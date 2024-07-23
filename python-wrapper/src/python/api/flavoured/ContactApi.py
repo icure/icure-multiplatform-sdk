@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedContact, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Contact, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, Service, ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, ContactShareOptions, deserialize_simple_share_result, SimpleShareResult
+from icure.model import DecryptedContact, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Contact, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, Service, ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, ContactShareOptions, deserialize_simple_share_result_decrypted_contact, SimpleShareResultDecryptedContact, deserialize_simple_share_result_encrypted_contact, SimpleShareResultEncryptedContact, deserialize_simple_share_result_contact, SimpleShareResultContact
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class ContactApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultEncryptedContact:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -24,7 +24,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -41,7 +41,7 @@ class ContactApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultEncryptedContact:
 			payload = {
 				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
@@ -56,10 +56,10 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_contact(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, contact: EncryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, contact: EncryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResultEncryptedContact:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -67,7 +67,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"contact": contact.__serialize__(),
@@ -83,7 +83,7 @@ class ContactApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, contact: EncryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, contact: EncryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResultEncryptedContact:
 			payload = {
 				"contact": contact.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -97,7 +97,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_contact(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, contact: EncryptedContact, delegates: Dict[str, ContactShareOptions]) -> EncryptedContact:
@@ -907,7 +907,7 @@ class ContactApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultContact:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -915,7 +915,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -932,7 +932,7 @@ class ContactApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultContact:
 			payload = {
 				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
@@ -947,10 +947,10 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_contact(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResultContact:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -958,7 +958,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"contact": contact.__serialize__(),
@@ -974,7 +974,7 @@ class ContactApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResultContact:
 			payload = {
 				"contact": contact.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -988,7 +988,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_contact(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> Contact:
@@ -2580,7 +2580,7 @@ class ContactApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultDecryptedContact:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2588,7 +2588,7 @@ class ContactApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_contact(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -2605,7 +2605,7 @@ class ContactApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultDecryptedContact:
 		payload = {
 			"delegateId": delegate_id,
 			"contact": contact.__serialize__(),
@@ -2620,10 +2620,10 @@ class ContactApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_contact(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, contact: DecryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, contact: DecryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResultDecryptedContact:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2631,7 +2631,7 @@ class ContactApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_contact(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"contact": contact.__serialize__(),
@@ -2647,7 +2647,7 @@ class ContactApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, contact: DecryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, contact: DecryptedContact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResultDecryptedContact:
 		payload = {
 			"contact": contact.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2661,7 +2661,7 @@ class ContactApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_contact(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, contact: DecryptedContact, delegates: Dict[str, ContactShareOptions]) -> DecryptedContact:

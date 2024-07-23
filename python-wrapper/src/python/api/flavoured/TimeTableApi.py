@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, TimeTable, serialize_time_table, EncryptedTimeTable, deserialize_time_table, DocIdentifier, TimeTableShareOptions, deserialize_simple_share_result, SimpleShareResult
+from icure.model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, TimeTable, serialize_time_table, EncryptedTimeTable, deserialize_time_table, DocIdentifier, TimeTableShareOptions, deserialize_simple_share_result_decrypted_time_table, SimpleShareResultDecryptedTimeTable, deserialize_simple_share_result_encrypted_time_table, SimpleShareResultEncryptedTimeTable, deserialize_simple_share_result_time_table, SimpleShareResultTimeTable
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -14,7 +14,7 @@ class TimeTableApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultEncryptedTimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -22,7 +22,7 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -39,7 +39,7 @@ class TimeTableApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultEncryptedTimeTable:
 			payload = {
 				"delegateId": delegate_id,
 				"timeTable": time_table.__serialize__(),
@@ -54,10 +54,10 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_time_table(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultEncryptedTimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -65,7 +65,7 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"timeTable": time_table.__serialize__(),
@@ -81,7 +81,7 @@ class TimeTableApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultEncryptedTimeTable:
 			payload = {
 				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -95,7 +95,7 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_time_table(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> EncryptedTimeTable:
@@ -304,7 +304,7 @@ class TimeTableApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultTimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -312,7 +312,7 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -329,7 +329,7 @@ class TimeTableApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultTimeTable:
 			payload = {
 				"delegateId": delegate_id,
 				"timeTable": time_table.__serialize__(),
@@ -344,10 +344,10 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_time_table(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultTimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -355,7 +355,7 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"timeTable": time_table.__serialize__(),
@@ -371,7 +371,7 @@ class TimeTableApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultTimeTable:
 			payload = {
 				"timeTable": time_table.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -385,7 +385,7 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_time_table(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> TimeTable:
@@ -991,7 +991,7 @@ class TimeTableApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultDecryptedTimeTable:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -999,7 +999,7 @@ class TimeTableApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_time_table(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1016,7 +1016,7 @@ class TimeTableApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultDecryptedTimeTable:
 		payload = {
 			"delegateId": delegate_id,
 			"timeTable": time_table.__serialize__(),
@@ -1031,10 +1031,10 @@ class TimeTableApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_time_table(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultDecryptedTimeTable:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1042,7 +1042,7 @@ class TimeTableApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_time_table(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"timeTable": time_table.__serialize__(),
@@ -1058,7 +1058,7 @@ class TimeTableApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultDecryptedTimeTable:
 		payload = {
 			"timeTable": time_table.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1072,7 +1072,7 @@ class TimeTableApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_time_table(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> DecryptedTimeTable:

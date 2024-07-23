@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedMessage, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Message, serialize_message, EncryptedMessage, deserialize_message, MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, MessageShareOptions, deserialize_simple_share_result, SimpleShareResult, PaginatedList
+from icure.model import DecryptedMessage, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Message, serialize_message, EncryptedMessage, deserialize_message, MessageAbstractFilter, serialize_abstract_filter, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration, MessageShareOptions, deserialize_simple_share_result_decrypted_message, SimpleShareResultDecryptedMessage, PaginatedList, deserialize_simple_share_result_encrypted_message, SimpleShareResultEncryptedMessage, deserialize_simple_share_result_message, SimpleShareResultMessage
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class MessageApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResultEncryptedMessage:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -24,7 +24,7 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -41,7 +41,7 @@ class MessageApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResultEncryptedMessage:
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
@@ -56,10 +56,10 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_message(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultEncryptedMessage:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -67,7 +67,7 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"message": message.__serialize__(),
@@ -83,7 +83,7 @@ class MessageApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultEncryptedMessage:
 			payload = {
 				"message": message.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -97,7 +97,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_message(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> EncryptedMessage:
@@ -752,7 +752,7 @@ class MessageApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResultMessage:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -760,7 +760,7 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -777,7 +777,7 @@ class MessageApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResultMessage:
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
@@ -792,10 +792,10 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_message(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultMessage:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -803,7 +803,7 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"message": message.__serialize__(),
@@ -819,7 +819,7 @@ class MessageApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultMessage:
 			payload = {
 				"message": message.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -833,7 +833,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_message(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> Message:
@@ -2017,7 +2017,7 @@ class MessageApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResultDecryptedMessage:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2025,7 +2025,7 @@ class MessageApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_message(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -2042,7 +2042,7 @@ class MessageApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResultDecryptedMessage:
 		payload = {
 			"delegateId": delegate_id,
 			"message": message.__serialize__(),
@@ -2057,10 +2057,10 @@ class MessageApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_message(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultDecryptedMessage:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2068,7 +2068,7 @@ class MessageApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_message(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"message": message.__serialize__(),
@@ -2084,7 +2084,7 @@ class MessageApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultDecryptedMessage:
 		payload = {
 			"message": message.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2098,7 +2098,7 @@ class MessageApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_message(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> DecryptedMessage:

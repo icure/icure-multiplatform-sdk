@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, AccessLogShareOptions, deserialize_simple_share_result, SimpleShareResult, PaginatedList
+from icure.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, AccessLogShareOptions, deserialize_simple_share_result_decrypted_access_log, SimpleShareResultDecryptedAccessLog, PaginatedList, deserialize_simple_share_result_encrypted_access_log, SimpleShareResultEncryptedAccessLog, deserialize_simple_share_result_access_log, SimpleShareResultAccessLog
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -15,7 +15,7 @@ class AccessLogApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultEncryptedAccessLog:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -23,7 +23,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -40,7 +40,7 @@ class AccessLogApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultEncryptedAccessLog:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": access_log.__serialize__(),
@@ -55,10 +55,10 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_access_log(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultEncryptedAccessLog:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -66,7 +66,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"accessLog": access_log.__serialize__(),
@@ -82,7 +82,7 @@ class AccessLogApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultEncryptedAccessLog:
 			payload = {
 				"accessLog": access_log.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -96,7 +96,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_access_log(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> EncryptedAccessLog:
@@ -491,7 +491,7 @@ class AccessLogApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultAccessLog:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -499,7 +499,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -516,7 +516,7 @@ class AccessLogApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultAccessLog:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": access_log.__serialize__(),
@@ -531,10 +531,10 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_access_log(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultAccessLog:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -542,7 +542,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"accessLog": access_log.__serialize__(),
@@ -558,7 +558,7 @@ class AccessLogApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultAccessLog:
 			payload = {
 				"accessLog": access_log.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -572,7 +572,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_access_log(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> AccessLog:
@@ -1364,7 +1364,7 @@ class AccessLogApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultDecryptedAccessLog:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1372,7 +1372,7 @@ class AccessLogApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_access_log(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1389,7 +1389,7 @@ class AccessLogApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultDecryptedAccessLog:
 		payload = {
 			"delegateId": delegate_id,
 			"accessLog": access_log.__serialize__(),
@@ -1404,10 +1404,10 @@ class AccessLogApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_access_log(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultDecryptedAccessLog:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1415,7 +1415,7 @@ class AccessLogApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_access_log(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"accessLog": access_log.__serialize__(),
@@ -1431,7 +1431,7 @@ class AccessLogApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultDecryptedAccessLog:
 		payload = {
 			"accessLog": access_log.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1445,7 +1445,7 @@ class AccessLogApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_access_log(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> DecryptedAccessLog:

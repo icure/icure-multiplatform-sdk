@@ -3208,8 +3208,6 @@ class Place:
 
 RecoveryDataKey = 'HexString'
 
-RecoveryResult = Union['RecoveryResultSuccess', 'RecoveryResultFailure']
-
 @dataclass
 class RecoveryResultSuccess:
 	data: object
@@ -3249,6 +3247,8 @@ class RecoveryResultFailure:
 		return cls(
 			reason=RecoveryDataUseFailureReason._deserialize(deserialized_dict["reason"]),
 		)
+
+RecoveryResult = Union['RecoveryResultSuccess', 'RecoveryResultFailure']
 
 def serialize_recovery_result(recovery_result: RecoveryResult) -> object:
 	if isinstance(recovery_result, RecoveryResultSuccess):
@@ -4245,8 +4245,6 @@ class DataOwnerType(Enum):
 		else:
 			raise Exception(f"{data} is not a valid value for DataOwnerType enum.")
 
-DataOwnerWithType = Union['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePatientDataOwner', 'DataOwnerWithTypeDeviceDataOwner']
-
 @dataclass
 class DataOwnerWithTypeHcpDataOwner:
 	data_owner: 'HealthcareParty'
@@ -4306,6 +4304,8 @@ class DataOwnerWithTypeDeviceDataOwner:
 		return cls(
 			data_owner=Device._deserialize(deserialized_dict["dataOwner"]),
 		)
+
+DataOwnerWithType = Union['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePatientDataOwner', 'DataOwnerWithTypeDeviceDataOwner']
 
 def serialize_data_owner_with_type(data_owner_with_type: DataOwnerWithType) -> object:
 	if isinstance(data_owner_with_type, DataOwnerWithTypeHcpDataOwner):
@@ -4663,8 +4663,6 @@ class AccessLevel(Enum):
 		else:
 			raise Exception(f"{data} is not a valid value for AccessLevel enum.")
 
-SecretIdOption = Union['SecretIdOptionUseAnyConfidential', 'SecretIdOptionUseAnySharedWithParent', 'SecretIdOptionUse']
-
 class SecretIdOptionUseAnyConfidential(metaclass=SingletonMeta):
 
 	def __serialize__(self) -> object:
@@ -4703,6 +4701,8 @@ class SecretIdOptionUse:
 			secret_ids=[x0 for x0 in deserialized_dict["secretIds"]],
 		)
 
+SecretIdOption = Union['SecretIdOptionUseAnyConfidential', 'SecretIdOptionUseAnySharedWithParent', 'SecretIdOptionUse']
+
 def serialize_secret_id_option(secret_id_option: SecretIdOption) -> object:
 	if isinstance(secret_id_option, SecretIdOptionUseAnyConfidential):
 		serialized_entity = secret_id_option.__serialize__()
@@ -4737,11 +4737,9 @@ def deserialize_secret_id_option(data: Union[str, Dict[str, object]]) -> 'Secret
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SecretIdOption")
 
-SimpleShareResult = Union['SimpleShareResultSuccess', 'SimpleShareResultFailure']
-
 @dataclass
-class SimpleShareResultSuccess:
-	updated_entity: object
+class SimpleShareResultDecryptedTimeTableSuccess:
+	updated_entity: DecryptedTimeTable
 
 	def __serialize__(self) -> object:
 		return {
@@ -4749,14 +4747,834 @@ class SimpleShareResultSuccess:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultSuccess':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedTimeTableSuccess':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
 		else:
 			deserialized_dict = data
 		return cls(
-			updated_entity=deserialized_dict["updatedEntity"],
+			updated_entity=DecryptedTimeTable._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedTimeTableSuccess:
+	updated_entity: EncryptedTimeTable
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedTimeTableSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedTimeTable._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultTimeTableSuccess:
+	updated_entity: TimeTable
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultTimeTableSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=TimeTable._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedClassificationSuccess:
+	updated_entity: DecryptedClassification
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedClassificationSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedClassification._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedClassificationSuccess:
+	updated_entity: EncryptedClassification
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedClassificationSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedClassification._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultClassificationSuccess:
+	updated_entity: Classification
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultClassificationSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Classification._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedMaintenanceTaskSuccess:
+	updated_entity: DecryptedMaintenanceTask
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedMaintenanceTaskSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedMaintenanceTask._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedMaintenanceTaskSuccess:
+	updated_entity: EncryptedMaintenanceTask
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedMaintenanceTaskSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedMaintenanceTask._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultMaintenanceTaskSuccess:
+	updated_entity: MaintenanceTask
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultMaintenanceTaskSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=MaintenanceTask._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedPatientSuccess:
+	updated_entity: DecryptedPatient
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedPatientSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedPatient._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedPatientSuccess:
+	updated_entity: EncryptedPatient
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedPatientSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedPatient._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultPatientSuccess:
+	updated_entity: Patient
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultPatientSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Patient._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedContactSuccess:
+	updated_entity: DecryptedContact
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedContactSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedContact._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedContactSuccess:
+	updated_entity: EncryptedContact
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedContactSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedContact._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultContactSuccess:
+	updated_entity: Contact
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultContactSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Contact._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedReceiptSuccess:
+	updated_entity: DecryptedReceipt
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedReceiptSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedReceipt._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedReceiptSuccess:
+	updated_entity: EncryptedReceipt
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedReceiptSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedReceipt._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultReceiptSuccess:
+	updated_entity: Receipt
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultReceiptSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Receipt._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedAccessLogSuccess:
+	updated_entity: DecryptedAccessLog
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedAccessLogSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedAccessLog._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedAccessLogSuccess:
+	updated_entity: EncryptedAccessLog
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedAccessLogSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedAccessLog._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultAccessLogSuccess:
+	updated_entity: AccessLog
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultAccessLogSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=AccessLog._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedTopicSuccess:
+	updated_entity: DecryptedTopic
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedTopicSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedTopic._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedTopicSuccess:
+	updated_entity: EncryptedTopic
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedTopicSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedTopic._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultTopicSuccess:
+	updated_entity: Topic
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultTopicSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Topic._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedCalendarItemSuccess:
+	updated_entity: DecryptedCalendarItem
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedCalendarItemSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedCalendarItem._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedCalendarItemSuccess:
+	updated_entity: EncryptedCalendarItem
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedCalendarItemSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedCalendarItem._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultCalendarItemSuccess:
+	updated_entity: CalendarItem
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultCalendarItemSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=CalendarItem._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedDocumentSuccess:
+	updated_entity: DecryptedDocument
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedDocumentSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedDocument._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedDocumentSuccess:
+	updated_entity: EncryptedDocument
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedDocumentSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedDocument._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDocumentSuccess:
+	updated_entity: Document
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDocumentSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Document._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedFormSuccess:
+	updated_entity: DecryptedForm
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedFormSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedForm._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedFormSuccess:
+	updated_entity: EncryptedForm
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedFormSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedForm._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultFormSuccess:
+	updated_entity: Form
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultFormSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Form._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedInvoiceSuccess:
+	updated_entity: DecryptedInvoice
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedInvoiceSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedInvoice._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedInvoiceSuccess:
+	updated_entity: EncryptedInvoice
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedInvoiceSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedInvoice._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultInvoiceSuccess:
+	updated_entity: Invoice
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultInvoiceSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Invoice._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedMessageSuccess:
+	updated_entity: DecryptedMessage
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedMessageSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedMessage._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedMessageSuccess:
+	updated_entity: EncryptedMessage
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedMessageSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedMessage._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultMessageSuccess:
+	updated_entity: Message
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultMessageSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=Message._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultDecryptedHealthElementSuccess:
+	updated_entity: DecryptedHealthElement
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultDecryptedHealthElementSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=DecryptedHealthElement._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultEncryptedHealthElementSuccess:
+	updated_entity: EncryptedHealthElement
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultEncryptedHealthElementSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=EncryptedHealthElement._deserialize(deserialized_dict["updatedEntity"]),
+		)
+
+@dataclass
+class SimpleShareResultHealthElementSuccess:
+	updated_entity: HealthElement
+
+	def __serialize__(self) -> object:
+		return {
+			"updatedEntity": self.updated_entity.__serialize__(),
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SimpleShareResultHealthElementSuccess':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			updated_entity=HealthElement._deserialize(deserialized_dict["updatedEntity"]),
 		)
 
 @dataclass
@@ -4779,19 +5597,21 @@ class SimpleShareResultFailure:
 			errors_details=[FailedRequestDetails._deserialize(x0) for x0 in deserialized_dict["errorsDetails"]],
 		)
 
-def serialize_simple_share_result(simple_share_result: SimpleShareResult) -> object:
-	if isinstance(simple_share_result, SimpleShareResultSuccess):
-		serialized_entity = simple_share_result.__serialize__()
+SimpleShareResultDecryptedTimeTable = Union['SimpleShareResultDecryptedTimeTableSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_time_table(simple_share_result_decrypted_time_table: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_time_table, SimpleShareResultDecryptedTimeTableSuccess):
+		serialized_entity = simple_share_result_decrypted_time_table.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
-	elif isinstance(simple_share_result, SimpleShareResultFailure):
-		serialized_entity = simple_share_result.__serialize__()
+	elif isinstance(simple_share_result_decrypted_time_table, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_time_table.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
-		raise Exception(f"{type(simple_share_result)} is not a known subclass of SimpleShareResult")
+		raise Exception(f"{type(simple_share_result_decrypted_time_table)} is not a known subclass of SimpleShareResult")
 
-def deserialize_simple_share_result(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+def deserialize_simple_share_result_decrypted_time_table(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -4801,7 +5621,1237 @@ def deserialize_simple_share_result(data: Union[str, Dict[str, object]]) -> 'Sim
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
 	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
-		return SimpleShareResultSuccess._deserialize(deserialized_dict)
+		return SimpleShareResultDecryptedTimeTableSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedTimeTable = Union['SimpleShareResultEncryptedTimeTableSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_time_table(simple_share_result_encrypted_time_table: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_time_table, SimpleShareResultEncryptedTimeTableSuccess):
+		serialized_entity = simple_share_result_encrypted_time_table.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_time_table, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_time_table.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_time_table)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_time_table(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedTimeTableSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultTimeTable = Union['SimpleShareResultTimeTableSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_time_table(simple_share_result_time_table: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_time_table, SimpleShareResultTimeTableSuccess):
+		serialized_entity = simple_share_result_time_table.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_time_table, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_time_table.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_time_table)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_time_table(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultTimeTableSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedClassification = Union['SimpleShareResultDecryptedClassificationSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_classification(simple_share_result_decrypted_classification: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_classification, SimpleShareResultDecryptedClassificationSuccess):
+		serialized_entity = simple_share_result_decrypted_classification.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_classification, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_classification.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_classification)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_classification(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedClassificationSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedClassification = Union['SimpleShareResultEncryptedClassificationSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_classification(simple_share_result_encrypted_classification: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_classification, SimpleShareResultEncryptedClassificationSuccess):
+		serialized_entity = simple_share_result_encrypted_classification.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_classification, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_classification.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_classification)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_classification(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedClassificationSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultClassification = Union['SimpleShareResultClassificationSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_classification(simple_share_result_classification: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_classification, SimpleShareResultClassificationSuccess):
+		serialized_entity = simple_share_result_classification.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_classification, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_classification.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_classification)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_classification(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultClassificationSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedMaintenanceTask = Union['SimpleShareResultDecryptedMaintenanceTaskSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_maintenance_task(simple_share_result_decrypted_maintenance_task: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_maintenance_task, SimpleShareResultDecryptedMaintenanceTaskSuccess):
+		serialized_entity = simple_share_result_decrypted_maintenance_task.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_maintenance_task, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_maintenance_task.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_maintenance_task)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_maintenance_task(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedMaintenanceTaskSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedMaintenanceTask = Union['SimpleShareResultEncryptedMaintenanceTaskSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_maintenance_task(simple_share_result_encrypted_maintenance_task: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_maintenance_task, SimpleShareResultEncryptedMaintenanceTaskSuccess):
+		serialized_entity = simple_share_result_encrypted_maintenance_task.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_maintenance_task, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_maintenance_task.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_maintenance_task)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_maintenance_task(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedMaintenanceTaskSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultMaintenanceTask = Union['SimpleShareResultMaintenanceTaskSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_maintenance_task(simple_share_result_maintenance_task: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_maintenance_task, SimpleShareResultMaintenanceTaskSuccess):
+		serialized_entity = simple_share_result_maintenance_task.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_maintenance_task, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_maintenance_task.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_maintenance_task)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_maintenance_task(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultMaintenanceTaskSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedPatient = Union['SimpleShareResultDecryptedPatientSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_patient(simple_share_result_decrypted_patient: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_patient, SimpleShareResultDecryptedPatientSuccess):
+		serialized_entity = simple_share_result_decrypted_patient.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_patient, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_patient.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_patient)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_patient(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedPatientSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedPatient = Union['SimpleShareResultEncryptedPatientSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_patient(simple_share_result_encrypted_patient: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_patient, SimpleShareResultEncryptedPatientSuccess):
+		serialized_entity = simple_share_result_encrypted_patient.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_patient, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_patient.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_patient)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_patient(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedPatientSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultPatient = Union['SimpleShareResultPatientSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_patient(simple_share_result_patient: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_patient, SimpleShareResultPatientSuccess):
+		serialized_entity = simple_share_result_patient.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_patient, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_patient.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_patient)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_patient(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultPatientSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedContact = Union['SimpleShareResultDecryptedContactSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_contact(simple_share_result_decrypted_contact: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_contact, SimpleShareResultDecryptedContactSuccess):
+		serialized_entity = simple_share_result_decrypted_contact.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_contact, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_contact.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_contact)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_contact(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedContactSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedContact = Union['SimpleShareResultEncryptedContactSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_contact(simple_share_result_encrypted_contact: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_contact, SimpleShareResultEncryptedContactSuccess):
+		serialized_entity = simple_share_result_encrypted_contact.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_contact, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_contact.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_contact)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_contact(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedContactSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultContact = Union['SimpleShareResultContactSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_contact(simple_share_result_contact: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_contact, SimpleShareResultContactSuccess):
+		serialized_entity = simple_share_result_contact.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_contact, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_contact.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_contact)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_contact(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultContactSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedReceipt = Union['SimpleShareResultDecryptedReceiptSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_receipt(simple_share_result_decrypted_receipt: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_receipt, SimpleShareResultDecryptedReceiptSuccess):
+		serialized_entity = simple_share_result_decrypted_receipt.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_receipt, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_receipt.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_receipt)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_receipt(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedReceiptSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedReceipt = Union['SimpleShareResultEncryptedReceiptSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_receipt(simple_share_result_encrypted_receipt: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_receipt, SimpleShareResultEncryptedReceiptSuccess):
+		serialized_entity = simple_share_result_encrypted_receipt.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_receipt, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_receipt.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_receipt)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_receipt(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedReceiptSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultReceipt = Union['SimpleShareResultReceiptSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_receipt(simple_share_result_receipt: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_receipt, SimpleShareResultReceiptSuccess):
+		serialized_entity = simple_share_result_receipt.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_receipt, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_receipt.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_receipt)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_receipt(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultReceiptSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedAccessLog = Union['SimpleShareResultDecryptedAccessLogSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_access_log(simple_share_result_decrypted_access_log: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_access_log, SimpleShareResultDecryptedAccessLogSuccess):
+		serialized_entity = simple_share_result_decrypted_access_log.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_access_log, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_access_log.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_access_log)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_access_log(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedAccessLogSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedAccessLog = Union['SimpleShareResultEncryptedAccessLogSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_access_log(simple_share_result_encrypted_access_log: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_access_log, SimpleShareResultEncryptedAccessLogSuccess):
+		serialized_entity = simple_share_result_encrypted_access_log.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_access_log, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_access_log.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_access_log)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_access_log(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedAccessLogSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultAccessLog = Union['SimpleShareResultAccessLogSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_access_log(simple_share_result_access_log: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_access_log, SimpleShareResultAccessLogSuccess):
+		serialized_entity = simple_share_result_access_log.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_access_log, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_access_log.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_access_log)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_access_log(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultAccessLogSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedTopic = Union['SimpleShareResultDecryptedTopicSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_topic(simple_share_result_decrypted_topic: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_topic, SimpleShareResultDecryptedTopicSuccess):
+		serialized_entity = simple_share_result_decrypted_topic.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_topic, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_topic.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_topic)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_topic(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedTopicSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedTopic = Union['SimpleShareResultEncryptedTopicSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_topic(simple_share_result_encrypted_topic: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_topic, SimpleShareResultEncryptedTopicSuccess):
+		serialized_entity = simple_share_result_encrypted_topic.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_topic, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_topic.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_topic)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_topic(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedTopicSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultTopic = Union['SimpleShareResultTopicSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_topic(simple_share_result_topic: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_topic, SimpleShareResultTopicSuccess):
+		serialized_entity = simple_share_result_topic.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_topic, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_topic.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_topic)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_topic(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultTopicSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedCalendarItem = Union['SimpleShareResultDecryptedCalendarItemSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_calendar_item(simple_share_result_decrypted_calendar_item: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_calendar_item, SimpleShareResultDecryptedCalendarItemSuccess):
+		serialized_entity = simple_share_result_decrypted_calendar_item.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_calendar_item, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_calendar_item.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_calendar_item)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_calendar_item(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedCalendarItemSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedCalendarItem = Union['SimpleShareResultEncryptedCalendarItemSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_calendar_item(simple_share_result_encrypted_calendar_item: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_calendar_item, SimpleShareResultEncryptedCalendarItemSuccess):
+		serialized_entity = simple_share_result_encrypted_calendar_item.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_calendar_item, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_calendar_item.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_calendar_item)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_calendar_item(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedCalendarItemSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultCalendarItem = Union['SimpleShareResultCalendarItemSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_calendar_item(simple_share_result_calendar_item: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_calendar_item, SimpleShareResultCalendarItemSuccess):
+		serialized_entity = simple_share_result_calendar_item.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_calendar_item, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_calendar_item.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_calendar_item)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_calendar_item(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultCalendarItemSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedDocument = Union['SimpleShareResultDecryptedDocumentSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_document(simple_share_result_decrypted_document: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_document, SimpleShareResultDecryptedDocumentSuccess):
+		serialized_entity = simple_share_result_decrypted_document.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_document, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_document.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_document)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_document(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedDocumentSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedDocument = Union['SimpleShareResultEncryptedDocumentSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_document(simple_share_result_encrypted_document: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_document, SimpleShareResultEncryptedDocumentSuccess):
+		serialized_entity = simple_share_result_encrypted_document.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_document, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_document.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_document)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_document(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedDocumentSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDocument = Union['SimpleShareResultDocumentSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_document(simple_share_result_document: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_document, SimpleShareResultDocumentSuccess):
+		serialized_entity = simple_share_result_document.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_document, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_document.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_document)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_document(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDocumentSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedForm = Union['SimpleShareResultDecryptedFormSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_form(simple_share_result_decrypted_form: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_form, SimpleShareResultDecryptedFormSuccess):
+		serialized_entity = simple_share_result_decrypted_form.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_form, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_form.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_form)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_form(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedFormSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedForm = Union['SimpleShareResultEncryptedFormSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_form(simple_share_result_encrypted_form: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_form, SimpleShareResultEncryptedFormSuccess):
+		serialized_entity = simple_share_result_encrypted_form.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_form, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_form.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_form)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_form(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedFormSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultForm = Union['SimpleShareResultFormSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_form(simple_share_result_form: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_form, SimpleShareResultFormSuccess):
+		serialized_entity = simple_share_result_form.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_form, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_form.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_form)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_form(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultFormSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedInvoice = Union['SimpleShareResultDecryptedInvoiceSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_invoice(simple_share_result_decrypted_invoice: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_invoice, SimpleShareResultDecryptedInvoiceSuccess):
+		serialized_entity = simple_share_result_decrypted_invoice.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_invoice, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_invoice.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_invoice)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_invoice(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedInvoiceSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedInvoice = Union['SimpleShareResultEncryptedInvoiceSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_invoice(simple_share_result_encrypted_invoice: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_invoice, SimpleShareResultEncryptedInvoiceSuccess):
+		serialized_entity = simple_share_result_encrypted_invoice.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_invoice, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_invoice.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_invoice)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_invoice(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedInvoiceSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultInvoice = Union['SimpleShareResultInvoiceSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_invoice(simple_share_result_invoice: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_invoice, SimpleShareResultInvoiceSuccess):
+		serialized_entity = simple_share_result_invoice.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_invoice, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_invoice.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_invoice)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_invoice(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultInvoiceSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedMessage = Union['SimpleShareResultDecryptedMessageSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_message(simple_share_result_decrypted_message: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_message, SimpleShareResultDecryptedMessageSuccess):
+		serialized_entity = simple_share_result_decrypted_message.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_message, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_message.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_message)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_message(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedMessageSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedMessage = Union['SimpleShareResultEncryptedMessageSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_message(simple_share_result_encrypted_message: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_message, SimpleShareResultEncryptedMessageSuccess):
+		serialized_entity = simple_share_result_encrypted_message.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_message, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_message.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_message)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_message(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedMessageSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultMessage = Union['SimpleShareResultMessageSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_message(simple_share_result_message: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_message, SimpleShareResultMessageSuccess):
+		serialized_entity = simple_share_result_message.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_message, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_message.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_message)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_message(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultMessageSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultDecryptedHealthElement = Union['SimpleShareResultDecryptedHealthElementSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_decrypted_health_element(simple_share_result_decrypted_health_element: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_decrypted_health_element, SimpleShareResultDecryptedHealthElementSuccess):
+		serialized_entity = simple_share_result_decrypted_health_element.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_decrypted_health_element, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_decrypted_health_element.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_decrypted_health_element)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_decrypted_health_element(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultDecryptedHealthElementSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultEncryptedHealthElement = Union['SimpleShareResultEncryptedHealthElementSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_encrypted_health_element(simple_share_result_encrypted_health_element: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_encrypted_health_element, SimpleShareResultEncryptedHealthElementSuccess):
+		serialized_entity = simple_share_result_encrypted_health_element.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_encrypted_health_element, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_encrypted_health_element.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_encrypted_health_element)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_encrypted_health_element(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultEncryptedHealthElementSuccess._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+		return SimpleShareResultFailure._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
+
+SimpleShareResultHealthElement = Union['SimpleShareResultHealthElementSuccess', 'SimpleShareResultFailure']
+
+def serialize_simple_share_result_health_element(simple_share_result_health_element: SimpleShareResult) -> object:
+	if isinstance(simple_share_result_health_element, SimpleShareResultHealthElementSuccess):
+		serialized_entity = simple_share_result_health_element.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		return serialized_entity
+	elif isinstance(simple_share_result_health_element, SimpleShareResultFailure):
+		serialized_entity = simple_share_result_health_element.__serialize__()
+		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(simple_share_result_health_element)} is not a known subclass of SimpleShareResult")
+
+def deserialize_simple_share_result_health_element(data: Union[str, Dict[str, object]]) -> 'SimpleShareResult':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+		return SimpleShareResultHealthElementSuccess._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
@@ -10295,8 +12345,6 @@ class Gender(Enum):
 		else:
 			raise Exception(f"{data} is not a valid value for Gender enum.")
 
-ExternalFilterKey = Union['ExternalFilterKeyExternalFilterStringKey', 'ExternalFilterKeyExternalFilterLongKey', 'ExternalFilterKeyExternalFilterComplexKey']
-
 @dataclass
 class ExternalFilterKeyExternalFilterStringKey:
 	key: str
@@ -10356,6 +12404,8 @@ class ExternalFilterKeyExternalFilterComplexKey:
 		return cls(
 			key=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["key"].items())),
 		)
+
+ExternalFilterKey = Union['ExternalFilterKeyExternalFilterStringKey', 'ExternalFilterKeyExternalFilterLongKey', 'ExternalFilterKeyExternalFilterComplexKey']
 
 def serialize_external_filter_key(external_filter_key: ExternalFilterKey) -> object:
 	if isinstance(external_filter_key, ExternalFilterKeyExternalFilterStringKey):

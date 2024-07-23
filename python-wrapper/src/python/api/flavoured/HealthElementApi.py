@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedHealthElement, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, HealthElement, serialize_health_element, EncryptedHealthElement, deserialize_health_element, HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, HealthElementShareOptions, deserialize_simple_share_result, SimpleShareResult
+from icure.model import DecryptedHealthElement, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, HealthElement, serialize_health_element, EncryptedHealthElement, deserialize_health_element, HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, HealthElementShareOptions, deserialize_simple_share_result_decrypted_health_element, SimpleShareResultDecryptedHealthElement, deserialize_simple_share_result_encrypted_health_element, SimpleShareResultEncryptedHealthElement, deserialize_simple_share_result_health_element, SimpleShareResultHealthElement
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class HealthElementApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, health_element: EncryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, health_element: EncryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResultEncryptedHealthElement:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -24,7 +24,7 @@ class HealthElementApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_health_element(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -41,7 +41,7 @@ class HealthElementApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, health_element: EncryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, health_element: EncryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResultEncryptedHealthElement:
 			payload = {
 				"delegateId": delegate_id,
 				"healthElement": health_element.__serialize__(),
@@ -56,10 +56,10 @@ class HealthElementApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_health_element(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, health_element: EncryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, health_element: EncryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResultEncryptedHealthElement:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -67,7 +67,7 @@ class HealthElementApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_health_element(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"healthElement": health_element.__serialize__(),
@@ -83,7 +83,7 @@ class HealthElementApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, health_element: EncryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, health_element: EncryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResultEncryptedHealthElement:
 			payload = {
 				"healthElement": health_element.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -97,7 +97,7 @@ class HealthElementApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_health_element(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, health_element: EncryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> EncryptedHealthElement:
@@ -451,7 +451,7 @@ class HealthElementApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, health_element: HealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, health_element: HealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResultHealthElement:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -459,7 +459,7 @@ class HealthElementApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_health_element(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -476,7 +476,7 @@ class HealthElementApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, health_element: HealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, health_element: HealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResultHealthElement:
 			payload = {
 				"delegateId": delegate_id,
 				"healthElement": health_element.__serialize__(),
@@ -491,10 +491,10 @@ class HealthElementApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_health_element(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, health_element: HealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, health_element: HealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResultHealthElement:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -502,7 +502,7 @@ class HealthElementApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_health_element(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"healthElement": health_element.__serialize__(),
@@ -518,7 +518,7 @@ class HealthElementApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, health_element: HealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, health_element: HealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResultHealthElement:
 			payload = {
 				"healthElement": health_element.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -532,7 +532,7 @@ class HealthElementApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_health_element(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, health_element: HealthElement, delegates: Dict[str, HealthElementShareOptions]) -> HealthElement:
@@ -1456,7 +1456,7 @@ class HealthElementApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, health_element: DecryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, health_element: DecryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResultDecryptedHealthElement:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1464,7 +1464,7 @@ class HealthElementApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_health_element(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1481,7 +1481,7 @@ class HealthElementApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, health_element: DecryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, health_element: DecryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResultDecryptedHealthElement:
 		payload = {
 			"delegateId": delegate_id,
 			"healthElement": health_element.__serialize__(),
@@ -1496,10 +1496,10 @@ class HealthElementApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_health_element(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, health_element: DecryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, health_element: DecryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResultDecryptedHealthElement:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1507,7 +1507,7 @@ class HealthElementApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_health_element(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"healthElement": health_element.__serialize__(),
@@ -1523,7 +1523,7 @@ class HealthElementApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, health_element: DecryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, health_element: DecryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> SimpleShareResultDecryptedHealthElement:
 		payload = {
 			"healthElement": health_element.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1537,7 +1537,7 @@ class HealthElementApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_health_element(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, health_element: DecryptedHealthElement, delegates: Dict[str, HealthElementShareOptions]) -> DecryptedHealthElement:

@@ -1,7 +1,7 @@
 import asyncio
 import json
 import base64
-from icure.model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ReceiptShareOptions, deserialize_simple_share_result, SimpleShareResult
+from icure.model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ReceiptShareOptions, deserialize_simple_share_result_decrypted_receipt, SimpleShareResultDecryptedReceipt, deserialize_simple_share_result_encrypted_receipt, SimpleShareResultEncryptedReceipt, deserialize_simple_share_result_receipt, SimpleShareResultReceipt
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -15,7 +15,7 @@ class ReceiptApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultEncryptedReceipt:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -23,7 +23,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -40,7 +40,7 @@ class ReceiptApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultEncryptedReceipt:
 			payload = {
 				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
@@ -55,10 +55,10 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_receipt(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultEncryptedReceipt:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -66,7 +66,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"receipt": receipt.__serialize__(),
@@ -82,7 +82,7 @@ class ReceiptApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultEncryptedReceipt:
 			payload = {
 				"receipt": receipt.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -96,7 +96,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_receipt(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> EncryptedReceipt:
@@ -262,7 +262,7 @@ class ReceiptApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultReceipt:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -270,7 +270,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -287,7 +287,7 @@ class ReceiptApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultReceipt:
 			payload = {
 				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
@@ -302,10 +302,10 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_receipt(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultReceipt:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -313,7 +313,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"receipt": receipt.__serialize__(),
@@ -329,7 +329,7 @@ class ReceiptApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultReceipt:
 			payload = {
 				"receipt": receipt.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -343,7 +343,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_receipt(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> Receipt:
@@ -1123,7 +1123,7 @@ class ReceiptApi:
 			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultDecryptedReceipt:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1131,7 +1131,7 @@ class ReceiptApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_receipt(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1148,7 +1148,7 @@ class ReceiptApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultDecryptedReceipt:
 		payload = {
 			"delegateId": delegate_id,
 			"receipt": receipt.__serialize__(),
@@ -1163,10 +1163,10 @@ class ReceiptApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_receipt(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultDecryptedReceipt:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1174,7 +1174,7 @@ class ReceiptApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_receipt(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"receipt": receipt.__serialize__(),
@@ -1190,7 +1190,7 @@ class ReceiptApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultDecryptedReceipt:
 		payload = {
 			"receipt": receipt.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1204,7 +1204,7 @@ class ReceiptApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_receipt(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> DecryptedReceipt:

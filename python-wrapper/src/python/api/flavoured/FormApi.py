@@ -1,7 +1,7 @@
 import asyncio
 import json
 import base64
-from icure.model import DecryptedForm, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, FormTemplate, FormShareOptions, deserialize_simple_share_result, SimpleShareResult
+from icure.model import DecryptedForm, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, FormTemplate, FormShareOptions, deserialize_simple_share_result_decrypted_form, SimpleShareResultDecryptedForm, deserialize_simple_share_result_encrypted_form, SimpleShareResultEncryptedForm, deserialize_simple_share_result_form, SimpleShareResultForm
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class FormApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, form: EncryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, form: EncryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResultEncryptedForm:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -24,7 +24,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -41,7 +41,7 @@ class FormApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, form: EncryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, form: EncryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResultEncryptedForm:
 			payload = {
 				"delegateId": delegate_id,
 				"form": form.__serialize__(),
@@ -56,10 +56,10 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_form(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, form: EncryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, form: EncryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResultEncryptedForm:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -67,7 +67,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"form": form.__serialize__(),
@@ -83,7 +83,7 @@ class FormApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, form: EncryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, form: EncryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResultEncryptedForm:
 			payload = {
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -97,7 +97,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_form(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, form: EncryptedForm, delegates: Dict[str, FormShareOptions]) -> EncryptedForm:
@@ -604,7 +604,7 @@ class FormApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> SimpleShareResultForm:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -612,7 +612,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -629,7 +629,7 @@ class FormApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> SimpleShareResultForm:
 			payload = {
 				"delegateId": delegate_id,
 				"form": form.__serialize__(),
@@ -644,10 +644,10 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_form(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, form: Form, delegates: Dict[str, FormShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, form: Form, delegates: Dict[str, FormShareOptions]) -> SimpleShareResultForm:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -655,7 +655,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"form": form.__serialize__(),
@@ -671,7 +671,7 @@ class FormApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, form: Form, delegates: Dict[str, FormShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, form: Form, delegates: Dict[str, FormShareOptions]) -> SimpleShareResultForm:
 			payload = {
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -685,7 +685,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_form(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, form: Form, delegates: Dict[str, FormShareOptions]) -> Form:
@@ -1952,7 +1952,7 @@ class FormApi:
 			return_value = result_info.success
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, form: DecryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, form: DecryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResultDecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1960,7 +1960,7 @@ class FormApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_form(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1977,7 +1977,7 @@ class FormApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, form: DecryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, form: DecryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResultDecryptedForm:
 		payload = {
 			"delegateId": delegate_id,
 			"form": form.__serialize__(),
@@ -1992,10 +1992,10 @@ class FormApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_form(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, form: DecryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, form: DecryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResultDecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2003,7 +2003,7 @@ class FormApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_form(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"form": form.__serialize__(),
@@ -2019,7 +2019,7 @@ class FormApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, form: DecryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, form: DecryptedForm, delegates: Dict[str, FormShareOptions]) -> SimpleShareResultDecryptedForm:
 		payload = {
 			"form": form.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -2033,7 +2033,7 @@ class FormApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_form(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, form: DecryptedForm, delegates: Dict[str, FormShareOptions]) -> DecryptedForm:
