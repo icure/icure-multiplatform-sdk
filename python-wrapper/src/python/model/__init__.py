@@ -4739,7 +4739,7 @@ def deserialize_secret_id_option(data: Union[str, Dict[str, object]]) -> 'Secret
 
 @dataclass
 class SimpleShareResultDecryptedTimeTableSuccess:
-	updated_entity: DecryptedTimeTable
+	updated_entity: 'DecryptedTimeTable'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4759,7 +4759,7 @@ class SimpleShareResultDecryptedTimeTableSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedTimeTableSuccess:
-	updated_entity: EncryptedTimeTable
+	updated_entity: 'EncryptedTimeTable'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4779,7 +4779,7 @@ class SimpleShareResultEncryptedTimeTableSuccess:
 
 @dataclass
 class SimpleShareResultTimeTableSuccess:
-	updated_entity: TimeTable
+	updated_entity: 'TimeTable'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4799,7 +4799,7 @@ class SimpleShareResultTimeTableSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedClassificationSuccess:
-	updated_entity: DecryptedClassification
+	updated_entity: 'DecryptedClassification'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4819,7 +4819,7 @@ class SimpleShareResultDecryptedClassificationSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedClassificationSuccess:
-	updated_entity: EncryptedClassification
+	updated_entity: 'EncryptedClassification'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4839,7 +4839,7 @@ class SimpleShareResultEncryptedClassificationSuccess:
 
 @dataclass
 class SimpleShareResultClassificationSuccess:
-	updated_entity: Classification
+	updated_entity: 'Classification'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4859,7 +4859,7 @@ class SimpleShareResultClassificationSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedMaintenanceTaskSuccess:
-	updated_entity: DecryptedMaintenanceTask
+	updated_entity: 'DecryptedMaintenanceTask'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4879,7 +4879,7 @@ class SimpleShareResultDecryptedMaintenanceTaskSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedMaintenanceTaskSuccess:
-	updated_entity: EncryptedMaintenanceTask
+	updated_entity: 'EncryptedMaintenanceTask'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4899,7 +4899,7 @@ class SimpleShareResultEncryptedMaintenanceTaskSuccess:
 
 @dataclass
 class SimpleShareResultMaintenanceTaskSuccess:
-	updated_entity: MaintenanceTask
+	updated_entity: 'MaintenanceTask'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4919,7 +4919,7 @@ class SimpleShareResultMaintenanceTaskSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedPatientSuccess:
-	updated_entity: DecryptedPatient
+	updated_entity: 'DecryptedPatient'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4939,7 +4939,7 @@ class SimpleShareResultDecryptedPatientSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedPatientSuccess:
-	updated_entity: EncryptedPatient
+	updated_entity: 'EncryptedPatient'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4959,7 +4959,7 @@ class SimpleShareResultEncryptedPatientSuccess:
 
 @dataclass
 class SimpleShareResultPatientSuccess:
-	updated_entity: Patient
+	updated_entity: 'Patient'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4979,7 +4979,7 @@ class SimpleShareResultPatientSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedContactSuccess:
-	updated_entity: DecryptedContact
+	updated_entity: 'DecryptedContact'
 
 	def __serialize__(self) -> object:
 		return {
@@ -4999,7 +4999,7 @@ class SimpleShareResultDecryptedContactSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedContactSuccess:
-	updated_entity: EncryptedContact
+	updated_entity: 'EncryptedContact'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5019,7 +5019,7 @@ class SimpleShareResultEncryptedContactSuccess:
 
 @dataclass
 class SimpleShareResultContactSuccess:
-	updated_entity: Contact
+	updated_entity: 'Contact'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5039,7 +5039,7 @@ class SimpleShareResultContactSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedReceiptSuccess:
-	updated_entity: DecryptedReceipt
+	updated_entity: 'DecryptedReceipt'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5059,7 +5059,7 @@ class SimpleShareResultDecryptedReceiptSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedReceiptSuccess:
-	updated_entity: EncryptedReceipt
+	updated_entity: 'EncryptedReceipt'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5079,7 +5079,7 @@ class SimpleShareResultEncryptedReceiptSuccess:
 
 @dataclass
 class SimpleShareResultReceiptSuccess:
-	updated_entity: Receipt
+	updated_entity: 'Receipt'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5099,7 +5099,7 @@ class SimpleShareResultReceiptSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedAccessLogSuccess:
-	updated_entity: DecryptedAccessLog
+	updated_entity: 'DecryptedAccessLog'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5119,7 +5119,7 @@ class SimpleShareResultDecryptedAccessLogSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedAccessLogSuccess:
-	updated_entity: EncryptedAccessLog
+	updated_entity: 'EncryptedAccessLog'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5139,7 +5139,7 @@ class SimpleShareResultEncryptedAccessLogSuccess:
 
 @dataclass
 class SimpleShareResultAccessLogSuccess:
-	updated_entity: AccessLog
+	updated_entity: 'AccessLog'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5159,7 +5159,7 @@ class SimpleShareResultAccessLogSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedTopicSuccess:
-	updated_entity: DecryptedTopic
+	updated_entity: 'DecryptedTopic'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5179,7 +5179,7 @@ class SimpleShareResultDecryptedTopicSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedTopicSuccess:
-	updated_entity: EncryptedTopic
+	updated_entity: 'EncryptedTopic'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5199,7 +5199,7 @@ class SimpleShareResultEncryptedTopicSuccess:
 
 @dataclass
 class SimpleShareResultTopicSuccess:
-	updated_entity: Topic
+	updated_entity: 'Topic'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5219,7 +5219,7 @@ class SimpleShareResultTopicSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedCalendarItemSuccess:
-	updated_entity: DecryptedCalendarItem
+	updated_entity: 'DecryptedCalendarItem'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5239,7 +5239,7 @@ class SimpleShareResultDecryptedCalendarItemSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedCalendarItemSuccess:
-	updated_entity: EncryptedCalendarItem
+	updated_entity: 'EncryptedCalendarItem'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5259,7 +5259,7 @@ class SimpleShareResultEncryptedCalendarItemSuccess:
 
 @dataclass
 class SimpleShareResultCalendarItemSuccess:
-	updated_entity: CalendarItem
+	updated_entity: 'CalendarItem'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5279,7 +5279,7 @@ class SimpleShareResultCalendarItemSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedDocumentSuccess:
-	updated_entity: DecryptedDocument
+	updated_entity: 'DecryptedDocument'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5299,7 +5299,7 @@ class SimpleShareResultDecryptedDocumentSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedDocumentSuccess:
-	updated_entity: EncryptedDocument
+	updated_entity: 'EncryptedDocument'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5319,7 +5319,7 @@ class SimpleShareResultEncryptedDocumentSuccess:
 
 @dataclass
 class SimpleShareResultDocumentSuccess:
-	updated_entity: Document
+	updated_entity: 'Document'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5339,7 +5339,7 @@ class SimpleShareResultDocumentSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedFormSuccess:
-	updated_entity: DecryptedForm
+	updated_entity: 'DecryptedForm'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5359,7 +5359,7 @@ class SimpleShareResultDecryptedFormSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedFormSuccess:
-	updated_entity: EncryptedForm
+	updated_entity: 'EncryptedForm'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5379,7 +5379,7 @@ class SimpleShareResultEncryptedFormSuccess:
 
 @dataclass
 class SimpleShareResultFormSuccess:
-	updated_entity: Form
+	updated_entity: 'Form'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5399,7 +5399,7 @@ class SimpleShareResultFormSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedInvoiceSuccess:
-	updated_entity: DecryptedInvoice
+	updated_entity: 'DecryptedInvoice'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5419,7 +5419,7 @@ class SimpleShareResultDecryptedInvoiceSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedInvoiceSuccess:
-	updated_entity: EncryptedInvoice
+	updated_entity: 'EncryptedInvoice'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5439,7 +5439,7 @@ class SimpleShareResultEncryptedInvoiceSuccess:
 
 @dataclass
 class SimpleShareResultInvoiceSuccess:
-	updated_entity: Invoice
+	updated_entity: 'Invoice'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5459,7 +5459,7 @@ class SimpleShareResultInvoiceSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedMessageSuccess:
-	updated_entity: DecryptedMessage
+	updated_entity: 'DecryptedMessage'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5479,7 +5479,7 @@ class SimpleShareResultDecryptedMessageSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedMessageSuccess:
-	updated_entity: EncryptedMessage
+	updated_entity: 'EncryptedMessage'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5499,7 +5499,7 @@ class SimpleShareResultEncryptedMessageSuccess:
 
 @dataclass
 class SimpleShareResultMessageSuccess:
-	updated_entity: Message
+	updated_entity: 'Message'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5519,7 +5519,7 @@ class SimpleShareResultMessageSuccess:
 
 @dataclass
 class SimpleShareResultDecryptedHealthElementSuccess:
-	updated_entity: DecryptedHealthElement
+	updated_entity: 'DecryptedHealthElement'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5539,7 +5539,7 @@ class SimpleShareResultDecryptedHealthElementSuccess:
 
 @dataclass
 class SimpleShareResultEncryptedHealthElementSuccess:
-	updated_entity: EncryptedHealthElement
+	updated_entity: 'EncryptedHealthElement'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5559,7 +5559,7 @@ class SimpleShareResultEncryptedHealthElementSuccess:
 
 @dataclass
 class SimpleShareResultHealthElementSuccess:
-	updated_entity: HealthElement
+	updated_entity: 'HealthElement'
 
 	def __serialize__(self) -> object:
 		return {
@@ -5599,7 +5599,7 @@ class SimpleShareResultFailure:
 
 SimpleShareResultDecryptedTimeTable = Union['SimpleShareResultDecryptedTimeTableSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_time_table(simple_share_result_decrypted_time_table: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_time_table(simple_share_result_decrypted_time_table: SimpleShareResultDecryptedTimeTable) -> object:
 	if isinstance(simple_share_result_decrypted_time_table, SimpleShareResultDecryptedTimeTableSuccess):
 		serialized_entity = simple_share_result_decrypted_time_table.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5629,7 +5629,7 @@ def deserialize_simple_share_result_decrypted_time_table(data: Union[str, Dict[s
 
 SimpleShareResultEncryptedTimeTable = Union['SimpleShareResultEncryptedTimeTableSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_time_table(simple_share_result_encrypted_time_table: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_time_table(simple_share_result_encrypted_time_table: SimpleShareResultEncryptedTimeTable) -> object:
 	if isinstance(simple_share_result_encrypted_time_table, SimpleShareResultEncryptedTimeTableSuccess):
 		serialized_entity = simple_share_result_encrypted_time_table.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5659,7 +5659,7 @@ def deserialize_simple_share_result_encrypted_time_table(data: Union[str, Dict[s
 
 SimpleShareResultTimeTable = Union['SimpleShareResultTimeTableSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_time_table(simple_share_result_time_table: SimpleShareResult) -> object:
+def serialize_simple_share_result_time_table(simple_share_result_time_table: SimpleShareResultTimeTable) -> object:
 	if isinstance(simple_share_result_time_table, SimpleShareResultTimeTableSuccess):
 		serialized_entity = simple_share_result_time_table.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5689,7 +5689,7 @@ def deserialize_simple_share_result_time_table(data: Union[str, Dict[str, object
 
 SimpleShareResultDecryptedClassification = Union['SimpleShareResultDecryptedClassificationSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_classification(simple_share_result_decrypted_classification: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_classification(simple_share_result_decrypted_classification: SimpleShareResultDecryptedClassification) -> object:
 	if isinstance(simple_share_result_decrypted_classification, SimpleShareResultDecryptedClassificationSuccess):
 		serialized_entity = simple_share_result_decrypted_classification.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5719,7 +5719,7 @@ def deserialize_simple_share_result_decrypted_classification(data: Union[str, Di
 
 SimpleShareResultEncryptedClassification = Union['SimpleShareResultEncryptedClassificationSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_classification(simple_share_result_encrypted_classification: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_classification(simple_share_result_encrypted_classification: SimpleShareResultEncryptedClassification) -> object:
 	if isinstance(simple_share_result_encrypted_classification, SimpleShareResultEncryptedClassificationSuccess):
 		serialized_entity = simple_share_result_encrypted_classification.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5749,7 +5749,7 @@ def deserialize_simple_share_result_encrypted_classification(data: Union[str, Di
 
 SimpleShareResultClassification = Union['SimpleShareResultClassificationSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_classification(simple_share_result_classification: SimpleShareResult) -> object:
+def serialize_simple_share_result_classification(simple_share_result_classification: SimpleShareResultClassification) -> object:
 	if isinstance(simple_share_result_classification, SimpleShareResultClassificationSuccess):
 		serialized_entity = simple_share_result_classification.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5779,7 +5779,7 @@ def deserialize_simple_share_result_classification(data: Union[str, Dict[str, ob
 
 SimpleShareResultDecryptedMaintenanceTask = Union['SimpleShareResultDecryptedMaintenanceTaskSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_maintenance_task(simple_share_result_decrypted_maintenance_task: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_maintenance_task(simple_share_result_decrypted_maintenance_task: SimpleShareResultDecryptedMaintenanceTask) -> object:
 	if isinstance(simple_share_result_decrypted_maintenance_task, SimpleShareResultDecryptedMaintenanceTaskSuccess):
 		serialized_entity = simple_share_result_decrypted_maintenance_task.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5809,7 +5809,7 @@ def deserialize_simple_share_result_decrypted_maintenance_task(data: Union[str, 
 
 SimpleShareResultEncryptedMaintenanceTask = Union['SimpleShareResultEncryptedMaintenanceTaskSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_maintenance_task(simple_share_result_encrypted_maintenance_task: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_maintenance_task(simple_share_result_encrypted_maintenance_task: SimpleShareResultEncryptedMaintenanceTask) -> object:
 	if isinstance(simple_share_result_encrypted_maintenance_task, SimpleShareResultEncryptedMaintenanceTaskSuccess):
 		serialized_entity = simple_share_result_encrypted_maintenance_task.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5839,7 +5839,7 @@ def deserialize_simple_share_result_encrypted_maintenance_task(data: Union[str, 
 
 SimpleShareResultMaintenanceTask = Union['SimpleShareResultMaintenanceTaskSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_maintenance_task(simple_share_result_maintenance_task: SimpleShareResult) -> object:
+def serialize_simple_share_result_maintenance_task(simple_share_result_maintenance_task: SimpleShareResultMaintenanceTask) -> object:
 	if isinstance(simple_share_result_maintenance_task, SimpleShareResultMaintenanceTaskSuccess):
 		serialized_entity = simple_share_result_maintenance_task.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5869,7 +5869,7 @@ def deserialize_simple_share_result_maintenance_task(data: Union[str, Dict[str, 
 
 SimpleShareResultDecryptedPatient = Union['SimpleShareResultDecryptedPatientSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_patient(simple_share_result_decrypted_patient: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_patient(simple_share_result_decrypted_patient: SimpleShareResultDecryptedPatient) -> object:
 	if isinstance(simple_share_result_decrypted_patient, SimpleShareResultDecryptedPatientSuccess):
 		serialized_entity = simple_share_result_decrypted_patient.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5899,7 +5899,7 @@ def deserialize_simple_share_result_decrypted_patient(data: Union[str, Dict[str,
 
 SimpleShareResultEncryptedPatient = Union['SimpleShareResultEncryptedPatientSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_patient(simple_share_result_encrypted_patient: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_patient(simple_share_result_encrypted_patient: SimpleShareResultEncryptedPatient) -> object:
 	if isinstance(simple_share_result_encrypted_patient, SimpleShareResultEncryptedPatientSuccess):
 		serialized_entity = simple_share_result_encrypted_patient.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5929,7 +5929,7 @@ def deserialize_simple_share_result_encrypted_patient(data: Union[str, Dict[str,
 
 SimpleShareResultPatient = Union['SimpleShareResultPatientSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_patient(simple_share_result_patient: SimpleShareResult) -> object:
+def serialize_simple_share_result_patient(simple_share_result_patient: SimpleShareResultPatient) -> object:
 	if isinstance(simple_share_result_patient, SimpleShareResultPatientSuccess):
 		serialized_entity = simple_share_result_patient.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5959,7 +5959,7 @@ def deserialize_simple_share_result_patient(data: Union[str, Dict[str, object]])
 
 SimpleShareResultDecryptedContact = Union['SimpleShareResultDecryptedContactSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_contact(simple_share_result_decrypted_contact: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_contact(simple_share_result_decrypted_contact: SimpleShareResultDecryptedContact) -> object:
 	if isinstance(simple_share_result_decrypted_contact, SimpleShareResultDecryptedContactSuccess):
 		serialized_entity = simple_share_result_decrypted_contact.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -5989,7 +5989,7 @@ def deserialize_simple_share_result_decrypted_contact(data: Union[str, Dict[str,
 
 SimpleShareResultEncryptedContact = Union['SimpleShareResultEncryptedContactSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_contact(simple_share_result_encrypted_contact: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_contact(simple_share_result_encrypted_contact: SimpleShareResultEncryptedContact) -> object:
 	if isinstance(simple_share_result_encrypted_contact, SimpleShareResultEncryptedContactSuccess):
 		serialized_entity = simple_share_result_encrypted_contact.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6019,7 +6019,7 @@ def deserialize_simple_share_result_encrypted_contact(data: Union[str, Dict[str,
 
 SimpleShareResultContact = Union['SimpleShareResultContactSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_contact(simple_share_result_contact: SimpleShareResult) -> object:
+def serialize_simple_share_result_contact(simple_share_result_contact: SimpleShareResultContact) -> object:
 	if isinstance(simple_share_result_contact, SimpleShareResultContactSuccess):
 		serialized_entity = simple_share_result_contact.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6049,7 +6049,7 @@ def deserialize_simple_share_result_contact(data: Union[str, Dict[str, object]])
 
 SimpleShareResultDecryptedReceipt = Union['SimpleShareResultDecryptedReceiptSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_receipt(simple_share_result_decrypted_receipt: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_receipt(simple_share_result_decrypted_receipt: SimpleShareResultDecryptedReceipt) -> object:
 	if isinstance(simple_share_result_decrypted_receipt, SimpleShareResultDecryptedReceiptSuccess):
 		serialized_entity = simple_share_result_decrypted_receipt.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6079,7 +6079,7 @@ def deserialize_simple_share_result_decrypted_receipt(data: Union[str, Dict[str,
 
 SimpleShareResultEncryptedReceipt = Union['SimpleShareResultEncryptedReceiptSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_receipt(simple_share_result_encrypted_receipt: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_receipt(simple_share_result_encrypted_receipt: SimpleShareResultEncryptedReceipt) -> object:
 	if isinstance(simple_share_result_encrypted_receipt, SimpleShareResultEncryptedReceiptSuccess):
 		serialized_entity = simple_share_result_encrypted_receipt.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6109,7 +6109,7 @@ def deserialize_simple_share_result_encrypted_receipt(data: Union[str, Dict[str,
 
 SimpleShareResultReceipt = Union['SimpleShareResultReceiptSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_receipt(simple_share_result_receipt: SimpleShareResult) -> object:
+def serialize_simple_share_result_receipt(simple_share_result_receipt: SimpleShareResultReceipt) -> object:
 	if isinstance(simple_share_result_receipt, SimpleShareResultReceiptSuccess):
 		serialized_entity = simple_share_result_receipt.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6139,7 +6139,7 @@ def deserialize_simple_share_result_receipt(data: Union[str, Dict[str, object]])
 
 SimpleShareResultDecryptedAccessLog = Union['SimpleShareResultDecryptedAccessLogSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_access_log(simple_share_result_decrypted_access_log: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_access_log(simple_share_result_decrypted_access_log: SimpleShareResultDecryptedAccessLog) -> object:
 	if isinstance(simple_share_result_decrypted_access_log, SimpleShareResultDecryptedAccessLogSuccess):
 		serialized_entity = simple_share_result_decrypted_access_log.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6169,7 +6169,7 @@ def deserialize_simple_share_result_decrypted_access_log(data: Union[str, Dict[s
 
 SimpleShareResultEncryptedAccessLog = Union['SimpleShareResultEncryptedAccessLogSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_access_log(simple_share_result_encrypted_access_log: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_access_log(simple_share_result_encrypted_access_log: SimpleShareResultEncryptedAccessLog) -> object:
 	if isinstance(simple_share_result_encrypted_access_log, SimpleShareResultEncryptedAccessLogSuccess):
 		serialized_entity = simple_share_result_encrypted_access_log.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6199,7 +6199,7 @@ def deserialize_simple_share_result_encrypted_access_log(data: Union[str, Dict[s
 
 SimpleShareResultAccessLog = Union['SimpleShareResultAccessLogSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_access_log(simple_share_result_access_log: SimpleShareResult) -> object:
+def serialize_simple_share_result_access_log(simple_share_result_access_log: SimpleShareResultAccessLog) -> object:
 	if isinstance(simple_share_result_access_log, SimpleShareResultAccessLogSuccess):
 		serialized_entity = simple_share_result_access_log.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6229,7 +6229,7 @@ def deserialize_simple_share_result_access_log(data: Union[str, Dict[str, object
 
 SimpleShareResultDecryptedTopic = Union['SimpleShareResultDecryptedTopicSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_topic(simple_share_result_decrypted_topic: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_topic(simple_share_result_decrypted_topic: SimpleShareResultDecryptedTopic) -> object:
 	if isinstance(simple_share_result_decrypted_topic, SimpleShareResultDecryptedTopicSuccess):
 		serialized_entity = simple_share_result_decrypted_topic.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6259,7 +6259,7 @@ def deserialize_simple_share_result_decrypted_topic(data: Union[str, Dict[str, o
 
 SimpleShareResultEncryptedTopic = Union['SimpleShareResultEncryptedTopicSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_topic(simple_share_result_encrypted_topic: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_topic(simple_share_result_encrypted_topic: SimpleShareResultEncryptedTopic) -> object:
 	if isinstance(simple_share_result_encrypted_topic, SimpleShareResultEncryptedTopicSuccess):
 		serialized_entity = simple_share_result_encrypted_topic.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6289,7 +6289,7 @@ def deserialize_simple_share_result_encrypted_topic(data: Union[str, Dict[str, o
 
 SimpleShareResultTopic = Union['SimpleShareResultTopicSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_topic(simple_share_result_topic: SimpleShareResult) -> object:
+def serialize_simple_share_result_topic(simple_share_result_topic: SimpleShareResultTopic) -> object:
 	if isinstance(simple_share_result_topic, SimpleShareResultTopicSuccess):
 		serialized_entity = simple_share_result_topic.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6319,7 +6319,7 @@ def deserialize_simple_share_result_topic(data: Union[str, Dict[str, object]]) -
 
 SimpleShareResultDecryptedCalendarItem = Union['SimpleShareResultDecryptedCalendarItemSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_calendar_item(simple_share_result_decrypted_calendar_item: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_calendar_item(simple_share_result_decrypted_calendar_item: SimpleShareResultDecryptedCalendarItem) -> object:
 	if isinstance(simple_share_result_decrypted_calendar_item, SimpleShareResultDecryptedCalendarItemSuccess):
 		serialized_entity = simple_share_result_decrypted_calendar_item.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6349,7 +6349,7 @@ def deserialize_simple_share_result_decrypted_calendar_item(data: Union[str, Dic
 
 SimpleShareResultEncryptedCalendarItem = Union['SimpleShareResultEncryptedCalendarItemSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_calendar_item(simple_share_result_encrypted_calendar_item: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_calendar_item(simple_share_result_encrypted_calendar_item: SimpleShareResultEncryptedCalendarItem) -> object:
 	if isinstance(simple_share_result_encrypted_calendar_item, SimpleShareResultEncryptedCalendarItemSuccess):
 		serialized_entity = simple_share_result_encrypted_calendar_item.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6379,7 +6379,7 @@ def deserialize_simple_share_result_encrypted_calendar_item(data: Union[str, Dic
 
 SimpleShareResultCalendarItem = Union['SimpleShareResultCalendarItemSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_calendar_item(simple_share_result_calendar_item: SimpleShareResult) -> object:
+def serialize_simple_share_result_calendar_item(simple_share_result_calendar_item: SimpleShareResultCalendarItem) -> object:
 	if isinstance(simple_share_result_calendar_item, SimpleShareResultCalendarItemSuccess):
 		serialized_entity = simple_share_result_calendar_item.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6409,7 +6409,7 @@ def deserialize_simple_share_result_calendar_item(data: Union[str, Dict[str, obj
 
 SimpleShareResultDecryptedDocument = Union['SimpleShareResultDecryptedDocumentSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_document(simple_share_result_decrypted_document: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_document(simple_share_result_decrypted_document: SimpleShareResultDecryptedDocument) -> object:
 	if isinstance(simple_share_result_decrypted_document, SimpleShareResultDecryptedDocumentSuccess):
 		serialized_entity = simple_share_result_decrypted_document.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6439,7 +6439,7 @@ def deserialize_simple_share_result_decrypted_document(data: Union[str, Dict[str
 
 SimpleShareResultEncryptedDocument = Union['SimpleShareResultEncryptedDocumentSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_document(simple_share_result_encrypted_document: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_document(simple_share_result_encrypted_document: SimpleShareResultEncryptedDocument) -> object:
 	if isinstance(simple_share_result_encrypted_document, SimpleShareResultEncryptedDocumentSuccess):
 		serialized_entity = simple_share_result_encrypted_document.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6469,7 +6469,7 @@ def deserialize_simple_share_result_encrypted_document(data: Union[str, Dict[str
 
 SimpleShareResultDocument = Union['SimpleShareResultDocumentSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_document(simple_share_result_document: SimpleShareResult) -> object:
+def serialize_simple_share_result_document(simple_share_result_document: SimpleShareResultDocument) -> object:
 	if isinstance(simple_share_result_document, SimpleShareResultDocumentSuccess):
 		serialized_entity = simple_share_result_document.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6499,7 +6499,7 @@ def deserialize_simple_share_result_document(data: Union[str, Dict[str, object]]
 
 SimpleShareResultDecryptedForm = Union['SimpleShareResultDecryptedFormSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_form(simple_share_result_decrypted_form: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_form(simple_share_result_decrypted_form: SimpleShareResultDecryptedForm) -> object:
 	if isinstance(simple_share_result_decrypted_form, SimpleShareResultDecryptedFormSuccess):
 		serialized_entity = simple_share_result_decrypted_form.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6529,7 +6529,7 @@ def deserialize_simple_share_result_decrypted_form(data: Union[str, Dict[str, ob
 
 SimpleShareResultEncryptedForm = Union['SimpleShareResultEncryptedFormSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_form(simple_share_result_encrypted_form: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_form(simple_share_result_encrypted_form: SimpleShareResultEncryptedForm) -> object:
 	if isinstance(simple_share_result_encrypted_form, SimpleShareResultEncryptedFormSuccess):
 		serialized_entity = simple_share_result_encrypted_form.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6559,7 +6559,7 @@ def deserialize_simple_share_result_encrypted_form(data: Union[str, Dict[str, ob
 
 SimpleShareResultForm = Union['SimpleShareResultFormSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_form(simple_share_result_form: SimpleShareResult) -> object:
+def serialize_simple_share_result_form(simple_share_result_form: SimpleShareResultForm) -> object:
 	if isinstance(simple_share_result_form, SimpleShareResultFormSuccess):
 		serialized_entity = simple_share_result_form.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6589,7 +6589,7 @@ def deserialize_simple_share_result_form(data: Union[str, Dict[str, object]]) ->
 
 SimpleShareResultDecryptedInvoice = Union['SimpleShareResultDecryptedInvoiceSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_invoice(simple_share_result_decrypted_invoice: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_invoice(simple_share_result_decrypted_invoice: SimpleShareResultDecryptedInvoice) -> object:
 	if isinstance(simple_share_result_decrypted_invoice, SimpleShareResultDecryptedInvoiceSuccess):
 		serialized_entity = simple_share_result_decrypted_invoice.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6619,7 +6619,7 @@ def deserialize_simple_share_result_decrypted_invoice(data: Union[str, Dict[str,
 
 SimpleShareResultEncryptedInvoice = Union['SimpleShareResultEncryptedInvoiceSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_invoice(simple_share_result_encrypted_invoice: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_invoice(simple_share_result_encrypted_invoice: SimpleShareResultEncryptedInvoice) -> object:
 	if isinstance(simple_share_result_encrypted_invoice, SimpleShareResultEncryptedInvoiceSuccess):
 		serialized_entity = simple_share_result_encrypted_invoice.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6649,7 +6649,7 @@ def deserialize_simple_share_result_encrypted_invoice(data: Union[str, Dict[str,
 
 SimpleShareResultInvoice = Union['SimpleShareResultInvoiceSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_invoice(simple_share_result_invoice: SimpleShareResult) -> object:
+def serialize_simple_share_result_invoice(simple_share_result_invoice: SimpleShareResultInvoice) -> object:
 	if isinstance(simple_share_result_invoice, SimpleShareResultInvoiceSuccess):
 		serialized_entity = simple_share_result_invoice.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6679,7 +6679,7 @@ def deserialize_simple_share_result_invoice(data: Union[str, Dict[str, object]])
 
 SimpleShareResultDecryptedMessage = Union['SimpleShareResultDecryptedMessageSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_message(simple_share_result_decrypted_message: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_message(simple_share_result_decrypted_message: SimpleShareResultDecryptedMessage) -> object:
 	if isinstance(simple_share_result_decrypted_message, SimpleShareResultDecryptedMessageSuccess):
 		serialized_entity = simple_share_result_decrypted_message.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6709,7 +6709,7 @@ def deserialize_simple_share_result_decrypted_message(data: Union[str, Dict[str,
 
 SimpleShareResultEncryptedMessage = Union['SimpleShareResultEncryptedMessageSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_message(simple_share_result_encrypted_message: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_message(simple_share_result_encrypted_message: SimpleShareResultEncryptedMessage) -> object:
 	if isinstance(simple_share_result_encrypted_message, SimpleShareResultEncryptedMessageSuccess):
 		serialized_entity = simple_share_result_encrypted_message.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6739,7 +6739,7 @@ def deserialize_simple_share_result_encrypted_message(data: Union[str, Dict[str,
 
 SimpleShareResultMessage = Union['SimpleShareResultMessageSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_message(simple_share_result_message: SimpleShareResult) -> object:
+def serialize_simple_share_result_message(simple_share_result_message: SimpleShareResultMessage) -> object:
 	if isinstance(simple_share_result_message, SimpleShareResultMessageSuccess):
 		serialized_entity = simple_share_result_message.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6769,7 +6769,7 @@ def deserialize_simple_share_result_message(data: Union[str, Dict[str, object]])
 
 SimpleShareResultDecryptedHealthElement = Union['SimpleShareResultDecryptedHealthElementSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_decrypted_health_element(simple_share_result_decrypted_health_element: SimpleShareResult) -> object:
+def serialize_simple_share_result_decrypted_health_element(simple_share_result_decrypted_health_element: SimpleShareResultDecryptedHealthElement) -> object:
 	if isinstance(simple_share_result_decrypted_health_element, SimpleShareResultDecryptedHealthElementSuccess):
 		serialized_entity = simple_share_result_decrypted_health_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6799,7 +6799,7 @@ def deserialize_simple_share_result_decrypted_health_element(data: Union[str, Di
 
 SimpleShareResultEncryptedHealthElement = Union['SimpleShareResultEncryptedHealthElementSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_encrypted_health_element(simple_share_result_encrypted_health_element: SimpleShareResult) -> object:
+def serialize_simple_share_result_encrypted_health_element(simple_share_result_encrypted_health_element: SimpleShareResultEncryptedHealthElement) -> object:
 	if isinstance(simple_share_result_encrypted_health_element, SimpleShareResultEncryptedHealthElementSuccess):
 		serialized_entity = simple_share_result_encrypted_health_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
@@ -6829,7 +6829,7 @@ def deserialize_simple_share_result_encrypted_health_element(data: Union[str, Di
 
 SimpleShareResultHealthElement = Union['SimpleShareResultHealthElementSuccess', 'SimpleShareResultFailure']
 
-def serialize_simple_share_result_health_element(simple_share_result_health_element: SimpleShareResult) -> object:
+def serialize_simple_share_result_health_element(simple_share_result_health_element: SimpleShareResultHealthElement) -> object:
 	if isinstance(simple_share_result_health_element, SimpleShareResultHealthElementSuccess):
 		serialized_entity = simple_share_result_health_element.__serialize__()
 		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
