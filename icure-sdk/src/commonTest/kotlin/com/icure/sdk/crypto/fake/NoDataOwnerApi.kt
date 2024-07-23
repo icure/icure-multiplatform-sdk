@@ -26,10 +26,6 @@ object NoDataOwnerApi : DataOwnerApi {
 		TODO("Not yet implemented")
 	}
 
-	override suspend fun getDataOwnerStub(ownerId: String): CryptoActorStubWithType {
-		TODO("Not yet implemented")
-	}
-
 	override suspend fun getCurrentDataOwnerHierarchyIdsFrom(parentId: String): List<String> {
 		TODO("Not yet implemented")
 	}
