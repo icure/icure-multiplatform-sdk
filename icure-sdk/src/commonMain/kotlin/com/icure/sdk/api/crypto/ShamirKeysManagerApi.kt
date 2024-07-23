@@ -39,8 +39,8 @@ interface ShamirKeysManagerApi {
 	 * Note: currently you can only split the legacy key pair.
 	 * @param keySplitsToUpdate the fingerprints of key pairs which will have updated/new splits and the details on how to create the updated splits.
 	 * @param keySplitsToDelete the fingerprints or hex-encoded spki public keys which will not be shared anymore.
-	 * @throws if the parameters refer to non-existing or unavailable keys, have split creation details, or if they request to delete a non-existing
-	 * split.
+	 * @throws IllegalArgumentException if the parameters refer to non-existing or unavailable keys, have split creation details, or if they request
+	 * to delete a non-existing split.
 	 */
 	suspend fun updateSelfSplits(
 		keySplitsToUpdate: Map<KeypairFingerprintV1String, ShamirUpdateRequest>,
