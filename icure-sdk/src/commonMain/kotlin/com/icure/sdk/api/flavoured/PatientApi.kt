@@ -39,7 +39,6 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.model.requests.RequestedPermission
@@ -575,7 +574,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 		config.crypto.entityAccessInformationProvider.getDataOwnersWithAccessTo(patient.withTypeInfo())
 
 	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
+		events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
 		filter: AbstractFilter<Patient>,
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedPatient> {

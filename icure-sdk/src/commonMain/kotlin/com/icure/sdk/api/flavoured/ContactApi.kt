@@ -4,12 +4,12 @@ import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.InternalCryptoServices
+import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Contact
@@ -31,7 +31,6 @@ import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -41,6 +40,7 @@ import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.SubscriptionEventType
 import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
@@ -61,36 +61,122 @@ import kotlinx.serialization.json.jsonObject
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi : Subscribable<Contact, EncryptedContact> {
+	/**
+	 * Get the ids of all contacts matching the provided filter.
+	 * @param filter a contact filter
+	 * @return a list of contact ids
+	 */
 	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): List<String>
+
+	/**
+	 * Get the ids of all services matching the provided filter.
+	 * @param filter a service filter
+	 * @return a list of service ids
+	 */
 	suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String>
+
+	/**
+	 * Deletes a contact. If you don't have write access to the contact the method will fail.
+	 * @param entityId id of the contact.
+	 * @return the id and revision of the deleted contact.
+	 */
 	suspend fun deleteContact(entityId: String): DocIdentifier
+
+	/**
+	 * Deletes many contacts. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * you don't have write access will be ignored.
+	 * @param entityIds ids of the contacts.
+	 * @return the id and revision of the deleted contacts. If some entities could not be deleted (for example
+	 * because you had no write access to them) they will not be included in this list.
+	 */
 	suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): List<IcureStub>
 
+	/**
+	 * Gives an approximation of the amount of times each code of type [codeType] is used in services. This number is
+	 * not exact, and may be cached, so you should not use this method if you need precise values, but it can be useful
+	 * if you want to give suggestions.
+	 * Only codes that occur at least [minOccurrences] times will be used.
+	 * @return the occurrences for codes of type [codeType] in services.
+	 */
 	suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long): List<LabelledOccurence>
 
-	suspend fun subscribeToServiceEvents(
-		events: Set<SubscriptionEventType>,
+	/**
+	 * Subscribe to creation and update events on Services. Unlike other entity events subscription methods for services
+	 * you all subscription will be notified of both creation and update events.
+	 * @param filter only events for services matching this filter will be notified
+	 * @param subscriptionConfig customise the subscription configuration
+	 * @return a subscription that receives notifications for creation or update of services.
+	 */
+	suspend fun subscribeToServiceCreateOrUpdateEvents(
 		filter: AbstractFilter<Service>,
-		subscriptionConfig: EntitySubscriptionConfiguration
+		@DefaultValue("null")
+		subscriptionConfig: EntitySubscriptionConfiguration? = null
 	): EntitySubscription<EncryptedService>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface ContactBasicFlavouredApi<E : Contact, S : Service> {
+	/**
+	 * Modifies a contact. You need to have write access to the entity.
+	 * Flavoured method.
+	 * @param entity a contact with update content
+	 * @return the contact updated with the provided content and a new revision.
+	 */
 	suspend fun modifyContact(entity: E): E
+
+	/**
+	 * Modifies multiple contacts. Ignores all contacts for which you don't have write access.
+	 * Flavoured method.
+	 * @param entities contacts with update content
+	 * @return the updated contacts with a new revision.
+	 */
 	suspend fun modifyContacts(entities: List<E>): List<E>
+
+	/**
+	 * Get a contact by its id. You must have read access to the entity. Fails if the id does not correspond to any
+	 * entity, corresponds to an entity that is not a contact, or corresponds to an entity for which you don't have
+	 * read access.
+	 * Flavoured method.
+	 * @param entityId a contact id.
+	 * @return the contact with id [entityId].
+	 */
 	suspend fun getContact(entityId: String): E
+
+	/**
+	 * Get multiple contacts by their ids. Ignores all ids that do not correspond to an entity, correspond to
+	 * an entity that is not a contact, or correspond to an entity for which you don't have read access.
+	 * Flavoured method.
+	 * @param entityIds a list of contacts ids
+	 * @return all contacts that you can access with one of the provided ids.
+	 */
 	suspend fun getContacts(entityIds: List<String>): List<E>
+
+	/**
+	 * @param filter a contact filter
+	 * @return an iterator that iterates over all contacts matching the provided filter.
+	 */
 	suspend fun filterContactsBy(filter: AbstractFilter<Contact>): PaginatedListIterator<E>
 
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun listContactsByExternalId(externalId: String): List<E>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun listContactsByHCPartyAndFormId(hcPartyId: String, formId: String): List<E>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: List<String>): List<E>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
@@ -100,11 +186,35 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		skipClosedContacts: Boolean? = null,
 	): List<E>
 
+	@Deprecated("The method is very specialised and rarely needed. Can be replaced by bulk get and modify") // Maybe we can add a close contacts by ids to save some bandwidth (close without getting first).
 	suspend fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
+
+	/**
+	 * Get a service by its id. You must have read access to the entity. Fails if the id does not correspond to any
+	 * entity, corresponds to an entity that is not a service, or corresponds to an entity for which you don't have
+	 * read access.
+	 * Flavoured method.
+	 * @param serviceId a service id
+	 * @return the service with id [serviceId].
+	 */
 	suspend fun getService(serviceId: String): S
+
+	/**
+	 * Get multiple services by their ids. Ignores all ids that do not correspond to an entity, correspond to
+	 * an entity that is not a services, or correspond to an entity for which you don't have read access.
+	 * Flavoured method.
+	 * @param entityIds a list of service ids
+	 * @return all services that you can access with one of the provided ids.
+	 */
 	suspend fun getServices(entityIds: List<String>): List<S>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun getServicesLinkedTo(linkType: String, ids: List<String>): List<S>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun listServicesByAssociationId(associationId: String): List<S>
+
+	@Deprecated("Will be replaced by filter")
 	suspend fun listServicesByHealthElementId(hcPartyId: String, healthElementId: String): List<S>
 
 	@Deprecated(
@@ -126,11 +236,26 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
+	/**
+	 * @param filter a service filter
+	 * @return an iterator that iterates over all services matching the provided filter.
+	 */
 	suspend fun filterServicesBy(filter: AbstractFilter<Service>): PaginatedListIterator<S>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
 interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredApi<E, S> {
+	/**
+	 * Share a contact with another data owner. The contact must already exist in the database for this method to
+	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
+	 * the initialise encryption metadata method.
+	 * @param delegateId the owner that will gain access to the contact
+	 * @param contact the contact to share with [delegateId]
+	 * @param options specifies how the contact will be shared. By default, all data available to the current user
+	 * will be shared, and the delegate will have the same permissions as the current user on the contact. Refer
+	 * to the documentation of [CalendarItemShareOptions] for more information.
+	 * @return the updated contact if the sharing was successful, or details on the errors if the sharing failed.
+	 */
 	suspend fun shareWith(
 		delegateId: String,
 		contact: E,
@@ -139,18 +264,13 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	): SimpleShareResult<E>
 
 	/**
-	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
-	 * encrypted content, with read-only or read-write permissions.
-	 * @param contact the [Contact] to share.
-	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
-	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
-	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
-	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
-	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
-	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
-	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
-	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
-	 * the operation failed.
+	 * Share a contact with multiple data owners. The contact must already exist in the database for this method to
+	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
+	 * the initialise encryption metadata method.
+	 * @param contact the contact to share
+	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
+	 * each of them.
+	 * @return the updated contact if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun tryShareWithMany(
 		contact: E,
@@ -158,25 +278,21 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	): SimpleShareResult<E>
 
 	/**
-	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
-	 * encrypted content, with read-only or read-write permissions.
-	 * @param contact the [Contact] to share.
-	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
-	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
-	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
-	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
-	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
-	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
-	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
-	 * @return the updated entity.
-	 * @throws IllegalStateException if the operation was not successful.
+	 * Share a contact with multiple data owners. The contact must already exist in the database for this method to
+	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
+	 * the initialise encryption metadata method.
+	 * Throws an exception if the operation fails.
+	 * @param contact the contact to share
+	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
+	 * each of them.
+	 * @return the updated contact.
 	 */
 	suspend fun shareWithMany(
 		contact: E,
 		delegates: Map<String, ContactShareOptions>
 	): E
 
-
+	@Deprecated("Will be replaced by filter")
 	suspend fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -187,13 +303,39 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 		@DefaultValue("null")
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
-
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<DecryptedContact, DecryptedService> {
+	/**
+	 * Create a new contact. The provided contact must have the encryption metadata initialised.
+	 * @param entity a contact with initialised encryption metadata
+	 * @return the created contact with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 */
 	suspend fun createContact(entity: DecryptedContact): DecryptedContact
+
+	/**
+	 * Create multiple contacts. All the provided contacts must have the encryption metadata initialised, otherwise
+	 * this method fails without doing anything.
+	 * @param entities contacts with initialised encryption metadata
+	 * @return the created contacts with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of any contact in the input was not initialised.
+	 */
 	suspend fun createContacts(entities: List<DecryptedContact>): List<DecryptedContact>
+
+	/**
+	 * Creates a new contact with initialised encryption metadata
+	 * @param base a contact with initialised content and uninitialised encryption metadata. The result of this
+	 * method takes the content from [base] if provided.
+	 * @param patient the patient linked to the contact.
+	 * @param user the current user, will be used for the auto-delegations if provided.
+	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
+	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
+	 * @param secretId specifies which secret id of [patient] to use for the new contact
+	 * @return a contact with initialised encryption metadata.
+	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
+	 */
 	suspend fun withEncryptionMetadata(
 		base: DecryptedContact?,
 		patient: Patient,
@@ -204,11 +346,69 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedContact
+
+	/**
+	 * Attempts to extract the encryption keys of a contact. If the user does not have access to any encryption key
+	 * of the access log the method will return an empty set.
+	 * Note: entities now have only one encryption key, but this method returns a set for compatibility with older
+	 * versions of iCure where this was not a guarantee.
+	 * @param contact a contact
+	 * @return the encryption keys extracted from the provided contact.
+	 */
 	suspend fun getEncryptionKeysOf(contact: Contact): Set<HexString>
+
+	/**
+	 * Specifies if the current user has write access to a contact.
+	 * @param contact a contact
+	 * @return if the current user has write access to the provided contact
+	 */
 	suspend fun hasWriteAccess(contact: Contact): Boolean
+
+	/**
+	 * Attempts to extract the patient id linked to a contact.
+	 * Note: contacts usually should be linked with only one patient, but this method returns a set for compatibility
+	 * with older versions of iCure
+	 * @param contact a contact
+	 * @return the id of the patient linked to the contact, or empty if the current user can't access any patient id
+	 * of the contact.
+	 */
 	suspend fun decryptPatientIdOf(contact: Contact): Set<String>
+
+	/**
+	 * Create metadata to allow other users to identify the anonymous delegates of a contact.
+	 *
+	 * When calling this method the SDK will use all the information available to the current user to try to identify
+	 * any anonymous data-owners in the delegations of the provided contact. The SDK will be able to identify the
+	 * anonymous data owners of the delegations only under the following conditions:
+	 * - The other participant of the delegation is the current data owner
+	 * - The SDK is using hierarchical data owners and the other participant of the delegation is a parent of the
+	 * current data owner
+	 * - There is de-anonymization metadata for the delegation shared with the current data owner.
+	 *
+	 * After identifying the anonymous delegates in the contact the sdk will create the corresponding de-anonymization
+	 * metadata if it does not yet exist, and then share it with the provided delegates.
+	 *
+	 * Note that this delegation metadata may be used to de-anonymize the corresponding delegation in any Contact,
+	 * not only in the provided instance.
+	 *
+	 * ## Example
+	 *
+	 * If you have a contact E, and you have shared it with patient P and healthcare party H, H will not
+	 * be able to know that P has access to E until you create delegations de anonymization metadata and share that with
+	 * H. From now on, for any contact that you have shared with P, H will be able to know that the contact was
+	 * shared with P, regardless of whether it was created before or after the corresponding de-anonymization metadata.
+	 *
+	 * At the same time since the de-anonymization metadata applies to a specific delegation and therefore to a specific
+	 * delegator-delegate pair, you will not be able to see if P has access to a contact that was created by H and
+	 * shared with you and P unless also H creates delegations de-anonymization metadata.
+	 *
+	 * @param entity a contact
+	 * @param delegates a set of data owner ids
+	 */
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Set<String>)
+
 	suspend fun decrypt(contact: EncryptedContact): DecryptedContact
+
 	suspend fun tryDecrypt(contact: EncryptedContact): Contact
 
 	/**
@@ -256,18 +456,23 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	override suspend fun filterContactsBy(filter: AbstractFilter<Contact>): PaginatedListIterator<E> =
 		IdsPageIterator(rawApi.matchContactsBy(filter).successBody(), this::getContacts)
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E> =
 		rawApi.listContactByHCPartyServiceId(hcPartyId, serviceId).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listContactsByExternalId(externalId: String): List<E> =
 		rawApi.listContactsByExternalId(externalId).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listContactsByHCPartyAndFormId(hcPartyId: String, formId: String): List<E> =
 		rawApi.listContactsByHCPartyAndFormId(hcPartyId, formId).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: List<String>): List<E> =
 		rawApi.listContactsByHCPartyAndFormIds(hcPartyId, ListOfIds(formIds)).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listContactsByHCPartyAndPatientSecretFKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
@@ -277,6 +482,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		rawApi.listContactsByHCPartyAndPatientSecretFKeys(hcPartyId, secretPatientKeys, planOfActionsIds, skipClosedContacts).successBody()
 			.map { maybeDecrypt(it) }
 
+	@Deprecated("The method is very specialised and rarely needed. Can be replaced by bulk get and modify")
 	override suspend fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.closeForHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
@@ -285,12 +491,15 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	override suspend fun getServices(entityIds: List<String>): List<S> =
 		rawApi.getServices(ListOfIds(entityIds)).successBody().map { maybeDecryptService(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun getServicesLinkedTo(linkType: String, ids: List<String>): List<S> =
 		rawApi.getServicesLinkedTo(linkType, ListOfIds(ids)).successBody().map { maybeDecryptService(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listServicesByAssociationId(associationId: String): List<S> =
 		rawApi.listServicesByAssociationId(associationId).successBody().map { maybeDecryptService(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listServicesByHealthElementId(hcPartyId: String, healthElementId: String): List<S> =
 		rawApi.listServicesByHealthElementId(healthElementId, hcPartyId).successBody().map { maybeDecryptService(it) }
 
@@ -358,6 +567,7 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	override suspend fun shareWithMany(contact: E, delegates: Map<String, ContactShareOptions>): E =
 		tryShareWithMany(contact, delegates).updatedEntityOrThrow()
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findContactsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
@@ -513,6 +723,7 @@ private class AbstractContactBasicFlavourlessApi(
 	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String> = rawApi.matchServicesBy(filter).successBody()
 	override suspend fun deleteContact(entityId: String) = rawApi.deleteContact(entityId).successBody()
 	override suspend fun deleteContacts(entityIds: List<String>) = rawApi.deleteContacts(ListOfIds(entityIds)).successBody()
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
@@ -521,10 +732,9 @@ private class AbstractContactBasicFlavourlessApi(
 	override suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long) =
 		rawApi.getServiceCodesOccurrences(codeType, minOccurrences).successBody()
 
-	override suspend fun subscribeToServiceEvents(
-		events: Set<SubscriptionEventType>,
+	override suspend fun subscribeToServiceCreateOrUpdateEvents(
 		filter: AbstractFilter<Service>,
-		subscriptionConfig: EntitySubscriptionConfiguration
+		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedService> {
 		return WebSocketSubscription.initialize(
 			client = config.httpClient,
@@ -532,7 +742,7 @@ private class AbstractContactBasicFlavourlessApi(
 			path = "/ws/v2/notification/subscribe",
 			clientJson = config.clientJson,
 			entitySerializer = EncryptedService.serializer(),
-			events = events,
+			events = setOf(SubscriptionEventType.Create, SubscriptionEventType.Update),
 			filter = filter,
 			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
@@ -544,7 +754,7 @@ private class AbstractContactBasicFlavourlessApi(
 	}
 
 	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
+		events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
 		filter: AbstractFilter<Contact>,
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedContact> {

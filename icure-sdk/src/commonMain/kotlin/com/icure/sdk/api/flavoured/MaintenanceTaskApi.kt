@@ -16,7 +16,6 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -200,7 +199,7 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 	override suspend fun deleteMaintenanceTasks(entityIds: List<String>) = rawApi.deleteMaintenanceTasks(ListOfIds(entityIds)).successBody()
 	override suspend fun matchMaintenanceTasksBy(filter: AbstractFilter<MaintenanceTask>): List<String> = rawApi.matchMaintenanceTasksBy(filter).successBody()
 	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
+		events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
 		filter: AbstractFilter<MaintenanceTask>,
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMaintenanceTask> {

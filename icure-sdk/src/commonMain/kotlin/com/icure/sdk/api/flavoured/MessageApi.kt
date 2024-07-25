@@ -20,7 +20,6 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -328,7 +327,7 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, priv
 	override suspend fun deleteMessages(entityIds: List<String>) = rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
 
 	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
+		events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
 		filter: AbstractFilter<Message>,
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMessage> {

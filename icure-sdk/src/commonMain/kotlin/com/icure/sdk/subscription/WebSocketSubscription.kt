@@ -84,14 +84,19 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 			clientJson: Json,
 			config: EntitySubscriptionConfiguration?,
 			entitySerializer: KSerializer<NotificationEntity>,
-			events: Set<SubscriptionEventType>,
+			events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
 			filter: AbstractFilter<BaseType>,
 			qualifiedName: String,
 			subscriptionRequestSerializer: (com.icure.sdk.model.notification.Subscription<BaseType>) -> String,
 		): WebSocketSubscription<NotificationEntity> {
 			val subscriptionRequest = subscriptionRequestSerializer(
 				com.icure.sdk.model.notification.Subscription(
-					eventTypes = events.toList(),
+					eventTypes = events.map {
+						when (it) {
+							com.icure.sdk.subscription.SubscriptionEventType.Create -> SubscriptionEventType.Create
+							com.icure.sdk.subscription.SubscriptionEventType.Update -> SubscriptionEventType.Update
+						}
+					},
 					filter = FilterChain(
 						filter = filter,
 					),

@@ -1,10 +1,8 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawTopicApi
-import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TopicShareOptions
 import com.icure.sdk.crypto.entities.withTypeInfo
@@ -21,8 +19,6 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.requests.topic.AddParticipant
 import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.model.specializations.HexString
@@ -205,7 +201,7 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 	override suspend fun matchTopicsBy(filter: AbstractFilter<Topic>) = rawApi.matchTopicsBy(filter).successBody()
 
 	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
+		events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
 		filter: AbstractFilter<Topic>,
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedTopic> {
