@@ -1,3 +1,5 @@
+import tasks.InitialiseTestEnvironment
+
 plugins {
 	kotlinMultiplatform()
 	kotlinSerialization()
@@ -115,6 +117,31 @@ publishing {
 		}
 	}
 }
+
+tasks.register<InitialiseTestEnvironment>("initialiseTestEnvironment")
+
+tasks.named("allTests") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("iosSimulatorArm64Test") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("iosX64Test") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jsBrowserTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jsNodeTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jsTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jvmTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+
 
 tasks.named("jsNodeDevelopmentRun") { dependsOn("jsProductionExecutableCompileSync") }
 tasks.named("jsNodeProductionRun") { dependsOn("jsProductionExecutableCompileSync") }

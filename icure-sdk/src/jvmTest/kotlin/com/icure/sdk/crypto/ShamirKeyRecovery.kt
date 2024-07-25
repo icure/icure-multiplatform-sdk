@@ -1,7 +1,6 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.api.crypto.ShamirKeysManagerApi
 import com.icure.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.sdk.crypto.impl.exportSpkiHex
 import com.icure.sdk.model.DecryptedPatient

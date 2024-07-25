@@ -9,8 +9,6 @@ import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.User
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
-import com.icure.test.setup.ICureTestSetup
-import java.util.UUID
 
 private var initialised = false
 
@@ -20,22 +18,6 @@ suspend fun initialiseTestEnvironment() {
 		return
 	}
 	initialised = true
-	println("Starting kraken")
-	ICureTestSetup.startKrakenEnvironment(
-		"file:///Users/vincenzoclaudiopierro/Documents/GitHub/icure-typescript-sdk/test/scratch/docker-compose-cloud-debuggable.yaml",
-		listOf("mock"),
-		"/Users/vincenzoclaudiopierro/Documents/GitHub/icure-typescript-sdk/test/scratch"
-	)
-	println("Bootstrap cloud")
-	ICureTestSetup.bootstrapCloud(
-		"xx",
-		"xx",
-		UUID.randomUUID().toString(),
-		"john",
-		couchDbUser = "icure",
-		couchDbPassword = "icure",
-		rootUserRoles = defaultRoles
-	)
 	println("Creating test group")
 	val groupApi = RawGroupApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	if (groupApi.getGroup(testGroupId).status.value == 200) {
@@ -45,7 +27,7 @@ suspend fun initialiseTestEnvironment() {
 		groupApi.createGroup(
 			testGroupId,
 			testGroupName,
-			password = UUID.randomUUID().toString(),
+			password = uuid(),
 			initialisationData = DatabaseInitialisation(
 				users = emptyList(),
 				healthcareParties = emptyList(),
@@ -56,7 +38,7 @@ suspend fun initialiseTestEnvironment() {
 	RawUserApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json).createAdminUserInGroup(
 		testGroupId,
 		User(
-			UUID.randomUUID().toString(),
+			uuid(),
 			login = testGroupAdmin,
 			email = testGroupAdmin,
 			passwordHash = testGroupAdminPassword,

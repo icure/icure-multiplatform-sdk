@@ -1,5 +1,6 @@
 package com.icure.sdk.auth
 
+import com.icure.kotp.ShaVersion
 import com.icure.kotp.Totp
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.sdk.IcureSdk
@@ -15,6 +16,7 @@ import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.test.baseUrl
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createUserInMultipleGroups
+import com.icure.sdk.test.initialiseTestEnvironment
 import com.icure.sdk.test.shouldBeNextRevOf
 import com.icure.sdk.test.testGroupAdminAuth
 import com.icure.sdk.test.uuid
@@ -47,6 +49,10 @@ class SmartAuthProviderTest : StringSpec({
 		httpClient = IcureSdk.sharedHttpClient,
 		json = Serialization.json
 	)
+
+	beforeAny {
+		initialiseTestEnvironment()
+	}
 
 	"Should automatically ask for secret to get a new token, and asks again the secret if it is not valid" {
 		val hcpDetails = createHcpUser()
@@ -170,7 +176,7 @@ class SmartAuthProviderTest : StringSpec({
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
-		val totp = Totp(secret = totpSecret, algorithm = HmacAlgorithm.HmacSha256)
+		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
 		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret, otpLength))
 		val userWithPwdAnd2fa = adminUserApi.modifyUser(
@@ -228,7 +234,7 @@ class SmartAuthProviderTest : StringSpec({
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
-		val totp = Totp(secret = totpSecret, algorithm = HmacAlgorithm.HmacSha256)
+		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
 		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret, otpLength))
 		val userWithPwdAnd2fa = adminUserApi.modifyUser(

@@ -15,4 +15,9 @@ dependencies {
 	implementation(libs.kotlinSerializationPlugin)
 	implementation(libs.kotestMultiplatformPlugin)
 	implementation(libs.androidLibraryPlugin)
+	implementation(libs.coroutinesCore)
+	implementation(libs.ktorClientCore)
+	implementation(libs.ktorClientEngineCio)
+	implementation(libs.ktorContentNegotiation)
+	implementation(libs.ktorSerializationJson)
 }
