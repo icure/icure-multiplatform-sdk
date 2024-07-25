@@ -80,8 +80,7 @@ class RawDeviceApiImpl(
 
 	override suspend fun updateDevice(deviceDto: Device): HttpResponse<Device> =
 		put(authProvider) {
-			url
-			{
+			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device")
 			}

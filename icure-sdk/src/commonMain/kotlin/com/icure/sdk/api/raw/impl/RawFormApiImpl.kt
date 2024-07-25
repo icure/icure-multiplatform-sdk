@@ -54,8 +54,7 @@ class RawFormApiImpl(
 
 	override suspend fun getForm(formId: String): HttpResponse<EncryptedForm> =
 		get(authProvider) {
-			url
-			{
+			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", formId)
 				parameter("ts", GMTDate().timestamp)

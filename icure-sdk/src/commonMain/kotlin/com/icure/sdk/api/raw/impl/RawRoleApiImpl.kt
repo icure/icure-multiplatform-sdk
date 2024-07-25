@@ -9,6 +9,7 @@ import com.icure.sdk.model.Role
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
+import io.ktor.client.request.parameter
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
