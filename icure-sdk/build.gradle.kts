@@ -54,7 +54,6 @@ kotlin {
 		val jvmTest by getting {
 			dependencies {
 				implementation(libs.kotestRunnerJunit)
-				implementation("io.icure:icure-e2e-test-setup:0.0.24-gc854bb2431")
 				implementation(libs.ktorClientEngineCio) // Currently needed by test setup, remove later
 				implementation(libs.mockk)
 				implementation(libs.bundles.ktorServer)
