@@ -6,12 +6,10 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.raw.RawHealthcarePartyApi
-import com.icure.sdk.api.raw.RawPatientApi
-import com.icure.sdk.api.raw.RawUserApi
 import com.icure.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.sdk.api.raw.impl.RawPatientApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
+import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.User
@@ -268,7 +266,10 @@ class LegacyMetadataMigrationTest : StringSpec({
 		secretIdsKnownByA shouldHaveSize 2
 		secretIdsKnownByA shouldContain testData.patientConfidentialSecretId
 		secretIdsKnownByA shouldContain secretIdsKnownByB.first()
-		val sharedPatient = apiB.patient.shareWith(x.dataOwnerId, patient, secretIdsKnownByB, requestedPermission = RequestedPermission.FullRead).shouldNotBeNull().updatedEntityOrThrow()
+		val sharedPatient = apiB.patient.shareWith(x.dataOwnerId, patient, PatientShareOptions(
+			shareSecretIds = secretIdsKnownByB,
+			requestedPermissions = RequestedPermission.FullRead
+		)).shouldNotBeNull().updatedEntityOrThrow()
 		val secureDelegations = sharedPatient.securityMetadata?.secureDelegations?.values?.toList() ?: emptyList()
 		secureDelegations shouldHaveSize 3
 		secureDelegations.find { it.delegator == testData.b.dataOwnerId && it.delegate == testData.b.dataOwnerId }.shouldNotBeNull()
@@ -281,7 +282,10 @@ class LegacyMetadataMigrationTest : StringSpec({
 		// TODO test X does not have write access
 		apiX.patient.getSecretIdsOf(sharedPatient) shouldContainExactlyInAnyOrder secretIdsKnownByB
 		val x2 = createHcpUser()
-		val sharedPatient2 = apiA.patient.shareWith(x2.dataOwnerId, sharedPatient, secretIdsKnownByB, requestedPermission = RequestedPermission.FullRead).shouldNotBeNull().updatedEntityOrThrow()
+		val sharedPatient2 = apiA.patient.shareWith(x2.dataOwnerId, sharedPatient, PatientShareOptions(
+			shareSecretIds=secretIdsKnownByB,
+			requestedPermissions = RequestedPermission.FullRead
+		)).shouldNotBeNull().updatedEntityOrThrow()
 		val secureDelegations2 = sharedPatient2.securityMetadata?.secureDelegations?.values?.toList() ?: emptyList()
 		secureDelegations2 shouldHaveSize 5
 		secureDelegations2.find { it.delegator == testData.a.dataOwnerId && it.delegate == testData.a.dataOwnerId }.shouldNotBeNull()
@@ -311,7 +315,10 @@ class LegacyMetadataMigrationTest : StringSpec({
 		val patient = apiP.patient.getPatient(testData.patientId).shouldNotBeNull()
 		val secretIdsKnownByA = apiA.patient.getSecretIdsOf(patient)
 		val secretIdsKnownByB = apiB.patient.getSecretIdsOf(patient)
-		val sharedPatient = apiA.patient.shareWith(x.dataOwnerId, patient, secretIdsKnownByB, requestedPermission = RequestedPermission.FullRead).shouldNotBeNull().updatedEntityOrThrow()
+		val sharedPatient = apiA.patient.shareWith(x.dataOwnerId, patient, PatientShareOptions(
+			shareSecretIds=secretIdsKnownByB,
+			requestedPermissions = RequestedPermission.FullRead
+		)).shouldNotBeNull().updatedEntityOrThrow()
 		val secureDelegations = sharedPatient.securityMetadata?.secureDelegations?.values?.toList() ?: emptyList()
 		secureDelegations shouldHaveSize 3
 		secureDelegations.find { it.delegator == testData.a.dataOwnerId && it.delegate == testData.a.dataOwnerId }.shouldNotBeNull()

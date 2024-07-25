@@ -263,6 +263,7 @@ private class KeyLoader(
 				it.copy(stub = it.stub.copy(publicKeysForOaepWithSha256 = it.stub.publicKeysForOaepWithSha256 + newKeySpki))
 			}
 			dataOwnerApi.modifyDataOwnerStub(selfWithNewKey)
+			icureStorage.saveEncryptionKeypair(selfInfo.dataOwner.id, newKey, true)
 			KeyData(
 				selfInfo.dataOwner.id,
 				fullyRecoveredKeyData.dropLast(1) + fullyRecoveredKeyData.last().copy(

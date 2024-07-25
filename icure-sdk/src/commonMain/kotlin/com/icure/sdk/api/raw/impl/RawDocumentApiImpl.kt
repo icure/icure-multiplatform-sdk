@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawDocumentApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedDocument
@@ -21,10 +20,10 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
+import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.ByteArray
@@ -41,7 +40,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawDocumentApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -57,37 +56,34 @@ class RawDocumentApiImpl(
 		documentDto: EncryptedDocument,
 		strict: Boolean?,
 	): HttpResponse<EncryptedDocument> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document")
 				parameter("strict", strict)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
 	override suspend fun deleteDocuments(documentIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentIds)
 		}.wrap()
 
 	override suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -95,14 +91,13 @@ class RawDocumentApiImpl(
 		documentId: String,
 		fileName: String?,
 	): HttpResponse<ByteArray> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "attachment")
 				parameter("fileName", fileName)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.OctetStream)
 		}.wrap()
 
@@ -110,13 +105,12 @@ class RawDocumentApiImpl(
 		documentId: String,
 		rev: String,
 	): HttpResponse<EncryptedDocument> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "attachment")
 				parameter("rev", rev)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -128,7 +122,7 @@ class RawDocumentApiImpl(
 		lengthHeader: Long?,
 		encrypted: Boolean?,
 	): HttpResponse<EncryptedDocument> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "attachment")
@@ -136,77 +130,69 @@ class RawDocumentApiImpl(
 				parameter("utis", utis)
 				parameter("encrypted", encrypted)
 			}
-			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
-			header("Content-Length", lengthHeader)
-			setBody(ByteReadChannel(payload))
+			`header`("Content-Length", lengthHeader)
+			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun getDocument(documentId: String): HttpResponse<EncryptedDocument> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDocumentByExternalUuid(externalUuid: String): HttpResponse<EncryptedDocument> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "externaluuid", externalUuid)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDocumentsByExternalUuid(externalUuid: String): HttpResponse<List<EncryptedDocument>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "externaluuid", externalUuid, "all")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDocuments(documentIds: ListOfIds): HttpResponse<List<EncryptedDocument>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentIds)
 		}.wrap()
 
 	override suspend fun modifyDocument(documentDto: EncryptedDocument): HttpResponse<EncryptedDocument> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
 	override suspend fun modifyDocuments(documentDtos: List<EncryptedDocument>): HttpResponse<List<EncryptedDocument>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentDtos)
@@ -217,14 +203,13 @@ class RawDocumentApiImpl(
 		documentTypeCode: String?,
 		secretMessageKeys: ListOfIds,
 	): HttpResponse<List<EncryptedDocument>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 				parameter("documentTypeCode", documentTypeCode)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretMessageKeys)
@@ -237,7 +222,7 @@ class RawDocumentApiImpl(
 		descending: Boolean?,
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "byDataOwnerPatientCreated")
@@ -246,21 +231,19 @@ class RawDocumentApiImpl(
 				parameter("endDate", endDate)
 				parameter("descending", descending)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
 	override suspend fun findWithoutDelegation(limit: Int?): HttpResponse<List<EncryptedDocument>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "woDelegation")
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -273,7 +256,7 @@ class RawDocumentApiImpl(
 		lengthHeader: Long?,
 		encrypted: Boolean?,
 	): HttpResponse<EncryptedDocument> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "secondaryAttachments", key)
@@ -281,11 +264,9 @@ class RawDocumentApiImpl(
 				parameter("utis", utis)
 				parameter("encrypted", encrypted)
 			}
-			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
-			header("Content-Length", lengthHeader)
-			setBody(ByteReadChannel(payload))
+			`header`("Content-Length", lengthHeader)
+			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun getSecondaryAttachment(
@@ -293,14 +274,13 @@ class RawDocumentApiImpl(
 		key: String,
 		fileName: String?,
 	): HttpResponse<ByteArray> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "secondaryAttachments", key)
 				parameter("fileName", fileName)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -309,35 +289,32 @@ class RawDocumentApiImpl(
 		key: String,
 		rev: String,
 	): HttpResponse<EncryptedDocument> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "secondaryAttachments", key)
 				parameter("rev", rev)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "bulkSharedMetadataUpdate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
 	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "bulkSharedMetadataUpdateMinimal")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)

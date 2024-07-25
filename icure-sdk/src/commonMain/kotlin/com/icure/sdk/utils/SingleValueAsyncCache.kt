@@ -39,7 +39,7 @@ class SingleValueAsyncCache<TCached : Any, TRetrieved : Any> { // TODO test
 		it to null
 	} ?: joinOrRetrieve(doRetrieve)
 
-	private tailrec suspend fun joinOrRetrieve(
+	private suspend fun joinOrRetrieve(
 		doRetrieve: suspend () -> Pair<TCached, TRetrieved>
 	): Pair<TCached, TRetrieved?> = coroutineScope {
 		val cacheInfo: Deferred<Pair<TCached, TRetrieved?>?> = mutex.withLock {

@@ -9,16 +9,25 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.UserGroup
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.model.security.TokenWithGroup
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlin.js.JsName
 
 interface UserApi {
 	suspend fun getCurrentUser(): User
+
+	@Deprecated(
+		"List methods are deprecated",
+		ReplaceWith(
+			expression = "filterUsersBy(AllUsersFilter())",
+			imports = arrayOf("com.icure.sdk.model.filter.user.AllUsersFilter")
+		)
+	)
 	suspend fun listUsersBy(
 		@DefaultValue("null")
 		startKey: String? = null,
@@ -32,6 +41,7 @@ interface UserApi {
 
 	suspend fun createUser(user: User): User
 	suspend fun getUser(userId: String): User
+	suspend fun getUsers(userIds: List<String>): List<User>
 	suspend fun getUserByEmail(email: String): User
 	suspend fun getUserByPhoneNumber(phoneNumber: String): User
 	suspend fun findByHcpartyId(id: String): List<String>
@@ -53,16 +63,20 @@ interface UserApi {
 		token: String? = null,
 	): String
 
-	suspend fun filterUsersBy(
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		filterChain: FilterChain<User>,
-	): PaginatedList<User>
+	suspend fun filterUsersBy(filter: AbstractFilter<User>): PaginatedListIterator<User>
 
 	suspend fun matchUsersBy(filter: AbstractFilter<User>): List<String>
 	suspend fun getMatchingUsers(): List<UserGroup>
+
+	suspend fun getUsersInGroup(groupId: String, userIds: List<String>): List<User>
+
+	@Deprecated(
+		"List methods are deprecated",
+		ReplaceWith(
+			expression = "filterUsersInGroupBy(groupId, AllUsersFilter())",
+			imports = arrayOf("com.icure.sdk.model.filter.user.AllUsersFilter")
+		)
+	)
 	suspend fun listUsersInGroup(
 		groupId: String,
 		@DefaultValue("null")
@@ -126,12 +140,10 @@ interface UserApi {
 
 	suspend fun filterUsersInGroupBy(
 		groupId: String,
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		filterChain: FilterChain<User>,
-	): PaginatedList<User>
+		filter: AbstractFilter<User>,
+	): PaginatedListIterator<User>
+
+	suspend fun matchUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): List<String>
 
 	@JsName("enable2faForUserWithGroup")
 	suspend fun enable2faForUser(
@@ -170,6 +182,10 @@ internal class UserApiImpl(
 		raw.getCurrentUser().successBody()
 
 
+	@Deprecated(
+		"List methods are deprecated",
+		replaceWith = ReplaceWith("filterUsersBy(AllUsersFilter())", "com.icure.sdk.model.filter.user.AllUsersFilter")
+	)
 	override suspend fun listUsersBy(
 		startKey: String?,
 		startDocumentId: String?,
@@ -190,6 +206,7 @@ internal class UserApiImpl(
 
 	override suspend fun getUser(userId: String) = raw.getUser(userId).successBody()
 
+	override suspend fun getUsers(userIds: List<String>) = raw.getUsers(ListOfIds(userIds)).successBody()
 
 	override suspend fun getUserByEmail(email: String) = raw.getUserByEmail(email).successBody()
 
@@ -220,16 +237,21 @@ internal class UserApiImpl(
 		token: String?,
 	) = raw.getToken(userId, key, tokenValidity, token).successBody()
 
-	override suspend fun filterUsersBy(
-		startDocumentId: String?,
-		limit: Int?,
-		filterChain: FilterChain<User>,
-	) = raw.filterUsersBy(startDocumentId, limit, filterChain).successBody()
+	override suspend fun filterUsersBy(filter: AbstractFilter<User>): PaginatedListIterator<User> =
+		IdsPageIterator(matchUsersBy(filter), this::getUsers)
 
 	override suspend fun matchUsersBy(filter: AbstractFilter<User>) = raw.matchUsersBy(filter).successBody()
 
 	override suspend fun getMatchingUsers() = raw.getMatchingUsers().successBody()
 
+	override suspend fun getUsersInGroup(groupId: String, userIds: List<String>): List<User> = raw.getUsersInGroup(groupId, ListOfIds(userIds)).successBody()
+
+	override suspend fun matchUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): List<String> = raw.matchUsersInGroupBy(groupId, filter).successBody()
+
+	@Deprecated(
+		"List methods are deprecated",
+		replaceWith = ReplaceWith("filterUsersInGroupBy(groupId, AllUsersFilter())", "com.icure.sdk.model.filter.user.AllUsersFilter")
+	)
 	override suspend fun listUsersInGroup(
 		groupId: String,
 		startKey: String?,
@@ -285,12 +307,8 @@ internal class UserApiImpl(
 		tokenValidity: Long?,
 	) = raw.getTokenInAllGroups(userIdentifier, key, token, tokenValidity).successBody()
 
-	override suspend fun filterUsersInGroupBy(
-		groupId: String,
-		startDocumentId: String?,
-		limit: Int?,
-		filterChain: FilterChain<User>,
-	) = raw.filterUsersInGroupBy(groupId, startDocumentId, limit, filterChain).successBody()
+	override suspend fun filterUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): PaginatedListIterator<User> =
+		IdsPageIterator(matchUsersInGroupBy(groupId, filter), this::getUsers)
 
 	override suspend fun enable2faForUser(
 		userId: String,

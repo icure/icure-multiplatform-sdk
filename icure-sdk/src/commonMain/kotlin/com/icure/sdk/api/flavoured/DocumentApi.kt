@@ -4,7 +4,6 @@ import com.icure.sdk.api.raw.RawDocumentApi
 import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedDocument
@@ -19,7 +18,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -37,10 +35,10 @@ import kotlinx.serialization.json.decodeFromJsonElement
 interface DocumentBasicFlavourlessApi {
 	suspend fun deleteDocument(entityId: String): DocIdentifier
 	suspend fun deleteDocuments(entityIds: List<String>): List<DocIdentifier>
-	suspend fun getRawMainAttachment(documentId: String, attachmentId: String): ByteArray
-	suspend fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String): String
-	suspend fun getMainAttachmentAsJson(documentId: String, attachmentId: String): JsonElement
-	suspend fun getRawSecondaryAttachment(documentId: String, key: String, attachmentId: String): ByteArray
+	suspend fun getRawMainAttachment(documentId: String): ByteArray
+	suspend fun getMainAttachmentAsPlainText(documentId: String): String
+	suspend fun getMainAttachmentAsJson(documentId: String): JsonElement
+	suspend fun getRawSecondaryAttachment(documentId: String, key: String): ByteArray
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -78,7 +76,7 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	): EncryptedDocument
 
 	suspend fun deleteMainAttachment(entityId: String, rev: String): E
-	suspend fun deleteSecondaryAttachment(documentId: String, key: String, attachmentId: String): E
+	suspend fun deleteSecondaryAttachment(documentId: String, key: String, rev: String): E
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -86,12 +84,8 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		document: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: DocumentShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -158,24 +152,47 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedDocument
 
-	suspend fun getAndTryDecryptMainAttachment(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray?
-	suspend fun getAndTryDecryptMainAttachmentAsPlainText(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): String?
-	suspend fun getAndTryDecryptMainAttachmentAsJson(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): JsonElement?
+	suspend fun getAndTryDecryptMainAttachment(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): ByteArray?
+	suspend fun getAndTryDecryptMainAttachmentAsPlainText(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): String?
+	suspend fun getAndTryDecryptMainAttachmentAsJson(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): JsonElement?
 
-	suspend fun getAndDecryptMainAttachment(document: Document, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray
-	suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument
+	suspend fun getAndDecryptMainAttachment(
+		document: Document,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): ByteArray
+	suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>?, attachment: ByteArray): EncryptedDocument
 
-	suspend fun getAndDecryptSecondaryAttachment(document: Document, key: String, attachmentId: String, decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean = { true }): ByteArray
+	suspend fun getAndDecryptSecondaryAttachment(
+		document: Document,
+		key: String,
+		@DefaultValue("null")
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)? = null
+	): ByteArray
 	suspend fun encryptAndSetSecondaryAttachment(
 		document: Document,
 		key: String,
-		utis: List<String>,
+		utis: List<String>?,
 		attachment: ByteArray,
 	): EncryptedDocument
 	suspend fun getEncryptionKeysOf(document: Document): Set<HexString>
 	suspend fun hasWriteAccess(document: Document): Boolean
 	suspend fun decryptPatientIdOf(document: Document): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Document, delegates: Set<String>)
+	suspend fun decrypt(document: EncryptedDocument): DecryptedDocument
+	suspend fun tryDecrypt(document: EncryptedDocument): Document
 
 	val encrypted: DocumentFlavouredApi<EncryptedDocument>
 	val tryAndRecover: DocumentFlavouredApi<Document>
@@ -215,8 +232,8 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected
 	override suspend fun deleteMainAttachment(entityId: String, rev: String) =
 		rawApi.deleteAttachment(entityId, rev).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun deleteSecondaryAttachment(documentId: String, key: String, attachmentId: String) =
-		rawApi.deleteSecondaryAttachment(documentId, key, attachmentId).successBody().let { maybeDecrypt(it) }
+	override suspend fun deleteSecondaryAttachment(documentId: String, key: String, rev: String) =
+		rawApi.deleteSecondaryAttachment(documentId, key, rev).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun getDocumentByExternalUuid(externalUuid: String) =
 		rawApi.getDocumentByExternalUuid(externalUuid).successBody().let { maybeDecrypt(it) }
@@ -258,20 +275,13 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	override suspend fun shareWith(
 		delegateId: String,
 		document: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: DocumentShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			document.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: DocumentShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -313,15 +323,15 @@ private class AbstractDocumentBasicFlavourlessApi(val rawApi: RawDocumentApi) : 
 	override suspend fun deleteDocument(entityId: String) = rawApi.deleteDocument(entityId).successBody()
 	override suspend fun deleteDocuments(entityIds: List<String>) = rawApi.deleteDocuments(ListOfIds(entityIds)).successBody()
 
-	override suspend fun getRawMainAttachment(documentId: String, attachmentId: String) =
-		rawApi.getMainAttachment(documentId, attachmentId).successBody()
+	override suspend fun getRawMainAttachment(documentId: String) =
+		rawApi.getMainAttachment(documentId).successBody()
 
-	override suspend fun getRawSecondaryAttachment(documentId: String, key: String, attachmentId: String) =
-		rawApi.getSecondaryAttachment(documentId, key, attachmentId).successBody()
+	override suspend fun getRawSecondaryAttachment(documentId: String, key: String) =
+		rawApi.getSecondaryAttachment(documentId, key).successBody()
 
-	override suspend fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String): String = getRawMainAttachment(documentId, attachmentId).decodeToString()
+	override suspend fun getMainAttachmentAsPlainText(documentId: String): String = getRawMainAttachment(documentId).decodeToString()
 
-	override suspend fun getMainAttachmentAsJson(documentId: String, attachmentId: String): JsonElement = getMainAttachmentAsPlainText(documentId, attachmentId).let {
+	override suspend fun getMainAttachmentAsJson(documentId: String): JsonElement = getMainAttachmentAsPlainText(documentId).let {
 		Serialization.json.decodeFromString<JsonElement>(it)
 	}
 
@@ -385,7 +395,7 @@ internal class DocumentApiImpl(
 		return rawApi.createDocument(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -416,36 +426,32 @@ internal class DocumentApiImpl(
 
 	override suspend fun getAndTryDecryptMainAttachment(
 		document: Document,
-		attachmentId: String,
-		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
-	): ByteArray? = getRawMainAttachment(document.id, attachmentId).let {
-			crypto.entity.tryDecryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
+	): ByteArray? = getRawMainAttachment(document.id).let {
+			crypto.entity.tryDecryptAttachmentOf(document.withTypeInfo(), it, decryptedAttachmentValidator)
 		}
 
 	override suspend fun getAndTryDecryptMainAttachmentAsPlainText(
 		document: Document,
-		attachmentId: String,
-		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
-	): String? = getAndTryDecryptMainAttachment(document, attachmentId, decryptedDocumentValidator)?.decodeToString()
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
+	): String? = getAndTryDecryptMainAttachment(document, decryptedAttachmentValidator)?.decodeToString()
 
 	override suspend fun getAndTryDecryptMainAttachmentAsJson(
 		document: Document,
-		attachmentId: String,
-		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
-	): JsonElement? = getAndTryDecryptMainAttachmentAsPlainText(document, attachmentId, decryptedDocumentValidator)?.let {
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
+	): JsonElement? = getAndTryDecryptMainAttachmentAsPlainText(document, decryptedAttachmentValidator)?.let {
 		Serialization.json.decodeFromString<JsonElement>(it)
 	}
 
 	override suspend fun getAndDecryptMainAttachment(
 		document: Document,
-		attachmentId: String,
-		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	) =
-		rawApi.getMainAttachment(document.id, attachmentId).successBody().let {
-			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+		rawApi.getMainAttachment(document.id).successBody().let {
+			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedAttachmentValidator)
 		}
 
-	override suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>, attachment: ByteArray): EncryptedDocument {
+	override suspend fun encryptAndSetMainAttachment(document: Document, utis: List<String>?, attachment: ByteArray): EncryptedDocument {
 		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
 			?: throw EntityEncryptionException("Cannot extract encryption key from document")
 		val payload = crypto.primitives.aes.encrypt(attachment, aesKey)
@@ -462,17 +468,16 @@ internal class DocumentApiImpl(
 	override suspend fun getAndDecryptSecondaryAttachment(
 		document: Document,
 		key: String,
-		attachmentId: String,
-		decryptedDocumentValidator: suspend (document: ByteArray) -> Boolean
+		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	) =
-		rawApi.getSecondaryAttachment(document.id, key, attachmentId).successBody().let {
-			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedDocumentValidator)
+		rawApi.getSecondaryAttachment(document.id, key).successBody().let {
+			crypto.entity.decryptAttachmentOf(document.withTypeInfo(), it, decryptedAttachmentValidator)
 		}
 
 	override suspend fun encryptAndSetSecondaryAttachment(
 		document: Document,
 		key: String,
-		utis: List<String>,
+		utis: List<String>?,
 		attachment: ByteArray,
 	): EncryptedDocument {
 		val aesKey = crypto.entity.tryDecryptAndImportAnyEncryptionKey(document.withTypeInfo())?.key
@@ -505,12 +510,16 @@ internal class DocumentApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }
 
-	suspend fun decrypt(entity: EncryptedDocument, errorMessage: () -> String): DecryptedDocument = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedDocument): DecryptedDocument? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedDocument.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(document: EncryptedDocument): DecryptedDocument =
+		decryptOrNull(document) ?: throw EntityEncryptionException("Document cannot be decrypted")
+
+	override suspend fun tryDecrypt(document: EncryptedDocument): Document =
+		decryptOrNull(document) ?: document
 }
 
 @InternalIcureApi

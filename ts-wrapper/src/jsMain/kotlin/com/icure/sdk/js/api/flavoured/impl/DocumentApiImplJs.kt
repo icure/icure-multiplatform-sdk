@@ -109,9 +109,6 @@ internal class DocumentApiImplJs(
 				val result = documentApi.encrypted.shareWith(
 					delegateIdConverted,
 					documentConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -464,9 +461,6 @@ internal class DocumentApiImplJs(
 				val result = documentApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					documentConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -1166,9 +1160,6 @@ internal class DocumentApiImplJs(
 			val result = documentApi.shareWith(
 				delegateIdConverted,
 				documentConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

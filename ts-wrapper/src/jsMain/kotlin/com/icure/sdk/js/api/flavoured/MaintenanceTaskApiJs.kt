@@ -12,8 +12,8 @@ import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
@@ -47,6 +47,12 @@ public external interface MaintenanceTaskApiJs {
 
 	public fun deleteMaintenanceTasks(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<MaintenanceTaskJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedMaintenanceTaskJs>>
+
 	public fun shareWith(
 		delegateId: String,
 		maintenanceTask: DecryptedMaintenanceTaskJs,
@@ -67,11 +73,4 @@ public external interface MaintenanceTaskApiJs {
 
 	public fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
 			options: dynamic): Promise<PaginatedListJs<DecryptedMaintenanceTaskJs>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<MaintenanceTaskJs>,
-		eventFired: (DecryptedMaintenanceTaskJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

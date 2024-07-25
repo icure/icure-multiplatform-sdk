@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.ListOfIds
@@ -16,6 +15,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.serialization.HealthcarePartyAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -40,7 +40,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawHealthcarePartyApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -49,13 +49,12 @@ class RawHealthcarePartyApiImpl(
 	// region common endpoints
 
 	override suspend fun getCurrentHealthcareParty(): HttpResponse<HealthcareParty> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "current")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -65,7 +64,7 @@ class RawHealthcarePartyApiImpl(
 		limit: Int?,
 		desc: Boolean?,
 	): HttpResponse<PaginatedList<HealthcareParty>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty")
@@ -75,7 +74,6 @@ class RawHealthcarePartyApiImpl(
 				parameter("desc", desc)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -86,7 +84,7 @@ class RawHealthcarePartyApiImpl(
 		limit: Int?,
 		desc: Boolean?,
 	): HttpResponse<PaginatedList<HealthcareParty>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "byName")
@@ -97,7 +95,6 @@ class RawHealthcarePartyApiImpl(
 				parameter("desc", desc)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -108,7 +105,7 @@ class RawHealthcarePartyApiImpl(
 		limit: Int?,
 		desc: Boolean,
 	): HttpResponse<PaginatedList<HealthcareParty>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "byNihiiOrSsin", searchValue)
@@ -118,18 +115,16 @@ class RawHealthcarePartyApiImpl(
 				parameter("desc", desc)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listHealthcarePartiesByName(name: String): HttpResponse<List<HealthcareParty>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "byNameStrict", name)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -142,7 +137,7 @@ class RawHealthcarePartyApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<HealthcareParty>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "bySpecialityAndPostCode", type, spec, firstCode, "to", lastCode)
@@ -151,17 +146,15 @@ class RawHealthcarePartyApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createHealthcareParty(h: HealthcareParty): HttpResponse<HealthcareParty> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(h)
@@ -170,102 +163,93 @@ class RawHealthcarePartyApiImpl(
 	override suspend fun getAesExchangeKeysForDelegate(
 		healthcarePartyId: String,
 	): HttpResponse<Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId, "aesExchangeKeys")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getHealthcareParty(healthcarePartyId: String): HttpResponse<HealthcareParty> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getHealthcareParties(healthcarePartyIds: ListOfIds): HttpResponse<List<HealthcareParty>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthcarePartyIds)
 		}.wrap()
 
 	override suspend fun listHealthcarePartiesByParentId(parentId: String): HttpResponse<List<HealthcareParty>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", parentId, "children")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getPublicKey(healthcarePartyId: String): HttpResponse<PublicKey> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId, "publicKey")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteHealthcareParties(healthcarePartyIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthcarePartyIds)
 		}.wrap()
 
 	override suspend fun deleteHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthcarePartyDto)
 		}.wrap()
 
 	override suspend fun matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "match")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(HealthcarePartyAbstractFilterSerializer, filter)
@@ -276,17 +260,19 @@ class RawHealthcarePartyApiImpl(
 		limit: Int?,
 		filterChain: FilterChain<HealthcareParty>,
 	): HttpResponse<PaginatedList<HealthcareParty>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(
+				FilterChainSerializer(HealthcarePartyAbstractFilterSerializer),
+				filterChain,
+			)
 		}.wrap()
 
 	// endregion
@@ -297,12 +283,11 @@ class RawHealthcarePartyApiImpl(
 		groupId: String,
 		healthcarePartyIds: ListOfIds?,
 	): HttpResponse<List<HealthcareParty>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "inGroup", groupId, "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthcarePartyIds)
@@ -312,12 +297,11 @@ class RawHealthcarePartyApiImpl(
 		groupId: String,
 		healthcarePartyIds: ListOfIds,
 	): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "delete", "batch", "inGroup", groupId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthcarePartyIds)
@@ -327,12 +311,11 @@ class RawHealthcarePartyApiImpl(
 		healthcarePartyId: String,
 		groupId: String,
 	): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId, "inGroup", groupId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -340,12 +323,11 @@ class RawHealthcarePartyApiImpl(
 		groupId: String,
 		healthcarePartyDto: HealthcareParty,
 	): HttpResponse<HealthcareParty> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "inGroup", groupId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthcarePartyDto)
@@ -355,12 +337,11 @@ class RawHealthcarePartyApiImpl(
 		groupId: String,
 		h: HealthcareParty,
 	): HttpResponse<HealthcareParty> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "inGroup", groupId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(h)
@@ -373,7 +354,7 @@ class RawHealthcarePartyApiImpl(
 		useShortToken: Boolean?,
 		hcp: HealthcareParty,
 	): HttpResponse<DataOwnerRegistrationSuccess> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "register", "inGroup", groupId)
@@ -381,7 +362,6 @@ class RawHealthcarePartyApiImpl(
 				parameter("token", token)
 				parameter("useShortToken", useShortToken)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(hcp)

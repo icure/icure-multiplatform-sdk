@@ -18,9 +18,10 @@ import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -68,6 +69,18 @@ public external interface ContactApiJs {
 
 	public fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>>
+
+	public fun subscribeToServiceEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ServiceJs>,
+		subscriptionConfig: EntitySubscriptionConfigurationJs,
+	): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<ContactJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedContactJs>>
 
 	public fun shareWith(
 		delegateId: String,
@@ -146,18 +159,4 @@ public external interface ContactApiJs {
 		startDocumentId: String?,
 		limit: Double?,
 	): Promise<PaginatedListJs<DecryptedServiceJs>>
-
-	public fun subscribeToServiceEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ServiceJs>,
-		eventFired: (DecryptedServiceJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ContactJs>,
-		eventFired: (DecryptedContactJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

@@ -4,7 +4,6 @@ import com.icure.sdk.api.raw.RawFormApi
 import com.icure.sdk.crypto.entities.FormShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedForm
@@ -19,7 +18,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -88,12 +86,8 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		form: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: FormShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -164,6 +158,8 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 	suspend fun hasWriteAccess(form: Form): Boolean
 	suspend fun decryptPatientIdOf(form: Form): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Form, delegates: Set<String>)
+	suspend fun decrypt(form: EncryptedForm): DecryptedForm
+	suspend fun tryDecrypt(form: EncryptedForm): Form
 
 	val encrypted: FormFlavouredApi<EncryptedForm>
 	val tryAndRecover: FormFlavouredApi<Form>
@@ -217,20 +213,13 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 	override suspend fun shareWith(
 		delegateId: String,
 		form: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: FormShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			form.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: FormShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -368,7 +357,7 @@ internal class FormApiImpl(
 		return rawApi.createForm(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -379,7 +368,7 @@ internal class FormApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -423,11 +412,16 @@ internal class FormApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
-	suspend fun decrypt(entity: EncryptedForm, errorMessage: () -> String): DecryptedForm = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedForm): DecryptedForm? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
-		?: throw EntityEncryptionException(errorMessage())
+
+	override suspend fun decrypt(form: EncryptedForm): DecryptedForm =
+		decryptOrNull(form) ?: throw EntityEncryptionException("Form cannot be decrypted")
+
+	override suspend fun tryDecrypt(form: EncryptedForm): Form =
+		decryptOrNull(form) ?: form
 
 }
 

@@ -4,7 +4,6 @@ import com.icure.sdk.api.raw.RawMessageApi
 import com.icure.sdk.crypto.entities.MessageShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedMessage
@@ -21,12 +20,16 @@ import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.serialization.MessageAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.subscription.EntitySubscription
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -34,29 +37,22 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.websocket.Connection
-import com.icure.sdk.websocket.ConnectionImpl
-import com.icure.sdk.websocket.EmittedEvent
-import com.icure.sdk.websocket.Subscribable
-import io.ktor.util.InternalAPI
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface MessageBasicFlavourlessApi {
+interface MessageBasicFlavourlessApi: Subscribable<Message, EncryptedMessage> {
 	suspend fun matchMessagesBy(filter: AbstractFilter<Message>): List<String>
 	suspend fun deleteMessage(entityId: String): DocIdentifier
 	suspend fun deleteMessages(entityIds: List<String>): List<DocIdentifier>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface MessageBasicFlavouredApi<E : Message>: Subscribable<Message, E> {
+interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun modifyMessage(entity: E): E
 	suspend fun getMessage(entityId: String): E
 	suspend fun getMessages(entityIds: List<String>): List<E>
-	suspend fun filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterMessagesBy(filter: AbstractFilter<Message>): PaginatedListIterator<E>
 
 	suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>): List<E>
 	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): List<E>
@@ -65,6 +61,9 @@ interface MessageBasicFlavouredApi<E : Message>: Subscribable<Message, E> {
 	suspend fun getMessagesChildren(messageIds: List<String>): List<E>
 	suspend fun listMessagesByInvoices(invoiceIds: List<String>): List<E>
 	suspend fun findMessagesByTransportGuid(transportGuid: String): PaginatedList<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterMessagesBy()"))
 	suspend fun findMessagesByTransportGuidSentDate(
 		transportGuid: String,
 		from: Long,
@@ -79,7 +78,12 @@ interface MessageBasicFlavouredApi<E : Message>: Subscribable<Message, E> {
 		hcpId: String? = null,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterMessagesBy()"))
 	suspend fun findMessagesByToAddress(toAddress: String, startKey: JsonElement?, startDocumentId: String?, limit: Int?): PaginatedList<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterMessagesBy()"))
 	suspend fun findMessagesByFromAddress(
 		fromAddress: String,
 		startKey: JsonElement?,
@@ -96,13 +100,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		message: E,
-		shareSecretIds: Set<String>,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		options: MessageShareOptions
 	): SimpleShareResult<E>
 
 	/**
@@ -172,6 +170,8 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(message: Message): Boolean
 	suspend fun decryptPatientIdOf(message: Message): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Message, delegates: Set<String>)
+	suspend fun decrypt(message: EncryptedMessage): DecryptedMessage
+	suspend fun tryDecrypt(message: EncryptedMessage): Message
 
 	val encrypted: MessageFlavouredApi<EncryptedMessage>
 	val tryAndRecover: MessageFlavouredApi<Message>
@@ -194,12 +194,11 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	override suspend fun getMessages(entityIds: List<String>): List<E> =
 		rawApi.getMessages(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterMessagesBy(
-		filterChain: FilterChain<Message>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.filterMessagesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterMessagesBy(filter: AbstractFilter<Message>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchMessagesBy(filter).successBody(),
+			this::getMessages
+		)
 
 	override suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>) =
 		rawApi.listMessagesByTransportGuids(hcPartyId, ListOfIds(transportGuids)).successBody().map { maybeDecrypt(it) }
@@ -264,41 +263,6 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 		userId: String,
 	) = rawApi.setMessagesReadStatus(MessagesReadStatusUpdate(entityIds, time, readStatus, userId)).successBody().map { maybeDecrypt(it) }
 
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Message>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (E) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedMessage.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecrypt(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMessage
 	abstract suspend fun maybeDecrypt(entity: EncryptedMessage): E
 }
@@ -314,21 +278,13 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 	override suspend fun shareWith(
 		delegateId: String,
 		message: E,
-		shareSecretIds: Set<String>,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: MessageShareOptions,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			message.withTypeInfo(),
 			false,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = shareSecretIds,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to options,
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -366,10 +322,32 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 }
 
 @InternalIcureApi
-private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi) : MessageBasicFlavourlessApi {
+private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, private val config: BasicApiConfiguration) : MessageBasicFlavourlessApi {
 	override suspend fun matchMessagesBy(filter: AbstractFilter<Message>) = rawApi.matchMessagesBy(filter).successBody()
 	override suspend fun deleteMessage(entityId: String) = rawApi.deleteMessage(entityId).successBody()
 	override suspend fun deleteMessages(entityIds: List<String>) = rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Message>,
+		subscriptionConfig: EntitySubscriptionConfiguration?
+	): EntitySubscription<EncryptedMessage> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedMessage.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(MessageAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -392,7 +370,7 @@ internal class MessageApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
-}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi) {
+}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi, config) {
 	override val encrypted: MessageFlavouredApi<EncryptedMessage> =
 		object : AbstractMessageFlavouredApi<EncryptedMessage>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedMessage): EncryptedMessage =
@@ -429,13 +407,11 @@ internal class MessageApiImpl(
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createMessage(
 			encrypt(entity),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	override suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage =
-		rawApi.createMessageInTopic(encrypt(entity)).successBody().let { decrypt(it) { "Created entity cannot be decrypted" } }
+		rawApi.createMessageInTopic(encrypt(entity)).successBody().let { decrypt(it) }
 
 	private val crypto get() = config.crypto
 	private val fieldsToEncrypt get() = config.encryption.message
@@ -478,12 +454,16 @@ internal class MessageApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
-	suspend fun decrypt(entity: EncryptedMessage, errorMessage: () -> String): DecryptedMessage = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedMessage): DecryptedMessage? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedMessage.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(message: EncryptedMessage): DecryptedMessage =
+		decryptOrNull(message) ?: throw EntityEncryptionException("Message cannot be decrypted")
+
+	override suspend fun tryDecrypt(message: EncryptedMessage): Message =
+		decryptOrNull(message) ?: message
 }
 
 @InternalIcureApi
@@ -496,4 +476,4 @@ internal class MessageBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedMessage.serializer(), config.encryption.message)
 
 	override suspend fun maybeDecrypt(entity: EncryptedMessage): EncryptedMessage = entity
-}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi)
+}, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi, config)

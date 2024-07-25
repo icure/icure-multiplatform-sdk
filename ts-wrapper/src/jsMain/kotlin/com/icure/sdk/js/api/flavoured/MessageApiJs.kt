@@ -13,9 +13,9 @@ import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
-import com.icure.sdk.js.websocket.ConnectionJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -55,6 +55,12 @@ public external interface MessageApiJs {
 	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<MessageJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedMessageJs>>
 
 	public fun shareWith(
 		delegateId: String,
@@ -139,11 +145,4 @@ public external interface MessageApiJs {
 		readStatus: Boolean,
 		userId: String,
 	): Promise<Array<DecryptedMessageJs>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<MessageJs>,
-		eventFired: (DecryptedMessageJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

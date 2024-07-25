@@ -3,14 +3,13 @@ package com.icure.sdk.api.flavoured
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.raw.RawContactApi
-import com.icure.sdk.crypto.JsonEncryptionService
+import com.icure.sdk.crypto.InternalCryptoServices
 import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Contact
@@ -26,17 +25,23 @@ import com.icure.sdk.model.data.LabelledOccurence
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.serialization.ContactAbstractFilterSerializer
+import com.icure.sdk.serialization.ServiceAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.subscription.EntitySubscription
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -45,29 +50,17 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.currentFuzzyDateTime
 import com.icure.sdk.utils.ensure
+import com.icure.sdk.utils.ensureNonNull
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.websocket.Connection
-import com.icure.sdk.websocket.ConnectionImpl
-import com.icure.sdk.websocket.EmittedEvent
-import com.icure.sdk.websocket.Subscribable
-import io.ktor.util.InternalAPI
-import kotlinx.coroutines.channels.Channel
 import kotlinx.datetime.TimeZone
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface ContactBasicFlavourlessApi {
+interface ContactBasicFlavourlessApi : Subscribable<Contact, EncryptedContact> {
 	suspend fun matchContactsBy(filter: AbstractFilter<Contact>): List<String>
 	suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String>
 	suspend fun deleteContact(entityId: String): DocIdentifier
@@ -78,15 +71,21 @@ interface ContactBasicFlavourlessApi {
 	): List<IcureStub>
 
 	suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long): List<LabelledOccurence>
+
+	suspend fun subscribeToServiceEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Service>,
+		subscriptionConfig: EntitySubscriptionConfiguration
+	): EntitySubscription<EncryptedService>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Contact, E> {
+interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	suspend fun modifyContact(entity: E): E
 	suspend fun modifyContacts(entities: List<E>): List<E>
 	suspend fun getContact(entityId: String): E
 	suspend fun getContacts(entityIds: List<String>): List<E>
-	suspend fun filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: String?, limit: Int?): PaginatedList<E>
+	suspend fun filterContactsBy(filter: AbstractFilter<Contact>): PaginatedListIterator<E>
 
 	suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E>
 	suspend fun listContactsByExternalId(externalId: String): List<E>
@@ -107,6 +106,14 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Cont
 	suspend fun getServicesLinkedTo(linkType: String, ids: List<String>): List<S>
 	suspend fun listServicesByAssociationId(associationId: String): List<S>
 	suspend fun listServicesByHealthElementId(hcPartyId: String, healthElementId: String): List<S>
+
+	@Deprecated(
+		"Find methods are deprecated",
+		ReplaceWith(
+			expression = "filterContactsBy(ContactByHcPartyTagCodeDateFilter(healthcarePartyId = hcPartyId, startOfContactOpeningDate = startDate, endOfContactOpeningDate = endDate))",
+			imports = arrayOf("com.icure.sdk.model.filter.contact.ContactByHcPartyTagCodeDateFilter")
+		)
+	)
 	suspend fun findContactsByOpeningDate(
 		startDate: Long,
 		endDate: Long,
@@ -119,23 +126,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> : Subscribable<Cont
 		limit: Int? = null,
 	): PaginatedList<E>
 
-	suspend fun filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: String?, limit: Int?): PaginatedList<S>
-
-	suspend fun subscribeToServiceEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Service>,
-		@DefaultValue("{}")
-		onConnected: suspend () -> Unit = {},
-		@DefaultValue("kotlinx.coroutines.channels.Channel.BUFFERED")
-		channelCapacity: Int = Channel.BUFFERED,
-		@DefaultValue("2.seconds")
-		retryDelay: Duration = 2.seconds,
-		@DefaultValue("2.0")
-		retryDelayExponentFactor: Double = 2.0,
-		@DefaultValue("5")
-		maxRetries: Int = 5,
-		eventFired: suspend (S) -> Unit,
-	): Connection
+	suspend fun filterServicesBy(filter: AbstractFilter<Service>): PaginatedListIterator<S>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -143,12 +134,8 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	suspend fun shareWith(
 		delegateId: String,
 		contact: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: ContactShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -221,6 +208,29 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(contact: Contact): Boolean
 	suspend fun decryptPatientIdOf(contact: Contact): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Set<String>)
+	suspend fun decrypt(contact: EncryptedContact): DecryptedContact
+	suspend fun tryDecrypt(contact: EncryptedContact): Contact
+
+	/**
+	 * Decrypts a single [EncryptedService].
+	 * Note: you should use this function only when you retrieve [Service]s as single entity. If you are retrieving them as part of a
+	 * [Contact], use [decrypt] instead.
+	 *
+	 * @param service the [EncryptedService] to decrypt.
+	 * @return the [DecryptedService].
+	 * @throws EntityEncryptionException if [service] could not be decrypted.
+	 */
+	suspend fun decryptService(service: EncryptedService): DecryptedService
+
+	/**
+	 * Tries to decrypt a single [EncryptedService].
+	 * Note: you should use this function only when you retrieve [Service]s as single entity. If you are retrieving them as part of a
+	 * [Contact], use [tryDecrypt] instead.
+	 *
+	 * @param service the [EncryptedService] to decrypt.
+	 * @return the [DecryptedService] if the decryption was successful, the original [service] otherwise.
+	 */
+	suspend fun tryDecryptService(service: EncryptedService): Service
 
 	val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService>
 	val tryAndRecover: ContactFlavouredApi<Contact, Service>
@@ -243,12 +253,8 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	override suspend fun getContacts(entityIds: List<String>): List<E> =
 		rawApi.getContacts(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterContactsBy(
-		filterChain: FilterChain<Contact>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<E> =
-		rawApi.filterContactsBy(startDocumentId, limit, filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterContactsBy(filter: AbstractFilter<Contact>): PaginatedListIterator<E> =
+		IdsPageIterator(rawApi.matchContactsBy(filter).successBody(), this::getContacts)
 
 	override suspend fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): List<E> =
 		rawApi.listContactByHCPartyServiceId(hcPartyId, serviceId).successBody().map { maybeDecrypt(it) }
@@ -275,12 +281,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 		rawApi.closeForHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun getService(serviceId: String): S = rawApi.getService(serviceId).successBody().let { maybeDecryptService(it) }
-	override suspend fun filterServicesBy(
-		filterChain: FilterChain<Service>,
-		startDocumentId: String?,
-		limit: Int?,
-	): PaginatedList<S> =
-		rawApi.filterServicesBy(startDocumentId, limit, filterChain).successBody().map { maybeDecryptService(it) }
 
 	override suspend fun getServices(entityIds: List<String>): List<S> =
 		rawApi.getServices(ListOfIds(entityIds)).successBody().map { maybeDecryptService(it) }
@@ -294,6 +294,13 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	override suspend fun listServicesByHealthElementId(hcPartyId: String, healthElementId: String): List<S> =
 		rawApi.listServicesByHealthElementId(healthElementId, hcPartyId).successBody().map { maybeDecryptService(it) }
 
+	@Deprecated(
+		"Find methods are deprecated",
+		replaceWith = ReplaceWith(
+			"filterContactsBy(ContactByHcPartyTagCodeDateFilter(healthcarePartyId = hcPartyId, startOfContactOpeningDate = startDate, endOfContactOpeningDate = endDate))",
+			"com.icure.sdk.model.filter.contact.ContactByHcPartyTagCodeDateFilter"
+		)
+	)
 	override suspend fun findContactsByOpeningDate(
 		startDate: Long,
 		endDate: Long,
@@ -304,75 +311,11 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	): PaginatedList<E> = rawApi.findContactsByOpeningDate(startDate, endDate, hcPartyId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 		.map { maybeDecrypt(it) }
 
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToServiceEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Service>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (S) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedService.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecryptService(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
+	override suspend fun filterServicesBy(filter: AbstractFilter<Service>): PaginatedListIterator<S> =
+		IdsPageIterator(
+			rawApi.matchServicesBy(filter).successBody(),
+			this::getServices
 		)
-	}
-
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Contact>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (E) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedContact.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecrypt(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedContact
 	abstract suspend fun maybeDecrypt(entity: EncryptedContact): E
@@ -391,20 +334,13 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	override suspend fun shareWith(
 		delegateId: String,
 		contact: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: ContactShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			contact.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: ContactShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -441,49 +377,105 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	}
 }
 
-suspend fun JsonObject.walkCompounds(transform: suspend (JsonObject) -> JsonObject): JsonObject =
-	if (this["content"]?.jsonObject?.values?.all { c -> c.jsonObject.entries.all { (k, v) -> k == "compoundValue" || v == JsonNull || (v is JsonArray && v.isEmpty()) } } == true) JsonObject(
-		mapValues { (k, v) ->
-			if (k == "content")
-				JsonObject(
-					v.jsonObject.mapValues { (_, c) ->
-						JsonObject(
-							c.jsonObject["compoundValue"]?.jsonArray?.let { compoundServices ->
-								mapOf(
-									"compoundValue" to JsonArray(
-										compoundServices.map { dSvc ->
-											dSvc.jsonObject.walkCompounds(transform)
-										},
-									),
-								)
-							} ?: emptyMap(),
-						)
-					},
-				)
-			else v
-		},
-	) else transform(this)
+private fun Service.hasOnlyCompoundContent() =
+	content.values.all {
+		it.isCompound()
+	}
 
-@OptIn(InternalIcureApi::class)
-internal suspend fun DecryptedService.encrypt(jsonEncryptionService: JsonEncryptionService, contactKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService =
-	Serialization.json.encodeToJsonElement<DecryptedService>(this).jsonObject
-		.walkCompounds { jsonEncryptionService.encrypt(contactKey, it, serviceEncryptedFieldsManifest) }
-		.let {
+@InternalIcureApi
+private suspend fun DecryptedService.encrypt(
+	config: ApiConfiguration,
+	contactKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>,
+	serviceEncryptedFieldsManifest: EncryptedFieldsManifest
+): EncryptedService =
+	if (this.hasOnlyCompoundContent()) {
+		config.crypto.jsonEncryption.encrypt(
+			contactKey,
+			Serialization.json.encodeToJsonElement(this).jsonObject,
+			serviceEncryptedFieldsManifest
+		).let {
 			Serialization.json.decodeFromJsonElement<EncryptedService>(it)
-		}
-
-
-@OptIn(InternalIcureApi::class)
-internal suspend fun EncryptedService.validate(jsonEncryptionService: JsonEncryptionService, serviceEncryptedFieldsManifest: EncryptedFieldsManifest): EncryptedService {
-	return this.also { encryptedService ->
-		Serialization.json.encodeToJsonElement<EncryptedService>(encryptedService).jsonObject
-			.walkCompounds {
-				it.also { encryptedJson ->
-					require(!jsonEncryptionService.requiresEncryption(encryptedJson, serviceEncryptedFieldsManifest)) {
-						"Service ${this.id} has some fields which should be encrypted according to the manifest but are not encrypted; you should not modify encrypted fields when working directly with encrypted entities."
+		}.copy(
+			content = content.mapValues { (_, compoundContent) ->
+				EncryptedContent(
+					compoundValue = ensureNonNull(compoundContent.compoundValue) {
+						"Compound value can't be null on a only-compound compound content"
+					}.map {
+						it.encrypt(config, contactKey, serviceEncryptedFieldsManifest)
 					}
-				}
+				)
 			}
+		)
+	} else {
+		config.crypto.jsonEncryption.encrypt(
+			contactKey,
+			Serialization.json.encodeToJsonElement(this).jsonObject,
+			serviceEncryptedFieldsManifest.copy(topLevelFields = serviceEncryptedFieldsManifest.topLevelFields + "content")
+		).let {
+			Serialization.json.decodeFromJsonElement(it)
+		}
+	}
+
+
+@InternalIcureApi
+private fun EncryptedService.requiresEncryption(
+	config: BasicApiConfiguration,
+	serviceEncryptedFieldsManifest: EncryptedFieldsManifest
+): Boolean =
+	if (this.hasOnlyCompoundContent()) {
+		config.crypto.jsonEncryption.requiresEncryption(
+			Serialization.json.encodeToJsonElement(this).jsonObject,
+			serviceEncryptedFieldsManifest
+		) || content.values.any { compoundContent ->
+			ensureNonNull(compoundContent.compoundValue) {
+				"Compound value can't be null on a only-compound compound content"
+			}.any {
+				it.requiresEncryption(config, serviceEncryptedFieldsManifest)
+			}
+		}
+	} else {
+		config.crypto.jsonEncryption.requiresEncryption(
+			Serialization.json.encodeToJsonElement(this).jsonObject,
+			serviceEncryptedFieldsManifest.copy(topLevelFields = serviceEncryptedFieldsManifest.topLevelFields + "content")
+		)
+	}
+
+@InternalIcureApi
+private suspend fun DecryptedContact.encrypt(
+	config: ApiConfiguration,
+	contactEncryptedFieldsManifest: EncryptedFieldsManifest,
+	serviceEncryptedFieldsManifest: EncryptedFieldsManifest
+): EncryptedContact =
+	config.crypto.entity.encryptEntity(
+		this.withTypeInfo(),
+		DecryptedContact.serializer(),
+		contactEncryptedFieldsManifest,
+	) { Serialization.json.decodeFromJsonElement<EncryptedContact>(it) }.copy(
+		services = this.services.map {
+			it.encrypt(
+				config,
+				config.crypto.entity.tryDecryptAndImportAnyEncryptionKey(this.withTypeInfo())?.key
+					?: throw EntityEncryptionException("Cannot obtain key from contact"),
+				serviceEncryptedFieldsManifest
+			)
+		}.toSet(),
+	)
+
+@InternalIcureApi
+private suspend fun EncryptedContact.validateEncrypted(
+	config: BasicApiConfiguration,
+	contactEncryptedFieldsManifest: EncryptedFieldsManifest,
+	serviceEncryptedFieldsManifest: EncryptedFieldsManifest
+) {
+	config.crypto.validationService.validateEncryptedEntity(
+		this.withTypeInfo(),
+		EncryptedContact.serializer(),
+		contactEncryptedFieldsManifest
+	)
+	services.forEach {
+		if (it.requiresEncryption(config, serviceEncryptedFieldsManifest)) {
+			throw EntityEncryptionException("Service ${it.id} in contact ${this.id} is not properly encrypted according to the manifest")
+		}
 	}
 }
 
@@ -513,7 +505,10 @@ internal fun Service.asIcureStubWithTypeInfo(): EntityWithTypeInfo<IcureStub> {
 }
 
 @InternalIcureApi
-private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : ContactBasicFlavourlessApi {
+private class AbstractContactBasicFlavourlessApi(
+	val rawApi: RawContactApi,
+	private val config: BasicApiConfiguration
+) : ContactBasicFlavourlessApi {
 	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>) = rawApi.matchContactsBy(filter).successBody()
 	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): List<String> = rawApi.matchServicesBy(filter).successBody()
 	override suspend fun deleteContact(entityId: String) = rawApi.deleteContact(entityId).successBody()
@@ -525,7 +520,64 @@ private class AbstractContactBasicFlavourlessApi(val rawApi: RawContactApi) : Co
 
 	override suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long) =
 		rawApi.getServiceCodesOccurrences(codeType, minOccurrences).successBody()
+
+	override suspend fun subscribeToServiceEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Service>,
+		subscriptionConfig: EntitySubscriptionConfiguration
+	): EntitySubscription<EncryptedService> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedService.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Service.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(ServiceAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Contact>,
+		subscriptionConfig: EntitySubscriptionConfiguration?
+	): EntitySubscription<EncryptedContact> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedContact.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Contact.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(ContactAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
+
+@InternalIcureApi
+private suspend fun decryptServiceOrNull(entity: EncryptedService, crypto: InternalCryptoServices): DecryptedService? = try {
+		crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.asIcureStubWithTypeInfo())?.key
+	} catch (e: InternalIcureException) {
+		null
+	}?.let { contactKey ->
+		Serialization.json.encodeToJsonElement<EncryptedService>(entity).jsonObject
+			.let { crypto.jsonEncryption.decrypt(contactKey, it) }
+			.let {
+				Serialization.json.decodeFromJsonElement<DecryptedService>(it)
+			}
+	}
 
 @InternalIcureApi
 internal class ContactApiImpl(
@@ -534,20 +586,7 @@ internal class ContactApiImpl(
 ) : ContactApi, ContactFlavouredApi<DecryptedContact, DecryptedService> by object :
 	AbstractContactFlavouredApi<DecryptedContact, DecryptedService>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedContact): EncryptedContact =
-		crypto.entity.encryptEntity(
-			entity.withTypeInfo(),
-			DecryptedContact.serializer(),
-			fieldsToEncrypt,
-		) { Serialization.json.decodeFromJsonElement<EncryptedContact>(it) }.copy(
-			services = entity.services.map {
-				it.encrypt(
-					crypto.jsonEncryption,
-					crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-						?: throw EntityEncryptionException("Cannot obtain key from contact"),
-					serviceFieldsToEncrypt
-				)
-			}.toSet(),
-		)
+		entity.encrypt(config, fieldsToEncrypt, serviceFieldsToEncrypt)
 
 	override suspend fun maybeDecrypt(entity: EncryptedContact): DecryptedContact {
 		return crypto.entity.tryDecryptEntity(
@@ -558,29 +597,16 @@ internal class ContactApiImpl(
 	}
 
 	override suspend fun maybeDecryptService(entity: EncryptedService): DecryptedService =
-		try {
-			crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.asIcureStubWithTypeInfo())?.key
-		} catch (e: InternalIcureException) {
-			null
-		}?.let { contactKey ->
-			Serialization.json.encodeToJsonElement<EncryptedService>(entity).jsonObject
-				.let { crypto.jsonEncryption.decrypt(contactKey, it) }
-				.let {
-					Serialization.json.decodeFromJsonElement<DecryptedService>(it)
-				}
-		} ?: throw EntityEncryptionException("Service ${entity.id} cannot be decrypted")
+		decryptServiceOrNull(entity, crypto)
+			?: throw EntityEncryptionException("Service ${entity.id} cannot be decrypted")
 
-}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi) {
+}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi, config) {
 	private val crypto get() = config.crypto
 
 	override val encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService> =
 		object : AbstractContactFlavouredApi<EncryptedContact, EncryptedService>(rawApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedContact): EncryptedContact =
-				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedContact.serializer(), fieldsToEncrypt).copy(
-					services = entity.services.map {
-						it.validate(crypto.jsonEncryption, serviceFieldsToEncrypt)
-					}.toSet(),
-				)
+				entity.also { it.validateEncrypted(config, fieldsToEncrypt, serviceFieldsToEncrypt) }
 
 			override suspend fun maybeDecrypt(entity: EncryptedContact): EncryptedContact = entity
 			override suspend fun maybeDecryptService(entity: EncryptedService): EncryptedService = entity
@@ -595,43 +621,13 @@ internal class ContactApiImpl(
 				) { Serialization.json.decodeFromJsonElement<DecryptedContact>(it) }
 					?: entity
 
-			override suspend fun maybeDecryptService(entity: EncryptedService): Service = try {
-				crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.asIcureStubWithTypeInfo())?.key
-			} catch (e: InternalIcureException) {
-				null
-			}?.let { contactKey ->
-				Serialization.json.encodeToJsonElement<EncryptedService>(entity).jsonObject
-					.let { crypto.jsonEncryption.decrypt(contactKey, it) }
-					.let {
-						Serialization.json.decodeFromJsonElement<DecryptedService>(it)
-					}
-			} ?: entity
+			override suspend fun maybeDecryptService(entity: EncryptedService): Service =
+				decryptServiceOrNull(entity, crypto) ?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Contact): EncryptedContact = when (entity) {
-				is EncryptedContact -> crypto.entity.validateEncryptedEntity(
-					entity.withTypeInfo(),
-					EncryptedContact.serializer(),
-					fieldsToEncrypt,
-				).copy(
-					services = entity.services.map {
-						it.validate(crypto.jsonEncryption, serviceFieldsToEncrypt)
-					}.toSet(),
-				)
+				is EncryptedContact -> entity.also { it.validateEncrypted(config, fieldsToEncrypt, serviceFieldsToEncrypt) }
 
-				is DecryptedContact -> crypto.entity.encryptEntity(
-					entity.withTypeInfo(),
-					DecryptedContact.serializer(),
-					fieldsToEncrypt,
-				) { Serialization.json.decodeFromJsonElement<EncryptedContact>(it) }.copy(
-					services = entity.services.map {
-						it.encrypt(
-							crypto.jsonEncryption,
-							crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
-								?: throw EntityEncryptionException("Cannot obtain key from contact"),
-							serviceFieldsToEncrypt
-						)
-					}.toSet(),
-				)
+				is DecryptedContact -> entity.encrypt(config, fieldsToEncrypt, serviceFieldsToEncrypt)
 			}
 		}
 
@@ -640,7 +636,7 @@ internal class ContactApiImpl(
 		return rawApi.createContact(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -651,7 +647,7 @@ internal class ContactApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -696,7 +692,7 @@ internal class ContactApiImpl(
 	) { Serialization.json.decodeFromJsonElement<EncryptedContact>(it) }.copy(
 		services = entity.services.map {
 			it.encrypt(
-				crypto.jsonEncryption,
+				config,
 				crypto.entity.tryDecryptAndImportAnyEncryptionKey(entity.withTypeInfo())?.key
 					?: throw EntityEncryptionException("Cannot obtain key from contact"),
 				config.encryption.service
@@ -704,11 +700,22 @@ internal class ContactApiImpl(
 		}.toSet(),
 	)
 
-	suspend fun decrypt(entity: EncryptedContact, errorMessage: () -> String): DecryptedContact = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedContact): DecryptedContact? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedContact.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedContact>(it) }
-		?: throw EntityEncryptionException(errorMessage())
+
+	override suspend fun decrypt(contact: EncryptedContact): DecryptedContact =
+		decryptOrNull(contact) ?: throw EntityEncryptionException("Contact cannot be decrypted")
+
+	override suspend fun tryDecrypt(contact: EncryptedContact): Contact =
+		decryptOrNull(contact) ?: contact
+
+	override suspend fun decryptService(service: EncryptedService): DecryptedService =
+		decryptServiceOrNull(service, crypto) ?: throw EntityEncryptionException("Service cannot be decrypted")
+
+	override suspend fun tryDecryptService(service: EncryptedService): Service =
+		decryptServiceOrNull(service, crypto) ?: service
 }
 
 @InternalIcureApi
@@ -718,12 +725,8 @@ internal class ContactBasicApiImpl(
 ) : ContactBasicApi, ContactBasicFlavouredApi<EncryptedContact, EncryptedService> by object :
 	AbstractContactBasicFlavouredApi<EncryptedContact, EncryptedService>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedContact): EncryptedContact =
-		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedContact.serializer(), config.encryption.contact).copy(
-			services = entity.services.map {
-				it.validate(config.crypto.jsonEncryption, config.encryption.service)
-			}.toSet(),
-		)
+		entity.also { it.validateEncrypted(config, config.encryption.contact, config.encryption.service) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedContact): EncryptedContact = entity
 	override suspend fun maybeDecryptService(entity: EncryptedService): EncryptedService = entity
-}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi)
+}, ContactBasicFlavourlessApi by AbstractContactBasicFlavourlessApi(rawApi, config)

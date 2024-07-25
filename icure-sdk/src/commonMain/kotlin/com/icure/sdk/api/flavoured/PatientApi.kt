@@ -18,7 +18,6 @@ import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
@@ -40,7 +39,6 @@ import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.extensions.publicKeysSpki
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
@@ -48,22 +46,23 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.serialization.PatientAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.subscription.EntitySubscription
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.websocket.Connection
-import com.icure.sdk.websocket.ConnectionImpl
-import com.icure.sdk.websocket.EmittedEvent
-import com.icure.sdk.websocket.Subscribable
-import io.ktor.util.InternalAPI
-import kotlinx.serialization.encodeToString
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlin.time.Duration
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface PatientBasicFlavourlessApi {
+interface PatientBasicFlavourlessApi : Subscribable<Patient, EncryptedPatient> {
 	suspend fun matchPatientsBy(filter: AbstractFilter<Patient>): List<String>
 	suspend fun deletePatient(entityId: String): DocIdentifier
 	suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier>
@@ -72,25 +71,13 @@ interface PatientBasicFlavourlessApi {
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
-interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
+interface PatientBasicFlavouredApi<E : Patient> {
 	suspend fun modifyPatient(entity: E): E
 	suspend fun getPatient(entityId: String): E
-	suspend fun filterPatientsBy(
-		filterChain: FilterChain<Patient>,
-		@DefaultValue("null")
-		startKey: String? = null,
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		@DefaultValue("null")
-		skip: Int? = null,
-		@DefaultValue("null")
-		sort: String? = null,
-		@DefaultValue("null")
-		desc: Boolean? = null
-	): PaginatedList<E>
+	suspend fun filterPatientsBy(filter: AbstractFilter<Patient>): PaginatedListIterator<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsByNameBirthSsinAuto(
 		@DefaultValue("null")
 		healthcarePartyId: String? = null,
@@ -105,6 +92,8 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun listPatientsOfHcParty(
 		hcPartyId: String,
 		@DefaultValue("\"name\"")
@@ -120,6 +109,9 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 	): PaginatedList<E>
 
 	suspend fun listOfMergesAfter(date: Long): List<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsModifiedAfter(
 		date: Long,
 		@DefaultValue("null")
@@ -130,6 +122,8 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun listPatientsByHcParty(
 		hcPartyId: String,
 		@DefaultValue("\"name\"")
@@ -146,6 +140,9 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 
 	suspend fun getPatientHcPartyKeysForDelegate(patientId: String): Map<String, String>
 	suspend fun countOfPatients(hcPartyId: String): EncryptedContent
+
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsByHealthcareParty(
 		@DefaultValue("null")
 		hcPartyId: String? = null,
@@ -161,6 +158,8 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 		sortDirection: SortDirection = SortDirection.Asc,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findPatientsIdsByHealthcareParty(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -180,6 +179,8 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 		dateOfBirth: Int? = null,
 	): List<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findDeletedPatients(
 		startDate: Long,
 		@DefaultValue("null")
@@ -201,7 +202,7 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 		lastName: String? = null,
 	): List<E>
 
-	suspend fun getPatients(patientIds: ListOfIds): List<E>
+	suspend fun getPatients(patientIds: List<String>): List<E>
 	suspend fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
 		id: String,
@@ -219,6 +220,8 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 		end: Long? = null,
 	): E
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findDuplicatesBySsin(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -229,6 +232,8 @@ interface PatientBasicFlavouredApi<E : Patient>: Subscribable<Patient, E> {
 		limit: Int? = null,
 	): PaginatedList<E>
 
+	// TODO: Implement filter for this method
+	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findDuplicatesByName(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -252,13 +257,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		patient: E,
-		shareSecretIds: Set<String>,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		options: PatientShareOptions
 	): SimpleShareResult<E>
 
 	/**
@@ -318,6 +317,8 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(patient: Patient): Boolean
 	suspend fun decryptPatientIdOf(patient: Patient): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>)
+	suspend fun decrypt(patient: EncryptedPatient): DecryptedPatient
+	suspend fun tryDecrypt(patient: EncryptedPatient): Patient
 
 	val encrypted: PatientFlavouredApi<EncryptedPatient>
 	val tryAndRecover: PatientFlavouredApi<Patient>
@@ -377,23 +378,11 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 
 	override suspend fun getPatient(entityId: String): E = rawApi.getPatient(entityId).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun filterPatientsBy(
-		filterChain: FilterChain<Patient>,
-		startKey: String?,
-		startDocumentId: String?,
-		limit: Int?,
-		skip: Int?,
-		sort: String?,
-		desc: Boolean?,
-	): PaginatedList<E> =
-		rawApi.filterPatientsBy(
-            startKey,
-            startDocumentId,
-            limit,
-            skip,
-            sort,
-            desc, filterChain,
-        ).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterPatientsBy(filter: AbstractFilter<Patient>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchPatientsBy(filter).successBody(),
+			this::getPatients
+		)
 
 	override suspend fun findPatientsByNameBirthSsinAuto(
 		healthcarePartyId: String?,
@@ -494,7 +483,7 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 		lastName: String?,
 	) = rawApi.listDeletedPatientsByName(firstName, lastName).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun getPatients(patientIds: ListOfIds) = rawApi.getPatients(patientIds).successBody().map { maybeDecrypt(it) }
+	override suspend fun getPatients(patientIds: List<String>) = rawApi.getPatients(ListOfIds(patientIds)).successBody().map { maybeDecrypt(it) }
 	override suspend fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
 		id: String,
@@ -527,41 +516,6 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 		updatedInto: EncryptedPatient,
 	) = rawApi.mergePatients(intoId, fromId, expectedFromRev, updatedInto).successBody().let { maybeDecrypt(it) }
 
-	@OptIn(InternalAPI::class)
-	override suspend fun subscribeToEvents(
-		events: Set<SubscriptionEventType>,
-		filter: AbstractFilter<Patient>,
-		onConnected: suspend () -> Unit,
-		channelCapacity: Int,
-		retryDelay: Duration,
-		retryDelayExponentFactor: Double,
-		maxRetries: Int,
-		eventFired: suspend (E) -> Unit
-	): Connection {
-		return ConnectionImpl.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl.replace("https://", "").replace("http://", ""),
-			path = "/ws/v2/notification/subscribe",
-			serializer = EncryptedPatient.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Patient.KRAKEN_QUALIFIED_NAME,
-			subscriptionSerializer = { Serialization.json.encodeToString(it) },
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			onOpenListener = onConnected,
-			retryDelay = retryDelay,
-			retryDelayExponentFactor = retryDelayExponentFactor,
-			maxRetries = maxRetries,
-			eventCallback = { entity, onEvent ->
-				try {
-					eventFired(maybeDecrypt(entity))
-				} catch (e: EntityEncryptionException) {
-					onEvent(EmittedEvent.Error(e.message, false))
-				}
-			}
-		)
-	}
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedPatient
 	abstract suspend fun maybeDecrypt(entity: EncryptedPatient): E
 }
@@ -577,22 +531,12 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	override suspend fun shareWith(
 		delegateId: String,
 		patient: E,
-		shareSecretIds: Set<String>,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: PatientShareOptions,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			patient.withTypeInfo(),
 			false,
-			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = shareSecretIds,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
-			),
+			mapOf(delegateId to options),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
 		}
@@ -629,6 +573,28 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 	override suspend fun undeletePatient(patientIds: String) = rawApi.undeletePatient(patientIds).successBody()
 	override suspend fun getDataOwnersWithAccessTo(patient: Patient): EntityAccessInformation =
 		config.crypto.entityAccessInformationProvider.getDataOwnersWithAccessTo(patient.withTypeInfo())
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: AbstractFilter<Patient>,
+		subscriptionConfig: EntitySubscriptionConfiguration?
+	): EntitySubscription<EncryptedPatient> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedPatient.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = Patient.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(PatientAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -696,9 +662,7 @@ internal class PatientApiImpl(
 		require(patient.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createPatient(
 			encrypt(patient),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	override suspend fun createPatients(patientDtos: List<DecryptedPatient>) = rawApi.createPatients(patientDtos.map { encrypt(it) }).successBody()
@@ -966,11 +930,10 @@ internal class PatientApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }
 
-	suspend fun decrypt(entity: EncryptedPatient, errorPatient: () -> String): DecryptedPatient = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedPatient): DecryptedPatient? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedPatient.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
-		?: throw EntityEncryptionException(errorPatient())
 
 	override suspend fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Boolean {
 		val patient = encrypted.getPatient(patientId)
@@ -978,6 +941,12 @@ internal class PatientApiImpl(
 		crypto.exchangeDataManager.getOrCreateEncryptionDataTo(patientId, true)
 		return true
 	}
+
+	override suspend fun decrypt(patient: EncryptedPatient): DecryptedPatient =
+		decryptOrNull(patient) ?: throw EntityEncryptionException("Patient cannot be decrypted")
+
+	override suspend fun tryDecrypt(patient: EncryptedPatient): Patient =
+		decryptOrNull(patient) ?: patient
 }
 
 @InternalIcureApi

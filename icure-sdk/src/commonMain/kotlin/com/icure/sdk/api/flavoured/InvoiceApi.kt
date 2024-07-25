@@ -5,7 +5,6 @@ import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedInvoice
@@ -26,8 +25,7 @@ import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.requests.RequestedPermission
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -48,6 +46,7 @@ interface InvoiceBasicFlavourlessApi {
 	suspend fun deleteInvoice(entityId: String): DocIdentifier
 	suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
 	suspend fun getTarificationsCodesOccurrences(minOccurrence: Int): List<LabelledOccurence>
+
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -56,7 +55,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	suspend fun modifyInvoices(entities: List<E>): List<E>
 	suspend fun getInvoice(entityId: String): E
 	suspend fun getInvoices(entityIds: List<String>): List<E>
-	suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): List<E>
+	suspend fun filterInvoicesBy(filter: AbstractFilter<Invoice>): PaginatedListIterator<E>
 	suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 	suspend fun reassignInvoice(invoice: E): E
 	suspend fun mergeTo(invoiceId: String, ids: List<String>): E
@@ -76,6 +75,9 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	): List<E>
 
 	suspend fun removeCodes(userId: String, serviceId: String, secretFKeys: String, tarificationIds: List<String>): List<E>
+
+	// TODO: Implement filter for this method
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterInvoicesBy()"))
 	suspend fun findInvoicesByAuthor(
 		hcPartyId: String,
 		@DefaultValue("null")
@@ -134,12 +136,8 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		invoice: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: InvoiceShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -210,6 +208,8 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 	suspend fun hasWriteAccess(invoice: Invoice): Boolean
 	suspend fun decryptPatientIdOf(invoice: Invoice): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>)
+	suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice
+	suspend fun tryDecrypt(invoice: EncryptedInvoice): Invoice
 
 	val encrypted: InvoiceFlavouredApi<EncryptedInvoice>
 	val tryAndRecover: InvoiceFlavouredApi<Invoice>
@@ -230,8 +230,8 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 	override suspend fun getInvoices(entityIds: List<String>): List<E> =
 		rawApi.getInvoices(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun filterInvoicesBy(filterChain: FilterChain<Invoice>): List<E> =
-		rawApi.filterInvoicesBy(filterChain).successBody().map { maybeDecrypt(it) }
+	override suspend fun filterInvoicesBy(filter: AbstractFilter<Invoice>): PaginatedListIterator<E> =
+		TODO()
 
 	override suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
 		rawApi.findInvoicesByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }
@@ -351,20 +351,13 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 	override suspend fun shareWith(
 		delegateId: String,
 		invoice: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: InvoiceShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			invoice.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: InvoiceShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -477,7 +470,7 @@ internal class InvoiceApiImpl(
 		return rawApi.createInvoice(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -518,7 +511,7 @@ internal class InvoiceApiImpl(
 				encrypt(it)
 			},
 		).successBody().map {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -565,12 +558,16 @@ internal class InvoiceApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }
 
-	suspend fun decrypt(entity: EncryptedInvoice, errorMessage: () -> String): DecryptedInvoice = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedInvoice): DecryptedInvoice? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedInvoice.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice =
+		decryptOrNull(invoice) ?: throw EntityEncryptionException("Invoice cannot be decrypted")
+
+	override suspend fun tryDecrypt(invoice: EncryptedInvoice): Invoice =
+		decryptOrNull(invoice) ?: invoice
 }
 
 @InternalIcureApi

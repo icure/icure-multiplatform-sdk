@@ -4,7 +4,6 @@ import com.icure.sdk.api.raw.RawReceiptApi
 import com.icure.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.DecryptedReceipt
@@ -18,7 +17,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -49,12 +47,8 @@ interface ReceiptFlavouredApi<E : Receipt> : ReceiptBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		receipt: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: ReceiptShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -106,7 +100,7 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
-		@DefaultValue("SecretIdOption.UseAnySharedWithParent")
+		@DefaultValue("com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
 		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
 	): DecryptedReceipt
 	suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String): ByteArray
@@ -116,6 +110,8 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 	suspend fun decryptPatientIdOf(receipt: Receipt): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Receipt, delegates: Set<String>)
 	suspend fun logReceipt(user: User, docId: String, refs: List<String>, blobType: String, blob: ByteArray): Receipt
+	suspend fun decrypt(receipt: EncryptedReceipt): DecryptedReceipt
+	suspend fun tryDecrypt(receipt: EncryptedReceipt): Receipt
 
 	val encrypted: ReceiptFlavouredApi<EncryptedReceipt>
 	val tryAndRecover: ReceiptFlavouredApi<Receipt>
@@ -148,20 +144,13 @@ private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 	override suspend fun shareWith(
 		delegateId: String,
 		receipt: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: ReceiptShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			receipt.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: ReceiptShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -248,9 +237,7 @@ internal class ReceiptApiImpl(
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createReceipt(
 			encrypt(entity),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	private val crypto get() = config.crypto
@@ -333,12 +320,17 @@ internal class ReceiptApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedReceipt>(it) }
 
-	suspend fun decrypt(entity: EncryptedReceipt, errorMessage: () -> String): DecryptedReceipt = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedReceipt): DecryptedReceipt? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedReceipt.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(receipt: EncryptedReceipt): DecryptedReceipt =
+		decryptOrNull(receipt) ?: throw EntityEncryptionException("Receipt cannot be decrypted")
+
+	override suspend fun tryDecrypt(receipt: EncryptedReceipt): Receipt = runCatching {
+		decrypt(receipt)
+	}.getOrDefault(receipt)
 }
 
 @InternalIcureApi

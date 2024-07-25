@@ -15,6 +15,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.TokenWithGroup
+import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.serialization.UserAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -95,6 +96,16 @@ class RawUserApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", userId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getUsers(userIds: ListOfIds): HttpResponse<List<User>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "byIds")
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -198,7 +209,7 @@ class RawUserApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun filterUsersBy(
@@ -215,7 +226,7 @@ class RawUserApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(UserAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchUsersBy(filter: AbstractFilter<User>): HttpResponse<List<String>> =
@@ -385,7 +396,7 @@ class RawUserApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun getTokenInAllGroups(
@@ -402,7 +413,7 @@ class RawUserApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			header("token", token)
+			`header`("token", token)
 		}.wrap()
 
 	override suspend fun filterUsersInGroupBy(
@@ -420,7 +431,34 @@ class RawUserApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(filterChain)
+			setBodyWithSerializer(FilterChainSerializer(UserAbstractFilterSerializer), filterChain)
+		}.wrap()
+
+	override suspend fun getUsersInGroup(
+		groupId: String,
+		userIds: ListOfIds,
+	): HttpResponse<List<User>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId, "byIds")
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchUsersInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<User>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "match", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(UserAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun enable2faForUser(

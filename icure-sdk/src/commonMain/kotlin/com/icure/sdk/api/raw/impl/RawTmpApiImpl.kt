@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawTmpApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.EncryptedDocument
@@ -25,10 +24,10 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
+import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.serialization.json.Json
 import kotlin.ByteArray
 import kotlin.Int
@@ -43,7 +42,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawTmpApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -52,23 +51,21 @@ class RawTmpApiImpl(
 	// region cloud endpoints
 
 	override suspend fun createTmpDatabase(): HttpResponse<Unit> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun destroyTmpDatabase(): HttpResponse<Unit> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp")
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -76,83 +73,76 @@ class RawTmpApiImpl(
 		from: String,
 		ids: List<String>,
 	): HttpResponse<ReplicatorDocument> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "replicate", "from", from)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun getTmpPatient(id: String): HttpResponse<EncryptedPatient> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "patient", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpPatient(c: EncryptedPatient): HttpResponse<EncryptedPatient> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "patient")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpPatient(patientDto: EncryptedPatient): HttpResponse<EncryptedPatient> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "patient")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(patientDto)
 		}.wrap()
 
 	override suspend fun getTmpPatients(ids: List<String>): HttpResponse<List<EncryptedPatient>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "patient", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun modifyTmpPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "patient", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(patientDtos)
 		}.wrap()
 
 	override suspend fun createTmpPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "patient", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(patientDtos)
@@ -162,7 +152,7 @@ class RawTmpApiImpl(
 		firstPatientId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedPatient>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "patient", "list")
@@ -170,52 +160,47 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpHealthElement(id: String): HttpResponse<EncryptedHealthElement> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "healthElement", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpHealthElement(c: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "healthElement")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpHealthElement(healthElementDto: EncryptedHealthElement): HttpResponse<EncryptedHealthElement> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "healthElement")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthElementDto)
 		}.wrap()
 
 	override suspend fun getTmpHealthElements(ids: List<String>): HttpResponse<List<EncryptedHealthElement>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "healthElement", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
@@ -224,12 +209,11 @@ class RawTmpApiImpl(
 	override suspend fun modifyTmpHealthElements(
 		healthElementDtos: List<EncryptedHealthElement>,
 	): HttpResponse<List<EncryptedHealthElement>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthElementDtos)
@@ -238,12 +222,11 @@ class RawTmpApiImpl(
 	override suspend fun createTmpHealthElements(
 		healthElementDtos: List<EncryptedHealthElement>,
 	): HttpResponse<List<EncryptedHealthElement>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "healthElement", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(healthElementDtos)
@@ -253,7 +236,7 @@ class RawTmpApiImpl(
 		firstHealthElementId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedHealthElement>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "healthElement", "list")
@@ -261,76 +244,69 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpForm(id: String): HttpResponse<EncryptedForm> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "form", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpForm(c: EncryptedForm): HttpResponse<EncryptedForm> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "form")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpForm(formDto: EncryptedForm): HttpResponse<EncryptedForm> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "form")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formDto)
 		}.wrap()
 
 	override suspend fun getTmpForms(ids: List<String>): HttpResponse<List<EncryptedForm>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "form", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun modifyTmpForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "form", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
 	override suspend fun createTmpForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "form", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formDtos)
@@ -340,7 +316,7 @@ class RawTmpApiImpl(
 		firstFormId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedForm>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "form", "list")
@@ -348,76 +324,69 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpContact(id: String): HttpResponse<EncryptedContact> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "contact", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpContact(c: EncryptedContact): HttpResponse<EncryptedContact> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "contact")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpContact(contactDto: EncryptedContact): HttpResponse<EncryptedContact> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "contact")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactDto)
 		}.wrap()
 
 	override suspend fun getTmpContacts(ids: List<String>): HttpResponse<List<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "contact", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun modifyTmpContacts(contactDtos: List<EncryptedContact>): HttpResponse<List<EncryptedContact>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "contact", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
 	override suspend fun createTmpContacts(contactDtos: List<EncryptedContact>): HttpResponse<List<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "contact", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactDtos)
@@ -427,7 +396,7 @@ class RawTmpApiImpl(
 		firstContactId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedInvoice>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "contact", "list")
@@ -435,76 +404,69 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpMessage(id: String): HttpResponse<EncryptedMessage> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "message", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpMessage(c: EncryptedMessage): HttpResponse<EncryptedMessage> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "message")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpMessage(messageDto: EncryptedMessage): HttpResponse<EncryptedMessage> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "message")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(messageDto)
 		}.wrap()
 
 	override suspend fun getTmpMessages(ids: List<String>): HttpResponse<List<EncryptedMessage>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "message", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun modifyTmpMessages(messageDtos: List<EncryptedMessage>): HttpResponse<List<EncryptedMessage>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "message", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(messageDtos)
 		}.wrap()
 
 	override suspend fun createTmpMessages(messageDtos: List<EncryptedMessage>): HttpResponse<List<EncryptedMessage>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "message", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(messageDtos)
@@ -514,7 +476,7 @@ class RawTmpApiImpl(
 		firstMessageId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedInvoice>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "message", "list")
@@ -522,76 +484,69 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpInvoice(id: String): HttpResponse<EncryptedInvoice> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "invoice", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpInvoice(c: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "invoice")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpInvoice(invoiceDto: EncryptedInvoice): HttpResponse<EncryptedInvoice> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "invoice")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(invoiceDto)
 		}.wrap()
 
 	override suspend fun getTmpInvoices(ids: List<String>): HttpResponse<List<EncryptedInvoice>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "invoice", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun modifyTmpInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "invoice", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(invoiceDtos)
 		}.wrap()
 
 	override suspend fun createTmpInvoices(invoiceDtos: List<EncryptedInvoice>): HttpResponse<List<EncryptedInvoice>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "invoice", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(invoiceDtos)
@@ -601,7 +556,7 @@ class RawTmpApiImpl(
 		firstInvoiceId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedInvoice>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "invoice", "list")
@@ -609,18 +564,16 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpDocument(id: String): HttpResponse<EncryptedDocument> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -630,7 +583,7 @@ class RawTmpApiImpl(
 		enckeys: String?,
 		fileName: String?,
 	): HttpResponse<ByteArray> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", documentId, "attachment", attachmentId)
@@ -638,17 +591,15 @@ class RawTmpApiImpl(
 				parameter("fileName", fileName)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.OctetStream)
 		}.wrap()
 
 	override suspend fun deleteTmpDocumentAttachment(documentId: String): HttpResponse<EncryptedDocument> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", documentId, "attachment")
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -657,73 +608,66 @@ class RawTmpApiImpl(
 		enckeys: String?,
 		payload: ByteArray,
 	): HttpResponse<EncryptedDocument> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", documentId, "attachment")
 				parameter("enckeys", enckeys)
 			}
-			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
-			setBody(ByteReadChannel(payload))
+			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun createTmpDocument(c: EncryptedDocument): HttpResponse<EncryptedDocument> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpDocument(documentDto: EncryptedDocument): HttpResponse<EncryptedDocument> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentDto)
 		}.wrap()
 
 	override suspend fun getTmpDocuments(ids: List<String>): HttpResponse<List<EncryptedDocument>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun modifyTmpDocuments(documentDtos: List<EncryptedDocument>): HttpResponse<List<EncryptedDocument>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentDtos)
 		}.wrap()
 
 	override suspend fun createTmpDocuments(documentDtos: List<EncryptedDocument>): HttpResponse<List<EncryptedDocument>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentDtos)
@@ -733,7 +677,7 @@ class RawTmpApiImpl(
 		firstDocumentId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedDocument>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "document", "list")
@@ -741,52 +685,47 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpClassification(id: String): HttpResponse<EncryptedClassification> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "classification", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpClassification(c: EncryptedClassification): HttpResponse<EncryptedClassification> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "classification")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "classification")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(classificationDto)
 		}.wrap()
 
 	override suspend fun getTmpClassifications(ids: List<String>): HttpResponse<List<EncryptedClassification>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "classification", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
@@ -795,12 +734,11 @@ class RawTmpApiImpl(
 	override suspend fun modifyTmpClassifications(
 		classificationDtos: List<EncryptedClassification>,
 	): HttpResponse<List<EncryptedClassification>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "classification", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(classificationDtos)
@@ -809,12 +747,11 @@ class RawTmpApiImpl(
 	override suspend fun createTmpClassifications(
 		classificationDtos: List<EncryptedClassification>,
 	): HttpResponse<List<EncryptedClassification>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "classification", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(classificationDtos)
@@ -824,7 +761,7 @@ class RawTmpApiImpl(
 		firstClassificationId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EncryptedClassification>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "classification", "list")
@@ -832,76 +769,69 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTmpEntityTemplate(id: String): HttpResponse<EntityTemplate> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "byId", id)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createTmpEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "entityTemplate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun modifyTmpEntityTemplate(entityTemplateDto: EntityTemplate): HttpResponse<EntityTemplate> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "entityTemplate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateDto)
 		}.wrap()
 
 	override suspend fun getTmpEntityTemplates(ids: List<String>): HttpResponse<List<EntityTemplate>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "get")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun modifyTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>): HttpResponse<List<EntityTemplate>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
 	override suspend fun createTmpEntityTemplates(entityTemplateDtos: List<EntityTemplate>): HttpResponse<List<EntityTemplate>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateDtos)
@@ -911,7 +841,7 @@ class RawTmpApiImpl(
 		firstEntityTemplateId: String?,
 		pageSize: Int?,
 	): HttpResponse<PaginatedList<EntityTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "entityTemplate", "list")
@@ -919,29 +849,26 @@ class RawTmpApiImpl(
 				parameter("pageSize", pageSize)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "batch", "delete")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun purgeTmpItems(ids: List<String>): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "tmp", "batch", "purge")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)

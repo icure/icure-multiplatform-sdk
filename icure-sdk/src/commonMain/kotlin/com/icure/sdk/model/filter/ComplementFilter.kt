@@ -1,7 +1,6 @@
 package com.icure.sdk.model.filter
 
 import com.icure.sdk.model.base.Identifiable
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlin.String
 
@@ -11,9 +10,7 @@ import kotlin.String
 @Serializable
 data class ComplementFilter<O : Identifiable<String>>(
 	override val desc: String? = null,
-	@Contextual
 	override val superSet: AbstractFilter<O>,
-	@Contextual
 	override val subSet: AbstractFilter<O>,
 ) : AbstractFilter<O>, Filter.ComplementFilter<O> {
 	// region ComplementFilter-ComplementFilter

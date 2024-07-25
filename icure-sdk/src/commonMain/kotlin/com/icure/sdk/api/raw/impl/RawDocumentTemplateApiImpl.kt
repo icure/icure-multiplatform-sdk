@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawDocumentTemplateApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.DocumentTemplate
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -17,10 +16,10 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
+import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.ByteArray
@@ -35,7 +34,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawDocumentTemplateApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -44,23 +43,21 @@ class RawDocumentTemplateApiImpl(
 	// region common endpoints
 
 	override suspend fun getDocumentTemplate(documentTemplateId: String): HttpResponse<DocumentTemplate> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", documentTemplateId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteDocumentTemplates(documentTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(documentTemplateIds)
@@ -70,14 +67,13 @@ class RawDocumentTemplateApiImpl(
 		specialityCode: String,
 		loadAttachment: Boolean?,
 	): HttpResponse<List<DocumentTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "bySpecialty", specialityCode)
 				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -85,14 +81,13 @@ class RawDocumentTemplateApiImpl(
 		documentTypeCode: String,
 		loadAttachment: Boolean?,
 	): HttpResponse<List<DocumentTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentType", documentTypeCode)
 				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -100,26 +95,24 @@ class RawDocumentTemplateApiImpl(
 		documentTypeCode: String,
 		loadAttachment: Boolean?,
 	): HttpResponse<List<DocumentTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "byDocumentTypeForCurrentUser", documentTypeCode)
 				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listDocumentTemplates(loadAttachment: Boolean?): HttpResponse<List<DocumentTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate")
 				parameter("loadAttachment", loadAttachment)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -128,7 +121,7 @@ class RawDocumentTemplateApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<DocumentTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", "find", "all")
@@ -137,17 +130,15 @@ class RawDocumentTemplateApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createDocumentTemplate(ft: DocumentTemplate): HttpResponse<DocumentTemplate> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ft)
@@ -157,12 +148,11 @@ class RawDocumentTemplateApiImpl(
 		documentTemplateId: String,
 		ft: DocumentTemplate,
 	): HttpResponse<DocumentTemplate> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", documentTemplateId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ft)
@@ -172,13 +162,12 @@ class RawDocumentTemplateApiImpl(
 		documentTemplateId: String,
 		attachmentId: String,
 	): HttpResponse<ByteArray> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", documentTemplateId, "attachment", attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.OctetStream)
 		}.wrap()
 
@@ -186,13 +175,12 @@ class RawDocumentTemplateApiImpl(
 		documentTemplateId: String,
 		attachmentId: String,
 	): HttpResponse<ByteArray> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", documentTemplateId, "attachmentText", attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.OctetStream)
 		}.wrap()
 
@@ -200,15 +188,13 @@ class RawDocumentTemplateApiImpl(
 		documentTemplateId: String,
 		payload: ByteArray,
 	): HttpResponse<DocumentTemplate> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "doctemplate", documentTemplateId, "attachment")
 			}
-			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
-			setBody(ByteReadChannel(payload))
+			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
 	// endregion

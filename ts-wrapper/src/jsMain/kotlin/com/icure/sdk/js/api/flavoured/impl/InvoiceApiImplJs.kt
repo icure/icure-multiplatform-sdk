@@ -119,9 +119,6 @@ internal class InvoiceApiImplJs(
 				val result = invoiceApi.encrypted.shareWith(
 					delegateIdConverted,
 					invoiceConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -850,9 +847,6 @@ internal class InvoiceApiImplJs(
 				val result = invoiceApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					invoiceConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -1758,9 +1752,6 @@ internal class InvoiceApiImplJs(
 			val result = invoiceApi.shareWith(
 				delegateIdConverted,
 				invoiceConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

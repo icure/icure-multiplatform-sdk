@@ -105,9 +105,6 @@ internal class FormApiImplJs(
 				val result = formApi.encrypted.shareWith(
 					delegateIdConverted,
 					formConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -408,9 +405,6 @@ internal class FormApiImplJs(
 				val result = formApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					formConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -999,9 +993,6 @@ internal class FormApiImplJs(
 			val result = formApi.shareWith(
 				delegateIdConverted,
 				formConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,

@@ -47,6 +47,11 @@ public interface RawICureApi {
 		ids: String? = null,
 		limit: Int? = null,
 	): HttpResponse<List<IdWithRev>>
+
+	suspend fun resolveCodesConflicts(
+		ids: String? = null,
+		limit: Int? = null,
+	): HttpResponse<List<IdWithRev>>
 	// endregion
 
 	// region cloud endpoints

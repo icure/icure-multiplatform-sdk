@@ -15,8 +15,8 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 import {MessageFlavouredApi} from './MessageFlavouredApi.mjs';
 
 
@@ -46,6 +46,9 @@ export interface MessageApi {
 	deleteMessage(entityId: string): Promise<DocIdentifier>;
 
 	deleteMessages(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Message>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedMessage>>;
 
 	shareWith(delegateId: string, message: DecryptedMessage, shareSecretIds: Array<string>,
 			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedMessage>>;
@@ -100,9 +103,5 @@ export interface MessageApi {
 
 	setMessagesReadStatus(entityIds: Array<string>, time: number | undefined, readStatus: boolean,
 			userId: string): Promise<Array<DecryptedMessage>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Message>,
-			eventFired: (x1: DecryptedMessage) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

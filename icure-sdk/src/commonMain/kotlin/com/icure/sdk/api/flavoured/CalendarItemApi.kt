@@ -7,7 +7,6 @@ import com.icure.sdk.crypto.entities.DelegateShareOptions
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.CalendarItem
@@ -62,12 +61,8 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	suspend fun shareWith(
 		delegateId: String,
 		calendarItem: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: CalendarItemShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -148,6 +143,8 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun hasWriteAccess(calendarItem: CalendarItem): Boolean
 	suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>)
+	suspend fun decrypt(calendarItem: EncryptedCalendarItem): DecryptedCalendarItem
+	suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem
 
 	val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem>
 	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
@@ -214,20 +211,13 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	override suspend fun shareWith(
 		delegateId: String,
 		calendarItem: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: CalendarItemShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			calendarItem.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: CalendarItemShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -356,7 +346,7 @@ internal class CalendarItemApiImpl(
 		return rawApi.createCalendarItem(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -395,15 +385,21 @@ internal class CalendarItemApiImpl(
 		config.encryption.calendarItem,
 	) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }
 
-	suspend fun decrypt(entity: EncryptedCalendarItem, errorMessage: () -> String): DecryptedCalendarItem = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedCalendarItem): DecryptedCalendarItem? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedCalendarItem.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
-		?: throw EntityEncryptionException(errorMessage())
+
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
+
+	override suspend fun decrypt(calendarItem: EncryptedCalendarItem): DecryptedCalendarItem =
+		decryptOrNull(calendarItem) ?: throw EntityEncryptionException("CalendarItem cannot be decrypted")
+
+	override suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem =
+		decryptOrNull(calendarItem) ?: calendarItem
 
 }
 

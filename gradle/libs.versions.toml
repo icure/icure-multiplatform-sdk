@@ -1,14 +1,16 @@
 [versions]
-kotlin = "1.9.24"
-ktor = "2.3.8"
+kotlin = "2.0.20-Beta1"
+ktor = "3.0.0-beta-1"
 coroutines = "1.8.0"
 kotlinSerialization = "1.6.1"
 kotlinDateTime = "0.6.0-RC.2"
 kotest = "5.9.0"
 androidLibrary = "8.2.2"
-kryptom = "1.0.7"
+kryptom = "1.1.0"
 kermit = "2.0.3"
-kotp = "1.0.0"
+okio = "3.9.0"
+bouncyCastle = "1.70"
+kotp = "1.0.2"
 
 [libraries]
 
@@ -20,15 +22,17 @@ androidLibraryPlugin = { group = "com.android.library", name = "com.android.libr
 
 # Ktor
 ktorUtils = { group = "io.ktor", name = "ktor-utils", version.ref = "ktor" }
+ktorHttpCio = { group = "io.ktor", name = "ktor-http-cio", version.ref = "ktor" }
 ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktorClientEngineOkhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktorClientEngineWinhttp = { group = "io.ktor", name = "ktor-client-winhttp", version.ref = "ktor" }
 ktorClientEngineDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorClientEngineJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
 ktorClientEngineJava = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
 ktorClientWebsocket = { group = "io.ktor", name = "ktor-client-websockets", version.ref = "ktor" }
-# TODO CIO engine only needed by the current test setup, remove later
 ktorClientEngineCio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktorClientEngineCurl = { group = "io.ktor", name = "ktor-client-curl", version.ref = "ktor" }
 ktorContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktorServerCore = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
@@ -49,12 +53,18 @@ kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", versio
 
 # Mockk
 mockk = { group = "io.mockk", name = "mockk", version = "1.13.10" }
+
 # Logging
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 # Kryptom
 kryptom = { group = "com.icure.kryptom", name = "kryptom", version.ref = "kryptom" }
 kotp = { group = "com.icure.kotp", name = "kotp", version.ref = "kotp" }
+
+# Okio
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
+
+bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 
 [bundles]
 ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]

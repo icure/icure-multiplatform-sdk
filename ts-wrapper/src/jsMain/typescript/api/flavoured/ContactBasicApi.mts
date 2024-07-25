@@ -8,8 +8,8 @@ import {EncryptedService, Service} from '../../model/embed/Service.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 
 
 export interface ContactBasicApi {
@@ -27,6 +27,12 @@ export interface ContactBasicApi {
 
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
+
+	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
+			subscriptionConfig: EntitySubscriptionConfiguration): Promise<EntitySubscription<EncryptedService>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedContact>>;
 
 	modifyContact(entity: EncryptedContact): Promise<EncryptedContact>;
 
@@ -72,13 +78,5 @@ export interface ContactBasicApi {
 
 	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<EncryptedService>>;
-
-	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
-			eventFired: (x1: EncryptedService) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
-			eventFired: (x1: EncryptedContact) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

@@ -5,3 +5,6 @@ local.properties
 **/.DS_store
 *.hprof
 .kotlin
+**/__pycache__
+python.iml
+python-wrapper/src/python/lib

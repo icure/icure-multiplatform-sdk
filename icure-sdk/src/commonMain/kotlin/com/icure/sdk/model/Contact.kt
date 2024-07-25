@@ -4,6 +4,7 @@ import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.HasEncryptionMetadata
 import com.icure.sdk.model.base.ICureDocument
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.base.ParticipantType
 import com.icure.sdk.model.base.StoredDocument
 import com.icure.sdk.model.embed.Address
 import com.icure.sdk.model.embed.Annotation
@@ -78,6 +79,8 @@ sealed interface Contact :
 
 	public val services: Set<Service>
 
+	public val participants: Map<ParticipantType, String>
+
 	public val healthcarePartyId: String?
 
 	public val modifiedContactId: String?
@@ -131,6 +134,8 @@ data class DecryptedContact(
 	override val subContacts: Set<DecryptedSubContact> = emptySet(),
 	@DefaultValue("emptySet()")
 	override val services: Set<DecryptedService> = emptySet(),
+	@DefaultValue("emptyMap()")
+	override val participants: Map<ParticipantType, String> = emptyMap(),
 	override val healthcarePartyId: String? = null,
 	override val modifiedContactId: String? = null,
 	@DefaultValue("emptySet()")
@@ -181,6 +186,8 @@ data class EncryptedContact(
 	override val subContacts: Set<EncryptedSubContact> = emptySet(),
 	@DefaultValue("emptySet()")
 	override val services: Set<EncryptedService> = emptySet(),
+	@DefaultValue("emptyMap()")
+	override val participants: Map<ParticipantType, String> = emptyMap(),
 	override val healthcarePartyId: String? = null,
 	override val modifiedContactId: String? = null,
 	@DefaultValue("emptySet()")

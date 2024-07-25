@@ -1,11 +1,12 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * Specifies a behaviour for the sharing of encryption keys or owning entity ids in the extended apis 'share' methods.
  */
+@Serializable
 enum class ShareMetadataBehaviour {
 	/**
 	 * The method must share the metadata with the delegate. If this is not possible, because for example the current user has no access to this kind of

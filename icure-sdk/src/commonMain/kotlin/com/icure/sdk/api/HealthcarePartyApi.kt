@@ -6,13 +6,12 @@ import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.PublicKey
-
-
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 
 interface HealthcarePartyApi {
 	suspend fun getHealthcareParty(deviceId: String): HealthcareParty
@@ -30,6 +29,14 @@ interface HealthcarePartyApi {
 	): HealthcareParty
 
 	suspend fun getCurrentHealthcareParty(): HealthcareParty
+
+	@Deprecated(
+		"Find methods are deprecated",
+		ReplaceWith(
+			expression = "filterHealthPartiesBy(AllHealthcarePartiesFilter())",
+			imports = arrayOf("com.icure.sdk.model.filter.hcparty.AllHealthcarePartiesFilter")
+		)
+	)
 	suspend fun findHealthcarePartiesBy(
 		@DefaultValue("null")
 		startKey: String? = null,
@@ -41,6 +48,13 @@ interface HealthcarePartyApi {
 		desc: Boolean? = null,
 	): PaginatedList<HealthcareParty>
 
+	@Deprecated(
+		"Find methods are deprecated",
+		ReplaceWith(
+			expression = "filterHealthPartiesBy(HealthcarePartyByNameFilter(name = name, descending = desc)",
+			imports = arrayOf("com.icure.sdk.model.filter.hcparty.HealthcarePartyByNameFilter")
+		)
+	)
 	suspend fun findHealthcarePartiesByName(
 		@DefaultValue("null")
 		name: String? = null,
@@ -54,6 +68,8 @@ interface HealthcarePartyApi {
 		desc: Boolean? = null,
 	): PaginatedList<HealthcareParty>
 
+	// TODO: implement filter for this one
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterHealthPartiesBy(filter)"))
 	suspend fun findHealthcarePartiesBySsinOrNihii(
 		searchValue: String,
 		@DefaultValue("null")
@@ -67,6 +83,9 @@ interface HealthcarePartyApi {
 	): PaginatedList<HealthcareParty>
 
 	suspend fun listHealthcarePartiesByName(name: String): List<HealthcareParty>
+
+	// TODO: implement filter for this one
+	@Deprecated("Find methods are deprecated", ReplaceWith("filterHealthPartiesBy(filter)"))
 	suspend fun findHealthcarePartiesBySpecialityAndPostCode(
 		type: String,
 		spec: String,
@@ -86,13 +105,10 @@ interface HealthcarePartyApi {
 	suspend fun deleteHealthcareParties(healthcarePartyIds: List<String>): List<DocIdentifier>
 	suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HealthcareParty
 	suspend fun matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>): List<String>
+
 	suspend fun filterHealthPartiesBy(
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		filterChain: FilterChain<HealthcareParty>,
-	): PaginatedList<HealthcareParty>
+		filter: AbstractFilter<HealthcareParty>,
+	): PaginatedListIterator<HealthcareParty>
 
 	suspend fun getHealthcarePartiesInGroup(
 		groupId: String,
@@ -141,6 +157,14 @@ internal class HealthcarePartyApiImpl(
 
 
 	override suspend fun getCurrentHealthcareParty() = rawApi.getCurrentHealthcareParty().successBody()
+
+	@Deprecated(
+		"Find methods are deprecated",
+		ReplaceWith(
+			expression = "filterHealthPartiesBy(AllHealthcarePartiesFilter())",
+			imports = arrayOf("com.icure.sdk.model.filter.hcparty.AllHealthcarePartiesFilter")
+		)
+	)
 	override suspend fun findHealthcarePartiesBy(
 		startKey: String?,
 		startDocumentId: String?,
@@ -148,6 +172,13 @@ internal class HealthcarePartyApiImpl(
 		desc: Boolean?,
 	) = rawApi.findHealthcarePartiesBy(startKey, startDocumentId, limit, desc).successBody()
 
+	@Deprecated(
+		"Find methods are deprecated",
+		ReplaceWith(
+			expression = "filterHealthPartiesBy(HealthcarePartyByNameFilter(name = name, descending = desc)",
+			imports = arrayOf("com.icure.sdk.model.filter.hcparty.HealthcarePartyByNameFilter")
+		)
+	)
 	override suspend fun findHealthcarePartiesByName(
 		name: String?,
 		startKey: String?,
@@ -156,6 +187,7 @@ internal class HealthcarePartyApiImpl(
 		desc: Boolean?,
 	) = rawApi.findHealthcarePartiesByName(name, startKey, startDocumentId, limit, desc).successBody()
 
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterHealthPartiesBy(filter)"))
 	override suspend fun findHealthcarePartiesBySsinOrNihii(
 		searchValue: String,
 		startKey: String?,
@@ -165,6 +197,7 @@ internal class HealthcarePartyApiImpl(
 	) = rawApi.findHealthcarePartiesBySsinOrNihii(searchValue, startKey, startDocumentId, limit, desc).successBody()
 
 	override suspend fun listHealthcarePartiesByName(name: String) = rawApi.listHealthcarePartiesByName(name).successBody()
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterHealthPartiesBy(filter)"))
 	override suspend fun findHealthcarePartiesBySpecialityAndPostCode(
 		type: String,
 		spec: String,
@@ -189,11 +222,8 @@ internal class HealthcarePartyApiImpl(
 	override suspend fun matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>) =
 		rawApi.matchHealthcarePartiesBy(filter).successBody()
 
-	override suspend fun filterHealthPartiesBy(
-		startDocumentId: String?,
-		limit: Int?,
-		filterChain: FilterChain<HealthcareParty>,
-	) = rawApi.filterHealthPartiesBy(startDocumentId, limit, filterChain).successBody()
+	override suspend fun filterHealthPartiesBy(filter: AbstractFilter<HealthcareParty>): PaginatedListIterator<HealthcareParty> =
+		IdsPageIterator(matchHealthcarePartiesBy(filter), this::getHealthcareParties)
 
 	override suspend fun getHealthcarePartiesInGroup(
 		groupId: String,

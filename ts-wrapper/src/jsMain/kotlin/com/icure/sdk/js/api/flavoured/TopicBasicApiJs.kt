@@ -9,10 +9,9 @@ import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.filter.AbstractFilterJs
 import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.websocket.ConnectionJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import kotlin.Array
 import kotlin.String
-import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -24,6 +23,12 @@ public external interface TopicBasicApiJs {
 	public fun deleteTopics(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<TopicJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedTopicJs>>
 
 	public fun modifyTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs>
 
@@ -41,11 +46,4 @@ public external interface TopicBasicApiJs {
 	): Promise<EncryptedTopicJs>
 
 	public fun removeParticipant(entityId: String, dataOwnerId: String): Promise<EncryptedTopicJs>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<TopicJs>,
-		eventFired: (EncryptedTopicJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs>
 }

@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawSecureDelegationKeyMapApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.EncryptedSecureDelegationKeyMap
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -30,7 +29,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawSecureDelegationKeyMapApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -42,17 +41,16 @@ class RawSecureDelegationKeyMapApiImpl(
 		secureDelegationKeyMap: EncryptedSecureDelegationKeyMap,
 		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<EncryptedSecureDelegationKeyMap> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "securedelegationkeymap")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secureDelegationKeyMap)
 			accessControlKeysHeaderValues.forEach {
-				header(ACCESS_CONTROL_KEYS_HEADER, it)
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
 			}
 		}.wrap()
 
@@ -60,17 +58,16 @@ class RawSecureDelegationKeyMapApiImpl(
 		delegationKeys: ListOfIds,
 		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<List<EncryptedSecureDelegationKeyMap>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "securedelegationkeymap", "bydelegationkeys")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(delegationKeys)
 			accessControlKeysHeaderValues.forEach {
-				header(ACCESS_CONTROL_KEYS_HEADER, it)
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
 			}
 		}.wrap()
 
@@ -78,17 +75,16 @@ class RawSecureDelegationKeyMapApiImpl(
 		request: BulkShareOrUpdateMetadataParams,
 		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "securedelegationkeymap", "bulkSharedMetadataUpdate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
 			accessControlKeysHeaderValues.forEach {
-				header(ACCESS_CONTROL_KEYS_HEADER, it)
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
 			}
 		}.wrap()
 

@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawObjectStorageApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.objectstorage.StoredObjectInformation
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -14,10 +13,9 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
-import io.ktor.http.contentType
+import io.ktor.http.content.ByteArrayContent
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import io.ktor.utils.io.ByteReadChannel
 import kotlinx.serialization.json.Json
 import kotlin.ByteArray
 import kotlin.Long
@@ -31,7 +29,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawObjectStorageApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -48,7 +46,7 @@ class RawObjectStorageApiImpl(
 		startByte: Long?,
 		content: ByteArray,
 	): HttpResponse<Unit> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId)
@@ -56,10 +54,8 @@ class RawObjectStorageApiImpl(
 				parameter("md5Hash", md5Hash)
 				parameter("startByte", startByte)
 			}
-			setAuthorizationWith(authService)
-			contentType(Application.OctetStream)
 			accept(Application.Json)
-			setBody(ByteReadChannel(content))
+			setBody(ByteArrayContent(content, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun getAttachment(
@@ -67,13 +63,12 @@ class RawObjectStorageApiImpl(
 		entityId: String,
 		attachmentId: String,
 	): HttpResponse<ByteArray> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -82,13 +77,12 @@ class RawObjectStorageApiImpl(
 		entityId: String,
 		attachmentId: String,
 	): HttpResponse<StoredObjectInformation> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId, "info")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 

@@ -6,8 +6,8 @@ import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
 import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 
 
 export interface TopicBasicApi {
@@ -17,6 +17,9 @@ export interface TopicBasicApi {
 	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	matchTopicsBy(filter: AbstractFilter<Topic>): Promise<Array<string>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Topic>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedTopic>>;
 
 	modifyTopic(entity: EncryptedTopic): Promise<EncryptedTopic>;
 
@@ -31,9 +34,5 @@ export interface TopicBasicApi {
 			topicRole: TopicRole): Promise<EncryptedTopic>;
 
 	removeParticipant(entityId: string, dataOwnerId: string): Promise<EncryptedTopic>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Topic>,
-			eventFired: (x1: EncryptedTopic) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

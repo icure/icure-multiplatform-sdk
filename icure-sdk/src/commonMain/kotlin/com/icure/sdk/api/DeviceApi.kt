@@ -4,12 +4,12 @@ import com.icure.sdk.api.raw.RawDeviceApi
 import com.icure.sdk.model.Device
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 
 interface DeviceApi {
 	suspend fun getDevice(deviceId: String): Device
@@ -18,13 +18,10 @@ interface DeviceApi {
 	suspend fun updateDevice(device: Device): Device
 	suspend fun createDevices(devices: List<Device>): List<IdWithRev>
 	suspend fun updateDevices(devices: List<Device>): List<IdWithRev>
+
 	suspend fun filterDevicesBy(
-		@DefaultValue("null")
-		startDocumentId: String? = null,
-		@DefaultValue("null")
-		limit: Int? = null,
-		filterChain: FilterChain<Device>,
-	): PaginatedList<Device>
+		filter: AbstractFilter<Device>
+	): PaginatedListIterator<Device>
 
 	suspend fun matchDevicesBy(filter: AbstractFilter<Device>): List<String>
 	suspend fun deleteDevice(deviceId: String): DocIdentifier
@@ -67,8 +64,7 @@ internal class DeviceApiImpl(
 
 	override suspend fun updateDevices(devices: List<Device>) = rawApi.updateDevices(devices).successBody()
 
-	override suspend fun filterDevicesBy(startDocumentId: String?, limit: Int?, filterChain: FilterChain<Device>) =
-		rawApi.filterDevicesBy(startDocumentId, limit, filterChain).successBody()
+	override suspend fun filterDevicesBy(filter: AbstractFilter<Device>) = IdsPageIterator(matchDevicesBy(filter), this::getDevices)
 
 	override suspend fun matchDevicesBy(filter: AbstractFilter<Device>) = rawApi.matchDevicesBy(filter).successBody()
 

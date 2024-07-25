@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.HealthcareElementApi
+import com.icure.sdk.api.flavoured.HealthElementApi
 import com.icure.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
@@ -18,7 +18,6 @@ import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
-import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
@@ -44,11 +43,13 @@ import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.specializations.hexString_toJs
 import com.icure.sdk.js.model.user_fromJs
+import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
+import com.icure.sdk.js.subscription.entitySubscription_toJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
-import com.icure.sdk.js.websocket.ConnectionJs
-import com.icure.sdk.js.websocket.connection_toJs
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
@@ -62,6 +63,7 @@ import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -74,16 +76,13 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlin.js.Promise
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class HealthcareElementApiImplJs(
-	private val healthcareElementApi: HealthcareElementApi,
+	private val healthcareElementApi: HealthElementApi,
 ) : HealthcareElementApiJs {
 	override val encrypted: HealthcareElementFlavouredApiJs<EncryptedHealthElementJs> = object :
 			HealthcareElementFlavouredApiJs<EncryptedHealthElementJs> {
@@ -120,9 +119,6 @@ internal class HealthcareElementApiImplJs(
 				val result = healthcareElementApi.encrypted.shareWith(
 					delegateIdConverted,
 					healthcareElementConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -210,7 +206,7 @@ internal class HealthcareElementApiImplJs(
 				) { descending: Boolean? ->
 					undefinedToNull(descending)
 				}
-				val result = healthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatient(
+				val result = healthcareElementApi.encrypted.findHealthElementsByHcPartyPatient(
 					hcPartyIdConverted,
 					patientConverted,
 					startDateConverted,
@@ -229,7 +225,7 @@ internal class HealthcareElementApiImplJs(
 		override fun modifyHealthcareElement(entity: EncryptedHealthElementJs):
 				Promise<EncryptedHealthElementJs> = GlobalScope.promise {
 			val entityConverted: EncryptedHealthElement = healthElement_fromJs(entity)
-			val result = healthcareElementApi.encrypted.modifyHealthcareElement(
+			val result = healthcareElementApi.encrypted.modifyHealthElement(
 				entityConverted,
 			)
 			healthElement_toJs(result)
@@ -244,7 +240,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val result = healthcareElementApi.encrypted.modifyHealthcareElements(
+			val result = healthcareElementApi.encrypted.modifyHealthElements(
 				entitiesConverted,
 			)
 			listToArray(
@@ -258,7 +254,7 @@ internal class HealthcareElementApiImplJs(
 		override fun getHealthcareElement(entityId: String): Promise<EncryptedHealthElementJs> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
-			val result = healthcareElementApi.encrypted.getHealthcareElement(
+			val result = healthcareElementApi.encrypted.getHealthElement(
 				entityIdConverted,
 			)
 			healthElement_toJs(result)
@@ -273,7 +269,7 @@ internal class HealthcareElementApiImplJs(
 					x1
 				},
 			)
-			val result = healthcareElementApi.encrypted.getHealthcareElements(
+			val result = healthcareElementApi.encrypted.getHealthElements(
 				entityIdsConverted,
 			)
 			listToArray(
@@ -297,7 +293,7 @@ internal class HealthcareElementApiImplJs(
 			)
 			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = healthcareElementApi.encrypted.filterHealthcareElementsBy(
+			val result = healthcareElementApi.encrypted.filterHealthElementsBy(
 				filterChainConverted,
 				startDocumentIdConverted,
 				limitConverted,
@@ -321,7 +317,7 @@ internal class HealthcareElementApiImplJs(
 					x1
 				},
 			)
-			val result = healthcareElementApi.encrypted.findHealthcareElementsByHcPartyPatientForeignKeys(
+			val result = healthcareElementApi.encrypted.findHealthElementsByHcPartyPatientForeignKeys(
 				hcPartyIdConverted,
 				secretPatientKeysConverted,
 			)
@@ -331,83 +327,6 @@ internal class HealthcareElementApiImplJs(
 					healthElement_toJs(x1)
 				},
 			)
-		}
-
-		override fun subscribeToEvents(
-			events: Array<String>,
-			filter: AbstractFilterJs<HealthElementJs>,
-			eventFired: (EncryptedHealthElementJs) -> Promise<Unit>,
-			options: dynamic,
-		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-					events,
-					"events",
-					{ x1: String ->
-						SubscriptionEventType.valueOf(x1)
-					},
-				)
-				val filterConverted: AbstractFilter<HealthElement> = abstractFilter_fromJs(
-					filter,
-					{ x1: HealthElementJs ->
-						healthElement_fromJs(x1)
-					},
-				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-					_options,
-					"onConnected",
-					{}
-				) { onConnected: () -> Promise<Unit> ->
-					{  ->
-						onConnected().await()
-					}
-				}
-				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"channelCapacity",
-					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity: Double ->
-					numberToInt(channelCapacity, "channelCapacity")
-				}
-				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelay",
-					2.seconds
-				) { retryDelay: Double ->
-					numberToDuration(retryDelay, "retryDelay")
-				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelayExponentFactor",
-					2.0
-				) { retryDelayExponentFactor: Double ->
-					retryDelayExponentFactor
-				}
-				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"maxRetries",
-					5
-				) { maxRetries: Double ->
-					numberToInt(maxRetries, "maxRetries")
-				}
-				val eventFiredConverted: suspend (EncryptedHealthElement) -> Unit = { arg0 ->
-					eventFired(
-						healthElement_toJs(arg0),
-					).await()
-				}
-				val result = healthcareElementApi.encrypted.subscribeToEvents(
-					eventsConverted,
-					filterConverted,
-					onConnectedConverted,
-					channelCapacityConverted,
-					retryDelayConverted,
-					retryDelayExponentFactorConverted,
-					maxRetriesConverted,
-					eventFiredConverted,
-				)
-				connection_toJs(result)
-			}
 		}
 	}
 
@@ -446,9 +365,6 @@ internal class HealthcareElementApiImplJs(
 				val result = healthcareElementApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					healthcareElementConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -536,7 +452,7 @@ internal class HealthcareElementApiImplJs(
 				) { descending: Boolean? ->
 					undefinedToNull(descending)
 				}
-				val result = healthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatient(
+				val result = healthcareElementApi.tryAndRecover.findHealthElementsByHcPartyPatient(
 					hcPartyIdConverted,
 					patientConverted,
 					startDateConverted,
@@ -555,7 +471,7 @@ internal class HealthcareElementApiImplJs(
 		override fun modifyHealthcareElement(entity: HealthElementJs): Promise<HealthElementJs> =
 				GlobalScope.promise {
 			val entityConverted: HealthElement = healthElement_fromJs(entity)
-			val result = healthcareElementApi.tryAndRecover.modifyHealthcareElement(
+			val result = healthcareElementApi.tryAndRecover.modifyHealthElement(
 				entityConverted,
 			)
 			healthElement_toJs(result)
@@ -570,7 +486,7 @@ internal class HealthcareElementApiImplJs(
 					healthElement_fromJs(x1)
 				},
 			)
-			val result = healthcareElementApi.tryAndRecover.modifyHealthcareElements(
+			val result = healthcareElementApi.tryAndRecover.modifyHealthElements(
 				entitiesConverted,
 			)
 			listToArray(
@@ -584,7 +500,7 @@ internal class HealthcareElementApiImplJs(
 		override fun getHealthcareElement(entityId: String): Promise<HealthElementJs> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
-			val result = healthcareElementApi.tryAndRecover.getHealthcareElement(
+			val result = healthcareElementApi.tryAndRecover.getHealthElement(
 				entityIdConverted,
 			)
 			healthElement_toJs(result)
@@ -599,7 +515,7 @@ internal class HealthcareElementApiImplJs(
 					x1
 				},
 			)
-			val result = healthcareElementApi.tryAndRecover.getHealthcareElements(
+			val result = healthcareElementApi.tryAndRecover.getHealthElements(
 				entityIdsConverted,
 			)
 			listToArray(
@@ -623,7 +539,7 @@ internal class HealthcareElementApiImplJs(
 			)
 			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = healthcareElementApi.tryAndRecover.filterHealthcareElementsBy(
+			val result = healthcareElementApi.tryAndRecover.filterHealthElementsBy(
 				filterChainConverted,
 				startDocumentIdConverted,
 				limitConverted,
@@ -647,7 +563,7 @@ internal class HealthcareElementApiImplJs(
 				},
 			)
 			val result =
-					healthcareElementApi.tryAndRecover.findHealthcareElementsByHcPartyPatientForeignKeys(
+					healthcareElementApi.tryAndRecover.findHealthElementsByHcPartyPatientForeignKeys(
 				hcPartyIdConverted,
 				secretPatientKeysConverted,
 			)
@@ -658,89 +574,12 @@ internal class HealthcareElementApiImplJs(
 				},
 			)
 		}
-
-		override fun subscribeToEvents(
-			events: Array<String>,
-			filter: AbstractFilterJs<HealthElementJs>,
-			eventFired: (HealthElementJs) -> Promise<Unit>,
-			options: dynamic,
-		): Promise<ConnectionJs> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-					events,
-					"events",
-					{ x1: String ->
-						SubscriptionEventType.valueOf(x1)
-					},
-				)
-				val filterConverted: AbstractFilter<HealthElement> = abstractFilter_fromJs(
-					filter,
-					{ x1: HealthElementJs ->
-						healthElement_fromJs(x1)
-					},
-				)
-				val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-					_options,
-					"onConnected",
-					{}
-				) { onConnected: () -> Promise<Unit> ->
-					{  ->
-						onConnected().await()
-					}
-				}
-				val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"channelCapacity",
-					kotlinx.coroutines.channels.Channel.BUFFERED
-				) { channelCapacity: Double ->
-					numberToInt(channelCapacity, "channelCapacity")
-				}
-				val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelay",
-					2.seconds
-				) { retryDelay: Double ->
-					numberToDuration(retryDelay, "retryDelay")
-				}
-				val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-					_options,
-					"retryDelayExponentFactor",
-					2.0
-				) { retryDelayExponentFactor: Double ->
-					retryDelayExponentFactor
-				}
-				val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-					_options,
-					"maxRetries",
-					5
-				) { maxRetries: Double ->
-					numberToInt(maxRetries, "maxRetries")
-				}
-				val eventFiredConverted: suspend (HealthElement) -> Unit = { arg0 ->
-					eventFired(
-						healthElement_toJs(arg0),
-					).await()
-				}
-				val result = healthcareElementApi.tryAndRecover.subscribeToEvents(
-					eventsConverted,
-					filterConverted,
-					onConnectedConverted,
-					channelCapacityConverted,
-					retryDelayConverted,
-					retryDelayExponentFactorConverted,
-					maxRetriesConverted,
-					eventFiredConverted,
-				)
-				connection_toJs(result)
-			}
-		}
 	}
 
 	override fun createHealthcareElement(entity: DecryptedHealthElementJs):
 			Promise<DecryptedHealthElementJs> = GlobalScope.promise {
 		val entityConverted: DecryptedHealthElement = healthElement_fromJs(entity)
-		val result = healthcareElementApi.createHealthcareElement(
+		val result = healthcareElementApi.createHealthElement(
 			entityConverted,
 		)
 		healthElement_toJs(result)
@@ -755,7 +594,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val result = healthcareElementApi.createHealthcareElements(
+		val result = healthcareElementApi.createHealthElements(
 			entitiesConverted,
 		)
 		listToArray(
@@ -882,7 +721,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val result = healthcareElementApi.matchHealthcareElementsBy(
+		val result = healthcareElementApi.matchHealthElementsBy(
 			filterConverted,
 		)
 		listToArray(
@@ -896,7 +735,7 @@ internal class HealthcareElementApiImplJs(
 	override fun deleteHealthcareElement(entityId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = healthcareElementApi.deleteHealthcareElement(
+		val result = healthcareElementApi.deleteHealthElement(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
@@ -911,7 +750,7 @@ internal class HealthcareElementApiImplJs(
 				x1
 			},
 		)
-		val result = healthcareElementApi.deleteHealthcareElements(
+		val result = healthcareElementApi.deleteHealthElements(
 			entityIdsConverted,
 		)
 		listToArray(
@@ -933,7 +772,7 @@ internal class HealthcareElementApiImplJs(
 			},
 		)
 		val result =
-				healthcareElementApi.findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(
+				healthcareElementApi.findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
 			hcPartyIdConverted,
 			secretPatientKeysConverted,
 		)
@@ -943,6 +782,50 @@ internal class HealthcareElementApiImplJs(
 				icureStub_toJs(x1)
 			},
 		)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: AbstractFilterJs<HealthElementJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedHealthElementJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: AbstractFilter<HealthElement> = abstractFilter_fromJs(
+				filter,
+				{ x1: HealthElementJs ->
+					healthElement_fromJs(x1)
+				},
+			)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = healthcareElementApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedHealthElement ->
+					healthElement_toJs(x1)
+				},
+			)
+		}
 	}
 
 	override fun shareWith(
@@ -978,9 +861,6 @@ internal class HealthcareElementApiImplJs(
 			val result = healthcareElementApi.shareWith(
 				delegateIdConverted,
 				healthcareElementConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
 			)
 			simpleShareResult_toJs(
 				result,
@@ -1068,7 +948,7 @@ internal class HealthcareElementApiImplJs(
 			) { descending: Boolean? ->
 				undefinedToNull(descending)
 			}
-			val result = healthcareElementApi.findHealthcareElementsByHcPartyPatient(
+			val result = healthcareElementApi.findHealthElementsByHcPartyPatient(
 				hcPartyIdConverted,
 				patientConverted,
 				startDateConverted,
@@ -1087,7 +967,7 @@ internal class HealthcareElementApiImplJs(
 	override fun modifyHealthcareElement(entity: DecryptedHealthElementJs):
 			Promise<DecryptedHealthElementJs> = GlobalScope.promise {
 		val entityConverted: DecryptedHealthElement = healthElement_fromJs(entity)
-		val result = healthcareElementApi.modifyHealthcareElement(
+		val result = healthcareElementApi.modifyHealthElement(
 			entityConverted,
 		)
 		healthElement_toJs(result)
@@ -1102,7 +982,7 @@ internal class HealthcareElementApiImplJs(
 				healthElement_fromJs(x1)
 			},
 		)
-		val result = healthcareElementApi.modifyHealthcareElements(
+		val result = healthcareElementApi.modifyHealthElements(
 			entitiesConverted,
 		)
 		listToArray(
@@ -1116,7 +996,7 @@ internal class HealthcareElementApiImplJs(
 	override fun getHealthcareElement(entityId: String): Promise<DecryptedHealthElementJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = healthcareElementApi.getHealthcareElement(
+		val result = healthcareElementApi.getHealthElement(
 			entityIdConverted,
 		)
 		healthElement_toJs(result)
@@ -1131,7 +1011,7 @@ internal class HealthcareElementApiImplJs(
 				x1
 			},
 		)
-		val result = healthcareElementApi.getHealthcareElements(
+		val result = healthcareElementApi.getHealthElements(
 			entityIdsConverted,
 		)
 		listToArray(
@@ -1155,7 +1035,7 @@ internal class HealthcareElementApiImplJs(
 		)
 		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
 		val limitConverted: Int? = numberToInt(limit, "limit")
-		val result = healthcareElementApi.filterHealthcareElementsBy(
+		val result = healthcareElementApi.filterHealthElementsBy(
 			filterChainConverted,
 			startDocumentIdConverted,
 			limitConverted,
@@ -1179,7 +1059,7 @@ internal class HealthcareElementApiImplJs(
 				x1
 			},
 		)
-		val result = healthcareElementApi.findHealthcareElementsByHcPartyPatientForeignKeys(
+		val result = healthcareElementApi.findHealthElementsByHcPartyPatientForeignKeys(
 			hcPartyIdConverted,
 			secretPatientKeysConverted,
 		)
@@ -1189,82 +1069,5 @@ internal class HealthcareElementApiImplJs(
 				healthElement_toJs(x1)
 			},
 		)
-	}
-
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<HealthElementJs>,
-		eventFired: (DecryptedHealthElementJs) -> Promise<Unit>,
-		options: dynamic,
-	): Promise<ConnectionJs> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<HealthElement> = abstractFilter_fromJs(
-				filter,
-				{ x1: HealthElementJs ->
-					healthElement_fromJs(x1)
-				},
-			)
-			val onConnectedConverted: suspend () -> Unit = convertingOptionOrDefaultNonNull(
-				_options,
-				"onConnected",
-				{}
-			) { onConnected: () -> Promise<Unit> ->
-				{  ->
-					onConnected().await()
-				}
-			}
-			val channelCapacityConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"channelCapacity",
-				kotlinx.coroutines.channels.Channel.BUFFERED
-			) { channelCapacity: Double ->
-				numberToInt(channelCapacity, "channelCapacity")
-			}
-			val retryDelayConverted: Duration = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelay",
-				2.seconds
-			) { retryDelay: Double ->
-				numberToDuration(retryDelay, "retryDelay")
-			}
-			val retryDelayExponentFactorConverted: Double = convertingOptionOrDefaultNonNull(
-				_options,
-				"retryDelayExponentFactor",
-				2.0
-			) { retryDelayExponentFactor: Double ->
-				retryDelayExponentFactor
-			}
-			val maxRetriesConverted: Int = convertingOptionOrDefaultNonNull(
-				_options,
-				"maxRetries",
-				5
-			) { maxRetries: Double ->
-				numberToInt(maxRetries, "maxRetries")
-			}
-			val eventFiredConverted: suspend (DecryptedHealthElement) -> Unit = { arg0 ->
-				eventFired(
-					healthElement_toJs(arg0),
-				).await()
-			}
-			val result = healthcareElementApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				onConnectedConverted,
-				channelCapacityConverted,
-				retryDelayConverted,
-				retryDelayExponentFactorConverted,
-				maxRetriesConverted,
-				eventFiredConverted,
-			)
-			connection_toJs(result)
-		}
 	}
 }

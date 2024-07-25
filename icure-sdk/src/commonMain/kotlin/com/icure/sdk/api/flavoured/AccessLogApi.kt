@@ -6,7 +6,6 @@ import com.icure.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.AccessLog
@@ -21,7 +20,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -91,12 +89,8 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		accessLog: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: AccessLogShareOptions? = null,
 	): SimpleShareResult<E>
 
 	/**
@@ -167,6 +161,8 @@ interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<Dec
 	suspend fun hasWriteAccess(accessLog: AccessLog): Boolean
 	suspend fun decryptPatientIdOf(accessLog: AccessLog): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: AccessLog, delegates: Set<String>)
+	suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog
+	suspend fun tryDecrypt(accessLog: EncryptedAccessLog): AccessLog
 
 
 	val encrypted: AccessLogFlavouredApi<EncryptedAccessLog>
@@ -238,20 +234,13 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	override suspend fun shareWith(
 		delegateId: String,
 		accessLog: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: AccessLogShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			accessLog.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: AccessLogShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -366,7 +355,7 @@ internal class AccessLogApiImpl(
 		return rawApi.createAccessLog(
 			encrypt(entity),
 		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
+			decrypt(it)
 		}
 	}
 
@@ -398,12 +387,16 @@ internal class AccessLogApiImpl(
 		config.encryption.accessLog,
 	) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }
 
-	suspend fun decrypt(entity: EncryptedAccessLog, errorMessage: () -> String): DecryptedAccessLog = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedAccessLog): DecryptedAccessLog? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedAccessLog.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog =
+		decryptOrNull(accessLog) ?: throw EntityEncryptionException("AccessLog cannot be decrypted")
+
+	override suspend fun tryDecrypt(accessLog: EncryptedAccessLog): AccessLog =
+		decryptOrNull(accessLog) ?: accessLog
 }
 
 @InternalIcureApi

@@ -16,8 +16,8 @@ import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
 import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
-import {DurationMs} from '../../utils/DurationMs.mjs';
-import {Connection} from '../../websocket/Connection.mjs';
+import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
 import {HealthcareElementFlavouredApi} from './HealthcareElementFlavouredApi.mjs';
 
 
@@ -52,6 +52,9 @@ export interface HealthcareElementApi {
 	findHealthcareElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
 
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<HealthElement>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedHealthElement>>;
+
 	shareWith(delegateId: string, healthcareElement: DecryptedHealthElement,
 			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedHealthElement>>;
 
@@ -78,9 +81,5 @@ export interface HealthcareElementApi {
 
 	findHealthcareElementsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<DecryptedHealthElement>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<HealthElement>,
-			eventFired: (x1: DecryptedHealthElement) => Promise<void>,
-			options?: { onConnected?: () => Promise<void>, channelCapacity?: number, retryDelay?: DurationMs, retryDelayExponentFactor?: number, maxRetries?: number }): Promise<Connection>;
 
 }

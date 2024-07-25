@@ -17,7 +17,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.Encryptable
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
-import com.icure.sdk.model.requests.MinimalEntityBulkShareResult
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -120,7 +119,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param initialiseEncryptionKey if false this method will not initialize an encryption key for the entity. Use only for entities which use
 	 * delegations for access control but don't actually have any encrypted content.
 	 * @param initialiseSecretId if false this method will not initialize any secret id, use it for entities which can not be 'owning entities' (e.g.
-	 * HealthcareElement).
+	 * HealthElement).
 	 * @param autoDelegations automatically shares the metadata with the provided data owners, with the provided access level.
 	 * @throws if the entity already has non-empty values for encryption metadata.
 	 * @return an updated copy of the entity.
@@ -230,7 +229,7 @@ interface EntityEncryptionService : EntityValidationService {
 	suspend fun tryDecryptAttachmentOf(
 		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
-		validator: suspend (decryptedData: ByteArray) -> Boolean
+		validator: (suspend (decryptedData: ByteArray) -> Boolean)?
 	): ByteArray?
 
 	/**
@@ -250,7 +249,7 @@ interface EntityEncryptionService : EntityValidationService {
 	suspend fun decryptAttachmentOf(
 		entity: EntityWithTypeInfo<*>,
 		content: ByteArray,
-		validator: suspend (decryptedData: ByteArray) -> Boolean
+		validator: (suspend (decryptedData: ByteArray) -> Boolean)?
 	): ByteArray
 
 	/**

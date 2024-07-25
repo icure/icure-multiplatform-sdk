@@ -4,7 +4,7 @@ plugins {
 	kotestMultiplatform()
 	androidLibrary()
 	id("maven-publish")
-	id("com.google.devtools.ksp") version "1.9.24-1.0.20"
+	id("com.google.devtools.ksp") version "2.0.20-Beta1-1.0.22"
 }
 
 val repoUsername: String by project
@@ -29,6 +29,7 @@ kotlin {
 				implementation(libs.kermit)
 				api(libs.kryptom)
 				implementation(libs.coroutinesCore)
+				implementation(libs.okio)
 				implementation(kotlin("reflect"))
 			}
 		}
@@ -45,6 +46,7 @@ kotlin {
 		val jvmMain by getting {
 			dependencies {
 				implementation(libs.ktorClientEngineOkhttp)
+				implementation(libs.bouncyCastle)
 			}
 		}
 		val jvmTest by getting {
@@ -71,9 +73,19 @@ kotlin {
 				implementation(libs.kotestRunnerJunit)
 			}
 		}
-		iosMain {
+		appleMain {
 			dependencies {
 				implementation(libs.ktorClientEngineDarwin)
+			}
+		}
+		linuxMain {
+			dependencies {
+				implementation(project(":ktor-curl"))
+			}
+		}
+		mingwMain {
+			dependencies {
+				implementation(libs.ktorClientEngineWinhttp)
 			}
 		}
 	}

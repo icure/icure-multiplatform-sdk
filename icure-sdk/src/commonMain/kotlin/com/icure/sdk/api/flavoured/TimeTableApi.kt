@@ -3,7 +3,6 @@ package com.icure.sdk.api.flavoured
 import com.icure.sdk.api.raw.RawTimeTableApi
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.crypto.entities.withTypeInfo
@@ -18,7 +17,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
@@ -49,12 +47,8 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		timeTable: E,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareEncryptionKeys: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-		shareOwningEntityIds: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
-		@DefaultValue("com.icure.sdk.model.requests.RequestedPermission.MaxWrite")
-		requestedPermission: RequestedPermission = RequestedPermission.MaxWrite,
+		@DefaultValue("null")
+		options: TimeTableShareOptions? = null
 	): SimpleShareResult<E>
 
 	/**
@@ -113,6 +107,8 @@ interface TimeTableApi : TimeTableBasicFlavourlessApi, TimeTableFlavouredApi<Dec
 	suspend fun hasWriteAccess(timeTable: TimeTable): Boolean
 	suspend fun decryptPatientIdOf(timeTable: TimeTable): Set<String>
 	suspend fun createDelegationDeAnonymizationMetadata(entity: TimeTable, delegates: Set<String>)
+	suspend fun decrypt(timeTable: EncryptedTimeTable): DecryptedTimeTable
+	suspend fun tryDecrypt(timeTable: EncryptedTimeTable): TimeTable
 
 	val encrypted: TimeTableFlavouredApi<EncryptedTimeTable>
 	val tryAndRecover: TimeTableFlavouredApi<TimeTable>
@@ -149,20 +145,13 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 	override suspend fun shareWith(
 		delegateId: String,
 		timeTable: E,
-		shareEncryptionKeys: ShareMetadataBehaviour,
-		shareOwningEntityIds: ShareMetadataBehaviour,
-		requestedPermission: RequestedPermission,
+		options: TimeTableShareOptions?,
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			timeTable.withTypeInfo(),
 			true,
 			mapOf(
-				delegateId to SimpleDelegateShareOptionsImpl(
-					shareSecretIds = null,
-					shareEncryptionKey = shareEncryptionKeys,
-					shareOwningEntityIds = shareOwningEntityIds,
-					requestedPermissions = requestedPermission,
-				),
+				delegateId to (options ?: TimeTableShareOptions()),
 			),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -244,9 +233,7 @@ internal class TimeTableApiImpl(
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createTimeTable(
 			encrypt(entity),
-		).successBody().let {
-			decrypt(it) { "Created entity cannot be decrypted" }
-		}
+		).successBody().let { decrypt(it) }
 	}
 
 	private val crypto get() = config.crypto
@@ -289,12 +276,16 @@ internal class TimeTableApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedTimeTable>(it) }
 
-	suspend fun decrypt(entity: EncryptedTimeTable, errorMessage: () -> String): DecryptedTimeTable = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedTimeTable): DecryptedTimeTable? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedTimeTable.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
-		?: throw EntityEncryptionException(errorMessage())
 
+	override suspend fun decrypt(timeTable: EncryptedTimeTable): DecryptedTimeTable =
+		decryptOrNull(timeTable) ?: throw EntityEncryptionException("TimeTable cannot be decrypted")
+
+	override suspend fun tryDecrypt(timeTable: EncryptedTimeTable): TimeTable =
+		decryptOrNull(timeTable) ?: timeTable
 }
 
 @InternalIcureApi
