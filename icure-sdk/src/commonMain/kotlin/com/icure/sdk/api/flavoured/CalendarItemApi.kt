@@ -41,6 +41,7 @@ interface CalendarItemBasicFlavourlessApi {
 	 * @return the id and revision of the deleted {{entity}}.
 	 */
 	suspend fun deleteCalendarItem(entityId: String): DocIdentifier
+
 	/**
 	 * Deletes many {{entities}}. Ids that do not correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
