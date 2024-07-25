@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawTopicApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.ListOfIds
@@ -42,7 +41,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawTopicApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -52,81 +51,74 @@ class RawTopicApiImpl(
 	// region cloud endpoints
 
 	override suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", topicId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getTopics(topicIds: ListOfIds): HttpResponse<List<EncryptedTopic>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(topicIds)
 		}.wrap()
 
 	override suspend fun createTopic(ft: EncryptedTopic): HttpResponse<EncryptedTopic> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
 	override suspend fun modifyTopic(topicDto: EncryptedTopic): HttpResponse<EncryptedTopic> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(topicDto)
 		}.wrap()
 
 	override suspend fun deleteTopics(topicIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(topicIds)
 		}.wrap()
 
 	override suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", topicId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "bulkSharedMetadataUpdate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
@@ -137,26 +129,24 @@ class RawTopicApiImpl(
 		limit: Int?,
 		filterChain: FilterChain<Topic>,
 	): HttpResponse<PaginatedList<EncryptedTopic>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(FilterChainSerializer(TopicAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "match")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(TopicAbstractFilterSerializer, filter)
@@ -166,12 +156,11 @@ class RawTopicApiImpl(
 		topicId: String,
 		request: AddParticipant,
 	): HttpResponse<EncryptedTopic> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", topicId, "addParticipant")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
@@ -181,12 +170,11 @@ class RawTopicApiImpl(
 		topicId: String,
 		request: RemoveParticipant,
 	): HttpResponse<EncryptedTopic> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", topicId, "removeParticipant")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)

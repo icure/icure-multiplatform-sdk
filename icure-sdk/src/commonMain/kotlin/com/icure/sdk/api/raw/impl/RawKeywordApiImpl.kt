@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawKeywordApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.Keyword
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
@@ -32,7 +31,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawKeywordApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -41,36 +40,34 @@ class RawKeywordApiImpl(
 	// region common endpoints
 
 	override suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "keyword")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> =
-		get {
-			url {
+		get(authProvider) {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "keyword", keywordId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getKeywordsByUser(userId: String): HttpResponse<List<Keyword>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "keyword", "byUser", userId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -78,7 +75,7 @@ class RawKeywordApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<Keyword>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "keyword")
@@ -86,29 +83,26 @@ class RawKeywordApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteKeywords(keywordIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "keyword", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(keywordIds)
 		}.wrap()
 
 	override suspend fun modifyKeyword(keywordDto: Keyword): HttpResponse<Keyword> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "keyword")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(keywordDto)

@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawCalendarItemApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedCalendarItem
@@ -40,7 +39,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawCalendarItemApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -56,7 +55,7 @@ class RawCalendarItemApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<EncryptedCalendarItem>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem")
@@ -64,73 +63,66 @@ class RawCalendarItemApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createCalendarItem(calendarItemDto: EncryptedCalendarItem): HttpResponse<EncryptedCalendarItem> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(calendarItemDto)
 		}.wrap()
 
 	override suspend fun deleteCalendarItems(calendarItemIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(calendarItemIds)
 		}.wrap()
 
 	override suspend fun deleteCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", calendarItemId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteCalendarItemsWithPost(calendarItemIds: String): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", calendarItemIds)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", calendarItemId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyCalendarItem(calendarItemDto: EncryptedCalendarItem): HttpResponse<EncryptedCalendarItem> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(calendarItemDto)
@@ -141,7 +133,7 @@ class RawCalendarItemApiImpl(
 		endDate: Long,
 		hcPartyId: String,
 	): HttpResponse<List<EncryptedCalendarItem>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byPeriodAndHcPartyId")
@@ -149,7 +141,6 @@ class RawCalendarItemApiImpl(
 				parameter("endDate", endDate)
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
@@ -159,7 +150,7 @@ class RawCalendarItemApiImpl(
 		endDate: Long,
 		agendaId: String,
 	): HttpResponse<List<EncryptedCalendarItem>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byPeriodAndAgendaId")
@@ -167,18 +158,16 @@ class RawCalendarItemApiImpl(
 				parameter("endDate", endDate)
 				parameter("agendaId", agendaId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCalendarItemsWithIds(calendarItemIds: ListOfIds): HttpResponse<List<EncryptedCalendarItem>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(calendarItemIds)
@@ -188,7 +177,7 @@ class RawCalendarItemApiImpl(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<EncryptedCalendarItem>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys")
@@ -196,7 +185,6 @@ class RawCalendarItemApiImpl(
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -204,13 +192,12 @@ class RawCalendarItemApiImpl(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<EncryptedCalendarItem>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -223,7 +210,7 @@ class RawCalendarItemApiImpl(
 		startDocumentId: String?,
 		limit: Int,
 	): HttpResponse<PaginatedList<EncryptedCalendarItem>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys", "page", "$limit")
@@ -233,7 +220,6 @@ class RawCalendarItemApiImpl(
 				parameter("startDocumentId", startDocumentId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -244,7 +230,7 @@ class RawCalendarItemApiImpl(
 		startDocumentId: String?,
 		limit: Int,
 	): HttpResponse<PaginatedList<EncryptedCalendarItem>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys", "page", "$limit")
@@ -252,7 +238,6 @@ class RawCalendarItemApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -265,7 +250,7 @@ class RawCalendarItemApiImpl(
 		descending: Boolean?,
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byDataOwnerPatientStartTime")
@@ -274,7 +259,6 @@ class RawCalendarItemApiImpl(
 				parameter("endDate", endDate)
 				parameter("descending", descending)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -284,13 +268,12 @@ class RawCalendarItemApiImpl(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -302,7 +285,7 @@ class RawCalendarItemApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<EncryptedCalendarItem>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byRecurrenceId")
@@ -312,31 +295,28 @@ class RawCalendarItemApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(
 		request: BulkShareOrUpdateMetadataParams,
 	): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "bulkSharedMetadataUpdate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
 	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "bulkSharedMetadataUpdateMinimal")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)

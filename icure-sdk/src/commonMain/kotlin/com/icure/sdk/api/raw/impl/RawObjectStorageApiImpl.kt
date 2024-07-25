@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawObjectStorageApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.objectstorage.StoredObjectInformation
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -30,7 +29,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawObjectStorageApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -47,7 +46,7 @@ class RawObjectStorageApiImpl(
 		startByte: Long?,
 		content: ByteArray,
 	): HttpResponse<Unit> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId)
@@ -55,7 +54,6 @@ class RawObjectStorageApiImpl(
 				parameter("md5Hash", md5Hash)
 				parameter("startByte", startByte)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 			setBody(ByteArrayContent(content, Application.OctetStream))
 		}.wrap()
@@ -65,13 +63,12 @@ class RawObjectStorageApiImpl(
 		entityId: String,
 		attachmentId: String,
 	): HttpResponse<ByteArray> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -80,13 +77,12 @@ class RawObjectStorageApiImpl(
 		entityId: String,
 		attachmentId: String,
 	): HttpResponse<StoredObjectInformation> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "objectstorage{entityGroup}", entityId, attachmentId, "info")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 

@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawClassificationApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedClassification
@@ -38,7 +37,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawClassificationApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -51,35 +50,32 @@ class RawClassificationApiImpl(
 	// region common endpoints
 
 	override suspend fun createClassification(c: EncryptedClassification): HttpResponse<EncryptedClassification> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun getClassification(classificationId: String): HttpResponse<EncryptedClassification> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", classificationId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getClassifications(classificationIds: ListOfIds): HttpResponse<List<EncryptedClassification>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(classificationIds)
@@ -89,7 +85,7 @@ class RawClassificationApiImpl(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<EncryptedClassification>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "byHcPartySecretForeignKeys")
@@ -97,7 +93,6 @@ class RawClassificationApiImpl(
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -108,7 +103,7 @@ class RawClassificationApiImpl(
 		descending: Boolean?,
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "byDataOwnerPatientCreated")
@@ -117,41 +112,37 @@ class RawClassificationApiImpl(
 				parameter("endDate", endDate)
 				parameter("descending", descending)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
 		}.wrap()
 
 	override suspend fun deleteClassifications(classificationIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(classificationIds)
 		}.wrap()
 
 	override suspend fun deleteClassification(classificationId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", classificationId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(classificationDto)
@@ -161,13 +152,12 @@ class RawClassificationApiImpl(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -176,24 +166,22 @@ class RawClassificationApiImpl(
 	override suspend fun bulkShare(
 		request: BulkShareOrUpdateMetadataParams,
 	): HttpResponse<List<EntityBulkShareResult<EncryptedClassification>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "bulkSharedMetadataUpdate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
 	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "bulkSharedMetadataUpdateMinimal")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
