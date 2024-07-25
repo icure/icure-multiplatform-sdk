@@ -1370,7 +1370,6 @@ public fun setRawMainAttachmentBlocking(sdk: IcureApis, params: String): String 
 			decodedParams.documentId,
 			decodedParams.rev,
 			decodedParams.utis,
-			decodedParams.blobType,
 			decodedParams.attachment,
 			decodedParams.encrypted,
 		)
@@ -1391,7 +1390,6 @@ public fun setRawMainAttachmentAsync(
 				decodedParams.documentId,
 				decodedParams.rev,
 				decodedParams.utis,
-				decodedParams.blobType,
 				decodedParams.attachment,
 				decodedParams.encrypted,
 			)

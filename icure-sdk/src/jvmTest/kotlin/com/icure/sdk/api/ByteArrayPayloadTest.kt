@@ -34,7 +34,6 @@ class ByteArrayPayloadTest : StringSpec({
 			documentId = createdDocument.id,
 			rev = createdDocument.rev.shouldNotBeNull(),
 			utis = listOf(uti),
-			blobType = uti,
 			attachment = payload,
 			encrypted = false
 		)

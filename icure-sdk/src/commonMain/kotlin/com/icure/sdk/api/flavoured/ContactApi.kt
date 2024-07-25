@@ -186,9 +186,6 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 		skipClosedContacts: Boolean? = null,
 	): List<E>
 
-	@Deprecated("The method is very specialised and rarely needed. Can be replaced by bulk get and modify") // Maybe we can add a close contacts by ids to save some bandwidth (close without getting first).
-	suspend fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
-
 	/**
 	 * Get a service by its id. You must have read access to the entity. Fails if the id does not correspond to any
 	 * entity, corresponds to an entity that is not a service, or corresponds to an entity for which you don't have
@@ -481,10 +478,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	): List<E> =
 		rawApi.listContactsByHCPartyAndPatientSecretFKeys(hcPartyId, secretPatientKeys, planOfActionsIds, skipClosedContacts).successBody()
 			.map { maybeDecrypt(it) }
-
-	@Deprecated("The method is very specialised and rarely needed. Can be replaced by bulk get and modify")
-	override suspend fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
-		rawApi.closeForHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
 	override suspend fun getService(serviceId: String): S = rawApi.getService(serviceId).successBody().let { maybeDecryptService(it) }
 
