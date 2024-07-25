@@ -9,6 +9,7 @@ import kotlin.String
 @Serializable
 data class Enable2faRequest(
 	public val secret: String,
+	public val otpLength: Int
 ) {
 	// region Enable2faRequest-Enable2faRequest
 

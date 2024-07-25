@@ -166,12 +166,13 @@ class SmartAuthProviderTest : StringSpec({
 	"Should automatically ask for TOTP after password if user has 2fa enabled" {
 		val hcpDetails = createHcpUser()
 		val api = hcpDetails.api()
+		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, algorithm = HmacAlgorithm.HmacSha256)
 		val userPwd = uuid()
-		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret))
+		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret, otpLength))
 		val userWithPwdAnd2fa = adminUserApi.modifyUser(
 			initialUser.copy(
 				passwordHash = userPwd,
@@ -201,12 +202,12 @@ class SmartAuthProviderTest : StringSpec({
 							if(calls == 1) {
 								previousAttempts.shouldBeEmpty()
 								calls ++
-								AuthSecretDetails.TwoFactorAuthTokenDetails(secret = "${totp.generate()}13")
+								AuthSecretDetails.TwoFactorAuthTokenDetails(secret = "${totp.generate(digits = otpLength)}13")
 							}
 							else {
 								previousAttempts.size shouldBe 1
 								calls++
-								AuthSecretDetails.TwoFactorAuthTokenDetails(secret = totp.generate())
+								AuthSecretDetails.TwoFactorAuthTokenDetails(secret = totp.generate(digits = otpLength))
 							}
 						}
 						else -> throw IllegalStateException("Invalid number of attempts: $calls")
@@ -223,12 +224,13 @@ class SmartAuthProviderTest : StringSpec({
 	"Should ask for TOTP directly if password is cached" {
 		val hcpDetails = createHcpUser()
 		val api = hcpDetails.api()
+		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, algorithm = HmacAlgorithm.HmacSha256)
 		val userPwd = uuid()
-		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret))
+		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret, otpLength))
 		val userWithPwdAnd2fa = adminUserApi.modifyUser(
 			initialUser.copy(
 				passwordHash = userPwd,
@@ -246,7 +248,7 @@ class SmartAuthProviderTest : StringSpec({
 					acceptedSecrets shouldContain AuthenticationClass.TwoFactorAuthentication
 					previousAttempts.shouldBeEmpty()
 					calls++ shouldBe 0
-					return AuthSecretDetails.TwoFactorAuthTokenDetails(secret = totp.generate())
+					return AuthSecretDetails.TwoFactorAuthTokenDetails(secret = totp.generate(digits = 8))
 				}
 			},
 			initialSecret = SmartAuthProvider.InitialSecret.PlainSecret(userPwd)
