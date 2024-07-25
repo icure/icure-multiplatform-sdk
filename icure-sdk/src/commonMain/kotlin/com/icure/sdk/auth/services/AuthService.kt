@@ -26,7 +26,7 @@ interface AuthService {
 	class UnavailableAuthenticationClassException(authenticationClass: ServerAuthenticationClass)
 		: Exception("Cannot generate a token with authentication class $authenticationClass")
 
-	suspend fun invalidateCurrentHeader(error: RequestStatusException)
+	suspend fun invalidateCurrentToken(error: RequestStatusException)
 }
 
 /**

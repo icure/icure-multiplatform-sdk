@@ -33,7 +33,7 @@ class JwtAuthService(
 	private val authApi: RawAnonymousAuthApi,
 	private val credentials: Credentials,
 	private val refreshPadding: Duration = 30L.seconds
-) : TokenBasedAuthService<Jwt>, AuthProvider {
+) : TokenBasedAuthService<Jwt>, JwtBasedAuthProvider {
 
 	private lateinit var jwt: Jwt
 	private val jwtMutex = Mutex()
@@ -88,7 +88,7 @@ class JwtAuthService(
 
 	override fun getAuthService() = this
 
-	override suspend fun invalidateCurrentHeader(error: RequestStatusException) = errorMutex.withLock {
+	override suspend fun invalidateCurrentToken(error: RequestStatusException) = errorMutex.withLock {
 		lastRecordedError = error
 	}
 

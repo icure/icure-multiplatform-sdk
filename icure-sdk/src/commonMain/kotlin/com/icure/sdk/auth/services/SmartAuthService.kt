@@ -1,5 +1,6 @@
 package com.icure.sdk.auth.services
 
+import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.ServerAuthenticationClass
 import com.icure.sdk.auth.TokenProvider
 import com.icure.sdk.utils.InternalIcureApi
@@ -21,50 +22,54 @@ private sealed interface SmartAuthServiceState {
 @InternalIcureApi
 class SmartAuthService(
 	private val tokenProvider: TokenProvider
-) : AuthService {
+) : TokenBasedAuthService<Jwt>, AuthService {
 
 	private var currentState: SmartAuthServiceState = SmartAuthServiceState.Initial
 
-	override suspend fun setAuthorizationInRequest(builder: HttpRequestBuilder, authenticationClass: ServerAuthenticationClass?) {
-		when(val immutableCurrentState = currentState) {
-			is SmartAuthServiceState.Initial -> {
-				if(authenticationClass != null) {
-					throw IllegalStateException("Illegal state: cannot ask for a specific auth class level at the first request attempt.")
-				} else {
-					val tokens = tokenProvider.getCachedOrRefreshedOrNewToken()
-					currentState = SmartAuthServiceState.DoneInitial(tokens.jwt)
-					builder.bearerAuth(tokens.jwt)
-				}
+	private suspend fun getTokenInState(authenticationClass: ServerAuthenticationClass?): String = when(val immutableCurrentState = currentState) {
+		is SmartAuthServiceState.Initial -> {
+			if(authenticationClass != null) {
+				throw IllegalStateException("Illegal state: cannot ask for a specific auth class level at the first request attempt.")
+			} else {
+				val tokens = tokenProvider.getCachedOrRefreshedOrNewToken()
+				currentState = SmartAuthServiceState.DoneInitial(tokens.jwt)
+				tokens.jwt
 			}
-			is SmartAuthServiceState.Reattempt -> {
-				if(authenticationClass != null) {
-					val token = tokenProvider.getNewTokenWithClass(authenticationClass)
-					currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
-					builder.bearerAuth(token)
-				} else {
-					val tokens = tokenProvider.getCachedOrRefreshedOrNewToken()
-					if(tokens.jwt == immutableCurrentState.token) {
-						throw immutableCurrentState.initialError
-					}
-					currentState = SmartAuthServiceState.ReattemptedWithNewUnboundToken
-					builder.bearerAuth(tokens.jwt)
-				}
-			}
-			is SmartAuthServiceState.ExpectRequestWithSpecificAuthClass -> {
-				if(authenticationClass != null) {
-					val token = tokenProvider.getNewTokenWithClass(authenticationClass)
-					currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
-					builder.bearerAuth(token)
-				} else {
-					throw immutableCurrentState.errorFromNewToken
-				}
-			}
-			is SmartAuthServiceState.TerminalError -> throw immutableCurrentState.error
-			else -> throw IllegalStateException("Illegal state: cannot get token in state: ${immutableCurrentState::class.simpleName}")
 		}
+		is SmartAuthServiceState.Reattempt -> {
+			if(authenticationClass != null) {
+				val token = tokenProvider.getNewTokenWithClass(authenticationClass)
+				currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
+				token
+			} else {
+				val tokens = tokenProvider.getCachedOrRefreshedOrNewToken()
+				if(tokens.jwt == immutableCurrentState.token) {
+					throw immutableCurrentState.initialError
+				}
+				currentState = SmartAuthServiceState.ReattemptedWithNewUnboundToken
+				tokens.jwt
+			}
+		}
+		is SmartAuthServiceState.ExpectRequestWithSpecificAuthClass -> {
+			if(authenticationClass != null) {
+				val token = tokenProvider.getNewTokenWithClass(authenticationClass)
+				currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
+				token
+			} else {
+				throw immutableCurrentState.errorFromNewToken
+			}
+		}
+		is SmartAuthServiceState.TerminalError -> throw immutableCurrentState.error
+		else -> throw IllegalStateException("Illegal state: cannot get token in state: ${immutableCurrentState::class.simpleName}")
 	}
 
-	override suspend fun invalidateCurrentHeader(error: RequestStatusException) {
+	override suspend fun getToken(): Jwt = Jwt(getTokenInState(null), "")
+
+	override suspend fun setAuthorizationInRequest(builder: HttpRequestBuilder, authenticationClass: ServerAuthenticationClass?) {
+		builder.bearerAuth(getTokenInState(authenticationClass))
+	}
+
+	override suspend fun invalidateCurrentToken(error: RequestStatusException) {
 		currentState = when(val immutableCurrentState = currentState) {
 			is SmartAuthServiceState.DoneInitial -> SmartAuthServiceState.Reattempt(token = immutableCurrentState.token, initialError = error)
 			is SmartAuthServiceState.ReattemptedWithNewUnboundToken -> SmartAuthServiceState.ExpectRequestWithSpecificAuthClass(errorFromNewToken = error)

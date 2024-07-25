@@ -19,5 +19,5 @@ class CompositeAuthService(
 
 	override fun getAuthService(): AuthService = this
 
-	override suspend fun invalidateCurrentHeader(error: RequestStatusException) = services.forEach { it.invalidateCurrentHeader(error) }
+	override suspend fun invalidateCurrentToken(error: RequestStatusException) = services.forEach { it.invalidateCurrentToken(error) }
 }

@@ -10,7 +10,7 @@ kryptom = "1.1.0"
 kermit = "2.0.3"
 okio = "3.9.0"
 bouncyCastle = "1.70"
-kotp = "1.0.2"
+kotp = "1.0.1"
 
 [libraries]
 

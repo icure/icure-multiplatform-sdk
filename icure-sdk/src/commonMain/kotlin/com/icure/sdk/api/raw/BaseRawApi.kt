@@ -57,7 +57,7 @@ abstract class BaseRawApi(
 	private suspend fun requestAndRetryOnUnauthorized(method: HttpMethod, authService: AuthService?, authenticationClass: ServerAuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit): HttpResponse {
 		val response = request(method, authService, authenticationClass, block)
 		return if (authService != null && response.status == HttpStatusCode.Unauthorized) {
-			authService.invalidateCurrentHeader(RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value))
+			authService.invalidateCurrentToken(RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value))
 			return requestAndRetryOnUnauthorized(
 				method = method,
 				authService = authService,

@@ -19,5 +19,5 @@ class AccessControlKeysAuthService(
 
 	override fun getAuthService() = this
 
-	override suspend fun invalidateCurrentHeader(error: RequestStatusException) {}
+	override suspend fun invalidateCurrentToken(error: RequestStatusException) {}
 }

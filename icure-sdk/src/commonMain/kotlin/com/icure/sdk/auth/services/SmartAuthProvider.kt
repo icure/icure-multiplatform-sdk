@@ -12,7 +12,7 @@ import com.icure.sdk.utils.InternalIcureApi
 class SmartAuthProvider private constructor(
 	private val tokenProvider: TokenProvider,
 	private val groupId: String? = null
-) : AuthProvider {
+) : JwtBasedAuthProvider {
 
 	sealed interface InitialSecret {
 		data class PlainSecret(val secret: String) : InitialSecret
@@ -48,7 +48,7 @@ class SmartAuthProvider private constructor(
 
 	}
 
-	override fun getAuthService(): AuthService = SmartAuthService(tokenProvider)
+	override fun getAuthService() = SmartAuthService(tokenProvider)
 
 	suspend fun switchGroup(newGroupId: String, matches: List<UserGroup>): AuthProvider = when {
 		newGroupId == groupId -> this
