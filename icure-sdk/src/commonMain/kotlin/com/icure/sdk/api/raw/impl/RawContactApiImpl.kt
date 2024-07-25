@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.Contact
@@ -50,7 +49,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawContactApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -63,46 +62,42 @@ class RawContactApiImpl(
 	// region common endpoints
 
 	override suspend fun getEmptyContent(): HttpResponse<EncryptedContent> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", "content", "empty")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createContact(c: EncryptedContact): HttpResponse<EncryptedContact> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun getContact(contactId: String): HttpResponse<EncryptedContact> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", contactId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getContacts(contactIds: ListOfIds): HttpResponse<List<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactIds)
@@ -112,13 +107,12 @@ class RawContactApiImpl(
 		codeType: String,
 		minOccurrences: Long,
 	): HttpResponse<List<LabelledOccurence>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", "codes", codeType, "$minOccurrences")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -126,7 +120,7 @@ class RawContactApiImpl(
 		hcPartyId: String,
 		serviceId: String,
 	): HttpResponse<List<EncryptedContact>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartyServiceId")
@@ -134,18 +128,16 @@ class RawContactApiImpl(
 				parameter("serviceId", serviceId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun listContactsByExternalId(externalId: String): HttpResponse<List<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byExternalId")
 				parameter("externalId", externalId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
@@ -154,7 +146,7 @@ class RawContactApiImpl(
 		hcPartyId: String,
 		formId: String,
 	): HttpResponse<List<EncryptedContact>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartyFormId")
@@ -162,7 +154,6 @@ class RawContactApiImpl(
 				parameter("formId", formId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -170,13 +161,12 @@ class RawContactApiImpl(
 		hcPartyId: String,
 		formIds: ListOfIds,
 	): HttpResponse<List<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartyFormIds")
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formIds)
@@ -186,13 +176,13 @@ class RawContactApiImpl(
 		hcPartyId: String,
 		patientForeignKeys: ListOfIds,
 	): HttpResponse<List<EncryptedContact>> =
-		post {
-			url {
+		post(authProvider) {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartyPatientForeignKeys")
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(patientForeignKeys)
@@ -205,7 +195,7 @@ class RawContactApiImpl(
 		descending: Boolean?,
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byDataOwnerPatientOpeningDate")
@@ -214,7 +204,6 @@ class RawContactApiImpl(
 				parameter("endDate", endDate)
 				parameter("descending", descending)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -226,7 +215,7 @@ class RawContactApiImpl(
 		planOfActionsIds: String?,
 		skipClosedContacts: Boolean?,
 	): HttpResponse<List<EncryptedContact>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys")
@@ -236,7 +225,6 @@ class RawContactApiImpl(
 				parameter("skipClosedContacts", skipClosedContacts)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -246,7 +234,7 @@ class RawContactApiImpl(
 		planOfActionsIds: String?,
 		skipClosedContacts: Boolean?,
 	): HttpResponse<List<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys")
@@ -254,7 +242,6 @@ class RawContactApiImpl(
 				parameter("planOfActionsIds", planOfActionsIds)
 				parameter("skipClosedContacts", skipClosedContacts)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -264,7 +251,7 @@ class RawContactApiImpl(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<IcureStub>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys", "delegations")
@@ -272,7 +259,6 @@ class RawContactApiImpl(
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -280,13 +266,12 @@ class RawContactApiImpl(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -296,71 +281,65 @@ class RawContactApiImpl(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<EncryptedContact>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys", "close")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteContacts(contactIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactIds)
 		}.wrap()
 
 	override suspend fun deleteContact(contactId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", contactId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyContact(contactDto: EncryptedContact): HttpResponse<EncryptedContact> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactDto)
 		}.wrap()
 
 	override suspend fun modifyContacts(contactDtos: List<EncryptedContact>): HttpResponse<List<EncryptedContact>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactDtos)
 		}.wrap()
 
 	override suspend fun createContacts(contactDtos: List<EncryptedContact>): HttpResponse<List<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(contactDtos)
@@ -371,39 +350,36 @@ class RawContactApiImpl(
 		limit: Int?,
 		filterChain: FilterChain<Contact>,
 	): HttpResponse<PaginatedList<EncryptedContact>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(FilterChainSerializer(ContactAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchContactsBy(filter: AbstractFilter<Contact>): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "match")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(ContactAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun getService(serviceId: String): HttpResponse<EncryptedService> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", serviceId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -412,38 +388,35 @@ class RawContactApiImpl(
 		limit: Int?,
 		filterChain: FilterChain<Service>,
 	): HttpResponse<PaginatedList<EncryptedService>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(FilterChainSerializer(ServiceAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchServicesBy(filter: AbstractFilter<Service>): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", "match")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(ServiceAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun getServices(ids: ListOfIds): HttpResponse<List<EncryptedService>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
@@ -453,27 +426,25 @@ class RawContactApiImpl(
 		linkType: String?,
 		ids: ListOfIds,
 	): HttpResponse<List<EncryptedService>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", "linkedTo")
 				parameter("linkType", linkType)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ids)
 		}.wrap()
 
 	override suspend fun listServicesByAssociationId(associationId: String): HttpResponse<List<EncryptedService>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", "associationId")
 				parameter("associationId", associationId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -481,14 +452,13 @@ class RawContactApiImpl(
 		healthElementId: String,
 		hcPartyId: String,
 	): HttpResponse<List<EncryptedService>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "service", "healthElementId", healthElementId)
 				parameter("hcPartyId", hcPartyId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -500,7 +470,7 @@ class RawContactApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<EncryptedContact>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byOpeningDate")
@@ -512,29 +482,26 @@ class RawContactApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedContact>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "bulkSharedMetadataUpdate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
 	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "bulkSharedMetadataUpdateMinimal")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)

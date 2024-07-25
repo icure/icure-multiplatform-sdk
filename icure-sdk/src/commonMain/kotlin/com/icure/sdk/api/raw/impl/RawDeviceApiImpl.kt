@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawDeviceApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.Device
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
@@ -39,7 +38,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawDeviceApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -48,71 +47,66 @@ class RawDeviceApiImpl(
 	// region common endpoints
 
 	override suspend fun getDevice(deviceId: String): HttpResponse<Device> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", deviceId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getDevices(deviceIds: ListOfIds): HttpResponse<List<Device>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceIds)
 		}.wrap()
 
 	override suspend fun createDevice(p: Device): HttpResponse<Device> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(p)
 		}.wrap()
 
 	override suspend fun updateDevice(deviceDto: Device): HttpResponse<Device> =
-		put {
-			url {
+		put(authProvider) {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceDto)
 		}.wrap()
 
 	override suspend fun createDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "bulk")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceDtos)
 		}.wrap()
 
 	override suspend fun updateDevices(deviceDtos: List<Device>): HttpResponse<List<IdWithRev>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "bulk")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceDtos)
@@ -123,14 +117,13 @@ class RawDeviceApiImpl(
 		limit: Int?,
 		filterChain: FilterChain<Device>,
 	): HttpResponse<PaginatedList<Device>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "filter")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(FilterChainSerializer(DeviceAbstractFilterSerializer), filterChain)
@@ -139,45 +132,41 @@ class RawDeviceApiImpl(
 	override suspend fun getDeviceAesExchangeKeysForDelegate(
 		deviceId: String,
 	): HttpResponse<Map<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", deviceId, "aesExchangeKeys")
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun matchDevicesBy(filter: AbstractFilter<Device>): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "match")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(DeviceAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", deviceId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun deleteDevices(deviceIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceIds)
@@ -191,12 +180,11 @@ class RawDeviceApiImpl(
 		groupId: String,
 		deviceIds: ListOfIds?,
 	): HttpResponse<List<Device>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId, "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceIds)
@@ -206,12 +194,11 @@ class RawDeviceApiImpl(
 		groupId: String,
 		deviceDto: Device,
 	): HttpResponse<Device> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceDto)
@@ -221,12 +208,11 @@ class RawDeviceApiImpl(
 		groupId: String,
 		deviceDto: Device,
 	): HttpResponse<Device> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceDto)
@@ -236,12 +222,11 @@ class RawDeviceApiImpl(
 		groupId: String,
 		deviceIds: String,
 	): HttpResponse<List<DocIdentifier>> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId, deviceIds)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 

@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawFormApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedForm
@@ -41,7 +40,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawFormApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
@@ -54,69 +53,64 @@ class RawFormApiImpl(
 	// region common endpoints
 
 	override suspend fun getForm(formId: String): HttpResponse<EncryptedForm> =
-		get {
-			url {
+		get(authProvider) {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", formId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getForms(formIds: ListOfIds): HttpResponse<List<EncryptedForm>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formIds)
 		}.wrap()
 
 	override suspend fun getFormByLogicalUuid(logicalUuid: String): HttpResponse<EncryptedForm> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "logicalUuid", logicalUuid)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormsByLogicalUuid(logicalUuid: String): HttpResponse<List<EncryptedForm>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "all", "logicalUuid", logicalUuid)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormsByUniqueId(uniqueId: String): HttpResponse<List<EncryptedForm>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "all", "uniqueId", uniqueId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getFormByUniqueId(uniqueId: String): HttpResponse<EncryptedForm> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "uniqueId", uniqueId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -124,81 +118,74 @@ class RawFormApiImpl(
 		formId: String,
 		hcPartyId: String,
 	): HttpResponse<List<EncryptedForm>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "childrenOf", formId, hcPartyId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createForm(ft: EncryptedForm): HttpResponse<EncryptedForm> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
 	override suspend fun modifyForm(formDto: EncryptedForm): HttpResponse<EncryptedForm> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formDto)
 		}.wrap()
 
 	override suspend fun deleteForms(formIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formIds)
 		}.wrap()
 
 	override suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", formId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formDtos)
 		}.wrap()
 
 	override suspend fun createForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(formDtos)
@@ -211,7 +198,7 @@ class RawFormApiImpl(
 		planOfActionId: String?,
 		formTemplateId: String?,
 	): HttpResponse<List<EncryptedForm>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys")
@@ -222,7 +209,6 @@ class RawFormApiImpl(
 				parameter("formTemplateId", formTemplateId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -233,7 +219,7 @@ class RawFormApiImpl(
 		planOfActionId: String?,
 		formTemplateId: String?,
 	): HttpResponse<List<EncryptedForm>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys")
@@ -242,7 +228,6 @@ class RawFormApiImpl(
 				parameter("planOfActionId", planOfActionId)
 				parameter("formTemplateId", formTemplateId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -255,7 +240,7 @@ class RawFormApiImpl(
 		descending: Boolean?,
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "byDataOwnerPatientOpeningDate")
@@ -264,7 +249,6 @@ class RawFormApiImpl(
 				parameter("endDate", endDate)
 				parameter("descending", descending)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -274,7 +258,7 @@ class RawFormApiImpl(
 		hcPartyId: String,
 		secretFKeys: String,
 	): HttpResponse<List<IcureStub>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys", "delegations")
@@ -282,7 +266,6 @@ class RawFormApiImpl(
 				parameter("secretFKeys", secretFKeys)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -290,13 +273,12 @@ class RawFormApiImpl(
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys", "delegations")
 				parameter("hcPartyId", hcPartyId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
@@ -306,14 +288,13 @@ class RawFormApiImpl(
 		formTemplateId: String,
 		raw: Boolean?,
 	): HttpResponse<FormTemplate> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template", formTemplateId)
 				parameter("raw", raw)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -322,14 +303,13 @@ class RawFormApiImpl(
 		specialityCode: String,
 		raw: Boolean?,
 	): HttpResponse<List<FormTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template", specialityCode, "guid", formTemplateGuid)
 				parameter("raw", raw)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -338,7 +318,7 @@ class RawFormApiImpl(
 		loadLayout: Boolean?,
 		raw: Boolean?,
 	): HttpResponse<List<FormTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template", "bySpecialty", specialityCode)
@@ -346,7 +326,6 @@ class RawFormApiImpl(
 				parameter("raw", raw)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -354,7 +333,7 @@ class RawFormApiImpl(
 		loadLayout: Boolean?,
 		raw: Boolean?,
 	): HttpResponse<List<FormTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template")
@@ -362,29 +341,26 @@ class RawFormApiImpl(
 				parameter("raw", raw)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ft)
 		}.wrap()
 
 	override suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<DocIdentifier> =
-		delete {
+		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template", formTemplateId)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -392,12 +368,11 @@ class RawFormApiImpl(
 		formTemplateId: String,
 		ft: FormTemplate,
 	): HttpResponse<FormTemplate> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template", formTemplateId)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(ft)
@@ -407,35 +382,32 @@ class RawFormApiImpl(
 		formTemplateId: String,
 		payload: ByteArray,
 	): HttpResponse<String> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "template", formTemplateId, "attachment")
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedForm>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "bulkSharedMetadataUpdate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
 		}.wrap()
 
 	override suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "bulkSharedMetadataUpdateMinimal")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)

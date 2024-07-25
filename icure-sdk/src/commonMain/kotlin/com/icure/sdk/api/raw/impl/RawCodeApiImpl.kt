@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawCodeApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.BooleanResponse
 import com.icure.sdk.model.Code
 import com.icure.sdk.model.ListOfIds
@@ -38,7 +37,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawCodeApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -56,7 +55,7 @@ class RawCodeApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<Code>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "byLabel")
@@ -70,7 +69,6 @@ class RawCodeApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -83,7 +81,7 @@ class RawCodeApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<Code>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code")
@@ -96,7 +94,6 @@ class RawCodeApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -107,7 +104,7 @@ class RawCodeApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<Code>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "byLink", linkType)
@@ -117,7 +114,6 @@ class RawCodeApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -127,7 +123,7 @@ class RawCodeApiImpl(
 		code: String?,
 		version: String?,
 	): HttpResponse<List<Code>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "byRegionTypeCode")
@@ -137,7 +133,6 @@ class RawCodeApiImpl(
 				parameter("version", version)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -145,7 +140,7 @@ class RawCodeApiImpl(
 		region: String?,
 		type: String?,
 	): HttpResponse<List<String>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "codetype", "byRegionType")
@@ -153,7 +148,6 @@ class RawCodeApiImpl(
 				parameter("type", type)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -161,7 +155,7 @@ class RawCodeApiImpl(
 		region: String?,
 		type: String?,
 	): HttpResponse<List<String>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "tagtype", "byRegionType")
@@ -169,29 +163,26 @@ class RawCodeApiImpl(
 				parameter("type", type)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createCode(c: Code): HttpResponse<Code> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun createCodes(codeBatch: List<Code>): HttpResponse<List<Code>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(codeBatch)
@@ -202,7 +193,7 @@ class RawCodeApiImpl(
 		code: String,
 		version: String?,
 	): HttpResponse<BooleanResponse> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "isValid")
@@ -211,7 +202,6 @@ class RawCodeApiImpl(
 				parameter("version", version)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -221,7 +211,7 @@ class RawCodeApiImpl(
 		type: String,
 		languages: String?,
 	): HttpResponse<Code> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "byRegionLanguagesTypeLabel")
@@ -231,30 +221,27 @@ class RawCodeApiImpl(
 				parameter("languages", languages)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(codeIds)
 		}.wrap()
 
 	override suspend fun getCode(codeId: String): HttpResponse<Code> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", codeId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -263,35 +250,32 @@ class RawCodeApiImpl(
 		code: String,
 		version: String,
 	): HttpResponse<Code> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", type, code, version)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyCode(codeDto: Code): HttpResponse<Code> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(codeDto)
 		}.wrap()
 
 	override suspend fun modifyCodes(codeBatch: List<Code>): HttpResponse<List<Code>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(codeBatch)
@@ -306,7 +290,7 @@ class RawCodeApiImpl(
 		desc: Boolean?,
 		filterChain: FilterChain<Code>,
 	): HttpResponse<PaginatedList<Code>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "filter")
@@ -317,31 +301,28 @@ class RawCodeApiImpl(
 				parameter("sort", sort)
 				parameter("desc", desc)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(FilterChainSerializer(CodeAbstractFilterSerializer), filterChain)
 		}.wrap()
 
 	override suspend fun matchCodesBy(filter: AbstractFilter<Code>): HttpResponse<List<String>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "match")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(CodeAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun importCodes(codeType: String): HttpResponse<Unit> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", codeType)
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
@@ -354,12 +335,11 @@ class RawCodeApiImpl(
 		groupId: String,
 		codeBatch: List<Code>,
 	): HttpResponse<List<Code>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(codeBatch)
@@ -369,12 +349,11 @@ class RawCodeApiImpl(
 		groupId: String,
 		codeIds: ListOfIds,
 	): HttpResponse<List<Code>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(codeIds)
@@ -384,12 +363,11 @@ class RawCodeApiImpl(
 		groupId: String,
 		codeBatch: List<Code>,
 	): HttpResponse<List<Code>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(codeBatch)
