@@ -10,26 +10,25 @@ import kotlin.String
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-sealed interface ExternalFilterKey<T> {
-	public val key: T
+sealed interface ExternalFilterKey {
+	public val key: Any
 
 	@Serializable
 	@SerialName("string")
 	public data class ExternalFilterStringKey(
 		override val key: String,
-	) : ExternalFilterKey<String>
-
+	) : ExternalFilterKey
 	@Serializable
 	@SerialName("long")
 	public data class ExternalFilterLongKey(
 		override val key: Long,
-	) : ExternalFilterKey<Long>
+	) : ExternalFilterKey
 
 	@Serializable
 	@SerialName("complexKey")
 	public data class ExternalFilterComplexKey(
 		override val key: JsonElement,
-	) : ExternalFilterKey<JsonElement>
+	) : ExternalFilterKey
 	// region ExternalFilterKey-ExternalFilterKey
 
 	// endregion
