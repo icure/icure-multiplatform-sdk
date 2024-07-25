@@ -41,7 +41,8 @@ interface AccessLogBasicFlavourlessApi {
 	 */
 	suspend fun deleteAccessLog(entityId: String): DocIdentifier
 	/**
-	 * Deletes many access log. If you don't have write access to any of the entities they will be ignored.
+	 * Deletes many access logs. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * you don't have write access will be ignored.
 	 * @param entityIds ids of access logs.
 	 * @return the id and revision of the deleted access logs. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
@@ -250,6 +251,17 @@ interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<Dec
 	 * Note that this delegation metadata may be used to de-anonymize the corresponding delegation in any AccessLog,
 	 * not only in the provided entity.
 	 *
+	 * ## Example
+	 *
+	 * If you have an access log E, and you have shared it with patient P and healthcare party H, H will not
+	 * be able to know that P has access to E until you create delegations de anonymization metadata and share that with
+	 * H. From now on, for any access log that you have shared with P, H will be able to know that the access log was
+	 * shared with P, regardless of whether it was created before or after the corresponding de-anonymization metadata.
+	 *
+	 * At the same time since the de-anonymization metadata applies to a specific delegation and therefore to a specific
+	 * delegator-delegate pair, you will not be able to see if P has access to an access log that was created by H and
+	 * shared with you and P unless also H creates delegations de-anonymization metadata.
+	 * 
 	 * @param entity an access log
 	 * @param delegates a set of data owner ids
 	 */
@@ -297,6 +309,7 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 	override suspend fun getAccessLogs(entityIds: List<String>): List<E> =
 		rawApi.getAccessLogByIds(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findAccessLogsBy(
 		fromEpoch: Long?,
 		toEpoch: Long?,
@@ -306,6 +319,7 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 	): PaginatedList<E> =
 		rawApi.findAccessLogsBy(fromEpoch, toEpoch, startKey, startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findAccessLogsByUserAfterDate(
 		userId: String,
 		accessType: String?,
@@ -318,6 +332,7 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 		rawApi.findAccessLogsByUserAfterDate(userId, accessType, startDate, startKey, startDocumentId, limit, descending).successBody()
 			.map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findAccessLogsInGroup(
 		groupId: String,
 		fromEpoch: Long?,
@@ -370,6 +385,7 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	override suspend fun shareWithMany(accessLog: E, delegates: Map<String, AccessLogShareOptions>): E =
 		tryShareWithMany(accessLog, delegates).updatedEntityOrThrow()
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findAccessLogsByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
