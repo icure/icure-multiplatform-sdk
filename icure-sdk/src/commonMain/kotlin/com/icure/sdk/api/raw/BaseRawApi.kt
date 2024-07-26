@@ -1,18 +1,27 @@
 package com.icure.sdk.api.raw
 
+import com.icure.sdk.auth.ServerAuthenticationClass
+import com.icure.sdk.auth.services.AuthProvider
+import com.icure.sdk.auth.services.AuthService
+import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.RequestStatusException
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.TextContent
 import io.ktor.http.headers
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration
 
+@InternalIcureApi
 abstract class BaseRawApi(
 	internal val httpClient: HttpClient,
 	private val additionalHeaders: Map<String, String>,
@@ -37,15 +46,30 @@ abstract class BaseRawApi(
 		}
 	}
 
-	protected suspend fun get(block: suspend HttpRequestBuilder.() -> Unit) = request(HttpMethod.Get, block)
+	protected suspend fun get(authProvider: AuthProvider? = null, block: suspend HttpRequestBuilder.() -> Unit) = requestAndRetryOnUnauthorized(HttpMethod.Get, authProvider?.getAuthService(), null, block)
 
-	protected suspend fun post(block: suspend HttpRequestBuilder.() -> Unit) = request(HttpMethod.Post, block)
+	protected suspend fun post(authProvider: AuthProvider? = null, block: suspend HttpRequestBuilder.() -> Unit) = requestAndRetryOnUnauthorized(HttpMethod.Post, authProvider?.getAuthService(), null, block)
 
-	protected suspend fun put(block: suspend HttpRequestBuilder.() -> Unit) = request(HttpMethod.Put, block)
+	protected suspend fun put(authProvider: AuthProvider? = null, block: suspend HttpRequestBuilder.() -> Unit) = requestAndRetryOnUnauthorized(HttpMethod.Put, authProvider?.getAuthService(), null, block)
 
-	protected suspend fun delete(block: suspend HttpRequestBuilder.() -> Unit) = request(HttpMethod.Delete, block)
+	protected suspend fun delete(authProvider: AuthProvider? = null, block: suspend HttpRequestBuilder.() -> Unit) = requestAndRetryOnUnauthorized(HttpMethod.Delete, authProvider?.getAuthService(), null, block)
 
-	private suspend fun request(method: HttpMethod, block: suspend HttpRequestBuilder.() -> Unit) =
+	private suspend fun requestAndRetryOnUnauthorized(method: HttpMethod, authService: AuthService?, authenticationClass: ServerAuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit): HttpResponse {
+		val response = request(method, authService, authenticationClass, block)
+		return if (authService != null && response.status == HttpStatusCode.Unauthorized) {
+			authService.invalidateCurrentToken(RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value))
+			return requestAndRetryOnUnauthorized(
+				method = method,
+				authService = authService,
+				authenticationClass = response.headers["Icure-Minimum-Required-Auth-Level"]?.let { ServerAuthenticationClass.minAuthClassForLevel(it.toInt()) },
+				block = block
+			)
+		} else {
+			response
+		}
+	}
+
+	private suspend fun request(method: HttpMethod, authService: AuthService?, authenticationClass: ServerAuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit) =
 		httpClient.request {
 			this.method = method
 			headers {
@@ -57,6 +81,9 @@ abstract class BaseRawApi(
 				timeout {
 					requestTimeoutMillis = it.inWholeMilliseconds
 				}
+			}
+			authService?.also {
+				setAuthorizationWith(it, authenticationClass)
 			}
 			block()
 			addAccessControlKeys()

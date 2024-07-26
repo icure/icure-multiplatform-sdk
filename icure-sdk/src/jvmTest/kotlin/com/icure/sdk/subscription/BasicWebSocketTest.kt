@@ -1,5 +1,8 @@
 package com.icure.sdk.subscription
 
+import com.icure.sdk.auth.Jwt
+import com.icure.sdk.auth.services.JwtBasedAuthProvider
+import com.icure.sdk.auth.services.TokenBasedAuthService
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
@@ -82,8 +85,11 @@ class BasicWebSocketTest : StringSpec({
 	}
 
 	"Should be able to reconnect if didn't received a ping within the configured delay" {
-		val authProvider = mockk<WebSocketAuthProvider>() {
-			coEvery { getBearerToken() } returns "token"
+		val authService = mockk<TokenBasedAuthService<Jwt>> {
+			coEvery { getToken() } returns Jwt("token", "refresh")
+		}
+		val authProvider = mockk<JwtBasedAuthProvider> {
+			coEvery { getAuthService() } returns authService
 		}
 
 		while (!fakeWebsocketServer.application.isActive) {
@@ -116,9 +122,13 @@ class BasicWebSocketTest : StringSpec({
 	}
 
 	"Should close the connection if the queue is full" {
-		val authProvider = mockk<WebSocketAuthProvider>() {
-			coEvery { getBearerToken() } returns "token"
+		val authService = mockk<TokenBasedAuthService<Jwt>> {
+			coEvery { getToken() } returns Jwt("token", "refresh")
 		}
+		val authProvider = mockk<JwtBasedAuthProvider> {
+			coEvery { getAuthService() } returns authService
+		}
+
 
 		while (!fakeWebsocketServer.application.isActive) {
 			delay(1.seconds)

@@ -5,9 +5,9 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.impl.exportSpkiHex
+import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.test.DataOwnerDetails
@@ -27,7 +27,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 		initialiseTestEnvironment()
 	}
 
-	val note: String = "Some secret note"
+	val note = "Some secret note"
 	val testStart = currentEpochMs()
 
 	suspend fun IcureSdk.createDataAndShareWith(
@@ -50,16 +50,14 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	) =
 		patient.getPatient(dataId).note shouldBe note
 
-	suspend fun IcureSdk.getMaintenanceTasks() =
-		maintenanceTask.filterMaintenanceTasksBy(
-			null,
-			100,
-			FilterChain(
-				filter = MaintenanceTaskAfterDateFilter(
-					date = testStart - 1000L
-				)
-			)
-		).rows
+	suspend fun IcureSdk.getMaintenanceTasks(): List<DecryptedMaintenanceTask> {
+		val iterator = maintenanceTask.filterMaintenanceTasksBy(MaintenanceTaskAfterDateFilter(date = testStart - 1000L))
+		val tasks = mutableListOf<DecryptedMaintenanceTask>()
+		while(iterator.hasNext()) {
+			tasks.add(iterator.next())
+		}
+		return tasks
+	}
 
 	suspend fun DataOwnerDetails.checkReceivedMaintenanceTaskAndGiveAccessBack(
 		expectedNotification: KeyPairUpdateNotification

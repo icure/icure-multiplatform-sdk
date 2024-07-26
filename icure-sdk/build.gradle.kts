@@ -1,3 +1,5 @@
+import tasks.InitialiseTestEnvironment
+
 plugins {
 	kotlinMultiplatform()
 	kotlinSerialization()
@@ -38,6 +40,7 @@ kotlin {
 				implementation(libs.kotestAssertions)
 				implementation(libs.kotestEngine)
 				implementation(libs.kotestDatatest)
+				implementation(libs.kotp)
 				implementation(kotlin("test-common"))
 				implementation(kotlin("test-annotations-common"))
 			}
@@ -51,7 +54,6 @@ kotlin {
 		val jvmTest by getting {
 			dependencies {
 				implementation(libs.kotestRunnerJunit)
-				implementation("io.icure:icure-e2e-test-setup:0.0.24-gc854bb2431")
 				implementation(libs.ktorClientEngineCio) // Currently needed by test setup, remove later
 				implementation(libs.mockk)
 				implementation(libs.bundles.ktorServer)
@@ -114,6 +116,31 @@ publishing {
 		}
 	}
 }
+
+tasks.register<InitialiseTestEnvironment>("initialiseTestEnvironment")
+
+tasks.named("allTests") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("iosSimulatorArm64Test") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("iosX64Test") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jsBrowserTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jsNodeTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jsTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+tasks.named("jvmTest") {
+	dependsOn("initialiseTestEnvironment")
+}
+
 
 tasks.named("jsNodeDevelopmentRun") { dependsOn("jsProductionExecutableCompileSync") }
 tasks.named("jsNodeProductionRun") { dependsOn("jsProductionExecutableCompileSync") }

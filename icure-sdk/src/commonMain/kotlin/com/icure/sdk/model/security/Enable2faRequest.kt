@@ -1,6 +1,7 @@
 package com.icure.sdk.model.security
 
 import kotlinx.serialization.Serializable
+import kotlin.Int
 import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -9,6 +10,7 @@ import kotlin.String
 @Serializable
 data class Enable2faRequest(
 	public val secret: String,
+	public val otpLength: Int,
 ) {
 	// region Enable2faRequest-Enable2faRequest
 

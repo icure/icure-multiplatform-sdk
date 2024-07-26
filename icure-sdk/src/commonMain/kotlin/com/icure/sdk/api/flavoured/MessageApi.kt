@@ -226,6 +226,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	override suspend fun findMessagesByTransportGuid(transportGuid: String) =
 		rawApi.findMessagesByTransportGuid(transportGuid).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterMessagesBy()"))
 	override suspend fun findMessagesByTransportGuidSentDate(
 		transportGuid: String,
 		from: Long,
@@ -237,6 +238,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	) = rawApi.findMessagesByTransportGuidSentDate(transportGuid, from, to, startKey.encodeStartKey(), startDocumentId, limit, hcpId).successBody()
 		.map { maybeDecrypt(it) }
 
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterMessagesBy()"))
 	override suspend fun findMessagesByToAddress(
 		toAddress: String,
 		startKey: JsonElement?,
@@ -244,6 +246,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 		limit: Int?,
 	) = rawApi.findMessagesByToAddress(toAddress, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterMessagesBy()"))
 	override suspend fun findMessagesByFromAddress(
 		fromAddress: String,
 		startKey: JsonElement?,

@@ -1,5 +1,6 @@
 package com.icure.sdk.subscription
 
+import com.icure.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
@@ -49,19 +50,11 @@ import kotlin.time.Duration.Companion.seconds
  *
  * If the queue is full, the connection will be closed and a fatal error will be emitted
  *
- * @param onOpenListeners List of listeners to be called when the WebSocket connection is opened (on the first connection)
- * @param sessionProvider Provider for the WebSocket session
- * @param retryDelay The base delay for the exponential backoff retry mechanism
- * @param retryDelayExponentFactor The factor to be used in the exponential backoff retry mechanism
- * @param maxRetries The maximum number of retries before giving up
- * @param durationBetweenPings The duration between pings to be sent to the server
- * @param channelSize The size of the queue to store messages that are sent while processing them
- * @param channelMessageCallback The callback to be called when a message is sent
  * */
 internal class WebSocketSubscription<E : Identifiable<String>> private constructor (
 	private val hostname: String,
 	private val path: String,
-	private val webSocketAuthProvider: WebSocketAuthProvider,
+	private val webSocketAuthProvider: JwtBasedAuthProvider,
 	private val client: HttpClient,
 	private val clientJson: Json,
 	private val config: EntitySubscriptionConfiguration,
@@ -79,7 +72,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		suspend fun <BaseType : Identifiable<String>, NotificationEntity : BaseType> initialize(
 			hostname: String,
 			path: String,
-			webSocketAuthProvider: WebSocketAuthProvider,
+			webSocketAuthProvider: JwtBasedAuthProvider,
 			client: HttpClient,
 			clientJson: Json,
 			config: EntitySubscriptionConfiguration?,
@@ -153,9 +146,9 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	}
 
 	/**
-	 * This will launch a job that will check if a ping has been received in the last [durationBetweenPings]
+	 * This will launch a job that will check if a ping has been received in the last [DURATION_BETWEEN_PINGS]
 	 *
-	 * If no ping has been received in the last [durationBetweenPings] and the job is still active, the connection will be closed. This should ignite the reconnection mechanism.
+	 * If no ping has been received in the last [DURATION_BETWEEN_PINGS] and the job is still active, the connection will be closed. This should ignite the reconnection mechanism.
 	 *
 	 * @return The job that has been launched
 	 */
@@ -171,7 +164,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	/**
 	 * Incoming messages loop that will handle the incoming messages and dispatch them to the queue or to the appropriate event.
 	 *
-	 * This loop will handle the ping/pong mechanism and will close the connection if no ping is received in the last [durationBetweenPings]
+	 * This loop will handle the ping/pong mechanism and will close the connection if no ping is received in the last [DURATION_BETWEEN_PINGS]
 	 *
 	 * Note: Control frames are not supported in this loop, they should not be emitted by Ktor's ReceiveChannel
 	 */
@@ -253,7 +246,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	}
 
 	private suspend fun startSession(): DefaultClientWebSocketSession {
-		val jwtToken = webSocketAuthProvider.getBearerToken()
+		val jwtToken = webSocketAuthProvider.getAuthService().getToken()
 		return client.initWsOrWssSession(
 			unsecure = hostname.startsWith("http://"),
 			method = HttpMethod.Get,
