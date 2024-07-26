@@ -20,7 +20,7 @@ interface AuthSecretProvider {
 	 *
 	 * Regardless of the number of elements in the array only one secret of the accepted types is sufficient for the operation to succeed.
 	 *
-	 * ## TWO_FACTOR_AUTHENTICATION_TOKEN secret type
+	 * ## [AuthenticationClass.TWO_FACTOR_AUTHENTICATION_TOKEN] secret type
 	 *
 	 * The [AuthenticationClass.TWO_FACTOR_AUTHENTICATION_TOKEN] secret type is only used when the user has 2fa enabled. In this case the SDK will call
 	 * this method twice, once containing the [AuthenticationClass.PASSWORD] element in the [acceptedSecrets] array, and if the provided secret is a
