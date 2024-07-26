@@ -172,10 +172,9 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
 	 * @param delegateId the owner that will gain access to the Message
-	 * @param healthElement the Message to share with [delegateId]
-	 * @param options specifies how the Message will be shared. By default, all data available to the current user
-	 * will be shared, and the delegate will have the same permissions as the current user on the Message. Refer
-	 * to the documentation of [MessageShareOptions] for more information.
+	 * @param message the Message to share with [delegateId]
+	 * @param options specifies how the Message will be shared. Refer to the documentation of [MessageShareOptions] for
+	 * more information.
 	 * @return the updated Message if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun shareWith(
@@ -188,7 +187,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	 * Share a message with multiple data owners. The Message must already exist in the database for this method to
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
-	 * @param healthElement the Message to share
+	 * @param message the Message to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
 	 * @return the updated Message if the sharing was successful, or details on the errors if the sharing failed.
@@ -203,7 +202,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
 	 * Throws an exception if the operation fails.
-	 * @param healthElement the Message to share
+	 * @param message the Message to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
 	 * @return the updated Message.
@@ -276,14 +275,14 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	 * of the access log the method will return an empty set.
 	 * Note: entities now have only one encryption key, but this method returns a set for compatibility with older
 	 * versions of iCure where this was not a guarantee.
-	 * @param healthElement a message
+	 * @param message a message
 	 * @return the encryption keys extracted from the provided Message.
 	 */
 	suspend fun getEncryptionKeysOf(message: Message): Set<HexString>
 
 	/**
 	 * Specifies if the current user has write access to a message.
-	 * @param healthElement a message
+	 * @param message a message
 	 * @return if the current user has write access to the provided Message
 	 */
 	suspend fun hasWriteAccess(message: Message): Boolean
@@ -292,7 +291,7 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	 * Attempts to extract the patient id linked to a message.
 	 * Note: messages usually should be linked with only one patient, but this method returns a set for compatibility
 	 * with older versions of iCure
-	 * @param healthElement a message
+	 * @param message a message
 	 * @return the id of the patient linked to the Message, or empty if the current user can't access any patient id
 	 * of the Message.
 	 */
@@ -333,7 +332,7 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 
 	/**
 	 * Decrypts a message, throwing an exception if it is not possible.
-	 * @param healthElement a message
+	 * @param message a message
 	 * @return the decrypted Message
 	 * @throws EntityEncryptionException if the Message could not be decrypted
 	 */
@@ -341,7 +340,7 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 
 	/**
 	 * Tries to decrypt a message, returns the input if it is not possible.
-	 * @param healthElement an encrypted Message
+	 * @param message an encrypted Message
 	 * @return the decrypted Message if the decryption was successful or the input if it was not.
 	 */
 	suspend fun tryDecrypt(message: EncryptedMessage): Message
@@ -379,32 +378,40 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 			this::getMessages
 		)
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>) =
 		rawApi.listMessagesByTransportGuids(hcPartyId, ListOfIds(transportGuids)).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findMessagesByHCPartyPatientForeignKeys(
 		secretPatientKeys: List<String>,
 	) = rawApi.findMessagesByHCPartyPatientForeignKeys(secretPatientKeys).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findMessages(
 		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
 	) = rawApi.findMessages(startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun getChildrenMessages(
 		messageId: String,
 	) = rawApi.getChildrenMessages(messageId).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun getMessagesChildren(messageIds: List<String>) =
 		rawApi.getMessagesChildren(ListOfIds(messageIds)).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun listMessagesByInvoices(invoiceIds: List<String>) =
 		rawApi.listMessagesByInvoices(ListOfIds(invoiceIds)).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findMessagesByTransportGuid(transportGuid: String) =
 		rawApi.findMessagesByTransportGuid(transportGuid).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterMessagesBy()"))
 	override suspend fun findMessagesByTransportGuidSentDate(
 		transportGuid: String,
 		from: Long,
@@ -416,6 +423,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	) = rawApi.findMessagesByTransportGuidSentDate(transportGuid, from, to, startKey.encodeStartKey(), startDocumentId, limit, hcpId).successBody()
 		.map { maybeDecrypt(it) }
 
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterMessagesBy()"))
 	override suspend fun findMessagesByToAddress(
 		toAddress: String,
 		startKey: JsonElement?,
@@ -423,6 +431,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 		limit: Int?,
 	) = rawApi.findMessagesByToAddress(toAddress, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterMessagesBy()"))
 	override suspend fun findMessagesByFromAddress(
 		fromAddress: String,
 		startKey: JsonElement?,
@@ -430,6 +439,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 		limit: Int?,
 	) = rawApi.findMessagesByFromAddress(fromAddress, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
 
+	@Deprecated("Status bits have unclear meaning, use read status instead")
 	override suspend fun setMessagesStatusBits(
 		entityIds: List<String>,
 		statusBits: Int,
@@ -481,6 +491,7 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 	override suspend fun shareWithMany(message: E, delegates: Map<String, MessageShareOptions>): E =
 		tryShareWithMany(message, delegates).updatedEntityOrThrow()
 
+	@Deprecated("Will be replaced by filter")
 	override suspend fun findMessagesByHcPartyPatient(
 		hcPartyId: String,
 		patient: Patient,
