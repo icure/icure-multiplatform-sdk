@@ -92,6 +92,7 @@ interface IcureApis : IcureNonCryptoApis {
 	val maintenanceTask: MaintenanceTaskApi
 	val message: MessageApi
 	val patient: PatientApi
+	@Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	val receipt: ReceiptApi
 	val timeTable: TimeTableApi
 	val topic: TopicApi
@@ -122,6 +123,7 @@ interface IcureBaseApis : IcureNonCryptoApis {
 	val maintenanceTask: MaintenanceTaskBasicApi
 	val message: MessageBasicApi
 	val patient: PatientBasicApi
+	@Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	val receipt: ReceiptBasicApi
 	val timeTable: TimeTableBasicApi
 	val topic: TopicBasicApi
