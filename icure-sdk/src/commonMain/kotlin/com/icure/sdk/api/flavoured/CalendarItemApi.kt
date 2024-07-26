@@ -36,17 +36,17 @@ import kotlinx.serialization.json.decodeFromJsonElement
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface CalendarItemBasicFlavourlessApi {
 	/**
-	 * Deletes {{an entity}}. If you don't have write access to the {{entity}} the method will fail.
-	 * @param entityId id of the {{entity}}.
-	 * @return the id and revision of the deleted {{entity}}.
+	 * Deletes a calendar item. If you don't have write access to the calendar item the method will fail.
+	 * @param entityId id of the calendar item.
+	 * @return the id and revision of the deleted calendar item.
 	 */
 	suspend fun deleteCalendarItem(entityId: String): DocIdentifier
 
 	/**
-	 * Deletes many {{entities}}. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * Deletes many calendar items. Ids that do not correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the {{entities}}.
-	 * @return the id and revision of the deleted {{entities}}. If some entities could not be deleted (for example
+	 * @param entityIds ids of the calendar items.
+	 * @return the id and revision of the deleted calendar items. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
 	suspend fun deleteCalendarItems(entityIds: List<String>): List<DocIdentifier>
@@ -55,29 +55,29 @@ interface CalendarItemBasicFlavourlessApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	/**
-	 * Modifies {{an entity}}. You need to have write access to the entity.
+	 * Modifies a calendar item. You need to have write access to the entity.
 	 * Flavoured method.
-	 * @param entity {{an entity}} with update content
-	 * @return the {{entity}} updated with the provided content and a new revision.
+	 * @param entity a calendar item with update content
+	 * @return the calendar item updated with the provided content and a new revision.
 	 */
 	suspend fun modifyCalendarItem(entity: E): E
 
 	/**
-	 * Get {{an entity}} by its id. You must have read access to the entity. Fails if the id does not correspond to any
-	 * entity, corresponds to an entity that is not {{an entity}}, or corresponds to an entity for which you don't have
+	 * Get a calendar item by its id. You must have read access to the entity. Fails if the id does not correspond to any
+	 * entity, corresponds to an entity that is not a calendar item, or corresponds to an entity for which you don't have
 	 * read access.
 	 * Flavoured method.
-	 * @param entityId {{an entity}} id.
-	 * @return the {{entity}} with id [entityId].
+	 * @param entityId a calendar item id.
+	 * @return the calendar item with id [entityId].
 	 */
 	suspend fun getCalendarItem(entityId: String): E
 
 	/**
-	 * Get multiple {{entities}} by their ids. Ignores all ids that do not correspond to an entity, correspond to
-	 * an entity that is not {{an entity}}, or correspond to an entity for which you don't have read access.
+	 * Get multiple calendar items by their ids. Ignores all ids that do not correspond to an entity, correspond to
+	 * an entity that is not a calendar item, or correspond to an entity for which you don't have read access.
 	 * Flavoured method.
-	 * @param entityIds a list of {{entities}} ids
-	 * @return all {{entities}} that you can access with one of the provided ids.
+	 * @param entityIds a list of calendar items ids
+	 * @return all calendar items that you can access with one of the provided ids.
 	 */
 	suspend fun getCalendarItems(entityIds: List<String>): List<E>
 
@@ -99,15 +99,15 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
 interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavouredApi<E> {
 	/**
-	 * Share {{an entity}} with another data owner. The {{entity}} must already exist in the database for this method to
-	 * succeed. If you want to share the {{entity}} before creation you should instead pass provide the delegates in
+	 * Share a calendar item with another data owner. The calendar item must already exist in the database for this method to
+	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
-	 * @param delegateId the owner that will gain access to the {{entity}}
-	 * @param calendarItem the {{entity}} to share with [delegateId]
-	 * @param options specifies how the {{entity}} will be shared. By default, all data available to the current user
-	 * will be shared, and the delegate will have the same permissions as the current user on the {{entity}}. Refer
-	 * to the documentation of [{{EntityType}}ShareOptions] for more information.
-	 * @return the updated {{entity}} if the sharing was successful, or details on the errors if the sharing failed.
+	 * @param delegateId the owner that will gain access to the calendar item
+	 * @param calendarItem the calendar item to share with [delegateId]
+	 * @param options specifies how the calendar item will be shared. By default, all data available to the current user
+	 * will be shared, and the delegate will have the same permissions as the current user on the calendar item. Refer
+	 * to the documentation of [CalendarItemShareOptions] for more information.
+	 * @return the updated calendar item if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun shareWith(
 		delegateId: String,
@@ -117,13 +117,13 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	): SimpleShareResult<E>
 
 	/**
-	 * Share {{an entity}} with multiple data owners. The {{entity}} must already exist in the database for this method to
-	 * succeed. If you want to share the {{entity}} before creation you should instead pass provide the delegates in
+	 * Share a calendar item with multiple data owners. The calendar item must already exist in the database for this method to
+	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
-	 * @param calendarItem the {{entity}} to share
+	 * @param calendarItem the calendar item to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
-	 * @return the updated {{entity}} if the sharing was successful, or details on the errors if the sharing failed.
+	 * @return the updated calendar item if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun tryShareWithMany(
 		calendarItem: E,
@@ -131,14 +131,14 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	): SimpleShareResult<E>
 
 	/**
-	 * Share {{an entity}} with multiple data owners. The {{entity}} must already exist in the database for this method to
-	 * succeed. If you want to share the {{entity}} before creation you should instead pass provide the delegates in
+	 * Share a calendar item with multiple data owners. The calendar item must already exist in the database for this method to
+	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
 	 * Throws an exception if the operation fails.
-	 * @param calendarItem the {{entity}} to share
+	 * @param calendarItem the calendar item to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
-	 * @return the updated {{entity}}.
+	 * @return the updated calendar item.
 	 */
 	suspend fun shareWithMany(
 		calendarItem: E,
@@ -172,23 +172,23 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavouredApi<DecryptedCalendarItem> {
 	/**
-	 * Create a new {{entity}}. The provided {{entity}} must have the encryption metadata initialised.
-	 * @param entity {{an entity}} with initialised encryption metadata
-	 * @return the created {{entity}} with updated revision.
+	 * Create a new calendar item. The provided calendar item must have the encryption metadata initialised.
+	 * @param entity a calendar item with initialised encryption metadata
+	 * @return the created calendar item with updated revision.
 	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
 	 */
 	suspend fun createCalendarItem(entity: DecryptedCalendarItem): DecryptedCalendarItem
 
 	/**
-	 * Creates a new {{entity}} with initialised encryption metadata
-	 * @param base {{an entity}} with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new calendar item with initialised encryption metadata
+	 * @param base a calendar item with initialised content and uninitialised encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
-	 * @param patient the patient linked to the {{entity}}.
+	 * @param patient the patient linked to the calendar item.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
-	 * @param secretId specifies which secret id of [patient] to use for the new {{entity}}
-	 * @return {{an entity}} with initialised encryption metadata.
+	 * @param secretId specifies which secret id of [patient] to use for the new calendar item
+	 * @return a calendar item with initialised encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -203,77 +203,77 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	): DecryptedCalendarItem
 
 	/**
-	 * Attempts to extract the encryption keys of {{an entity}}. If the user does not have access to any encryption key
+	 * Attempts to extract the encryption keys of a calendar item. If the user does not have access to any encryption key
 	 * of the access log the method will return an empty set.
 	 * Note: entities now have only one encryption key, but this method returns a set for compatibility with older
 	 * versions of iCure where this was not a guarantee.
-	 * @param calendarItem {{an entity}}
-	 * @return the encryption keys extracted from the provided {{entity}}.
+	 * @param calendarItem a calendar item
+	 * @return the encryption keys extracted from the provided calendar item.
 	 */
 	suspend fun getEncryptionKeysOf(calendarItem: CalendarItem): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to {{an entity}}.
-	 * @param calendarItem {{an entity}}
-	 * @return if the current user has write access to the provided {{entity}}
+	 * Specifies if the current user has write access to a calendar item.
+	 * @param calendarItem a calendar item
+	 * @return if the current user has write access to the provided calendar item
 	 */
 	suspend fun hasWriteAccess(calendarItem: CalendarItem): Boolean
 
 	/**
-	 * Attempts to extract the patient id linked to {{an entity}}.
-	 * Note: {{entities}} usually should be linked with only one patient, but this method returns a set for compatibility
+	 * Attempts to extract the patient id linked to a calendar item.
+	 * Note: calendar items usually should be linked with only one patient, but this method returns a set for compatibility
 	 * with older versions of iCure
-	 * @param calendarItem {{an entity}}
-	 * @return the id of the patient linked to the {{entity}}, or empty if the current user can't access any patient id
-	 * of the {{entity}}.
+	 * @param calendarItem a calendar item
+	 * @return the id of the patient linked to the calendar item, or empty if the current user can't access any patient id
+	 * of the calendar item.
 	 */
 	suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String>
 
 	/**
-	 * Create metadata to allow other users to identify the anonymous delegates of {{an entity}}.
+	 * Create metadata to allow other users to identify the anonymous delegates of a calendar item.
 	 *
 	 * When calling this method the SDK will use all the information available to the current user to try to identify
-	 * any anonymous data-owners in the delegations of the provided {{entity}}. The SDK will be able to identify the
+	 * any anonymous data-owners in the delegations of the provided calendar item. The SDK will be able to identify the
 	 * anonymous data owners of the delegations only under the following conditions:
 	 * - The other participant of the delegation is the current data owner
 	 * - The SDK is using hierarchical data owners and the other participant of the delegation is a parent of the
 	 * current data owner
 	 * - There is de-anonymization metadata for the delegation shared with the current data owner.
 	 *
-	 * After identifying the anonymous delegates in the {{entity}} the sdk will create the corresponding de-anonymization
+	 * After identifying the anonymous delegates in the calendar item the sdk will create the corresponding de-anonymization
 	 * metadata if it does not yet exist, and then share it with the provided delegates.
 	 *
-	 * Note that this delegation metadata may be used to de-anonymize the corresponding delegation in any {{EntityType}},
+	 * Note that this delegation metadata may be used to de-anonymize the corresponding delegation in any CalendarItem,
 	 * not only in the provided instance.
 	 *
 	 * ## Example
 	 *
-	 * If you have {{an entity}} E, and you have shared it with patient P and healthcare party H, H will not
+	 * If you have a calendar item E, and you have shared it with patient P and healthcare party H, H will not
 	 * be able to know that P has access to E until you create delegations de anonymization metadata and share that with
-	 * H. From now on, for any {{entity}} that you have shared with P, H will be able to know that the {{entity}} was
+	 * H. From now on, for any calendar item that you have shared with P, H will be able to know that the calendar item was
 	 * shared with P, regardless of whether it was created before or after the corresponding de-anonymization metadata.
 	 *
 	 * At the same time since the de-anonymization metadata applies to a specific delegation and therefore to a specific
-	 * delegator-delegate pair, you will not be able to see if P has access to {{an entity}} that was created by H and
+	 * delegator-delegate pair, you will not be able to see if P has access to a calendar item that was created by H and
 	 * shared with you and P unless also H creates delegations de-anonymization metadata.
 	 *
-	 * @param entity {{an entity}}
+	 * @param entity a calendar item
 	 * @param delegates a set of data owner ids
 	 */
 	suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>)
 
 	/**
-	 * Decrypts {{an entity}}, throwing an exception if it is not possible.
-	 * @param calendarItem {{an entity}}
-	 * @return the decrypted {{entity}}
-	 * @throws EntityEncryptionException if the {{entity}} could not be decrypted
+	 * Decrypts a calendar item, throwing an exception if it is not possible.
+	 * @param calendarItem a calendar item
+	 * @return the decrypted calendar item
+	 * @throws EntityEncryptionException if the calendar item could not be decrypted
 	 */
 	suspend fun decrypt(calendarItem: EncryptedCalendarItem): DecryptedCalendarItem
 
 	/**
-	 * Tries to decrypt {{an entity}}, returns the input if it is not possible.
-	 * @param calendarItem an encrypted {{entity}}
-	 * @return the decrypted {{entity}} if the decryption was successful or the input if it was not.
+	 * Tries to decrypt a calendar item, returns the input if it is not possible.
+	 * @param calendarItem an encrypted calendar item
+	 * @return the decrypted calendar item if the decryption was successful or the input if it was not.
 	 */
 	suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem
 
