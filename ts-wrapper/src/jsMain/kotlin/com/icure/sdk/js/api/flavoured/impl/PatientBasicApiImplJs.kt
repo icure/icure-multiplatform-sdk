@@ -115,7 +115,7 @@ internal class PatientBasicApiImplJs(
 	override fun undeletePatient(patientIds: String): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val patientIdsConverted: String = patientIds
-		val result = patientBasicApi.undeletePatient(
+		val result = patientBasicApi.undeletePatients(
 			patientIdsConverted,
 		)
 		listToArray(
