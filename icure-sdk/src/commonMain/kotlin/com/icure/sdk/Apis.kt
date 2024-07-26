@@ -87,6 +87,7 @@ interface IcureApis : IcureNonCryptoApis {
 	val document: DocumentApi
 	val form: FormApi
 	val healthElement: HealthElementApi
+	@Deprecated("The invoice API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	val invoice: InvoiceApi
 	val maintenanceTask: MaintenanceTaskApi
 	val message: MessageApi
@@ -116,6 +117,7 @@ interface IcureBaseApis : IcureNonCryptoApis {
 	val document: DocumentBasicApi
 	val form: FormBasicApi
 	val healthElement: HealthElementBasicApi
+	@Deprecated("The invoice API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	val invoice: InvoiceBasicApi
 	val maintenanceTask: MaintenanceTaskBasicApi
 	val message: MessageBasicApi

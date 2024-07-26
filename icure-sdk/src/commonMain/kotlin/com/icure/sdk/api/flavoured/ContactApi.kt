@@ -97,9 +97,11 @@ interface ContactBasicFlavourlessApi : Subscribable<Contact, EncryptedContact> {
 	): List<IcureStub>
 
 	/**
-	 * Gives an approximation of the amount of times each code of type [codeType] is used in services. This number is
-	 * not exact, and may be cached, so you should not use this method if you need precise values, but it can be useful
-	 * if you want to give suggestions.
+	 * Gives an approximation of the amount of times each code of type [codeType] is used in services where the current
+	 * data owner is a direct delegate (does not count situations where the data owner has access to the service through
+	 * delegations to a parent data owner).
+	 * This number is not exact, and may be cached, so you should not use this method if you need precise values, but
+	 * it can be useful if you want to give suggestions.
 	 * Only codes that occur at least [minOccurrences] times will be used.
 	 * @return the occurrences for codes of type [codeType] in services.
 	 */
