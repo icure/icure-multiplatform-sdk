@@ -4,7 +4,6 @@ import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.sdk.api.raw.RawContactApi
 import com.icure.sdk.crypto.InternalCryptoServices
-import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -250,7 +249,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	 * @param contact the contact to share with [delegateId]
 	 * @param options specifies how the contact will be shared. By default, all data available to the current user
 	 * will be shared, and the delegate will have the same permissions as the current user on the contact. Refer
-	 * to the documentation of [CalendarItemShareOptions] for more information.
+	 * to the documentation of [ContactShareOptions] for more information.
 	 * @return the updated contact if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun shareWith(

@@ -1,7 +1,6 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawClassificationApi
-import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
@@ -88,7 +87,7 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	 * @param classification the classification to share with [delegateId]
 	 * @param options specifies how the classification will be shared. By default, all data available to the current user
 	 * will be shared, and the delegate will have the same permissions as the current user on the classification. Refer
-	 * to the documentation of [CalendarItemShareOptions] for more information.
+	 * to the documentation of [ClassificationShareOptions] for more information.
 	 * @return the updated classification if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun shareWith(

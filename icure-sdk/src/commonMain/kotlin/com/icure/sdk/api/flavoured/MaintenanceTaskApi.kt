@@ -1,7 +1,6 @@
 package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawMaintenanceTaskApi
-import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
@@ -108,7 +107,7 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 	 * @param maintenanceTask the maintenance task to share with [delegateId]
 	 * @param options specifies how the maintenance task will be shared. By default, all data available to the current user
 	 * will be shared, and the delegate will have the same permissions as the current user on the maintenance task. Refer
-	 * to the documentation of [CalendarItemShareOptions] for more information.
+	 * to the documentation of [MaintenanceTaskShareOptions] for more information.
 	 * @return the updated maintenance task if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun shareWith(

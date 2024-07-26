@@ -179,7 +179,9 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	 */
 	suspend fun getDocument(entityId: String): E
 
-	@Deprecated("Will be replaced by filter")
+	@Deprecated("Will be replaced by filter (then you can get the first result in case of multiple matches)")
+	// Note: if multiple documents have the same uuid there is no discriminant field used to chose which one to return.
+	// We need to either define a proper discriminant or remove this method.
 	suspend fun getDocumentByExternalUuid(externalUuid: String): E
 
 	@Deprecated("Will be replaced by filter")
@@ -223,7 +225,7 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	 * @param document the document to share with [delegateId]
 	 * @param options specifies how the document will be shared. By default, all data available to the current user
 	 * will be shared, and the delegate will have the same permissions as the current user on the document. Refer
-	 * to the documentation of [CalendarItemShareOptions] for more information.
+	 * to the documentation of [DocumentShareOptions] for more information.
 	 * @return the updated document if the sharing was successful, or details on the errors if the sharing failed.
 	 */
 	suspend fun shareWith(
