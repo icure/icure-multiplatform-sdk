@@ -254,7 +254,6 @@ internal class DocumentBasicApiImplJs(
 			documentIdConverted,
 			revConverted,
 			utisConverted,
-			blobTypeConverted,
 			attachmentConverted,
 			encryptedConverted,
 		)

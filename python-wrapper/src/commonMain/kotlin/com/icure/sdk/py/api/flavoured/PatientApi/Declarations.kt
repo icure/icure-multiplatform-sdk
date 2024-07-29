@@ -484,7 +484,6 @@ public fun shareAllDataOfPatientBlocking(sdk: IcureApis, params: String): String
 		sdk.patient.shareAllDataOfPatient(
 			decodedParams.user,
 			decodedParams.patientId,
-			decodedParams.dataOwnerId,
 			decodedParams.delegatesWithShareType,
 		)
 	}
@@ -503,7 +502,6 @@ public fun shareAllDataOfPatientAsync(
 			sdk.patient.shareAllDataOfPatient(
 				decodedParams.user,
 				decodedParams.patientId,
-				decodedParams.dataOwnerId,
 				decodedParams.delegatesWithShareType,
 			)
 		}.toPyStringAsyncCallback(ShareAllPatientDataOptions.Result.serializer(), resultCallback)
@@ -524,7 +522,6 @@ public fun getPatientIdOfChildDocumentForHcpAndHcpParentsBlocking(sdk: IcureApis
 	runBlocking {
 		sdk.patient.getPatientIdOfChildDocumentForHcpAndHcpParents(
 			decodedParams.childDocument,
-			decodedParams.healthcarePartyId,
 		)
 	}
 }.toPyString(String.serializer())
@@ -542,7 +539,6 @@ public fun getPatientIdOfChildDocumentForHcpAndHcpParentsAsync(
 		kotlin.runCatching {
 			sdk.patient.getPatientIdOfChildDocumentForHcpAndHcpParents(
 				decodedParams.childDocument,
-				decodedParams.healthcarePartyId,
 			)
 		}.toPyStringAsyncCallback(String.serializer(), resultCallback)
 	}
@@ -717,7 +713,7 @@ private class UndeletePatientParams(
 public fun undeletePatientBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UndeletePatientParams>(params)
 	runBlocking {
-		sdk.patient.undeletePatient(
+		sdk.patient.undeletePatients(
 			decodedParams.patientIds,
 		)
 	}
@@ -733,7 +729,7 @@ public fun undeletePatientAsync(
 	val decodedParams = json.decodeFromString<UndeletePatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.undeletePatient(
+			sdk.patient.undeletePatients(
 				decodedParams.patientIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

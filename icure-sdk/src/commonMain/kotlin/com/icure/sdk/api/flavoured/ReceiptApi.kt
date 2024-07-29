@@ -91,6 +91,7 @@ interface ReceiptFlavouredApi<E : Receipt> : ReceiptBasicFlavouredApi<E> {
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
+@Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<DecryptedReceipt> {
 	suspend fun createReceipt(entity: DecryptedReceipt): DecryptedReceipt
 	suspend fun withEncryptionMetadata(
@@ -117,6 +118,7 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 	val tryAndRecover: ReceiptFlavouredApi<Receipt>
 }
 
+@Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 interface ReceiptBasicApi : ReceiptBasicFlavourlessApi, ReceiptBasicFlavouredApi<EncryptedReceipt>
 
 @InternalIcureApi

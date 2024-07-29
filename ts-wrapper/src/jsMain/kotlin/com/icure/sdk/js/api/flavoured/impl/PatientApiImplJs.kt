@@ -2048,7 +2048,6 @@ internal class PatientApiImplJs(
 		val result = patientApi.shareAllDataOfPatient(
 			userConverted,
 			patientIdConverted,
-			dataOwnerIdConverted,
 			delegatesWithShareTypeConverted,
 		)
 		shareAllPatientDataOptions_Result_toJs(result)
@@ -2060,7 +2059,6 @@ internal class PatientApiImplJs(
 		val healthcarePartyIdConverted: String = healthcarePartyId
 		val result = patientApi.getPatientIdOfChildDocumentForHcpAndHcpParents(
 			childDocumentConverted,
-			healthcarePartyIdConverted,
 		)
 		result
 	}
@@ -2138,7 +2136,7 @@ internal class PatientApiImplJs(
 	override fun undeletePatient(patientIds: String): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val patientIdsConverted: String = patientIds
-		val result = patientApi.undeletePatient(
+		val result = patientApi.undeletePatients(
 			patientIdsConverted,
 		)
 		listToArray(

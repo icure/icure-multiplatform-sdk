@@ -152,7 +152,7 @@ public fun undeletePatientBlocking(sdk: IcureBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UndeletePatientParams>(params)
 	runBlocking {
-		sdk.patient.undeletePatient(
+		sdk.patient.undeletePatients(
 			decodedParams.patientIds,
 		)
 	}
@@ -168,7 +168,7 @@ public fun undeletePatientAsync(
 	val decodedParams = json.decodeFromString<UndeletePatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.undeletePatient(
+			sdk.patient.undeletePatients(
 				decodedParams.patientIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

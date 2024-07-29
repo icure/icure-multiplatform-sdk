@@ -271,7 +271,7 @@ class SecureDelegationsManagerImpl (
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent
 	): EncryptedExchangeDataIdInfo {
 		val (delegateIsAnonymous, retrievedDelegate) =
-			dataOwnerAnonymityCache.get(delegateId)?.let { it to null } ?: dataOwnerApi.getDataOwnerStub(delegateId).let {
+			dataOwnerAnonymityCache.get(delegateId)?.let { it to null } ?: dataOwnerApi.getCryptoActorStub(delegateId).let {
 				val anonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(it)
 				dataOwnerAnonymityCache.set(delegateId, anonymous)
 				anonymous to it
@@ -299,7 +299,7 @@ class SecureDelegationsManagerImpl (
 					explicitDelegator = null,
 					explicitDelegate = delegateId,
 					exchangeDataId = null,
-					encryptedExchangeDataId = (retrievedDelegate ?: dataOwnerApi.getDataOwnerStub(delegateId)).let { delegate ->
+					encryptedExchangeDataId = (retrievedDelegate ?: dataOwnerApi.getCryptoActorStub(delegateId)).let { delegate ->
 						val allDelegateKeys = cryptoService.loadEncryptionKeysForDataOwner(delegate.stub)
 						// Important: this requires that the exchange data signature also validates the authenticity of the public keys included in there.
 						val verifiedDelegateFingerprints = exchangeDataInfo.exchangeData.exchangeKey.keys

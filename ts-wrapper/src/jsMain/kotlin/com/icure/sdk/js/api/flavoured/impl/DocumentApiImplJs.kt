@@ -357,7 +357,6 @@ internal class DocumentApiImplJs(
 				documentIdConverted,
 				revConverted,
 				utisConverted,
-				blobTypeConverted,
 				attachmentConverted,
 				encryptedConverted,
 			)
@@ -707,7 +706,6 @@ internal class DocumentApiImplJs(
 				documentIdConverted,
 				revConverted,
 				utisConverted,
-				blobTypeConverted,
 				attachmentConverted,
 				encryptedConverted,
 			)
@@ -1408,7 +1406,6 @@ internal class DocumentApiImplJs(
 			documentIdConverted,
 			revConverted,
 			utisConverted,
-			blobTypeConverted,
 			attachmentConverted,
 			encryptedConverted,
 		)
