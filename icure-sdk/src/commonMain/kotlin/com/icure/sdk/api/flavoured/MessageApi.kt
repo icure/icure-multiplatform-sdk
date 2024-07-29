@@ -16,6 +16,7 @@ import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
+import com.icure.sdk.model.embed.MessageReadStatus
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
 import com.icure.sdk.model.filter.AbstractFilter
@@ -153,16 +154,36 @@ interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun setMessagesStatusBits(entityIds: List<String>, statusBits: Int): List<E>
 
 	/**
-	 * Updates the read status of the messages with the provided id. You can use this method even if you don't have write permissions
-	 * on the message, as long as you have read permissions.
+	 * Updates the [Message.readStatus] of messages with the provided ids. You can use this method even if you don't
+	 * have write permissions on the message, but you still need read permissions.
+	 *
+	 * Depending on the permissions of the current user the method may have some restrictions:
+	 * - If the user does not have the permission `MessageManagement.ReadStatusUpdate.UnrestrictedUser` then the [userId]
+	 *   must be either null or the current user id.
+	 * - If the user does not have the permission `MessageManagement.ReadStatusUpdate.UnrestrictedTime` then [time] must
+	 *   be null (will be set automatically by the server)
+	 * If one of these two restrictions is not respected the method will fail.
+	 *
+	 * Additionally, unless the user has the `MessageManagement.ReadStatusUpdate.UnrestrictedEntryOverride`, the status
+	 * update request will only succeed in the following condition:
+	 * - If the [readStatus] is false there must no entry in the [Message.readStatus] for [userId] (the message goes from
+	 *   undelivered to delivered but unread)
+	 * - If the [readStatus] is true there must either be no entry in [Message.readStatus] for [userId] (the message goes
+	 *   from undelivered to read), or there is an entry with [MessageReadStatus.read] set to false (the message goes from
+	 *   delivered to read).
+	 * If for a specific message these conditions are not satisfied (and the user does not have the
+	 * `MessageManagement.ReadStatusUpdate.UnrestrictedEntryOverride` permission), or if the user does not have read
+	 * access to that method that message will be ignored and will not be included in the result. Other messages will
+	 * still be updated if they satisfy these condition.
+	 *
 	 * @param entityIds the ids of the messages to update
 	 * @param time the unix timestamp of when the message was read
-	 * @param readStatus if the message was read
-	 * @param userId the id of the user for which the status should be updated
+	 * @param readStatus true if the message was read, false if it was just received.
+	 * @param userId the id of the user for which the status should be updated. Null will be considered as the current
+	 * user id.
 	 * @return the updated messages.
 	 */
-	// TODO improve security by making that by default a user can only update his own information unless they have special permissions
-	suspend fun setMessagesReadStatus(entityIds: List<String>, time: Long?, readStatus: Boolean, userId: String): List<E>
+	suspend fun setMessagesReadStatus(entityIds: List<String>, time: Long?, readStatus: Boolean, userId: String?): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -449,7 +470,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 		entityIds: List<String>,
 		time: Long?,
 		readStatus: Boolean,
-		userId: String,
+		userId: String?,
 	) = rawApi.setMessagesReadStatus(MessagesReadStatusUpdate(entityIds, time, readStatus, userId)).successBody().map { maybeDecrypt(it) }
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedMessage
