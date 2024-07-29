@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawEntityTemplateApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.EntityTemplate
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -31,7 +30,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawEntityTemplateApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -45,7 +44,7 @@ class RawEntityTemplateApiImpl(
 		searchString: String?,
 		includeEntities: Boolean?,
 	): HttpResponse<List<EntityTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "find", userId, type)
@@ -53,7 +52,6 @@ class RawEntityTemplateApiImpl(
 				parameter("includeEntities", includeEntities)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -62,7 +60,7 @@ class RawEntityTemplateApiImpl(
 		searchString: String?,
 		includeEntities: Boolean?,
 	): HttpResponse<List<EntityTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "findAll", type)
@@ -70,7 +68,6 @@ class RawEntityTemplateApiImpl(
 				parameter("includeEntities", includeEntities)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -80,14 +77,13 @@ class RawEntityTemplateApiImpl(
 		keyword: String,
 		includeEntities: Boolean?,
 	): HttpResponse<List<EntityTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "find", userId, type, "keyword", keyword)
 				parameter("includeEntities", includeEntities)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -96,95 +92,87 @@ class RawEntityTemplateApiImpl(
 		keyword: String,
 		includeEntities: Boolean?,
 	): HttpResponse<List<EntityTemplate>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "findAll", type, "keyword", keyword)
 				parameter("includeEntities", includeEntities)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun createEntityTemplate(c: EntityTemplate): HttpResponse<EntityTemplate> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(c)
 		}.wrap()
 
 	override suspend fun getEntityTemplates(entityTemplateIds: ListOfIds): HttpResponse<List<EntityTemplate>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "byIds")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateIds)
 		}.wrap()
 
 	override suspend fun getEntityTemplate(entityTemplateId: String): HttpResponse<EntityTemplate> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", entityTemplateId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun modifyEntityTemplate(entityTemplateDto: EntityTemplate): HttpResponse<EntityTemplate> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateDto)
 		}.wrap()
 
 	override suspend fun modifyEntityTemplates(entityTemplateDtos: List<EntityTemplate>): HttpResponse<List<EntityTemplate>> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
 	override suspend fun createEntityTemplates(entityTemplateDtos: List<EntityTemplate>): HttpResponse<List<EntityTemplate>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateDtos)
 		}.wrap()
 
 	override suspend fun deleteEntityTemplate(entityTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "delete", "batch")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(entityTemplateIds)

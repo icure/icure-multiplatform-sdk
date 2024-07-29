@@ -8,3 +8,5 @@ local.properties
 **/__pycache__
 python.iml
 python-wrapper/src/python/lib
+**/scratch
+!**/scratch/docker-compose-cloud.yaml

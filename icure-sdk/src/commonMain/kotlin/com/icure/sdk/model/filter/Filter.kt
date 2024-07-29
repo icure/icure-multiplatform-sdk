@@ -11,7 +11,7 @@ import kotlin.collections.Set
 
 @Serializable
 sealed interface Filter<O : Identifiable<*>> {
-	public interface IdsFilter<T , O : Identifiable<T>> : Filter<O> {
+	public interface IdsFilter<T, O : Identifiable<T>> : Filter<O> {
 		public val ids: Set<T>
 	}
 

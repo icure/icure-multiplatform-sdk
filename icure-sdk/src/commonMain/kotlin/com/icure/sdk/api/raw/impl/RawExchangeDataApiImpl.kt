@@ -4,8 +4,7 @@ import com.icure.sdk.api.raw.BaseRawApi
 import com.icure.sdk.api.raw.HttpResponse
 import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.auth.services.AuthService
-import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.model.ExchangeData
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.utils.InternalIcureApi
@@ -30,7 +29,7 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawExchangeDataApiImpl(
 	internal val apiUrl: String,
-	private val authService: AuthService,
+	private val authProvider: AuthProvider,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
@@ -39,37 +38,34 @@ class RawExchangeDataApiImpl(
 	// region common endpoints
 
 	override suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-		post {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(exchangeData)
 		}.wrap()
 
 	override suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =
-		put {
+		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata")
 			}
-			setAuthorizationWith(authService)
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(exchangeData)
 		}.wrap()
 
 	override suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata", exchangeDataId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -78,7 +74,7 @@ class RawExchangeDataApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<ExchangeData>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId)
@@ -86,7 +82,6 @@ class RawExchangeDataApiImpl(
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -94,13 +89,12 @@ class RawExchangeDataApiImpl(
 		delegatorId: String,
 		delegateId: String,
 	): HttpResponse<List<ExchangeData>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate", delegatorId, delegateId)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 
@@ -109,7 +103,7 @@ class RawExchangeDataApiImpl(
 		counterpartsTypes: String,
 		ignoreOnEntryForFingerprint: String?,
 	): HttpResponse<List<String>> =
-		get {
+		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId, "counterparts")
@@ -117,7 +111,6 @@ class RawExchangeDataApiImpl(
 				parameter("ignoreOnEntryForFingerprint", ignoreOnEntryForFingerprint)
 				parameter("ts", GMTDate().timestamp)
 			}
-			setAuthorizationWith(authService)
 			accept(Application.Json)
 		}.wrap()
 

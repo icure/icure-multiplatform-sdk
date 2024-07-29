@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, EncryptedMaintenanceTask, deserialize_maintenance_task, DocIdentifier, MaintenanceTaskAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, MaintenanceTaskShareOptions, deserialize_simple_share_result, SimpleShareResult
+from icure.model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, EncryptedMaintenanceTask, deserialize_maintenance_task, DocIdentifier, MaintenanceTaskAbstractFilter, serialize_abstract_filter, SubscriptionEventType, EntitySubscriptionConfiguration, MaintenanceTaskShareOptions, deserialize_simple_share_result_decrypted_maintenance_task, SimpleShareResultDecryptedMaintenanceTask, deserialize_simple_share_result_encrypted_maintenance_task, SimpleShareResultEncryptedMaintenanceTask, deserialize_simple_share_result_maintenance_task, SimpleShareResultMaintenanceTask
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class MaintenanceTaskApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, maintenance_task: EncryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, maintenance_task: EncryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResultEncryptedMaintenanceTask:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -24,7 +24,7 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -41,7 +41,7 @@ class MaintenanceTaskApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, maintenance_task: EncryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, maintenance_task: EncryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResultEncryptedMaintenanceTask:
 			payload = {
 				"delegateId": delegate_id,
 				"maintenanceTask": maintenance_task.__serialize__(),
@@ -56,10 +56,10 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_maintenance_task(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, maintenance_task: EncryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, maintenance_task: EncryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResultEncryptedMaintenanceTask:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -67,7 +67,7 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
@@ -83,7 +83,7 @@ class MaintenanceTaskApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, maintenance_task: EncryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, maintenance_task: EncryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResultEncryptedMaintenanceTask:
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -97,7 +97,7 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_maintenance_task(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, maintenance_task: EncryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> EncryptedMaintenanceTask:
@@ -313,7 +313,7 @@ class MaintenanceTaskApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, maintenance_task: MaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, maintenance_task: MaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResultMaintenanceTask:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -321,7 +321,7 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -338,7 +338,7 @@ class MaintenanceTaskApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, maintenance_task: MaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, maintenance_task: MaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResultMaintenanceTask:
 			payload = {
 				"delegateId": delegate_id,
 				"maintenanceTask": maintenance_task.__serialize__(),
@@ -353,10 +353,10 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_maintenance_task(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResultMaintenanceTask:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -364,7 +364,7 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
@@ -380,7 +380,7 @@ class MaintenanceTaskApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResultMaintenanceTask:
 			payload = {
 				"maintenanceTask": maintenance_task.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -394,7 +394,7 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_maintenance_task(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> MaintenanceTask:
@@ -1096,7 +1096,7 @@ class MaintenanceTaskApi:
 				executor = self.icure_sdk._executor
 			)
 
-	async def share_with_async(self, delegate_id: str, maintenance_task: DecryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, maintenance_task: DecryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResultDecryptedMaintenanceTask:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1104,7 +1104,7 @@ class MaintenanceTaskApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_maintenance_task(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1121,7 +1121,7 @@ class MaintenanceTaskApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, maintenance_task: DecryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, maintenance_task: DecryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResultDecryptedMaintenanceTask:
 		payload = {
 			"delegateId": delegate_id,
 			"maintenanceTask": maintenance_task.__serialize__(),
@@ -1136,10 +1136,10 @@ class MaintenanceTaskApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_maintenance_task(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, maintenance_task: DecryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, maintenance_task: DecryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResultDecryptedMaintenanceTask:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1147,7 +1147,7 @@ class MaintenanceTaskApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_maintenance_task(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"maintenanceTask": maintenance_task.__serialize__(),
@@ -1163,7 +1163,7 @@ class MaintenanceTaskApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, maintenance_task: DecryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, maintenance_task: DecryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResultDecryptedMaintenanceTask:
 		payload = {
 			"maintenanceTask": maintenance_task.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1177,7 +1177,7 @@ class MaintenanceTaskApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_maintenance_task(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, maintenance_task: DecryptedMaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> DecryptedMaintenanceTask:

@@ -2,6 +2,10 @@ package com.icure.sdk.model.requests
 
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.Map
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).

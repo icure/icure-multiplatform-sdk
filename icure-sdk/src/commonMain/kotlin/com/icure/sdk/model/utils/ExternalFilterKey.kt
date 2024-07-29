@@ -18,7 +18,6 @@ sealed interface ExternalFilterKey {
 	public data class ExternalFilterStringKey(
 		override val key: String,
 	) : ExternalFilterKey
-
 	@Serializable
 	@SerialName("long")
 	public data class ExternalFilterLongKey(

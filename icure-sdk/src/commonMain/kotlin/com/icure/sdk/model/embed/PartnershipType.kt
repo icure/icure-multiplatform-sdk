@@ -95,6 +95,12 @@ enum class PartnershipType() {
 	@SerialName("tutor")
 	Tutor,
 
+	@SerialName("cohabiting")
+	Cohabiting,
+
+	@SerialName("registered_partner")
+	RegisteredPartner,
+
 	@SerialName("next_of_kin")
 	NextOfKin,
 

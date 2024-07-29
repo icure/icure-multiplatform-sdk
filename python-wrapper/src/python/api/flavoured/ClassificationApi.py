@@ -1,6 +1,6 @@
 import asyncio
 import json
-from icure.model import DecryptedClassification, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Classification, serialize_classification, EncryptedClassification, deserialize_classification, DocIdentifier, ClassificationShareOptions, deserialize_simple_share_result, SimpleShareResult
+from icure.model import DecryptedClassification, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Classification, serialize_classification, EncryptedClassification, deserialize_classification, DocIdentifier, ClassificationShareOptions, deserialize_simple_share_result_decrypted_classification, SimpleShareResultDecryptedClassification, deserialize_simple_share_result_encrypted_classification, SimpleShareResultEncryptedClassification, deserialize_simple_share_result_classification, SimpleShareResultClassification
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
@@ -15,7 +15,7 @@ class ClassificationApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, classification: EncryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, classification: EncryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResultEncryptedClassification:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -23,7 +23,7 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -40,7 +40,7 @@ class ClassificationApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, classification: EncryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, classification: EncryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResultEncryptedClassification:
 			payload = {
 				"delegateId": delegate_id,
 				"classification": classification.__serialize__(),
@@ -55,10 +55,10 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_classification(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, classification: EncryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, classification: EncryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResultEncryptedClassification:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -66,7 +66,7 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_encrypted_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"classification": classification.__serialize__(),
@@ -82,7 +82,7 @@ class ClassificationApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, classification: EncryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, classification: EncryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResultEncryptedClassification:
 			payload = {
 				"classification": classification.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -96,7 +96,7 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_encrypted_classification(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, classification: EncryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> EncryptedClassification:
@@ -320,7 +320,7 @@ class ClassificationApi:
 		def __init__(self, icure_sdk):
 			self.icure_sdk = icure_sdk
 
-		async def share_with_async(self, delegate_id: str, classification: Classification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResult:
+		async def share_with_async(self, delegate_id: str, classification: Classification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResultClassification:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -328,7 +328,7 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -345,7 +345,7 @@ class ClassificationApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, classification: Classification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResult:
+		def share_with_blocking(self, delegate_id: str, classification: Classification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResultClassification:
 			payload = {
 				"delegateId": delegate_id,
 				"classification": classification.__serialize__(),
@@ -360,10 +360,10 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_classification(result_info.success)
 				return return_value
 
-		async def try_share_with_many_async(self, classification: Classification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResult:
+		async def try_share_with_many_async(self, classification: Classification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResultClassification:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -371,7 +371,7 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+					result = deserialize_simple_share_result_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"classification": classification.__serialize__(),
@@ -387,7 +387,7 @@ class ClassificationApi:
 			)
 			return await future
 
-		def try_share_with_many_blocking(self, classification: Classification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResult:
+		def try_share_with_many_blocking(self, classification: Classification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResultClassification:
 			payload = {
 				"classification": classification.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -401,7 +401,7 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result(result_info.success)
+				return_value = deserialize_simple_share_result_classification(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, classification: Classification, delegates: Dict[str, ClassificationShareOptions]) -> Classification:
@@ -1022,7 +1022,7 @@ class ClassificationApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, classification: DecryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResult:
+	async def share_with_async(self, delegate_id: str, classification: DecryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResultDecryptedClassification:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1030,7 +1030,7 @@ class ClassificationApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_classification(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1047,7 +1047,7 @@ class ClassificationApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, classification: DecryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResult:
+	def share_with_blocking(self, delegate_id: str, classification: DecryptedClassification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResultDecryptedClassification:
 		payload = {
 			"delegateId": delegate_id,
 			"classification": classification.__serialize__(),
@@ -1062,10 +1062,10 @@ class ClassificationApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_classification(result_info.success)
 			return return_value
 
-	async def try_share_with_many_async(self, classification: DecryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResult:
+	async def try_share_with_many_async(self, classification: DecryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResultDecryptedClassification:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1073,7 +1073,7 @@ class ClassificationApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result(json.loads(success.decode('utf-8')))
+				result = deserialize_simple_share_result_decrypted_classification(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"classification": classification.__serialize__(),
@@ -1089,7 +1089,7 @@ class ClassificationApi:
 		)
 		return await future
 
-	def try_share_with_many_blocking(self, classification: DecryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResult:
+	def try_share_with_many_blocking(self, classification: DecryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResultDecryptedClassification:
 		payload = {
 			"classification": classification.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1103,7 +1103,7 @@ class ClassificationApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result(result_info.success)
+			return_value = deserialize_simple_share_result_decrypted_classification(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, classification: DecryptedClassification, delegates: Dict[str, ClassificationShareOptions]) -> DecryptedClassification:
