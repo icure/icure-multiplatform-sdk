@@ -124,6 +124,22 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 */
 	suspend fun getPatient(entityId: String): E
 
+
+	/**
+	 * Get the patient with the provided id and follows the chain of patient merges indicated by the
+	 * [Patient.mergeToPatientId] field until a patient that was not merged into another patient is reached, then that
+	 * patient is returned.
+	 * You can optionally limit the maximum depth of merges this method will go through by providing a [maxMergeDepth]
+	 * parameter. This parameter limits the amount of links that will be resolved: if by the time the [maxMergeDepth] is
+	 * reached the end of the merge chain is not yet reached this method will throw an exception.
+	 * @param patientId the id of a patient
+	 * @param maxMergeDepth a number greater than 0 or null if you don't want to limit the merge depth
+	 * @return the patient at the end of the merge chain
+	 * @throws IllegalArgumentException if maxMergeLevel is less than 1, or if the max merge level has been reached but
+	 * the end of the merge chain was not yet reached.
+	 */
+	suspend fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Int? = null): E
+
 	/**
 	 * @param filter a patient filter
 	 * @return an iterator that iterates over all patients matching the provided filter.
@@ -282,16 +298,6 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 */
 	suspend fun modifyPatients(patientDtos: List<EncryptedPatient>): List<IdWithRev>
 
-	// TODO do we need to keep this?
-	suspend fun modifyPatientReferral(
-		patientId: String,
-		referralId: String,
-		@DefaultValue("null")
-		start: Long? = null,
-		@DefaultValue("null")
-		end: Long? = null,
-	): E
-
 	// TODO: Implement filter for this method
 	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
 	suspend fun findDuplicatesBySsin(
@@ -315,6 +321,47 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<E>
+
+	/**
+	 * Merge two patients into one. This method performs the following operations:
+	 * - The `from` patient will be soft-deleted, and it will point to the `into` patient. Only the `deletionDate` and `mergeToPatientId` fields of the
+	 *   patient will be changed (automatically by this method). Note that the value of [from] is only used to verify that the client is aware of
+	 *   the last version of the `from` patient: any changes to its content and/or metadata compared to what is actually stored in the database will be
+	 *   ignored.
+	 * - The metadata of the `into` patient will be automatically updated to contain also the metadata of the `from` patient and to keep track of the
+	 *   merge:
+	 *   - the `mergedIds` will be updated to contain the `from` patient id
+	 *   - all secret ids of the `from` patient will be added to the `into` patient
+	 *   - all data owners (including anonymous data owners) with access to the `from` patient will have the same access to the merged `into` patient
+	 *     (unless they already had greater access to the `into` patient, in which case they keep the greater access)
+	 * - The content of the `into` patient will be updated to match the content (name, address, note, ...) of the provided [mergedInto] parameter.
+	 *   Note that since the metadata is automatically updated by this method you must not change the metadata of the `mergedInto` patient
+	 *   (`delegations`, mergedInto`, ...): if there is any change between the metadata of the provided `mergedInto` patient and the stored patient this
+	 *   method will fail.
+	 *
+	 * In case the revisions of [from] and/or [mergedInto] does not match the latest revisions for these patients in the database this
+	 * method will fail without soft-deleting the `from` patient and without updating the `into` patient with the merged content and metadata. You will
+	 * have to retrieve the updated versions of both patients before retrying the merge.
+	 *
+	 * Finally, note that this method only merges existing data, and does not perform any automatic sharing of the data. The secret ids and encryption
+	 * keys will not be shared with users that had access only to one of the entity, you will have to use a share method after the merge
+	 * if you want to do so.
+	 * For example consider hcps A, B with access to P' and hcps A, C with access to P'', and we merge P'' into P'. After the merge:
+	 * - A has access to all secret ids of the merged patient and to the encryption key of the merged patient
+	 * - B has access to the encryption key of the merged patient (since it is the same as in P'), but only to the secret id which was originally from
+	 *   the unmerged P'
+	 * - C has no access to the encryption key of the merged patient, and has access only to the secret id which was originally from the unmerged P''
+	 *
+	 * Note that the user performing this operation must have write access to both patients.
+	 *
+	 * @param from the original, unmodified `from` patient. Its content will be unchanged and its metadata will be automatically updated by this method
+	 * to reflect the merge.
+	 * @param mergedInto the `into` patient with updated content result of the merge with the `from` patient, as specified by your application logic.
+	 * The metadata of the `mergedInto` patient must not differ from the metadata of the stored version of the patient, since it will be automatically
+	 * updated by the method.
+	 * @return the updated `into` patient.
+	 */
+	suspend fun mergePatients(from: Patient, mergedInto: E): E
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
@@ -494,16 +541,6 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	val tryAndRecover: PatientFlavouredApi<Patient>
 	suspend fun createPatients(patientDtos: List<DecryptedPatient>): List<IdWithRev>
 
-	// TODO whole patient registration flow
-	suspend fun registerPatient(
-		hcPartyId: String,
-		groupId: String,
-		token: String? = null,
-		useShortToken: Boolean? = null,
-		createAutoDelegation: Boolean = true,
-		patient: DecryptedPatient
-	): DataOwnerRegistrationSuccess
-
 	/**
 	 * Share a patient and all data associated to that patient that the current user can access with other data owners.
 	 * @param patientId the id of the patient id to share
@@ -516,9 +553,8 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		delegatesWithShareType: Map<String, Set<ShareAllPatientDataOptions.Tag>>
 	): ShareAllPatientDataOptions.Result
 
-	@Deprecated("This method combines the getting of a patient id from owning entity ids with getting the merged patient. We should just provide a method to get the merged patient separately")
+	@Deprecated("This method combines the getPatientId of a child document (contact, health element, ...) with the getPatientResolvingMerges method. Use the methods individually instead.")
 	suspend fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<*>): String
-	// TODO get merged patient method
 
 	/**
 	 * Get all confidential secret ids of a patient
@@ -695,12 +731,6 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 	) = rawApi.getPatientByHealthcarePartyAndIdentifier(hcPartyId, id, system).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun modifyPatients(patientDtos: List<EncryptedPatient>) = rawApi.modifyPatients(patientDtos).successBody()
-	override suspend fun modifyPatientReferral(
-		patientId: String,
-		referralId: String,
-		start: Long?,
-		end: Long?,
-	) = rawApi.modifyPatientReferral(patientId, referralId, start, end).successBody().let { maybeDecrypt(it) }
 	@Deprecated("List methods are deprecated", replaceWith = ReplaceWith("filterPatientsBy()"))
 	override suspend fun findDuplicatesBySsin(
 		hcPartyId: String,
@@ -718,6 +748,36 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedPatient
 	abstract suspend fun maybeDecrypt(entity: EncryptedPatient): E
+
+	override suspend fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Int?): E {
+		tailrec suspend fun findLastMergedPatientInHierarchy(patient: E, depth: Int): E {
+			val mergeId = patient.mergeToPatientId
+			return if (mergeId != null) {
+				require (maxMergeDepth == null || depth < maxMergeDepth) {
+					"Merge chain for patient $patientId is longer than configured maxMergeDepth $maxMergeDepth"
+				}
+				findLastMergedPatientInHierarchy(getPatient(mergeId), depth + 1)
+			} else patient
+		}
+
+		return findLastMergedPatientInHierarchy(getPatient(patientId), 0)
+	}
+
+	override suspend fun mergePatients(from: Patient, mergedInto: E): E {
+		requireNotNull(mergedInto.rev) {
+			"Into patient should have a non-null rev"
+		}
+		return rawApi.mergePatients(
+			intoId = mergedInto.id,
+			fromId = from.id,
+			expectedFromRev = requireNotNull(from.rev) {
+				"From patient should have a non-null rev"
+			},
+			updatedInto = validateAndMaybeEncrypt(mergedInto)
+		).let {
+			maybeDecrypt(it.successBody())
+		}
+	}
 }
 
 @InternalIcureApi
@@ -869,22 +929,6 @@ internal class PatientApiImpl(
 	}
 
 	override suspend fun createPatients(patientDtos: List<DecryptedPatient>) = rawApi.createPatients(patientDtos.map { encrypt(it) }).successBody()
-
-	override suspend fun registerPatient(
-		hcPartyId: String,
-		groupId: String,
-		token: String?,
-		useShortToken: Boolean?,
-		createAutoDelegation: Boolean,
-		patient: DecryptedPatient,
-	): DataOwnerRegistrationSuccess = rawApi.registerPatient(
-		hcPartyId,
-		groupId,
-		token,
-		useShortToken,
-		createAutoDelegation,
-		encrypt(patient),
-	).successBody()
 
 	private suspend fun findDelegationStubsForHcPartyAndParent(
 		delegationSecretKeys: List<String>,
@@ -1061,6 +1105,7 @@ internal class PatientApiImpl(
 		)
 	}
 
+	@Deprecated("This method combines the getPatientId of a child document (contact, health element, ...) with the getPatientResolvingMerges method. Use the methods individually instead.")
 	override suspend fun getPatientIdOfChildDocumentForHcpAndHcpParents(
 		childDocument: EntityWithTypeInfo<*>
 	): String {
