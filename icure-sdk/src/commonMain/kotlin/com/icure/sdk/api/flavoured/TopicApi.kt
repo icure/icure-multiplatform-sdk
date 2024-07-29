@@ -2,7 +2,6 @@ package com.icure.sdk.api.flavoured
 
 import com.icure.sdk.api.raw.RawTopicApi
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TopicShareOptions
 import com.icure.sdk.crypto.entities.withTypeInfo
@@ -102,6 +101,8 @@ interface TopicBasicFlavouredApi<E : Topic> {
 
 	/**
 	 * Add a participant to the topic. The participant will be able to create messages associated to the topic.
+	 * Any user with a [TopicRole.Admin] on the can use this method, even if they don't have direct write access
+	 * to it through delegations.
 	 * @param entityId id of the topic
 	 * @param dataOwnerId id of the new participant
 	 * @param topicRole the role that the participant will have in the topic
@@ -111,6 +112,8 @@ interface TopicBasicFlavouredApi<E : Topic> {
 
 	/**
 	 * Removes a participant from a topic. The participant will not be able anymore to search for messages of that topic.
+	 * Any user with a [TopicRole.Admin] on the can use this method, even if they don't have direct write access
+	 * to it through delegations.
 	 * @param entityId id of the topic
 	 * @param dataOwnerId id of the participant to remove
 	 * @return the updated topic
@@ -125,7 +128,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
 	 * @param delegateId the owner that will gain access to the topic
-	 * @param healthElement the topic to share with [delegateId]
+	 * @param topic the topic to share with [delegateId]
 	 * @param options specifies how the topic will be shared. By default, all data available to the current user
 	 * will be shared, and the delegate will have the same permissions as the current user on the topic. Refer
 	 * to the documentation of [TopicShareOptions] for more information.
@@ -142,7 +145,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	 * Share a topic with multiple data owners. The topic must already exist in the database for this method to
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
-	 * @param healthElement the topic to share
+	 * @param topic the topic to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
 	 * @return the updated topic if the sharing was successful, or details on the errors if the sharing failed.
@@ -157,7 +160,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
 	 * the initialise encryption metadata method.
 	 * Throws an exception if the operation fails.
-	 * @param healthElement the topic to share
+	 * @param topic the topic to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
 	 * @return the updated topic.
@@ -206,14 +209,14 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	 * of the access log the method will return an empty set.
 	 * Note: entities now have only one encryption key, but this method returns a set for compatibility with older
 	 * versions of iCure where this was not a guarantee.
-	 * @param healthElement a topic
+	 * @param topic a topic
 	 * @return the encryption keys extracted from the provided topic.
 	 */
 	suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString>
 
 	/**
 	 * Specifies if the current user has write access to a topic.
-	 * @param healthElement a topic
+	 * @param topic a topic
 	 * @return if the current user has write access to the provided topic
 	 */
 	suspend fun hasWriteAccess(topic: Topic): Boolean
@@ -222,7 +225,7 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	 * Attempts to extract the patient id linked to a topic.
 	 * Note: topics usually should be linked with only one patient, but this method returns a set for compatibility
 	 * with older versions of iCure
-	 * @param healthElement a topic
+	 * @param topic a topic
 	 * @return the id of the patient linked to the topic, or empty if the current user can't access any patient id
 	 * of the topic.
 	 */
@@ -263,15 +266,15 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 
 	/**
 	 * Decrypts a topic, throwing an exception if it is not possible.
-	 * @param healthElement a topic
+	 * @param topic a topic
 	 * @return the decrypted topic
-	 * @throws EntityEncryptionExcep
+	 * @throws EntityEncryptionException if the topic could not be decrypted
 	 */
 	suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic
 
 	/**
 	 * Tries to decrypt a topic, returns the input if it is not possible.
-	 * @param healthElement an encrypted topic
+	 * @param topic an encrypted topic
 	 * @return the decrypted topic if the decryption was successful or the input if it was not.
 	 */
 	suspend fun tryDecrypt(topic: EncryptedTopic): Topic
