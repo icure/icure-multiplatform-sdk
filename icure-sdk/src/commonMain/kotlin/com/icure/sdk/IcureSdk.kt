@@ -196,8 +196,20 @@ interface IcureSdk : IcureApis {
 			sharedHttpClient.close()
 		}
 
+		/**
+		 * Initialise a new instance of the icure sdk for a specific user.
+		 *
+		 * @param applicationId a string to uniquely identify your iCure application.
+		 * @param baseUrl the url of the iCure backend to use
+		 * @param authenticationMethod specifies how the sdk should authenticate.
+		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
+		 * information including the user keys if [ApiOptions.keyStorage] is not provided.
+		 * @param cryptoStrategies implementation of crypto strategies for your application
+		 * @param options optional parameters for the initialization of the sdk.
+		 */
 		@OptIn(InternalIcureApi::class)
 		suspend fun initialise(
+			applicationId: String?,
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
 			baseStorage: StorageFacade,
@@ -208,11 +220,15 @@ interface IcureSdk : IcureApis {
 			val json = options.httpClientJson ?: Serialization.json
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val keysStorage = JsonAndBase64KeyStorage(baseStorage)
+			val keysStorage = options.keyStorage ?: JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage =
 				IcureStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authApi = RawAnonymousAuthApiImpl(apiUrl, client, json = json)
-			val authProvider = authenticationMethod.getAuthProvider(authApi)
+			val authProvider = authenticationMethod.getAuthProvider(
+				authApi,
+				cryptoService,
+				applicationId
+			)
 			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json))
 			val self = dataOwnerApi.getCurrentDataOwner()
 			val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
@@ -322,7 +338,7 @@ interface IcureSdk : IcureApis {
 				cryptoService,
 				jsonEncryptionService,
 				!options.disableParentKeysInitialisation,
-				false // TODO should be true only for MS
+				options.autoCreateEncryptionKeyForExistingLegacyData
 			)
 			val headersProvider: AccessControlKeysHeadersProvider =
 				if (selfIsAnonymous)

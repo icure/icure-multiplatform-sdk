@@ -1,18 +1,23 @@
 package com.icure.sdk.auth.services
 
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.auth.Credentials
 import com.icure.sdk.auth.Jwt
 import com.icure.sdk.auth.ServerAuthenticationClass
 import com.icure.sdk.auth.ThirdPartyProvider
 import com.icure.sdk.auth.ThirdPartyTokens
+import com.icure.sdk.auth.UsernameLongToken
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.security.jwt.JwtResponse
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.RequestStatusException
 import com.icure.sdk.utils.isJwtExpiredOrInvalid
-import io.ktor.client.request.*
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.bearerAuth
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration
@@ -32,6 +37,8 @@ import kotlin.time.Duration.Companion.seconds
 class JwtAuthService(
 	private val authApi: RawAnonymousAuthApi,
 	private val credentials: Credentials,
+	private val cryptoService: CryptoService,
+	private val applicationId: String?,
 	private val refreshPadding: Duration = 30L.seconds
 ) : TokenBasedAuthService<Jwt>, JwtBasedAuthProvider {
 
@@ -45,9 +52,17 @@ class JwtAuthService(
 	 * Generates a new [Jwt] using the provided credentials.
 	 * Note: if the [credentials] are of type [Jwt], then a new Jwt cannot be generated when the refresh token expires.
 	 */
-	private suspend fun generateJwt(): Jwt = when(credentials) {
+	private suspend fun generateJwt(): Jwt = when (credentials) {
 		is UsernamePassword -> authApi.login(
-			loginCredentials = LoginCredentials(credentials.username, credentials.password)
+			loginCredentials = LoginCredentials(
+				credentials.username,
+				applicationId?.let {
+					base64Encode(cryptoService.digest.sha256((credentials.password + it).toByteArray()))
+				} ?: credentials.password,
+			)
+		).successBody().toJwt()
+		is UsernameLongToken -> authApi.login(
+			loginCredentials = LoginCredentials(credentials.username, credentials.token)
 		).successBody().toJwt()
 		is ThirdPartyTokens -> credentials.tokens.map { (thirdParty, token) ->
 				runCatching {
