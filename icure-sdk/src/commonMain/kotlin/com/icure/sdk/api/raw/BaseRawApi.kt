@@ -58,11 +58,15 @@ abstract class BaseRawApi(
 	private suspend fun requestAndRetryOnUnauthorized(method: HttpMethod, authService: AuthService?, authenticationClass: AuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit): HttpResponse {
 		val response = request(method, authService, authenticationClass, block)
 		return if (authService != null && response.status == HttpStatusCode.Unauthorized) {
-			authService.invalidateCurrentToken(RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value))
+			val requiredAuthClass = response.headers["Icure-Minimum-Required-Auth-Level"]?.let { minAuthClassForLevel(it.toInt()) }
+			authService.invalidateCurrentAuthentication(
+				RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value),
+				requiredAuthClass
+			)
 			return requestAndRetryOnUnauthorized(
 				method = method,
 				authService = authService,
-				authenticationClass = response.headers["Icure-Minimum-Required-Auth-Level"]?.let { minAuthClassForLevel(it.toInt()) },
+				authenticationClass = requiredAuthClass,
 				block = block
 			)
 		} else {

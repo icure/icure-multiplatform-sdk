@@ -8,7 +8,7 @@ import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.auth.services.JwtAuthService
+import com.icure.sdk.auth.services.JwtAuthProvider
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.model.DataOwnerWithType
@@ -95,7 +95,7 @@ data class DataOwnerDetails(
 	}
 
 	fun authService() =
-		JwtAuthService(RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json), UsernamePassword(username, password))
+		JwtAuthProvider(RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json), UsernamePassword(username, password))
 
 	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(

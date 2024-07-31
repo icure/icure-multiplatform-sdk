@@ -11,7 +11,7 @@ import com.icure.sdk.auth.ThirdPartyTokens
 import com.icure.sdk.auth.UsernameLongToken
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.AuthProvider
-import com.icure.sdk.auth.services.JwtAuthService
+import com.icure.sdk.auth.services.JwtAuthProvider
 import com.icure.sdk.auth.services.SmartAuthProvider
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.User
@@ -126,7 +126,7 @@ internal fun AuthenticationMethod.getAuthProvider(
 			AuthSecretDetails.PasswordDetails(this.credentials.password),
 			this.credentials.username,
 		)
-		is JwtCredentials -> JwtAuthService(authApi, this.credentials.initialBearer, this.credentials.refresh)
+		is JwtCredentials -> JwtAuthProvider(authApi, this.credentials.initialBearer, this.credentials.refresh)
 	}
 	is AuthenticationMethod.UsingAuthProvider -> this.authProvider
 	is AuthenticationMethod.UsingSecretProvider -> SmartAuthProvider.initialise(
