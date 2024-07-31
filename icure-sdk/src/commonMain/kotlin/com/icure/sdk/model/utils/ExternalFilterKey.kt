@@ -3,6 +3,7 @@ package com.icure.sdk.model.utils
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
+import kotlin.Any
 import kotlin.Long
 import kotlin.String
 
@@ -18,6 +19,7 @@ sealed interface ExternalFilterKey {
 	public data class ExternalFilterStringKey(
 		override val key: String,
 	) : ExternalFilterKey
+
 	@Serializable
 	@SerialName("long")
 	public data class ExternalFilterLongKey(
