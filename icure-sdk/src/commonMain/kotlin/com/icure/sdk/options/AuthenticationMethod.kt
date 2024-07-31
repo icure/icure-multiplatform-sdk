@@ -103,8 +103,8 @@ sealed interface AuthenticationMethod {
 private fun CommonOptions.getPasswordClientSideSalt(applicationId: String?) =
 	applicationId?.takeIf { saltPasswordWithApplicationId }
 
-@OptIn(InternalIcureApi::class)
-fun AuthenticationMethod.getAuthProvider(
+@InternalIcureApi
+internal fun AuthenticationMethod.getAuthProvider(
 	authApi: RawAnonymousAuthApi,
 	cryptoService: CryptoService,
 	applicationId: String?,

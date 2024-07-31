@@ -4,12 +4,13 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
+import com.icure.sdk.auth.JwtBearerAndRefresh
 import com.icure.sdk.auth.TokenProvider
 import com.icure.sdk.model.UserGroup
 import com.icure.sdk.utils.InternalIcureApi
 
-@OptIn(InternalIcureApi::class)
-class SmartAuthProvider private constructor(
+@InternalIcureApi
+internal class SmartAuthProvider private constructor(
 	private val tokenProvider: TokenProvider,
 	private val groupId: String? = null
 ) : JwtBasedAuthProvider {
@@ -52,4 +53,7 @@ class SmartAuthProvider private constructor(
 			groupId = newGroupId,
 		)
 	}
+
+	override suspend fun getBearerAndRefreshToken(): JwtBearerAndRefresh =
+		tokenProvider.getCachedTokensOrLoad()
 }

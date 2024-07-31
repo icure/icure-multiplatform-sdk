@@ -13,7 +13,7 @@ import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.SerializationException
 
 @InternalIcureApi
-sealed interface DoGetTokenResult {
+internal sealed interface DoGetTokenResult {
 
 	data class Success(val bearer: JwtBearer, val refresh: JwtRefresh) : DoGetTokenResult
 
@@ -29,7 +29,7 @@ sealed interface DoGetTokenResult {
 }
 
 @InternalIcureApi
-class TokenProvider(
+internal class TokenProvider(
 	private val login: String,
 	private val groupId: String?,
 	private var currentLongLivedSecret: AuthSecretDetails.Cacheable?,
@@ -47,15 +47,23 @@ class TokenProvider(
 	suspend fun getCachedOrRefreshedOrNewToken(): RetrievedJwt =
 		cachedToken?.takeIf { !isJwtExpiredOrInvalid(it) }?.let { RetrievedJwt(it, RetrievedTokenType.Cached) }
 			?: cachedRefreshToken?.takeIf { !isJwtExpiredOrInvalid(it) }?.let { refreshAndCacheToken(it) }
-			?: RetrievedJwt(getAndCacheNewToken(null), RetrievedTokenType.New)
+			?: RetrievedJwt(getAndCacheNewTokens(null).bearer.token, RetrievedTokenType.New)
 
-	suspend fun getNewTokenWithClass(minimumAuthenticationClass: AuthenticationClass): String = getAndCacheNewToken(minimumAuthenticationClass)
+	suspend fun getNewTokenWithClass(minimumAuthenticationClass: AuthenticationClass): String =
+		getAndCacheNewTokens(minimumAuthenticationClass).bearer.token
 
-	private suspend fun getAndCacheNewToken(minimumAuthenticationClass: AuthenticationClass?): String =
-		getNewToken(minimumAuthenticationClass).let { (bearer, refresh) ->
-			cachedToken = bearer.token
-			cachedRefreshToken = refresh.token
-			bearer.token
+	suspend fun getCachedTokensOrLoad(): JwtBearerAndRefresh {
+		val bearer = this.cachedToken
+		val refresh = this.cachedRefreshToken
+		return if (bearer != null && refresh != null) {
+			JwtBearerAndRefresh(JwtBearer(bearer), JwtRefresh(refresh))
+		} else getAndCacheNewTokens(null)
+	}
+
+	private suspend fun getAndCacheNewTokens(minimumAuthenticationClass: AuthenticationClass?): JwtBearerAndRefresh =
+		getNewToken(minimumAuthenticationClass).also {
+			cachedToken = it.bearer.token
+			cachedRefreshToken = it.refresh.token
 		}
 
 	private suspend fun refreshAndCacheToken(refreshToken: String): RetrievedJwt =
@@ -65,14 +73,14 @@ class TokenProvider(
 			}
 			cachedToken = it.token
 			RetrievedJwt(it.token, RetrievedTokenType.Refreshed)
-		} ?: RetrievedJwt(getAndCacheNewToken(null), RetrievedTokenType.New)
+		} ?: RetrievedJwt(getAndCacheNewTokens(null).bearer.token, RetrievedTokenType.New)
 
-	private suspend fun getNewToken(minimumAuthenticationClass: AuthenticationClass?): Pair<JwtBearer, JwtRefresh> = currentLongLivedSecret?.takeIf {
+	private suspend fun getNewToken(minimumAuthenticationClass: AuthenticationClass?): JwtBearerAndRefresh = currentLongLivedSecret?.takeIf {
 		minimumAuthenticationClass == null || it.type.level >= minimumAuthenticationClass.level
 	}?.let { secret ->
 		val result = doGetTokenWithSecret(secret, secret.type)
 		when {
-			result is DoGetTokenResult.Success -> result.bearer to result.refresh
+			result is DoGetTokenResult.Success -> JwtBearerAndRefresh(result.bearer, result.refresh)
 			result is DoGetTokenResult.Failure
 				&& result.reason == DoGetTokenResult.DoGetTokenResultFailureReason.Needs2FA
 				&& (minimumAuthenticationClass?.level ?: 0) <= AuthenticationClass.TwoFactorAuthentication.level -> askTotpAndGetToken(secret.secret, minimumAuthenticationClass)
@@ -84,7 +92,7 @@ class TokenProvider(
 		minimumAuthenticationClass: AuthenticationClass?,
 		passwordIsValidAs2fa: Boolean,
 		previousAttempts: List<AuthSecretDetails> = emptyList()
-	): Pair<JwtBearer, JwtRefresh> {
+	): JwtBearerAndRefresh {
 		val minAuthClassLevel = minimumAuthenticationClass?.level ?: 0
 		val acceptedSecrets = listOfNotNull(
 			AuthenticationClass.LongLivedToken.takeIf { minAuthClassLevel <= AuthenticationClass.LongLivedToken.level },
@@ -106,7 +114,7 @@ class TokenProvider(
 				if (secretDetails is AuthSecretDetails.Cacheable) {
 					this.currentLongLivedSecret = secretDetails
 				}
-				result.bearer to result.refresh
+				JwtBearerAndRefresh(result.bearer, result.refresh)
 			}
 			result is DoGetTokenResult.Failure && result.reason == DoGetTokenResult.DoGetTokenResultFailureReason.Needs2FA -> askTotpAndGetToken(secretDetails.secret, minimumAuthenticationClass)
 			secretDetails is AuthSecretDetails.PasswordDetails
@@ -116,7 +124,7 @@ class TokenProvider(
 		}
 	}
 
-	private tailrec suspend fun askTotpAndGetToken(password: String, minimumAuthenticationClass: AuthenticationClass?, previousAttempts: List<AuthSecretDetails> = emptyList()): Pair<JwtBearer, JwtRefresh> {
+	private tailrec suspend fun askTotpAndGetToken(password: String, minimumAuthenticationClass: AuthenticationClass?, previousAttempts: List<AuthSecretDetails> = emptyList()): JwtBearerAndRefresh {
 		if((minimumAuthenticationClass?.level ?: 0) > AuthenticationClass.TwoFactorAuthentication.level) {
 			throw IllegalStateException("Internal error: asking for totp to login but minimumAuthenticationClassLevel is higher than TWO_FACTOR_AUTHENTICATION's level.")
 		}
@@ -128,7 +136,7 @@ class TokenProvider(
 		return when {
 			result is DoGetTokenResult.Success -> {
 				this.currentLongLivedSecret = AuthSecretDetails.PasswordDetails(password)
-				result.bearer to result.refresh
+				JwtBearerAndRefresh(result.bearer, result.refresh)
 			}
 			result is DoGetTokenResult.Failure && result.reason != DoGetTokenResult.DoGetTokenResultFailureReason.Invalid2FA -> {
 				throw IllegalStateException("Unexpected error while trying to login with (previously) valid password and 2fa token ${result.reason}.")

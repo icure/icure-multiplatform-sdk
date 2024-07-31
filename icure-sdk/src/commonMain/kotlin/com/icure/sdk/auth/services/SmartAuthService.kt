@@ -20,7 +20,7 @@ private sealed interface SmartAuthServiceState {
 }
 
 @InternalIcureApi
-class SmartAuthService(
+internal class SmartAuthService(
 	private val tokenProvider: TokenProvider
 ) : TokenBasedAuthService<JwtBearer>, AuthService {
 
