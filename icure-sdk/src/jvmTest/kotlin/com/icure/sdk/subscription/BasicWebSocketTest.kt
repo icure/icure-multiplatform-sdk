@@ -1,12 +1,11 @@
 package com.icure.sdk.subscription
 
-import com.icure.sdk.auth.Jwt
+import com.icure.sdk.auth.JwtBearer
 import com.icure.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.sdk.auth.services.TokenBasedAuthService
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.sdk.serialization.SubscriptionSerializer
 import com.icure.sdk.utils.Serialization
@@ -85,8 +84,8 @@ class BasicWebSocketTest : StringSpec({
 	}
 
 	"Should be able to reconnect if didn't received a ping within the configured delay" {
-		val authService = mockk<TokenBasedAuthService<Jwt>> {
-			coEvery { getToken() } returns Jwt("token", "refresh")
+		val authService = mockk<TokenBasedAuthService<JwtBearer>> {
+			coEvery { getToken() } returns JwtBearer("token")
 		}
 		val authProvider = mockk<JwtBasedAuthProvider> {
 			coEvery { getAuthService() } returns authService
@@ -122,8 +121,8 @@ class BasicWebSocketTest : StringSpec({
 	}
 
 	"Should close the connection if the queue is full" {
-		val authService = mockk<TokenBasedAuthService<Jwt>> {
-			coEvery { getToken() } returns Jwt("token", "refresh")
+		val authService = mockk<TokenBasedAuthService<JwtBearer>> {
+			coEvery { getToken() } returns JwtBearer("token")
 		}
 		val authProvider = mockk<JwtBasedAuthProvider> {
 			coEvery { getAuthService() } returns authService

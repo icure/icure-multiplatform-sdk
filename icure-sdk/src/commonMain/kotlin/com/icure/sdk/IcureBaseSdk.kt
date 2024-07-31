@@ -98,19 +98,26 @@ interface IcureBaseSdk : IcureBaseApis {
 	companion object {
 		@OptIn(InternalIcureApi::class)
 		fun initialise(
+			applicationId: String?,
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
 			options: BasicApiOptions = BasicApiOptions()
 		): IcureBaseSdk {
 			val client = options.httpClient ?: sharedHttpClient
 			val json = options.httpClientJson ?: Serialization.json
+			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
 			val authApi = RawAnonymousAuthApiImpl(apiUrl = apiUrl, httpClient = client, json = json)
-			val authProvider = authenticationMethod.getAuthProvider(authApi)
+			val authProvider = authenticationMethod.getAuthProvider(
+				authApi,
+				cryptoService,
+				applicationId,
+				options
+			)
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 
-			val jsonEncryptionService = JsonEncryptionServiceImpl(options.cryptoService)
+			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val config = BasicApiConfigurationImpl(
 				apiUrl,
 				client,

@@ -38,3 +38,8 @@ data class UsernameLongToken(
 data class ThirdPartyTokens(
 	val tokens: Map<ThirdPartyProvider, String>
 ) : Credentials
+
+data class JwtCredentials(
+	val initialBearer: JwtBearer?,
+	val refresh: JwtRefresh
+) : Credentials

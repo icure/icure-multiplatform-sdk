@@ -1,5 +1,7 @@
 package com.icure.sdk.auth
 
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.embed.AuthenticationClass
@@ -7,35 +9,13 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.RequestStatusException
 import com.icure.sdk.utils.decodeClaims
 import com.icure.sdk.utils.isJwtExpiredOrInvalid
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.SerializationException
-
-@InternalIcureApi
-sealed interface CachedSecretType : AuthSecret {
-
-	val authenticationClass: ServerAuthenticationClass?
-
-	data class UnspecifiedCachedSecret(override val secret: String): CachedSecretType {
-		override val authenticationClass = null
-	}
-
-	data class LongLivedTokenCachedSecret(override val secret: String): CachedSecretType {
-		override val authenticationClass: ServerAuthenticationClass = ServerAuthenticationClass.LongLivedToken
-	}
-
-	data class PasswordCachedSecret(override val secret: String): CachedSecretType {
-		override val authenticationClass: ServerAuthenticationClass = ServerAuthenticationClass.Password
-	}
-
-	data class ExternalAuthenticationCachedSecret(override val secret: String, val oauthType: ThirdPartyProvider): CachedSecretType {
-		override val authenticationClass: ServerAuthenticationClass = ServerAuthenticationClass.ExternalAuthentication
-	}
-
-}
 
 @InternalIcureApi
 sealed interface DoGetTokenResult {
 
-	data class Success(val jwt: Jwt) : DoGetTokenResult
+	data class Success(val bearer: JwtBearer, val refresh: JwtRefresh) : DoGetTokenResult
 
 	enum class DoGetTokenResultFailureReason {
 		Needs2FA,
@@ -52,11 +32,13 @@ sealed interface DoGetTokenResult {
 class TokenProvider(
 	private val login: String,
 	private val groupId: String?,
-	private var currentLongLivedSecret: CachedSecretType?,
+	private var currentLongLivedSecret: AuthSecretDetails.Cacheable?,
 	private var cachedToken: String?,
 	private var cachedRefreshToken: String?,
 	private val authApi: RawAnonymousAuthApi,
 	private val authSecretProvider: AuthSecretProvider,
+	private val cryptoService: CryptoService,
+	private val passwordClientSideSalt: String?,
 ) {
 
 	enum class RetrievedTokenType { New, Cached, Refreshed }
@@ -67,13 +49,14 @@ class TokenProvider(
 			?: cachedRefreshToken?.takeIf { !isJwtExpiredOrInvalid(it) }?.let { refreshAndCacheToken(it) }
 			?: RetrievedJwt(getAndCacheNewToken(null), RetrievedTokenType.New)
 
-	suspend fun getNewTokenWithClass(minimumAuthenticationClass: ServerAuthenticationClass): String = getAndCacheNewToken(minimumAuthenticationClass)
+	suspend fun getNewTokenWithClass(minimumAuthenticationClass: AuthenticationClass): String = getAndCacheNewToken(minimumAuthenticationClass)
 
-	private suspend fun getAndCacheNewToken(minimumAuthenticationClass: ServerAuthenticationClass?): String =
-		getNewToken(minimumAuthenticationClass).also {
-			cachedToken = it.jwt
-			cachedRefreshToken = it.refreshJwt
-		}.jwt
+	private suspend fun getAndCacheNewToken(minimumAuthenticationClass: AuthenticationClass?): String =
+		getNewToken(minimumAuthenticationClass).let { (bearer, refresh) ->
+			cachedToken = bearer.token
+			cachedRefreshToken = refresh.token
+			bearer.token
+		}
 
 	private suspend fun refreshAndCacheToken(refreshToken: String): RetrievedJwt =
 		authApi.refresh(refreshToken).successBodyOrNull()?.let {
@@ -84,24 +67,30 @@ class TokenProvider(
 			RetrievedJwt(it.token, RetrievedTokenType.Refreshed)
 		} ?: RetrievedJwt(getAndCacheNewToken(null), RetrievedTokenType.New)
 
-	private suspend fun getNewToken(minimumAuthenticationClass: ServerAuthenticationClass?): Jwt = currentLongLivedSecret?.takeIf {
-		minimumAuthenticationClass == null || it.authenticationClass == null || it.authenticationClass!!.level >= minimumAuthenticationClass.level
+	private suspend fun getNewToken(minimumAuthenticationClass: AuthenticationClass?): Pair<JwtBearer, JwtRefresh> = currentLongLivedSecret?.takeIf {
+		minimumAuthenticationClass == null || it.type.level >= minimumAuthenticationClass.level
 	}?.let { secret ->
-		val result = doGetTokenWithSecret(secret, secret.authenticationClass)
+		val result = doGetTokenWithSecret(secret, secret.type)
 		when {
-			result is DoGetTokenResult.Success -> result.jwt
+			result is DoGetTokenResult.Success -> result.bearer to result.refresh
 			result is DoGetTokenResult.Failure
 				&& result.reason == DoGetTokenResult.DoGetTokenResultFailureReason.Needs2FA
-				&& (minimumAuthenticationClass?.level ?: 0) <= ServerAuthenticationClass.TwoFactorAuthentication.level -> askTotpAndGetToken(secret.secret, minimumAuthenticationClass)
+				&& (minimumAuthenticationClass?.level ?: 0) <= AuthenticationClass.TwoFactorAuthentication.level -> askTotpAndGetToken(secret.secret, minimumAuthenticationClass)
 			else -> askSecretAndGetToken(minimumAuthenticationClass, true)
 		}
 	} ?: askSecretAndGetToken(minimumAuthenticationClass, true)
 
-	private tailrec suspend fun askSecretAndGetToken(minimumAuthenticationClass: ServerAuthenticationClass?, passwordIsValidAs2fa: Boolean, previousAttempts: List<AuthSecretDetails> = emptyList()): Jwt {
+	private tailrec suspend fun askSecretAndGetToken(
+		minimumAuthenticationClass: AuthenticationClass?,
+		passwordIsValidAs2fa: Boolean,
+		previousAttempts: List<AuthSecretDetails> = emptyList()
+	): Pair<JwtBearer, JwtRefresh> {
+		val minAuthClassLevel = minimumAuthenticationClass?.level ?: 0
 		val acceptedSecrets = listOfNotNull(
-			AuthenticationClass.LongLivedToken.takeIf { (minimumAuthenticationClass?.level ?: 0) <= ServerAuthenticationClass.LongLivedToken.level },
-			AuthenticationClass.ShortLivedToken.takeIf { (minimumAuthenticationClass?.level ?: 0) <= ServerAuthenticationClass.ShortLivedToken.level },
-			AuthenticationClass.Password.takeIf { (minimumAuthenticationClass?.level ?: 0) <= ServerAuthenticationClass.TwoFactorAuthentication.level && (passwordIsValidAs2fa || (minimumAuthenticationClass?.level ?: 0) <= ServerAuthenticationClass.Password.level) }
+			AuthenticationClass.LongLivedToken.takeIf { minAuthClassLevel <= AuthenticationClass.LongLivedToken.level },
+			AuthenticationClass.ShortLivedToken.takeIf { minAuthClassLevel <= AuthenticationClass.ShortLivedToken.level },
+			AuthenticationClass.Password.takeIf {
+				minAuthClassLevel <= AuthenticationClass.TwoFactorAuthentication.level && (passwordIsValidAs2fa || minAuthClassLevel <= AuthenticationClass.Password.level) }
 		).also {
 			if(it.isEmpty()) {
 				throw IllegalStateException("Internal error: no secret type is accepted for this request. Group may be misconfigured, or client may be outdated.")
@@ -114,8 +103,10 @@ class TokenProvider(
 		val result = doGetTokenWithSecret(secretDetails, minimumAuthenticationClass)
 		return when {
 			result is DoGetTokenResult.Success -> {
-				updateCachedSecret(secretDetails)
-				result.jwt
+				if (secretDetails is AuthSecretDetails.Cacheable) {
+					this.currentLongLivedSecret = secretDetails
+				}
+				result.bearer to result.refresh
 			}
 			result is DoGetTokenResult.Failure && result.reason == DoGetTokenResult.DoGetTokenResultFailureReason.Needs2FA -> askTotpAndGetToken(secretDetails.secret, minimumAuthenticationClass)
 			secretDetails is AuthSecretDetails.PasswordDetails
@@ -125,8 +116,8 @@ class TokenProvider(
 		}
 	}
 
-	private tailrec suspend fun askTotpAndGetToken(password: String, minimumAuthenticationClass: ServerAuthenticationClass?, previousAttempts: List<AuthSecretDetails> = emptyList()): Jwt {
-		if((minimumAuthenticationClass?.level ?: 0) > ServerAuthenticationClass.TwoFactorAuthentication.level) {
+	private tailrec suspend fun askTotpAndGetToken(password: String, minimumAuthenticationClass: AuthenticationClass?, previousAttempts: List<AuthSecretDetails> = emptyList()): Pair<JwtBearer, JwtRefresh> {
+		if((minimumAuthenticationClass?.level ?: 0) > AuthenticationClass.TwoFactorAuthentication.level) {
 			throw IllegalStateException("Internal error: asking for totp to login but minimumAuthenticationClassLevel is higher than TWO_FACTOR_AUTHENTICATION's level.")
 		}
 		val details = authSecretProvider.getSecret(listOf(AuthenticationClass.TwoFactorAuthentication), previousAttempts)
@@ -136,8 +127,8 @@ class TokenProvider(
 		val result = doGetTokenWithSecret(AuthSecretDetails.TwoFactorAuthTokenDetails(secret = "${password}|${details.secret}"), minimumAuthenticationClass)
 		return when {
 			result is DoGetTokenResult.Success -> {
-				updateCachedSecret(AuthSecretDetails.PasswordDetails(password))
-				result.jwt
+				this.currentLongLivedSecret = AuthSecretDetails.PasswordDetails(password)
+				result.bearer to result.refresh
 			}
 			result is DoGetTokenResult.Failure && result.reason != DoGetTokenResult.DoGetTokenResultFailureReason.Invalid2FA -> {
 				throw IllegalStateException("Unexpected error while trying to login with (previously) valid password and 2fa token ${result.reason}.")
@@ -149,22 +140,24 @@ class TokenProvider(
 	}
 
 	private suspend fun doGetTokenWithSecret(
-		secret: AuthSecret,
-		minimumAuthenticationClass: ServerAuthenticationClass?,
+		secret: AuthSecretDetails,
+		minimumAuthenticationClass: AuthenticationClass?,
 	): DoGetTokenResult {
-		val authResponse = when (secret) {
-			is CachedSecretType.ExternalAuthenticationCachedSecret -> {
-				when(secret.oauthType) {
-					ThirdPartyProvider.GOOGLE -> authApi.loginGoogle(secret.secret)
+		val authResponse = when {
+			secret is AuthSecretDetails.ExternalAuthenticationDetails -> {
+				when (secret.oauthType) {
+					ThirdPartyProvider.GOOGLE -> authApi.loginGoogle(secret.secret) // TODO add group id
 				}
 			}
 
-			is AuthSecretDetails.ExternalAuthenticationDetails -> {
-				when(secret.oauthType) {
-					ThirdPartyProvider.GOOGLE -> authApi.loginGoogle(secret.secret)
-				}
-			}
-
+			passwordClientSideSalt != null && secret is AuthSecretDetails.PasswordDetails ->
+				authApi.login(
+					loginCredentials = LoginCredentials(
+						username = login,
+						password = base64Encode(cryptoService.digest.sha256((secret.secret + passwordClientSideSalt).toByteArray()))
+					),
+					groupId = groupId
+				)
 			else -> {
 				authApi.login(loginCredentials = LoginCredentials(username = login, password = secret.secret), groupId = groupId)
 			}
@@ -176,7 +169,7 @@ class TokenProvider(
 			}
 			val claims = decodeClaims(authPayload.token)
 			if(claims.tokenAuthenticationClass == null || claims.tokenAuthenticationClass >= (minimumAuthenticationClass?.level ?: 0)) {
-				DoGetTokenResult.Success(Jwt(authPayload.token, authPayload.refreshToken))
+				DoGetTokenResult.Success(JwtBearer(authPayload.token), JwtRefresh(authPayload.refreshToken))
 			} else {
 				DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.InvalidAuthClassLevel)
 			}
@@ -212,19 +205,14 @@ class TokenProvider(
 		return TokenProvider(
 			login = login,
 			groupId = newGroupId,
-			currentLongLivedSecret = currentLongLivedSecret?.let { CachedSecretType.UnspecifiedCachedSecret(it.secret) },
+			currentLongLivedSecret = currentLongLivedSecret,
 			cachedToken = switchedJwt,
 			cachedRefreshToken = switchedRefresh,
 			authApi = authApi,
-			authSecretProvider = authSecretProvider
+			authSecretProvider = authSecretProvider,
+			cryptoService = cryptoService,
+			passwordClientSideSalt = passwordClientSideSalt
 		)
-	}
-
-	private fun updateCachedSecret(details: AuthSecretDetails) = when(details) {
-		is AuthSecretDetails.PasswordDetails -> CachedSecretType.PasswordCachedSecret(details.secret)
-		is AuthSecretDetails.LongLivedTokenDetails -> CachedSecretType.LongLivedTokenCachedSecret(details.secret)
-		is AuthSecretDetails.ExternalAuthenticationDetails -> CachedSecretType.ExternalAuthenticationCachedSecret(details.secret, details.oauthType)
-		else -> throw IllegalStateException("Unsupported AuthSecretDetails ${details::class.simpleName}")
 	}
 }
 

@@ -1,6 +1,7 @@
 package com.icure.sdk.auth.services
 
-import com.icure.sdk.auth.Jwt
+import com.icure.sdk.auth.JwtBearer
+import com.icure.sdk.auth.JwtBearerAndRefresh
 
 /**
  * An [AuthProvider] is responsible for instantiating an [AuthService] for each request of the raw api.
@@ -14,7 +15,13 @@ interface AuthProvider {
 }
 
 interface JwtBasedAuthProvider : AuthProvider {
+	override fun getAuthService(): TokenBasedAuthService<JwtBearer>
 
-	override fun getAuthService(): TokenBasedAuthService<Jwt>
-
+	/**
+	 * Get the bearer and refresh tokens used by this provider.
+	 * If both the bearer and refresh tokens are cached, they will be returned, even if expired.
+	 * If one of the tokens is not cached the provider will try to get a new one.
+	 * In case this is not possible the method will fail.
+	 */
+	suspend fun getBearerAndRefreshToken(): JwtBearerAndRefresh
 }

@@ -1,6 +1,6 @@
 package com.icure.sdk.auth.services
 
-import com.icure.sdk.auth.ServerAuthenticationClass
+import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.RequestStatusException
 import io.ktor.client.request.HttpRequestBuilder
@@ -21,9 +21,9 @@ interface AuthService {
 	 * @throws UnavailableAuthenticationClassException if it is not possible to generate a token with the specified
 	 * authentication class.
 	 */
-	suspend fun setAuthorizationInRequest(builder: HttpRequestBuilder, authenticationClass: ServerAuthenticationClass? = null)
+	suspend fun setAuthorizationInRequest(builder: HttpRequestBuilder, authenticationClass: AuthenticationClass? = null)
 
-	class UnavailableAuthenticationClassException(authenticationClass: ServerAuthenticationClass)
+	class UnavailableAuthenticationClassException(authenticationClass: AuthenticationClass)
 		: Exception("Cannot generate a token with authentication class $authenticationClass")
 
 	suspend fun invalidateCurrentToken(error: RequestStatusException)
@@ -33,5 +33,5 @@ interface AuthService {
  * @see [AuthService.setAuthorizationInRequest]
  */
 @OptIn(InternalIcureApi::class)
-suspend fun HttpRequestBuilder.setAuthorizationWith(service: AuthService, authenticationClass: ServerAuthenticationClass? = null) =
+suspend fun HttpRequestBuilder.setAuthorizationWith(service: AuthService, authenticationClass: AuthenticationClass? = null) =
 	service.setAuthorizationInRequest(this, authenticationClass)

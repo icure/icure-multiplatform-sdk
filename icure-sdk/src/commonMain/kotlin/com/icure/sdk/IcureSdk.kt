@@ -227,7 +227,8 @@ interface IcureSdk : IcureApis {
 			val authProvider = authenticationMethod.getAuthProvider(
 				authApi,
 				cryptoService,
-				applicationId
+				applicationId,
+				options
 			)
 			val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json))
 			val self = dataOwnerApi.getCurrentDataOwner()
@@ -380,7 +381,7 @@ interface IcureSdk : IcureApis {
 				apiUrl,
 				client,
 				json,
-				if(authProvider is JwtBasedAuthProvider) authProvider else null,
+				if (authProvider is JwtBasedAuthProvider) authProvider else null,
 				!selfIsAnonymous,
 				crypto,
 				manifests

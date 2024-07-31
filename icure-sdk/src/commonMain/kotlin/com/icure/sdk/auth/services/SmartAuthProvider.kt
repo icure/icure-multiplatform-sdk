@@ -1,9 +1,9 @@
 package com.icure.sdk.auth.services
 
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
-import com.icure.sdk.auth.CachedSecretType
-import com.icure.sdk.auth.ThirdPartyProvider
 import com.icure.sdk.auth.TokenProvider
 import com.icure.sdk.model.UserGroup
 import com.icure.sdk.utils.InternalIcureApi
@@ -13,35 +13,29 @@ class SmartAuthProvider private constructor(
 	private val tokenProvider: TokenProvider,
 	private val groupId: String? = null
 ) : JwtBasedAuthProvider {
-
-	sealed interface InitialSecret {
-		data class PlainSecret(val secret: String) : InitialSecret
-		data class OAuthSecret(val oauthToken: String, val oauthType: ThirdPartyProvider): InitialSecret
-	}
-
 	companion object {
 
 		fun initialise(
 			authApi: RawAnonymousAuthApi,
 			login: String,
 			secretProvider: AuthSecretProvider,
-			initialSecret: InitialSecret? = null,
-			initialAuthToken: String? = null,
-			initialRefreshToken: String? = null,
-			groupId: String? = null
+			initialSecret: AuthSecretDetails.Cacheable?,
+			initialAuthToken: String?,
+			initialRefreshToken: String?,
+			groupId: String?,
+			cryptoService: CryptoService,
+			passwordClientSideSalt: String?,
 		) = SmartAuthProvider(
 			TokenProvider(
 				login = login,
 				groupId = groupId,
-				currentLongLivedSecret = when(initialSecret) {
-					null -> null
-					is InitialSecret.PlainSecret -> CachedSecretType.UnspecifiedCachedSecret(secret = initialSecret.secret)
-					is InitialSecret.OAuthSecret -> CachedSecretType.ExternalAuthenticationCachedSecret(secret = initialSecret.oauthToken, oauthType = initialSecret.oauthType)
-				},
+				currentLongLivedSecret = initialSecret,
 				cachedToken = initialAuthToken,
 				cachedRefreshToken = initialRefreshToken,
 				authApi = authApi,
-				authSecretProvider = secretProvider
+				authSecretProvider = secretProvider,
+				passwordClientSideSalt = passwordClientSideSalt,
+				cryptoService = cryptoService
 			),
 			groupId
 		)
@@ -52,11 +46,10 @@ class SmartAuthProvider private constructor(
 
 	suspend fun switchGroup(newGroupId: String, matches: List<UserGroup>): AuthProvider = when {
 		newGroupId == groupId -> this
-		matches.none { it.groupId == newGroupId } -> throw IllegalStateException("New group id not found in matches.")
+		matches.none { it.groupId == newGroupId } -> throw IllegalArgumentException("New group id not found in matches.")
 		else -> SmartAuthProvider(
 			tokenProvider = tokenProvider.switchedGroup(newGroupId),
 			groupId = newGroupId,
 		)
 	}
-
 }

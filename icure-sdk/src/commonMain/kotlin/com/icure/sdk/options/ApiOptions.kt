@@ -56,6 +56,16 @@ interface CommonOptions {
 	 * In single-group applications this parameter won't be used, so it can be left as null.
 	 */
 	val groupSelector: ((availableGroups: List<UserGroup>) -> String)?
+	/**
+	 * If true (default) the password of the user will be salted together with the application id before sending it to
+	 * the iCure backend for login or when changing the user password.
+	 * This is done in addition to the server-side salting of the password before storing them.
+	 *
+	 * By enabling this option iCure never gets access to the plain text password of users.
+	 * Note that changing this value in a second moment requires also modifying the password of the user on the iCure
+	 * databases to reflect the change.
+	 */
+	val saltPasswordWithApplicationId: Boolean
 }
 
 data class ApiOptions(
@@ -92,7 +102,8 @@ data class ApiOptions(
 	 * Implementation of key storage to use.
 	 * If not provided the sdk will store the keys in the [StorageFacade] provided to the api initialization method.
 	 */
-	val keyStorage: KeyStorageFacade? = null
+	val keyStorage: KeyStorageFacade? = null,
+	override val saltPasswordWithApplicationId: Boolean = true,
 ): CommonOptions {
 }
 
@@ -103,6 +114,7 @@ data class BasicApiOptions(
 	override val httpClientJson: Json? = null,
 	override val cryptoService: CryptoService = defaultCryptoService,
 	override val groupSelector: ((availableGroups: List<UserGroup>) -> String)? = null,
+	override val saltPasswordWithApplicationId: Boolean = true,
 ): CommonOptions
 
 @Serializable
