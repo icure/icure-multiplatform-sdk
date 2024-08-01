@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.seconds
  * according to the duration specified in the parameter, to avoid the mid-flight expiration of the token.
  */
 @InternalIcureApi
-class JwtAuthProvider(
+internal class JwtAuthProvider(
 	private val authApi: RawAnonymousAuthApi,
 	initialBearer: JwtBearer?,
 	private val refreshToken: JwtRefresh,
