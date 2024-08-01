@@ -17,8 +17,6 @@ jobs:
             -   name: Set openssl and curl paths
                 id: set-paths
                 run: |
-                    openssl_path=$(which openssl)
-                    curl_path=$(which curl)
                     openssl_lib_path=$(brew --prefix openssl)/lib
                     curl_lib_path=$(brew --prefix curl)/lib
                     echo "LIB_PATHS=${openssl_lib_path};${curl_lib_path}" >> $GITHUB_ENV
