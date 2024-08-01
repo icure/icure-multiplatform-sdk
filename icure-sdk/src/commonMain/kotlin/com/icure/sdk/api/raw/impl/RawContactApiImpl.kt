@@ -177,8 +177,7 @@ class RawContactApiImpl(
 		patientForeignKeys: ListOfIds,
 	): HttpResponse<List<EncryptedContact>> =
 		post(authProvider) {
-			url
-			{
+			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "byHcPartyPatientForeignKeys")
 				parameter("hcPartyId", hcPartyId)

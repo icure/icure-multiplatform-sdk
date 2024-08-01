@@ -378,8 +378,7 @@ class RawGroupApiImpl(
 
 	override suspend fun getHierarchy(id: String): HttpResponse<List<String>> =
 		get(authProvider) {
-			url
-			{
+			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", id, "hierarchy")
 				parameter("ts", GMTDate().timestamp)
@@ -389,8 +388,7 @@ class RawGroupApiImpl(
 
 	override suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>> =
 		get(authProvider) {
-			url
-			{
+			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", "all")
 				parameter("ts", GMTDate().timestamp)

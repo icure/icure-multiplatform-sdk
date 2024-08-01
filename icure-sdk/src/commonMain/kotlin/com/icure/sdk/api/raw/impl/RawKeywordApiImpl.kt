@@ -52,8 +52,7 @@ class RawKeywordApiImpl(
 
 	override suspend fun getKeyword(keywordId: String): HttpResponse<Keyword> =
 		get(authProvider) {
-			url
-			{
+			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "keyword", keywordId)
 				parameter("ts", GMTDate().timestamp)
