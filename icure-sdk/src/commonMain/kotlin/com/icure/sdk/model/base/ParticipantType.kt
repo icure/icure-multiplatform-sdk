@@ -8,42 +8,42 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ParticipantType() {
-	@SerialName("Admitter")
+	@SerialName("admitter")
 	Admitter,
 
-	@SerialName("Attender")
+	@SerialName("attender")
 	Attender,
 
-	@SerialName("CallbackContact")
+	@SerialName("callback")
 	CallbackContact,
 
-	@SerialName("Consultant")
+	@SerialName("consultant")
 	Consultant,
 
-	@SerialName("Discharger")
+	@SerialName("discharger")
 	Discharger,
 
-	@SerialName("Escort")
+	@SerialName("escort")
 	Escort,
 
-	@SerialName("Referrer")
+	@SerialName("referrer")
 	Referrer,
 
-	@SerialName("SecondaryPerformer")
+	@SerialName("secondaryPerformer")
 	SecondaryPerformer,
 
-	@SerialName("PrimaryPerformer")
+	@SerialName("primaryPerformer")
 	PrimaryPerformer,
 
-	@SerialName("Participation")
+	@SerialName("participation")
 	Participation,
 
-	@SerialName("Translator")
+	@SerialName("translator")
 	Translator,
 
-	@SerialName("Emergency")
+	@SerialName("emergency")
 	Emergency,
 
-	@SerialName("Location")
+	@SerialName("location")
 	Location,
 }
