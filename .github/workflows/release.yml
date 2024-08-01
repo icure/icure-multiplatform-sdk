@@ -14,6 +14,13 @@ jobs:
         if: github.event.pull_request.merged == true
         runs-on: self-hosted
         steps:
+            -   name: Set openssl and curl paths
+                id: set-paths
+                run: |
+                    openssl_lib_path=$(brew --prefix openssl)/lib
+                    curl_lib_path=$(brew --prefix curl)/lib
+                    echo "LIB_PATHS=${openssl_lib_path};${curl_lib_path}" >> $GITHUB_ENV
+
             -   name: Checkout code
                 uses: actions/checkout@v4
                 with:
@@ -84,6 +91,7 @@ jobs:
                     ORG_GRADLE_PROJECT_mavenSnapshotsRepository: ${{ secrets.MAVEN_SNAPSHOT_REPOSITORY }}
                     ORG_GRADLE_PROJECT_mavenRepository: ${{ secrets.MAVEN_REPOSITORY }}
                     ORG_GRADLE_PROJECT_version: ${{ env.NEW_VERSION }}
+                    ORG_GRADLE_PROJECT_cinteropsLibsDir: ${{ env.LIB_PATHS }}
                     ANDROID_HOME: ~/android/sdk # The Android SDK is installed here from the setup-android action
 
             -   name: Upload Release
