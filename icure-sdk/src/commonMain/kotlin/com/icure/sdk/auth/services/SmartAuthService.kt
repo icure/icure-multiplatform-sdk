@@ -37,7 +37,7 @@ internal class SmartAuthService(
 		}
 		is SmartAuthServiceState.Reattempt -> {
 			if(authenticationClass != null) {
-				val token = smartTokenProvider.getNewTokenWithClass(authenticationClass)
+				val token = smartTokenProvider.getTokenForClass(authenticationClass)
 				currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
 				token
 			} else {
@@ -51,7 +51,7 @@ internal class SmartAuthService(
 		}
 		is SmartAuthServiceState.ExpectRequestWithSpecificAuthClass -> {
 			if(authenticationClass != null) {
-				val token = smartTokenProvider.getNewTokenWithClass(authenticationClass)
+				val token = smartTokenProvider.getTokenForClass(authenticationClass)
 				currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
 				token
 			} else {
