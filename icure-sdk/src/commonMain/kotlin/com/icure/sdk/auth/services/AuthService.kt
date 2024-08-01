@@ -1,6 +1,7 @@
 package com.icure.sdk.auth.services
 
 import com.icure.sdk.model.embed.AuthenticationClass
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.RequestStatusException
 import io.ktor.client.request.HttpRequestBuilder
 
@@ -11,6 +12,7 @@ import io.ktor.client.request.HttpRequestBuilder
  * different authentication credentials, for example to support mechanisms such as upgrade and retry.
  * However, using a single services for the execution of different methods may cause errors.
  */
+@InternalIcureApi
 interface AuthService {
 
 	/**
@@ -49,5 +51,6 @@ interface AuthService {
 /**
  * @see [AuthService.setAuthenticationInRequest]
  */
+@InternalIcureApi
 internal suspend fun HttpRequestBuilder.setAuthorizationWith(service: AuthService, authenticationClass: AuthenticationClass? = null) =
 	service.setAuthenticationInRequest(this, authenticationClass)

@@ -6,7 +6,6 @@ import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
 import com.icure.sdk.auth.JwtBearerAndRefresh
 import com.icure.sdk.auth.SmartTokenProvider
-import com.icure.sdk.model.UserGroup
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
@@ -45,9 +44,8 @@ internal class SmartAuthProvider private constructor(
 
 	override fun getAuthService() = SmartAuthService(smartTokenProvider)
 
-	suspend fun switchGroup(newGroupId: String, matches: List<UserGroup>): AuthProvider = when {
+	override suspend fun switchGroup(newGroupId: String): AuthProvider = when {
 		newGroupId == groupId -> this
-		matches.none { it.groupId == newGroupId } -> throw IllegalArgumentException("New group id not found in matches.")
 		else -> SmartAuthProvider(
 			smartTokenProvider = smartTokenProvider.switchedGroup(newGroupId),
 			groupId = newGroupId,

@@ -133,6 +133,8 @@ interface IcureBaseSdk : IcureBaseApis {
 				config
 			)
 		}
+
+		fun initialiseInGroup(): IcureBaseSdk = TODO()
 	}
 }
 

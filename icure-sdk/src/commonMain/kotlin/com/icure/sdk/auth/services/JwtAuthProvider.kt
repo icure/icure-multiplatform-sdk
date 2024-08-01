@@ -28,10 +28,10 @@ import kotlin.time.Duration.Companion.seconds
  */
 @InternalIcureApi
 class JwtAuthProvider(
-	authApi: RawAnonymousAuthApi,
+	private val authApi: RawAnonymousAuthApi,
 	initialBearer: JwtBearer?,
 	private val refreshToken: JwtRefresh,
-	refreshPadding: Duration = 30L.seconds
+	private val refreshPadding: Duration = 30L.seconds
 ) : JwtBasedAuthProvider {
 	private val refresher = TokenRefresher(refreshToken, initialBearer, refreshPadding, authApi)
 
@@ -39,6 +39,16 @@ class JwtAuthProvider(
 
 	override suspend fun getBearerAndRefreshToken(): JwtBearerAndRefresh =
 		JwtBearerAndRefresh(refresher.getOrRefreshToken(true), refreshToken)
+
+	override suspend fun switchGroup(newGroupId: String): AuthProvider {
+		val switchedRefresh = authApi.switchGroup(refreshToken.token, newGroupId).successBody()
+		return JwtAuthProvider(
+			authApi,
+			switchedRefresh.token?.let(::JwtBearer),
+			JwtRefresh(ensureNonNull(switchedRefresh.refreshToken) { "Switch group gave a null refresh token" }),
+			refreshPadding
+		)
+	}
 }
 
 @InternalIcureApi

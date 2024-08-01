@@ -39,6 +39,7 @@ sealed interface AuthenticationMethod {
 	/**
 	 * The sdk will perform requests using a specific authentication provider.
 	 */
+	@InternalIcureApi
 	data class UsingAuthProvider(
 		/**
 		 * The authentication provider to use for the requests.

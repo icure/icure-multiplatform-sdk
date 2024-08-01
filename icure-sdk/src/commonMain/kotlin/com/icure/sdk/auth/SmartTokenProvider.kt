@@ -75,6 +75,32 @@ internal class SmartTokenProvider(
 		} else getAndCacheNewTokens(null)
 	}
 
+	suspend fun switchedGroup(newGroupId: String): SmartTokenProvider {
+		// Take the mutable cached data while holding the lock
+		val (cachedRefreshToken, currentLongLivedSecret) = tokenCacheMutex.withLock {
+			this.cachedRefreshToken to this.currentLongLivedSecret
+		}
+		val (switchedJwt, switchedRefresh) = cachedRefreshToken?.let { refreshJwt ->
+			authApi.switchGroup(refreshJwt, newGroupId).successBodyOrNull()?.let { response ->
+				ensure (response.token != null && response.refreshToken != null) {
+					"Internal error: group switch succeeded but no token was returned. Unsupported backend version?"
+				}
+				response.token to response.refreshToken
+			}
+		} ?: (null to null)
+		return SmartTokenProvider(
+			loginUsername = loginUsername,
+			groupId = newGroupId,
+			currentLongLivedSecret = currentLongLivedSecret,
+			cachedToken = switchedJwt,
+			cachedRefreshToken = switchedRefresh,
+			authApi = authApi,
+			authSecretProvider = authSecretProvider,
+			cryptoService = cryptoService,
+			passwordClientSideSalt = passwordClientSideSalt
+		)
+	}
+
 	private suspend fun getAndCacheNewTokens(minimumAuthenticationClass: AuthenticationClass?): JwtBearerAndRefresh =
 		getNewToken(minimumAuthenticationClass).also {
 			cachedToken = it.bearer.token
@@ -225,28 +251,6 @@ internal class SmartTokenProvider(
 				else -> throw e
 			}
 		}
-	}
-
-	suspend fun switchedGroup(newGroupId: String): SmartTokenProvider {
-		val (switchedJwt, switchedRefresh) = cachedRefreshToken?.let { refreshJwt ->
-			authApi.switchGroup(refreshJwt, newGroupId).successBodyOrNull()?.let { response ->
-				ensure (response.token != null && response.refreshToken != null) {
-					"Internal error: group switch succeeded but no token was returned. Unsupported backend version?"
-				}
-				response.token to response.refreshToken
-			}
-		} ?: (null to null)
-		return SmartTokenProvider(
-			loginUsername = loginUsername,
-			groupId = newGroupId,
-			currentLongLivedSecret = currentLongLivedSecret,
-			cachedToken = switchedJwt,
-			cachedRefreshToken = switchedRefresh,
-			authApi = authApi,
-			authSecretProvider = authSecretProvider,
-			cryptoService = cryptoService,
-			passwordClientSideSalt = passwordClientSideSalt
-		)
 	}
 }
 
