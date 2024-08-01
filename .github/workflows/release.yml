@@ -14,6 +14,10 @@ jobs:
         if: github.event.pull_request.merged == true
         runs-on: self-hosted
         steps:
+            -   name: Check if curl is installed, otherwise install it
+                run: |
+                    brew list curl || brew install curl
+
             -   name: Set openssl and curl paths
                 id: set-paths
                 run: |
