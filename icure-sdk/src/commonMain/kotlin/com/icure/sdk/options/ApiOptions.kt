@@ -44,19 +44,6 @@ interface CommonOptions {
 	 */
 	val cryptoService: CryptoService
 	/**
-	 * An instance of iCure SDK is initialized for working as a specific user in a single group.
-	 * However, the user credentials may match multiple users in different groups (but at most one per group).
-	 * If that is the case, this function will be used to pick the actual user for which the sdk will be initialized.
-	 *
-	 * This function takes in input the information on the users and corresponding group that are matching the
-	 * credentials, and returns a single group id.
-	 *
-	 * This is mandatory in multi-group applications, where a single user could exist in multiple groups.
-	 * If this parameter is null and the user credentials match multiple users the api initialisation will fail.
-	 * In single-group applications this parameter won't be used, so it can be left as null.
-	 */
-	val groupSelector: ((availableGroups: List<UserGroup>) -> String)?
-	/**
 	 * If true (default) the password of the user will be salted together with the application id before sending it to
 	 * the iCure backend for login or when changing the user password.
 	 * This is done in addition to the server-side salting of the password before storing them.
@@ -67,6 +54,12 @@ interface CommonOptions {
 	 */
 	val saltPasswordWithApplicationId: Boolean
 }
+
+/**
+ * A function taking in input the information on all groups and user that some credentials can authenticate as, and
+ * the group id of one of the input values.
+ */
+typealias GroupSelector = (availableGroups: List<UserGroup>) -> String
 
 data class ApiOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
@@ -92,7 +85,16 @@ data class ApiOptions(
 	 */
 	val createTransferKeys: Boolean = true,
 	override val cryptoService: CryptoService = defaultCryptoService,
-	override val groupSelector: ((availableGroups: List<UserGroup>) -> String)? = null,
+	/**
+	 * An instance of iCure SDK is initialized for working as a specific user in a single group.
+	 * However, the user credentials may match multiple users in different groups (but at most one per group).
+	 * If that is the case, this function will be used to pick the actual user for which the sdk will be initialized.
+	 *
+	 * This is mandatory in multi-group applications, where a single user could exist in multiple groups.
+	 * If this parameter is null and the user credentials match multiple users the api initialisation will fail.
+	 * In single-group applications this parameter won't be used, so it can be left as null.
+	 */
+	val groupSelector: GroupSelector? = null,
 	/**
 	 * Options to support the migration of data created using iCure versions from before 2018.
 	 * Leave it as false (default) unless explicitly instructed to set it to true by the iCure team.
@@ -113,7 +115,6 @@ data class BasicApiOptions(
 	override val websocketClient: HttpClient? = null,
 	override val httpClientJson: Json? = null,
 	override val cryptoService: CryptoService = defaultCryptoService,
-	override val groupSelector: ((availableGroups: List<UserGroup>) -> String)? = null,
 	override val saltPasswordWithApplicationId: Boolean = true,
 ): CommonOptions
 

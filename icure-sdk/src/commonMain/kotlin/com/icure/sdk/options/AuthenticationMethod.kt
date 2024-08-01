@@ -2,6 +2,8 @@ package com.icure.sdk.options
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
+import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
 import com.icure.sdk.auth.Credentials
@@ -17,6 +19,9 @@ import com.icure.sdk.model.Group
 import com.icure.sdk.model.User
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensureNonNull
+import io.ktor.client.HttpClient
 
 sealed interface AuthenticationMethod {
 	/**
@@ -158,6 +163,32 @@ internal fun AuthenticationMethod.getAuthProvider(
 		passwordClientSideSalt = options.getPasswordClientSideSalt(applicationId),
 		cryptoService = cryptoService
 	)
+}
+
+/**
+ * Get an authentication provider and bind it to a group.
+ */
+@InternalIcureApi
+internal suspend fun AuthenticationMethod.getAuthProviderInGroup(
+	apiUrl: String,
+	httpClient: HttpClient,
+	cryptoService: CryptoService,
+	applicationId: String?,
+	options: CommonOptions,
+	groupSelector: GroupSelector?
+): AuthProvider {
+	val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, httpClient, json = Serialization.json)
+	val authProvider = getAuthProvider(rawAuthApi, cryptoService, applicationId, options)
+	val userApi = RawUserApiImpl(apiUrl, authProvider, httpClient, json = Serialization.json)
+	val matches = userApi.getMatchingUsers().successBody()
+	val chosenGroupId = if (matches.size > 1) {
+		 requireNotNull(groupSelector) {
+			"The provided credentials allow the user to login to multiple groups, but no group selector is provided"
+		}.invoke(matches)
+	} else {
+		ensureNonNull(matches.first().groupId) { "Group id of single match is null" }
+	}
+	return authProvider.switchGroup(chosenGroupId)
 }
 
 @InternalIcureApi
