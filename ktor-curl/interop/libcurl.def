@@ -11,4 +11,5 @@ linkerOpts.linux =           -lcurl \
 
 compilerOpts.linux =         -I/usr/include/ \
                              -I/usr/include/x86_64-linux-gnu/ \
+                             -I/usr/local/opt/curl/include \
                              -I/opt/homebrew/opt/curl/include/
