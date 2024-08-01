@@ -46,7 +46,6 @@ import com.icure.sdk.api.flavoured.ReceiptBasicApiImpl
 import com.icure.sdk.api.flavoured.TimeTableBasicApiImpl
 import com.icure.sdk.api.flavoured.TopicBasicApiImpl
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
-import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawApplicationSettingsApiImpl
 import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
 import com.icure.sdk.api.raw.impl.RawClassificationApiImpl
@@ -79,7 +78,6 @@ import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.auth.services.JwtBasedAuthProvider
-import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.impl.BasicInternalCryptoApiImpl
 import com.icure.sdk.crypto.impl.EntityValidationServiceImpl
 import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
@@ -89,15 +87,28 @@ import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.options.BasicApiConfigurationImpl
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
-import com.icure.sdk.options.getAuthProvider
+import com.icure.sdk.options.getAuthProviderInGroup
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.serialization.json.Json
 
 interface IcureBaseSdk : IcureBaseApis {
+	/**
+	 * Get a new sdk using the same configurations and user authentication methods but for a different group.
+	 * To use this method, the authentication method provided at initialization of this sdk must be valid also for the
+	 * new group.
+	 *
+	 * Note that the switched sdk will reuse components like the http client.
+	 * Don't close the client of this sdk while you are using the new sdk.
+	 *
+	 * @param groupId the id of the new group to switch to
+	 * @return a new sdk for executing requests in the provided group
+	 */
+	suspend fun switchGroup(groupId: String): IcureBaseSdk
+
 	companion object {
 		@OptIn(InternalIcureApi::class)
-		fun initialise(
+		suspend fun initialise(
 			applicationId: String?,
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
@@ -107,12 +118,13 @@ interface IcureBaseSdk : IcureBaseApis {
 			val json = options.httpClientJson ?: Serialization.json
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val authApi = RawAnonymousAuthApiImpl(apiUrl = apiUrl, httpClient = client, json = json)
-			val authProvider = authenticationMethod.getAuthProvider(
-				authApi,
+			val authProvider = authenticationMethod.getAuthProviderInGroup(
+				apiUrl,
+				client,
 				cryptoService,
 				applicationId,
-				options
+				options,
+				options.groupSelector
 			)
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
@@ -128,20 +140,16 @@ interface IcureBaseSdk : IcureBaseApis {
 			)
 			return IcureBaseApiImpl(
 				authProvider,
-				NoAccessControlKeysHeadersProvider,
 				json,
 				config
 			)
 		}
-
-		fun initialiseInGroup(): IcureBaseSdk = TODO()
 	}
 }
 
 @OptIn(InternalIcureApi::class)
 private class IcureBaseApiImpl(
 	private val authProvider: AuthProvider,
-	private val headersProvider: AccessControlKeysHeadersProvider,
 	private val httpClientJson: Json,
 	private val config: BasicApiConfiguration
 ) : IcureBaseSdk {
@@ -153,7 +161,7 @@ private class IcureBaseApiImpl(
 			RawAccessLogApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -164,7 +172,7 @@ private class IcureBaseApiImpl(
 			RawCalendarItemApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -175,7 +183,7 @@ private class IcureBaseApiImpl(
 			RawClassificationApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -187,7 +195,7 @@ private class IcureBaseApiImpl(
 			RawContactApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -199,7 +207,7 @@ private class IcureBaseApiImpl(
 			RawDocumentApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -210,7 +218,7 @@ private class IcureBaseApiImpl(
 			RawFormApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -231,7 +239,7 @@ private class IcureBaseApiImpl(
 			RawHealthElementApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -252,7 +260,7 @@ private class IcureBaseApiImpl(
 			RawInvoiceApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -263,7 +271,7 @@ private class IcureBaseApiImpl(
 			RawMaintenanceTaskApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -274,7 +282,7 @@ private class IcureBaseApiImpl(
 			RawMessageApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -285,7 +293,7 @@ private class IcureBaseApiImpl(
 			RawPatientApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -306,7 +314,7 @@ private class IcureBaseApiImpl(
 			RawReceiptApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -317,7 +325,7 @@ private class IcureBaseApiImpl(
 			RawTimeTableApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -328,7 +336,7 @@ private class IcureBaseApiImpl(
 			RawTopicApiImpl(
 				apiUrl,
 				authProvider,
-				headersProvider,
+				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
 			), config
@@ -374,4 +382,10 @@ private class IcureBaseApiImpl(
 	override val tarification: TarificationApi by lazy {
 		TarificationApiImpl(RawTarificationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
 	}
+
+	override suspend fun switchGroup(groupId: String): IcureBaseSdk = IcureBaseApiImpl(
+		authProvider.switchGroup(groupId),
+		httpClientJson,
+		config
+	)
 }

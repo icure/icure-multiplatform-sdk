@@ -164,6 +164,19 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 interface IcureSdk : IcureApis {
+	/**
+	 * Get a new sdk using the same configurations and user authentication methods but for a different group.
+	 * To use this method, the authentication method provided at initialization of this sdk must be valid also for the
+	 * new group.
+	 *
+	 * Note that the switched sdk will reuse components like the http client.
+	 * Don't close the client of this sdk while you are using the new sdk.
+	 *
+	 * @param groupId the id of the new group to switch to
+	 * @return a new sdk for executing requests in the provided group
+	 */
+	suspend fun switchGroup(groupId: String): IcureSdk
+
 	companion object {
 		/**
 		 * A shared http client to use as the default across all instances of iCure.
@@ -248,19 +261,6 @@ interface IcureSdk : IcureApis {
 			)
 		}
 	}
-
-	/**
-	 * Get a new sdk using the same configurations and user authentication methods but for a different group.
-	 * To use this method, the authentication method provided at initialization of this sdk must be valid also for the
-	 * new group.
-	 *
-	 * Note that the switched sdk will reuse components like the http client.
-	 * Don't close the client of this sdk while you are using the new sdk.
-	 *
-	 * @param groupId the id of the new group to switch to
-	 * @return a new sdk for executing requests in the provided group
-	 */
-	suspend fun switchGroup(groupId: String): IcureSdk
 }
 
 @InternalIcureApi

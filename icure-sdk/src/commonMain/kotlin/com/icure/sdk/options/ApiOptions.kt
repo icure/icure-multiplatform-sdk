@@ -53,6 +53,16 @@ interface CommonOptions {
 	 * databases to reflect the change.
 	 */
 	val saltPasswordWithApplicationId: Boolean
+	/**
+	 * An instance of iCure SDK is initialized for working as a specific user in a single group.
+	 * However, the user credentials may match multiple users in different groups (but at most one per group).
+	 * If that is the case, this function will be used to pick the actual user for which the sdk will be initialized.
+	 *
+	 * This is mandatory in multi-group applications, where a single user could exist in multiple groups.
+	 * If this parameter is null and the user credentials match multiple users the api initialisation will fail.
+	 * In single-group applications this parameter won't be used, so it can be left as null.
+	 */
+	val groupSelector: GroupSelector?
 }
 
 /**
@@ -85,16 +95,7 @@ data class ApiOptions(
 	 */
 	val createTransferKeys: Boolean = true,
 	override val cryptoService: CryptoService = defaultCryptoService,
-	/**
-	 * An instance of iCure SDK is initialized for working as a specific user in a single group.
-	 * However, the user credentials may match multiple users in different groups (but at most one per group).
-	 * If that is the case, this function will be used to pick the actual user for which the sdk will be initialized.
-	 *
-	 * This is mandatory in multi-group applications, where a single user could exist in multiple groups.
-	 * If this parameter is null and the user credentials match multiple users the api initialisation will fail.
-	 * In single-group applications this parameter won't be used, so it can be left as null.
-	 */
-	val groupSelector: GroupSelector? = null,
+	override val groupSelector: GroupSelector? = null,
 	/**
 	 * Options to support the migration of data created using iCure versions from before 2018.
 	 * Leave it as false (default) unless explicitly instructed to set it to true by the iCure team.
@@ -116,6 +117,7 @@ data class BasicApiOptions(
 	override val httpClientJson: Json? = null,
 	override val cryptoService: CryptoService = defaultCryptoService,
 	override val saltPasswordWithApplicationId: Boolean = true,
+	override val groupSelector: GroupSelector? = null,
 ): CommonOptions
 
 @Serializable
