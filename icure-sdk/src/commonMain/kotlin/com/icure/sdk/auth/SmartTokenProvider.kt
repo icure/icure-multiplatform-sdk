@@ -6,8 +6,11 @@ import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.RequestStatusException
 import com.icure.sdk.utils.decodeClaims
+import com.icure.sdk.utils.ensure
+import com.icure.sdk.utils.ensureNonNull
 import com.icure.sdk.utils.isJwtExpiredOrInvalid
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.SerializationException
@@ -28,9 +31,12 @@ internal sealed interface DoGetTokenResult {
 
 }
 
+/**
+ * TODO make thread safe
+ */
 @InternalIcureApi
-internal class TokenProvider(
-	private val login: String,
+internal class SmartTokenProvider(
+	private val loginUsername: String?,
 	private val groupId: String?,
 	private var currentLongLivedSecret: AuthSecretDetails.Cacheable?,
 	private var cachedToken: String?,
@@ -94,19 +100,22 @@ internal class TokenProvider(
 		previousAttempts: List<AuthSecretDetails> = emptyList()
 	): JwtBearerAndRefresh {
 		val minAuthClassLevel = minimumAuthenticationClass?.level ?: 0
-		val acceptedSecrets = listOfNotNull(
-			AuthenticationClass.LongLivedToken.takeIf { minAuthClassLevel <= AuthenticationClass.LongLivedToken.level },
-			AuthenticationClass.ShortLivedToken.takeIf { minAuthClassLevel <= AuthenticationClass.ShortLivedToken.level },
-			AuthenticationClass.Password.takeIf {
-				minAuthClassLevel <= AuthenticationClass.TwoFactorAuthentication.level && (passwordIsValidAs2fa || minAuthClassLevel <= AuthenticationClass.Password.level) }
-		).also {
-			if(it.isEmpty()) {
-				throw IllegalStateException("Internal error: no secret type is accepted for this request. Group may be misconfigured, or client may be outdated.")
+		val acceptedSecrets = AuthenticationClass.entries.filter {
+			when (it) {
+				AuthenticationClass.TwoFactorAuthentication -> false
+				AuthenticationClass.Password -> AuthenticationClass.TwoFactorAuthentication.level >= minAuthClassLevel && (passwordIsValidAs2fa || AuthenticationClass.Password.level >= minAuthClassLevel)
+				else -> it.level >= minAuthClassLevel
 			}
+		}.also {
+			ensure (it.isNotEmpty()) {
+				"Internal error: no secret type is accepted for this request. Group may be misconfigured, or client may be outdated."
+			}
+		}.let { allAcceptedSecrets ->
+			if (loginUsername != null) allAcceptedSecrets else allAcceptedSecrets.filterNot { it.requiresLoginUsername }
 		}
 		val secretDetails = authSecretProvider.getSecret(acceptedSecrets, previousAttempts)
 		if(secretDetails.type !in acceptedSecrets) {
-			throw IllegalStateException("Accepted secret types are ${acceptedSecrets.joinToString(", ")}, but got a secret of type ${secretDetails.type}.")
+			throw IllegalArgumentException("Accepted secret types are ${acceptedSecrets.joinToString(", ")}, but got a secret of type ${secretDetails.type}.")
 		}
 		val result = doGetTokenWithSecret(secretDetails, minimumAuthenticationClass)
 		return when {
@@ -125,8 +134,8 @@ internal class TokenProvider(
 	}
 
 	private tailrec suspend fun askTotpAndGetToken(password: String, minimumAuthenticationClass: AuthenticationClass?, previousAttempts: List<AuthSecretDetails> = emptyList()): JwtBearerAndRefresh {
-		if((minimumAuthenticationClass?.level ?: 0) > AuthenticationClass.TwoFactorAuthentication.level) {
-			throw IllegalStateException("Internal error: asking for totp to login but minimumAuthenticationClassLevel is higher than TWO_FACTOR_AUTHENTICATION's level.")
+		ensure ((minimumAuthenticationClass?.level ?: 0) <= AuthenticationClass.TwoFactorAuthentication.level) {
+			"Internal error: asking for totp to login but minimumAuthenticationClassLevel is higher than TWO_FACTOR_AUTHENTICATION's level."
 		}
 		val details = authSecretProvider.getSecret(listOf(AuthenticationClass.TwoFactorAuthentication), previousAttempts)
 		if(details !is AuthSecretDetails.TwoFactorAuthTokenDetails) {
@@ -158,32 +167,44 @@ internal class TokenProvider(
 				}
 			}
 
-			passwordClientSideSalt != null && secret is AuthSecretDetails.PasswordDetails ->
-				authApi.login(
-					loginCredentials = LoginCredentials(
-						username = login,
-						password = base64Encode(cryptoService.digest.sha256((secret.secret + passwordClientSideSalt).toByteArray()))
-					),
-					groupId = groupId
-				)
+			secret is AuthSecretDetails.DigitalIdDetails ->
+				TODO("Digital id login is not yet implemented for smart auth")
+
 			else -> {
-				authApi.login(loginCredentials = LoginCredentials(username = login, password = secret.secret), groupId = groupId)
+				ensureNonNull(loginUsername) {
+					"Internal error: loginUsername is null but accepted authentication secret requires username to login."
+				}
+				if (passwordClientSideSalt != null && secret is AuthSecretDetails.PasswordDetails) {
+					authApi.login(
+						loginCredentials = LoginCredentials(
+							username = loginUsername,
+							password = base64Encode(cryptoService.digest.sha256((secret.secret + passwordClientSideSalt).toByteArray()))
+						),
+						groupId = groupId
+					)
+				} else {
+					authApi.login(loginCredentials = LoginCredentials(username = loginUsername, password = secret.secret), groupId = groupId)
+				}
 			}
 		}
 		return runCatching {
 			val authPayload = authResponse.successBody()
-			if(authPayload.token == null || authPayload.refreshToken == null) {
-				throw IllegalStateException("Internal error: login succeeded but no token was returned. Unsupported backend version?")
+			ensure (authPayload.token != null && authPayload.refreshToken != null) {
+				"Internal error: login succeeded but no token was returned. Unsupported backend version?"
 			}
-			val claims = decodeClaims(authPayload.token)
-			if(claims.tokenAuthenticationClass == null || claims.tokenAuthenticationClass >= (minimumAuthenticationClass?.level ?: 0)) {
+			val tokenAuthClass = ensureNonNull(
+				kotlin.runCatching {
+					decodeClaims(authPayload.token)
+				}.getOrNull()?.tokenAuthenticationClass
+			) { "Could not decode token authentication class. Unsupported backend version?"}
+			if (tokenAuthClass >= (minimumAuthenticationClass?.level ?: 0)) {
 				DoGetTokenResult.Success(JwtBearer(authPayload.token), JwtRefresh(authPayload.refreshToken))
 			} else {
 				DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.InvalidAuthClassLevel)
 			}
 		}.onFailure { error ->
 			return when (error) {
-				is SerializationException -> throw IllegalStateException("Internal error: authClassLevel is not a number. Unsupported backend version?")
+				is SerializationException -> throw InternalIcureException("Internal error: authClassLevel is not a number. Unsupported backend version?")
 				is RequestStatusException -> when(error.statusCode) {
 					// Password is wrong (401) or unacceptable (e.g. too short, 412)
 					401, 412 -> DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.InvalidPwOrToken)
@@ -201,17 +222,17 @@ internal class TokenProvider(
 		}.getOrThrow()
 	}
 
-	suspend fun switchedGroup(newGroupId: String): TokenProvider {
+	suspend fun switchedGroup(newGroupId: String): SmartTokenProvider {
 		val (switchedJwt, switchedRefresh) = cachedRefreshToken?.let { refreshJwt ->
 			authApi.switchGroup(refreshJwt, newGroupId).successBodyOrNull()?.let { response ->
-				if(response.token == null || response.refreshToken == null) {
-					throw IllegalStateException("Internal error: group switch succeeded but no token was returned. Unsupported backend version?")
+				ensure (response.token != null && response.refreshToken != null) {
+					"Internal error: group switch succeeded but no token was returned. Unsupported backend version?"
 				}
 				response.token to response.refreshToken
 			}
 		} ?: (null to null)
-		return TokenProvider(
-			login = login,
+		return SmartTokenProvider(
+			loginUsername = loginUsername,
 			groupId = newGroupId,
 			currentLongLivedSecret = currentLongLivedSecret,
 			cachedToken = switchedJwt,

@@ -59,7 +59,7 @@ class SmartAuthProviderTest : StringSpec({
 		var calls = 0
 		val authProvider = SmartAuthProvider.initialise(
 			authApi = authApi,
-			login = hcpDetails.username,
+			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
@@ -116,7 +116,7 @@ class SmartAuthProviderTest : StringSpec({
 		var calls = 0
 		val authProvider = SmartAuthProvider.initialise(
 			authApi = authApi,
-			login = hcpDetails.username,
+			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
@@ -187,7 +187,7 @@ class SmartAuthProviderTest : StringSpec({
 		var calls = 0
 		val authProvider = SmartAuthProvider.initialise(
 			authApi = authApi,
-			login = hcpDetails.username,
+			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
@@ -245,7 +245,7 @@ class SmartAuthProviderTest : StringSpec({
 		var calls = 0
 		val authProvider = SmartAuthProvider.initialise(
 			authApi = authApi,
-			login = hcpDetails.username,
+			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
@@ -271,7 +271,7 @@ class SmartAuthProviderTest : StringSpec({
 		val firstUser = details.values.first()
 		val authProvider = SmartAuthProvider.initialise(
 			authApi = authApi,
-			login = firstUser.username,
+			loginUsername = firstUser.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,

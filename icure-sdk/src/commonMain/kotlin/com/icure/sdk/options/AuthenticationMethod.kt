@@ -6,8 +6,8 @@ import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
 import com.icure.sdk.auth.Credentials
 import com.icure.sdk.auth.JwtCredentials
+import com.icure.sdk.auth.ThirdPartyAuthentication
 import com.icure.sdk.auth.ThirdPartyProvider
-import com.icure.sdk.auth.ThirdPartyTokens
 import com.icure.sdk.auth.UsernameLongToken
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.auth.services.AuthProvider
@@ -71,8 +71,11 @@ sealed interface AuthenticationMethod {
 		 * - [Group.id]:[User.id]
 		 * - [User.login]
 		 * - [User.email]
+		 * This value is optional because authentication using external methods (e.g. Google or digital ids) does not
+		 * require explicitly providing the username. However, if not provided, the authentication will be locked to
+		 * only use these external authentication methods.
 		 */
-		val username: String,
+		val loginUsername: String?,
 		/**
 		 * An initial secret for the login.
 		 * If not null, the authentication provider will attempt to use it when needed before asking the secret
@@ -111,7 +114,13 @@ internal fun AuthenticationMethod.getAuthProvider(
 	options: CommonOptions
 ): AuthProvider = when(this) {
 	is AuthenticationMethod.UsingCredentials -> when (this.credentials) {
-		is ThirdPartyTokens -> TODO("third party tokens don't need login")
+		is ThirdPartyAuthentication -> smartAuthWithConstantSecret(
+			authApi,
+			cryptoService,
+			options.getPasswordClientSideSalt(applicationId),
+			AuthSecretDetails.ExternalAuthenticationDetails(this.credentials.token, this.credentials.provider),
+			null
+		)
 		is UsernameLongToken -> smartAuthWithConstantSecret(
 			authApi,
 			cryptoService,
@@ -131,7 +140,7 @@ internal fun AuthenticationMethod.getAuthProvider(
 	is AuthenticationMethod.UsingAuthProvider -> this.authProvider
 	is AuthenticationMethod.UsingSecretProvider -> SmartAuthProvider.initialise(
 		authApi = authApi,
-		login = username,
+		loginUsername = loginUsername,
 		secretProvider = secretProvider,
 		initialAuthToken = existingJwt,
 		initialRefreshToken = existingRefreshJwt,
@@ -156,10 +165,10 @@ private fun smartAuthWithConstantSecret(
 	cryptoService: CryptoService,
 	passwordClientSideSalt: String?,
 	authSecretDetails: AuthSecretDetails.Cacheable,
-	login: String
+	login: String?
 ) = SmartAuthProvider.initialise(
 	authApi = authApi,
-	login = login,
+	loginUsername = login,
 	secretProvider = ConstantSecretProvider(authSecretDetails),
 	initialAuthToken = null,
 	initialRefreshToken = null,

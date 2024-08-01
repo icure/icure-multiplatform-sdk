@@ -5,20 +5,20 @@ import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
 import com.icure.sdk.auth.JwtBearerAndRefresh
-import com.icure.sdk.auth.TokenProvider
+import com.icure.sdk.auth.SmartTokenProvider
 import com.icure.sdk.model.UserGroup
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class SmartAuthProvider private constructor(
-	private val tokenProvider: TokenProvider,
+	private val smartTokenProvider: SmartTokenProvider,
 	private val groupId: String? = null
 ) : JwtBasedAuthProvider {
 	companion object {
 
 		fun initialise(
 			authApi: RawAnonymousAuthApi,
-			login: String,
+			loginUsername: String?,
 			secretProvider: AuthSecretProvider,
 			initialSecret: AuthSecretDetails.Cacheable?,
 			initialAuthToken: String?,
@@ -27,8 +27,8 @@ internal class SmartAuthProvider private constructor(
 			cryptoService: CryptoService,
 			passwordClientSideSalt: String?,
 		) = SmartAuthProvider(
-			TokenProvider(
-				login = login,
+			SmartTokenProvider(
+				loginUsername = loginUsername,
 				groupId = groupId,
 				currentLongLivedSecret = initialSecret,
 				cachedToken = initialAuthToken,
@@ -43,17 +43,17 @@ internal class SmartAuthProvider private constructor(
 
 	}
 
-	override fun getAuthService() = SmartAuthService(tokenProvider)
+	override fun getAuthService() = SmartAuthService(smartTokenProvider)
 
 	suspend fun switchGroup(newGroupId: String, matches: List<UserGroup>): AuthProvider = when {
 		newGroupId == groupId -> this
 		matches.none { it.groupId == newGroupId } -> throw IllegalArgumentException("New group id not found in matches.")
 		else -> SmartAuthProvider(
-			tokenProvider = tokenProvider.switchedGroup(newGroupId),
+			smartTokenProvider = smartTokenProvider.switchedGroup(newGroupId),
 			groupId = newGroupId,
 		)
 	}
 
 	override suspend fun getBearerAndRefreshToken(): JwtBearerAndRefresh =
-		tokenProvider.getCachedTokensOrLoad()
+		smartTokenProvider.getCachedTokensOrLoad()
 }

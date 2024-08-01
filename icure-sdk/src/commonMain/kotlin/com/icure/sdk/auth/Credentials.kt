@@ -35,8 +35,15 @@ data class UsernameLongToken(
 	val token: String,
 ) : Credentials
 
-data class ThirdPartyTokens(
-	val tokens: Map<ThirdPartyProvider, String>
+data class ThirdPartyAuthentication(
+	/**
+	 * A token used to perform the third party authentication
+	 */
+	val token: String,
+	/**
+	 * The authentication provider
+	 */
+	val provider: ThirdPartyProvider
 ) : Credentials
 
 data class JwtCredentials(

@@ -1,7 +1,7 @@
 package com.icure.sdk.auth.services
 
 import com.icure.sdk.auth.JwtBearer
-import com.icure.sdk.auth.TokenProvider
+import com.icure.sdk.auth.SmartTokenProvider
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.RequestStatusException
@@ -20,7 +20,7 @@ private sealed interface SmartAuthServiceState {
 
 @InternalIcureApi
 internal class SmartAuthService(
-	private val tokenProvider: TokenProvider
+	private val smartTokenProvider: SmartTokenProvider
 ) : TokenBasedAuthService<JwtBearer>, AuthService {
 
 	private var currentState: SmartAuthServiceState = SmartAuthServiceState.Initial
@@ -30,18 +30,18 @@ internal class SmartAuthService(
 			if(authenticationClass != null) {
 				throw IllegalStateException("Illegal state: cannot ask for a specific auth class level at the first request attempt.")
 			} else {
-				val tokens = tokenProvider.getCachedOrRefreshedOrNewToken()
+				val tokens = smartTokenProvider.getCachedOrRefreshedOrNewToken()
 				currentState = SmartAuthServiceState.DoneInitial(tokens.jwt)
 				tokens.jwt
 			}
 		}
 		is SmartAuthServiceState.Reattempt -> {
 			if(authenticationClass != null) {
-				val token = tokenProvider.getNewTokenWithClass(authenticationClass)
+				val token = smartTokenProvider.getNewTokenWithClass(authenticationClass)
 				currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
 				token
 			} else {
-				val tokens = tokenProvider.getCachedOrRefreshedOrNewToken()
+				val tokens = smartTokenProvider.getCachedOrRefreshedOrNewToken()
 				if (tokens.jwt == immutableCurrentState.token) {
 					throw immutableCurrentState.initialError
 				}
@@ -51,7 +51,7 @@ internal class SmartAuthService(
 		}
 		is SmartAuthServiceState.ExpectRequestWithSpecificAuthClass -> {
 			if(authenticationClass != null) {
-				val token = tokenProvider.getNewTokenWithClass(authenticationClass)
+				val token = smartTokenProvider.getNewTokenWithClass(authenticationClass)
 				currentState = SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken
 				token
 			} else {
