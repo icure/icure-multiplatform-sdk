@@ -8,6 +8,7 @@ import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
 import io.kotest.assertions.fail
@@ -41,6 +42,7 @@ import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
+@InternalIcureApi
 class BasicWebSocketTest : StringSpec({
 	val client = newPlatformHttpClient {
 		install(ContentNegotiation) {

@@ -5,6 +5,7 @@ import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.notification.SubscriptionEventType
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.InternalIcureException
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.plugin
@@ -51,6 +52,7 @@ import kotlin.time.Duration.Companion.seconds
  * If the queue is full, the connection will be closed and a fatal error will be emitted
  *
  * */
+@InternalIcureApi
 internal class WebSocketSubscription<E : Identifiable<String>> private constructor (
 	private val hostname: String,
 	private val path: String,

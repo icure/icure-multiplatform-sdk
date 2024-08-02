@@ -3,6 +3,7 @@ package com.icure.sdk.auth
 import com.icure.kotp.ShaVersion
 import com.icure.kotp.Totp
 import com.icure.kryptom.crypto.HmacAlgorithm
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
@@ -11,6 +12,7 @@ import com.icure.sdk.auth.services.SmartAuthProvider
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.model.security.AuthenticationToken
 import com.icure.sdk.model.security.Enable2faRequest
+import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.test.baseUrl
@@ -85,7 +87,14 @@ class SmartAuthProviderTest : StringSpec({
 						else -> throw IllegalStateException("Invalid number of attempts: $calls")
 					}
 				}
-			}
+			},
+			initialSecret = null,
+			initialAuthToken = null,
+			initialRefreshToken = null,
+			groupId = null,
+			cryptoService = defaultCryptoService,
+			passwordClientSideSalt = null,
+			cacheSecrets = true,
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -144,7 +153,14 @@ class SmartAuthProviderTest : StringSpec({
 						else -> throw IllegalStateException("Invalid number of attempts: $calls")
 					}
 				}
-			}
+			},
+			initialSecret = null,
+			initialAuthToken = null,
+			initialRefreshToken = null,
+			groupId = null,
+			cryptoService = defaultCryptoService,
+			passwordClientSideSalt = null,
+			cacheSecrets = true,
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -159,12 +175,12 @@ class SmartAuthProviderTest : StringSpec({
 		userWithNewPwd.rev.shouldNotBeNull() shouldBeNextRevOf userWithLongTokenAndPwd.rev.shouldNotBeNull()
 		calls shouldBe 2
 		val retrievedWithNewPwd = getUserApiWithProvider(
-			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(authApi)
+			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(authApi, defaultCryptoService, null, ApiOptions())
 		).getCurrentUser().successBody()
 		retrievedWithNewPwd shouldBe userWithNewPwd
 		shouldThrow<RequestStatusException> {
 			getUserApiWithProvider(
-				AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, userPwd)).getAuthProvider(authApi)
+				AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, userPwd)).getAuthProvider(authApi, defaultCryptoService, null, ApiOptions())
 			).getCurrentUser()
 		}.statusCode shouldBe 401
 	}
@@ -219,7 +235,14 @@ class SmartAuthProviderTest : StringSpec({
 						else -> throw IllegalStateException("Invalid number of attempts: $calls")
 					}
 				}
-			}
+			},
+			initialSecret = null,
+			initialAuthToken = null,
+			initialRefreshToken = null,
+			groupId = null,
+			cryptoService = defaultCryptoService,
+			passwordClientSideSalt = null,
+			cacheSecrets = true,
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -257,7 +280,13 @@ class SmartAuthProviderTest : StringSpec({
 					return AuthSecretDetails.TwoFactorAuthTokenDetails(secret = totp.generate(digits = 8))
 				}
 			},
-			initialSecret = SmartAuthProvider.InitialSecret.PlainSecret(userPwd)
+			initialSecret = AuthSecretDetails.PasswordDetails(userPwd),
+			initialAuthToken = null,
+			initialRefreshToken = null,
+			groupId = null,
+			cryptoService = defaultCryptoService,
+			passwordClientSideSalt = null,
+			cacheSecrets = true,
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -281,13 +310,20 @@ class SmartAuthProviderTest : StringSpec({
 					previousAttempts.shouldBeEmpty()
 					return AuthSecretDetails.PasswordDetails(firstUser.password)
 				}
-			}
+			},
+			initialSecret = null,
+			initialAuthToken = null,
+			initialRefreshToken = null,
+			groupId = null,
+			cryptoService = defaultCryptoService,
+			passwordClientSideSalt = null,
+			cacheSecrets = true,
 		)
 		val defaultGroupUserApi = getUserApiWithProvider(authProvider)
 		val defaultGroupUser = defaultGroupUserApi.getCurrentUser().successBody()
 		val otherGroupId = if (defaultGroupUser.groupId == groups[0]) groups[1] else groups[0]
 		val matches = defaultGroupUserApi.getMatchingUsers().successBody()
-		val switchedUserApi = getUserApiWithProvider(authProvider.switchGroup(otherGroupId, matches))
+		val switchedUserApi = getUserApiWithProvider(authProvider.switchGroup(otherGroupId))
 		val switchedUser = switchedUserApi.getCurrentUser().successBody()
 		switchedUser.id shouldNotBe defaultGroupUser.id
 		switchedUser.groupId shouldBe otherGroupId

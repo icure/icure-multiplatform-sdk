@@ -15,6 +15,7 @@ import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
+import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
@@ -94,8 +95,16 @@ data class DataOwnerDetails(
 		)
 	}
 
-	fun authService() =
-		JwtAuthProvider(RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json), UsernamePassword(username, password))
+	internal fun authService() =
+		AuthenticationMethod.UsingCredentials(
+			UsernamePassword(username, password),
+		).getAuthProvider(
+			RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
+			defaultCryptoService,
+			null,
+			ApiOptions(saltPasswordWithApplicationId = false)
+		)
+
 
 	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(
@@ -103,6 +112,7 @@ data class DataOwnerDetails(
 		fillStorage: suspend (storage: IcureStorageFacade) -> Unit
 	): IcureSdk =
 		IcureSdk.initialise(
+			null,
 			baseUrl,
 			AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
 			VolatileStorageFacade().also {

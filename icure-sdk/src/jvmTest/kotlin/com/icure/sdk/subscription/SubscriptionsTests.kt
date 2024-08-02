@@ -15,7 +15,6 @@ import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndIde
 import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
 import com.icure.sdk.model.filter.topic.TopicByHcPartyFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initialiseTestEnvironment
 import io.kotest.assertions.fail

@@ -205,7 +205,7 @@ public fun createDelegationsDeAnonymizationMetadataBlocking(sdk: IcureApis, para
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDelegationsDeAnonymizationMetadataParams>(params)
 	runBlocking {
-		sdk.patient.createDelegationsDeAnonymizationMetadata(
+		sdk.patient.createDelegationDeAnonymizationMetadata(
 			decodedParams.patient,
 			decodedParams.dataOwnerIds,
 		)
@@ -222,7 +222,7 @@ public fun createDelegationsDeAnonymizationMetadataAsync(
 	val decodedParams = json.decodeFromString<CreateDelegationsDeAnonymizationMetadataParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.createDelegationsDeAnonymizationMetadata(
+			sdk.patient.createDelegationDeAnonymizationMetadata(
 				decodedParams.patient,
 				decodedParams.dataOwnerIds,
 			)

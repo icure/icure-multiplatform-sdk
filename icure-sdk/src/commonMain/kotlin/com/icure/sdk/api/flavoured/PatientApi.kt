@@ -19,7 +19,6 @@ import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
-import com.icure.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IcureStub

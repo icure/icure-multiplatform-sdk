@@ -1929,7 +1929,7 @@ internal class PatientApiImplJs(
 				x1
 			},
 		)
-		patientApi.createDelegationsDeAnonymizationMetadata(
+		patientApi.createDelegationDeAnonymizationMetadata(
 			patientConverted,
 			dataOwnerIdsConverted,
 		)

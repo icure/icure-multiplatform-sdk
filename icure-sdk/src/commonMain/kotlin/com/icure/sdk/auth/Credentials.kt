@@ -2,6 +2,7 @@ package com.icure.sdk.auth
 
 import com.icure.sdk.model.Group
 import com.icure.sdk.model.User
+import com.icure.sdk.utils.InternalIcureApi
 
 sealed interface Credentials
 
@@ -46,6 +47,7 @@ data class ThirdPartyAuthentication(
 	val provider: ThirdPartyProvider
 ) : Credentials
 
+@InternalIcureApi
 data class JwtCredentials(
 	val initialBearer: JwtBearer?,
 	val refresh: JwtRefresh
