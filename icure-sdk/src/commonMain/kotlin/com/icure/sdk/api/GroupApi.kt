@@ -132,17 +132,19 @@ internal class GroupApiImpl(
 		q: Int?,
 		n: Int?,
 		superGroup: String?,
+		applicationId: String?,
 		initialisationData: DatabaseInitialisation,
     ): Group = rawApi.createGroup(
-        id,
-        name,
-        type,
-        password,
-        server,
-        q,
-        n,
-        superGroup,
-        initialisationData,
+	    id = id,
+	    name = name,
+	    type = type,
+	    password = password,
+	    server = server,
+	    q = q,
+	    n = n,
+	    superGroup = superGroup,
+	    applicationId = applicationId,
+	    initialisationData = initialisationData,
     ).successBody()
 
     override suspend fun registerNewGroupAdministrator(

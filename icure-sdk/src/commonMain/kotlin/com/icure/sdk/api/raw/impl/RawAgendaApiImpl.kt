@@ -20,10 +20,6 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
-import kotlin.Int
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -119,7 +115,7 @@ class RawAgendaApiImpl(
 
 	override suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> =
 		put(authProvider) {
-			url{
+			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "agenda")
 			}

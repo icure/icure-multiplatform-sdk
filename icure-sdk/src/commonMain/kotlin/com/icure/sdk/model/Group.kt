@@ -41,6 +41,7 @@ data class Group(
 	public val minimumKrakenVersion: String? = null,
 	public val minimumAuthenticationClassForElevatedPrivileges: AuthenticationClass,
 	public val superGroup: String? = null,
+	public val applicationId: String? = null,
 ) : StoredDocument, HasTags {
 	// region Group-Group
 

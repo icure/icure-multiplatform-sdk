@@ -35,6 +35,20 @@ class RawAnonymousApiImpl(
 	timeout: Duration? = null,
 	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAnonymousApi {
+	// region anonymous healthcareparty endpoints
+
+	override suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	// endregion
+
 	// region anonymous medicallocation endpoints
 
 	override suspend fun getPublicMedicalLocationsByGroupId(
@@ -50,20 +64,6 @@ class RawAnonymousApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	// endregion
-
-	// region anonymous healthcareparty endpoints
-
-	override suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)

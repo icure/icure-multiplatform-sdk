@@ -15,21 +15,6 @@ import kotlin.collections.List
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 public interface RawAnonymousApi {
-	// region anonymous medicallocation endpoints
-
-	suspend fun getPublicMedicalLocationsByGroupId(
-		groupId: String,
-		startKey: String? = null,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<AnonymousMedicalLocation>>
-	// endregion
-
-	// region anonymous healthcareparty endpoints
-
-	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>>
-	// endregion
-
 	// region anonymous calendaritem endpoints
 
 	suspend fun listAppointmentTypesForUser(
@@ -50,5 +35,20 @@ public interface RawAnonymousApi {
 		placeId: String? = null,
 		limit: Int? = null,
 	): HttpResponse<List<Long>>
+	// endregion
+
+	// region anonymous medicallocation endpoints
+
+	suspend fun getPublicMedicalLocationsByGroupId(
+		groupId: String,
+		startKey: String? = null,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<AnonymousMedicalLocation>>
+	// endregion
+
+	// region anonymous healthcareparty endpoints
+
+	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>>
 	// endregion
 }
