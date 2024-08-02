@@ -44,6 +44,7 @@ internal class SmartTokenProvider(
 	private val authSecretProvider: AuthSecretProvider,
 	private val cryptoService: CryptoService,
 	private val passwordClientSideSalt: String?,
+	private val cacheSecrets: Boolean,
 	private val refreshPadding: Duration = 30.seconds
 ) {
 	enum class RetrievedTokenType { New, Cached, Refreshed }
@@ -97,7 +98,9 @@ internal class SmartTokenProvider(
 			authApi = authApi,
 			authSecretProvider = authSecretProvider,
 			cryptoService = cryptoService,
-			passwordClientSideSalt = passwordClientSideSalt
+			passwordClientSideSalt = passwordClientSideSalt,
+			cacheSecrets = cacheSecrets,
+			refreshPadding = refreshPadding
 		)
 	}
 
@@ -120,6 +123,7 @@ internal class SmartTokenProvider(
 		minimumAuthenticationClass == null || it.type.level >= minimumAuthenticationClass.level
 	}?.let { secret ->
 		val result = doGetTokenWithSecret(secret, secret.type)
+		if (!cacheSecrets) currentLongLivedSecret = null
 		when {
 			result is DoGetTokenResult.Success -> JwtBearerAndRefresh(result.bearer, result.refresh)
 			result is DoGetTokenResult.Failure
@@ -155,7 +159,7 @@ internal class SmartTokenProvider(
 		val result = doGetTokenWithSecret(secretDetails, minimumAuthenticationClass)
 		return when {
 			result is DoGetTokenResult.Success -> {
-				if (secretDetails is AuthSecretDetails.Cacheable) {
+				if (cacheSecrets && secretDetails is AuthSecretDetails.Cacheable) {
 					this.currentLongLivedSecret = secretDetails
 				}
 				JwtBearerAndRefresh(result.bearer, result.refresh)
@@ -179,7 +183,9 @@ internal class SmartTokenProvider(
 		val result = doGetTokenWithSecret(AuthSecretDetails.TwoFactorAuthTokenDetails(secret = "${password}|${details.secret}"), minimumAuthenticationClass)
 		return when {
 			result is DoGetTokenResult.Success -> {
-				this.currentLongLivedSecret = AuthSecretDetails.PasswordDetails(password)
+				if (cacheSecrets) {
+					this.currentLongLivedSecret = AuthSecretDetails.PasswordDetails(password)
+				}
 				JwtBearerAndRefresh(result.bearer, result.refresh)
 			}
 			result is DoGetTokenResult.Failure && result.reason != DoGetTokenResult.DoGetTokenResultFailureReason.Invalid2FA -> {

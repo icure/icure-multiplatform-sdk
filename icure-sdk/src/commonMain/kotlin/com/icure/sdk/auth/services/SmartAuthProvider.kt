@@ -7,6 +7,7 @@ import com.icure.sdk.auth.AuthSecretProvider
 import com.icure.sdk.auth.JwtBearerAndRefresh
 import com.icure.sdk.auth.SmartTokenProvider
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.isJwtExpiredOrInvalid
 
 @InternalIcureApi
 internal class SmartAuthProvider private constructor(
@@ -25,17 +26,21 @@ internal class SmartAuthProvider private constructor(
 			groupId: String?,
 			cryptoService: CryptoService,
 			passwordClientSideSalt: String?,
+			cacheSecrets: Boolean
 		) = SmartAuthProvider(
 			SmartTokenProvider(
 				loginUsername = loginUsername,
 				groupId = groupId,
-				currentLongLivedSecret = initialSecret,
+				currentLongLivedSecret = if (
+					cacheSecrets || initialRefreshToken == null || isJwtExpiredOrInvalid(initialRefreshToken)
+				) initialSecret else null, // Even if cache secret is false, in case the initial refresh token is not valid the secret will actually be cached until the first request
 				cachedToken = initialAuthToken,
 				cachedRefreshToken = initialRefreshToken,
 				authApi = authApi,
 				authSecretProvider = secretProvider,
 				passwordClientSideSalt = passwordClientSideSalt,
-				cryptoService = cryptoService
+				cacheSecrets = cacheSecrets,
+				cryptoService = cryptoService,
 			),
 			groupId
 		)

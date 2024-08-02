@@ -33,6 +33,9 @@ sealed interface AuthenticationMethod {
 	 *
 	 * This authentication method can also be used for the execution of requests that require an elevated security context
 	 * as long as the credentials provided can be used to create a suitable token.
+	 *
+	 * Not that when using this authentication method the provided credentials will be cached (in volatile memory)
+	 * without expiration.
 	 */
 	data class UsingCredentials(
 		/**
@@ -100,6 +103,12 @@ sealed interface AuthenticationMethod {
 		 * Secret provider to use for authentication. Will handle interaction with the GUI.
 		 */
 		val secretProvider: AuthSecretProvider,
+		/**
+		 * If set to true the secrets used by the authentication provider will be cached without expiration
+		 * (in volatile memory).
+		 * This minimizes the interaction with the end user, but may not be suitable for your security policy.
+		 */
+		val cacheSecrets: Boolean = false
 	) : AuthenticationMethod {
 		sealed interface InitialSecret {
 			data class Password(val password: String) : InitialSecret
@@ -161,7 +170,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 		},
 		groupId = null,
 		passwordClientSideSalt = options.getPasswordClientSideSalt(applicationId),
-		cryptoService = cryptoService
+		cryptoService = cryptoService,
+		cacheSecrets = false
 	)
 }
 
@@ -207,7 +217,8 @@ private fun smartAuthWithConstantSecret(
 	initialSecret = authSecretDetails,
 	groupId = null,
 	passwordClientSideSalt = passwordClientSideSalt,
-	cryptoService = cryptoService
+	cryptoService = cryptoService,
+	cacheSecrets = true
 )
 
 private class ConstantSecretProvider(
