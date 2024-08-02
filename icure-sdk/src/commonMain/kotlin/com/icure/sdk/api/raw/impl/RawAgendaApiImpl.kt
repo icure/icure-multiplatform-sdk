@@ -119,7 +119,8 @@ class RawAgendaApiImpl(
 
 	override suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda> =
 		put(authProvider) {
-			url {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "agenda")
 			}

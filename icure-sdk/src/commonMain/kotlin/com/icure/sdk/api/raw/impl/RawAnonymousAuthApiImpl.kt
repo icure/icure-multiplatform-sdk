@@ -39,6 +39,7 @@ class RawAnonymousAuthApiImpl(
 		duration: Long?,
 		loginCredentials: LoginCredentials,
 		groupId: String?,
+		applicationId: String?,
 	): HttpResponse<JwtResponse> =
 		post {
 			url {
@@ -46,6 +47,7 @@ class RawAnonymousAuthApiImpl(
 				appendPathSegments("rest", "v2", "auth", "login")
 				parameter("duration", duration)
 				parameter("groupId", groupId)
+				parameter("applicationId", applicationId)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
@@ -99,12 +101,14 @@ class RawAnonymousAuthApiImpl(
 	override suspend fun loginGoogle(
 		token: String,
 		groupId: String?,
+		applicationId: String?,
 	): HttpResponse<JwtResponse> =
 		post {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "auth", "login", "google")
 				parameter("groupId", groupId)
+				parameter("applicationId", applicationId)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
@@ -114,12 +118,14 @@ class RawAnonymousAuthApiImpl(
 	override suspend fun loginFas(
 		token: String,
 		groupId: String?,
+		applicationId: String?,
 	): HttpResponse<JwtResponse> =
 		post {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "auth", "login", "be.fas")
 				parameter("groupId", groupId)
+				parameter("applicationId", applicationId)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)

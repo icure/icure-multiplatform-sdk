@@ -42,6 +42,7 @@ public interface RawGroupApi {
 		q: Int? = null,
 		n: Int? = null,
 		superGroup: String? = null,
+		applicationId: String? = null,
 		initialisationData: DatabaseInitialisation,
 	): HttpResponse<Group>
 
@@ -76,6 +77,11 @@ public interface RawGroupApi {
 	suspend fun modifyGroupName(
 		id: String,
 		name: String,
+	): HttpResponse<Group>
+
+	suspend fun modifyGroupApplicationId(
+		id: String,
+		applicationId: String,
 	): HttpResponse<Group>
 
 	suspend fun getOperationToken(

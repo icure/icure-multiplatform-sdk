@@ -66,6 +66,7 @@ class RawGroupApiImpl(
 		q: Int?,
 		n: Int?,
 		superGroup: String?,
+		applicationId: String?,
 		initialisationData: DatabaseInitialisation,
 	): HttpResponse<Group> =
 		post(authProvider) {
@@ -78,6 +79,7 @@ class RawGroupApiImpl(
 				parameter("q", q)
 				parameter("n", n)
 				parameter("superGroup", superGroup)
+				parameter("applicationId", applicationId)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
@@ -186,6 +188,19 @@ class RawGroupApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", id, "name", name)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun modifyGroupApplicationId(
+		id: String,
+		applicationId: String,
+	): HttpResponse<Group> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "applicationId", applicationId)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
@@ -378,7 +393,8 @@ class RawGroupApiImpl(
 
 	override suspend fun getHierarchy(id: String): HttpResponse<List<String>> =
 		get(authProvider) {
-			url {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", id, "hierarchy")
 				parameter("ts", GMTDate().timestamp)
@@ -388,7 +404,8 @@ class RawGroupApiImpl(
 
 	override suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>> =
 		get(authProvider) {
-			url {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", "all")
 				parameter("ts", GMTDate().timestamp)
