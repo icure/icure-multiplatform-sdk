@@ -171,7 +171,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 		groupId = null,
 		passwordClientSideSalt = options.getPasswordClientSideSalt(applicationId),
 		cryptoService = cryptoService,
-		cacheSecrets = false
+		cacheSecrets = false,
+		allowSecretRetry = true
 	)
 }
 
@@ -218,7 +219,8 @@ private fun smartAuthWithConstantSecret(
 	groupId = null,
 	passwordClientSideSalt = passwordClientSideSalt,
 	cryptoService = cryptoService,
-	cacheSecrets = true
+	cacheSecrets = true,
+	allowSecretRetry = false
 )
 
 private class ConstantSecretProvider(
@@ -226,7 +228,7 @@ private class ConstantSecretProvider(
 ) : AuthSecretProvider {
 	override suspend fun getSecret(
 		acceptedSecrets: List<AuthenticationClass>,
-		previousAttempts: List<AuthSecretDetails>
+		previousAttempts: List<AuthSecretDetails>,
 	): AuthSecretDetails {
 		if (authSecretDetails.type in acceptedSecrets) {
 			if (previousAttempts.isEmpty())

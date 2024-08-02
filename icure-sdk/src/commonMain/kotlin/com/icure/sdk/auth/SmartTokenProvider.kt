@@ -6,6 +6,7 @@ import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.InternalIcureException
 import com.icure.sdk.utils.RequestStatusException
 import com.icure.sdk.utils.decodeClaims
 import com.icure.sdk.utils.ensure
@@ -25,11 +26,15 @@ internal sealed interface DoGetTokenResult {
 	enum class DoGetTokenResultFailureReason {
 		Needs2FA,
 		Invalid2FA,
-		InvalidPwOrToken,
-		InvalidAuthClassLevel
+		InvalidPwOrToken
 	}
 
-	data class Failure(val reason: DoGetTokenResultFailureReason) : DoGetTokenResult
+	data object InvalidAuthClass : DoGetTokenResult
+
+	data class Failure(
+		val reason: DoGetTokenResultFailureReason,
+		val error: Throwable
+	) : DoGetTokenResult
 
 }
 
@@ -45,6 +50,7 @@ internal class SmartTokenProvider(
 	private val cryptoService: CryptoService,
 	private val passwordClientSideSalt: String?,
 	private val cacheSecrets: Boolean,
+	private val allowSecretRetry: Boolean,
 	private val refreshPadding: Duration = 30.seconds
 ) {
 	enum class RetrievedTokenType { New, Cached, Refreshed }
@@ -100,7 +106,8 @@ internal class SmartTokenProvider(
 			cryptoService = cryptoService,
 			passwordClientSideSalt = passwordClientSideSalt,
 			cacheSecrets = cacheSecrets,
-			refreshPadding = refreshPadding
+			refreshPadding = refreshPadding,
+			allowSecretRetry = allowSecretRetry
 		)
 	}
 
@@ -165,10 +172,9 @@ internal class SmartTokenProvider(
 				JwtBearerAndRefresh(result.bearer, result.refresh)
 			}
 			result is DoGetTokenResult.Failure && result.reason == DoGetTokenResult.DoGetTokenResultFailureReason.Needs2FA -> askTotpAndGetToken(secretDetails.secret, minimumAuthenticationClass)
-			secretDetails is AuthSecretDetails.PasswordDetails
-				&& result is DoGetTokenResult.Failure
-				&& result.reason == DoGetTokenResult.DoGetTokenResultFailureReason.InvalidAuthClassLevel -> askSecretAndGetToken(minimumAuthenticationClass, false)
-			else -> askSecretAndGetToken(minimumAuthenticationClass, passwordIsValidAs2fa, previousAttempts + secretDetails)
+			secretDetails is AuthSecretDetails.PasswordDetails && passwordIsValidAs2fa && result == DoGetTokenResult.InvalidAuthClass -> askSecretAndGetToken(minimumAuthenticationClass, false)
+			result is DoGetTokenResult.Failure -> if (allowSecretRetry) askSecretAndGetToken(minimumAuthenticationClass, passwordIsValidAs2fa, previousAttempts + secretDetails) else throw result.error
+			else -> throw InternalIcureException("Provided secret auth class did not match expected")
 		}
 	}
 
@@ -241,18 +247,18 @@ internal class SmartTokenProvider(
 			if (tokenAuthClass >= (minimumAuthenticationClass?.level ?: 0)) {
 				DoGetTokenResult.Success(JwtBearer(authPayload.token), JwtRefresh(authPayload.refreshToken))
 			} else {
-				DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.InvalidAuthClassLevel)
+				DoGetTokenResult.InvalidAuthClass
 			}
 		} catch (e: RequestStatusException) {
 			when (e.statusCode) {
 				// Password is wrong (401) or unacceptable (e.g. too short, 412)
-				401, 412 -> DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.InvalidPwOrToken)
+				401, 412 -> DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.InvalidPwOrToken, e)
 
 				// Password is correct, but 2fa token is not
-				406 -> DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.Invalid2FA)
+				406 -> DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.Invalid2FA, e)
 
 				// Password is correct, but the user has 2fa enabled and no 2fa token was provided
-				417 -> DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.Needs2FA)
+				417 -> DoGetTokenResult.Failure(DoGetTokenResult.DoGetTokenResultFailureReason.Needs2FA, e)
 
 				else -> throw e
 			}

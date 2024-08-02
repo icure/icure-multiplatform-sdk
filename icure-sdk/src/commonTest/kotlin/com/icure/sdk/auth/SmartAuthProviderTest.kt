@@ -95,6 +95,7 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
+			allowSecretRetry = true
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -161,6 +162,7 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
+			allowSecretRetry = true
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -243,6 +245,7 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
+			allowSecretRetry = true
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -287,6 +290,7 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
+			allowSecretRetry = true
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -318,6 +322,7 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
+			allowSecretRetry = true
 		)
 		val defaultGroupUserApi = getUserApiWithProvider(authProvider)
 		val defaultGroupUser = defaultGroupUserApi.getCurrentUser().successBody()

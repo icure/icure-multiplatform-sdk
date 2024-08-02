@@ -26,7 +26,8 @@ internal class SmartAuthProvider private constructor(
 			groupId: String?,
 			cryptoService: CryptoService,
 			passwordClientSideSalt: String?,
-			cacheSecrets: Boolean
+			cacheSecrets: Boolean,
+			allowSecretRetry: Boolean
 		) = SmartAuthProvider(
 			SmartTokenProvider(
 				loginUsername = loginUsername,
@@ -41,6 +42,7 @@ internal class SmartAuthProvider private constructor(
 				passwordClientSideSalt = passwordClientSideSalt,
 				cacheSecrets = cacheSecrets,
 				cryptoService = cryptoService,
+				allowSecretRetry = allowSecretRetry
 			),
 			groupId
 		)
