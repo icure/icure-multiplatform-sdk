@@ -61,7 +61,16 @@ class SubscriptionsTests : StringSpec(
 	{
 		runBlocking {
 			initialiseTestEnvironment()
-			val hcpUser = createHcpUser()
+			val hcpUser = createHcpUser(
+				roles = setOf(
+					"PATIENT_USER_MANAGER",
+					"BASIC_USER",
+					"BASIC_DATA_OWNER",
+					"HIERARCHICAL_DATA_OWNER",
+					"TOPIC_MANAGER",
+					"LEGACY_MESSAGE_MANAGER",
+				)
+			)
 
 			include(
 				subscribableTests(

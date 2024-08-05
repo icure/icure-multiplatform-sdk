@@ -99,7 +99,7 @@ class BasicWebSocketTest : StringSpec({
 
 		val connection = WebSocketSubscription.initialize(
 			client = client,
-			hostname = "localhost:25565",
+			hostname = "http://localhost:25565",
 			path = "/",
 			clientJson = Serialization.json,
 			entitySerializer = EncryptedHealthElement.serializer(),
@@ -137,7 +137,7 @@ class BasicWebSocketTest : StringSpec({
 
 		val connection = WebSocketSubscription.initialize(
 			client = client,
-			hostname = "localhost:25565",
+			hostname = "http://localhost:25565",
 			path = "/load",
 			clientJson = Serialization.json,
 			entitySerializer = EncryptedHealthElement.serializer(),

@@ -7,11 +7,13 @@ import com.icure.sdk.IcureSdk
 import com.icure.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.sdk.api.raw.impl.RawPatientApiImpl
+import com.icure.sdk.api.raw.impl.RawRoleApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
+import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.embed.DelegationTag
@@ -127,7 +129,7 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
 @OptIn(InternalIcureApi::class)
-suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false): DataOwnerDetails {
+suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false, roles: Set<String>? = null): DataOwnerDetails {
 	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	val hcpId = uuid()
@@ -150,7 +152,7 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			parentId = parent?.dataOwnerId
 		)
 	).successBody()
-	userRawApi.createUser(
+	val created = userRawApi.createUser(
 		User(
 			uuid(),
 			login = login,
@@ -160,6 +162,9 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			autoDelegations = mapOf(DelegationTag.All to parent?.hierarchy()?.toSet().orEmpty())
 		)
 	).successBody()
+	if (roles != null) {
+		userRawApi.addRolesToUser(created.id, ListOfIds(roles.toList()))
+	}
 	return DataOwnerDetails(hcpId, login, password, keypair, parent).also { println("Created hcp $it") }
 }
 

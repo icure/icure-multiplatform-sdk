@@ -253,7 +253,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	}
 
 	private suspend fun startSession(): DefaultClientWebSocketSession {
-		val jwtToken = webSocketAuthProvider.getAuthService().getToken()
+		val jwtToken = webSocketAuthProvider.getAuthService().getToken().token
 		return client.initWsOrWssSession(
 			unsecure = hostname.startsWith("http://"),
 			method = HttpMethod.Get,
