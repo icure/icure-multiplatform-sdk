@@ -196,7 +196,7 @@ class SmartAuthProviderTest : StringSpec({
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
-		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret, otpLength))
+		adminUserApi.enable2faForUser(initialUser.id, Enable2faRequest(totpSecret, otpLength)).successBody()
 		val userWithPwdAnd2fa = adminUserApi.modifyUser(
 			initialUser.copy(
 				passwordHash = userPwd,

@@ -16,7 +16,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 
@@ -33,8 +32,8 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 	val userId1 = uuid()
 	val userId2 = uuid()
 	val userId3 = uuid()
-	val groupRawApi = RawGroupApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val groupRawApi = RawGroupApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	groupRawApi.createGroup(
 		id = groupId1,
 		name = "test-group-1-${groupId1}",

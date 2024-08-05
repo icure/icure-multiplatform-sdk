@@ -43,6 +43,12 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val (userInfoB, apiB) = createHcpUser().let { it to it.api() }
 		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api() }
 		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api() }
+		println("""
+			A: ${userInfoA.dataOwnerId}
+			B: ${userInfoB.dataOwnerId}
+			P1: ${userInfoP1.dataOwnerId}
+			P2: ${userInfoP2.dataOwnerId}
+		""".trimIndent())
 		var entity = apiA.createSamplePatient()
 		/*
 		 * A->A
@@ -145,7 +151,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		 */
 		entity = apiP1.patient.shareWith(userInfoP2.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds=emptySet(),
-			requestedPermissions = RequestedPermission.FullWrite
+			requestedPermissions = RequestedPermission.FullRead
 		)).updatedEntityOrThrow()
 		apiP2.crypto.forceReload()
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
