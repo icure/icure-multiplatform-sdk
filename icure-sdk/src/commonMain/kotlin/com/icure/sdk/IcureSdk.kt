@@ -1,6 +1,7 @@
 package com.icure.sdk
 
 import com.icure.kryptom.crypto.CryptoService
+import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
 import com.icure.sdk.api.ApplicationSettingsApi
 import com.icure.sdk.api.ApplicationSettingsApiImpl
 import com.icure.sdk.api.CodeApi
@@ -72,8 +73,11 @@ import com.icure.sdk.api.flavoured.TimeTableApi
 import com.icure.sdk.api.flavoured.TimeTableApiImpl
 import com.icure.sdk.api.flavoured.TopicApi
 import com.icure.sdk.api.flavoured.TopicApiImpl
+import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.RawPatientApi
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
+import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawApplicationSettingsApiImpl
 import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
 import com.icure.sdk.api.raw.impl.RawClassificationApiImpl
@@ -109,6 +113,12 @@ import com.icure.sdk.api.raw.impl.RawTarificationApiImpl
 import com.icure.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
+import com.icure.sdk.auth.AuthenticationProcessCaptchaType
+import com.icure.sdk.auth.AuthenticationProcessTelecomType
+import com.icure.sdk.auth.AuthenticationProcessTemplateParameters
+import com.icure.sdk.auth.JwtBearer
+import com.icure.sdk.auth.JwtCredentials
+import com.icure.sdk.auth.JwtRefresh
 import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
@@ -141,6 +151,7 @@ import com.icure.sdk.crypto.impl.TransferKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserEncryptionKeysManagerImpl
 import com.icure.sdk.crypto.impl.UserSignatureKeysManagerImpl
 import com.icure.sdk.model.DataOwnerWithType
+import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.options.ApiConfiguration
@@ -155,6 +166,7 @@ import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensureNonNull
 import com.icure.sdk.utils.newPlatformHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
@@ -164,6 +176,19 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 interface IcureSdk : IcureApis {
+	/**
+	 * Represents an intermediate stage in the initialization of an SDK through an authentication process
+	 * The initialization can complete only after the user provides the validation code received via email/sms.
+	 */
+	interface AuthenticationWithProcessStep {
+		/**
+		 * Complete the authentication of the user and finishes the initialization of the SDK.
+		 * In case the provided validation code is wrong this method will throw an exception, but it is still possible
+		 * to call to re-attempt authentication by calling this method with a different validation code.
+		 */
+		suspend fun completeAuthentication(validationCode: String): IcureSdk
+	}
+
 	/**
 	 * Get a new sdk using the same configurations and user authentication methods but for a different group.
 	 * To use this method, the authentication method provided at initialization of this sdk must be valid also for the
@@ -260,6 +285,112 @@ interface IcureSdk : IcureApis {
 				options
 			)
 		}
+
+		/**
+		 * Initialise a new instance of the icure sdk for a specific user.
+		 * The authentication will be performed through an authentication process.
+		 *
+		 * @param applicationId a string to uniquely identify your iCure application.
+		 * @param baseUrl the url of the iCure backend to use
+		 * @param messageGatewayUrl the url of the iCure message gateway you want to use. Usually this should be
+		 * @param externalServicesSpecId an identifier that allows the message gateway to connect the request to your
+		 * services for email / sms communication of the process tokens.
+		 * @param processId the id of the process you want to execute.
+		 * @param userTelecomType the type of telecom number used for the user.
+		 * @param userTelecom the telecom number of the user for which you want to execute the process. This should be an
+		 * email address or phone number depending on the type of process you are executing.
+		 * @param captchaType the type of captcha you use with your processes.
+		 * @param captchaKey the key obtained by resolving the captcha. Used to prevent abuse of the message gateway and
+		 * connected external services.
+		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
+		 * information including the user keys if [ApiOptions.keyStorage] is not provided.
+		 * @param cryptoStrategies implementation of crypto strategies for your application
+		 * @param options optional parameters for the initialization of the sdk.
+		 */
+		@OptIn(InternalIcureApi::class)
+		suspend fun initialiseWithProcess(
+			applicationId: String?,
+			baseUrl: String,
+			messageGatewayUrl: String,
+			externalServicesSpecId: String,
+			processId: String,
+			userTelecomType: AuthenticationProcessTelecomType,
+			userTelecom: String,
+			captchaType: AuthenticationProcessCaptchaType,
+			captchaKey: String,
+			baseStorage: StorageFacade,
+			cryptoStrategies: CryptoStrategies,
+			options: ApiOptions = ApiOptions(),
+			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters()
+		): AuthenticationWithProcessStep {
+			val api = RawMessageGatewayApi(options.httpClient ?: sharedHttpClient)
+			val requestId = api.startProcess(
+				messageGatewayUrl = messageGatewayUrl,
+				externalServicesSpecId = externalServicesSpecId,
+				processId = processId,
+				captchaType = captchaType,
+				captchaKey = captchaKey,
+				firstName = authenticationProcessTemplateParameters.firstName,
+				lastName = authenticationProcessTemplateParameters.lastName,
+				userTelecom = userTelecom,
+				userTelecomType = userTelecomType
+			)
+			return AuthenticationWithProcessStepImpl(
+				applicationId = applicationId,
+				baseUrl = baseUrl,
+				baseStorage = baseStorage,
+				cryptoStrategies = cryptoStrategies,
+				options = options,
+				api = api,
+				messageGatewayUrl = messageGatewayUrl,
+				externalServicesSpecId = externalServicesSpecId,
+				requestId = requestId,
+				userTelecom = userTelecom
+			)
+		}
+	}
+}
+
+@InternalIcureApi
+private class AuthenticationWithProcessStepImpl(
+	private val applicationId: String?,
+	private val baseUrl: String,
+	private val baseStorage: StorageFacade,
+	private val cryptoStrategies: CryptoStrategies,
+	private val options: ApiOptions,
+	private val api: RawMessageGatewayApi,
+	private val messageGatewayUrl: String,
+	private val externalServicesSpecId: String,
+	private val requestId: String,
+	private val userTelecom: String
+) : IcureSdk.AuthenticationWithProcessStep {
+	override suspend fun completeAuthentication(validationCode: String): IcureSdk {
+		api.completeProcess(
+			messageGatewayUrl = messageGatewayUrl,
+			externalServicesSpecId = externalServicesSpecId,
+			requestId = requestId,
+			validationCode = validationCode
+		)
+		val rawAuthApi: RawAnonymousAuthApi = RawAnonymousAuthApiImpl(
+			baseUrl,
+			options.httpClient ?: sharedHttpClient,
+			json = options.httpClientJson ?: Serialization.json
+		)
+		// TODO applicationId
+		val loginResult = rawAuthApi.login(
+			loginCredentials = LoginCredentials(username = userTelecom, password = validationCode)
+		).successBody()
+		return IcureSdk.initialise(
+			applicationId,
+			baseUrl,
+			AuthenticationMethod.UsingCredentials(JwtCredentials(
+				JwtBearer(ensureNonNull(loginResult.token)  { "Successful login gave null bearer token"}),
+				JwtRefresh(ensureNonNull(loginResult.refreshToken)  { "Successful login gave null refresh token"}),
+			)),
+			baseStorage,
+			cryptoStrategies,
+			options
+		)
 	}
 }
 

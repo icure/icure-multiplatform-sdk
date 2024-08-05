@@ -6,6 +6,7 @@ import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
+import com.icure.sdk.auth.AuthenticationProcessApi
 import com.icure.sdk.auth.Credentials
 import com.icure.sdk.auth.JwtCredentials
 import com.icure.sdk.auth.ThirdPartyAuthentication
@@ -229,6 +230,7 @@ private class ConstantSecretProvider(
 	override suspend fun getSecret(
 		acceptedSecrets: List<AuthenticationClass>,
 		previousAttempts: List<AuthSecretDetails>,
+		authProcessApi: AuthenticationProcessApi
 	): AuthSecretDetails {
 		if (authSecretDetails.type in acceptedSecrets) {
 			if (previousAttempts.isEmpty())

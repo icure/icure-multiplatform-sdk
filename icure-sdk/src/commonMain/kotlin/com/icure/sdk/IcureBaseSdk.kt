@@ -99,7 +99,57 @@ import kotlinx.serialization.json.Json
  * This allows using proxy authentication methods.
  */
 @InternalIcureApi
-interface IcureUnboundBaseSdk : IcureBaseApis
+interface IcureUnboundBaseSdk : IcureBaseApis {
+	companion object {
+		/**
+		 * Initialise a new instance of icure base sdks that is not bound to a specific user.
+		 * Each request may be done as a different user, depending on the provided authentication method.
+		 *
+		 * This allows implementing services between the end user and the icure backend that act as proxy and perform
+		 * some requests on behalf of the user.
+		 *
+		 * @param baseUrl the url of the iCure backend to use
+		 * @param authenticationMethod specifies how the sdk should authenticate.
+		 * @param options optional parameters for the initialization of the sdk.
+		 */
+		@InternalIcureApi
+		fun initialise(
+			baseUrl: String,
+			authenticationMethod: AuthenticationMethod,
+			options: BasicApiOptions = BasicApiOptions()
+		): IcureUnboundBaseSdk {
+			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
+			val client = options.httpClient ?: sharedHttpClient
+			val json = options.httpClientJson ?: Serialization.json
+			val cryptoService = options.cryptoService
+			val apiUrl = baseUrl
+			val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, client, json = Serialization.json)
+			val authProvider = authenticationMethod.getAuthProvider(
+				rawAuthApi,
+				cryptoService,
+				null,
+				options,
+			)
+
+			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
+
+			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
+			val config = BasicApiConfigurationImpl(
+				apiUrl,
+				client,
+				json,
+				if (authProvider is JwtBasedAuthProvider) authProvider else null,
+				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
+				manifests
+			)
+			return object : IcureUnboundBaseSdk, IcureBaseApis by IcureBaseSdkImpl(
+				authProvider,
+				json,
+				config
+			) {}
+		}
+	}
+}
 
 interface IcureBaseSdk : IcureBaseApis {
 	/**
@@ -160,54 +210,6 @@ interface IcureBaseSdk : IcureBaseApis {
 				json,
 				config
 			)
-		}
-
-		/**
-		 * Initialise a new instance of icure base sdks that is not bound to a specific user.
-		 * Each request may be done as a different user, depending on the provided authentication method.
-		 *
-		 * This allows implementing services between the end user and the icure backend that act as proxy and perform
-		 * some requests on behalf of the user.
-		 *
-		 * @param baseUrl the url of the iCure backend to use
-		 * @param authenticationMethod specifies how the sdk should authenticate.
-		 * @param options optional parameters for the initialization of the sdk.
-		 */
-		@InternalIcureApi
-		fun initialiseUnbound(
-			baseUrl: String,
-			authenticationMethod: AuthenticationMethod,
-			options: BasicApiOptions = BasicApiOptions()
-		): IcureUnboundBaseSdk {
-			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
-			val client = options.httpClient ?: sharedHttpClient
-			val json = options.httpClientJson ?: Serialization.json
-			val cryptoService = options.cryptoService
-			val apiUrl = baseUrl
-			val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, client, json = Serialization.json)
-			val authProvider = authenticationMethod.getAuthProvider(
-				rawAuthApi,
-				cryptoService,
-				null,
-				options,
-			)
-
-			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
-
-			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
-			val config = BasicApiConfigurationImpl(
-				apiUrl,
-				client,
-				json,
-				if (authProvider is JwtBasedAuthProvider) authProvider else null,
-				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
-				manifests
-			)
-			return object : IcureUnboundBaseSdk, IcureBaseApis by IcureBaseSdkImpl(
-				authProvider,
-				json,
-				config
-			) {}
 		}
 	}
 }
