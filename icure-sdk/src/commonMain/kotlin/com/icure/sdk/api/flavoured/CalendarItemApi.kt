@@ -11,6 +11,8 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.DecryptedCalendarItem
 import com.icure.sdk.model.EncryptedCalendarItem
+import com.icure.sdk.model.EncryptedHealthElement
+import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
@@ -20,10 +22,17 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.extensions.autoDelegationsFor
 import com.icure.sdk.model.extensions.dataOwnerId
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.BasicApiConfiguration
+import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
+import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.subscription.EntitySubscription
+import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.Subscribable
+import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -34,7 +43,7 @@ import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface CalendarItemBasicFlavourlessApi {
+interface CalendarItemBasicFlavourlessApi: Subscribable<CalendarItem, EncryptedCalendarItem> {
 	/**
 	 * Deletes a calendar item. If you don't have write access to the calendar item the method will fail.
 	 * @param entityId id of the calendar item.
@@ -421,9 +430,34 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 }
 
 @InternalIcureApi
-private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarItemApi) : CalendarItemBasicFlavourlessApi {
+private class AbstractCalendarItemBasicFlavourlessApi(
+	val rawApi: RawCalendarItemApi,
+	private val config: BasicApiConfiguration
+) : CalendarItemBasicFlavourlessApi {
 	override suspend fun deleteCalendarItem(entityId: String) = rawApi.deleteCalendarItem(entityId).successBody()
 	override suspend fun deleteCalendarItems(entityIds: List<String>) = rawApi.deleteCalendarItems(ListOfIds(entityIds)).successBody()
+
+	override suspend fun subscribeToEvents(
+		events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
+		filter: AbstractFilter<CalendarItem>,
+		subscriptionConfig: EntitySubscriptionConfiguration?
+	): EntitySubscription<EncryptedCalendarItem> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedCalendarItem.serializer(),
+			events = events,
+			filter = filter,
+			qualifiedName = CalendarItem.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(TODO("CalendarItemAbstractFilterSerializer")), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -447,7 +481,7 @@ internal class CalendarItemApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
-}, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi) {
+}, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi, config) {
 	override val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem> =
 		object : AbstractCalendarItemFlavouredApi<EncryptedCalendarItem>(rawApi, rawDataOwnerApi, config) {
 			override suspend fun validateAndMaybeEncrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem =
@@ -552,4 +586,4 @@ internal class CalendarItemBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), config.encryption.calendarItem)
 
 	override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem = entity
-}, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi)
+}, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi, config)
