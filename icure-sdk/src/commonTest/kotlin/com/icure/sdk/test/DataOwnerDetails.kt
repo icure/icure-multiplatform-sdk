@@ -22,23 +22,37 @@ import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
-import io.kotest.common.runBlocking
 
 @OptIn(InternalIcureApi::class)
-data class DataOwnerDetails(
+@ConsistentCopyVisibility
+data class DataOwnerDetails private constructor (
 	val dataOwnerId: String,
 	val username: String,
 	val password: String,
 	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
-	val parent: DataOwnerDetails?
+	val parent: DataOwnerDetails?,
+	val publicKeySpki: SpkiHexString
 ) {
 	companion object {
 		fun testEmailForLogin(login: String) = "$login@test.com"
+
+		suspend operator fun invoke(
+			dataOwnerId: String,
+			username: String,
+			password: String,
+			keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+			parent: DataOwnerDetails?
+		) = DataOwnerDetails(
+			dataOwnerId = dataOwnerId,
+			username = username,
+			password = password,
+			keypair = keypair,
+			parent = parent,
+			publicKeySpki = SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString())
+		)
 	}
 
 	val testEmail: String get() = testEmailForLogin(username)
-
-	val publicKeySpki = runBlocking { SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString()) }
 
 	/**
 	 * Creates a new api with access to the original key of the user and his parents.

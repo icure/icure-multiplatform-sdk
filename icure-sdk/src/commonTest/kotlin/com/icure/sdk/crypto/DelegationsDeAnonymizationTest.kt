@@ -24,7 +24,7 @@ import io.kotest.matchers.shouldBe
 
 @OptIn(InternalIcureApi::class)
 class DelegationsDeAnonymizationTest : StringSpec({
-	beforeAny { initializeTestEnvironment() }
+	beforeSpec { initializeTestEnvironment() }
 
 	suspend fun IcureSdk.createSamplePatient() =
 		patient.createPatient(

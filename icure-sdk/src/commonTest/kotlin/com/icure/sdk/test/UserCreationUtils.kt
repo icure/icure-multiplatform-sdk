@@ -164,7 +164,7 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 	if (roles != null) {
 		userRawApi.addRolesToUser(created.id, ListOfIds(roles.toList()))
 	}
-	return DataOwnerDetails(hcpId, login, password, keypair, parent).also { println("Created hcp $it") }
+	return DataOwnerDetails(hcpId, login, password, keypair, parent)
 }
 
 @OptIn(InternalIcureApi::class)
@@ -196,7 +196,7 @@ suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetai
 			patientId = patient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patientId, login, password, keypair, null).also { println("Created patient $it") }
+	return DataOwnerDetails(patientId, login, password, keypair, null)
 }
 
 @OptIn(InternalIcureApi::class)
@@ -220,5 +220,5 @@ suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
 			patientId = updatedPatient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patient.id, login, password, keypair, null).also { println("Created user for patient $it") }
+	return DataOwnerDetails(patient.id, login, password, keypair, null)
 }

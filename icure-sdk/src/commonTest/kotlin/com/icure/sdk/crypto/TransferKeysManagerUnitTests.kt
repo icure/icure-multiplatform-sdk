@@ -23,7 +23,6 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.collections.DirectedGraph
 import com.icure.sdk.utils.collections.StronglyConnectedGraph
 import io.kotest.assertions.fail
-import io.kotest.common.runBlocking
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainAnyOf
@@ -53,16 +52,14 @@ private data class Keys(
 @OptIn(InternalIcureApi::class)
 class TransferKeysManagerUnitTests : StringSpec({
 	suspend fun createKeyInfo(): Pair<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, SpkiHexString> =
-		runBlocking {
-			defaultCryptoService.rsa.generateKeyPair(
-				RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
-			).let { keyPair ->
-				val keyInfo = IcureKeyInfo(
-					defaultCryptoService.rsa.exportSpkiHex(keyPair.public),
-					keyPair
-				)
-				Pair(keyInfo, keyInfo.pubSpkiHexString)
-			}
+		defaultCryptoService.rsa.generateKeyPair(
+			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
+		).let { keyPair ->
+			val keyInfo = IcureKeyInfo(
+				defaultCryptoService.rsa.exportSpkiHex(keyPair.public),
+				keyPair
+			)
+			Pair(keyInfo, keyInfo.pubSpkiHexString)
 		}
 
 	lateinit var storage: IcureStorageFacade
