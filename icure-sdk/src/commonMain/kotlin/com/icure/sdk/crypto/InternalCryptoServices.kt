@@ -16,6 +16,8 @@ interface InternalCryptoServices : BasicInternalCryptoApi{
 	val dataOwnerApi: DataOwnerApi
 	val userEncryptionKeysManager: UserEncryptionKeysManager
 	val recoveryDataEncryption: RecoveryDataEncryption
+	val headersProvider: AccessControlKeysHeadersProvider
+	val strategies: CryptoStrategies
 
 	override val validationService: EntityValidationService
 		get() = entity

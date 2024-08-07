@@ -1,62 +1,69 @@
 package com.icure.sdk.auth.services
 
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.api.raw.RawMessageGatewayApi
+import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
-import com.icure.sdk.auth.CachedSecretType
-import com.icure.sdk.auth.ThirdPartyProvider
-import com.icure.sdk.auth.TokenProvider
-import com.icure.sdk.model.UserGroup
+import com.icure.sdk.auth.JwtBearerAndRefresh
+import com.icure.sdk.auth.SmartTokenProvider
 import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.isJwtExpiredOrInvalid
 
-@OptIn(InternalIcureApi::class)
-class SmartAuthProvider private constructor(
-	private val tokenProvider: TokenProvider,
+@InternalIcureApi
+internal class SmartAuthProvider private constructor(
+	private val smartTokenProvider: SmartTokenProvider,
 	private val groupId: String? = null
 ) : JwtBasedAuthProvider {
-
-	sealed interface InitialSecret {
-		data class PlainSecret(val secret: String) : InitialSecret
-		data class OAuthSecret(val oauthToken: String, val oauthType: ThirdPartyProvider): InitialSecret
-	}
-
 	companion object {
 
 		fun initialise(
 			authApi: RawAnonymousAuthApi,
-			login: String,
+			loginUsername: String?,
 			secretProvider: AuthSecretProvider,
-			initialSecret: InitialSecret? = null,
-			initialAuthToken: String? = null,
-			initialRefreshToken: String? = null,
-			groupId: String? = null
+			initialSecret: AuthSecretDetails.Cacheable?,
+			initialAuthToken: String?,
+			initialRefreshToken: String?,
+			groupId: String?,
+			applicationId: String?,
+			cryptoService: CryptoService,
+			passwordClientSideSalt: String?,
+			cacheSecrets: Boolean,
+			allowSecretRetry: Boolean,
+			messageGatewayApi: RawMessageGatewayApi
 		) = SmartAuthProvider(
-			TokenProvider(
-				login = login,
+			SmartTokenProvider(
+				loginUsername = loginUsername,
 				groupId = groupId,
-				currentLongLivedSecret = when(initialSecret) {
-					null -> null
-					is InitialSecret.PlainSecret -> CachedSecretType.UnspecifiedCachedSecret(secret = initialSecret.secret)
-					is InitialSecret.OAuthSecret -> CachedSecretType.ExternalAuthenticationCachedSecret(secret = initialSecret.oauthToken, oauthType = initialSecret.oauthType)
-				},
+				applicationId = applicationId,
+				currentLongLivedSecret = if (
+					cacheSecrets || initialRefreshToken == null || isJwtExpiredOrInvalid(initialRefreshToken)
+				) initialSecret else null, // Even if cache secret is false, in case the initial refresh token is not valid the secret will actually be cached until the first request
 				cachedToken = initialAuthToken,
 				cachedRefreshToken = initialRefreshToken,
 				authApi = authApi,
-				authSecretProvider = secretProvider
+				authSecretProvider = secretProvider,
+				passwordClientSideSalt = passwordClientSideSalt,
+				cacheSecrets = cacheSecrets,
+				cryptoService = cryptoService,
+				allowSecretRetry = allowSecretRetry,
+				messageGatewayApi = messageGatewayApi
 			),
 			groupId
 		)
 
 	}
 
-	override fun getAuthService() = SmartAuthService(tokenProvider)
+	override fun getAuthService() = SmartAuthService(smartTokenProvider)
 
-	suspend fun switchGroup(newGroupId: String, matches: List<UserGroup>): AuthProvider = when {
+	override suspend fun switchGroup(newGroupId: String): AuthProvider = when {
 		newGroupId == groupId -> this
-		matches.none { it.groupId == newGroupId } -> throw IllegalStateException("New group id not found in matches.")
 		else -> SmartAuthProvider(
-			tokenProvider = tokenProvider.switchedGroup(newGroupId),
+			smartTokenProvider = smartTokenProvider.switchedGroup(newGroupId),
 			groupId = newGroupId,
 		)
 	}
 
+	override suspend fun getBearerAndRefreshToken(): JwtBearerAndRefresh =
+		smartTokenProvider.getCachedTokensOrLoad()
 }

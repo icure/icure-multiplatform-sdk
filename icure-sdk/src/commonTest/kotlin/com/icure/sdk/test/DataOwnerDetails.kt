@@ -6,15 +6,16 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.IcureSdk
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.auth.services.JwtAuthService
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
+import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
@@ -31,6 +32,12 @@ data class DataOwnerDetails(
 	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
 	val parent: DataOwnerDetails?
 ) {
+	companion object {
+		fun testEmailForLogin(login: String) = "$login@test.com"
+	}
+
+	val testEmail: String get() = testEmailForLogin(username)
+
 	val publicKeySpki = runBlocking { SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString()) }
 
 	/**
@@ -94,8 +101,17 @@ data class DataOwnerDetails(
 		)
 	}
 
-	fun authService() =
-		JwtAuthService(RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json), UsernamePassword(username, password))
+	internal fun authService() =
+		AuthenticationMethod.UsingCredentials(
+			UsernamePassword(username, password),
+		).getAuthProvider(
+			RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
+			defaultCryptoService,
+			null,
+			ApiOptions(saltPasswordWithApplicationId = false),
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+		)
+
 
 	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(
@@ -103,6 +119,7 @@ data class DataOwnerDetails(
 		fillStorage: suspend (storage: IcureStorageFacade) -> Unit
 	): IcureSdk =
 		IcureSdk.initialise(
+			null,
 			baseUrl,
 			AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
 			VolatileStorageFacade().also {

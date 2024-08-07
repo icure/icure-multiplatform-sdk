@@ -1,9 +1,10 @@
 package com.icure.sdk.api.raw
 
-import com.icure.sdk.auth.ServerAuthenticationClass
+import com.icure.sdk.auth.minAuthClassForLevel
 import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.auth.services.AuthService
 import com.icure.sdk.auth.services.setAuthorizationWith
+import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.RequestStatusException
 import io.ktor.client.HttpClient
@@ -54,14 +55,18 @@ abstract class BaseRawApi(
 
 	protected suspend fun delete(authProvider: AuthProvider? = null, block: suspend HttpRequestBuilder.() -> Unit) = requestAndRetryOnUnauthorized(HttpMethod.Delete, authProvider?.getAuthService(), null, block)
 
-	private suspend fun requestAndRetryOnUnauthorized(method: HttpMethod, authService: AuthService?, authenticationClass: ServerAuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit): HttpResponse {
+	private suspend fun requestAndRetryOnUnauthorized(method: HttpMethod, authService: AuthService?, authenticationClass: AuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit): HttpResponse {
 		val response = request(method, authService, authenticationClass, block)
 		return if (authService != null && response.status == HttpStatusCode.Unauthorized) {
-			authService.invalidateCurrentToken(RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value))
+			val requiredAuthClass = response.headers["Icure-Minimum-Required-Auth-Level"]?.let { minAuthClassForLevel(it.toInt()) }
+			authService.invalidateCurrentAuthentication(
+				RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value),
+				requiredAuthClass
+			)
 			return requestAndRetryOnUnauthorized(
 				method = method,
 				authService = authService,
-				authenticationClass = response.headers["Icure-Minimum-Required-Auth-Level"]?.let { ServerAuthenticationClass.minAuthClassForLevel(it.toInt()) },
+				authenticationClass = requiredAuthClass,
 				block = block
 			)
 		} else {
@@ -69,7 +74,7 @@ abstract class BaseRawApi(
 		}
 	}
 
-	private suspend fun request(method: HttpMethod, authService: AuthService?, authenticationClass: ServerAuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit) =
+	private suspend fun request(method: HttpMethod, authService: AuthService?, authenticationClass: AuthenticationClass?, block: suspend HttpRequestBuilder.() -> Unit) =
 		httpClient.request {
 			this.method = method
 			headers {

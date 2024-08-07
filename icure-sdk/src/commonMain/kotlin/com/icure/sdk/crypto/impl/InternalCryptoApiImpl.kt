@@ -2,7 +2,9 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.BasicInternalCryptoApi
+import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.DelegationsDeAnonymization
 import com.icure.sdk.crypto.EntityAccessInformationProvider
 import com.icure.sdk.crypto.EntityEncryptionService
@@ -29,7 +31,9 @@ class InternalCryptoApiImpl(
 	override val delegationsDeAnonymization: DelegationsDeAnonymization,
 	override val dataOwnerApi: DataOwnerApi,
 	override val userEncryptionKeysManager: UserEncryptionKeysManager,
-	override val recoveryDataEncryption: RecoveryDataEncryption
+	override val recoveryDataEncryption: RecoveryDataEncryption,
+	override val headersProvider: AccessControlKeysHeadersProvider,
+	override val strategies: CryptoStrategies
 ) : InternalCryptoServices {
 	/**
 	 * Deletes all cached data in crypto services and reloads as needed.

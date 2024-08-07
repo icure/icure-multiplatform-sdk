@@ -1,14 +1,14 @@
 package com.icure.sdk.subscription
 
-import com.icure.sdk.auth.Jwt
+import com.icure.sdk.auth.JwtBearer
 import com.icure.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.sdk.auth.services.TokenBasedAuthService
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.sdk.serialization.SubscriptionSerializer
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.newPlatformHttpClient
 import io.kotest.assertions.fail
@@ -42,6 +42,7 @@ import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
+@InternalIcureApi
 class BasicWebSocketTest : StringSpec({
 	val client = newPlatformHttpClient {
 		install(ContentNegotiation) {
@@ -85,8 +86,8 @@ class BasicWebSocketTest : StringSpec({
 	}
 
 	"Should be able to reconnect if didn't received a ping within the configured delay" {
-		val authService = mockk<TokenBasedAuthService<Jwt>> {
-			coEvery { getToken() } returns Jwt("token", "refresh")
+		val authService = mockk<TokenBasedAuthService<JwtBearer>> {
+			coEvery { getToken() } returns JwtBearer("token")
 		}
 		val authProvider = mockk<JwtBasedAuthProvider> {
 			coEvery { getAuthService() } returns authService
@@ -98,7 +99,7 @@ class BasicWebSocketTest : StringSpec({
 
 		val connection = WebSocketSubscription.initialize(
 			client = client,
-			hostname = "localhost:25565",
+			hostname = "http://localhost:25565",
 			path = "/",
 			clientJson = Serialization.json,
 			entitySerializer = EncryptedHealthElement.serializer(),
@@ -122,8 +123,8 @@ class BasicWebSocketTest : StringSpec({
 	}
 
 	"Should close the connection if the queue is full" {
-		val authService = mockk<TokenBasedAuthService<Jwt>> {
-			coEvery { getToken() } returns Jwt("token", "refresh")
+		val authService = mockk<TokenBasedAuthService<JwtBearer>> {
+			coEvery { getToken() } returns JwtBearer("token")
 		}
 		val authProvider = mockk<JwtBasedAuthProvider> {
 			coEvery { getAuthService() } returns authService
@@ -136,7 +137,7 @@ class BasicWebSocketTest : StringSpec({
 
 		val connection = WebSocketSubscription.initialize(
 			client = client,
-			hostname = "localhost:25565",
+			hostname = "http://localhost:25565",
 			path = "/load",
 			clientJson = Serialization.json,
 			entitySerializer = EncryptedHealthElement.serializer(),

@@ -12,11 +12,11 @@ import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.model.DatabaseInitialisation
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.HealthcareParty
+import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.embed.DelegationTag
 import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 
@@ -27,14 +27,14 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 	val groupId1 = uuid()
 	val groupId2 = uuid()
 	val groupId3 = uuid()
-	val userLogin = "edmond.dantes+${uuid()}@montecristo.fr"
+	val userLogin = "edmond.dantes+${uuid()}"
 	val userPw12 = uuid()
 	val userPw3 = uuid()
 	val userId1 = uuid()
 	val userId2 = uuid()
 	val userId3 = uuid()
-	val groupRawApi = RawGroupApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val groupRawApi = RawGroupApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	groupRawApi.createGroup(
 		id = groupId1,
 		name = "test-group-1-${groupId1}",
@@ -74,7 +74,7 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 			id = userId1,
 			login = userLogin,
 			name = userLogin,
-			email = userLogin,
+			email = DataOwnerDetails.testEmailForLogin(userLogin),
 			passwordHash = userPw12
 		)
 	).successBody()
@@ -84,7 +84,7 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 			id = userId2,
 			login = userLogin,
 			name = userLogin,
-			email = userLogin,
+			email = DataOwnerDetails.testEmailForLogin(userLogin),
 			passwordHash = userPw12
 		)
 	).successBody()
@@ -94,7 +94,7 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 			id = userId3,
 			login = userLogin,
 			name = userLogin,
-			email = userLogin,
+			email = DataOwnerDetails.testEmailForLogin(userLogin),
 			passwordHash = userPw3
 		)
 	).successBody()
@@ -128,7 +128,7 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
 @OptIn(InternalIcureApi::class)
-suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false): DataOwnerDetails {
+suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false, roles: Set<String>? = null): DataOwnerDetails {
 	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	val hcpId = uuid()
@@ -151,16 +151,19 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			parentId = parent?.dataOwnerId
 		)
 	).successBody()
-	userRawApi.createUser(
+	val created = userRawApi.createUser(
 		User(
 			uuid(),
 			login = login,
-			email = login,
+			email = DataOwnerDetails.testEmailForLogin(login),
 			passwordHash = password,
 			healthcarePartyId = hcp.id,
 			autoDelegations = mapOf(DelegationTag.All to parent?.hierarchy()?.toSet().orEmpty())
 		)
 	).successBody()
+	if (roles != null) {
+		userRawApi.addRolesToUser(created.id, ListOfIds(roles.toList()))
+	}
 	return DataOwnerDetails(hcpId, login, password, keypair, parent).also { println("Created hcp $it") }
 }
 
@@ -188,7 +191,7 @@ suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetai
 		User(
 			uuid(),
 			login = login,
-			email = login,
+			email = DataOwnerDetails.testEmailForLogin(login),
 			passwordHash = password,
 			patientId = patient.id
 		)
@@ -212,7 +215,7 @@ suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
 		User(
 			uuid(),
 			login = login,
-			email = login,
+			email = DataOwnerDetails.testEmailForLogin(login),
 			passwordHash = password,
 			patientId = updatedPatient.id
 		)

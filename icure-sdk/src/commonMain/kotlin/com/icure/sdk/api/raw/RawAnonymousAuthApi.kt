@@ -17,6 +17,7 @@ public interface RawAnonymousAuthApi {
 		duration: Long? = null,
 		loginCredentials: LoginCredentials,
 		groupId: String? = null,
+		applicationId: String? = null,
 	): HttpResponse<JwtResponse>
 
 	suspend fun refresh(
@@ -37,11 +38,13 @@ public interface RawAnonymousAuthApi {
 	suspend fun loginGoogle(
 		token: String,
 		groupId: String? = null,
+		applicationId: String? = null,
 	): HttpResponse<JwtResponse>
 
 	suspend fun loginFas(
 		token: String,
 		groupId: String? = null,
+		applicationId: String? = null,
 	): HttpResponse<JwtResponse>
 
 	suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit>

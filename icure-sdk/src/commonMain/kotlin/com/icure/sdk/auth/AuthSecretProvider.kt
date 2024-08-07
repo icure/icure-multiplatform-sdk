@@ -39,8 +39,13 @@ interface AuthSecretProvider {
 	 * method is called for a given operation, but it may contain multiple elements if the SDK has already called this method multiple times because the
 	 * previously returned secrets were not valid. The first element is the first secret that was attempted, and the last element is the most recently
 	 * attempted.
+	 * @param authProcessApi an api which can be used to request sms or email short-lived tokens for the user.
 	 * @return a promise that resolves with the secret and the secret type to use for authentication. If the promise rejects then the ongoing SDK
 	 * operation will fail without being re-attempted.
 	 */
-	suspend fun getSecret(acceptedSecrets: List<AuthenticationClass>, previousAttempts: List<AuthSecretDetails>): AuthSecretDetails
+	suspend fun getSecret(
+		acceptedSecrets: List<AuthenticationClass>,
+		previousAttempts: List<AuthSecretDetails>,
+		authProcessApi: AuthenticationProcessApi
+	): AuthSecretDetails
 }

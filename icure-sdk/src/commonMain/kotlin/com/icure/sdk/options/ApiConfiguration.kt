@@ -3,7 +3,7 @@ package com.icure.sdk.options
 import com.icure.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.sdk.crypto.BasicInternalCryptoApi
 import com.icure.sdk.crypto.InternalCryptoServices
-import com.icure.sdk.subscription.WebSocketAuthProvider
+import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
@@ -27,6 +27,7 @@ internal interface BasicApiConfiguration {
 @InternalIcureApi
 internal interface ApiConfiguration : BasicApiConfiguration {
 	val autofillAuthor: Boolean
+	val storage: IcureStorageFacade
 	override val crypto: InternalCryptoServices
 }
 
@@ -38,7 +39,8 @@ internal data class ApiConfigurationImpl(
 	override val webSocketAuthProvider: JwtBasedAuthProvider?,
 	override val autofillAuthor: Boolean,
 	override val crypto: InternalCryptoServices,
-	override val encryption: EntitiesEncryptedFieldsManifests
+	override val encryption: EntitiesEncryptedFieldsManifests,
+	override val storage: IcureStorageFacade
 ) : ApiConfiguration
 
 @InternalIcureApi
