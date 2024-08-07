@@ -45,7 +45,7 @@ class SecureDelegationsManagerImpl (
 	// Data owner id -> is anonymous
 	private val dataOwnerAnonymityCache = SynchronisedLruCache<String, Boolean>(1000)
 
-	override suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
+	override suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entity: EntityWithTypeInfo<T>,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,

@@ -6,7 +6,7 @@ import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.utils.RequestStatusException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -19,7 +19,7 @@ import java.util.UUID
 
 class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 	}
 
 	"Data shared with a parent hcp should be accessible to the parent and siblings, but not to the grandparent" {
@@ -62,7 +62,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 				),
 				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
-		).shouldNotBeNull().let { hcpApi.patient.initialiseConfidentialSecretId(it) }
+		).shouldNotBeNull().let { hcpApi.patient.initializeConfidentialSecretId(it) }
 		val confidentialSecretIds = hcpApi.patient.getConfidentialSecretIdsOf(patient)
 		val allSecretIds = hcpApi.patient.getSecretIdsOf(patient)
 		allSecretIds shouldHaveSize 2

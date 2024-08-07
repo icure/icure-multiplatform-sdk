@@ -189,7 +189,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	/**
 	 * Share a form with another data owner. The form must already exist in the database for this method to
 	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the form
 	 * @param form the form to share with [delegateId]
 	 * @param options specifies how the form will be shared. By default, all data available to the current user
@@ -207,7 +207,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	/**
 	 * Share a form with multiple data owners. The form must already exist in the database for this method to
 	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param form the form to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -221,7 +221,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	/**
 	 * Share a form with multiple data owners. The form must already exist in the database for this method to
 	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param form the form to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -249,32 +249,32 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 	/**
-	 * Create a new form. The provided form must have the encryption metadata initialised.
-	 * @param entity a form with initialised encryption metadata
+	 * Create a new form. The provided form must have the encryption metadata initialized.
+	 * @param entity a form with initialized encryption metadata
 	 * @return the created form with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createForm(entity: DecryptedForm): DecryptedForm
 
 	/**
-	 * Create multiple forms. All the provided forms must have the encryption metadata initialised, otherwise
+	 * Create multiple forms. All the provided forms must have the encryption metadata initialized, otherwise
 	 * this method fails without doing anything.
-	 * @param entities forms with initialised encryption metadata
+	 * @param entities forms with initialized encryption metadata
 	 * @return the created forms with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any form in the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of any form in the input was not initialized.
 	 */
 	suspend fun createForms(entities: List<DecryptedForm>): List<DecryptedForm>
 
 	/**
-	 * Creates a new form with initialised encryption metadata
-	 * @param base a form with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new form with initialized encryption metadata
+	 * @param base a form with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the form.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [patient] to use for the new form
-	 * @return a form with initialised encryption metadata.
+	 * @return a form with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -570,7 +570,7 @@ internal class FormApiImpl(
 		}
 
 	override suspend fun createForm(entity: DecryptedForm): DecryptedForm {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createForm(
 			encrypt(entity),
 		).successBody().let {
@@ -579,7 +579,7 @@ internal class FormApiImpl(
 	}
 
 	override suspend fun createForms(entities: List<DecryptedForm>): List<DecryptedForm> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createForms(
 			entities.map {
 				encrypt(it)
@@ -599,7 +599,7 @@ internal class FormApiImpl(
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 	): DecryptedForm =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedForm(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -608,8 +608,8 @@ internal class FormApiImpl(
 			).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

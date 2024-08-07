@@ -22,7 +22,7 @@ export interface PatientFlavouredApi<E extends Patient> {
 
 	shareWithMany(patient: E, delegates: { [ key: string ]: PatientShareOptions }): Promise<E>;
 
-	initialiseConfidentialSecretId(patient: E): Promise<E>;
+	initializeConfidentialSecretId(patient: E): Promise<E>;
 
 	modifyPatient(entity: E): Promise<E>;
 

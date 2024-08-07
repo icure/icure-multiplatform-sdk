@@ -3,7 +3,7 @@ package com.icure.sdk.api
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.filter.patient.PatientByHcPartyDateOfBirthBetweenFilter
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.uuid
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
@@ -11,7 +11,7 @@ import io.kotest.matchers.shouldBe
 class NativeFilterTest : StringSpec({
 
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 	}
 
 	"Can filter using a patient filter" {

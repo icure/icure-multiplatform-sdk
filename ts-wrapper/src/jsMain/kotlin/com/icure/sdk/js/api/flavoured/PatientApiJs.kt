@@ -79,7 +79,7 @@ public external interface PatientApiJs {
 
 	public fun getConfidentialSecretIdsOf(patient: PatientJs): Promise<Array<String>>
 
-	public fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Promise<Boolean>
+	public fun forceInitializeExchangeDataToNewlyInvitedPatient(patientId: String): Promise<Boolean>
 
 	public fun matchPatientsBy(filter: AbstractFilterJs<PatientJs>): Promise<Array<String>>
 
@@ -111,7 +111,7 @@ public external interface PatientApiJs {
 	public fun shareWithMany(patient: DecryptedPatientJs,
 			delegates: Record<String, PatientShareOptionsJs>): Promise<DecryptedPatientJs>
 
-	public fun initialiseConfidentialSecretId(patient: DecryptedPatientJs): Promise<DecryptedPatientJs>
+	public fun initializeConfidentialSecretId(patient: DecryptedPatientJs): Promise<DecryptedPatientJs>
 
 	public fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs>
 

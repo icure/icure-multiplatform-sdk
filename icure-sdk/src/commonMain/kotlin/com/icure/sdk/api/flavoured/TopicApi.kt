@@ -126,7 +126,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	/**
 	 * Share a topic with another data owner. The topic must already exist in the database for this method to
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the topic
 	 * @param topic the topic to share with [delegateId]
 	 * @param options specifies how the topic will be shared. By default, all data available to the current user
@@ -144,7 +144,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	/**
 	 * Share a topic with multiple data owners. The topic must already exist in the database for this method to
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param topic the topic to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -158,7 +158,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	/**
 	 * Share a topic with multiple data owners. The topic must already exist in the database for this method to
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param topic the topic to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -174,23 +174,23 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic> {
 	/**
-	 * Create a new topic. The provided topic must have the encryption metadata initialised.
-	 * @param entity a topic with initialised encryption metadata
+	 * Create a new topic. The provided topic must have the encryption metadata initialized.
+	 * @param entity a topic with initialized encryption metadata
 	 * @return the created topic with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createTopic(entity: DecryptedTopic): DecryptedTopic
 
 	/**
-	 * Creates a new topic with initialised encryption metadata
-	 * @param base a topic with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new topic with initialized encryption metadata
+	 * @param base a topic with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the topic.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [patient] to use for the new topic
-	 * @return a topic with initialised encryption metadata.
+	 * @return a topic with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -440,7 +440,7 @@ internal class TopicApiImpl(
 		}
 
 	override suspend fun createTopic(entity: DecryptedTopic): DecryptedTopic {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createTopic(
 			encrypt(entity),
 		).successBody().let { decrypt(it) }
@@ -457,7 +457,7 @@ internal class TopicApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedTopic =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedTopic(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -466,8 +466,8 @@ internal class TopicApiImpl(
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

@@ -5,7 +5,7 @@ import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createUserFromExistingPatient
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -14,7 +14,7 @@ import java.util.UUID
 
 class PatientUserTest : StringSpec({
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 	}
 
 	"A new user created from an existing patient should be able to create data for himself" {

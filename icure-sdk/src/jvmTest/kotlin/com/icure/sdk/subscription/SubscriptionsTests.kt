@@ -16,7 +16,7 @@ import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
 import com.icure.sdk.model.filter.topic.TopicByHcPartyFilter
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.core.spec.style.stringSpec
@@ -60,7 +60,7 @@ fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribabl
 class SubscriptionsTests : StringSpec(
 	{
 		runBlocking {
-			initialiseTestEnvironment()
+			initializeTestEnvironment()
 			val hcpUser = createHcpUser(
 				roles = setOf(
 					"PATIENT_USER_MANAGER",

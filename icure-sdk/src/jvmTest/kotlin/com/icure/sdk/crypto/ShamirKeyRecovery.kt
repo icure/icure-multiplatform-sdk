@@ -7,7 +7,7 @@ import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import io.kotest.assertions.throwables.shouldThrow
@@ -17,7 +17,7 @@ import io.kotest.matchers.shouldBe
 
 @OptIn(InternalIcureApi::class)
 class ShamirKeyRecovery : StringSpec({
-	beforeAny { initialiseTestEnvironment() }
+	beforeAny { initializeTestEnvironment() }
 
 	suspend fun doTest(
 		userDetails: DataOwnerDetails,

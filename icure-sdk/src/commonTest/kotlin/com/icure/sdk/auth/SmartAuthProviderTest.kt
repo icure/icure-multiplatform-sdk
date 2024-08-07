@@ -20,7 +20,7 @@ import com.icure.sdk.test.MockMessageGatewayUtils
 import com.icure.sdk.test.baseUrl
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createUserInMultipleGroups
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.mockMessageGatewayUrl
 import com.icure.sdk.test.mockSpecId
 import com.icure.sdk.test.shouldBeNextRevOf
@@ -59,13 +59,13 @@ class SmartAuthProviderTest : StringSpec({
 	)
 
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 	}
 
 	"Should automatically ask for secret to get a new token, and asks again the secret if it is not valid" {
 		val hcpDetails = createHcpUser()
 		var calls = 0
-		val authProvider = SmartAuthProvider.initialise(
+		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
@@ -133,7 +133,7 @@ class SmartAuthProviderTest : StringSpec({
 			)
 		).successBody()
 		var calls = 0
-		val authProvider = SmartAuthProvider.initialise(
+		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
@@ -227,7 +227,7 @@ class SmartAuthProviderTest : StringSpec({
 			)
 		).successBody()
 		var calls = 0
-		val authProvider = SmartAuthProvider.initialise(
+		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
@@ -296,7 +296,7 @@ class SmartAuthProviderTest : StringSpec({
 			)
 		).successBody()
 		var calls = 0
-		val authProvider = SmartAuthProvider.initialise(
+		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
@@ -336,7 +336,7 @@ class SmartAuthProviderTest : StringSpec({
 			userType = MockMessageGatewayUtils.UserType.Hcp
 		)
 		var calls = 0
-		val authProvider = SmartAuthProvider.initialise(
+		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
@@ -383,7 +383,7 @@ class SmartAuthProviderTest : StringSpec({
 		val details = createUserInMultipleGroups()
 		val groups = details.keys.toList()
 		val firstUser = details.values.first()
-		val authProvider = SmartAuthProvider.initialise(
+		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = firstUser.username,
 			secretProvider = object : AuthSecretProvider {

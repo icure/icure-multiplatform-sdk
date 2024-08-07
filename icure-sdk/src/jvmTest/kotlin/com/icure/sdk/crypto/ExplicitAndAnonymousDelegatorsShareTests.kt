@@ -8,7 +8,7 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createPatientUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -20,7 +20,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	val heNote = "This will be encrypted - he"
 
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 	}
 
 	suspend fun testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {

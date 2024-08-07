@@ -368,7 +368,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	/**
 	 * Share a patient with another data owner. The patient must already exist in the database for this method to
 	 * succeed. If you want to share the patient before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the patient
 	 * @param patient the patient to share with [delegateId]
 	 * @param options specifies how the patient will be shared. Refer to the documentation of [PatientShareOptions] for more information.
@@ -383,7 +383,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	/**
 	 * Share a patient with multiple data owners. The patient must already exist in the database for this method to
 	 * succeed. If you want to share the patient before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param patient the patient to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -397,7 +397,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	/**
 	 * Share a patient with multiple data owners. The patient must already exist in the database for this method to
 	 * succeed. If you want to share the patient before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param patient the patient to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -411,7 +411,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 
 	/**
 	 * Initializes a new "confidential" secret id for the provided patient if there is none, and saves it. Returns the
-	 * updated patient if a new secret id was initialised, or the input if there was already a confidential secret id
+	 * updated patient if a new secret id was initialized, or the input if there was already a confidential secret id
 	 * available.
 	 *
 	 * A "confidential" secret id is a secret id that was not shared with any of the current data owner parents, at
@@ -427,7 +427,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	 * @param patient a patient
 	 * @return the input if there is already a secret id available for the patient, or the updated patient otherwise.
 	 */
-	suspend fun initialiseConfidentialSecretId(patient: E): E
+	suspend fun initializeConfidentialSecretId(patient: E): E
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -450,21 +450,21 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString>
 
 	/**
-	 * Create a new patient. The provided patient must have the encryption metadata initialised.
-	 * @param patient a patient with initialised encryption metadata
+	 * Create a new patient. The provided patient must have the encryption metadata initialized.
+	 * @param patient a patient with initialized encryption metadata
 	 * @return the created patient with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient
 
 	/**
-	 * Creates a new patient with initialised encryption metadata
-	 * @param base a patient with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new patient with initialized encryption metadata
+	 * @param base a patient with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
-	 * @return a patient with initialised encryption metadata.
+	 * @return a patient with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -590,7 +590,7 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * @return true if exchange data was initialized, false if the patient already has a key pair and the exchange data
 	 * will be initialized in the standard way (automatically on the first time data is shared with the user).
 	 */
-	suspend fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Boolean
+	suspend fun forceInitializeExchangeDataToNewlyInvitedPatient(patientId: String): Boolean
 }
 
 interface PatientBasicApi : PatientBasicFlavourlessApi, PatientBasicFlavouredApi<EncryptedPatient>
@@ -812,11 +812,11 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	override suspend fun shareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): E =
 		tryShareWithMany(patient, delegates).updatedEntityOrThrow()
 
-	override suspend fun initialiseConfidentialSecretId(patient: E): E {
+	override suspend fun initializeConfidentialSecretId(patient: E): E {
 		requireNotNull(patient.rev) {
 			"Patient must be created before confidential secret id initialisation"
 		}
-		return crypto.entity.initialiseConfidentialSecretId(
+		return crypto.entity.initializeConfidentialSecretId(
 			patient.withTypeInfo(),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -921,7 +921,7 @@ internal class PatientApiImpl(
 		}
 
 	override suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient {
-		require(patient.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(patient.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createPatient(
 			encrypt(patient),
 		).successBody().let { decrypt(it) }
@@ -953,7 +953,7 @@ internal class PatientApiImpl(
 		val hcp = rawHealthcarePartyApi.getCurrentHealthcareParty().successBody() // Shall we do it for any data owner?
 		val parentId = hcp.parentId
 		val patient = encrypted.getPatient(patientId).let { patient ->
-			crypto.entity.ensureEncryptionKeysInitialised(patient.withTypeInfo())?.let {
+			crypto.entity.ensureEncryptionKeysInitialized(patient.withTypeInfo())?.let {
 				encrypted.modifyPatient(it)
 			} ?: patient
 		}
@@ -1134,7 +1134,7 @@ internal class PatientApiImpl(
 		delegates: Map<String, AccessLevel>,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedPatient =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedPatient(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -1143,8 +1143,8 @@ internal class PatientApiImpl(
 			).withTypeInfo(),
 			null,
 			null,
-			initialiseEncryptionKey = true,
-			initialiseSecretId = true,
+			initializeEncryptionKey = true,
+			initializeSecretId = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
@@ -1174,7 +1174,7 @@ internal class PatientApiImpl(
 		EncryptedPatient.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
 
-	override suspend fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Boolean {
+	override suspend fun forceInitializeExchangeDataToNewlyInvitedPatient(patientId: String): Boolean {
 		val patient = encrypted.getPatient(patientId)
 		if (patient.publicKeysSpki.isNotEmpty()) return false
 		crypto.exchangeDataManager.getOrCreateEncryptionDataTo(patientId, true)

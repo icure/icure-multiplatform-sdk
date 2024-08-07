@@ -197,10 +197,10 @@ internal class PatientApiImplJs(
 			patient_toJs(result)
 		}
 
-		override fun initialiseConfidentialSecretId(patient: EncryptedPatientJs):
+		override fun initializeConfidentialSecretId(patient: EncryptedPatientJs):
 				Promise<EncryptedPatientJs> = GlobalScope.promise {
 			val patientConverted: EncryptedPatient = patient_fromJs(patient)
-			val result = patientApi.encrypted.initialiseConfidentialSecretId(
+			val result = patientApi.encrypted.initializeConfidentialSecretId(
 				patientConverted,
 			)
 			patient_toJs(result)
@@ -1072,10 +1072,10 @@ internal class PatientApiImplJs(
 			patient_toJs(result)
 		}
 
-		override fun initialiseConfidentialSecretId(patient: PatientJs): Promise<PatientJs> =
+		override fun initializeConfidentialSecretId(patient: PatientJs): Promise<PatientJs> =
 				GlobalScope.promise {
 			val patientConverted: Patient = patient_fromJs(patient)
-			val result = patientApi.tryAndRecover.initialiseConfidentialSecretId(
+			val result = patientApi.tryAndRecover.initializeConfidentialSecretId(
 				patientConverted,
 			)
 			patient_toJs(result)
@@ -2077,10 +2077,10 @@ internal class PatientApiImplJs(
 		)
 	}
 
-	override fun forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: String): Promise<Boolean>
+	override fun forceInitializeExchangeDataToNewlyInvitedPatient(patientId: String): Promise<Boolean>
 			= GlobalScope.promise {
 		val patientIdConverted: String = patientId
-		val result = patientApi.forceInitialiseExchangeDataToNewlyInvitedPatient(
+		val result = patientApi.forceInitializeExchangeDataToNewlyInvitedPatient(
 			patientIdConverted,
 		)
 		result
@@ -2302,10 +2302,10 @@ internal class PatientApiImplJs(
 		patient_toJs(result)
 	}
 
-	override fun initialiseConfidentialSecretId(patient: DecryptedPatientJs):
+	override fun initializeConfidentialSecretId(patient: DecryptedPatientJs):
 			Promise<DecryptedPatientJs> = GlobalScope.promise {
 		val patientConverted: DecryptedPatient = patient_fromJs(patient)
-		val result = patientApi.initialiseConfidentialSecretId(
+		val result = patientApi.initializeConfidentialSecretId(
 			patientConverted,
 		)
 		patient_toJs(result)

@@ -191,7 +191,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	/**
 	 * Share a message with another data owner. The Message must already exist in the database for this method to
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the Message
 	 * @param message the Message to share with [delegateId]
 	 * @param options specifies how the Message will be shared. Refer to the documentation of [MessageShareOptions] for
@@ -207,7 +207,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	/**
 	 * Share a message with multiple data owners. The Message must already exist in the database for this method to
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param message the Message to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -221,7 +221,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	/**
 	 * Share a message with multiple data owners. The Message must already exist in the database for this method to
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param message the Message to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -249,35 +249,35 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<DecryptedMessage> {
 	/**
-	 * Create a new Message. The provided Message must have the encryption metadata initialised. This method requires
+	 * Create a new Message. The provided Message must have the encryption metadata initialized. This method requires
 	 * the permission to create messages outside of topics. If you want to create a message within a topic use the
 	 * [createMessageInTopic] method instead.
-	 * @param entity a message with initialised encryption metadata
+	 * @param entity a message with initialized encryption metadata
 	 * @return the created Message with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createMessage(entity: DecryptedMessage): DecryptedMessage
 
 	/**
-	 * Create a new Message. The provided Message must have the encryption metadata initialised, and the id of the topic
+	 * Create a new Message. The provided Message must have the encryption metadata initialized, and the id of the topic
 	 * set in [Message.transportGuid] (note that your configuration must not encrypt the transport guid). The user needs
 	 * to be a participant in that topic for this method to succeed.
-	 * @param entity a message with initialised encryption metadata and with a transportGuid set to the topic
+	 * @param entity a message with initialized encryption metadata and with a transportGuid set to the topic
 	 * @return the created Message with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage
 
 	/**
-	 * Creates a new Message with initialised encryption metadata
-	 * @param base a message with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new Message with initialized encryption metadata
+	 * @param base a message with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the Message.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [patient] to use for the new Message
-	 * @return a message with initialised encryption metadata.
+	 * @return a message with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -615,7 +615,7 @@ internal class MessageApiImpl(
 		}
 
 	override suspend fun createMessage(entity: DecryptedMessage): DecryptedMessage {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createMessage(
 			encrypt(entity),
 		).successBody().let { decrypt(it) }
@@ -635,7 +635,7 @@ internal class MessageApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedMessage =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedMessage(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -644,8 +644,8 @@ internal class MessageApiImpl(
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
-			initialiseEncryptionKey = true,
-			initialiseSecretId = true,
+			initializeEncryptionKey = true,
+			initializeSecretId = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

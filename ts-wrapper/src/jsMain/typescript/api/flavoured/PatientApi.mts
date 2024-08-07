@@ -68,7 +68,7 @@ export interface PatientApi {
 
 	getConfidentialSecretIdsOf(patient: Patient): Promise<Array<string>>;
 
-	forceInitialiseExchangeDataToNewlyInvitedPatient(patientId: string): Promise<boolean>;
+	forceInitializeExchangeDataToNewlyInvitedPatient(patientId: string): Promise<boolean>;
 
 	matchPatientsBy(filter: AbstractFilter<Patient>): Promise<Array<string>>;
 
@@ -92,7 +92,7 @@ export interface PatientApi {
 	shareWithMany(patient: DecryptedPatient,
 			delegates: { [ key: string ]: PatientShareOptions }): Promise<DecryptedPatient>;
 
-	initialiseConfidentialSecretId(patient: DecryptedPatient): Promise<DecryptedPatient>;
+	initializeConfidentialSecretId(patient: DecryptedPatient): Promise<DecryptedPatient>;
 
 	modifyPatient(entity: DecryptedPatient): Promise<DecryptedPatient>;
 

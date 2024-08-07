@@ -18,7 +18,7 @@ import com.icure.sdk.utils.InternalIcureApi
 interface UserEncryptionKeysManager {
 	interface Factory {
 		/**
-		 * Details of a newly initialised encryption keys manager.
+		 * Details of a newly initialized encryption keys manager.
 		 */
 		data class InitialisationDetails internal constructor(
 			/**
@@ -34,7 +34,7 @@ interface UserEncryptionKeysManager {
 		/**
 		 * Initializes a new manager, containing all keys for the current data owner.
 		 */
-		suspend fun initialise(): InitialisationDetails
+		suspend fun initialize(): InitialisationDetails
 	}
 
 	/**

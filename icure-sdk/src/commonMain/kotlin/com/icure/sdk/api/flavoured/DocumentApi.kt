@@ -220,7 +220,7 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	/**
 	 * Share a document with another data owner. The document must already exist in the database for this method to
 	 * succeed. If you want to share the document before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the document
 	 * @param document the document to share with [delegateId]
 	 * @param options specifies how the document will be shared. By default, all data available to the current user
@@ -238,7 +238,7 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	/**
 	 * Share a document with multiple data owners. The document must already exist in the database for this method to
 	 * succeed. If you want to share the document before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param document the document to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -252,7 +252,7 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	/**
 	 * Share a document with multiple data owners. The document must already exist in the database for this method to
 	 * succeed. If you want to share the document before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param document the document to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -280,23 +280,23 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<DecryptedDocument> {
 	/**
-	 * Create a new document. The provided document must have the encryption metadata initialised.
-	 * @param entity a document with initialised encryption metadata
+	 * Create a new document. The provided document must have the encryption metadata initialized.
+	 * @param entity a document with initialized encryption metadata
 	 * @return the created document with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createDocument(entity: DecryptedDocument): DecryptedDocument
 
 	/**
-	 * Creates a new document with initialised encryption metadata
-	 * @param base a document with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new document with initialized encryption metadata
+	 * @param base a document with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param message the message linked to the document, if any.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [message] to use for the new document
-	 * @return a document with initialised encryption metadata.
+	 * @return a document with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -722,7 +722,7 @@ internal class DocumentApiImpl(
 		}
 
 	override suspend fun createDocument(entity: DecryptedDocument): DecryptedDocument {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createDocument(
 			encrypt(entity),
 		).successBody().let {
@@ -741,7 +741,7 @@ internal class DocumentApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedDocument =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -750,8 +750,8 @@ internal class DocumentApiImpl(
 			).withTypeInfo(),
 			message?.id,
 			message?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

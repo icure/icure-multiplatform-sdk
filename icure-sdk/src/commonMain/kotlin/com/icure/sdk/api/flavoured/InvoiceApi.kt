@@ -195,7 +195,7 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	/**
 	 * Share an invoice with another data owner. The invoice must already exist in the database for this method to
 	 * succeed. If you want to share the invoice before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the invoice
 	 * @param invoice the invoice to share with [delegateId]
 	 * @param options specifies how the invoice will be shared. By default, all data available to the current user
@@ -213,7 +213,7 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	/**
 	 * Share an invoice with multiple data owners. The invoice must already exist in the database for this method to
 	 * succeed. If you want to share the invoice before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param invoice the invoice to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -227,7 +227,7 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	/**
 	 * Share an invoice with multiple data owners. The invoice must already exist in the database for this method to
 	 * succeed. If you want to share the invoice before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param invoice the invoice to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -256,32 +256,32 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 @Deprecated("The invoice API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<DecryptedInvoice> {
 	/**
-	 * Create a new invoice. The provided invoice must have the encryption metadata initialised.
-	 * @param entity an invoice with initialised encryption metadata
+	 * Create a new invoice. The provided invoice must have the encryption metadata initialized.
+	 * @param entity an invoice with initialized encryption metadata
 	 * @return the created invoice with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createInvoice(entity: DecryptedInvoice, prefix: String?): DecryptedInvoice
 
 	/**
-	 * Create multiple invoices. All the provided invoices must have the encryption metadata initialised, otherwise
+	 * Create multiple invoices. All the provided invoices must have the encryption metadata initialized, otherwise
 	 * this method fails without doing anything.
-	 * @param entities invoices with initialised encryption metadata
+	 * @param entities invoices with initialized encryption metadata
 	 * @return the created invoices with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any invoice in the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of any invoice in the input was not initialized.
 	 */
 	suspend fun createInvoices(entities: List<DecryptedInvoice>): List<DecryptedInvoice>
 
 	/**
-	 * Creates a new invoice with initialised encryption metadata
-	 * @param base an invoice with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new invoice with initialized encryption metadata
+	 * @param base an invoice with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the invoice.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [patient] to use for the new invoice
-	 * @return an invoice with initialised encryption metadata.
+	 * @return an invoice with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -646,7 +646,7 @@ internal class InvoiceApiImpl(
 		}
 
 	private suspend fun createInvoice(entity: DecryptedInvoice): DecryptedInvoice {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createInvoice(
 			encrypt(entity),
 		).successBody().let {
@@ -685,7 +685,7 @@ internal class InvoiceApiImpl(
 	}
 
 	override suspend fun createInvoices(entities: List<DecryptedInvoice>): List<DecryptedInvoice> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createInvoices(
 			entities.map {
 				encrypt(it)
@@ -716,7 +716,7 @@ internal class InvoiceApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedInvoice =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedInvoice(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -727,8 +727,8 @@ internal class InvoiceApiImpl(
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 

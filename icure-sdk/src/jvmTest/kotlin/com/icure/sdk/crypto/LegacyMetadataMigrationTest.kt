@@ -17,7 +17,7 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.baseUrl
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.testGroupAdminAuth
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
@@ -231,7 +231,7 @@ private suspend fun createTestDataAndApis(): TestData {
 }
 
 class LegacyMetadataMigrationTest : StringSpec({
-	beforeAny { initialiseTestEnvironment() }
+	beforeAny { initializeTestEnvironment() }
 
 	/*
 	 * Entity E with legacy metadata created by A and shared with P.

@@ -77,7 +77,7 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 	/**
 	 * Share a time-table with another data owner. The time-table must already exist in the database for this method to
 	 * succeed. If you want to share the time-table before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the time-table
 	 * @param timeTable the time-table to share with [delegateId]
 	 * @param options specifies how the time-table will be shared. By default, all data available to the current user
@@ -96,7 +96,7 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 	/**
 	 * Share a time-table with multiple data owners. The time-table must already exist in the database for this method to
 	 * succeed. If you want to share the time-table before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param timeTable the time-table to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -110,7 +110,7 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 	/**
 	 * Share a time-table with multiple data owners. The time-table must already exist in the database for this method to
 	 * succeed. If you want to share the time-table before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param timeTable the time-table to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -126,23 +126,23 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface TimeTableApi : TimeTableBasicFlavourlessApi, TimeTableFlavouredApi<DecryptedTimeTable> {
 	/**
-	 * Create a new time-table. The provided time-table must have the encryption metadata initialised.
-	 * @param entity a time-table with initialised encryption metadata
+	 * Create a new time-table. The provided time-table must have the encryption metadata initialized.
+	 * @param entity a time-table with initialized encryption metadata
 	 * @return the created time-table with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createTimeTable(entity: DecryptedTimeTable): DecryptedTimeTable
 
 	/**
-	 * Creates a new time-table with initialised encryption metadata
-	 * @param base a time-table with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new time-table with initialized encryption metadata
+	 * @param base a time-table with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the time-table.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [patient] to use for the new time-table
-	 * @return a time-table with initialised encryption metadata.
+	 * @return a time-table with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -360,7 +360,7 @@ internal class TimeTableApiImpl(
 		}
 
 	override suspend fun createTimeTable(entity: DecryptedTimeTable): DecryptedTimeTable {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createTimeTable(
 			encrypt(entity),
 		).successBody().let { decrypt(it) }
@@ -386,7 +386,7 @@ internal class TimeTableApiImpl(
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 	): DecryptedTimeTable =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedTimeTable(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -395,8 +395,8 @@ internal class TimeTableApiImpl(
 			).withTypeInfo(),
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 

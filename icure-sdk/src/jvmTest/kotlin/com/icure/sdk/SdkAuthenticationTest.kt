@@ -7,23 +7,23 @@ import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.test.MockMessageGatewayUtils
 import com.icure.sdk.test.baseUrl
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.mockMessageGatewayUrl
 import com.icure.sdk.test.mockSpecId
 import com.icure.sdk.test.testGroupId
 import io.kotest.core.spec.style.StringSpec
 
 class SdkAuthenticationTest : StringSpec({
-	beforeAny { initialiseTestEnvironment() }
+	beforeAny { initializeTestEnvironment() }
 
-	"A user should be able to initialise an sdk using an authentication process" {
+	"A user should be able to initialize an sdk using an authentication process" {
 		val hcpDetails = createHcpUser()
 		val processId = MockMessageGatewayUtils.createTestProcess(
 			groupId = testGroupId,
 			hcpId = hcpDetails.dataOwnerId,
 			userType = MockMessageGatewayUtils.UserType.Hcp
 		)
-		val authStep = IcureSdk.initialiseWithProcess(
+		val authStep = IcureSdk.initializeWithProcess(
 			null,
 			baseUrl,
 			mockMessageGatewayUrl,

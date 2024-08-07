@@ -102,7 +102,7 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 	/**
 	 * Share a maintenance task with another data owner. The maintenance task must already exist in the database for this method to
 	 * succeed. If you want to share the maintenance task before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the maintenance task
 	 * @param maintenanceTask the maintenance task to share with [delegateId]
 	 * @param options specifies how the maintenance task will be shared. By default, all data available to the current user
@@ -120,7 +120,7 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 	/**
 	 * Share a maintenance task with multiple data owners. The maintenance task must already exist in the database for this method to
 	 * succeed. If you want to share the maintenance task before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param maintenanceTask the maintenance task to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -134,7 +134,7 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 	/**
 	 * Share a maintenance task with multiple data owners. The maintenance task must already exist in the database for this method to
 	 * succeed. If you want to share the maintenance task before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param maintenanceTask the maintenance task to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -150,16 +150,16 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask> {
 	/**
-	 * Create a new maintenance task. The provided maintenance task must have the encryption metadata initialised.
-	 * @param entity a maintenance task with initialised encryption metadata
+	 * Create a new maintenance task. The provided maintenance task must have the encryption metadata initialized.
+	 * @param entity a maintenance task with initialized encryption metadata
 	 * @return the created maintenance task with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createMaintenanceTask(entity: DecryptedMaintenanceTask): DecryptedMaintenanceTask
 
 	/**
-	 * Creates a maintenance task with initialised encryption metadata, using the provided maintenance task as a base.
-	 * @param maintenanceTask a maintenance task with initialised content, to be used as a base for the result.
+	 * Creates a maintenance task with initialized encryption metadata, using the provided maintenance task as a base.
+	 * @param maintenanceTask a maintenance task with initialized content, to be used as a base for the result.
 	 * @param user the current user. If provided the auto-delegations from the user will be used in addition to
 	 * [delegates], and the user details will be used to autofill author information (if not provided author information
 	 * will be autofilled by the server for explicit data owners).
@@ -404,7 +404,7 @@ internal class MaintenanceTaskApiImpl(
 		}
 
 	override suspend fun createMaintenanceTask(entity: DecryptedMaintenanceTask): DecryptedMaintenanceTask {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createMaintenanceTask(
 			encrypt(entity),
 		).successBody().let {
@@ -431,7 +431,7 @@ internal class MaintenanceTaskApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 	): DecryptedMaintenanceTask =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(maintenanceTask ?: DecryptedMaintenanceTask(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = maintenanceTask?.created ?: currentEpochMs(),
 				modified = maintenanceTask?.modified ?: currentEpochMs(),
@@ -440,8 +440,8 @@ internal class MaintenanceTaskApiImpl(
 			).withTypeInfo(),
 			null,
 			null,
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates + (user?.autoDelegationsFor(DelegationTag.All) ?: emptyMap()),
 		).updatedEntity
 

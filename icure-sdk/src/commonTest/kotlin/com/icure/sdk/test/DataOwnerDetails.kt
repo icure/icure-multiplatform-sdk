@@ -118,7 +118,7 @@ data class DataOwnerDetails(
 		cryptoStrategies: CryptoStrategies,
 		fillStorage: suspend (storage: IcureStorageFacade) -> Unit
 	): IcureSdk =
-		IcureSdk.initialise(
+		IcureSdk.initialize(
 			null,
 			baseUrl,
 			AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),

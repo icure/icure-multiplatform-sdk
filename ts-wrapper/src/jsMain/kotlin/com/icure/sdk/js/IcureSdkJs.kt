@@ -86,13 +86,13 @@ interface IcureSdkJs {
  * Provides access to the SDK from pure typescript. You should not use this from kotlin.
  */
 @JsExport
-fun initialiseSdk(
+fun initializeSdk(
 	baseUrl: String,
 	username: String,
 	password: String,
 	options: ApiOptionsJs
 ): Promise<IcureSdkJs> = GlobalScope.promise {
-	IcureSdkJsImpl(IcureSdk.initialise(
+	IcureSdkJsImpl(IcureSdk.initialize(
 		baseUrl,
 		AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
 		VolatileStorageFacade(),

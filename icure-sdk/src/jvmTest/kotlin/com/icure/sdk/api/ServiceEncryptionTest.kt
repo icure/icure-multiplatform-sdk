@@ -12,7 +12,7 @@ import com.icure.sdk.model.embed.EncryptedContent
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.uuid
 import com.icure.sdk.utils.EntityEncryptionException
 import io.kotest.assertions.throwables.shouldThrow
@@ -28,7 +28,7 @@ class ServiceEncryptionTest : StringSpec({
 	lateinit var sdk: IcureSdk
 	lateinit var patient: DecryptedPatient
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 		hcp = createHcpUser()
 		sdk = hcp.api()
 		patient = sdk.patient.createPatient(sdk.patient.withEncryptionMetadata(DecryptedPatient(uuid())))

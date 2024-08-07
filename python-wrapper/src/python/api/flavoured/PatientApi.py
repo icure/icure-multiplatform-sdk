@@ -141,7 +141,7 @@ class PatientApi:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
 
-		async def initialise_confidential_secret_id_async(self, patient: EncryptedPatient) -> EncryptedPatient:
+		async def initialize_confidential_secret_id_async(self, patient: EncryptedPatient) -> EncryptedPatient:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -157,18 +157,18 @@ class PatientApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.initialiseConfidentialSecretIdAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.initializeConfidentialSecretIdAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def initialise_confidential_secret_id_blocking(self, patient: EncryptedPatient) -> EncryptedPatient:
+		def initialize_confidential_secret_id_blocking(self, patient: EncryptedPatient) -> EncryptedPatient:
 			payload = {
 				"patient": patient.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.initialiseConfidentialSecretIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.encrypted.initializeConfidentialSecretIdBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -889,7 +889,7 @@ class PatientApi:
 				return_value = Patient._deserialize(result_info.success)
 				return return_value
 
-		async def initialise_confidential_secret_id_async(self, patient: Patient) -> Patient:
+		async def initialize_confidential_secret_id_async(self, patient: Patient) -> Patient:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -905,18 +905,18 @@ class PatientApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.initialiseConfidentialSecretIdAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.initializeConfidentialSecretIdAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def initialise_confidential_secret_id_blocking(self, patient: Patient) -> Patient:
+		def initialize_confidential_secret_id_blocking(self, patient: Patient) -> Patient:
 			payload = {
 				"patient": patient.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.initialiseConfidentialSecretIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.initializeConfidentialSecretIdBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -2117,7 +2117,7 @@ class PatientApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def force_initialise_exchange_data_to_newly_invited_patient_async(self, patient_id: str) -> bool:
+	async def force_initialize_exchange_data_to_newly_invited_patient_async(self, patient_id: str) -> bool:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2133,18 +2133,18 @@ class PatientApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.forceInitialiseExchangeDataToNewlyInvitedPatientAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.forceInitializeExchangeDataToNewlyInvitedPatientAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def force_initialise_exchange_data_to_newly_invited_patient_blocking(self, patient_id: str) -> bool:
+	def force_initialize_exchange_data_to_newly_invited_patient_blocking(self, patient_id: str) -> bool:
 		payload = {
 			"patientId": patient_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.forceInitialiseExchangeDataToNewlyInvitedPatientBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.forceInitializeExchangeDataToNewlyInvitedPatientBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -2530,7 +2530,7 @@ class PatientApi:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
 
-	async def initialise_confidential_secret_id_async(self, patient: DecryptedPatient) -> DecryptedPatient:
+	async def initialize_confidential_secret_id_async(self, patient: DecryptedPatient) -> DecryptedPatient:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2546,18 +2546,18 @@ class PatientApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.initialiseConfidentialSecretIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.initializeConfidentialSecretIdAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def initialise_confidential_secret_id_blocking(self, patient: DecryptedPatient) -> DecryptedPatient:
+	def initialize_confidential_secret_id_blocking(self, patient: DecryptedPatient) -> DecryptedPatient:
 		payload = {
 			"patient": patient.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.initialiseConfidentialSecretIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.initializeConfidentialSecretIdBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)

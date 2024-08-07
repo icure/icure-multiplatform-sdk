@@ -12,16 +12,16 @@ import com.icure.sdk.utils.InternalIcureApi
 interface SecureDelegationsManager {
 	/**
 	 * Note: this method does not save the updated entity.
-	 * @param entity an entity, must already have secret foreign keys initialised.
+	 * @param entity an entity, must already have secret foreign keys initialized.
 	 * @param entityType the type of the entity
 	 * @param secretIds the initial secret ids to include and share with the auto-delegations
 	 * @param owningEntityIds the initial owning entity ids to include and share with the auto-delegations
 	 * @param encryptionKeys the initial encryption keys to include and share with the auto-delegations
 	 * @param autoDelegations the data owners which will initially have access to the entity in addition to the current data owner and the access level
 	 * they will have on the entity.
-	 * @return the entity with the security metadata initialised for the provided parameters.
+	 * @return the entity with the security metadata initialized for the provided parameters.
 	 */
-	suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
+	suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entity: EntityWithTypeInfo<T>,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,

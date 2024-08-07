@@ -98,16 +98,16 @@ class UserEncryptionKeysManagerImpl private constructor (
 		private val icureStorage: IcureStorageFacade,
 		private val icureKeyRecovery: IcureKeyRecovery,
 		private val keyPairRecoverer: KeyPairRecoverer,
-		private val initialiseParentKeys: Boolean
+		private val initializeParentKeys: Boolean
 	): UserEncryptionKeysManager.Factory {
-		override suspend fun initialise(): UserEncryptionKeysManager.Factory.InitialisationDetails {
+		override suspend fun initialize(): UserEncryptionKeysManager.Factory.InitialisationDetails {
 			val keyLoader = KeyLoader(
 				cryptoService,
 				dataOwnerApi,
 				icureStorage,
 				icureKeyRecovery,
 				keyPairRecoverer,
-				initialiseParentKeys
+				initializeParentKeys
 			)
 			val (initialKeyData, newKey) = keyLoader.doLoadKeys(
 				cryptoStrategies::recoverAndVerifySelfHierarchyKeys,
@@ -158,7 +158,7 @@ private class KeyLoader(
 	private val icureStorage: IcureStorageFacade,
 	private val icureKeyRecovery: IcureKeyRecovery,
 	private val keyPairRecoverer: KeyPairRecoverer,
-	private val initialiseParentKeys: Boolean,
+	private val initializeParentKeys: Boolean,
 ) {
 
 	/*
@@ -173,7 +173,7 @@ private class KeyLoader(
 		recoverAndVerifySelfHierarchyKeys: RecoveryFunction,
 		generateNewKeyForDataOwner: KeyGenerationFunction
 	): Pair<KeyData, IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>?> {
-		val hierarchy = if (initialiseParentKeys)
+		val hierarchy = if (initializeParentKeys)
 			dataOwnerApi.getCurrentDataOwnerHierarchy()
 		else
 			listOf(dataOwnerApi.getCurrentDataOwner())
@@ -235,7 +235,7 @@ private class KeyLoader(
 		if (fullyRecoveredKeyData.dropLast(1).any { (_, keys) -> keys.none { it.value.isSafeForEncryption } }) throw IllegalStateException(
 			"""
 			There are no verified keys available for a parent data owner; make sure that all parent data owners are 
-			properly initialised and that the current user has access to at least a key for them. 
+			properly initialized and that the current user has access to at least a key for them. 
 			""".trimIndent()
 		)
 		return if (fullyRecoveredKeyData.last().second.none { it.value.isSafeForEncryption }) {

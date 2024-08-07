@@ -27,7 +27,7 @@ interface ConfidentialEntities {
 	 * @return undefined if the entity already had a confidential secret id for the current user, or the updated AND SAVED entity with the new
 	 * confidential secret id.
 	 */
-	suspend fun <T : HasEncryptionMetadata> initialiseConfidentialSecretId(
+	suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
 		entity: T,
 		entityType: EntityWithEncryptionMetadataTypeName,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<T>>

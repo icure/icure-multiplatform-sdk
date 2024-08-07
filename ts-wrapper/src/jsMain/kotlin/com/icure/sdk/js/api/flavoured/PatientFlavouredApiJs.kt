@@ -34,7 +34,7 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 
 	public fun shareWithMany(patient: E, delegates: Record<String, PatientShareOptionsJs>): Promise<E>
 
-	public fun initialiseConfidentialSecretId(patient: E): Promise<E>
+	public fun initializeConfidentialSecretId(patient: E): Promise<E>
 
 	public fun modifyPatient(entity: E): Promise<E>
 

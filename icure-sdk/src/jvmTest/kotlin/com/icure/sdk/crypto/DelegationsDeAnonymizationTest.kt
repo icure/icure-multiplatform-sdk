@@ -12,7 +12,7 @@ import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.test.baseUrl
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createPatientUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import io.kotest.core.spec.style.StringSpec
@@ -24,7 +24,7 @@ import io.kotest.matchers.shouldBe
 
 @OptIn(InternalIcureApi::class)
 class DelegationsDeAnonymizationTest : StringSpec({
-	beforeAny { initialiseTestEnvironment() }
+	beforeAny { initializeTestEnvironment() }
 
 	suspend fun IcureSdk.createSamplePatient() =
 		patient.createPatient(

@@ -103,7 +103,7 @@ interface EntityEncryptionService : EntityValidationService {
 
 	/**
 	 * @param entity an entity
-	 * @return if the entity has no encryption metadata and can be safely initialised using .
+	 * @return if the entity has no encryption metadata and can be safely initialized using .
 	 */
 	fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>): Boolean
 	// endregion
@@ -116,20 +116,20 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param entity entity which requires encryption metadata initialisation.
 	 * @param owningEntityId id of the owning entity, if any (e.g. patient id for Contact/HealtchareElement, message id for Document, ...).
 	 * @param owningEntitySecretId secret id of the parent entity, to use in the secret foreign keys for the provided entity, if any.
-	 * @param initialiseEncryptionKey if false this method will not initialize an encryption key for the entity. Use only for entities which use
+	 * @param initializeEncryptionKey if false this method will not initialize an encryption key for the entity. Use only for entities which use
 	 * delegations for access control but don't actually have any encrypted content.
-	 * @param initialiseSecretId if false this method will not initialize any secret id, use it for entities which can not be 'owning entities' (e.g.
+	 * @param initializeSecretId if false this method will not initialize any secret id, use it for entities which can not be 'owning entities' (e.g.
 	 * HealthElement).
 	 * @param autoDelegations automatically shares the metadata with the provided data owners, with the provided access level.
 	 * @throws if the entity already has non-empty values for encryption metadata.
 	 * @return an updated copy of the entity.
 	 */
-	suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
+	suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entity: EntityWithTypeInfo<T>,
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
-		initialiseEncryptionKey: Boolean,
-		initialiseSecretId: Boolean,
+		initializeEncryptionKey: Boolean,
+		initializeSecretId: Boolean,
 		autoDelegations: Map<String, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T>
 
@@ -203,8 +203,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @param entity an entity.
 	 * @param type type of the entity.
 	 * @param content data of the entity which you want to encrypt.
-	 * @param saveEntity a function which saves the entity to the cloud/DB. Used only if a new encryption key needed to be initialised for the entity.
-	 * @return the encrypted data and, if a new encryption key was initialised for the entity, the updated entity.
+	 * @param saveEntity a function which saves the entity to the cloud/DB. Used only if a new encryption key needed to be initialized for the entity.
+	 * @return the encrypted data and, if a new encryption key was initialized for the entity, the updated entity.
 	 * @throws if the provided data owner can't access any encryption keys for the entity.
 	 */
 	suspend fun <T : HasEncryptionMetadata> encryptAttachmentOf(
@@ -293,7 +293,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * key not safe for encryption anymore, in which case this method will return the entity with a new and safe encryption key.
 	 * After this method is called, if it returns an entity it should also be re-encrypted (using the new key) and saved to the cloud.
 	 */
-	suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialised(entity: EntityWithTypeInfo<T>): T?
+	suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialized(entity: EntityWithTypeInfo<T>): T?
 	// endregion
 
 	// region confidential sfks
@@ -309,7 +309,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * @return undefined if the entity already had a confidential secret id for the current user, or the updated AND SAVED entity with the new
 	 * confidential secret id.
 	 */
-	suspend fun <T : HasEncryptionMetadata> initialiseConfidentialSecretId(
+	suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
 		entity: EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T?

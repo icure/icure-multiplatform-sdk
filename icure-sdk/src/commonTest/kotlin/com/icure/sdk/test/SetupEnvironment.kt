@@ -10,14 +10,14 @@ import com.icure.sdk.model.User
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 
-private var initialised = false
+private var initialized = false
 
 @OptIn(InternalIcureApi::class)
-suspend fun initialiseTestEnvironment() {
-	if (initialised) {
+suspend fun initializeTestEnvironment() {
+	if (initialized) {
 		return
 	}
-	initialised = true
+	initialized = true
 	println("Creating test group")
 	val groupApi = RawGroupApiImpl(baseUrl, superadminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
 	if (groupApi.getGroup(testGroupId).status.value == 200) {

@@ -578,33 +578,33 @@ public fun getConfidentialSecretIdsOfAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class ForceInitialiseExchangeDataToNewlyInvitedPatientParams(
+private class ForceInitializeExchangeDataToNewlyInvitedPatientParams(
 	public val patientId: String,
 )
 
-public fun forceInitialiseExchangeDataToNewlyInvitedPatientBlocking(sdk: IcureApis, params: String):
+public fun forceInitializeExchangeDataToNewlyInvitedPatientBlocking(sdk: IcureApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams =
-			json.decodeFromString<ForceInitialiseExchangeDataToNewlyInvitedPatientParams>(params)
+			json.decodeFromString<ForceInitializeExchangeDataToNewlyInvitedPatientParams>(params)
 	runBlocking {
-		sdk.patient.forceInitialiseExchangeDataToNewlyInvitedPatient(
+		sdk.patient.forceInitializeExchangeDataToNewlyInvitedPatient(
 			decodedParams.patientId,
 		)
 	}
 }.toPyString(Boolean.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun forceInitialiseExchangeDataToNewlyInvitedPatientAsync(
+public fun forceInitializeExchangeDataToNewlyInvitedPatientAsync(
 	sdk: IcureApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams =
-			json.decodeFromString<ForceInitialiseExchangeDataToNewlyInvitedPatientParams>(params)
+			json.decodeFromString<ForceInitializeExchangeDataToNewlyInvitedPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.forceInitialiseExchangeDataToNewlyInvitedPatient(
+			sdk.patient.forceInitializeExchangeDataToNewlyInvitedPatient(
 				decodedParams.patientId,
 			)
 		}.toPyStringAsyncCallback(Boolean.serializer(), resultCallback)
@@ -917,31 +917,31 @@ public fun shareWithManyAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class InitialiseConfidentialSecretIdParams(
+private class InitializeConfidentialSecretIdParams(
 	public val patient: DecryptedPatient,
 )
 
-public fun initialiseConfidentialSecretIdBlocking(sdk: IcureApis, params: String): String =
+public fun initializeConfidentialSecretIdBlocking(sdk: IcureApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<InitialiseConfidentialSecretIdParams>(params)
+	val decodedParams = json.decodeFromString<InitializeConfidentialSecretIdParams>(params)
 	runBlocking {
-		sdk.patient.initialiseConfidentialSecretId(
+		sdk.patient.initializeConfidentialSecretId(
 			decodedParams.patient,
 		)
 	}
 }.toPyString(DecryptedPatient.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun initialiseConfidentialSecretIdAsync(
+public fun initializeConfidentialSecretIdAsync(
 	sdk: IcureApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<InitialiseConfidentialSecretIdParams>(params)
+	val decodedParams = json.decodeFromString<InitializeConfidentialSecretIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.initialiseConfidentialSecretId(
+			sdk.patient.initializeConfidentialSecretId(
 				decodedParams.patient,
 			)
 		}.toPyStringAsyncCallback(DecryptedPatient.serializer(), resultCallback)

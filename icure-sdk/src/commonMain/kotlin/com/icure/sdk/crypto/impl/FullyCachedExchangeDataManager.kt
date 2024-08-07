@@ -154,7 +154,7 @@ class FullyCachedExchangeDataManager(
 	/**
 	 * Fails if unsuccessful
 	 */
-	suspend fun initialiseCache() {
+	suspend fun initializeCache() {
 		cache.update { getAllKeysInfo() to CacheUpdateResult.Success }
 	}
 

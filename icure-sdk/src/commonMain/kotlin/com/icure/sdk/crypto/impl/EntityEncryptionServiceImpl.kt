@@ -74,9 +74,9 @@ class EntityEncryptionServiceImpl(
 		fieldsToEncrypt: EncryptedFieldsManifest,
 		constructor: (json: JsonElement) -> E
 	): E where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable {
-		val updatedEntity = ensureEncryptionKeysInitialised(unencryptedEntity)?.let { EntityWithTypeInfo(it, unencryptedEntity.type) } ?: unencryptedEntity
+		val updatedEntity = ensureEncryptionKeysInitialized(unencryptedEntity)?.let { EntityWithTypeInfo(it, unencryptedEntity.type) } ?: unencryptedEntity
 		val keyInfo = tryDecryptAndImportAnyEncryptionKey(updatedEntity)
-			?: throw EntityEncryptionException("${updatedEntity.type.id} ${updatedEntity.id} has no encryption key, and can't be encrypted; entity may have not been initialised properly.")
+			?: throw EntityEncryptionException("${updatedEntity.type.id} ${updatedEntity.id} has no encryption key, and can't be encrypted; entity may have not been initialized properly.")
 		val plainJson = Serialization.json.encodeToJsonElement(unencryptedEntitySerializer, updatedEntity.entity).jsonObject
 		val encryptedJson = jsonEncryptionService.encrypt(keyInfo.key, plainJson, fieldsToEncrypt)
 		return constructor(encryptedJson)
@@ -97,7 +97,7 @@ class EntityEncryptionServiceImpl(
 		content: ByteArray,
 		saveEntity: suspend (entity: T) -> T
 	): EntityDataEncryptionResult<T> {
-		val updatedEntity = ensureEncryptionKeysInitialised(entity)?.let { EntityWithTypeInfo(saveEntity(it), entity.type) }
+		val updatedEntity = ensureEncryptionKeysInitialized(entity)?.let { EntityWithTypeInfo(saveEntity(it), entity.type) }
 		val encryptionKey = tryDecryptAndImportAnyEncryptionKey(updatedEntity ?: entity)?.key
 			?: throw IllegalArgumentException("Could not decrypt any encryption key for ${entity.type.id} ${entity.id}")
 		return EntityDataEncryptionResult(
@@ -147,24 +147,24 @@ class EntityEncryptionServiceImpl(
 		)
 	}
 
-	override suspend fun <T : HasEncryptionMetadata> entityWithInitialisedEncryptedMetadata(
+	override suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entity: EntityWithTypeInfo<T>,
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
-		initialiseEncryptionKey: Boolean,
-		initialiseSecretId: Boolean,
+		initializeEncryptionKey: Boolean,
+		initializeSecretId: Boolean,
 		autoDelegations: Map<String, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T> {
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = true)
-		val newRawKey = if (initialiseEncryptionKey)
+		val newRawKey = if (initializeEncryptionKey)
 			HexString(cryptoService.aes.exportKey(cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)).toHexString())
 		else
 			null
-		val newSecretId = if (initialiseSecretId)
+		val newSecretId = if (initializeSecretId)
 			cryptoService.strongRandom.randomUUID()
 		else
 			null
-		val entityWitSecurityMetadata = secureDelegationsManager.entityWithInitialisedEncryptedMetadata(
+		val entityWitSecurityMetadata = secureDelegationsManager.entityWithInitializedEncryptedMetadata(
 			entity = entity,
 			secretIds = setOfNotNull(newSecretId),
 			owningEntityIds = setOfNotNull(owningEntityId),
@@ -243,19 +243,19 @@ class EntityEncryptionServiceImpl(
 	private fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>, throwIfNonEmpty: Boolean): Boolean {
 		if (entity.securityMetadata != null) {
 			if (throwIfNonEmpty) {
-				throw IllegalArgumentException("Entity already has initialised security metadata")
+				throw IllegalArgumentException("Entity already has initialized security metadata")
 			}
 			return false
 		}
 		if (entity.secretForeignKeys.isNotEmpty()) {
 			if (throwIfNonEmpty) {
-				throw IllegalArgumentException("Entity already has initialised secret foreign keys")
+				throw IllegalArgumentException("Entity already has initialized secret foreign keys")
 			}
 			return false
 		}
 		if (entity.delegations.isNotEmpty() || entity.cryptedForeignKeys.isNotEmpty() || entity.encryptionKeys.isNotEmpty()) {
 			if (throwIfNonEmpty) {
-				throw IllegalArgumentException("Entity already has initialised legacy security metadata")
+				throw IllegalArgumentException("Entity already has initialized legacy security metadata")
 			}
 			return false
 		}
@@ -523,12 +523,12 @@ class EntityEncryptionServiceImpl(
 		return SimpleShareResult.Failure(shareResult.updateErrors)
 	}
 
-	override suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialised(entity: EntityWithTypeInfo<T>): T? {
+	override suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialized(entity: EntityWithTypeInfo<T>): T? {
 		if (allDecryptors.hasAnyEncryptionKeys(entity)) {
 			return null
 		}
 		require(entity.rev != null) {
-			"A new ${entity.type.id} does not have encryption keys initialised: make sure the entity was created using the `newInstance` method from the appropriate api before trying to save it."
+			"A new ${entity.type.id} does not have encryption keys initialized: make sure the entity was created using the `newInstance` method from the appropriate api before trying to save it."
 		}
 		if (autoCreateEncryptionKeyForExistingLegacyData && entity.delegations.isNotEmpty()) {
 			/*
@@ -539,7 +539,7 @@ class EntityEncryptionServiceImpl(
 			 * databases of hcps without collaborators.
 			 */
 			val newKey = cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
-			return secureDelegationsManager.entityWithInitialisedEncryptedMetadata(
+			return secureDelegationsManager.entityWithInitializedEncryptedMetadata(
 				entity = entity,
 				secretIds = emptySet(), // Will still be available through legacy delegations
 				owningEntityIds = emptySet(), // Will still be available through legacy delegations
@@ -552,12 +552,12 @@ class EntityEncryptionServiceImpl(
 		)
 	}
 
-	override suspend fun <T : HasEncryptionMetadata> initialiseConfidentialSecretId(
+	override suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
 		entity: EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T? {
 		if (entity.rev == null) {
-			throw IllegalArgumentException("Entity must be an existing entity to initialise a confidential secret id")
+			throw IllegalArgumentException("Entity must be an existing entity to initialize a confidential secret id")
 		}
 		if (getConfidentialSecretIdsOf(entity, null).isNotEmpty()) return null
 		return simpleShareOrUpdateEncryptedEntityMetadata(

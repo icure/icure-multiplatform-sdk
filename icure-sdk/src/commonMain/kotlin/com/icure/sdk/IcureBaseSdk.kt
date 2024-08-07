@@ -103,7 +103,7 @@ import kotlinx.serialization.json.Json
 interface IcureUnboundBaseSdk : IcureBaseApis {
 	companion object {
 		/**
-		 * Initialise a new instance of icure base sdks that is not bound to a specific user.
+		 * Initialize a new instance of icure base sdks that is not bound to a specific user.
 		 * Each request may be done as a different user, depending on the provided authentication method.
 		 *
 		 * This allows implementing services between the end user and the icure backend that act as proxy and perform
@@ -114,7 +114,7 @@ interface IcureUnboundBaseSdk : IcureBaseApis {
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@InternalIcureApi
-		fun initialise(
+		fun initialize(
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
 			options: BasicApiOptions = BasicApiOptions()
@@ -169,7 +169,7 @@ interface IcureBaseSdk : IcureBaseApis {
 
 	companion object {
 		/**
-		 * Initialise a new instance of icure base sdks for a specific user.
+		 * Initialize a new instance of icure base sdks for a specific user.
 		 *
 		 * @param applicationId a string to uniquely identify your iCure application.
 		 * @param baseUrl the url of the iCure backend to use
@@ -177,7 +177,7 @@ interface IcureBaseSdk : IcureBaseApis {
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@OptIn(InternalIcureApi::class)
-		suspend fun initialise(
+		suspend fun initialize(
 			applicationId: String?,
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,

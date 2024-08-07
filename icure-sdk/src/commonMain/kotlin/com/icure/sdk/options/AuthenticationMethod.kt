@@ -162,7 +162,7 @@ internal fun AuthenticationMethod.getAuthProvider(
 		is JwtCredentials -> JwtAuthProvider(authApi, this.credentials.initialBearer, this.credentials.refresh)
 	}
 	is AuthenticationMethod.UsingAuthProvider -> this.authProvider
-	is AuthenticationMethod.UsingSecretProvider -> SmartAuthProvider.initialise(
+	is AuthenticationMethod.UsingSecretProvider -> SmartAuthProvider.initialize(
 		authApi = authApi,
 		loginUsername = loginUsername,
 		secretProvider = secretProvider,
@@ -223,7 +223,7 @@ private fun smartAuthWithConstantSecret(
 	login: String?,
 	messageGatewayApi: RawMessageGatewayApi,
 	applicationId: String?
-) = SmartAuthProvider.initialise(
+) = SmartAuthProvider.initialize(
 	authApi = authApi,
 	loginUsername = login,
 	secretProvider = ConstantSecretProvider(authSecretDetails),

@@ -1,4 +1,4 @@
-import tasks.InitialiseTestEnvironment
+import tasks.InitializeTestEnvironment
 
 plugins {
 	kotlinMultiplatform()
@@ -117,28 +117,28 @@ publishing {
 	}
 }
 
-tasks.register<InitialiseTestEnvironment>("initialiseTestEnvironment")
+tasks.register<InitializeTestEnvironment>("initializeTestEnvironment")
 
 tasks.named("allTests") {
-	dependsOn("initialiseTestEnvironment")
+	dependsOn("initializeTestEnvironment")
 }
 tasks.named("iosSimulatorArm64Test") {
-	dependsOn("initialiseTestEnvironment")
+	dependsOn("initializeTestEnvironment")
 }
 tasks.named("iosX64Test") {
-	dependsOn("initialiseTestEnvironment")
+	dependsOn("initializeTestEnvironment")
 }
 tasks.named("jsBrowserTest") {
-	dependsOn("initialiseTestEnvironment")
+	dependsOn("initializeTestEnvironment")
 }
 tasks.named("jsNodeTest") {
-	dependsOn("initialiseTestEnvironment")
+	dependsOn("initializeTestEnvironment")
 }
 tasks.named("jsTest") {
-	dependsOn("initialiseTestEnvironment")
+	dependsOn("initializeTestEnvironment")
 }
 tasks.named("jvmTest") {
-	dependsOn("initialiseTestEnvironment")
+	dependsOn("initializeTestEnvironment")
 }
 
 

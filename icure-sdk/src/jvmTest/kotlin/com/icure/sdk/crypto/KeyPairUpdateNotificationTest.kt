@@ -13,7 +13,7 @@ import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createPatientUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.currentEpochMs
 import io.kotest.core.spec.style.StringSpec
@@ -24,7 +24,7 @@ import io.kotest.matchers.shouldBe
 
 class KeyPairUpdateNotificationTest : StringSpec({
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 	}
 
 	val note = "Some secret note"

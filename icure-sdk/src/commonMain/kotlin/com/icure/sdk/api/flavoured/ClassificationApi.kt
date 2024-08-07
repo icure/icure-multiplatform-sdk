@@ -82,7 +82,7 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	/**
 	 * Share a classification with another data owner. The classification must already exist in the database for this method to
 	 * succeed. If you want to share the classification before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the classification
 	 * @param classification the classification to share with [delegateId]
 	 * @param options specifies how the classification will be shared. By default, all data available to the current user
@@ -100,7 +100,7 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	/**
 	 * Share a classification with multiple data owners. The classification must already exist in the database for this method to
 	 * succeed. If you want to share the classification before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param classification the classification to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -114,7 +114,7 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	/**
 	 * Share a classification with multiple data owners. The classification must already exist in the database for this method to
 	 * succeed. If you want to share the classification before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param classification the classification to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -143,23 +143,23 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationFlavouredApi<DecryptedClassification> {
 	/**
-	 * Create a new classification. The provided classification must have the encryption metadata initialised.
-	 * @param entity a classification with initialised encryption metadata
+	 * Create a new classification. The provided classification must have the encryption metadata initialized.
+	 * @param entity a classification with initialized encryption metadata
 	 * @return the created classification with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification
 
 	/**
-	 * Creates a new classification with initialised encryption metadata
-	 * @param base a classification with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new classification with initialized encryption metadata
+	 * @param base a classification with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the classification.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [patient] to use for the new classification
-	 * @return a classification with initialised encryption metadata.
+	 * @return a classification with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -393,7 +393,7 @@ internal class ClassificationApiImpl(
 		}
 
 	override suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createClassification(
 			encrypt(entity),
 		).successBody().let {
@@ -410,7 +410,7 @@ internal class ClassificationApiImpl(
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdOption,
 	): DecryptedClassification =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedClassification(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -419,8 +419,8 @@ internal class ClassificationApiImpl(
 			).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

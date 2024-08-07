@@ -8,7 +8,7 @@ import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.internal
 import com.icure.sdk.utils.InternalIcureApi
 import io.kotest.core.spec.style.StringSpec
@@ -22,7 +22,7 @@ import io.kotest.matchers.shouldBe
 @OptIn(InternalIcureApi::class)
 class TransferKeyRecoveryTest : StringSpec({
 	beforeAny {
-		initialiseTestEnvironment()
+		initializeTestEnvironment()
 	}
 
 	class VerifyEverythingStrategy(

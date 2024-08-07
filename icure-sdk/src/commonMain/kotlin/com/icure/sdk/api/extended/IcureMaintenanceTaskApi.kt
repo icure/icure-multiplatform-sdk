@@ -113,12 +113,12 @@ class IcureMaintenanceTaskApiImpl(
 		}
 		if (to.isEmpty()) return
 		val self = dataOwnerApi.getCurrentDataOwnerId()
-		val tasks = to.map { initialiseMaintenanceTaskTo(self, it, key) }
+		val tasks = to.map { initializeMaintenanceTaskTo(self, it, key) }
 		// TODO bulk create
 		tasks.forEach { maintenanceTaskApi.createMaintenanceTask(it) }
 	}
 
-	private suspend fun initialiseMaintenanceTaskTo(
+	private suspend fun initializeMaintenanceTaskTo(
 		self: String,
 		other: String,
 		key: SpkiHexString

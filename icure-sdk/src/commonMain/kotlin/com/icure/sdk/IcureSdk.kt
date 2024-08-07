@@ -208,7 +208,7 @@ interface IcureSdk : IcureApis {
 	companion object {
 		/**
 		 * A shared http client to use as the default across all instances of iCure.
-		 * Initialised only when needed.
+		 * Initialized only when needed.
 		 * Previous versions of the icure SDK (in different languages) did not need explicit disposal, but this is
 		 * necessary in the multiplatform sdk. The use of this shared client allows to minimise the resource leaking
 		 * when creating multiple instances of the iCure API without proper disposal of the client.
@@ -238,7 +238,7 @@ interface IcureSdk : IcureApis {
 		}
 
 		/**
-		 * Initialise a new instance of the icure sdk for a specific user.
+		 * Initialize a new instance of the icure sdk for a specific user.
 		 *
 		 * @param applicationId a string to uniquely identify your iCure application.
 		 * @param baseUrl the url of the iCure backend to use
@@ -249,7 +249,7 @@ interface IcureSdk : IcureApis {
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@OptIn(InternalIcureApi::class)
-		suspend fun initialise(
+		suspend fun initialize(
 			applicationId: String?,
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
@@ -290,7 +290,7 @@ interface IcureSdk : IcureApis {
 		}
 
 		/**
-		 * Initialise a new instance of the icure sdk for a specific user.
+		 * Initialize a new instance of the icure sdk for a specific user.
 		 * The authentication will be performed through an authentication process.
 		 *
 		 * @param applicationId a string to uniquely identify your iCure application.
@@ -311,7 +311,7 @@ interface IcureSdk : IcureApis {
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@OptIn(InternalIcureApi::class)
-		suspend fun initialiseWithProcess(
+		suspend fun initializeWithProcess(
 			applicationId: String?,
 			baseUrl: String,
 			messageGatewayUrl: String,
@@ -387,7 +387,7 @@ private class AuthenticationWithProcessStepImpl(
 				applicationId = applicationId
 			).successBody()
 		}
-		return IcureSdk.initialise(
+		return IcureSdk.initialize(
 			applicationId,
 			baseUrl,
 			AuthenticationMethod.UsingCredentials(JwtCredentials(
@@ -454,7 +454,7 @@ private suspend fun initializeApiCrypto(
 		icureKeyRecovery,
 		KeyPairRecovererImpl(recoveryDataEncryption),
 		!options.disableParentKeysInitialisation,
-	).initialise().also { initInfo ->
+	).initialize().also { initInfo ->
 		initInfo.newKey
 	}.manager
 	val userSignatureKeysManager = UserSignatureKeysManagerImpl(
@@ -471,7 +471,7 @@ private suspend fun initializeApiCrypto(
 			dataOwnerApi,
 			cryptoService,
 			!options.disableParentKeysInitialisation,
-		).also { it.initialiseCache() }
+		).also { it.initializeCache() }
 	else
 		CachedLruExchangeDataManager(
 			baseExchangeDataManager,
@@ -842,12 +842,12 @@ private suspend fun ensureDelegationForSelf(
 		if (availableSecretIds.isEmpty()) {
 			val patientSelf = self.dataOwner.withTypeInfo()
 			if (encryptionService.hasEmptyEncryptionMetadata(patientSelf)) {
-				val updatedPatient = encryptionService.entityWithInitialisedEncryptedMetadata(
+				val updatedPatient = encryptionService.entityWithInitializedEncryptedMetadata(
 					entity = patientSelf,
 					owningEntityId = null,
 					owningEntitySecretId = null,
-					initialiseEncryptionKey = true,
-					initialiseSecretId = true,
+					initializeEncryptionKey = true,
+					initializeSecretId = true,
 					autoDelegations = emptyMap()
 				).updatedEntity
 				return DataOwnerWithType.PatientDataOwner(patientApi.modifyPatient(updatedPatient).successBody())

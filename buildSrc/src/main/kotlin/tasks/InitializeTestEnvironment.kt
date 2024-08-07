@@ -1,19 +1,20 @@
 package tasks
 
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.basicAuth
+import io.ktor.client.request.get
+import io.ktor.http.isSuccess
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.io.File
-import java.util.*
+import java.util.UUID
 
-abstract class InitialiseTestEnvironment : DefaultTask() {
+abstract class InitializeTestEnvironment : DefaultTask() {
 
 	private val composeFileName = "docker-compose-cloud.yaml"
 	private val httpClient = HttpClient(CIO) {
@@ -29,7 +30,7 @@ abstract class InitialiseTestEnvironment : DefaultTask() {
 	)
 
 	@TaskAction
-	fun initialise() = runBlocking {
+	fun initialize() = runBlocking {
 		println("Starting kraken")
 		val baseDir = Regex(".*icure-multiplatform-sdk").find(project.projectDir.absolutePath)?.value
 			?: throw IllegalStateException("Cannot find base compose dir")

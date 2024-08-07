@@ -246,7 +246,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	/**
 	 * Share a contact with another data owner. The contact must already exist in the database for this method to
 	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param delegateId the owner that will gain access to the contact
 	 * @param contact the contact to share with [delegateId]
 	 * @param options specifies how the contact will be shared. By default, all data available to the current user
@@ -264,7 +264,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	/**
 	 * Share a contact with multiple data owners. The contact must already exist in the database for this method to
 	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * @param contact the contact to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.
@@ -278,7 +278,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	/**
 	 * Share a contact with multiple data owners. The contact must already exist in the database for this method to
 	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
-	 * the initialise encryption metadata method.
+	 * the initialize encryption metadata method.
 	 * Throws an exception if the operation fails.
 	 * @param contact the contact to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -306,32 +306,32 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<DecryptedContact, DecryptedService> {
 	/**
-	 * Create a new contact. The provided contact must have the encryption metadata initialised.
-	 * @param entity a contact with initialised encryption metadata
+	 * Create a new contact. The provided contact must have the encryption metadata initialized.
+	 * @param entity a contact with initialized encryption metadata
 	 * @return the created contact with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
 	suspend fun createContact(entity: DecryptedContact): DecryptedContact
 
 	/**
-	 * Create multiple contacts. All the provided contacts must have the encryption metadata initialised, otherwise
+	 * Create multiple contacts. All the provided contacts must have the encryption metadata initialized, otherwise
 	 * this method fails without doing anything.
-	 * @param entities contacts with initialised encryption metadata
+	 * @param entities contacts with initialized encryption metadata
 	 * @return the created contacts with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any contact in the input was not initialised.
+	 * @throws IllegalArgumentException if the encryption metadata of any contact in the input was not initialized.
 	 */
 	suspend fun createContacts(entities: List<DecryptedContact>): List<DecryptedContact>
 
 	/**
-	 * Creates a new contact with initialised encryption metadata
-	 * @param base a contact with initialised content and uninitialised encryption metadata. The result of this
+	 * Creates a new contact with initialized encryption metadata
+	 * @param base a contact with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the contact.
 	 * @param user the current user, will be used for the auto-delegations if provided.
 	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
 	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
 	 * @param secretId specifies which secret id of [patient] to use for the new contact
-	 * @return a contact with initialised encryption metadata.
+	 * @return a contact with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
 	suspend fun withEncryptionMetadata(
@@ -836,7 +836,7 @@ internal class ContactApiImpl(
 		}
 
 	override suspend fun createContact(entity: DecryptedContact): DecryptedContact {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createContact(
 			encrypt(entity),
 		).successBody().let {
@@ -845,7 +845,7 @@ internal class ContactApiImpl(
 	}
 
 	override suspend fun createContacts(entities: List<DecryptedContact>): List<DecryptedContact> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialised. You can use the withEncryptionMetadata for that very purpose." }
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createContacts(
 			entities.map {
 				encrypt(it)
@@ -863,7 +863,7 @@ internal class ContactApiImpl(
 		secretId: SecretIdOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedContact =
-		crypto.entity.entityWithInitialisedEncryptedMetadata(
+		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedContact(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
@@ -874,8 +874,8 @@ internal class ContactApiImpl(
 				).withTypeInfo(),
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 

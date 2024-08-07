@@ -79,7 +79,7 @@ interface RecoveryApi {
 	 *   identify the delegate instead of validating that the public key belongs to the delegate.
 	 * - A patient is not yet registered in the system and therefore has no keypair, but the doctor wants to already share
 	 *   some data with them. The doctor can create some placeholder exchange data, encrypted only with his own key
-	 *   through the {@link IccPatientXApi.forceInitialiseExchangeDataToNewlyInvitedPatient} method, then create recovery data
+	 *   through the {@link IccPatientXApi.forceInitializeExchangeDataToNewlyInvitedPatient} method, then create recovery data
 	 *   for it and share the recovery key with the patient. The moment the patient logs in and creates his keypair he
 	 *   will use the {@link recoverExchangeData} method to "complete" the placeholder exchange data.
 	 *

@@ -186,7 +186,7 @@ class DelegationsDeAnonymizationImpl(
 		val selfDoId = dataOwnerApi.getCurrentDataOwnerId()
 		val initialDelegates = setOf(delegationMembersDetails.delegate, delegationMembersDetails.delegator, *delegates.toTypedArray())
 			.filter { it != selfDoId }
-		val initialMapInfo = entity.entityWithInitialisedEncryptedMetadata(
+		val initialMapInfo = entity.entityWithInitializedEncryptedMetadata(
 			entity = EntityWithTypeInfo(
 				DecryptedSecureDelegationKeyMap(
 					id = crypto.strongRandom.randomUUID(),
@@ -198,8 +198,8 @@ class DelegationsDeAnonymizationImpl(
 			),
 			owningEntityId = null,
 			owningEntitySecretId = null,
-			initialiseEncryptionKey = true,
-			initialiseSecretId = false,
+			initializeEncryptionKey = true,
+			initializeSecretId = false,
 			autoDelegations = initialDelegates.associateWith { AccessLevel.Read }
 		)
 		val encryptedKeyMap = entity.encryptEntity(

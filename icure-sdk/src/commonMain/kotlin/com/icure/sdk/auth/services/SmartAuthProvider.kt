@@ -17,7 +17,7 @@ internal class SmartAuthProvider private constructor(
 ) : JwtBasedAuthProvider {
 	companion object {
 
-		fun initialise(
+		fun initialize(
 			authApi: RawAnonymousAuthApi,
 			loginUsername: String?,
 			secretProvider: AuthSecretProvider,

@@ -20,7 +20,7 @@ import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createPatientUser
-import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.internal
 import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
@@ -35,7 +35,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 
 @OptIn(InternalIcureApi::class)
 class RecoveryDataEncryptionTest : StringSpec({
-	beforeAny { initialiseTestEnvironment() }
+	beforeAny { initializeTestEnvironment() }
 	"User should be able to create and use key recovery info" {
 		val hcp = createHcpUser()
 		val api = hcp.api()
@@ -94,7 +94,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 		shouldThrow<IllegalArgumentException> {
 			api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds=secretIds))
 		}
-		api.patient.forceInitialiseExchangeDataToNewlyInvitedPatient(patient.id) shouldBe true
+		api.patient.forceInitializeExchangeDataToNewlyInvitedPatient(patient.id) shouldBe true
 		api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds =secretIds))
 		val recoveryKey = api.recovery.createExchangeDataRecoveryInfo(patient.id)
 		val patientUser = createPatientUser(existingPatientId = patient.id)
