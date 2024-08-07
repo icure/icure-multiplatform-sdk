@@ -61,7 +61,7 @@ private suspend fun createTestDataAndApis(): TestData {
 		"login": "$pLogin",
 		"passwordHash": "$pPassword",
 		"healthcarePartyId": "$pId",
-		"email": "$pLogin"
+		"email": "${DataOwnerDetails.testEmailForLogin(pLogin)}"
 	}""")
 	val aId = UUID.randomUUID().toString()
 	val aLogin = "childA-${UUID.randomUUID()}"
@@ -102,7 +102,7 @@ private suspend fun createTestDataAndApis(): TestData {
 		"autoDelegations": {
 			"all": ["$pId"]
 		},
-		"email": "$aLogin"
+		"email": "${DataOwnerDetails.testEmailForLogin(aLogin)}"
 	}""")
 	val bId = UUID.randomUUID().toString()
 	val bLogin = "childB-${UUID.randomUUID()}"
@@ -138,7 +138,7 @@ private suspend fun createTestDataAndApis(): TestData {
 		"autoDelegations": {
 			"all": ["$pId"]
 		},
-		"email": "$bLogin"
+		"email": "${DataOwnerDetails.testEmailForLogin(bLogin)}"
 	}""")
 	val patientConfidentialSecretId = "24cd8cf5-0958-4ee9-8e90-95f3d25a47d7"
 	val patientBase: EncryptedPatient = Serialization.json.decodeFromString("""{

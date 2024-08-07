@@ -32,6 +32,12 @@ data class DataOwnerDetails(
 	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
 	val parent: DataOwnerDetails?
 ) {
+	companion object {
+		fun testEmailForLogin(login: String) = "$login@test.com"
+	}
+
+	val testEmail: String get() = testEmailForLogin(username)
+
 	val publicKeySpki = runBlocking { SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString()) }
 
 	/**

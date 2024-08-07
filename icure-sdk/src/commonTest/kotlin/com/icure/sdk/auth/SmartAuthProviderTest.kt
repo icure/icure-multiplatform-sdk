@@ -16,12 +16,16 @@ import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.getAuthProvider
+import com.icure.sdk.test.MockMessageGatewayUtils
 import com.icure.sdk.test.baseUrl
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.createUserInMultipleGroups
 import com.icure.sdk.test.initialiseTestEnvironment
+import com.icure.sdk.test.mockMessageGatewayUrl
+import com.icure.sdk.test.mockSpecId
 import com.icure.sdk.test.shouldBeNextRevOf
 import com.icure.sdk.test.testGroupAdminAuth
+import com.icure.sdk.test.testGroupId
 import com.icure.sdk.test.uuid
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.RequestStatusException
@@ -35,6 +39,7 @@ import io.kotest.matchers.maps.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.ktor.http.isSuccess
 import kotlinx.datetime.Clock
 
 @OptIn(InternalIcureApi::class)
@@ -316,6 +321,56 @@ class SmartAuthProviderTest : StringSpec({
 
 		val userApi = getUserApiWithProvider(authProvider)
 		userApi.getCurrentUser().successBody().rev shouldBe userWithPwdAnd2fa.rev
+		calls shouldBe 1
+	}
+
+	"Auth provider should allow to request and use short lived tokens" {
+		val hcpDetails = createHcpUser()
+		val processId = MockMessageGatewayUtils.createTestProcess(
+			groupId = testGroupId,
+			hcpId = hcpDetails.dataOwnerId,
+			userType = MockMessageGatewayUtils.UserType.Hcp
+		)
+		var calls = 0
+		val authProvider = SmartAuthProvider.initialise(
+			authApi = authApi,
+			loginUsername = hcpDetails.username,
+			secretProvider = object : AuthSecretProvider {
+				override suspend fun getSecret(
+					acceptedSecrets: List<AuthenticationClass>,
+					previousAttempts: List<AuthSecretDetails>,
+					authProcessApi: AuthenticationProcessApi
+				): AuthSecretDetails {
+					acceptedSecrets shouldContain AuthenticationClass.ShortLivedToken
+					previousAttempts.shouldBeEmpty()
+					calls++ shouldBe 0
+					val processRequest = authProcessApi.executeProcess(
+						mockMessageGatewayUrl,
+						mockSpecId,
+						processId,
+						AuthenticationProcessTelecomType.Email,
+						hcpDetails.testEmail,
+						AuthenticationProcessCaptchaType.Recaptcha,
+						"onmock"
+					)
+					return AuthSecretDetails.ShortLivedTokenDetails(
+						secret = MockMessageGatewayUtils.getLatestEmailTo(hcpDetails.testEmail).subject,
+						authenticationProcessInfo = processRequest
+					)
+				}
+			},
+			initialSecret = null,
+			initialAuthToken = null,
+			initialRefreshToken = null,
+			groupId = null,
+			cryptoService = defaultCryptoService,
+			passwordClientSideSalt = null,
+			cacheSecrets = true,
+			allowSecretRetry = true,
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+		)
+		val userApi = getUserApiWithProvider(authProvider)
+		userApi.getCurrentUser().response.status.isSuccess() shouldBe true
 		calls shouldBe 1
 	}
 
