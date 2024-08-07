@@ -6,9 +6,9 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.IcureSdk
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.auth.services.JwtAuthProvider
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.model.DataOwnerWithType
@@ -102,7 +102,8 @@ data class DataOwnerDetails(
 			RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
 			defaultCryptoService,
 			null,
-			ApiOptions(saltPasswordWithApplicationId = false)
+			ApiOptions(saltPasswordWithApplicationId = false),
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 		)
 
 

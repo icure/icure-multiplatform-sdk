@@ -2,6 +2,7 @@ package com.icure.sdk.test
 
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.options.ApiOptions
@@ -24,7 +25,8 @@ internal val testGroupAdminAuth =
 		RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
 		defaultCryptoService,
 		null,
-		ApiOptions(saltPasswordWithApplicationId = false)
+		ApiOptions(saltPasswordWithApplicationId = false),
+		messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 	)
 
 @OptIn(InternalIcureApi::class)
@@ -35,5 +37,6 @@ internal val superadminAuth =
 		RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
 		defaultCryptoService,
 		null,
-		ApiOptions(saltPasswordWithApplicationId = false)
+		ApiOptions(saltPasswordWithApplicationId = false),
+		messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 	)

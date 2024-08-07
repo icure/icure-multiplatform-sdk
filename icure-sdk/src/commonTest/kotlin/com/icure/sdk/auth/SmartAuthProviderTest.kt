@@ -5,6 +5,7 @@ import com.icure.kotp.Totp
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.auth.services.AuthProvider
@@ -66,6 +67,7 @@ class SmartAuthProviderTest : StringSpec({
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
+					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
 					acceptedSecrets shouldContain AuthenticationClass.Password
 					acceptedSecrets shouldContain AuthenticationClass.LongLivedToken
@@ -95,7 +97,8 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
-			allowSecretRetry = true
+			allowSecretRetry = true,
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -131,6 +134,7 @@ class SmartAuthProviderTest : StringSpec({
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
+					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
 					return when(calls) {
 						0 -> {
@@ -162,7 +166,8 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
-			allowSecretRetry = true
+			allowSecretRetry = true,
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -177,12 +182,24 @@ class SmartAuthProviderTest : StringSpec({
 		userWithNewPwd.rev.shouldNotBeNull() shouldBeNextRevOf userWithLongTokenAndPwd.rev.shouldNotBeNull()
 		calls shouldBe 2
 		val retrievedWithNewPwd = getUserApiWithProvider(
-			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(authApi, defaultCryptoService, null, ApiOptions())
+			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(
+				authApi,
+				defaultCryptoService,
+				null,
+				ApiOptions(),
+				RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			)
 		).getCurrentUser().successBody()
 		retrievedWithNewPwd shouldBe userWithNewPwd
 		shouldThrow<RequestStatusException> {
 			getUserApiWithProvider(
-				AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, userPwd)).getAuthProvider(authApi, defaultCryptoService, null, ApiOptions())
+				AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, userPwd)).getAuthProvider(
+					authApi,
+					defaultCryptoService,
+					null,
+					ApiOptions(),
+					RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+				)
 			).getCurrentUser()
 		}.statusCode shouldBe 401
 	}
@@ -210,6 +227,7 @@ class SmartAuthProviderTest : StringSpec({
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
+					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
 					return when(calls) {
 						0 -> {
@@ -245,7 +263,8 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
-			allowSecretRetry = true
+			allowSecretRetry = true,
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -276,6 +295,7 @@ class SmartAuthProviderTest : StringSpec({
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
+					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
 					acceptedSecrets shouldContain AuthenticationClass.TwoFactorAuthentication
 					previousAttempts.shouldBeEmpty()
@@ -290,7 +310,8 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
-			allowSecretRetry = true
+			allowSecretRetry = true,
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -309,6 +330,7 @@ class SmartAuthProviderTest : StringSpec({
 				override suspend fun getSecret(
 					acceptedSecrets: List<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
+					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
 					acceptedSecrets shouldContain AuthenticationClass.Password
 					previousAttempts.shouldBeEmpty()
@@ -322,7 +344,8 @@ class SmartAuthProviderTest : StringSpec({
 			cryptoService = defaultCryptoService,
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
-			allowSecretRetry = true
+			allowSecretRetry = true,
+			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 		)
 		val defaultGroupUserApi = getUserApiWithProvider(authProvider)
 		val defaultGroupUser = defaultGroupUserApi.getCurrentUser().successBody()
