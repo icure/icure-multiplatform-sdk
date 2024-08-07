@@ -108,7 +108,13 @@ class BasicWebSocketTest : StringSpec({
 				hcpId = "fake-uuid",
 			),
 			qualifiedName = HealthElement.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = { Serialization.json.encodeToString(SubscriptionSerializer(HealthElementAbstractFilterSerializer), it) },
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(
+					SubscriptionSerializer(
+						HealthElementAbstractFilterSerializer
+					), it
+				)
+			},
 			webSocketAuthProvider = authProvider,
 			config = null
 		)

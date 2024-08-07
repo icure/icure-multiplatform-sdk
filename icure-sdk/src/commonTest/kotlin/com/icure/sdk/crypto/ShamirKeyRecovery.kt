@@ -40,7 +40,8 @@ class ShamirKeyRecovery : StringSpec({
 			mapOf(userDetails.publicKeySpki.fingerprintV1() to ShamirUpdateRequest(
 				notariesIds = shareWith.mapTo(mutableSetOf()) { it.dataOwnerId },
 				minShares = askAccessBackTo.size
-			)),
+			)
+			),
 			emptySet()
 		)
 		val (lostKeyApi, newKey) = userDetails.apiWithLostKeys()

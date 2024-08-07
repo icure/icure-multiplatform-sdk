@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.DecryptedPatient
@@ -10,7 +11,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import java.util.UUID
 
 class PatientUserTest : StringSpec({
 	beforeAny {
@@ -23,7 +23,7 @@ class PatientUserTest : StringSpec({
 			hcpApi.patient.createPatient(
 				hcpApi.patient.withEncryptionMetadata(
 					DecryptedPatient(
-						id = UUID.randomUUID().toString(),
+						id = defaultCryptoService.strongRandom.randomUUID(),
 						firstName = "John",
 						lastName = "Doe",
 						note = "This note will not be visible to the patient"
@@ -37,7 +37,7 @@ class PatientUserTest : StringSpec({
 		val createdData = patientApi.healthElement.createHealthElement(
 			patientApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					note = "Some note"
 				),
 				encryptedPatient,

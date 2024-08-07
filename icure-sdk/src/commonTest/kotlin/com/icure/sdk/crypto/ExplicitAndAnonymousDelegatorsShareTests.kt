@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.model.DecryptedHealthElement
@@ -13,7 +14,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import java.util.UUID
 
 class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	val patientNote = "This will be encrypted - patient"
@@ -28,7 +28,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					firstName = "John",
 					lastName = "Doe",
 					note = patientNote
@@ -39,7 +39,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		val he = delegatorApi.healthElement.createHealthElement(
 			delegatorApi.healthElement.withEncryptionMetadata(
 				base = DecryptedHealthElement(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					note = heNote,
 				),
 				patient = patient,
@@ -65,18 +65,20 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
 		val delegatorApi: IcureSdk =  delegator.api()
 		val patient = delegatorApi.patient.createPatient(
-			delegatorApi.patient.withEncryptionMetadata(DecryptedPatient(
-				id = UUID.randomUUID().toString(),
-				firstName = "John",
-				lastName = "Doe",
-				note = patientNote
-			))
+			delegatorApi.patient.withEncryptionMetadata(
+				DecryptedPatient(
+					id = defaultCryptoService.strongRandom.randomUUID(),
+					firstName = "John",
+					lastName = "Doe",
+					note = patientNote
+				)
+			)
 		).shouldNotBeNull()
 		val sfk = delegatorApi.patient.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
 		val he = delegatorApi.healthElement.createHealthElement(
 			delegatorApi.healthElement.withEncryptionMetadata(
 				base = DecryptedHealthElement(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					note = heNote,
 				),
 				user = delegatorApi.user.getCurrentUser(),

@@ -1,5 +1,3 @@
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
@@ -22,6 +20,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
+@OptIn(InternalIcureApi::class)
 class KeyPairUpdateNotificationTest : StringSpec({
 	beforeAny {
 		initializeTestEnvironment()

@@ -31,8 +31,28 @@ import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
 @OptIn(InternalIcureApi::class)
+private data class Keys(
+	val a: SpkiHexString,
+	val b: SpkiHexString,
+	val c: SpkiHexString,
+	val d: SpkiHexString,
+	val e: SpkiHexString,
+	val f: SpkiHexString,
+	val pairs: Pairs
+) {
+	data class Pairs(
+		val a: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val b: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val c: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val d: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val e: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val f: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+	)
+}
+
+@OptIn(InternalIcureApi::class)
 class TransferKeysManagerUnitTests : StringSpec({
-	fun createKeyInfo(): Pair<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, SpkiHexString> =
+	suspend fun createKeyInfo(): Pair<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, SpkiHexString> =
 		runBlocking {
 			defaultCryptoService.rsa.generateKeyPair(
 				RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
@@ -49,12 +69,7 @@ class TransferKeysManagerUnitTests : StringSpec({
 	lateinit var encryptionKeysManage: FakeUserEncryptionKeysManager
 	lateinit var transferKeysManager: TransferKeysManagerImpl
 	lateinit var self: HealthcareParty
-	val (aKey, a) = createKeyInfo()
-	val (bKey, b) = createKeyInfo()
-	val (cKey, c) = createKeyInfo()
-	val (dKey, d) = createKeyInfo()
-	val (eKey, e) = createKeyInfo()
-	val (fKey, f) = createKeyInfo()
+	lateinit var keys: Keys
 
 	beforeEach {
 		val memStorage = VolatileStorageFacade()
@@ -74,6 +89,28 @@ class TransferKeysManagerUnitTests : StringSpec({
 			NoDataOwnerApi
 		)
 		self = HealthcareParty(defaultCryptoService.strongRandom.randomUUID())
+		val (aKey, a) = createKeyInfo()
+		val (bKey, b) = createKeyInfo()
+		val (cKey, c) = createKeyInfo()
+		val (dKey, d) = createKeyInfo()
+		val (eKey, e) = createKeyInfo()
+		val (fKey, f) = createKeyInfo()
+		keys = Keys(
+			a,
+			b,
+			c,
+			d,
+			e,
+			f,
+			Keys.Pairs(
+				aKey,
+				bKey,
+				cKey,
+				dKey,
+				eKey,
+				fKey
+			)
+		)
 	}
 
 	suspend fun addKey(key: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, available: Boolean, verified: Boolean) {
@@ -134,12 +171,12 @@ class TransferKeysManagerUnitTests : StringSpec({
 
 	// Support debugging
 	fun KeypairFingerprintV1String.humanize() = when (s) {
-		a.fingerprintV1().s -> "A"
-		b.fingerprintV1().s -> "B"
-		c.fingerprintV1().s -> "C"
-		d.fingerprintV1().s -> "D"
-		e.fingerprintV1().s -> "E"
-		f.fingerprintV1().s -> "F"
+		keys.a.fingerprintV1().s -> "A"
+		keys.b.fingerprintV1().s -> "B"
+		keys.c.fingerprintV1().s -> "C"
+		keys.d.fingerprintV1().s -> "D"
+		keys.e.fingerprintV1().s -> "E"
+		keys.f.fingerprintV1().s -> "F"
 		else -> "Unknown"
 	}
 	fun SpkiHexString.humanize() = fingerprintV1().humanize()
@@ -177,39 +214,39 @@ class TransferKeysManagerUnitTests : StringSpec({
 
 	"Suggested transfer keys with all keys available and verified should match expected - case 1" {
 		// A -> B -> C
-		addKey(aKey, true, true)
-		addKey(bKey, true, true)
-		addKey(cKey, true, true)
-		addTransferKey(a, bKey)
-		addTransferKey(b, cKey)
+		addKey(keys.pairs.a, true, true)
+		addKey(keys.pairs.b, true, true)
+		addKey(keys.pairs.c, true, true)
+		addTransferKey(keys.a, keys.pairs.b)
+		addTransferKey(keys.b, keys.pairs.c)
 
 		val suggestedTransferKeys = getSuggestedTransferKeysAndPrint()
 		suggestedTransferKeys.size shouldBe 1
-		suggestedTransferKeys.first().target.pubSpkiHexString shouldBe a
-		suggestedTransferKeys.first().sources shouldBe listOf(c)
+		suggestedTransferKeys.first().target.pubSpkiHexString shouldBe keys.a
+		suggestedTransferKeys.first().sources shouldBe listOf(keys.c)
 		applySuggestionsAndVerifyFullyConnected(suggestedTransferKeys)
 	}
 
 	"Suggested transfer keys with all keys available and verified should match expected - case 2" {
 		// A -> B <-> C -> D <-> E
-		addKey(aKey, true, true)
-		addKey(bKey, true, true)
-		addKey(cKey, true, true)
-		addKey(dKey, true, true)
-		addKey(eKey, true, true)
-		addTransferKey(a, bKey)
-		addTransferKey(b, cKey)
-		addTransferKey(c, bKey)
-		addTransferKey(c, dKey)
-		addTransferKey(d, eKey)
-		addTransferKey(e, dKey)
+		addKey(keys.pairs.a, true, true)
+		addKey(keys.pairs.b, true, true)
+		addKey(keys.pairs.c, true, true)
+		addKey(keys.pairs.d, true, true)
+		addKey(keys.pairs.e, true, true)
+		addTransferKey(keys.a, keys.pairs.b)
+		addTransferKey(keys.b, keys.pairs.c)
+		addTransferKey(keys.c, keys.pairs.b)
+		addTransferKey(keys.c, keys.pairs.d)
+		addTransferKey(keys.d, keys.pairs.e)
+		addTransferKey(keys.e, keys.pairs.d)
 
 		val suggestedTransferKeys = getSuggestedTransferKeysAndPrint()
 		suggestedTransferKeys.size shouldBe 1
-		suggestedTransferKeys.first().target.pubSpkiHexString shouldBe a
+		suggestedTransferKeys.first().target.pubSpkiHexString shouldBe keys.a
 		suggestedTransferKeys.first().sources.let {
 			it.size shouldBe 1
-			it shouldContainAnyOf listOf(d, e)
+			it shouldContainAnyOf listOf(keys.d, keys.e)
 		}
 		applySuggestionsAndVerifyFullyConnected(suggestedTransferKeys)
 	}
@@ -217,13 +254,13 @@ class TransferKeysManagerUnitTests : StringSpec({
 	"Suggested transfer keys with all keys available and verified should match expected - case 3" {
 		// A -> B -> C
 		// D
-		addKey(aKey, true, true)
-		addKey(bKey, true, true)
-		addKey(cKey, true, true)
-		addKey(dKey, true, true)
-		addTransferKey(a, bKey)
-		addTransferKey(b, cKey)
-		addTransferKey(c, bKey)
+		addKey(keys.pairs.a, true, true)
+		addKey(keys.pairs.b, true, true)
+		addKey(keys.pairs.c, true, true)
+		addKey(keys.pairs.d, true, true)
+		addTransferKey(keys.a, keys.pairs.b)
+		addTransferKey(keys.b, keys.pairs.c)
+		addTransferKey(keys.c, keys.pairs.b)
 
 		/*
 		 * A <- (C) -- note: this is redundant if for the following ones `A` is picked, but we complicate too much the algorithm otherwise
@@ -233,53 +270,53 @@ class TransferKeysManagerUnitTests : StringSpec({
 		val suggestedTransferKeys = getSuggestedTransferKeysAndPrint()
 		if (suggestedTransferKeys.size != 2 && suggestedTransferKeys.size != 3) fail("Unexpected number of suggested transfer keys - ${suggestedTransferKeys.size}")
 		suggestedTransferKeys.find {
-			it.target.pubSpkiHexString == a && it.sources.contains(c)
+			it.target.pubSpkiHexString == keys.a && it.sources.contains(keys.c)
 		} ?: fail("No suggestion for A <- C")
 		suggestedTransferKeys.find { candidate ->
-			candidate.target.pubSpkiHexString == d && candidate.sources.any { it == a || it == b || it == c }
+			candidate.target.pubSpkiHexString == keys.d && candidate.sources.any { it == keys.a || it == keys.b || it == keys.c }
 		} ?: fail("No suggestion for D <- one of {A, B, C}")
 		suggestedTransferKeys.find { candidate ->
-			candidate.target.pubSpkiHexString.let { it == a || it == b || it == c } && candidate.sources.any { it == d }
+			candidate.target.pubSpkiHexString.let { it == keys.a || it == keys.b || it == keys.c } && candidate.sources.any { it == keys.d }
 		} ?: fail("No suggestion for one of {A, B, C} <- D")
 		applySuggestionsAndVerifyFullyConnected(suggestedTransferKeys)
 	}
 
 	"Should not suggest transfer keys to non-available keys" {
 		// A (non available) -> B (available)
-		addKey(bKey, true, true)
-		addKey(aKey, false, true)
-		addTransferKey(a, bKey)
+		addKey(keys.pairs.b, true, true)
+		addKey(keys.pairs.a, false, true)
+		addTransferKey(keys.a, keys.pairs.b)
 		getSuggestedTransferKeysAndPrint().shouldBeEmpty()
 	}
 
 	"Should suggest transfer keys even if the from is not-available" {
 		// A (available), B (non available), should suggest B -> A
-		addKey(aKey, true, true)
-		addKey(bKey, false, true)
+		addKey(keys.pairs.a, true, true)
+		addKey(keys.pairs.b, false, true)
 		val suggestions = getSuggestedTransferKeysAndPrint()
 		suggestions.size shouldBe 1
-		suggestions.first().target.pubSpkiHexString shouldBe a
-		suggestions.first().sources shouldBe listOf(b)
+		suggestions.first().target.pubSpkiHexString shouldBe keys.a
+		suggestions.first().sources shouldBe listOf(keys.b)
 		getSuggestedTransferKeysAndPrint(applySuggestions(suggestions)).shouldBeEmpty()
 	}
 
 	"Should not suggest transfer keys from unverified keys" {
 		// A (verified) -> B (unverified)
-		addKey(aKey, true, true)
-		addKey(bKey, true, false)
-		addTransferKey(a, bKey)
+		addKey(keys.pairs.a, true, true)
+		addKey(keys.pairs.b, true, false)
+		addTransferKey(keys.a, keys.pairs.b)
 		getSuggestedTransferKeysAndPrint().shouldBeEmpty()
 	}
 
 	"Should still suggest transfer keys to unverified keys" {
 		// A (unverified) -> B (verified)
-		addKey(aKey, true, false)
-		addKey(bKey, true, true)
-		addTransferKey(a, bKey)
+		addKey(keys.pairs.a, true, false)
+		addKey(keys.pairs.b, true, true)
+		addTransferKey(keys.a, keys.pairs.b)
 		val suggestions = getSuggestedTransferKeysAndPrint()
 		suggestions.size shouldBe 1
-		suggestions.first().target.pubSpkiHexString shouldBe a
-		suggestions.first().sources shouldBe listOf(b)
+		suggestions.first().target.pubSpkiHexString shouldBe keys.a
+		suggestions.first().sources shouldBe listOf(keys.b)
 		getSuggestedTransferKeysAndPrint(applySuggestions(suggestions)).shouldBeEmpty()
 	}
 
@@ -290,26 +327,26 @@ class TransferKeysManagerUnitTests : StringSpec({
 		// D (v) -> E -> F -> D
 
 		// Must create D -> A
-		addKey(aKey, true, true)
-		addKey(bKey, true, false)
-		addKey(cKey, true, false)
-		addKey(dKey, true, true)
-		addKey(eKey, true, false)
-		addKey(fKey, true, false)
-		addTransferKey(a, bKey)
-		addTransferKey(b, cKey)
-		addTransferKey(c, aKey)
-		addTransferKey(d, eKey)
-		addTransferKey(e, fKey)
-		addTransferKey(f, dKey)
-		addTransferKey(b, eKey)
+		addKey(keys.pairs.a, true, true)
+		addKey(keys.pairs.b, true, false)
+		addKey(keys.pairs.c, true, false)
+		addKey(keys.pairs.d, true, true)
+		addKey(keys.pairs.e, true, false)
+		addKey(keys.pairs.f, true, false)
+		addTransferKey(keys.a, keys.pairs.b)
+		addTransferKey(keys.b, keys.pairs.c)
+		addTransferKey(keys.c, keys.pairs.a)
+		addTransferKey(keys.d, keys.pairs.e)
+		addTransferKey(keys.e, keys.pairs.f)
+		addTransferKey(keys.f, keys.pairs.d)
+		addTransferKey(keys.b, keys.pairs.e)
 
 		repeat(1000) {
 			val shuffledSelf = self.shuffled()
 			val suggestions = transferKeysManager.getSuggestedTransferKeys(shuffledSelf)
 			suggestions.size shouldBe 1
-			suggestions.first().target.pubSpkiHexString shouldBe a
-			suggestions.first().sources shouldBe listOf(d)
+			suggestions.first().target.pubSpkiHexString shouldBe keys.a
+			suggestions.first().sources shouldBe listOf(keys.d)
 			applySuggestionsAndVerifyFullyConnected(suggestions, shuffledSelf)
 		}
 	}
@@ -323,19 +360,19 @@ class TransferKeysManagerUnitTests : StringSpec({
 		// Verification and availability was manipulated in order to enforce an attempt to create a key from A -> D.
 		// The algorithm should realize that there is already a different transfer key from another member of group A to
 		// another member of group D and should not suggest a new transfer key.
-		addKey(aKey, false, true)
-		addKey(bKey, false, false)
-		addKey(cKey, false, false)
-		addKey(dKey, true, true)
-		addKey(eKey, true, false)
-		addKey(fKey, true, false)
-		addTransferKey(a, bKey)
-		addTransferKey(b, cKey)
-		addTransferKey(c, aKey)
-		addTransferKey(d, eKey)
-		addTransferKey(e, fKey)
-		addTransferKey(f, dKey)
-		addTransferKey(b, eKey)
+		addKey(keys.pairs.a, false, true)
+		addKey(keys.pairs.b, false, false)
+		addKey(keys.pairs.c, false, false)
+		addKey(keys.pairs.d, true, true)
+		addKey(keys.pairs.e, true, false)
+		addKey(keys.pairs.f, true, false)
+		addTransferKey(keys.a, keys.pairs.b)
+		addTransferKey(keys.b, keys.pairs.c)
+		addTransferKey(keys.c, keys.pairs.a)
+		addTransferKey(keys.d, keys.pairs.e)
+		addTransferKey(keys.e, keys.pairs.f)
+		addTransferKey(keys.f, keys.pairs.d)
+		addTransferKey(keys.b, keys.pairs.e)
 
 		// Randomize the graph used to make sure that at least one time B and E are NOT the canonical labels for the 2 groups
 		repeat(1000) {

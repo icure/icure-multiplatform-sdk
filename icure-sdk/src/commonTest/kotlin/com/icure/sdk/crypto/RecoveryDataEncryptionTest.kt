@@ -32,6 +32,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeSingleton
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.ktor.utils.io.core.toByteArray
 
 @OptIn(InternalIcureApi::class)
 class RecoveryDataEncryptionTest : StringSpec({
@@ -61,7 +62,8 @@ class RecoveryDataEncryptionTest : StringSpec({
 				val recoveredKeys = keyPairRecoverer.recoverWithRecoveryKey(recoveryKey, autoDelete = true).value
 				return keysData.associate { keyData ->
 					keyData.dataOwnerDetails.dataOwner.id to CryptoStrategies.RecoveredKeyData(
-						recoveredKeys.getValue(keyData.dataOwnerDetails.dataOwner.id).mapKeys { it.key.fingerprintV1() },
+						recoveredKeys.getValue(keyData.dataOwnerDetails.dataOwner.id)
+							.mapKeys { it.key.fingerprintV1() },
 						emptyMap()
 					)
 				}
@@ -92,10 +94,10 @@ class RecoveryDataEncryptionTest : StringSpec({
 		)
 		val secretIds = api.patient.getSecretIdsOf(patient)
 		shouldThrow<IllegalArgumentException> {
-			api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds=secretIds))
+			api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds = secretIds))
 		}
 		api.patient.forceInitializeExchangeDataToNewlyInvitedPatient(patient.id) shouldBe true
-		api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds =secretIds))
+		api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds = secretIds))
 		val recoveryKey = api.recovery.createExchangeDataRecoveryInfo(patient.id)
 		val patientUser = createPatientUser(existingPatientId = patient.id)
 		val apiPatient = patientUser.api()
@@ -164,7 +166,8 @@ class RecoveryDataEncryptionTest : StringSpec({
 			RecoveryData(
 				id = api.crypto.internal.recoveryDataEncryption.recoveryKeyToId(newRecoveryKey),
 				recipient = hcp.dataOwnerId,
-				encryptedSelf = defaultCryptoService.aes.encrypt(recoveryDataContentJson.toByteArray(), newKey).base64Encode(),
+				encryptedSelf = defaultCryptoService.aes.encrypt(recoveryDataContentJson.toByteArray(), newKey)
+					.base64Encode(),
 				type = RecoveryData.Type.KeypairRecovery
 			)
 		)

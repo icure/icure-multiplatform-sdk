@@ -1,5 +1,6 @@
 package com.icure.sdk.crypto
 
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.model.DecryptedHealthElement
@@ -15,9 +16,8 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import java.util.UUID
 
-class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
+class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 	beforeAny {
 		initializeTestEnvironment()
 	}
@@ -32,7 +32,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val patient = hcpApi.patient.createPatient(
 			hcpApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					firstName = "John",
 					lastName = "Doe",
 					note = note
@@ -55,7 +55,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val patient = hcpApi.patient.createPatient(
 			hcpApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					firstName = "John",
 					lastName = "Doe",
 					note = "This will be encrypted"
@@ -72,7 +72,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val nonConfidentialHe = hcpApi.healthElement.createHealthElement(
 			hcpApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					note = nonConfidentialNote
 				),
 				patient,
@@ -84,7 +84,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec ({
 		val confidentialHe = hcpApi.healthElement.createHealthElement(
 			hcpApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
-					id = UUID.randomUUID().toString(),
+					id = defaultCryptoService.strongRandom.randomUUID(),
 					note = confidentialNote
 				),
 				patient,
