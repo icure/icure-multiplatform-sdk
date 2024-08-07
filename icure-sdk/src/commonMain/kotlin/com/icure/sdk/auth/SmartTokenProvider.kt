@@ -3,6 +3,7 @@ package com.icure.sdk.auth
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi
@@ -38,8 +39,41 @@ internal sealed interface DoGetTokenResult {
 
 }
 
+private class AuthProcessApiImpl(
+	private val messageGatewayApi: RawMessageGatewayApi
+) : AuthenticationProcessApi {
+	override suspend fun executeProcess(
+		messageGatewayUrl: String,
+		externalServicesSpecId: String,
+		processId: String,
+		userTelecomType: AuthenticationProcessTelecomType,
+		userTelecom: String,
+		captchaType: AuthenticationProcessCaptchaType,
+		captchaKey: String,
+		processTemplateParameters: AuthenticationProcessTemplateParameters
+	): AuthenticationProcessApi.AuthenticationProcessRequest {
+		val requestId = messageGatewayApi.startProcess(
+			messageGatewayUrl = messageGatewayUrl,
+			externalServicesSpecId = externalServicesSpecId,
+			processId = processId,
+			userTelecomType = userTelecomType,
+			userTelecom = userTelecom,
+			captchaType = captchaType,
+			captchaKey = captchaKey,
+			firstName = processTemplateParameters.firstName,
+			lastName = processTemplateParameters.lastName
+		)
+		return AuthenticationProcessApi.AuthenticationProcessRequest(
+			messageGwUrl = messageGatewayUrl,
+			specId = externalServicesSpecId,
+			requestId = requestId
+		)
+	}
+}
+
 @InternalIcureApi
 internal class SmartTokenProvider(
+	private val messageGatewayApi: RawMessageGatewayApi,
 	private val loginUsername: String?,
 	private val groupId: String?,
 	private var currentLongLivedSecret: AuthSecretDetails.Cacheable?,
@@ -57,6 +91,7 @@ internal class SmartTokenProvider(
 	data class RetrievedJwt(val jwt: String, val type: RetrievedTokenType)
 
 	private val tokenCacheMutex = Mutex()
+	private val authProcessApi = AuthProcessApiImpl(messageGatewayApi)
 
 	suspend fun getCachedOrRefreshedOrNewToken(): RetrievedJwt = tokenCacheMutex.withLock {
 		cachedToken?.takeIf { !isJwtExpiredOrInvalid(it, refreshPadding) }?.let { RetrievedJwt(it, RetrievedTokenType.Cached) }
@@ -96,6 +131,7 @@ internal class SmartTokenProvider(
 			}
 		} ?: (null to null)
 		return SmartTokenProvider(
+			messageGatewayApi = messageGatewayApi,
 			loginUsername = loginUsername,
 			groupId = newGroupId,
 			currentLongLivedSecret = currentLongLivedSecret,
@@ -159,7 +195,7 @@ internal class SmartTokenProvider(
 		}.let { allAcceptedSecrets ->
 			if (loginUsername != null) allAcceptedSecrets else allAcceptedSecrets.filterNot { it.requiresLoginUsername }
 		}
-		val secretDetails = authSecretProvider.getSecret(acceptedSecrets, previousAttempts)
+		val secretDetails = authSecretProvider.getSecret(acceptedSecrets, previousAttempts, authProcessApi)
 		if(secretDetails.type !in acceptedSecrets) {
 			throw IllegalArgumentException("Accepted secret types are ${acceptedSecrets.joinToString(", ")}, but got a secret of type ${secretDetails.type}.")
 		}
@@ -182,8 +218,8 @@ internal class SmartTokenProvider(
 		ensure ((minimumAuthenticationClass?.level ?: 0) <= AuthenticationClass.TwoFactorAuthentication.level) {
 			"Internal error: asking for totp to login but minimumAuthenticationClassLevel is higher than TWO_FACTOR_AUTHENTICATION's level."
 		}
-		val details = authSecretProvider.getSecret(listOf(AuthenticationClass.TwoFactorAuthentication), previousAttempts)
-		if(details !is AuthSecretDetails.TwoFactorAuthTokenDetails) {
+		val details = authSecretProvider.getSecret(listOf(AuthenticationClass.TwoFactorAuthentication), previousAttempts, authProcessApi)
+		if (details !is AuthSecretDetails.TwoFactorAuthTokenDetails) {
 			throw IllegalStateException("Was expecting a 2fa token but got a secret of type ${details::class.simpleName}.")
 		}
 		val result = doGetTokenWithSecret(AuthSecretDetails.TwoFactorAuthTokenDetails(secret = "${password}|${details.secret}"), minimumAuthenticationClass)
@@ -230,6 +266,14 @@ internal class SmartTokenProvider(
 						groupId = groupId
 					)
 				} else {
+					if (secret is AuthSecretDetails.ShortLivedTokenDetails) {
+						messageGatewayApi.completeProcess(
+							messageGatewayUrl = secret.authenticationProcessInfo.messageGwUrl,
+							externalServicesSpecId = secret.authenticationProcessInfo.specId,
+							requestId = secret.authenticationProcessInfo.requestId,
+							validationCode = secret.secret
+						)
+					}
 					authApi.login(loginCredentials = LoginCredentials(username = loginUsername, password = secret.secret), groupId = groupId)
 				}
 			}

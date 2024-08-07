@@ -45,6 +45,7 @@ import com.icure.sdk.api.flavoured.PatientBasicApiImpl
 import com.icure.sdk.api.flavoured.ReceiptBasicApiImpl
 import com.icure.sdk.api.flavoured.TimeTableBasicApiImpl
 import com.icure.sdk.api.flavoured.TopicBasicApiImpl
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawApplicationSettingsApiImpl
@@ -129,6 +130,7 @@ interface IcureUnboundBaseSdk : IcureBaseApis {
 				cryptoService,
 				null,
 				options,
+				RawMessageGatewayApi(client)
 			)
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)

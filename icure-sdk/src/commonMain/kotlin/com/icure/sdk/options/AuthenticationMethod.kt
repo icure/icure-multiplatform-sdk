@@ -2,6 +2,7 @@ package com.icure.sdk.options
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.sdk.auth.AuthSecretDetails
@@ -127,7 +128,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 	authApi: RawAnonymousAuthApi,
 	cryptoService: CryptoService,
 	applicationId: String?,
-	options: CommonOptions
+	options: CommonOptions,
+	messageGatewayApi: RawMessageGatewayApi
 ): AuthProvider = when(this) {
 	is AuthenticationMethod.UsingCredentials -> when (this.credentials) {
 		is ThirdPartyAuthentication -> smartAuthWithConstantSecret(
@@ -135,7 +137,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 			cryptoService,
 			options.getPasswordClientSideSalt(applicationId),
 			AuthSecretDetails.ExternalAuthenticationDetails(this.credentials.token, this.credentials.provider),
-			null
+			null,
+			messageGatewayApi
 		)
 		is UsernameLongToken -> smartAuthWithConstantSecret(
 			authApi,
@@ -143,6 +146,7 @@ internal fun AuthenticationMethod.getAuthProvider(
 			options.getPasswordClientSideSalt(applicationId),
 			AuthSecretDetails.LongLivedTokenDetails(this.credentials.token),
 			this.credentials.username,
+			messageGatewayApi
 		)
 		is UsernamePassword -> smartAuthWithConstantSecret(
 			authApi,
@@ -150,6 +154,7 @@ internal fun AuthenticationMethod.getAuthProvider(
 			options.getPasswordClientSideSalt(applicationId),
 			AuthSecretDetails.PasswordDetails(this.credentials.password),
 			this.credentials.username,
+			messageGatewayApi
 		)
 		is JwtCredentials -> JwtAuthProvider(authApi, this.credentials.initialBearer, this.credentials.refresh)
 	}
@@ -173,7 +178,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 		passwordClientSideSalt = options.getPasswordClientSideSalt(applicationId),
 		cryptoService = cryptoService,
 		cacheSecrets = false,
-		allowSecretRetry = true
+		allowSecretRetry = true,
+		messageGatewayApi = messageGatewayApi
 	)
 }
 
@@ -190,7 +196,8 @@ internal suspend fun AuthenticationMethod.getAuthProviderInGroup(
 	groupSelector: GroupSelector?
 ): AuthProvider {
 	val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, httpClient, json = Serialization.json)
-	val authProvider = getAuthProvider(rawAuthApi, cryptoService, applicationId, options)
+	val messageGatewayApi = RawMessageGatewayApi(httpClient)
+	val authProvider = getAuthProvider(rawAuthApi, cryptoService, applicationId, options, messageGatewayApi)
 	val userApi = RawUserApiImpl(apiUrl, authProvider, httpClient, json = Serialization.json)
 	val matches = userApi.getMatchingUsers().successBody()
 	val chosenGroupId = if (matches.size > 1) {
@@ -209,7 +216,8 @@ private fun smartAuthWithConstantSecret(
 	cryptoService: CryptoService,
 	passwordClientSideSalt: String?,
 	authSecretDetails: AuthSecretDetails.Cacheable,
-	login: String?
+	login: String?,
+	messageGatewayApi: RawMessageGatewayApi
 ) = SmartAuthProvider.initialise(
 	authApi = authApi,
 	loginUsername = login,
@@ -221,7 +229,8 @@ private fun smartAuthWithConstantSecret(
 	passwordClientSideSalt = passwordClientSideSalt,
 	cryptoService = cryptoService,
 	cacheSecrets = true,
-	allowSecretRetry = false
+	allowSecretRetry = false,
+	messageGatewayApi = messageGatewayApi
 )
 
 private class ConstantSecretProvider(

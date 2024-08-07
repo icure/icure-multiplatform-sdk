@@ -28,7 +28,7 @@ interface AuthenticationProcessApi {
 	 * @param captchaKey the key obtained by resolving the captcha. Used to prevent abuse of the message gateway and
 	 * connected external services.
 	 */
-	fun executeProcess(
+	suspend fun executeProcess(
 		messageGatewayUrl: String,
 		externalServicesSpecId: String,
 		processId: String,
@@ -36,6 +36,6 @@ interface AuthenticationProcessApi {
 		userTelecom: String,
 		captchaType: AuthenticationProcessCaptchaType,
 		captchaKey: String,
-		processTemplateParameters: Map<String, String>
+		processTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters()
 	): AuthenticationProcessRequest
 }

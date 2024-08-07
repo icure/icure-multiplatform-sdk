@@ -2,6 +2,7 @@ package com.icure.sdk.auth.services
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.auth.AuthSecretDetails
 import com.icure.sdk.auth.AuthSecretProvider
 import com.icure.sdk.auth.JwtBearerAndRefresh
@@ -27,7 +28,8 @@ internal class SmartAuthProvider private constructor(
 			cryptoService: CryptoService,
 			passwordClientSideSalt: String?,
 			cacheSecrets: Boolean,
-			allowSecretRetry: Boolean
+			allowSecretRetry: Boolean,
+			messageGatewayApi: RawMessageGatewayApi
 		) = SmartAuthProvider(
 			SmartTokenProvider(
 				loginUsername = loginUsername,
@@ -42,7 +44,8 @@ internal class SmartAuthProvider private constructor(
 				passwordClientSideSalt = passwordClientSideSalt,
 				cacheSecrets = cacheSecrets,
 				cryptoService = cryptoService,
-				allowSecretRetry = allowSecretRetry
+				allowSecretRetry = allowSecretRetry,
+				messageGatewayApi = messageGatewayApi
 			),
 			groupId
 		)
