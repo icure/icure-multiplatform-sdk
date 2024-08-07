@@ -25,6 +25,7 @@ internal class SmartAuthProvider private constructor(
 			initialAuthToken: String?,
 			initialRefreshToken: String?,
 			groupId: String?,
+			applicationId: String?,
 			cryptoService: CryptoService,
 			passwordClientSideSalt: String?,
 			cacheSecrets: Boolean,
@@ -34,6 +35,7 @@ internal class SmartAuthProvider private constructor(
 			SmartTokenProvider(
 				loginUsername = loginUsername,
 				groupId = groupId,
+				applicationId = applicationId,
 				currentLongLivedSecret = if (
 					cacheSecrets || initialRefreshToken == null || isJwtExpiredOrInvalid(initialRefreshToken)
 				) initialSecret else null, // Even if cache secret is false, in case the initial refresh token is not valid the secret will actually be cached until the first request

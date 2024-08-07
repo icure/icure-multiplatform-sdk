@@ -138,7 +138,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 			options.getPasswordClientSideSalt(applicationId),
 			AuthSecretDetails.ExternalAuthenticationDetails(this.credentials.token, this.credentials.provider),
 			null,
-			messageGatewayApi
+			messageGatewayApi,
+			applicationId
 		)
 		is UsernameLongToken -> smartAuthWithConstantSecret(
 			authApi,
@@ -146,7 +147,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 			options.getPasswordClientSideSalt(applicationId),
 			AuthSecretDetails.LongLivedTokenDetails(this.credentials.token),
 			this.credentials.username,
-			messageGatewayApi
+			messageGatewayApi,
+			applicationId
 		)
 		is UsernamePassword -> smartAuthWithConstantSecret(
 			authApi,
@@ -154,7 +156,8 @@ internal fun AuthenticationMethod.getAuthProvider(
 			options.getPasswordClientSideSalt(applicationId),
 			AuthSecretDetails.PasswordDetails(this.credentials.password),
 			this.credentials.username,
-			messageGatewayApi
+			messageGatewayApi,
+			applicationId
 		)
 		is JwtCredentials -> JwtAuthProvider(authApi, this.credentials.initialBearer, this.credentials.refresh)
 	}
@@ -175,6 +178,7 @@ internal fun AuthenticationMethod.getAuthProvider(
 			null -> null
 		},
 		groupId = null,
+		applicationId = applicationId,
 		passwordClientSideSalt = options.getPasswordClientSideSalt(applicationId),
 		cryptoService = cryptoService,
 		cacheSecrets = false,
@@ -217,7 +221,8 @@ private fun smartAuthWithConstantSecret(
 	passwordClientSideSalt: String?,
 	authSecretDetails: AuthSecretDetails.Cacheable,
 	login: String?,
-	messageGatewayApi: RawMessageGatewayApi
+	messageGatewayApi: RawMessageGatewayApi,
+	applicationId: String?
 ) = SmartAuthProvider.initialise(
 	authApi = authApi,
 	loginUsername = login,
@@ -226,6 +231,7 @@ private fun smartAuthWithConstantSecret(
 	initialRefreshToken = null,
 	initialSecret = authSecretDetails,
 	groupId = null,
+	applicationId = applicationId,
 	passwordClientSideSalt = passwordClientSideSalt,
 	cryptoService = cryptoService,
 	cacheSecrets = true,

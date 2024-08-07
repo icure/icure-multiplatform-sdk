@@ -41,6 +41,8 @@ interface GroupApi {
 		n: Int? = null,
 		@DefaultValue("null")
 		superGroup: String? = null,
+		@DefaultValue("null")
+		applicationId: String? = null,
 		initialisationData: DatabaseInitialisation,
 	): Group
 

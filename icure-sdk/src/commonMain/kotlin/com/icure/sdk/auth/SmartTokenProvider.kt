@@ -78,6 +78,7 @@ internal class SmartTokenProvider(
 	private val messageGatewayApi: RawMessageGatewayApi,
 	private val loginUsername: String?,
 	private val groupId: String?,
+	private val applicationId: String?,
 	private var currentLongLivedSecret: AuthSecretDetails.Cacheable?,
 	private var cachedToken: String?,
 	private var cachedRefreshToken: String?,
@@ -136,6 +137,7 @@ internal class SmartTokenProvider(
 			messageGatewayApi = messageGatewayApi,
 			loginUsername = loginUsername,
 			groupId = newGroupId,
+			applicationId = applicationId,
 			currentLongLivedSecret = currentLongLivedSecret,
 			cachedToken = switchedJwt,
 			cachedRefreshToken = switchedRefresh,
@@ -253,7 +255,11 @@ internal class SmartTokenProvider(
 		val authResponse = when {
 			secret is AuthSecretDetails.ExternalAuthenticationDetails -> {
 				when (secret.oauthType) {
-					ThirdPartyProvider.GOOGLE -> authApi.loginGoogle(secret.secret) // TODO add group id
+					ThirdPartyProvider.GOOGLE -> authApi.loginGoogle(
+						secret.secret,
+						groupId = groupId,
+						applicationId = applicationId
+					)
 				}
 			}
 
@@ -266,7 +272,8 @@ internal class SmartTokenProvider(
 						username = requireLoginUsername,
 						password = base64Encode(cryptoService.digest.sha256((secret.secret + passwordClientSideSalt).toByteArray()))
 					),
-					groupId = groupId
+					groupId = groupId,
+					applicationId = applicationId
 				)
 
 			secret is AuthSecretDetails.ShortLivedTokenDetails -> {
@@ -283,13 +290,19 @@ internal class SmartTokenProvider(
 						loginCredentials = LoginCredentials(
 							username = requireLoginUsername,
 							password = secret.secret
-						), groupId = groupId
+						),
+						groupId = groupId,
+						applicationId = applicationId
 					)
 				}
 			}
 
 			else ->
-				authApi.login(loginCredentials = LoginCredentials(username = requireLoginUsername, password = secret.secret), groupId = groupId)
+				authApi.login(
+					loginCredentials = LoginCredentials(username = requireLoginUsername, password = secret.secret),
+					groupId = groupId,
+					applicationId = applicationId
+				)
 		}
 		return try {
 			val authPayload = authResponse.successBody()

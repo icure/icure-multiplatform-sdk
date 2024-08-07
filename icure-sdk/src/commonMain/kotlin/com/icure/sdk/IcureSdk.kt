@@ -379,11 +379,13 @@ private class AuthenticationWithProcessStepImpl(
 			options.httpClient ?: sharedHttpClient,
 			json = options.httpClientJson ?: Serialization.json
 		)
-		// TODO applicationId
 		val loginResult = retryWithDelays(
 			listOf(100.milliseconds, 500.milliseconds, 1.seconds)
 		) {
-			rawAuthApi.login(loginCredentials = LoginCredentials(username = userTelecom, password = validationCode)).successBody()
+			rawAuthApi.login(
+				loginCredentials = LoginCredentials(username = userTelecom, password = validationCode),
+				applicationId = applicationId
+			).successBody()
 		}
 		return IcureSdk.initialise(
 			applicationId,
