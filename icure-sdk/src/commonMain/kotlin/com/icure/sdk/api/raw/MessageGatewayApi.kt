@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.sdk.auth.AuthenticationProcessTelecomType
 import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -49,7 +50,6 @@ class RawMessageGatewayApi(
 		requestId: String,
 		validationCode: String
 	) {
-		client.post("${messageGatewayUrl}/${externalServicesSpecId}/process/validate/${requestId}-${validationCode}") {
-		}.wrap<Unit>().successBody()
+		client.get("${messageGatewayUrl}/${externalServicesSpecId}/process/validate/${requestId}-${validationCode}").requireSuccess()
 	}
 }

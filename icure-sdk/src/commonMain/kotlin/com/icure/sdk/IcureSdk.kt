@@ -168,12 +168,15 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensureNonNull
 import com.icure.sdk.utils.newPlatformHttpClient
+import com.icure.sdk.utils.retryWithDelays
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 interface IcureSdk : IcureApis {
 	/**
@@ -377,9 +380,11 @@ private class AuthenticationWithProcessStepImpl(
 			json = options.httpClientJson ?: Serialization.json
 		)
 		// TODO applicationId
-		val loginResult = rawAuthApi.login(
-			loginCredentials = LoginCredentials(username = userTelecom, password = validationCode)
-		).successBody()
+		val loginResult = retryWithDelays(
+			listOf(100.milliseconds, 500.milliseconds, 1.seconds)
+		) {
+			rawAuthApi.login(loginCredentials = LoginCredentials(username = userTelecom, password = validationCode)).successBody()
+		}
 		return IcureSdk.initialise(
 			applicationId,
 			baseUrl,

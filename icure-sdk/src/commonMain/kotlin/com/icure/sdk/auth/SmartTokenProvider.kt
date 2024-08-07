@@ -13,10 +13,12 @@ import com.icure.sdk.utils.decodeClaims
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.ensureNonNull
 import com.icure.sdk.utils.isJwtExpiredOrInvalid
+import com.icure.sdk.utils.retryWithDelays
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @InternalIcureApi
@@ -239,6 +241,11 @@ internal class SmartTokenProvider(
 		}
 	}
 
+	private val requireLoginUsername get() =
+		ensureNonNull(loginUsername) {
+			"Internal error: loginUsername is null but accepted authentication secret requires username to login."
+		}
+
 	private suspend fun doGetTokenWithSecret(
 		secret: AuthSecretDetails,
 		minimumAuthenticationClass: AuthenticationClass?,
@@ -253,30 +260,36 @@ internal class SmartTokenProvider(
 			secret is AuthSecretDetails.DigitalIdDetails ->
 				TODO("Digital id login is not yet implemented for smart auth")
 
-			else -> {
-				ensureNonNull(loginUsername) {
-					"Internal error: loginUsername is null but accepted authentication secret requires username to login."
-				}
-				if (passwordClientSideSalt != null && secret is AuthSecretDetails.PasswordDetails) {
+			passwordClientSideSalt != null && secret is AuthSecretDetails.PasswordDetails ->
+				authApi.login(
+					loginCredentials = LoginCredentials(
+						username = requireLoginUsername,
+						password = base64Encode(cryptoService.digest.sha256((secret.secret + passwordClientSideSalt).toByteArray()))
+					),
+					groupId = groupId
+				)
+
+			secret is AuthSecretDetails.ShortLivedTokenDetails -> {
+				messageGatewayApi.completeProcess(
+					messageGatewayUrl = secret.authenticationProcessInfo.messageGwUrl,
+					externalServicesSpecId = secret.authenticationProcessInfo.specId,
+					requestId = secret.authenticationProcessInfo.requestId,
+					validationCode = secret.secret
+				)
+				retryWithDelays(
+					listOf(100.milliseconds, 500.milliseconds, 1.seconds)
+				) {
 					authApi.login(
 						loginCredentials = LoginCredentials(
-							username = loginUsername,
-							password = base64Encode(cryptoService.digest.sha256((secret.secret + passwordClientSideSalt).toByteArray()))
-						),
-						groupId = groupId
+							username = requireLoginUsername,
+							password = secret.secret
+						), groupId = groupId
 					)
-				} else {
-					if (secret is AuthSecretDetails.ShortLivedTokenDetails) {
-						messageGatewayApi.completeProcess(
-							messageGatewayUrl = secret.authenticationProcessInfo.messageGwUrl,
-							externalServicesSpecId = secret.authenticationProcessInfo.specId,
-							requestId = secret.authenticationProcessInfo.requestId,
-							validationCode = secret.secret
-						)
-					}
-					authApi.login(loginCredentials = LoginCredentials(username = loginUsername, password = secret.secret), groupId = groupId)
 				}
 			}
+
+			else ->
+				authApi.login(loginCredentials = LoginCredentials(username = requireLoginUsername, password = secret.secret), groupId = groupId)
 		}
 		return try {
 			val authPayload = authResponse.successBody()

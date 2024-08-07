@@ -44,5 +44,9 @@ class MappedBodyProvider<S : Any, T : Any>(private val provider: BodyProvider<S>
 inline fun <reified T : Any> io.ktor.client.statement.HttpResponse.wrap(): HttpResponse<T> =
 	HttpResponse(this, TypedBodyProvider(typeInfo<T>()))
 
+fun io.ktor.client.statement.HttpResponse.requireSuccess(): Unit {
+	if (!status.isSuccess()) throw RequestStatusException(call.request.method, call.request.url.toString(), status.value)
+}
+
 fun <T : Any, V : Any> HttpResponse<T>.map(block: T.() -> V): HttpResponse<V> =
 	HttpResponse(response, MappedBodyProvider(provider, block))
