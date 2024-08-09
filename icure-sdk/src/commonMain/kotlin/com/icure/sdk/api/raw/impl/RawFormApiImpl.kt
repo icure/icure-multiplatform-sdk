@@ -26,6 +26,13 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import kotlin.Boolean
+import kotlin.ByteArray
+import kotlin.Long
+import kotlin.Nothing
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -47,7 +54,8 @@ class RawFormApiImpl(
 
 	override suspend fun getForm(formId: String): HttpResponse<EncryptedForm> =
 		get(authProvider) {
-			url {
+			url
+			{
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", formId)
 				parameter("ts", GMTDate().timestamp)
