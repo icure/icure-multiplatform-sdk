@@ -1,0 +1,163 @@
+package com.icure.sdk.filters
+
+import com.icure.sdk.model.HealthElement
+import com.icure.sdk.model.Patient
+import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.utils.DefaultValue
+
+object HealthElementFilters {
+    /**
+     * Create options for health element filtering that will match all health element shared with a specific data owner.
+     * If [dataOwnerId] is null the filter will match all health elements shared directly with the current data owner.
+     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @return options for health element filtering
+     */
+    fun allHealthElementsForDataOwner(
+        @DefaultValue("null")
+        dataOwnerId: String? = null
+    ): FilterOptions<HealthElement> =
+        ByDataOwner(dataOwnerId)
+
+    internal class ByDataOwner(
+        val dataOwnerId: String?
+    ): FilterOptions<HealthElement>
+
+    /**
+     * Options for health element filtering which match all the health elements shared with a specific data owner that have at least
+     * an identifier that has the same exact [Identifier.system] and [Identifier.value] as one of the provided
+     * [identifiers]. Other properties of the provided identifiers are ignored.
+     *
+     * These options are sortable. When sorting using these options the health elements will be in the same order as the input
+     * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
+     * sorting.
+     * @param identifiers a list of identifiers
+     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @return options for health element filtering
+     */
+    fun byIdentifiers(
+        identifiers: List<Identifier>,
+        @DefaultValue("null")
+        dataOwnerId: String? = null
+    ): SortableFilterOptions<HealthElement> =
+        ByIdentifiers(identifiers, dataOwnerId)
+
+    internal class ByIdentifiers(
+        val identifiers: List<Identifier>,
+        val dataOwnerId: String?
+    ): SortableFilterOptions<HealthElement>
+
+    /**
+     * Options for health element filtering which match all health elements shared with a specific data owner that have a certain code.
+     * If you specify only the [codeType] you will get all entities that have at least a code of that type.
+     *
+     * These options are sortable. When sorting using these options the health elements will be sorted by [codeCode].
+     *
+     * @param codeType a code type
+     * @param codeCode a code for the provided code type, or null if you want the filter to accept any entity
+     * with a code of the provided type.
+     * @param dataOwnerId a data owner id or null to use the current data owner id
+     */
+    fun byCode(
+        codeType: String,
+        @DefaultValue("null")
+        codeCode: String? = null,
+        @DefaultValue("null")
+        dataOwnerId: String? = null
+    ): SortableFilterOptions<HealthElement> = ByCode(
+        codeType = codeType,
+        codeCode = codeCode,
+        dataOwnerId = dataOwnerId
+    )
+
+    internal class ByCode(
+        val codeType: String,
+        val codeCode: String?,
+        val dataOwnerId: String?
+    ): SortableFilterOptions<HealthElement>
+
+    /**
+     * Options for health element filtering which match all health elements shared with a specific data owner that have a certain tag.
+     * If you specify only the [tagType] you will get all entities that have at least a tag of that type.
+     *
+     * These options are sortable. When sorting using these options the health elements will be sorted by [tagCode].
+     *
+     * @param tagType a tag type
+     * @param tagCode a code for the provided tag type, or null if you want the filter to accept any entity
+     * with a tag of the provided type.
+     * @param dataOwnerId a data owner id or null to use the current data owner id
+     */
+    fun byTag(
+        tagType: String,
+        @DefaultValue("null")
+        tagCode: String? = null,
+        @DefaultValue("null")
+        dataOwnerId: String? = null
+    ): SortableFilterOptions<HealthElement> = ByTag(
+        tagType = tagType,
+        tagCode = tagCode,
+        dataOwnerId = dataOwnerId
+    )
+
+    internal class ByTag(
+        val tagType: String,
+        val tagCode: String?,
+        val dataOwnerId: String?
+    ): SortableFilterOptions<HealthElement>
+
+    /**
+     * Options for health element filtering which match all health elements shared with a specific data owner that are linked with one
+     * of the provided patients.
+     * These options are sortable. When sorting using these options the health elements will be sorted by the patients, using
+     * the same order as the input patients.
+     * @param patients a list of patients.
+     * @param dataOwnerId a data owner id or null to use the current data owner id
+     */
+    fun byPatients(
+        patients: List<Patient>,
+        @DefaultValue("null")
+        dataOwnerId: String? = null
+    ): SortableFilterOptions<HealthElement> = ByPatients(
+        patients = patients,
+        dataOwnerId = dataOwnerId
+    )
+
+    internal class ByPatients(
+        val patients: List<Patient>,
+        val dataOwnerId: String?
+    ) : SortableFilterOptions<HealthElement>
+
+    /**
+     * Options for health element filtering which match all health elements shared with a specific data owner that are linked with a
+     * patient through one of the provided secret ids.
+     * These options are sortable. When sorting using these options the health elements will be sorted by the linked patients
+     * secret id, using the same order as the input.
+     * @param secretIds a list of patients secret ids
+     * @param dataOwnerId a data owner id or null to use the current data owner id
+     */
+    fun byPatientsSecretIds(
+        secretIds: List<String>,
+        @DefaultValue("null")
+        dataOwnerId: String? = null
+    ): SortableFilterOptions<HealthElement> = ByPatientsSecretIds(
+        secretIds = secretIds,
+        dataOwnerId = dataOwnerId
+    )
+
+    internal class ByPatientsSecretIds(
+        val secretIds: List<String>,
+        val dataOwnerId: String?
+    ): SortableFilterOptions<HealthElement>
+
+    /**
+     * Filter options that match all health elements with one of the provided ids.
+     * These options are sortable. When sorting using these options the health elements will have the same order as the input ids.
+     * @param ids a list of health element ids.
+     */
+    fun byIds(
+        ids: List<String>
+    ): SortableFilterOptions<HealthElement> = ByIds(ids)
+
+    internal class ByIds(
+        val ids: List<String>
+    ): SortableFilterOptions<HealthElement>
+}
