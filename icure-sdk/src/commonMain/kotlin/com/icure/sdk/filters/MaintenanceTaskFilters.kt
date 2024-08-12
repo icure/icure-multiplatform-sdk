@@ -2,21 +2,32 @@ package com.icure.sdk.filters
 
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndIdentifiersFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndTypeFilter
+import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByIdsFilter
 import com.icure.sdk.utils.DefaultValue
+import com.icure.sdk.utils.requireUniqueElements
 
 object MaintenanceTaskFilters {
     /**
      * Filter options that match all maintenance tasks with one of the provided ids.
      * These options are sortable. When sorting using these options the maintenance tasks will have the same order as the input ids.
-     * @param ids a list of maintenance task ids.
+     * @param ids a list of unique maintenance task ids.
+     * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
     fun byIds(
         ids: List<String>
     ): SortableFilterOptions<MaintenanceTask> = ByIds(ids)
 
     internal class ByIds(
-        val identifiers : List<String>
-    ): SortableFilterOptions<MaintenanceTask>
+        val ids : List<String>
+    ): SortableFilterOptions<MaintenanceTask> {
+        init {
+            ids.requireUniqueElements("`ids`")
+        }
+    }
 
     /**
      * Options for maintenance task filtering which match all the maintenance tasks shared with a specific data owner that have at least
@@ -82,4 +93,26 @@ object MaintenanceTaskFilters {
         val date: Long,
         val dataOwnerId: String?
     ): SortableFilterOptions<MaintenanceTask>
+}
+
+internal suspend fun mapMaintenanceTaskFilterOptions(
+    filterOptions: FilterOptions<MaintenanceTask>,
+    selfDataOwnerId: String
+): AbstractFilter<MaintenanceTask> = mapIfMetaFilterOptions(filterOptions) {
+    mapMaintenanceTaskFilterOptions(it, selfDataOwnerId)
+} ?: when (filterOptions) {
+    is MaintenanceTaskFilters.ByType -> MaintenanceTaskByHcPartyAndTypeFilter(
+        type = filterOptions.type,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is MaintenanceTaskFilters.AfterDate -> MaintenanceTaskAfterDateFilter(
+        date = filterOptions.date,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is MaintenanceTaskFilters.ByIdentifiers -> MaintenanceTaskByHcPartyAndIdentifiersFilter(
+        identifiers = filterOptions.identifiers,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is MaintenanceTaskFilters.ByIds -> MaintenanceTaskByIdsFilter(ids = filterOptions.ids.toSet())
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering MaintenanceTasks")
 }

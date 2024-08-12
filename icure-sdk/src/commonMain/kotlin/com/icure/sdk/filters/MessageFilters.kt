@@ -1,6 +1,9 @@
 package com.icure.sdk.filters
 
 import com.icure.sdk.model.Message
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.message.LatestMessageByHcPartyTransportGuidFilter
+import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
 import com.icure.sdk.utils.DefaultValue
 
 object MessageFilters {
@@ -40,4 +43,18 @@ object MessageFilters {
 		val transportGuid: String,
 		val dataOwnerId: String?
 	) : SortableFilterOptions<Message>
+}
+
+internal suspend fun mapMessageFilterOptions(
+	filterOptions: FilterOptions<Message>,
+	selfDataOwnerId: String
+): AbstractFilter<Message> = mapIfMetaFilterOptions(filterOptions) {
+	mapMessageFilterOptions(it, selfDataOwnerId)
+} ?: when (filterOptions) {
+	is MessageFilters.ByDataOwner -> MessageByHcPartyFilter(hcpId = filterOptions.dataOwnerId ?: selfDataOwnerId)
+	is MessageFilters.ByTransportGuidDate -> LatestMessageByHcPartyTransportGuidFilter(
+		transportGuid = filterOptions.transportGuid,
+		healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+	)
+	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Messages")
 }

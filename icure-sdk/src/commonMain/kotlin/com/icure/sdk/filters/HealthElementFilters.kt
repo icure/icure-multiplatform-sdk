@@ -1,9 +1,21 @@
 package com.icure.sdk.filters
 
+import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.ContactFilters.byPatientsSecretIds
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
+import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyIdentifiersFilter
+import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartySecretForeignKeysFilter
+import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyTagCodeFilter
+import com.icure.sdk.model.filter.healthelement.HealthElementByIdsFilter
 import com.icure.sdk.utils.DefaultValue
+import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.requireUniqueElements
 
 object HealthElementFilters {
     /**
@@ -107,6 +119,14 @@ object HealthElementFilters {
     /**
      * Options for health element filtering which match all health elements shared with a specific data owner that are linked with one
      * of the provided patients.
+     *
+     * When using these options the sdk will automatically extract the secret ids from the provided patients and use
+     * those for filtering.
+     * If you already have the secret ids of the patient you may instead use [byPatientsSecretIds].
+     * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+     * simply be ignored.
+     * Note that these may not be used in methods of apis from [IcureBaseApis].
+     *
      * These options are sortable. When sorting using these options the health elements will be sorted by the patients, using
      * the same order as the input patients.
      * @param patients a list of patients.
@@ -151,7 +171,8 @@ object HealthElementFilters {
     /**
      * Filter options that match all health elements with one of the provided ids.
      * These options are sortable. When sorting using these options the health elements will have the same order as the input ids.
-     * @param ids a list of health element ids.
+     * @param ids a list of unique health element ids.
+     * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
     fun byIds(
         ids: List<String>
@@ -159,5 +180,52 @@ object HealthElementFilters {
 
     internal class ByIds(
         val ids: List<String>
-    ): SortableFilterOptions<HealthElement>
+    ): SortableFilterOptions<HealthElement> {
+        init {
+            ids.requireUniqueElements("`ids`")
+        }
+    }
+}
+
+@InternalIcureApi
+internal suspend fun mapHealthElementFilterOptions(
+    filterOptions: FilterOptions<HealthElement>,
+    selfDataOwnerId: String,
+    entityEncryptionService: EntityEncryptionService?
+): AbstractFilter<HealthElement> = mapIfMetaFilterOptions(filterOptions) {
+    mapHealthElementFilterOptions(it, selfDataOwnerId, entityEncryptionService)
+} ?: when (filterOptions) {
+    is HealthElementFilters.ByDataOwner -> HealthElementByHcPartyFilter(hcpId = filterOptions.dataOwnerId ?: selfDataOwnerId)
+    is HealthElementFilters.ByCode -> HealthElementByHcPartyTagCodeFilter(
+        tagType = null,
+        tagCode = null,
+        codeType = filterOptions.codeType,
+        codeCode = filterOptions.codeCode,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is HealthElementFilters.ByIdentifiers -> HealthElementByHcPartyIdentifiersFilter(
+        identifiers = filterOptions.identifiers,
+        hcPartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is HealthElementFilters.ByIds -> HealthElementByIdsFilter(ids = filterOptions.ids.toSet())
+    is HealthElementFilters.ByPatients -> HealthElementByHcPartySecretForeignKeysFilter(
+        patientSecretForeignKeys = filterOptions.patients.flatMap {
+            requireNotNull(entityEncryptionService) {
+                "Health element filter options `byPatients` can't be used in iCure base apis"
+            }.secretIdsOf(it.withTypeInfo(), null)
+        }.toSet(),
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is HealthElementFilters.ByPatientsSecretIds -> HealthElementByHcPartySecretForeignKeysFilter(
+        patientSecretForeignKeys = filterOptions.secretIds.toSet(),
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is HealthElementFilters.ByTag -> HealthElementByHcPartyTagCodeFilter(
+        tagType = filterOptions.tagType,
+        tagCode = filterOptions.tagCode,
+        codeType = null,
+        codeCode = null,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering HealthElements")
 }

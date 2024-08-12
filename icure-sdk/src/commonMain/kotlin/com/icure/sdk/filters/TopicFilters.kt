@@ -1,6 +1,9 @@
 package com.icure.sdk.filters
 
 import com.icure.sdk.model.Topic
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.topic.TopicByHcPartyFilter
+import com.icure.sdk.model.filter.topic.TopicByParticipantFilter
 import com.icure.sdk.utils.DefaultValue
 
 object TopicFilters {
@@ -33,4 +36,15 @@ object TopicFilters {
     internal class ByParticipant(
         val participantId: String
     ) : FilterOptions<Topic>
+}
+
+internal suspend fun mapTopicFilterOptions(
+    filterOptions: FilterOptions<Topic>,
+    selfDataOwnerId: String
+): AbstractFilter<Topic> = mapIfMetaFilterOptions(filterOptions) {
+    mapTopicFilterOptions(it, selfDataOwnerId)
+} ?: when (filterOptions) {
+    is TopicFilters.ByDataOwner -> TopicByHcPartyFilter(hcpId = filterOptions.dataOwnerId ?: selfDataOwnerId)
+    is TopicFilters.ByParticipant -> TopicByParticipantFilter(participantId = filterOptions.participantId)
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Topics")
 }

@@ -1,6 +1,11 @@
 package com.icure.sdk.filters
 
 import com.icure.sdk.model.Code
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.code.AllCodesFilter
+import com.icure.sdk.model.filter.code.CodeByIdsFilter
+import com.icure.sdk.model.filter.code.CodeByRegionTypeLabelLanguageFilter
+import com.icure.sdk.utils.requireUniqueElements
 
 object CodeFilters {
     /**
@@ -12,7 +17,8 @@ object CodeFilters {
     /**
      * Filter options that match all codes with one of the provided ids.
      * These options are sortable. When sorting using these options the codes will have the same order as the input ids.
-     * @param ids a list of code ids.
+     * @param ids a list of unique code ids.
+     * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
     fun byIds(
         ids: List<String>
@@ -55,7 +61,11 @@ object CodeFilters {
 
     internal class ByIds(
         val ids: List<String>
-    ): SortableFilterOptions<Code>
+    ): SortableFilterOptions<Code> {
+        init {
+            ids.requireUniqueElements("`ids`")
+        }
+    }
 
     internal class ByLanguageTypeLabelRegion(
         val language: String,
@@ -69,4 +79,18 @@ object CodeFilters {
             }
         }
     }
+}
+
+internal suspend fun mapCodeFilterOptions(
+    filterOptions: FilterOptions<Code>
+): AbstractFilter<Code> = mapIfMetaFilterOptions(filterOptions, ::mapCodeFilterOptions) ?: when (filterOptions) {
+    CodeFilters.All -> AllCodesFilter()
+    is CodeFilters.ByIds -> CodeByIdsFilter(ids = filterOptions.ids.toSet())
+    is CodeFilters.ByLanguageTypeLabelRegion -> CodeByRegionTypeLabelLanguageFilter(
+        language = filterOptions.language,
+        type = filterOptions.type,
+        label = filterOptions.label,
+        region = filterOptions.region
+    )
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Codes")
 }

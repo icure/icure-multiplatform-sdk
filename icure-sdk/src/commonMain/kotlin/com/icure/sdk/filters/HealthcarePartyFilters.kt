@@ -2,7 +2,14 @@ package com.icure.sdk.filters
 
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.hcparty.AllHealthcarePartiesFilter
+import com.icure.sdk.model.filter.hcparty.HealthcarePartyByIdentifiersFilter
+import com.icure.sdk.model.filter.hcparty.HealthcarePartyByIdsFilter
+import com.icure.sdk.model.filter.hcparty.HealthcarePartyByNameFilter
+import com.icure.sdk.model.filter.hcparty.HealthcarePartyByTagCodeFilter
 import com.icure.sdk.utils.DefaultValue
+import com.icure.sdk.utils.requireUniqueElements
 
 object HealthcarePartyFilters {
     /**
@@ -58,7 +65,8 @@ object HealthcarePartyFilters {
     /**
      * Filter options that match all healthcare parties with one of the provided ids.
      * These options are sortable. When sorting using these options the healthcare parties will have the same order as the input ids.
-     * @param ids a list of healthcare party ids.
+     * @param ids a list of unique healthcare party ids.
+     * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
     fun byIds(
         ids: List<String>
@@ -92,10 +100,40 @@ object HealthcarePartyFilters {
     ): SortableFilterOptions<HealthcareParty>
     internal class ByIds(
         val ids: List<String>
-    ): SortableFilterOptions<HealthcareParty>
+    ): SortableFilterOptions<HealthcareParty> {
+        init {
+            ids.requireUniqueElements("`ids`")
+        }
+    }
 
     internal class ByName(
         val searchString: String,
         val descending: Boolean
     ): SortableFilterOptions<HealthcareParty>
+}
+
+
+internal suspend fun mapHealthcarePartyFilterOptions(
+    filterOptions: FilterOptions<HealthcareParty>
+): AbstractFilter<HealthcareParty> = mapIfMetaFilterOptions(filterOptions, ::mapHealthcarePartyFilterOptions) ?: when (filterOptions) {
+    HealthcarePartyFilters.All -> AllHealthcarePartiesFilter()
+    is HealthcarePartyFilters.ByIds -> HealthcarePartyByIdsFilter(ids = filterOptions.ids.toSet())
+    is HealthcarePartyFilters.ByIdentifiers -> HealthcarePartyByIdentifiersFilter(identifiers = filterOptions.identifiers)
+    is HealthcarePartyFilters.ByCode -> HealthcarePartyByTagCodeFilter(
+        tagType = null,
+        tagCode = null,
+        codeType = filterOptions.codeType,
+        codeCode = filterOptions.codeCode,
+    )
+    is HealthcarePartyFilters.ByName -> HealthcarePartyByNameFilter(
+        name = filterOptions.searchString,
+        descending = filterOptions.descending
+    )
+    is HealthcarePartyFilters.ByTag -> HealthcarePartyByTagCodeFilter(
+        tagType = filterOptions.tagType,
+        tagCode = filterOptions.tagCode,
+        codeType = null,
+        codeCode = null,
+    )
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering HealthcareParties")
 }

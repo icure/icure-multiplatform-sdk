@@ -1,9 +1,19 @@
 package com.icure.sdk.filters
 
+import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.contact.ContactByHcPartyFilter
+import com.icure.sdk.model.filter.contact.ContactByHcPartyIdentifiersFilter
+import com.icure.sdk.model.filter.contact.ContactByHcPartyPatientTagCodeDateFilter
+import com.icure.sdk.model.filter.contact.ContactByHcPartyTagCodeDateFilter
+import com.icure.sdk.model.filter.contact.ContactByServiceIdsFilter
 import com.icure.sdk.utils.DefaultValue
+import com.icure.sdk.utils.InternalIcureApi
 
 object ContactFilters {
 	/**
@@ -116,6 +126,14 @@ object ContactFilters {
 	/**
 	 * Options for contact filtering which match all contacts shared with a specific data owner that are linked with one
 	 * of the provided patients.
+	 *
+	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
+	 * those for filtering.
+	 * If you already have the secret ids of the patient you may instead use [byPatientsSecretIds].
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 * Note that these may not be used in methods of apis from [IcureBaseApis].
+	 *
 	 * These options are sortable. When sorting using these options the contacts will be sorted by the patients, using
 	 * the same order as the input patients.
 	 * @param patients a list of patients.
@@ -216,4 +234,55 @@ object ContactFilters {
 		val serviceIds: List<String>,
 		val dataOwnerId: String?
 	): SortableFilterOptions<Contact>
+}
+
+@InternalIcureApi
+internal suspend fun mapContactFilterOptions(
+	filterOptions: FilterOptions<Contact>,
+	selfDataOwnerId: String,
+	entityEncryptionService: EntityEncryptionService?
+): AbstractFilter<Contact> = mapIfMetaFilterOptions(filterOptions) {
+	mapContactFilterOptions(it, selfDataOwnerId, entityEncryptionService)
+} ?: when (filterOptions) {
+	is ContactFilters.ByDataOwner -> ContactByHcPartyFilter(
+		hcpId = filterOptions.dataOwnerId ?: selfDataOwnerId
+	)
+	is ContactFilters.ByCodeAndOpeningDate -> ContactByHcPartyTagCodeDateFilter(
+		tagType = null,
+		tagCode = null,
+		codeType = filterOptions.codeType,
+		codeCode = filterOptions.codeCode,
+		startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
+		endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
+		healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+	)
+	is ContactFilters.ByIdentifiers -> ContactByHcPartyIdentifiersFilter(
+		identifiers = filterOptions.identifiers,
+		healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+	)
+	is ContactFilters.ByPatients -> ContactByHcPartyPatientTagCodeDateFilter(
+		patientSecretForeignKeys = filterOptions.patients.flatMap {
+			requireNotNull(entityEncryptionService) {
+				"Contact filter options `byPatients` can't be used in iCure base apis"
+			}.secretIdsOf(it.withTypeInfo(), null)
+		},
+		healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+	)
+	is ContactFilters.ByPatientsSecretIds -> ContactByHcPartyPatientTagCodeDateFilter(
+		patientSecretForeignKeys = filterOptions.secretIds,
+		healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+	)
+	is ContactFilters.ByServiceIds -> ContactByServiceIdsFilter(
+		ids = filterOptions.serviceIds
+	)
+	is ContactFilters.ByTagAndOpeningDate -> ContactByHcPartyTagCodeDateFilter(
+		tagType = filterOptions.tagType,
+		tagCode = filterOptions.tagCode,
+		codeType = null,
+		codeCode = null,
+		startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
+		endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
+		healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+	)
+	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Contacts")
 }

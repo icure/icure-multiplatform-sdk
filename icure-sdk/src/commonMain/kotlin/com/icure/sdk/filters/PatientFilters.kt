@@ -5,7 +5,22 @@ import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.Address
 import com.icure.sdk.model.embed.Gender
 import com.icure.sdk.model.embed.Telecom
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyAndActiveFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyAndAddressFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyAndExternalIdFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyAndIdentifiersFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyAndSsinFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyAndSsinsFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyAndTelecomFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyDateOfBirthBetweenFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyDateOfBirthFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyGenderEducationProfession
+import com.icure.sdk.model.filter.patient.PatientByHcPartyNameContainsFuzzyFilter
+import com.icure.sdk.model.filter.patient.PatientByIdsFilter
 import com.icure.sdk.utils.DefaultValue
+import com.icure.sdk.utils.requireUniqueElements
 
 object PatientFilters {
     /**
@@ -23,7 +38,8 @@ object PatientFilters {
     /**
      * Filter options that match all patients with one of the provided ids.
      * These options are sortable. When sorting using these options the patients will have the same order as the input ids.
-     * @param ids a list of patient ids.
+     * @param ids a list of unique patient ids.
+     * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
     fun byIds(
         ids: List<String>
@@ -65,15 +81,15 @@ object PatientFilters {
 
     /**
      * Options for patient filtering which match all the patients shared with a specific data owner that have
-     * [Patient.dateOfBirth] between the provided values.
+     * [Patient.dateOfBirth] between the provided values (inclusive).
      * These options are sortable. When sorting using these options the patients will be ordered by date of birth.
-     * @param fromDate the start date in YYYYMMDD format
-     * @param toDate the end date in YYYYMMDD format
+     * @param fromDate the start date in YYYYMMDD format (inclusive)
+     * @param toDate the end date in YYYYMMDD format (inclusive)
      * @param dataOwnerId a data owner id or null to use the current data owner id
      */
     fun byDateOfBirthBetween(
-        fromDate: Long,
-        toDate: Long,
+        fromDate: Int,
+        toDate: Int,
         @DefaultValue("null")
         dataOwnerId: String? = null
     ): SortableFilterOptions<Patient> = ByDateOfBirthBetween(
@@ -240,7 +256,11 @@ object PatientFilters {
 
     internal class ByIds(
         val ids: List<String>
-    ) : SortableFilterOptions<Patient>
+    ) : SortableFilterOptions<Patient> {
+        init {
+            ids.requireUniqueElements("`ids`")
+        }
+    }
 
     internal class BySsins(
         val ssins: List<String>,
@@ -248,8 +268,8 @@ object PatientFilters {
     ): SortableFilterOptions<Patient>
 
     internal class ByDateOfBirthBetween(
-        val fromDate: Long,
-        val toDate: Long,
+        val fromDate: Int,
+        val toDate: Int,
         val dataOwnerId: String?
     ): SortableFilterOptions<Patient>
 
@@ -297,4 +317,79 @@ object PatientFilters {
         val externalIdPrefix: String,
         val dataOwnerId: String?
     ) : SortableFilterOptions<Patient>
+}
+
+
+internal suspend fun mapPatientFilterOptions(
+    filterOptions: FilterOptions<Patient>,
+    selfDataOwnerId: String
+): AbstractFilter<Patient> = mapIfMetaFilterOptions(filterOptions) {
+    mapPatientFilterOptions(it, selfDataOwnerId)
+} ?: when (filterOptions) {
+    is PatientFilters.ByActive -> PatientByHcPartyAndActiveFilter(
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId,
+        active = filterOptions.active
+    )
+    is PatientFilters.ByDataOwner -> PatientByHcPartyFilter(
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId,
+    )
+    is PatientFilters.ByAddress -> PatientByHcPartyAndAddressFilter(
+        searchString = filterOptions.searchString,
+        postalCode = null,
+        houseNumber = null,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is PatientFilters.ByAddressPostalCodeHouseNumber -> PatientByHcPartyAndAddressFilter(
+        searchString = filterOptions.searchString,
+        postalCode = filterOptions.postalCode,
+        houseNumber = filterOptions.houseNumber,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is PatientFilters.ByDateOfBirthBetween -> if (filterOptions.fromDate == filterOptions.toDate) {
+        PatientByHcPartyDateOfBirthFilter(
+            dateOfBirth = filterOptions.fromDate,
+            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        )
+    } else {
+        PatientByHcPartyDateOfBirthBetweenFilter(
+            minDateOfBirth = filterOptions.fromDate,
+            maxDateOfBirth = filterOptions.toDate,
+            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        )
+    }
+    is PatientFilters.ByExternalId -> PatientByHcPartyAndExternalIdFilter(
+        externalId = filterOptions.externalIdPrefix,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is PatientFilters.ByFuzzyName -> PatientByHcPartyNameContainsFuzzyFilter(
+        searchString = filterOptions.searchString,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is PatientFilters.ByGenderEducationProfession -> PatientByHcPartyGenderEducationProfession(
+        gender = filterOptions.gender,
+        education = filterOptions.education,
+        profession = filterOptions.profession,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is PatientFilters.ByIdentifiers -> PatientByHcPartyAndIdentifiersFilter(
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId,
+        identifiers = filterOptions.identifiers
+    )
+    is PatientFilters.ByIds -> PatientByIdsFilter(ids = filterOptions.ids.toSet())
+    is PatientFilters.BySsins -> if (filterOptions.ssins.size == 1) {
+        PatientByHcPartyAndSsinFilter(
+            ssin = filterOptions.ssins.first(),
+            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        )
+    } else {
+        PatientByHcPartyAndSsinsFilter(
+            ssins = filterOptions.ssins,
+            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        )
+    }
+    is PatientFilters.ByTelecom -> PatientByHcPartyAndTelecomFilter(
+        searchString = filterOptions.searchString,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
 }

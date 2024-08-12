@@ -1,11 +1,24 @@
 package com.icure.sdk.filters
 
+import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.ContactFilters.byPatientsSecretIds
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.embed.SubContact
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.service.ServiceByHcPartyFilter
+import com.icure.sdk.model.filter.service.ServiceByHcPartyHealthElementIdsFilter
+import com.icure.sdk.model.filter.service.ServiceByHcPartyIdentifiersFilter
+import com.icure.sdk.model.filter.service.ServiceByHcPartyTagCodeDateFilter
+import com.icure.sdk.model.filter.service.ServiceByIdsFilter
+import com.icure.sdk.model.filter.service.ServiceBySecretForeignKeys
 import com.icure.sdk.utils.DefaultValue
+import com.icure.sdk.utils.InternalIcureApi
+import com.icure.sdk.utils.requireUniqueElements
 
 object ServiceFilters {
     /**
@@ -118,6 +131,14 @@ object ServiceFilters {
     /**
      * Options for service filtering which match all services shared with a specific data owner that are linked with one
      * of the provided patients.
+     *
+     * When using these options the sdk will automatically extract the secret ids from the provided patients and use
+     * those for filtering.
+     * If you already have the secret ids of the patient you may instead use [byPatientsSecretIds].
+     * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+     * simply be ignored.
+     * Note that these may not be used in methods of apis from [IcureBaseApis].
+     *
      * These options are sortable. When sorting using these options the services will be sorted by the patients, using
      * the same order as the input patients.
      * @param patients a list of patients.
@@ -173,7 +194,8 @@ object ServiceFilters {
     /**
      * Filter options that match all services with one of the provided ids.
      * These options are sortable. When sorting using these options the services will have the same order as the input ids.
-     * @param ids a list of service ids.
+     * @param ids a list of unique service ids.
+     * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
     fun byIds(
         ids: List<String>
@@ -233,5 +255,64 @@ object ServiceFilters {
 
     internal class ByIds(
         val ids: List<String>
-    ): SortableFilterOptions<Service>
+    ): SortableFilterOptions<Service> {
+        init {
+            ids.requireUniqueElements("`ids`")
+        }
+    }
+}
+
+@InternalIcureApi
+internal suspend fun mapServiceFilterOptions(
+    filterOptions: FilterOptions<Service>,
+    selfDataOwnerId: String,
+    entityEncryptionService: EntityEncryptionService?
+): AbstractFilter<Service> = mapIfMetaFilterOptions(filterOptions) {
+    mapServiceFilterOptions(it, selfDataOwnerId, entityEncryptionService)
+} ?: when (filterOptions) {
+    is ServiceFilters.ByDataOwner -> ServiceByHcPartyFilter(
+        hcpId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is ServiceFilters.ByCodeAndValueDate -> ServiceByHcPartyTagCodeDateFilter(
+        patientSecretForeignKey = null,
+        tagType = null,
+        tagCode = null,
+        codeType = filterOptions.codeType,
+        codeCode = filterOptions.codeCode,
+        startValueDate = filterOptions.startOfServiceValueDate,
+        endValueDate = filterOptions.endOfServiceValueDate,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is ServiceFilters.ByHealthElementIdFromSubcontact -> ServiceByHcPartyHealthElementIdsFilter(
+        healthElementIds = filterOptions.healthElementIds,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is ServiceFilters.ByIdentifiers -> ServiceByHcPartyIdentifiersFilter(
+        identifiers = filterOptions.identifiers,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is ServiceFilters.ByIds -> ServiceByIdsFilter(ids = filterOptions.ids.toSet())
+    is ServiceFilters.ByPatients -> ServiceBySecretForeignKeys(
+        patientSecretForeignKeys = filterOptions.patients.flatMap {
+            requireNotNull(entityEncryptionService) {
+                "Service filter options `byPatients` can't be used in iCure base apis"
+            }.secretIdsOf(it.withTypeInfo(), null)
+        }.toSet(),
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is ServiceFilters.ByPatientsSecretIds -> ServiceBySecretForeignKeys(
+        patientSecretForeignKeys = filterOptions.secretIds.toSet(),
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    is ServiceFilters.ByTagAndValueDate -> ServiceByHcPartyTagCodeDateFilter(
+        patientSecretForeignKey = null,
+        tagType = filterOptions.tagType,
+        tagCode = filterOptions.tagCode,
+        codeType = null,
+        codeCode = null,
+        startValueDate = filterOptions.startOfServiceValueDate,
+        endValueDate = filterOptions.endOfServiceValueDate,
+        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+    )
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Services")
 }
