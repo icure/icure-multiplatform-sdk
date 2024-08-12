@@ -24,16 +24,21 @@ import com.icure.sdk.utils.requireUniqueElements
 
 object PatientFilters {
     /**
-     * Create options for patient filtering that will match all patients shared with a specific data owner.
-     * If [dataOwnerId] is null the filter will match all patients shared directly with the current data owner.
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * Create options for patient filtering that will match all patients shared directly (i.e. ignoring hierarchies) with a specific data owner.
+     * @param dataOwnerId a data owner id
      * @return options for patient filtering
      */
     fun allPatientsForDataOwner(
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): FilterOptions<Patient> =
-        ByDataOwner(dataOwnerId)
+        dataOwnerId: String
+    ): BaseFilterOptions<Patient> =
+        AllForDataOwner(dataOwnerId)
+
+    /**
+     * Create options for patient filtering that will match all patients shared directly (i.e. ignoring hierarchies) with the current data owner.
+     * @return options for patient filtering
+     */
+    fun allPatientsForSelf(): FilterOptions<Patient> =
+        AllForSelf
 
     /**
      * Filter options that match all patients with one of the provided ids.
@@ -47,7 +52,7 @@ object PatientFilters {
         ByIds(ids)
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have at least
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have at least
      * an identifier that has the same exact [Identifier.system] and [Identifier.value] as one of the provided
      * [identifiers]. Other properties of the provided identifiers are ignored.
      *
@@ -55,66 +60,62 @@ object PatientFilters {
      * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
      * sorting.
      * @param identifiers a list of identifiers
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      * @return options for patient filtering
      */
-    fun byIdentifiers(
-        identifiers: List<Identifier>,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): SortableFilterOptions<Patient> =
-        ByIdentifiers(identifiers, dataOwnerId)
+    fun byIdentifiersForDataOwner(
+        dataOwnerId: String,
+        identifiers: List<Identifier>
+    ): BaseSortableFilterOptions<Patient> =
+        ByIdentifiersForDataOwner(identifiers, dataOwnerId)
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have
      * [Patient.ssin] matching one of the provided ssins.
      * These options are sortable. When sorting using these options the patients will be in the same order as the
      * provided ssins.
      * @param ssins a list of ssins
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun bySsins(
-        ssins: List<String>,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): SortableFilterOptions<Patient> = BySsins(ssins, dataOwnerId)
+    fun bySsinsForDataOwner(
+        dataOwnerId: String,
+        ssins: List<String>
+    ): BaseSortableFilterOptions<Patient> = BySsinsForDataOwner(ssins, dataOwnerId)
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have
      * [Patient.dateOfBirth] between the provided values (inclusive).
      * These options are sortable. When sorting using these options the patients will be ordered by date of birth.
      * @param fromDate the start date in YYYYMMDD format (inclusive)
      * @param toDate the end date in YYYYMMDD format (inclusive)
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byDateOfBirthBetween(
+    fun byDateOfBirthBetweenForDataOwner(
+        dataOwnerId: String,
         fromDate: Int,
-        toDate: Int,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): SortableFilterOptions<Patient> = ByDateOfBirthBetween(
+        toDate: Int
+    ): BaseSortableFilterOptions<Patient> = ByDateOfBirthBetweenForDataOwner(
         fromDate = fromDate,
         toDate = toDate,
         dataOwnerId = dataOwnerId
     )
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have the
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have the
      * provided search string contained within [Patient.firstName], [Patient.lastName], [Patient.maidenName], or
      * [Patient.spouseName].
      *
      * @param searchString part of a patient name.
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byFuzzyName(
-        searchString: String,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): FilterOptions<Patient> =
-        ByFuzzyName(searchString, dataOwnerId)
+    fun byFuzzyNameForDataOwner(
+        dataOwnerId: String,
+        searchString: String
+    ): BaseFilterOptions<Patient> =
+        ByFuzzyNameForDataOwner(searchString, dataOwnerId)
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have the
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have the
      * provided [Patient.gender], and optionally also the provided [Patient.education] and [Patient.profession].
      * Note you can only provide profession if you have provided the education.
      *
@@ -126,19 +127,18 @@ object PatientFilters {
      * this filter.
      * @param profession the patient profession. If not provided patient the profession of the patient will be ignored by
      * this filter.
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      * @throws IllegalArgumentException if [profession] is not null and [education] is null.
      */
-    fun byGenderEducationProfession(
+    fun byGenderEducationProfessionForDataOwner(
+        dataOwnerId: String,
         gender: Gender,
         @DefaultValue("null")
         education: String? = null,
         @DefaultValue("null")
-        profession: String? = null,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): SortableFilterOptions<Patient> =
-        ByGenderEducationProfession(
+        profession: String? = null
+    ): BaseSortableFilterOptions<Patient> =
+        ByGenderEducationProfessionForDataOwner(
             gender = gender,
             education = education,
             profession = profession,
@@ -146,20 +146,19 @@ object PatientFilters {
         )
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have the
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have the
      * provided [Patient.active] value.
      *
      * @param active true if the options should match active patients, false if it should match inactive patients.
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byActive(
-        active: Boolean,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ) : FilterOptions<Patient> = ByActive(active, dataOwnerId)
+    fun byActiveForDataOwner(
+        dataOwnerId: String,
+        active: Boolean
+    ) : BaseFilterOptions<Patient> = ByActiveForDataOwner(active, dataOwnerId)
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have at least
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have at least
      * an address with a [Patient.addresses] where one of the [Address.telecoms] has a [Telecom.telecomNumber] that
      * starts with the provided [searchString].
      *
@@ -167,16 +166,15 @@ object PatientFilters {
      * the matching telecom number.
      *
      * @param searchString start of a patient telecom. Non-alphanumeric characters are ignored.
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byTelecom(
-        searchString: String,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ) : SortableFilterOptions<Patient> = ByTelecom(searchString, dataOwnerId)
+    fun byTelecomForDataOwner(
+        dataOwnerId: String,
+        searchString: String
+    ) : BaseSortableFilterOptions<Patient> = ByTelecomForDataOwner(searchString, dataOwnerId)
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have at least
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have at least
      * an [Patient.addresses] where the [Address.street] or [Address.city] contain the provided [searchString] and
      * [Address.postalCode] matches the provided [postalCode].
      * Additionally you can limit the search to a specific house number.
@@ -187,17 +185,16 @@ object PatientFilters {
      * @param searchString part of a patient address street or city
      * @param postalCode the patient postal code
      * @param houseNumber the patient house number
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byAddressPostalCodeHouseNumber(
+    fun byAddressPostalCodeHouseNumberForDataOwner(
+        dataOwnerId: String,
         searchString: String,
         postalCode: String,
         @DefaultValue("null")
-        houseNumber: String? = null,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ) : SortableFilterOptions<Patient> =
-        ByAddressPostalCodeHouseNumber(
+        houseNumber: String? = null
+    ) : BaseSortableFilterOptions<Patient> =
+        ByAddressPostalCodeHouseNumberForDataOwner(
             searchString = searchString,
             postalCode = postalCode,
             houseNumber = houseNumber,
@@ -205,7 +202,7 @@ object PatientFilters {
         )
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have at least
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have at least
      * an [Patient.addresses] where the [Address.street], [Address.postalCode] or [Address.city] contain the provided
      * [searchString].
      *
@@ -213,46 +210,200 @@ object PatientFilters {
      * by the matching portion of street+postalCode+city, then by postal code and finally by house number.
      *
      * @param searchString part of a patient address street, postal code, or city
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byAddress(
-        searchString: String,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ) : SortableFilterOptions<Patient> =
-        ByAddress(
+    fun byAddressForDataOwner(
+        dataOwnerId: String,
+        searchString: String
+    ) : BaseSortableFilterOptions<Patient> =
+        ByAddressForDataOwner(
             searchString = searchString,
             dataOwnerId = dataOwnerId
         )
 
     /**
-     * Options for patient filtering which match all the patients shared with a specific data owner that have [Patient.externalId]
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have [Patient.externalId]
      * starting with the provided [externalIdPrefix].
      *
      * These options are sortable. When sorting using these options the patients will be ordered lexicographically by
      * the full [Patient.externalId].
      *
      * @param externalIdPrefix a patient external id prefix
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byExternalId(
-        externalIdPrefix: String,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ) : SortableFilterOptions<Patient> =
-        ByExternalId(
+    fun byExternalIdForDataOwner(
+        dataOwnerId: String,
+        externalIdPrefix: String
+    ) : BaseSortableFilterOptions<Patient> =
+        ByExternalIdForDataOwner(
             externalIdPrefix = externalIdPrefix,
             dataOwnerId = dataOwnerId
         )
 
-    internal class ByDataOwner(
-        val dataOwnerId: String?
-    ) : FilterOptions<Patient>
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have at least
+     * an identifier that has the same exact [Identifier.system] and [Identifier.value] as one of the provided
+     * [identifiers]. Other properties of the provided identifiers are ignored.
+     *
+     * These options are sortable. When sorting using these options the patients will be in the same order as the input
+     * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
+     * sorting.
+     * @param identifiers a list of identifiers
+     * @return options for patient filtering
+     */
+    fun byIdentifiersForSelf(
+        identifiers: List<Identifier>
+    ): SortableFilterOptions<Patient> =
+        ByIdentifiersForSelf(identifiers)
 
-    internal class ByIdentifiers(
-        val identifiers: List<Identifier>,
-        val dataOwnerId: String?
-    ) : SortableFilterOptions<Patient>
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have
+     * [Patient.ssin] matching one of the provided ssins.
+     * These options are sortable. When sorting using these options the patients will be in the same order as the
+     * provided ssins.
+     * @param ssins a list of ssins
+     */
+    fun bySsinsForSelf(
+        ssins: List<String>
+    ): SortableFilterOptions<Patient> = BySsinsForSelf(ssins)
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have
+     * [Patient.dateOfBirth] between the provided values (inclusive).
+     * These options are sortable. When sorting using these options the patients will be ordered by date of birth.
+     * @param fromDate the start date in YYYYMMDD format (inclusive)
+     * @param toDate the end date in YYYYMMDD format (inclusive)
+     */
+    fun byDateOfBirthBetweenForSelf(
+        fromDate: Int,
+        toDate: Int
+    ): SortableFilterOptions<Patient> = ByDateOfBirthBetweenForSelf(
+        fromDate = fromDate,
+        toDate = toDate,
+    )
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have the
+     * provided search string contained within [Patient.firstName], [Patient.lastName], [Patient.maidenName], or
+     * [Patient.spouseName].
+     *
+     * @param searchString part of a patient name.
+     */
+    fun byFuzzyNameForSelf(
+        searchString: String
+    ): FilterOptions<Patient> =
+        ByFuzzyNameForSelf(searchString)
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have the
+     * provided [Patient.gender], and optionally also the provided [Patient.education] and [Patient.profession].
+     * Note you can only provide profession if you have provided the education.
+     *
+     * These options are sortable. When sorting using these options the patients will be ordered first by education
+     * then by profession.
+     *
+     * @param gender the patient gender.
+     * @param education the patient education. If not provided patient the education of the patient will be ignored by
+     * this filter.
+     * @param profession the patient profession. If not provided patient the profession of the patient will be ignored by
+     * this filter.
+     * @throws IllegalArgumentException if [profession] is not null and [education] is null.
+     */
+    fun byGenderEducationProfessionForSelf(
+        gender: Gender,
+        @DefaultValue("null")
+        education: String? = null,
+        @DefaultValue("null")
+        profession: String? = null
+    ): SortableFilterOptions<Patient> =
+        ByGenderEducationProfessionForSelf(
+            gender = gender,
+            education = education,
+            profession = profession,
+        )
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have the
+     * provided [Patient.active] value.
+     *
+     * @param active true if the options should match active patients, false if it should match inactive patients.
+     */
+    fun byActiveForSelf(
+        active: Boolean
+    ) : FilterOptions<Patient> = ByActiveForSelf(active)
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have at least
+     * an address with a [Patient.addresses] where one of the [Address.telecoms] has a [Telecom.telecomNumber] that
+     * starts with the provided [searchString].
+     *
+     * These options are sortable. When sorting using these options the patients will be ordered lexicographically by
+     * the matching telecom number.
+     *
+     * @param searchString start of a patient telecom. Non-alphanumeric characters are ignored.
+     */
+    fun byTelecomForSelf(
+        searchString: String
+    ) : SortableFilterOptions<Patient> = ByTelecomForSelf(searchString)
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have at least
+     * an [Patient.addresses] where the [Address.street] or [Address.city] contain the provided [searchString] and
+     * [Address.postalCode] matches the provided [postalCode].
+     * Additionally you can limit the search to a specific house number.
+     *
+     * These options are sortable. When sorting using these options the patients will be ordered lexicographically first
+     * by the matching portion of street+city, then by postal code and finally by house number.
+     *
+     * @param searchString part of a patient address street or city
+     * @param postalCode the patient postal code
+     * @param houseNumber the patient house number
+     */
+    fun byAddressPostalCodeHouseNumberForSelf(
+        searchString: String,
+        postalCode: String,
+        @DefaultValue("null")
+        houseNumber: String? = null
+    ) : SortableFilterOptions<Patient> =
+        ByAddressPostalCodeHouseNumberForSelf(
+            searchString = searchString,
+            postalCode = postalCode,
+            houseNumber = houseNumber,
+        )
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have at least
+     * an [Patient.addresses] where the [Address.street], [Address.postalCode] or [Address.city] contain the provided
+     * [searchString].
+     *
+     * These options are sortable. When sorting using these options the patients will be ordered lexicographically first
+     * by the matching portion of street+postalCode+city, then by postal code and finally by house number.
+     *
+     * @param searchString part of a patient address street, postal code, or city
+     */
+    fun byAddressForSelf(
+        searchString: String
+    ) : SortableFilterOptions<Patient> =
+        ByAddressForSelf(
+            searchString = searchString,
+        )
+
+    /**
+     * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have [Patient.externalId]
+     * starting with the provided [externalIdPrefix].
+     *
+     * These options are sortable. When sorting using these options the patients will be ordered lexicographically by
+     * the full [Patient.externalId].
+     *
+     * @param externalIdPrefix a patient external id prefix
+     */
+    fun byExternalIdForSelf(
+        externalIdPrefix: String
+    ) : SortableFilterOptions<Patient> =
+        ByExternalIdForSelf(
+            externalIdPrefix = externalIdPrefix,
+        )
+
 
     internal class ByIds(
         val ids: List<String>
@@ -262,27 +413,94 @@ object PatientFilters {
         }
     }
 
-    internal class BySsins(
-        val ssins: List<String>,
-        val dataOwnerId: String?
-    ): SortableFilterOptions<Patient>
+    internal class AllForDataOwner(
+        val dataOwnerId: String
+    ) : BaseFilterOptions<Patient>
 
-    internal class ByDateOfBirthBetween(
+    internal data object AllForSelf : FilterOptions<Patient>
+
+    internal class ByIdentifiersForDataOwner(
+        val identifiers: List<Identifier>,
+        val dataOwnerId: String
+    ) : BaseSortableFilterOptions<Patient>
+
+    internal class BySsinsForDataOwner(
+        val ssins: List<String>,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<Patient>
+
+    internal class ByDateOfBirthBetweenForDataOwner(
         val fromDate: Int,
         val toDate: Int,
-        val dataOwnerId: String?
-    ): SortableFilterOptions<Patient>
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<Patient>
 
-    internal class ByFuzzyName(
+    internal class ByFuzzyNameForDataOwner(
         val searchString: String,
-        val dataOwnerId: String?
-    ) : SortableFilterOptions<Patient>
+        val dataOwnerId: String
+    ) : BaseSortableFilterOptions<Patient>
 
-    internal class ByGenderEducationProfession(
+    internal class ByGenderEducationProfessionForDataOwner(
         val gender: Gender,
         val education: String?,
         val profession: String?,
-        val dataOwnerId: String?
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<Patient> {
+        init {
+            require (profession == null || education != null) {
+                "You must provide a value for education if you want to filter by profession"
+            }
+        }
+    }
+
+    internal class ByActiveForDataOwner(
+        val active: Boolean,
+        val dataOwnerId: String
+    ) : BaseFilterOptions<Patient>
+
+    internal class ByTelecomForDataOwner(
+        val searchString: String,
+        val dataOwnerId: String
+    ) : BaseSortableFilterOptions<Patient>
+
+    internal class ByAddressPostalCodeHouseNumberForDataOwner(
+        val searchString: String,
+        val postalCode: String,
+        val houseNumber: String?,
+        val dataOwnerId: String
+    ) : BaseSortableFilterOptions<Patient>
+
+    internal class ByAddressForDataOwner(
+        val searchString: String,
+        val dataOwnerId: String
+    ) : BaseSortableFilterOptions<Patient>
+
+    internal class ByExternalIdForDataOwner(
+        val externalIdPrefix: String,
+        val dataOwnerId: String
+    ) : BaseSortableFilterOptions<Patient>
+
+    internal class ByIdentifiersForSelf(
+        val identifiers: List<Identifier>
+    ) : SortableFilterOptions<Patient>
+
+    internal class BySsinsForSelf(
+        val ssins: List<String>
+    ): SortableFilterOptions<Patient>
+
+    internal class ByDateOfBirthBetweenForSelf(
+        val fromDate: Int,
+        val toDate: Int
+    ): SortableFilterOptions<Patient>
+
+    internal class ByFuzzyNameForSelf(
+        val searchString: String
+    ) : SortableFilterOptions<Patient>
+
+    internal class ByGenderEducationProfessionForSelf(
+        val gender: Gender,
+        val education: String?,
+        val profession: String?
     ): SortableFilterOptions<Patient> {
         init {
             require (profession == null || education != null) {
@@ -291,31 +509,26 @@ object PatientFilters {
         }
     }
 
-    internal class ByActive(
-        val active: Boolean,
-        val dataOwnerId: String?
+    internal class ByActiveForSelf(
+        val active: Boolean
     ) : FilterOptions<Patient>
 
-    internal class ByTelecom(
-        val searchString: String,
-        val dataOwnerId: String?
+    internal class ByTelecomForSelf(
+        val searchString: String
     ) : SortableFilterOptions<Patient>
 
-    internal class ByAddressPostalCodeHouseNumber(
+    internal class ByAddressPostalCodeHouseNumberForSelf(
         val searchString: String,
         val postalCode: String,
-        val houseNumber: String?,
-        val dataOwnerId: String?
+        val houseNumber: String?
     ) : SortableFilterOptions<Patient>
 
-    internal class ByAddress(
-        val searchString: String,
-        val dataOwnerId: String?
+    internal class ByAddressForSelf(
+        val searchString: String
     ) : SortableFilterOptions<Patient>
 
-    internal class ByExternalId(
-        val externalIdPrefix: String,
-        val dataOwnerId: String?
+    internal class ByExternalIdForSelf(
+        val externalIdPrefix: String
     ) : SortableFilterOptions<Patient>
 }
 
@@ -326,70 +539,134 @@ internal suspend fun mapPatientFilterOptions(
 ): AbstractFilter<Patient> = mapIfMetaFilterOptions(filterOptions) {
     mapPatientFilterOptions(it, selfDataOwnerId)
 } ?: when (filterOptions) {
-    is PatientFilters.ByActive -> PatientByHcPartyAndActiveFilter(
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId,
+    is PatientFilters.AllForDataOwner -> PatientByHcPartyFilter(
+        healthcarePartyId = filterOptions.dataOwnerId,
+    )
+    PatientFilters.AllForSelf -> PatientByHcPartyFilter(
+        healthcarePartyId = selfDataOwnerId,
+    )
+    is PatientFilters.ByIds -> PatientByIdsFilter(ids = filterOptions.ids.toSet())
+    is PatientFilters.ByActiveForDataOwner -> PatientByHcPartyAndActiveFilter(
+        healthcarePartyId = filterOptions.dataOwnerId,
         active = filterOptions.active
     )
-    is PatientFilters.ByDataOwner -> PatientByHcPartyFilter(
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId,
-    )
-    is PatientFilters.ByAddress -> PatientByHcPartyAndAddressFilter(
+    is PatientFilters.ByAddressForDataOwner -> PatientByHcPartyAndAddressFilter(
         searchString = filterOptions.searchString,
         postalCode = null,
         houseNumber = null,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
     )
-    is PatientFilters.ByAddressPostalCodeHouseNumber -> PatientByHcPartyAndAddressFilter(
+    is PatientFilters.ByAddressPostalCodeHouseNumberForDataOwner -> PatientByHcPartyAndAddressFilter(
         searchString = filterOptions.searchString,
         postalCode = filterOptions.postalCode,
         houseNumber = filterOptions.houseNumber,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
     )
-    is PatientFilters.ByDateOfBirthBetween -> if (filterOptions.fromDate == filterOptions.toDate) {
+    is PatientFilters.ByDateOfBirthBetweenForDataOwner -> if (filterOptions.fromDate == filterOptions.toDate) {
         PatientByHcPartyDateOfBirthFilter(
             dateOfBirth = filterOptions.fromDate,
-            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+            healthcarePartyId = filterOptions.dataOwnerId
         )
     } else {
         PatientByHcPartyDateOfBirthBetweenFilter(
             minDateOfBirth = filterOptions.fromDate,
             maxDateOfBirth = filterOptions.toDate,
-            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+            healthcarePartyId = filterOptions.dataOwnerId
         )
     }
-    is PatientFilters.ByExternalId -> PatientByHcPartyAndExternalIdFilter(
+    is PatientFilters.ByExternalIdForDataOwner -> PatientByHcPartyAndExternalIdFilter(
         externalId = filterOptions.externalIdPrefix,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
     )
-    is PatientFilters.ByFuzzyName -> PatientByHcPartyNameContainsFuzzyFilter(
+    is PatientFilters.ByFuzzyNameForDataOwner -> PatientByHcPartyNameContainsFuzzyFilter(
         searchString = filterOptions.searchString,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
     )
-    is PatientFilters.ByGenderEducationProfession -> PatientByHcPartyGenderEducationProfession(
+    is PatientFilters.ByGenderEducationProfessionForDataOwner -> PatientByHcPartyGenderEducationProfession(
         gender = filterOptions.gender,
         education = filterOptions.education,
         profession = filterOptions.profession,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
     )
-    is PatientFilters.ByIdentifiers -> PatientByHcPartyAndIdentifiersFilter(
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId,
+    is PatientFilters.ByIdentifiersForDataOwner -> PatientByHcPartyAndIdentifiersFilter(
+        healthcarePartyId = filterOptions.dataOwnerId,
         identifiers = filterOptions.identifiers
     )
-    is PatientFilters.ByIds -> PatientByIdsFilter(ids = filterOptions.ids.toSet())
-    is PatientFilters.BySsins -> if (filterOptions.ssins.size == 1) {
+    is PatientFilters.BySsinsForDataOwner -> if (filterOptions.ssins.size == 1) {
         PatientByHcPartyAndSsinFilter(
             ssin = filterOptions.ssins.first(),
-            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+            healthcarePartyId = filterOptions.dataOwnerId
         )
     } else {
         PatientByHcPartyAndSsinsFilter(
             ssins = filterOptions.ssins,
-            healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+            healthcarePartyId = filterOptions.dataOwnerId
         )
     }
-    is PatientFilters.ByTelecom -> PatientByHcPartyAndTelecomFilter(
+    is PatientFilters.ByTelecomForDataOwner -> PatientByHcPartyAndTelecomFilter(
         searchString = filterOptions.searchString,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
+    )
+    is PatientFilters.ByActiveForSelf -> PatientByHcPartyAndActiveFilter(
+        healthcarePartyId = selfDataOwnerId,
+        active = filterOptions.active
+    )
+    is PatientFilters.ByAddressForSelf -> PatientByHcPartyAndAddressFilter(
+        searchString = filterOptions.searchString,
+        postalCode = null,
+        houseNumber = null,
+        healthcarePartyId = selfDataOwnerId
+    )
+    is PatientFilters.ByAddressPostalCodeHouseNumberForSelf -> PatientByHcPartyAndAddressFilter(
+        searchString = filterOptions.searchString,
+        postalCode = filterOptions.postalCode,
+        houseNumber = filterOptions.houseNumber,
+        healthcarePartyId = selfDataOwnerId
+    )
+    is PatientFilters.ByDateOfBirthBetweenForSelf -> if (filterOptions.fromDate == filterOptions.toDate) {
+        PatientByHcPartyDateOfBirthFilter(
+            dateOfBirth = filterOptions.fromDate,
+            healthcarePartyId = selfDataOwnerId
+        )
+    } else {
+        PatientByHcPartyDateOfBirthBetweenFilter(
+            minDateOfBirth = filterOptions.fromDate,
+            maxDateOfBirth = filterOptions.toDate,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is PatientFilters.ByExternalIdForSelf -> PatientByHcPartyAndExternalIdFilter(
+        externalId = filterOptions.externalIdPrefix,
+        healthcarePartyId = selfDataOwnerId
+    )
+    is PatientFilters.ByFuzzyNameForSelf -> PatientByHcPartyNameContainsFuzzyFilter(
+        searchString = filterOptions.searchString,
+        healthcarePartyId = selfDataOwnerId
+    )
+    is PatientFilters.ByGenderEducationProfessionForSelf -> PatientByHcPartyGenderEducationProfession(
+        gender = filterOptions.gender,
+        education = filterOptions.education,
+        profession = filterOptions.profession,
+        healthcarePartyId = selfDataOwnerId
+    )
+    is PatientFilters.ByIdentifiersForSelf -> PatientByHcPartyAndIdentifiersFilter(
+        healthcarePartyId = selfDataOwnerId,
+        identifiers = filterOptions.identifiers
+    )
+    is PatientFilters.BySsinsForSelf -> if (filterOptions.ssins.size == 1) {
+        PatientByHcPartyAndSsinFilter(
+            ssin = filterOptions.ssins.first(),
+            healthcarePartyId = selfDataOwnerId
+        )
+    } else {
+        PatientByHcPartyAndSsinsFilter(
+            ssins = filterOptions.ssins,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is PatientFilters.ByTelecomForSelf -> PatientByHcPartyAndTelecomFilter(
+        searchString = filterOptions.searchString,
+        healthcarePartyId = selfDataOwnerId
     )
     else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
 }

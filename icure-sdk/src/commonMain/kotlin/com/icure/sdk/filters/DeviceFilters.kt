@@ -12,13 +12,13 @@ object DeviceFilters {
      * Filter options to match all devices.
      * These options are not sortable.
      */
-    fun all(): FilterOptions<Device> = All
+    fun all(): BaseFilterOptions<Device> = All
 
     /**
      * Filter options to match all devices where the [Device.responsible] is the provided [responsibleId]
      * @param responsibleId the id of the responsible
      */
-    fun byResponsible(responsibleId: String): FilterOptions<Device> = ByResponsible(responsibleId)
+    fun byResponsible(responsibleId: String): BaseFilterOptions<Device> = ByResponsible(responsibleId)
 
     /**
      * Filter options that match all devices with one of the provided ids.
@@ -28,19 +28,19 @@ object DeviceFilters {
      */
     fun byIds(
         ids: List<String>
-    ): SortableFilterOptions<Device> = ByIds(ids)
+    ): BaseSortableFilterOptions<Device> = ByIds(ids)
 
     /**
      * Filter options to match all devices.
      * These options are not sortable.
      */
-    internal data object All: FilterOptions<Device>
+    internal data object All: BaseFilterOptions<Device>
 
-    internal class ByResponsible(val responsibleId: String): FilterOptions<Device>
+    internal class ByResponsible(val responsibleId: String): BaseFilterOptions<Device>
 
     internal class ByIds(
         val ids: List<String>
-    ): SortableFilterOptions<Device> {
+    ): BaseSortableFilterOptions<Device> {
         init {
             ids.requireUniqueElements("`ids`")
         }

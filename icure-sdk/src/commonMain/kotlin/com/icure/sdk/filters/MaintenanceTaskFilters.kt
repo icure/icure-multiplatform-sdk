@@ -7,7 +7,6 @@ import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndIdentifiersFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndTypeFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByIdsFilter
-import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.requireUniqueElements
 
 object MaintenanceTaskFilters {
@@ -19,18 +18,41 @@ object MaintenanceTaskFilters {
      */
     fun byIds(
         ids: List<String>
-    ): SortableFilterOptions<MaintenanceTask> = ByIds(ids)
+    ): BaseSortableFilterOptions<MaintenanceTask> = ByIds(ids)
 
     internal class ByIds(
         val ids : List<String>
-    ): SortableFilterOptions<MaintenanceTask> {
+    ): BaseSortableFilterOptions<MaintenanceTask> {
         init {
             ids.requireUniqueElements("`ids`")
         }
     }
 
     /**
-     * Options for maintenance task filtering which match all the maintenance tasks shared with a specific data owner that have at least
+     * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with a specific data owner that have at least
+     * an identifier that has the same exact [Identifier.system] and [Identifier.value] as one of the provided
+     * [identifiers]. Other properties of the provided identifiers are ignored.
+     *
+     * These options are sortable. When sorting using these options the maintenance tasks will be in the same order as the input
+     * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
+     * sorting.
+     * @param dataOwnerId a data owner id
+     * @param identifiers a list of identifiers
+     * @return options for maintenance task filtering
+     */
+    fun byIdentifiersForDataOwner(
+        dataOwnerId: String,
+        identifiers: List<Identifier>
+    ): BaseSortableFilterOptions<MaintenanceTask> =
+        ByIdentifiersForDataOwner(identifiers, dataOwnerId)
+
+    internal class ByIdentifiersForDataOwner(
+        val identifiers : List<Identifier>,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<MaintenanceTask>
+
+    /**
+     * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with the current data owner that have at least
      * an identifier that has the same exact [Identifier.system] and [Identifier.value] as one of the provided
      * [identifiers]. Other properties of the provided identifiers are ignored.
      *
@@ -38,60 +60,89 @@ object MaintenanceTaskFilters {
      * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
      * sorting.
      * @param identifiers a list of identifiers
-     * @param dataOwnerId a data owner id or null to use the current data owner id
      * @return options for maintenance task filtering
      */
-    fun byIdentifiers(
+    fun byIdentifiersForSelf(
         identifiers: List<Identifier>,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
     ): SortableFilterOptions<MaintenanceTask> =
-        ByIdentifiers(identifiers, dataOwnerId)
+        ByIdentifiersForSelf(identifiers)
 
-    internal class ByIdentifiers(
-        val identifiers : List<Identifier>,
-        val dataOwnerId: String?
+    internal class ByIdentifiersForSelf(
+        val identifiers : List<Identifier>
     ): SortableFilterOptions<MaintenanceTask>
 
     /**
-     * Options for maintenance task filtering which match all the maintenance tasks shared with a specific data owner
+     * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with a specific data owner
      * that have the provided type.
      *
      * @param type a maintenance task type
-     * @param dataOwnerId a data owner id or null to use the current data owner id
+     * @param dataOwnerId a data owner id
      */
-    fun byType(
-        type: String,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): FilterOptions<MaintenanceTask> =
-        ByType(type, dataOwnerId)
+    fun byTypeForDataOwner(
+        dataOwnerId: String,
+        type: String
+    ): BaseFilterOptions<MaintenanceTask> =
+        ByTypeForDataOwner(type, dataOwnerId)
 
-    internal class ByType(
+    internal class ByTypeForDataOwner(
         val type: String,
-        val dataOwnerId: String?
+        val dataOwnerId: String
+    ): BaseFilterOptions<MaintenanceTask>
+
+
+    /**
+     * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with the current data owner
+     * that have the provided type.
+     *
+     * @param type a maintenance task type
+     */
+    fun byTypeForSelf(
+        type: String,
+    ): FilterOptions<MaintenanceTask> =
+        ByTypeForSelf(type)
+
+    internal class ByTypeForSelf(
+        val type: String,
     ): FilterOptions<MaintenanceTask>
 
     /**
-     * Options for maintenance task filtering which match all the maintenance tasks shared with a specific data owner
+     * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with a specific data owner
+     * that have a [MaintenanceTask.created] after the provided date.
+     *
+     * These options are sortable. When sorting using these options the maintenance tasks will be ordered by their
+     * [MaintenanceTask.created].
+     *
+     * @param dataOwnerId a data owner id
+     * @param date a unix timestamp
+     */
+    fun afterDateForDataOwner(
+        dataOwnerId: String,
+        date: Long
+    ): BaseSortableFilterOptions<MaintenanceTask> =
+        AfterDateForDataOwner(date, dataOwnerId)
+
+    internal class AfterDateForDataOwner(
+        val date: Long,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<MaintenanceTask>
+
+
+    /**
+     * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with the current data owner
      * that have a [MaintenanceTask.created] after the provided date.
      *
      * These options are sortable. When sorting using these options the maintenance tasks will be ordered by their
      * [MaintenanceTask.created].
      *
      * @param date a unix timestamp
-     * @param dataOwnerId a data owner id or null to use the current data owner id
      */
-    fun afterDate(
+    fun afterDateForSelf(
         date: Long,
-        @DefaultValue("null")
-        dataOwnerId: String? = null
     ): SortableFilterOptions<MaintenanceTask> =
-        AfterDate(date, dataOwnerId)
+        AfterDateForSelf(date)
 
-    internal class AfterDate(
+    internal class AfterDateForSelf(
         val date: Long,
-        val dataOwnerId: String?
     ): SortableFilterOptions<MaintenanceTask>
 }
 
@@ -101,17 +152,29 @@ internal suspend fun mapMaintenanceTaskFilterOptions(
 ): AbstractFilter<MaintenanceTask> = mapIfMetaFilterOptions(filterOptions) {
     mapMaintenanceTaskFilterOptions(it, selfDataOwnerId)
 } ?: when (filterOptions) {
-    is MaintenanceTaskFilters.ByType -> MaintenanceTaskByHcPartyAndTypeFilter(
+    is MaintenanceTaskFilters.ByTypeForDataOwner -> MaintenanceTaskByHcPartyAndTypeFilter(
         type = filterOptions.type,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
     )
-    is MaintenanceTaskFilters.AfterDate -> MaintenanceTaskAfterDateFilter(
+    is MaintenanceTaskFilters.AfterDateForDataOwner -> MaintenanceTaskAfterDateFilter(
         date = filterOptions.date,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
     )
-    is MaintenanceTaskFilters.ByIdentifiers -> MaintenanceTaskByHcPartyAndIdentifiersFilter(
+    is MaintenanceTaskFilters.ByIdentifiersForDataOwner -> MaintenanceTaskByHcPartyAndIdentifiersFilter(
         identifiers = filterOptions.identifiers,
-        healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+        healthcarePartyId = filterOptions.dataOwnerId
+    )
+    is MaintenanceTaskFilters.ByTypeForSelf -> MaintenanceTaskByHcPartyAndTypeFilter(
+        type = filterOptions.type,
+        healthcarePartyId = selfDataOwnerId
+    )
+    is MaintenanceTaskFilters.AfterDateForSelf -> MaintenanceTaskAfterDateFilter(
+        date = filterOptions.date,
+        healthcarePartyId = selfDataOwnerId
+    )
+    is MaintenanceTaskFilters.ByIdentifiersForSelf -> MaintenanceTaskByHcPartyAndIdentifiersFilter(
+        identifiers = filterOptions.identifiers,
+        healthcarePartyId = selfDataOwnerId
     )
     is MaintenanceTaskFilters.ByIds -> MaintenanceTaskByIdsFilter(ids = filterOptions.ids.toSet())
     else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering MaintenanceTasks")

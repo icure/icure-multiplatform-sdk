@@ -22,7 +22,7 @@ object CodeFilters {
      */
     fun byIds(
         ids: List<String>
-    ): SortableFilterOptions<Code> = ByIds(ids)
+    ): BaseSortableFilterOptions<Code> = ByIds(ids)
 
     /**
      * Filter options to match all codes with the provided type that have a [Code.label] or [Code.searchTerms] for the
@@ -49,7 +49,7 @@ object CodeFilters {
         type: String,
         label: String? = null,
         region: String? = null
-    ): FilterOptions<Code> = ByLanguageTypeLabelRegion(
+    ): BaseFilterOptions<Code> = ByLanguageTypeLabelRegion(
         language = language,
         type = type,
         label = label,
@@ -61,7 +61,7 @@ object CodeFilters {
 
     internal class ByIds(
         val ids: List<String>
-    ): SortableFilterOptions<Code> {
+    ): BaseSortableFilterOptions<Code> {
         init {
             ids.requireUniqueElements("`ids`")
         }
@@ -72,7 +72,7 @@ object CodeFilters {
         val type: String,
         val label: String?,
         val region: String?
-    ): FilterOptions<Code> {
+    ): BaseFilterOptions<Code> {
         init {
             require(label != null || region == null) {
                 "You can use region in byLanguageTypeLabelRegion options only if you are filtering for a specific label"

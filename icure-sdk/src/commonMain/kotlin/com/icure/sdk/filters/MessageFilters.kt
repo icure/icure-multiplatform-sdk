@@ -4,45 +4,68 @@ import com.icure.sdk.model.Message
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.message.LatestMessageByHcPartyTransportGuidFilter
 import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
-import com.icure.sdk.utils.DefaultValue
 
 object MessageFilters {
 	/**
-	 * Create options for message filtering that will match all messages shared with a specific data owner.
-	 * If [dataOwnerId] is null the filter will match all messages shared directly with the current data owner.
-	 * @param dataOwnerId a data owner id or null to use the current data owner id
+	 * Create options for message filtering that will match all messages shared directly (i.e. ignoring hierarchies) with a specific data owner.
+	 * @param dataOwnerId a data owner id
 	 * @return options for message filtering
 	 */
 	fun allMessagesForDataOwner(
-		@DefaultValue("null")
-		dataOwnerId: String? = null
-	): FilterOptions<Message> =
-		ByDataOwner(dataOwnerId)
+		dataOwnerId: String
+	): BaseFilterOptions<Message> =
+		AllForDataOwner(dataOwnerId)
 
 	/**
-	 * Creates options for message filtering that will match all messages shared with a specific data owner that have the
+	 * Create options for message filtering that will match all messages shared directly (i.e. ignoring hierarchies) with the current data owner.
+	 * @return options for message filtering
+	 */
+	fun allMessagesForSelf(): FilterOptions<Message> =
+		AllForSelf
+
+	/**
+	 * Creates options for message filtering that will match all messages shared directly (i.e. ignoring hierarchies) with a specific data owner that have the
+	 * provided transportGuid.
+	 *
+	 * These options are sortable. When sorting using these options the messages will be sorted by [Message.created].
+	 *
+	 * @param dataOwnerId a data owner id
+	 * @param transportGuid a message transport guid
+	 */
+	fun byTransportGuidDateForDataOwner(
+		dataOwnerId: String,
+		transportGuid: String
+	): BaseSortableFilterOptions<Message> =
+		ByTransportGuidDateForDataOwner(transportGuid, dataOwnerId)
+
+	internal class AllForDataOwner(
+		val dataOwnerId: String
+	) : BaseFilterOptions<Message>
+
+	internal data object AllForSelf : FilterOptions<Message>
+
+
+	internal class ByTransportGuidDateForDataOwner(
+		val transportGuid: String,
+		val dataOwnerId: String
+	) : BaseSortableFilterOptions<Message>
+
+	/**
+	 * Creates options for message filtering that will match all messages shared directly (i.e. ignoring hierarchies) with the current data owner that have the
 	 * provided transportGuid.
 	 *
 	 * These options are sortable. When sorting using these options the messages will be sorted by [Message.created].
 	 *
 	 * @param transportGuid a message transport guid
-	 * @param dataOwnerId a data owner id or null to use the current data owner id
 	 */
 	fun byTransportGuidDate(
 		transportGuid: String,
-		@DefaultValue("null")
-		dataOwnerId: String? = null
 	): SortableFilterOptions<Message> =
-		ByTransportGuidDate(transportGuid, dataOwnerId)
+		ByTransportGuidDateForSelf(transportGuid)
 
-	internal class ByDataOwner(
-		val dataOwnerId: String?
-	) : FilterOptions<Message>
-
-	internal class ByTransportGuidDate(
-		val transportGuid: String,
-		val dataOwnerId: String?
-	) : SortableFilterOptions<Message>
+	internal class ByTransportGuidDateForSelf(
+		val transportGuid: String
+	) : BaseSortableFilterOptions<Message>
 }
 
 internal suspend fun mapMessageFilterOptions(
@@ -51,10 +74,15 @@ internal suspend fun mapMessageFilterOptions(
 ): AbstractFilter<Message> = mapIfMetaFilterOptions(filterOptions) {
 	mapMessageFilterOptions(it, selfDataOwnerId)
 } ?: when (filterOptions) {
-	is MessageFilters.ByDataOwner -> MessageByHcPartyFilter(hcpId = filterOptions.dataOwnerId ?: selfDataOwnerId)
-	is MessageFilters.ByTransportGuidDate -> LatestMessageByHcPartyTransportGuidFilter(
+	is MessageFilters.AllForDataOwner -> MessageByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
+	MessageFilters.AllForSelf -> MessageByHcPartyFilter(hcpId = selfDataOwnerId)
+	is MessageFilters.ByTransportGuidDateForDataOwner -> LatestMessageByHcPartyTransportGuidFilter(
 		transportGuid = filterOptions.transportGuid,
-		healthcarePartyId = filterOptions.dataOwnerId ?: selfDataOwnerId
+		healthcarePartyId = filterOptions.dataOwnerId
+	)
+	is MessageFilters.ByTransportGuidDateForSelf -> LatestMessageByHcPartyTransportGuidFilter(
+		transportGuid = filterOptions.transportGuid,
+		healthcarePartyId = selfDataOwnerId
 	)
 	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Messages")
 }

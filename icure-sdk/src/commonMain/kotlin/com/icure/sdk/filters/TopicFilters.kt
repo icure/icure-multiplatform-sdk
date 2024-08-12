@@ -4,20 +4,24 @@ import com.icure.sdk.model.Topic
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.topic.TopicByHcPartyFilter
 import com.icure.sdk.model.filter.topic.TopicByParticipantFilter
-import com.icure.sdk.utils.DefaultValue
 
 object TopicFilters {
     /**
-     * Create options for topic filtering that will match all topics shared with a specific data owner.
-     * If [dataOwnerId] is null the filter will match all topics shared directly with the current data owner.
+     * Create options for topic filtering that will match all topics shared directly (i.e. ignoring hierarchies) with a specific data owner.
      * @param dataOwnerId a data owner id or null to use the current data owner id
      * @return options for topic filtering
      */
     fun allTopicsForDataOwner(
-        @DefaultValue("null")
-        dataOwnerId: String? = null
-    ): FilterOptions<Topic> =
-        ByDataOwner(dataOwnerId)
+        dataOwnerId: String
+    ): BaseFilterOptions<Topic> =
+        AllForDataOwner(dataOwnerId)
+
+    /**
+     * Create options for topic filtering that will match all topics shared directly (i.e. ignoring hierarchies) with the current data owner.
+     * @return options for topic filtering
+     */
+    fun allTopicsForSelf(): FilterOptions<Topic> =
+        AllForSelf
 
     /**
      * Creates options for topic filtering that will match all topics where the provided data owner is an active
@@ -29,13 +33,15 @@ object TopicFilters {
     ): FilterOptions<Topic> = 
         ByParticipant(participantId)
 
-    internal class ByDataOwner(
-        val dataOwnerId: String?
-    ) : FilterOptions<Topic>
+    internal class AllForDataOwner(
+        val dataOwnerId: String
+    ) : BaseFilterOptions<Topic>
+
+    internal data object AllForSelf : FilterOptions<Topic>
 
     internal class ByParticipant(
         val participantId: String
-    ) : FilterOptions<Topic>
+    ) : BaseFilterOptions<Topic>
 }
 
 internal suspend fun mapTopicFilterOptions(
@@ -44,7 +50,8 @@ internal suspend fun mapTopicFilterOptions(
 ): AbstractFilter<Topic> = mapIfMetaFilterOptions(filterOptions) {
     mapTopicFilterOptions(it, selfDataOwnerId)
 } ?: when (filterOptions) {
-    is TopicFilters.ByDataOwner -> TopicByHcPartyFilter(hcpId = filterOptions.dataOwnerId ?: selfDataOwnerId)
+    is TopicFilters.AllForDataOwner -> TopicByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
+    TopicFilters.AllForSelf -> TopicByHcPartyFilter(hcpId = selfDataOwnerId)
     is TopicFilters.ByParticipant -> TopicByParticipantFilter(participantId = filterOptions.participantId)
     else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Topics")
 }

@@ -16,7 +16,7 @@ object HealthcarePartyFilters {
      * Filter options to match all healthcare parties.
      * These options are not sortable.
      */
-    fun all(): FilterOptions<HealthcareParty> = All
+    fun all(): BaseFilterOptions<HealthcareParty> = All
 
     /**
      * Options for healthcare party filtering which match all the healthcare parties that have at least
@@ -28,10 +28,10 @@ object HealthcarePartyFilters {
      * for the sorting.
      * @param identifiers a list of identifiers
      */
-    fun byIdentifiers(identifiers: List<Identifier>): FilterOptions<HealthcareParty> = ByIdentifiers(identifiers)
+    fun byIdentifiers(identifiers: List<Identifier>): BaseFilterOptions<HealthcareParty> = ByIdentifiers(identifiers)
 
     /**
-     * Options for healthcare party filtering which match all healthcare parties shared with a specific data owner that have a certain code.
+     * Options for healthcare party filtering which match all healthcare parties shared directly (i.e. ignoring hierarchies) with a specific data owner that have a certain code.
      * If you specify only the [codeType] you will get all entities that have at least a code of that type.
      *
      * These options are sortable. When sorting using these options the healthcare parties will be sorted by [codeCode]
@@ -44,10 +44,10 @@ object HealthcarePartyFilters {
         codeType: String,
         @DefaultValue("null")
         codeCode: String? = null
-    ): SortableFilterOptions<HealthcareParty> = ByCode(codeType, codeCode)
+    ): BaseSortableFilterOptions<HealthcareParty> = ByCode(codeType, codeCode)
 
     /**
-     * Options for healthcare party filtering which match all healthcare parties shared with a specific data owner that have a certain tag.
+     * Options for healthcare party filtering which match all healthcare parties shared directly (i.e. ignoring hierarchies) with a specific data owner that have a certain tag.
      * If you specify only the [tagType] you will get all entities that have at least a tag of that type.
      *
      * These options are sortable. When sorting using these options the healthcare parties will be sorted by [tagCode]
@@ -60,7 +60,7 @@ object HealthcarePartyFilters {
         tagType: String,
         @DefaultValue("null")
         tagCode: String? = null
-    ): SortableFilterOptions<HealthcareParty> = ByTag(tagType, tagCode)
+    ): BaseSortableFilterOptions<HealthcareParty> = ByTag(tagType, tagCode)
 
     /**
      * Filter options that match all healthcare parties with one of the provided ids.
@@ -85,22 +85,22 @@ object HealthcarePartyFilters {
     fun byName(
         searchString: String,
         descending: Boolean = false
-    ): SortableFilterOptions<HealthcareParty> = ByName(searchString, descending)
+    ): BaseSortableFilterOptions<HealthcareParty> = ByName(searchString, descending)
 
 
-    internal data object All: FilterOptions<HealthcareParty>
-    internal class ByIdentifiers(val identifiers: List<Identifier>): FilterOptions<HealthcareParty>
+    internal data object All: BaseFilterOptions<HealthcareParty>
+    internal class ByIdentifiers(val identifiers: List<Identifier>): BaseFilterOptions<HealthcareParty>
     internal class ByCode(
         val codeType: String,
         val codeCode: String?
-    ): SortableFilterOptions<HealthcareParty>
+    ): BaseSortableFilterOptions<HealthcareParty>
     internal class ByTag(
         val tagType: String,
         val tagCode: String?
-    ): SortableFilterOptions<HealthcareParty>
+    ): BaseSortableFilterOptions<HealthcareParty>
     internal class ByIds(
         val ids: List<String>
-    ): SortableFilterOptions<HealthcareParty> {
+    ): BaseSortableFilterOptions<HealthcareParty> {
         init {
             ids.requireUniqueElements("`ids`")
         }
@@ -109,7 +109,7 @@ object HealthcarePartyFilters {
     internal class ByName(
         val searchString: String,
         val descending: Boolean
-    ): SortableFilterOptions<HealthcareParty>
+    ): BaseSortableFilterOptions<HealthcareParty>
 }
 
 
