@@ -23,7 +23,7 @@ value class AesExchangeKeyEncryptionKeypairIdentifier(val s: String) {
 	fun toFingerprintV1OrNull(): KeypairFingerprintV1String? =
 		if (s.length >= 32) KeypairFingerprintV1String(s.takeLast(32)) else null
 
-	fun sliceIfNeeded() =
+	internal fun sliceIfNeeded() =
 		if (s.length > 32) AesExchangeKeyEncryptionKeypairIdentifier(s.take(32)) else this
 }
 
@@ -47,19 +47,19 @@ value class AccessControlSecret(val s: String) {
 	/**
 	 * One way operation to get all possible secure delegation keys corresponding to this access control secret
 	 */
-	suspend fun allAccessControlKeys(cryptoService: CryptoService): Set<AccessControlKeyHexString> =
+	internal suspend fun allAccessControlKeys(cryptoService: CryptoService): Set<AccessControlKeyHexString> =
 		EntityWithEncryptionMetadataTypeName.entries.mapTo(mutableSetOf()) { toAccessControlKeyStringFor(it, cryptoService) }
 
 	/**
 	 * Get the secure delegation key corresponding to an access control secret for a specific entity type
 	 */
-	suspend fun toAccessControlKeyStringFor(
+	internal suspend fun toAccessControlKeyStringFor(
 		entityType: EntityWithEncryptionMetadataTypeName,
 		cryptoService: CryptoService
 	): AccessControlKeyHexString =
 		AccessControlKeyHexString(cryptoService.digest.sha256((s + entityType.id).toByteArray(Charsets.UTF_8)).sliceArray(0 until AccessControlKeyHexString.BYTES_LENGTH).toHexString())
 
-	suspend fun toSecureDelegationKeyFor(
+	internal suspend fun toSecureDelegationKeyFor(
 		entityType: EntityWithEncryptionMetadataTypeName,
 		cryptoService: CryptoService
 	) = toAccessControlKeyStringFor(entityType, cryptoService).toSecureDelegationKeyString(cryptoService)
@@ -75,11 +75,11 @@ value class AccessControlKeyHexString(val s: String) {
 	/**
 	 * One way operation to get the secure delegation key string corresponding to an access control key string
 	 */
-	suspend fun toSecureDelegationKeyString(cryptoService: CryptoService): SecureDelegationKeyString {
+	internal suspend fun toSecureDelegationKeyString(cryptoService: CryptoService): SecureDelegationKeyString {
 		return SecureDelegationKeyString(cryptoService.digest.sha256(bytes()).toHexString())
 	}
 
-	fun bytes(): ByteArray = hexToByteArray(s)
+	internal fun bytes(): ByteArray = hexToByteArray(s)
 
 	init {
 		require(s.length == HEX_LENGTH) { "An access control key should be exactly $BYTES_LENGTH bytes (before encoding); got $s" }
@@ -89,7 +89,7 @@ value class AccessControlKeyHexString(val s: String) {
 // various clients and servers)
 // Multiple of 3 to avoid any padding in base64 encoding
 const val MAX_ACCESS_CONTROL_KEYS_PER_HEADER = 360
-fun Iterable<AccessControlKeyHexString>.encodeAsAccessControlHeaders(): List<Base64String> =
+internal fun Iterable<AccessControlKeyHexString>.encodeAsAccessControlHeaders(): List<Base64String> =
 	chunked(MAX_ACCESS_CONTROL_KEYS_PER_HEADER).map { chunk ->
 		chunk.map { it.bytes() }.concat().base64Encode()
 	}
@@ -125,7 +125,7 @@ value class SpkiHexString(
 		return KeypairFingerprintV2String.fromPublicKeySpki(this)
 	}
 
-	fun bytes(): ByteArray =
+	internal fun bytes(): ByteArray =
 		hexToByteArray(s)
 }
 
@@ -155,7 +155,7 @@ value class KeypairFingerprintV1String(
 		return KeypairFingerprintV2String.fromV1(this)
 	}
 
-	fun asAmbiguousIdentifier(): AesExchangeKeyEncryptionKeypairIdentifier {
+	internal fun asAmbiguousIdentifier(): AesExchangeKeyEncryptionKeypairIdentifier {
 		return AesExchangeKeyEncryptionKeypairIdentifier(s)
 	}
 }
