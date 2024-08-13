@@ -3,10 +3,10 @@ package com.icure.sdk.crypto
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.impl.exportSpkiHex
+import com.icure.sdk.filters.MaintenanceTaskFilters
 import com.icure.sdk.model.DecryptedMaintenanceTask
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
@@ -50,7 +50,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 		patient.getPatient(dataId).note shouldBe note
 
 	suspend fun IcureSdk.getMaintenanceTasks(): List<DecryptedMaintenanceTask> {
-		val iterator = maintenanceTask.filterMaintenanceTasksBy(MaintenanceTaskAfterDateFilter(date = testStart - 1000L))
+		val iterator = maintenanceTask.filterMaintenanceTasksBy(MaintenanceTaskFilters.afterDateForSelf(date = testStart - 1000L))
 		val tasks = mutableListOf<DecryptedMaintenanceTask>()
 		while(iterator.hasNext()) {
 			tasks.add(iterator.next())

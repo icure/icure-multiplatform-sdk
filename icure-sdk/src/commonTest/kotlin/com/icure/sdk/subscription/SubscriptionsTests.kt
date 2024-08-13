@@ -2,6 +2,13 @@ package com.icure.sdk.subscription
 
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.IcureSdk
+import com.icure.sdk.filters.ContactFilters
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.HealthElementFilters
+import com.icure.sdk.filters.MaintenanceTaskFilters
+import com.icure.sdk.filters.MessageFilters
+import com.icure.sdk.filters.PatientFilters
+import com.icure.sdk.filters.TopicFilters
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.DecryptedContact
 import com.icure.sdk.model.DecryptedHealthElement
@@ -22,13 +29,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.model.base.Identifier
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.contact.ContactByHcPartyFilter
-import com.icure.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
-import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndIdentifiersFilter
-import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
-import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
-import com.icure.sdk.model.filter.topic.TopicByHcPartyFilter
 import com.icure.sdk.test.DataOwnerDetails
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initializeTestEnvironment
@@ -43,9 +43,9 @@ import kotlin.time.Duration.Companion.seconds
 
 interface SubscribableTestContext<BaseType : Identifiable<String>, EntityEventType : BaseType> {
 	val name: String
-	val subscribableApi: Subscribable<BaseType, EntityEventType>
+	val subscribableApi: Subscribable<BaseType, EntityEventType, FilterOptions<BaseType>>
 	suspend fun createEntity(): Identifiable<String>
-	val filter: AbstractFilter<BaseType>
+	val filter: FilterOptions<BaseType>
 }
 
 fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribableTests(
@@ -101,7 +101,7 @@ class SubscriptionsTests : StringSpec({
 			object : SubscribableTestContext<HealthElement, EncryptedHealthElement> {
 				override val name: String = "HealthElement"
 
-				override val subscribableApi: Subscribable<HealthElement, EncryptedHealthElement>
+				override val subscribableApi
 					get() = hcpUserApi.healthElement
 
 				override suspend fun createEntity(): Identifiable<String> {
@@ -131,8 +131,8 @@ class SubscriptionsTests : StringSpec({
 						}
 				}
 
-				override val filter: AbstractFilter<HealthElement>
-					get() = HealthElementByHcPartyFilter(hcpId = hcpUser.dataOwnerId)
+				override val filter: FilterOptions<HealthElement>
+					get() = HealthElementFilters.allHealthElementsForDataOwner(hcpUser.dataOwnerId)
 			}
 		),
 	)
@@ -140,7 +140,7 @@ class SubscriptionsTests : StringSpec({
 		subscribableTests(
 			object : SubscribableTestContext<Patient, EncryptedPatient> {
 				override val name: String = "Patient"
-				override val subscribableApi: Subscribable<Patient, EncryptedPatient>
+				override val subscribableApi
 					get() = hcpUserApi.patient
 
 				override suspend fun createEntity(): Identifiable<String> {
@@ -154,8 +154,8 @@ class SubscriptionsTests : StringSpec({
 						}
 				}
 
-				override val filter: AbstractFilter<Patient>
-					get() = PatientByHcPartyFilter(healthcarePartyId = hcpUser.dataOwnerId)
+				override val filter: FilterOptions<Patient>
+					get() = PatientFilters.allPatientsForDataOwner(hcpUser.dataOwnerId)
 			}
 		),
 	)
@@ -163,7 +163,7 @@ class SubscriptionsTests : StringSpec({
 		subscribableTests(
 			object : SubscribableTestContext<Contact, EncryptedContact> {
 				override val name = "Contact"
-				override val subscribableApi: Subscribable<Contact, EncryptedContact>
+				override val subscribableApi
 					get() = hcpUserApi.contact
 
 				override suspend fun createEntity(): Identifiable<String> {
@@ -191,8 +191,8 @@ class SubscriptionsTests : StringSpec({
 						}
 				}
 
-				override val filter: AbstractFilter<Contact>
-					get() = ContactByHcPartyFilter(hcpId = hcpUser.dataOwnerId)
+				override val filter: FilterOptions<Contact>
+					get() = ContactFilters.allContactsForDataOwner(hcpUser.dataOwnerId)
 			}
 		),
 	)
@@ -203,7 +203,7 @@ class SubscriptionsTests : StringSpec({
 		subscribableTests(
 			object : SubscribableTestContext<MaintenanceTask, EncryptedMaintenanceTask> {
 				override val name = "MaintenanceTask"
-				override val subscribableApi: Subscribable<MaintenanceTask, EncryptedMaintenanceTask>
+				override val subscribableApi
 					get() = hcpUserApi.maintenanceTask
 
 				override suspend fun createEntity(): Identifiable<String> {
@@ -220,8 +220,8 @@ class SubscriptionsTests : StringSpec({
 						}
 				}
 
-				override val filter: AbstractFilter<MaintenanceTask>
-					get() = MaintenanceTaskByHcPartyAndIdentifiersFilter(healthcarePartyId = hcpUser.dataOwnerId, identifiers = listOf(identifier))
+				override val filter: FilterOptions<MaintenanceTask>
+					get() = MaintenanceTaskFilters.byIdentifiersForDataOwner(dataOwnerId = hcpUser.dataOwnerId, identifiers = listOf(identifier))
 			}
 		),
 	)
@@ -230,7 +230,7 @@ class SubscriptionsTests : StringSpec({
 		subscribableTests(
 			object : SubscribableTestContext<Message, EncryptedMessage> {
 				override val name: String = "Message"
-				override val subscribableApi: Subscribable<Message, EncryptedMessage>
+				override val subscribableApi
 					get() = hcpUserApi.message
 
 				override suspend fun createEntity(): Identifiable<String> {
@@ -257,8 +257,8 @@ class SubscriptionsTests : StringSpec({
 						}
 				}
 
-				override val filter: AbstractFilter<Message>
-					get() = MessageByHcPartyFilter(hcpId = hcpUser.dataOwnerId)
+				override val filter: FilterOptions<Message>
+					get() = MessageFilters.allMessagesForDataOwner(hcpUser.dataOwnerId)
 			}
 		),
 	)
@@ -268,7 +268,7 @@ class SubscriptionsTests : StringSpec({
 			object : SubscribableTestContext<Topic, EncryptedTopic> {
 				override val name: String = "Topic"
 
-				override val subscribableApi: Subscribable<Topic, EncryptedTopic>
+				override val subscribableApi
 					get() = hcpUserApi.topic
 
 				override suspend fun createEntity(): Identifiable<String> {
@@ -295,8 +295,8 @@ class SubscriptionsTests : StringSpec({
 						}
 				}
 
-				override val filter: AbstractFilter<Topic>
-					get() = TopicByHcPartyFilter(hcpId = hcpUser.dataOwnerId)
+				override val filter: FilterOptions<Topic>
+					get() = TopicFilters.allTopicsForDataOwner(hcpUser.dataOwnerId)
 			}
 		),
 	)
