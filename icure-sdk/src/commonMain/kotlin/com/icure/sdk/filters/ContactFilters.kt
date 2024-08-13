@@ -393,87 +393,116 @@ object ContactFilters {
 @InternalIcureApi
 internal suspend fun mapContactFilterOptions(
 	filterOptions: FilterOptions<Contact>,
-	selfDataOwnerId: String,
+	selfDataOwnerId: String?,
 	entityEncryptionService: EntityEncryptionService?
 ): AbstractFilter<Contact> = mapIfMetaFilterOptions(filterOptions) {
 	mapContactFilterOptions(it, selfDataOwnerId, entityEncryptionService)
 } ?: when (filterOptions) {
-	is ContactFilters.AllByDataOwner -> ContactByHcPartyFilter(
-		hcpId = filterOptions.dataOwnerId
-	)
-	ContactFilters.AllForSelf -> ContactByHcPartyFilter(
-		hcpId = selfDataOwnerId
-	)
-	is ContactFilters.ByCodeAndOpeningDateForDataOwner -> ContactByHcPartyTagCodeDateFilter(
-		tagType = null,
-		tagCode = null,
-		codeType = filterOptions.codeType,
-		codeCode = filterOptions.codeCode,
-		startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
-		endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
-		healthcarePartyId = filterOptions.dataOwnerId
-	)
-	is ContactFilters.ByCodeAndOpeningDateForSelf -> ContactByHcPartyTagCodeDateFilter(
-		tagType = null,
-		tagCode = null,
-		codeType = filterOptions.codeType,
-		codeCode = filterOptions.codeCode,
-		startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
-		endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
-		healthcarePartyId = selfDataOwnerId
-	)
-	is ContactFilters.ByIdentifiersForDataOwner -> ContactByHcPartyIdentifiersFilter(
-		identifiers = filterOptions.identifiers,
-		healthcarePartyId = filterOptions.dataOwnerId
-	)
-	is ContactFilters.ByIdentifiersForSelf -> ContactByHcPartyIdentifiersFilter(
-		identifiers = filterOptions.identifiers,
-		healthcarePartyId = selfDataOwnerId
-	)
-	is ContactFilters.ByPatientsForDataOwner -> ContactByHcPartyPatientTagCodeDateFilter(
-		patientSecretForeignKeys = filterOptions.patients.flatMap {
-			requireNotNull(entityEncryptionService) {
-				"Contact filter options `byPatients` can't be used in iCure base apis"
-			}.secretIdsOf(it.withTypeInfo(), null)
-		},
-		healthcarePartyId = filterOptions.dataOwnerId
-	)
-	is ContactFilters.ByPatientsForSelf -> ContactByHcPartyPatientTagCodeDateFilter(
-		patientSecretForeignKeys = filterOptions.patients.flatMap {
-			requireNotNull(entityEncryptionService) {
-				"Contact filter options `byPatients` can't be used in iCure base apis"
-			}.secretIdsOf(it.withTypeInfo(), null)
-		},
-		healthcarePartyId = selfDataOwnerId
-	)
-	is ContactFilters.ByPatientsSecretIdsForDataOwner -> ContactByHcPartyPatientTagCodeDateFilter(
-		patientSecretForeignKeys = filterOptions.secretIds,
-		healthcarePartyId = filterOptions.dataOwnerId
-	)
-	is ContactFilters.ByPatientsSecretIdsForSelf -> ContactByHcPartyPatientTagCodeDateFilter(
-		patientSecretForeignKeys = filterOptions.secretIds,
-		healthcarePartyId = selfDataOwnerId
-	)
-	is ContactFilters.ByServiceIds -> ContactByServiceIdsFilter(
-		ids = filterOptions.serviceIds
-	)
-	is ContactFilters.ByTagAndOpeningDateForDataOwner -> ContactByHcPartyTagCodeDateFilter(
-		tagType = filterOptions.tagType,
-		tagCode = filterOptions.tagCode,
-		codeType = null,
-		codeCode = null,
-		startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
-		endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
-		healthcarePartyId = filterOptions.dataOwnerId
-	)
-	is ContactFilters.ByTagAndOpeningDateForSelf -> ContactByHcPartyTagCodeDateFilter(
-		tagType = filterOptions.tagType,
-		tagCode = filterOptions.tagCode,
-		codeType = null,
-		codeCode = null,
-		startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
-		endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
-		healthcarePartyId = selfDataOwnerId
-	)
-	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Contacts")
+	is ContactFilters.AllByDataOwner -> {
+		ContactByHcPartyFilter(
+			hcpId = filterOptions.dataOwnerId
+		)
+	}
+	ContactFilters.AllForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByHcPartyFilter(hcpId = selfDataOwnerId)
+	}
+	is ContactFilters.ByCodeAndOpeningDateForDataOwner -> {
+		ContactByHcPartyTagCodeDateFilter(
+			tagType = null,
+			tagCode = null,
+			codeType = filterOptions.codeType,
+			codeCode = filterOptions.codeCode,
+			startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
+			endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
+			healthcarePartyId = filterOptions.dataOwnerId
+		)
+	}
+	is ContactFilters.ByCodeAndOpeningDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByHcPartyTagCodeDateFilter(
+			tagType = null,
+			tagCode = null,
+			codeType = filterOptions.codeType,
+			codeCode = filterOptions.codeCode,
+			startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
+			endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
+			healthcarePartyId = selfDataOwnerId
+		)
+	}
+	is ContactFilters.ByIdentifiersForDataOwner -> {
+		ContactByHcPartyIdentifiersFilter(
+			identifiers = filterOptions.identifiers,
+			healthcarePartyId = filterOptions.dataOwnerId
+		)
+	}
+	is ContactFilters.ByIdentifiersForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByHcPartyIdentifiersFilter(
+			identifiers = filterOptions.identifiers,
+			healthcarePartyId = selfDataOwnerId
+		)
+	}
+	is ContactFilters.ByPatientsForDataOwner -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByHcPartyPatientTagCodeDateFilter(
+			patientSecretForeignKeys = filterOptions.patients.flatMap {
+				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+			},
+			healthcarePartyId = filterOptions.dataOwnerId
+		)
+	}
+	is ContactFilters.ByPatientsForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByHcPartyPatientTagCodeDateFilter(
+			patientSecretForeignKeys = filterOptions.patients.flatMap {
+				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+			},
+			healthcarePartyId = selfDataOwnerId
+		)
+	}
+	is ContactFilters.ByPatientsSecretIdsForDataOwner -> {
+		ContactByHcPartyPatientTagCodeDateFilter(
+			patientSecretForeignKeys = filterOptions.secretIds,
+			healthcarePartyId = filterOptions.dataOwnerId
+		)
+	}
+	is ContactFilters.ByPatientsSecretIdsForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByHcPartyPatientTagCodeDateFilter(
+			patientSecretForeignKeys = filterOptions.secretIds,
+			healthcarePartyId = selfDataOwnerId
+		)
+	}
+	is ContactFilters.ByServiceIds -> {
+		ContactByServiceIdsFilter(
+			ids = filterOptions.serviceIds
+		)
+	}
+	is ContactFilters.ByTagAndOpeningDateForDataOwner -> {
+		ContactByHcPartyTagCodeDateFilter(
+			tagType = filterOptions.tagType,
+			tagCode = filterOptions.tagCode,
+			codeType = null,
+			codeCode = null,
+			startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
+			endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
+			healthcarePartyId = filterOptions.dataOwnerId
+		)
+	}
+	is ContactFilters.ByTagAndOpeningDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByHcPartyTagCodeDateFilter(
+			tagType = filterOptions.tagType,
+			tagCode = filterOptions.tagCode,
+			codeType = null,
+			codeCode = null,
+			startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
+			endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
+			healthcarePartyId = selfDataOwnerId
+		)
+	}
+	else -> {
+		throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Contacts")
+	}
 }

@@ -1,11 +1,13 @@
 package com.icure.sdk.api
 
 import com.icure.sdk.api.raw.RawDeviceApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.mapDeviceFilterOptions
 import com.icure.sdk.model.Device
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.pagination.IdsPageIterator
@@ -20,10 +22,15 @@ interface DeviceApi {
 	suspend fun updateDevices(devices: List<Device>): List<IdWithRev>
 
 	suspend fun filterDevicesBy(
-		filter: AbstractFilter<Device>
+		filter: BaseFilterOptions<Device>
 	): PaginatedListIterator<Device>
 
-	suspend fun matchDevicesBy(filter: AbstractFilter<Device>): List<String>
+	suspend fun filterDevicesBySorted(
+		filter: BaseSortableFilterOptions<Device>
+	): PaginatedListIterator<Device>
+
+	suspend fun matchDevicesBy(filter: BaseFilterOptions<Device>): List<String>
+	suspend fun matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>): List<String>
 	suspend fun deleteDevice(deviceId: String): DocIdentifier
 	suspend fun deleteDevices(deviceIds: List<String>): List<DocIdentifier>
 	suspend fun getDevicesInGroup(
@@ -64,9 +71,17 @@ internal class DeviceApiImpl(
 
 	override suspend fun updateDevices(devices: List<Device>) = rawApi.updateDevices(devices).successBody()
 
-	override suspend fun filterDevicesBy(filter: AbstractFilter<Device>) = IdsPageIterator(matchDevicesBy(filter), this::getDevices)
+	override suspend fun filterDevicesBy(filter: BaseFilterOptions<Device>) =
+		IdsPageIterator(matchDevicesBy(filter), this::getDevices)
 
-	override suspend fun matchDevicesBy(filter: AbstractFilter<Device>) = rawApi.matchDevicesBy(filter).successBody()
+	override suspend fun filterDevicesBySorted(filter: BaseSortableFilterOptions<Device>) =
+		IdsPageIterator(matchDevicesBySorted(filter), this::getDevices)
+
+	override suspend fun matchDevicesBy(filter: BaseFilterOptions<Device>) =
+		rawApi.matchDevicesBy(mapDeviceFilterOptions(filter)).successBody()
+
+	override suspend fun matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>) =
+		matchDevicesBy(filter)
 
 	override suspend fun deleteDevice(deviceId: String) = rawApi.deleteDevice(deviceId).successBody()
 

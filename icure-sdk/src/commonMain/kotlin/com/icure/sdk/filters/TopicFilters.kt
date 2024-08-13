@@ -1,9 +1,11 @@
 package com.icure.sdk.filters
 
+import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.topic.TopicByHcPartyFilter
 import com.icure.sdk.model.filter.topic.TopicByParticipantFilter
+import com.icure.sdk.utils.InternalIcureApi
 
 object TopicFilters {
     /**
@@ -44,14 +46,25 @@ object TopicFilters {
     ) : BaseFilterOptions<Topic>
 }
 
+@InternalIcureApi
 internal suspend fun mapTopicFilterOptions(
     filterOptions: FilterOptions<Topic>,
-    selfDataOwnerId: String
+    selfDataOwnerId: String?,
+    entityEncryptionService: EntityEncryptionService?
 ): AbstractFilter<Topic> = mapIfMetaFilterOptions(filterOptions) {
-    mapTopicFilterOptions(it, selfDataOwnerId)
+    mapTopicFilterOptions(it, selfDataOwnerId, entityEncryptionService)
 } ?: when (filterOptions) {
-    is TopicFilters.AllForDataOwner -> TopicByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
-    TopicFilters.AllForSelf -> TopicByHcPartyFilter(hcpId = selfDataOwnerId)
-    is TopicFilters.ByParticipant -> TopicByParticipantFilter(participantId = filterOptions.participantId)
-    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Topics")
+    is TopicFilters.AllForDataOwner -> {
+        TopicByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
+    }
+    TopicFilters.AllForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        TopicByHcPartyFilter(hcpId = selfDataOwnerId)
+    }
+    is TopicFilters.ByParticipant -> {
+        TopicByParticipantFilter(participantId = filterOptions.participantId)
+    }
+    else -> {
+        throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Topics")
+    }
 }

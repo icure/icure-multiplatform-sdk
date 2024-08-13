@@ -2,11 +2,13 @@ package com.icure.sdk.api
 
 import com.icure.sdk.api.flavoured.encodeStartKey
 import com.icure.sdk.api.raw.RawCodeApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.mapCodeFilterOptions
 import com.icure.sdk.model.BooleanResponse
 import com.icure.sdk.model.Code
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.pagination.IdsPageIterator
@@ -120,10 +122,17 @@ interface CodeApi {
 	suspend fun modifyCodes(groupId: String, codeBatch: List<Code>): List<Code>
 
 	suspend fun filterCodesBy(
-		filter: AbstractFilter<Code>
+		filter: BaseFilterOptions<Code>
 	): PaginatedListIterator<Code>
 
-	suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String>
+	suspend fun filterCodesBySorted(
+		filter: BaseSortableFilterOptions<Code>
+	): PaginatedListIterator<Code>
+
+	suspend fun matchCodesBy(filter: BaseFilterOptions<Code>): List<String>
+
+	suspend fun matchCodesBySorted(filter: BaseSortableFilterOptions<Code>): List<String>
+
 	suspend fun importCodes(codeType: String)
 
 }
@@ -207,11 +216,17 @@ internal class CodeApiImpl(
 
     override suspend fun modifyCodes(codeBatch: List<Code>): List<Code> = rawApi.modifyCodes(codeBatch).successBody()
 
-	override suspend fun filterCodesBy(
-		filter: AbstractFilter<Code>
-	): PaginatedListIterator<Code> = IdsPageIterator(matchCodesBy(filter), this::getCodes)
+	override suspend fun filterCodesBy(filter: BaseFilterOptions<Code>): PaginatedListIterator<Code> =
+		IdsPageIterator(matchCodesBy(filter), this::getCodes)
 
-	override suspend fun matchCodesBy(filter: AbstractFilter<Code>): List<String> = rawApi.matchCodesBy(filter).successBody()
+	override suspend fun filterCodesBySorted(filter: BaseSortableFilterOptions<Code>): PaginatedListIterator<Code> =
+		IdsPageIterator(matchCodesBySorted(filter), this::getCodes)
+
+	override suspend fun matchCodesBy(filter: BaseFilterOptions<Code>): List<String> =
+		rawApi.matchCodesBy(mapCodeFilterOptions(filter)).successBody()
+
+	override suspend fun matchCodesBySorted(filter: BaseSortableFilterOptions<Code>): List<String> =
+		matchCodesBy(filter)
 
 	override suspend fun importCodes(codeType: String): Unit = rawApi.importCodes(codeType).successBody()
 

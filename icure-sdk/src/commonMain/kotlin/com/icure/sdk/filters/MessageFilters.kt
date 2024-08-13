@@ -1,9 +1,11 @@
 package com.icure.sdk.filters
 
+import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.message.LatestMessageByHcPartyTransportGuidFilter
 import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
+import com.icure.sdk.utils.InternalIcureApi
 
 object MessageFilters {
 	/**
@@ -68,21 +70,35 @@ object MessageFilters {
 	) : BaseSortableFilterOptions<Message>
 }
 
+@InternalIcureApi
 internal suspend fun mapMessageFilterOptions(
 	filterOptions: FilterOptions<Message>,
-	selfDataOwnerId: String
+	selfDataOwnerId: String?,
+	entityEncryptionService: EntityEncryptionService?
 ): AbstractFilter<Message> = mapIfMetaFilterOptions(filterOptions) {
-	mapMessageFilterOptions(it, selfDataOwnerId)
+	mapMessageFilterOptions(it, selfDataOwnerId, entityEncryptionService)
 } ?: when (filterOptions) {
-	is MessageFilters.AllForDataOwner -> MessageByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
-	MessageFilters.AllForSelf -> MessageByHcPartyFilter(hcpId = selfDataOwnerId)
-	is MessageFilters.ByTransportGuidDateForDataOwner -> LatestMessageByHcPartyTransportGuidFilter(
-		transportGuid = filterOptions.transportGuid,
-		healthcarePartyId = filterOptions.dataOwnerId
-	)
-	is MessageFilters.ByTransportGuidDateForSelf -> LatestMessageByHcPartyTransportGuidFilter(
-		transportGuid = filterOptions.transportGuid,
-		healthcarePartyId = selfDataOwnerId
-	)
-	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Messages")
+	is MessageFilters.AllForDataOwner -> {
+		MessageByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
+	}
+	MessageFilters.AllForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		MessageByHcPartyFilter(hcpId = selfDataOwnerId)
+	}
+	is MessageFilters.ByTransportGuidDateForDataOwner -> {
+		LatestMessageByHcPartyTransportGuidFilter(
+			transportGuid = filterOptions.transportGuid,
+			healthcarePartyId = filterOptions.dataOwnerId
+		)
+	}
+	is MessageFilters.ByTransportGuidDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		LatestMessageByHcPartyTransportGuidFilter(
+			transportGuid = filterOptions.transportGuid,
+			healthcarePartyId = selfDataOwnerId
+		)
+	}
+	else -> {
+		throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Messages")
+	}
 }

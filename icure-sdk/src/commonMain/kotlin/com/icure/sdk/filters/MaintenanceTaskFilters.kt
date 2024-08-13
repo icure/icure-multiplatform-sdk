@@ -1,5 +1,6 @@
 package com.icure.sdk.filters
 
+import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.model.MaintenanceTask
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.filter.AbstractFilter
@@ -7,6 +8,7 @@ import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskAfterDateFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndIdentifiersFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndTypeFilter
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByIdsFilter
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.requireUniqueElements
 
 object MaintenanceTaskFilters {
@@ -146,36 +148,57 @@ object MaintenanceTaskFilters {
     ): SortableFilterOptions<MaintenanceTask>
 }
 
+@InternalIcureApi
 internal suspend fun mapMaintenanceTaskFilterOptions(
     filterOptions: FilterOptions<MaintenanceTask>,
-    selfDataOwnerId: String
+    selfDataOwnerId: String?,
+    entityEncryptionService: EntityEncryptionService?
 ): AbstractFilter<MaintenanceTask> = mapIfMetaFilterOptions(filterOptions) {
-    mapMaintenanceTaskFilterOptions(it, selfDataOwnerId)
+    mapMaintenanceTaskFilterOptions(it, selfDataOwnerId, entityEncryptionService)
 } ?: when (filterOptions) {
-    is MaintenanceTaskFilters.ByTypeForDataOwner -> MaintenanceTaskByHcPartyAndTypeFilter(
-        type = filterOptions.type,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is MaintenanceTaskFilters.AfterDateForDataOwner -> MaintenanceTaskAfterDateFilter(
-        date = filterOptions.date,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is MaintenanceTaskFilters.ByIdentifiersForDataOwner -> MaintenanceTaskByHcPartyAndIdentifiersFilter(
-        identifiers = filterOptions.identifiers,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is MaintenanceTaskFilters.ByTypeForSelf -> MaintenanceTaskByHcPartyAndTypeFilter(
-        type = filterOptions.type,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is MaintenanceTaskFilters.AfterDateForSelf -> MaintenanceTaskAfterDateFilter(
-        date = filterOptions.date,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is MaintenanceTaskFilters.ByIdentifiersForSelf -> MaintenanceTaskByHcPartyAndIdentifiersFilter(
-        identifiers = filterOptions.identifiers,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is MaintenanceTaskFilters.ByIds -> MaintenanceTaskByIdsFilter(ids = filterOptions.ids.toSet())
-    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering MaintenanceTasks")
+    is MaintenanceTaskFilters.ByTypeForDataOwner -> {
+        MaintenanceTaskByHcPartyAndTypeFilter(
+            type = filterOptions.type,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is MaintenanceTaskFilters.AfterDateForDataOwner -> {
+        MaintenanceTaskAfterDateFilter(
+            date = filterOptions.date,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is MaintenanceTaskFilters.ByIdentifiersForDataOwner -> {
+        MaintenanceTaskByHcPartyAndIdentifiersFilter(
+            identifiers = filterOptions.identifiers,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is MaintenanceTaskFilters.ByTypeForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        MaintenanceTaskByHcPartyAndTypeFilter(
+            type = filterOptions.type,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is MaintenanceTaskFilters.AfterDateForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        MaintenanceTaskAfterDateFilter(
+            date = filterOptions.date,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is MaintenanceTaskFilters.ByIdentifiersForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        MaintenanceTaskByHcPartyAndIdentifiersFilter(
+            identifiers = filterOptions.identifiers,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is MaintenanceTaskFilters.ByIds -> {
+        MaintenanceTaskByIdsFilter(ids = filterOptions.ids.toSet())
+    }
+    else -> {
+        throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering MaintenanceTasks")
+    }
 }

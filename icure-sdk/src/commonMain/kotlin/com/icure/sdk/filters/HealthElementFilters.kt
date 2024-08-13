@@ -302,74 +302,106 @@ object HealthElementFilters {
 @InternalIcureApi
 internal suspend fun mapHealthElementFilterOptions(
     filterOptions: FilterOptions<HealthElement>,
-    selfDataOwnerId: String,
+    selfDataOwnerId: String?,
     entityEncryptionService: EntityEncryptionService?
 ): AbstractFilter<HealthElement> = mapIfMetaFilterOptions(filterOptions) {
     mapHealthElementFilterOptions(it, selfDataOwnerId, entityEncryptionService)
 } ?: when (filterOptions) {
-    is HealthElementFilters.AllForDataOwner -> HealthElementByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
-    is HealthElementFilters.AllForSelf -> HealthElementByHcPartyFilter(hcpId = selfDataOwnerId)
-    is HealthElementFilters.ByIds -> HealthElementByIdsFilter(ids = filterOptions.ids.toSet())
-    is HealthElementFilters.ByCodeForDataOwner -> HealthElementByHcPartyTagCodeFilter(
-        tagType = null,
-        tagCode = null,
-        codeType = filterOptions.codeType,
-        codeCode = filterOptions.codeCode,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is HealthElementFilters.ByIdentifiersForDataOwner -> HealthElementByHcPartyIdentifiersFilter(
-        identifiers = filterOptions.identifiers,
-        hcPartyId = filterOptions.dataOwnerId
-    )
-    is HealthElementFilters.ByPatientsForDataOwner -> HealthElementByHcPartySecretForeignKeysFilter(
-        patientSecretForeignKeys = filterOptions.patients.flatMap {
-            requireNotNull(entityEncryptionService) {
-                "Health element filter options `byPatients` can't be used in iCure base apis"
-            }.secretIdsOf(it.withTypeInfo(), null)
-        }.toSet(),
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is HealthElementFilters.ByPatientsSecretIdsForDataOwner -> HealthElementByHcPartySecretForeignKeysFilter(
-        patientSecretForeignKeys = filterOptions.secretIds.toSet(),
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is HealthElementFilters.ByTagForDataOwner -> HealthElementByHcPartyTagCodeFilter(
-        tagType = filterOptions.tagType,
-        tagCode = filterOptions.tagCode,
-        codeType = null,
-        codeCode = null,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
+    is HealthElementFilters.AllForDataOwner -> {
+        HealthElementByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
+    }
+    is HealthElementFilters.AllForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        HealthElementByHcPartyFilter(hcpId = selfDataOwnerId)
+    }
+    is HealthElementFilters.ByIds -> {
+        HealthElementByIdsFilter(ids = filterOptions.ids.toSet())
+    }
+    is HealthElementFilters.ByCodeForDataOwner -> {
+        HealthElementByHcPartyTagCodeFilter(
+            tagType = null,
+            tagCode = null,
+            codeType = filterOptions.codeType,
+            codeCode = filterOptions.codeCode,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is HealthElementFilters.ByIdentifiersForDataOwner -> {
+        HealthElementByHcPartyIdentifiersFilter(
+            identifiers = filterOptions.identifiers,
+            hcPartyId = filterOptions.dataOwnerId
+        )
+    }
+    is HealthElementFilters.ByPatientsForDataOwner -> {
+        HealthElementByHcPartySecretForeignKeysFilter(
+            patientSecretForeignKeys = filterOptions.patients.flatMap {
+                requireNotNull(entityEncryptionService) {
+                    "Health element filter options `byPatients` can't be used in iCure base apis"
+                }.secretIdsOf(it.withTypeInfo(), null)
+            }.toSet(),
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is HealthElementFilters.ByPatientsSecretIdsForDataOwner -> {
+        HealthElementByHcPartySecretForeignKeysFilter(
+            patientSecretForeignKeys = filterOptions.secretIds.toSet(),
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is HealthElementFilters.ByTagForDataOwner -> {
+        HealthElementByHcPartyTagCodeFilter(
+            tagType = filterOptions.tagType,
+            tagCode = filterOptions.tagCode,
+            codeType = null,
+            codeCode = null,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
 
-    is HealthElementFilters.ByCodeForSelf -> HealthElementByHcPartyTagCodeFilter(
-        tagType = null,
-        tagCode = null,
-        codeType = filterOptions.codeType,
-        codeCode = filterOptions.codeCode,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is HealthElementFilters.ByIdentifiersForSelf -> HealthElementByHcPartyIdentifiersFilter(
-        identifiers = filterOptions.identifiers,
-        hcPartyId = selfDataOwnerId
-    )
-    is HealthElementFilters.ByPatientsForSelf -> HealthElementByHcPartySecretForeignKeysFilter(
-        patientSecretForeignKeys = filterOptions.patients.flatMap {
-            requireNotNull(entityEncryptionService) {
-                "Health element filter options `byPatients` can't be used in iCure base apis"
-            }.secretIdsOf(it.withTypeInfo(), null)
-        }.toSet(),
-        healthcarePartyId = selfDataOwnerId
-    )
-    is HealthElementFilters.ByPatientsSecretIdsForSelf -> HealthElementByHcPartySecretForeignKeysFilter(
-        patientSecretForeignKeys = filterOptions.secretIds.toSet(),
-        healthcarePartyId = selfDataOwnerId
-    )
-    is HealthElementFilters.ByTagForSelf -> HealthElementByHcPartyTagCodeFilter(
-        tagType = filterOptions.tagType,
-        tagCode = filterOptions.tagCode,
-        codeType = null,
-        codeCode = null,
-        healthcarePartyId = selfDataOwnerId
-    )
-    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering HealthElements")
+    is HealthElementFilters.ByCodeForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        HealthElementByHcPartyTagCodeFilter(
+            tagType = null,
+            tagCode = null,
+            codeType = filterOptions.codeType,
+            codeCode = filterOptions.codeCode,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is HealthElementFilters.ByIdentifiersForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        HealthElementByHcPartyIdentifiersFilter(
+            identifiers = filterOptions.identifiers,
+            hcPartyId = selfDataOwnerId
+        )
+    }
+    is HealthElementFilters.ByPatientsForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        HealthElementByHcPartySecretForeignKeysFilter(
+            patientSecretForeignKeys = filterOptions.patients.flatMap {
+                entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+            }.toSet(),
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is HealthElementFilters.ByPatientsSecretIdsForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        HealthElementByHcPartySecretForeignKeysFilter(
+            patientSecretForeignKeys = filterOptions.secretIds.toSet(),
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is HealthElementFilters.ByTagForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        HealthElementByHcPartyTagCodeFilter(
+            tagType = filterOptions.tagType,
+            tagCode = filterOptions.tagCode,
+            codeType = null,
+            codeCode = null,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    else -> {
+        throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering HealthElements")
+    }
 }

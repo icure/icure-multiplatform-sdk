@@ -1,5 +1,6 @@
 package com.icure.sdk.filters
 
+import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.embed.Address
@@ -20,6 +21,7 @@ import com.icure.sdk.model.filter.patient.PatientByHcPartyGenderEducationProfess
 import com.icure.sdk.model.filter.patient.PatientByHcPartyNameContainsFuzzyFilter
 import com.icure.sdk.model.filter.patient.PatientByIdsFilter
 import com.icure.sdk.utils.DefaultValue
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.requireUniqueElements
 
 object PatientFilters {
@@ -533,140 +535,200 @@ object PatientFilters {
 }
 
 
+@InternalIcureApi
 internal suspend fun mapPatientFilterOptions(
     filterOptions: FilterOptions<Patient>,
-    selfDataOwnerId: String
+    selfDataOwnerId: String?,
+    entityEncryptionService: EntityEncryptionService?
 ): AbstractFilter<Patient> = mapIfMetaFilterOptions(filterOptions) {
-    mapPatientFilterOptions(it, selfDataOwnerId)
+    mapPatientFilterOptions(it, selfDataOwnerId, entityEncryptionService)
 } ?: when (filterOptions) {
-    is PatientFilters.AllForDataOwner -> PatientByHcPartyFilter(
-        healthcarePartyId = filterOptions.dataOwnerId,
-    )
-    PatientFilters.AllForSelf -> PatientByHcPartyFilter(
-        healthcarePartyId = selfDataOwnerId,
-    )
-    is PatientFilters.ByIds -> PatientByIdsFilter(ids = filterOptions.ids.toSet())
-    is PatientFilters.ByActiveForDataOwner -> PatientByHcPartyAndActiveFilter(
-        healthcarePartyId = filterOptions.dataOwnerId,
-        active = filterOptions.active
-    )
-    is PatientFilters.ByAddressForDataOwner -> PatientByHcPartyAndAddressFilter(
-        searchString = filterOptions.searchString,
-        postalCode = null,
-        houseNumber = null,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is PatientFilters.ByAddressPostalCodeHouseNumberForDataOwner -> PatientByHcPartyAndAddressFilter(
-        searchString = filterOptions.searchString,
-        postalCode = filterOptions.postalCode,
-        houseNumber = filterOptions.houseNumber,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is PatientFilters.ByDateOfBirthBetweenForDataOwner -> if (filterOptions.fromDate == filterOptions.toDate) {
-        PatientByHcPartyDateOfBirthFilter(
-            dateOfBirth = filterOptions.fromDate,
-            healthcarePartyId = filterOptions.dataOwnerId
+    is PatientFilters.AllForDataOwner -> {
+        PatientByHcPartyFilter(
+            healthcarePartyId = filterOptions.dataOwnerId,
         )
-    } else {
-        PatientByHcPartyDateOfBirthBetweenFilter(
-            minDateOfBirth = filterOptions.fromDate,
-            maxDateOfBirth = filterOptions.toDate,
+    }
+    PatientFilters.AllForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyFilter(
+            healthcarePartyId = selfDataOwnerId,
+        )
+    }
+    is PatientFilters.ByIds -> {
+        PatientByIdsFilter(ids = filterOptions.ids.toSet())
+    }
+    is PatientFilters.ByActiveForDataOwner -> {
+        PatientByHcPartyAndActiveFilter(
+            healthcarePartyId = filterOptions.dataOwnerId,
+            active = filterOptions.active
+        )
+    }
+    is PatientFilters.ByAddressForDataOwner -> {
+        PatientByHcPartyAndAddressFilter(
+            searchString = filterOptions.searchString,
+            postalCode = null,
+            houseNumber = null,
             healthcarePartyId = filterOptions.dataOwnerId
         )
     }
-    is PatientFilters.ByExternalIdForDataOwner -> PatientByHcPartyAndExternalIdFilter(
-        externalId = filterOptions.externalIdPrefix,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is PatientFilters.ByFuzzyNameForDataOwner -> PatientByHcPartyNameContainsFuzzyFilter(
-        searchString = filterOptions.searchString,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is PatientFilters.ByGenderEducationProfessionForDataOwner -> PatientByHcPartyGenderEducationProfession(
-        gender = filterOptions.gender,
-        education = filterOptions.education,
-        profession = filterOptions.profession,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is PatientFilters.ByIdentifiersForDataOwner -> PatientByHcPartyAndIdentifiersFilter(
-        healthcarePartyId = filterOptions.dataOwnerId,
-        identifiers = filterOptions.identifiers
-    )
-    is PatientFilters.BySsinsForDataOwner -> if (filterOptions.ssins.size == 1) {
-        PatientByHcPartyAndSsinFilter(
-            ssin = filterOptions.ssins.first(),
-            healthcarePartyId = filterOptions.dataOwnerId
-        )
-    } else {
-        PatientByHcPartyAndSsinsFilter(
-            ssins = filterOptions.ssins,
+    is PatientFilters.ByAddressPostalCodeHouseNumberForDataOwner -> {
+        PatientByHcPartyAndAddressFilter(
+            searchString = filterOptions.searchString,
+            postalCode = filterOptions.postalCode,
+            houseNumber = filterOptions.houseNumber,
             healthcarePartyId = filterOptions.dataOwnerId
         )
     }
-    is PatientFilters.ByTelecomForDataOwner -> PatientByHcPartyAndTelecomFilter(
-        searchString = filterOptions.searchString,
-        healthcarePartyId = filterOptions.dataOwnerId
-    )
-    is PatientFilters.ByActiveForSelf -> PatientByHcPartyAndActiveFilter(
-        healthcarePartyId = selfDataOwnerId,
-        active = filterOptions.active
-    )
-    is PatientFilters.ByAddressForSelf -> PatientByHcPartyAndAddressFilter(
-        searchString = filterOptions.searchString,
-        postalCode = null,
-        houseNumber = null,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is PatientFilters.ByAddressPostalCodeHouseNumberForSelf -> PatientByHcPartyAndAddressFilter(
-        searchString = filterOptions.searchString,
-        postalCode = filterOptions.postalCode,
-        houseNumber = filterOptions.houseNumber,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is PatientFilters.ByDateOfBirthBetweenForSelf -> if (filterOptions.fromDate == filterOptions.toDate) {
-        PatientByHcPartyDateOfBirthFilter(
-            dateOfBirth = filterOptions.fromDate,
-            healthcarePartyId = selfDataOwnerId
+    is PatientFilters.ByDateOfBirthBetweenForDataOwner -> {
+        if (filterOptions.fromDate == filterOptions.toDate) {
+            PatientByHcPartyDateOfBirthFilter(
+                dateOfBirth = filterOptions.fromDate,
+                healthcarePartyId = filterOptions.dataOwnerId
+            )
+        } else {
+            PatientByHcPartyDateOfBirthBetweenFilter(
+                minDateOfBirth = filterOptions.fromDate,
+                maxDateOfBirth = filterOptions.toDate,
+                healthcarePartyId = filterOptions.dataOwnerId
+            )
+        }
+    }
+    is PatientFilters.ByExternalIdForDataOwner -> {
+        PatientByHcPartyAndExternalIdFilter(
+            externalId = filterOptions.externalIdPrefix,
+            healthcarePartyId = filterOptions.dataOwnerId
         )
-    } else {
-        PatientByHcPartyDateOfBirthBetweenFilter(
-            minDateOfBirth = filterOptions.fromDate,
-            maxDateOfBirth = filterOptions.toDate,
+    }
+    is PatientFilters.ByFuzzyNameForDataOwner -> {
+        PatientByHcPartyNameContainsFuzzyFilter(
+            searchString = filterOptions.searchString,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is PatientFilters.ByGenderEducationProfessionForDataOwner -> {
+        PatientByHcPartyGenderEducationProfession(
+            gender = filterOptions.gender,
+            education = filterOptions.education,
+            profession = filterOptions.profession,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is PatientFilters.ByIdentifiersForDataOwner -> {
+        PatientByHcPartyAndIdentifiersFilter(
+            healthcarePartyId = filterOptions.dataOwnerId,
+            identifiers = filterOptions.identifiers
+        )
+    }
+    is PatientFilters.BySsinsForDataOwner -> {
+        if (filterOptions.ssins.size == 1) {
+            PatientByHcPartyAndSsinFilter(
+                ssin = filterOptions.ssins.first(),
+                healthcarePartyId = filterOptions.dataOwnerId
+            )
+        } else {
+            PatientByHcPartyAndSsinsFilter(
+                ssins = filterOptions.ssins,
+                healthcarePartyId = filterOptions.dataOwnerId
+            )
+        }
+    }
+    is PatientFilters.ByTelecomForDataOwner -> {
+        PatientByHcPartyAndTelecomFilter(
+            searchString = filterOptions.searchString,
+            healthcarePartyId = filterOptions.dataOwnerId
+        )
+    }
+    is PatientFilters.ByActiveForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyAndActiveFilter(
+            healthcarePartyId = selfDataOwnerId,
+            active = filterOptions.active
+        )
+    }
+    is PatientFilters.ByAddressForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyAndAddressFilter(
+            searchString = filterOptions.searchString,
+            postalCode = null,
+            houseNumber = null,
             healthcarePartyId = selfDataOwnerId
         )
     }
-    is PatientFilters.ByExternalIdForSelf -> PatientByHcPartyAndExternalIdFilter(
-        externalId = filterOptions.externalIdPrefix,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is PatientFilters.ByFuzzyNameForSelf -> PatientByHcPartyNameContainsFuzzyFilter(
-        searchString = filterOptions.searchString,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is PatientFilters.ByGenderEducationProfessionForSelf -> PatientByHcPartyGenderEducationProfession(
-        gender = filterOptions.gender,
-        education = filterOptions.education,
-        profession = filterOptions.profession,
-        healthcarePartyId = selfDataOwnerId
-    )
-    is PatientFilters.ByIdentifiersForSelf -> PatientByHcPartyAndIdentifiersFilter(
-        healthcarePartyId = selfDataOwnerId,
-        identifiers = filterOptions.identifiers
-    )
-    is PatientFilters.BySsinsForSelf -> if (filterOptions.ssins.size == 1) {
-        PatientByHcPartyAndSsinFilter(
-            ssin = filterOptions.ssins.first(),
-            healthcarePartyId = selfDataOwnerId
-        )
-    } else {
-        PatientByHcPartyAndSsinsFilter(
-            ssins = filterOptions.ssins,
+    is PatientFilters.ByAddressPostalCodeHouseNumberForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyAndAddressFilter(
+            searchString = filterOptions.searchString,
+            postalCode = filterOptions.postalCode,
+            houseNumber = filterOptions.houseNumber,
             healthcarePartyId = selfDataOwnerId
         )
     }
-    is PatientFilters.ByTelecomForSelf -> PatientByHcPartyAndTelecomFilter(
-        searchString = filterOptions.searchString,
-        healthcarePartyId = selfDataOwnerId
-    )
-    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
+    is PatientFilters.ByDateOfBirthBetweenForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        if (filterOptions.fromDate == filterOptions.toDate) {
+            PatientByHcPartyDateOfBirthFilter(
+                dateOfBirth = filterOptions.fromDate,
+                healthcarePartyId = selfDataOwnerId
+            )
+        } else {
+            PatientByHcPartyDateOfBirthBetweenFilter(
+                minDateOfBirth = filterOptions.fromDate,
+                maxDateOfBirth = filterOptions.toDate,
+                healthcarePartyId = selfDataOwnerId
+            )
+        }
+    }
+    is PatientFilters.ByExternalIdForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyAndExternalIdFilter(
+            externalId = filterOptions.externalIdPrefix,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is PatientFilters.ByFuzzyNameForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyNameContainsFuzzyFilter(
+            searchString = filterOptions.searchString,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is PatientFilters.ByGenderEducationProfessionForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyGenderEducationProfession(
+            gender = filterOptions.gender,
+            education = filterOptions.education,
+            profession = filterOptions.profession,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    is PatientFilters.ByIdentifiersForSelf -> {
+        PatientByHcPartyAndIdentifiersFilter(
+            healthcarePartyId = selfDataOwnerId,
+            identifiers = filterOptions.identifiers
+        )
+    }
+    is PatientFilters.BySsinsForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        if (filterOptions.ssins.size == 1) {
+            PatientByHcPartyAndSsinFilter(
+                ssin = filterOptions.ssins.first(),
+                healthcarePartyId = selfDataOwnerId
+            )
+        } else {
+            PatientByHcPartyAndSsinsFilter(
+                ssins = filterOptions.ssins,
+                healthcarePartyId = selfDataOwnerId
+            )
+        }
+    }
+    is PatientFilters.ByTelecomForSelf -> {
+        filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+        PatientByHcPartyAndTelecomFilter(
+            searchString = filterOptions.searchString,
+            healthcarePartyId = selfDataOwnerId
+        )
+    }
+    else -> {
+        throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
+    }
 }
