@@ -98,7 +98,7 @@ fun <E : Identifiable<String>> intersection(
 	} + b + others
 	return BaseSortableIntersectionFilterOptions(
 		sortableFilter,
-		otherOptions.flattenedIntersection()
+		otherOptions.baseFlattenedIntersection()
 	)
 }
 
@@ -131,7 +131,7 @@ fun <E : Identifiable<String>> intersection(
 	a: BaseFilterOptions<E>,
 	b: BaseFilterOptions<E>,
 	vararg others: BaseFilterOptions<E>
-): BaseFilterOptions<E> = BaseIntersectionFilterOptions((listOf(a, b) + others).flattenedIntersection())
+): BaseFilterOptions<E> = BaseIntersectionFilterOptions((listOf(a, b) + others).baseFlattenedIntersection())
 
 /**
  * Get filter options that allow to create a filter which matches only entities that match at least one of the provided
@@ -287,7 +287,7 @@ private fun <E : Identifiable<String>> List<FilterOptions<E>>.flattenedIntersect
 	}
 }
 
-private fun <E : Identifiable<String>> List<BaseFilterOptions<E>>.flattenedIntersection() = flatMap {
+private fun <E : Identifiable<String>> List<BaseFilterOptions<E>>.baseFlattenedIntersection() = flatMap {
 	when (it) {
 		is BaseSortableIntersectionFilterOptions -> listOf(it.sortFilter) + it.otherOptions
 		is BaseIntersectionFilterOptions -> it.options
