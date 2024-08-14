@@ -40,6 +40,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.ComplementFilter
 import com.icure.sdk.model.filter.IntersectionFilter
 import com.icure.sdk.model.filter.UnionFilter
+import com.icure.sdk.utils.InternalIcureApi
 
 /**
  * Get filter options that allow to create a filter which matches only entities that match all the provided filters
@@ -323,4 +324,96 @@ internal suspend fun <E : Identifiable<String>> mapIfMetaFilterOptions(
 	is BaseSortableDifferenceFilterOptions ->
 		ComplementFilter(superSet = mapTypedOptions(filterOptions.of), subSet = mapTypedOptions(filterOptions.subtracting))
 	else -> null
+}
+
+/**
+ * Dispatched versions of meta-filters-options factory methods, for internal use.
+ * Useful for the implementation of wrappers in languages where real overloads with different implementations are not
+ * supported (ts, python)
+ */
+@InternalIcureApi
+object DispatchedMetaFilterOptions {
+	fun <T : Identifiable<String>> union(
+		a: FilterOptions<T>,
+		b: FilterOptions<T>,
+		vararg others: FilterOptions<T>
+	): FilterOptions<T> =
+		if (a is BaseFilterOptions && b is BaseFilterOptions && others.all { it is BaseFilterOptions }) {
+				com.icure.sdk.filters.union(
+					a,
+					b,
+					*Array(others.size) { others[it] as BaseFilterOptions }
+				)
+		} else {
+				com.icure.sdk.filters.union(
+					a,
+					b,
+					*Array(others.size) { others[it] }
+				)
+		}
+
+	fun <T : Identifiable<String>> intersection(
+		a: FilterOptions<T>,
+		b: FilterOptions<T>,
+		vararg others: FilterOptions<T>
+	): FilterOptions<T> =
+		if (a is BaseFilterOptions && b is BaseFilterOptions && others.all { it is BaseFilterOptions }) {
+			if (a is BaseSortableFilterOptions) {
+					com.icure.sdk.filters.intersection(
+						a,
+						b,
+						*Array(others.size) { others[it] as BaseFilterOptions }
+					)
+			} else {
+					com.icure.sdk.filters.intersection(
+						a,
+						b,
+						*Array(others.size) { others[it] as BaseFilterOptions }
+					)
+			}
+		} else {
+			if (a is SortableFilterOptions) {
+					com.icure.sdk.filters.intersection(
+						a,
+						b,
+						*Array(others.size) { others[it] }
+					)
+			} else {
+					com.icure.sdk.filters.intersection(
+						a,
+						b,
+						*Array(others.size) { others[it] }
+					)
+			}
+		}
+
+	fun <T : Identifiable<String>> difference(
+		of: FilterOptions<T>,
+		subtracting: FilterOptions<T>
+	): FilterOptions<T> =
+		if (of is BaseFilterOptions && subtracting is BaseFilterOptions) {
+			if (of is BaseSortableFilterOptions) {
+					com.icure.sdk.filters.difference(
+						of = of,
+						subtracting = subtracting
+					)
+			} else {
+					com.icure.sdk.filters.difference(
+						of = of,
+						subtracting = subtracting
+					)
+			}
+		} else {
+			if (of is SortableFilterOptions) {
+					com.icure.sdk.filters.difference(
+						of = of,
+						subtracting = subtracting
+					)
+			} else {
+					com.icure.sdk.filters.difference(
+						of = of,
+						subtracting = subtracting
+					)
+			}
+		}
 }
