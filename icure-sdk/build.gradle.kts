@@ -17,7 +17,7 @@ val version: String? by project
 project.version = version ?: "0.0.0-snapshot"
 
 kotlin {
-	configureMultiplatform(this)
+	configureMultiplatform(this, null)
 
 	sourceSets {
 		val commonMain by getting {
