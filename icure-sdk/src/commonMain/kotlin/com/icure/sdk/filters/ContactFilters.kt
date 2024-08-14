@@ -14,6 +14,7 @@ import com.icure.sdk.model.filter.contact.ContactByHcPartyTagCodeDateFilter
 import com.icure.sdk.model.filter.contact.ContactByServiceIdsFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.Serializable
 
 object ContactFilters {
 	/**
@@ -298,21 +299,26 @@ object ContactFilters {
 		serviceIds = serviceIds
 	)
 
+	@Serializable
 	internal class AllByDataOwner(
 		val dataOwnerId: String
 	) : BaseFilterOptions<Contact>
 
+	@Serializable
 	internal data object AllForSelf : FilterOptions<Contact>
 
+	@Serializable
 	internal class ByIdentifiersForDataOwner(
 		val identifiers: List<Identifier>,
 		val dataOwnerId: String
 	) : BaseSortableFilterOptions<Contact>
 
+	@Serializable
 	internal class ByIdentifiersForSelf(
 		val identifiers: List<Identifier>
 	) : SortableFilterOptions<Contact>
 
+	@Serializable
 	internal class ByCodeAndOpeningDateForDataOwner(
 		val codeType: String,
 		val codeCode: String?,
@@ -327,6 +333,7 @@ object ContactFilters {
 		}
 	}
 
+	@Serializable
 	internal class ByCodeAndOpeningDateForSelf(
 		val codeType: String,
 		val codeCode: String?,
@@ -340,6 +347,7 @@ object ContactFilters {
 		}
 	}
 
+	@Serializable
 	internal class ByTagAndOpeningDateForDataOwner(
 		val tagType: String,
 		val tagCode: String?,
@@ -354,6 +362,7 @@ object ContactFilters {
 		}
 	}
 
+	@Serializable
 	internal class ByTagAndOpeningDateForSelf(
 		val tagType: String,
 		val tagCode: String?,
@@ -367,24 +376,29 @@ object ContactFilters {
 		}
 	}
 
+	@Serializable
 	internal class ByPatientsForDataOwner(
 		val patients: List<Patient>,
 		val dataOwnerId: String
 	): BaseSortableFilterOptions<Contact>
 
+	@Serializable
 	internal class ByPatientsForSelf(
 		val patients: List<Patient>,
 	): SortableFilterOptions<Contact>
 
+	@Serializable
 	internal class ByPatientsSecretIdsForDataOwner(
 		val secretIds: List<String>,
 		val dataOwnerId: String
 	): BaseSortableFilterOptions<Contact>
 
+	@Serializable
 	internal class ByPatientsSecretIdsForSelf(
 		val secretIds: List<String>,
 	): SortableFilterOptions<Contact>
 
+	@Serializable
 	internal class ByServiceIds(
 		val serviceIds: List<String>,
 	): BaseSortableFilterOptions<Contact>

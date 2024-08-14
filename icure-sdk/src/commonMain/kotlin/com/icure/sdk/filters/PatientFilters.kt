@@ -23,6 +23,7 @@ import com.icure.sdk.model.filter.patient.PatientByIdsFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object PatientFilters {
     /**
@@ -406,7 +407,7 @@ object PatientFilters {
             externalIdPrefix = externalIdPrefix,
         )
 
-
+    @Serializable
     internal class ByIds(
         val ids: List<String>
     ) : SortableFilterOptions<Patient> {
@@ -415,33 +416,40 @@ object PatientFilters {
         }
     }
 
+    @Serializable
     internal class AllForDataOwner(
         val dataOwnerId: String
     ) : BaseFilterOptions<Patient>
 
+    @Serializable
     internal data object AllForSelf : FilterOptions<Patient>
 
+    @Serializable
     internal class ByIdentifiersForDataOwner(
         val identifiers: List<Identifier>,
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class BySsinsForDataOwner(
         val ssins: List<String>,
         val dataOwnerId: String
     ): BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByDateOfBirthBetweenForDataOwner(
         val fromDate: Int,
         val toDate: Int,
         val dataOwnerId: String
     ): BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByFuzzyNameForDataOwner(
         val searchString: String,
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByGenderEducationProfessionForDataOwner(
         val gender: Gender,
         val education: String?,
@@ -455,16 +463,19 @@ object PatientFilters {
         }
     }
 
+    @Serializable
     internal class ByActiveForDataOwner(
         val active: Boolean,
         val dataOwnerId: String
     ) : BaseFilterOptions<Patient>
 
+    @Serializable
     internal class ByTelecomForDataOwner(
         val searchString: String,
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByAddressPostalCodeHouseNumberForDataOwner(
         val searchString: String,
         val postalCode: String,
@@ -472,33 +483,40 @@ object PatientFilters {
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByAddressForDataOwner(
         val searchString: String,
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByExternalIdForDataOwner(
         val externalIdPrefix: String,
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByIdentifiersForSelf(
         val identifiers: List<Identifier>
     ) : SortableFilterOptions<Patient>
 
+    @Serializable
     internal class BySsinsForSelf(
         val ssins: List<String>
     ): SortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByDateOfBirthBetweenForSelf(
         val fromDate: Int,
         val toDate: Int
     ): SortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByFuzzyNameForSelf(
         val searchString: String
     ) : SortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByGenderEducationProfessionForSelf(
         val gender: Gender,
         val education: String?,
@@ -511,24 +529,29 @@ object PatientFilters {
         }
     }
 
+    @Serializable
     internal class ByActiveForSelf(
         val active: Boolean
     ) : FilterOptions<Patient>
 
+    @Serializable
     internal class ByTelecomForSelf(
         val searchString: String
     ) : SortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByAddressPostalCodeHouseNumberForSelf(
         val searchString: String,
         val postalCode: String,
         val houseNumber: String?
     ) : SortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByAddressForSelf(
         val searchString: String
     ) : SortableFilterOptions<Patient>
 
+    @Serializable
     internal class ByExternalIdForSelf(
         val externalIdPrefix: String
     ) : SortableFilterOptions<Patient>

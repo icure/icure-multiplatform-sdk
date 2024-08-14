@@ -41,6 +41,7 @@ import com.icure.sdk.model.filter.ComplementFilter
 import com.icure.sdk.model.filter.IntersectionFilter
 import com.icure.sdk.model.filter.UnionFilter
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.Serializable
 
 /**
  * Get filter options that allow to create a filter which matches only entities that match all the provided filters
@@ -232,47 +233,57 @@ fun <E : Identifiable<String>> difference(
 	subtracting: BaseFilterOptions<E>
 ): BaseSortableFilterOptions<E> = BaseSortableDifferenceFilterOptions(of = of, subtracting = subtracting)
 
+@Serializable
 internal class SortableIntersectionFilterOptions<E : Identifiable<String>> (
 	val sortFilter: SortableFilterOptions<E>,
 	val otherOptions: List<FilterOptions<E>>
 ) : SortableFilterOptions<E>
 
+@Serializable
 internal class IntersectionFilterOptions<E : Identifiable<String>> (
 	val options: List<FilterOptions<E>>
 ) : FilterOptions<E>
 
+@Serializable
 internal class BaseSortableIntersectionFilterOptions<E : Identifiable<String>> (
 	val sortFilter: BaseSortableFilterOptions<E>,
 	val otherOptions: List<BaseFilterOptions<E>>
 ) : BaseSortableFilterOptions<E>
 
+@Serializable
 internal class BaseIntersectionFilterOptions<E : Identifiable<String>> (
 	val options: List<BaseFilterOptions<E>>
 ) : BaseFilterOptions<E>
 
+@Serializable
 internal class UnionFilterOptions<E : Identifiable<String>> (
 	val options: List<FilterOptions<E>>
 ) : FilterOptions<E>
 
+@Serializable
 internal class BaseUnionFilterOptions<E : Identifiable<String>> (
 	val options: List<BaseFilterOptions<E>>
 ) : BaseFilterOptions<E>
 
+@Serializable
 internal class DifferenceFilterOptions<E : Identifiable<String>> (
 	val of: FilterOptions<E>,
 	val subtracting: FilterOptions<E>,
 ) : FilterOptions<E>
 
+@Serializable
 internal class SortableDifferenceFilterOptions<E : Identifiable<String>> (
 	val of: SortableFilterOptions<E>,
 	val subtracting: FilterOptions<E>,
 ) : SortableFilterOptions<E>
 
+@Serializable
 internal class BaseDifferenceFilterOptions<E : Identifiable<String>> (
 	val of: BaseFilterOptions<E>,
 	val subtracting: BaseFilterOptions<E>,
 ) : BaseFilterOptions<E>
 
+@Serializable
 internal class BaseSortableDifferenceFilterOptions<E : Identifiable<String>> (
 	val of: BaseSortableFilterOptions<E>,
 	val subtracting: BaseFilterOptions<E>,

@@ -6,6 +6,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.topic.TopicByHcPartyFilter
 import com.icure.sdk.model.filter.topic.TopicByParticipantFilter
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.Serializable
 
 object TopicFilters {
     /**
@@ -35,12 +36,15 @@ object TopicFilters {
     ): FilterOptions<Topic> = 
         ByParticipant(participantId)
 
+    @Serializable
     internal class AllForDataOwner(
         val dataOwnerId: String
     ) : BaseFilterOptions<Topic>
 
+    @Serializable
     internal data object AllForSelf : FilterOptions<Topic>
 
+    @Serializable
     internal class ByParticipant(
         val participantId: String
     ) : BaseFilterOptions<Topic>

@@ -10,6 +10,7 @@ import com.icure.sdk.model.filter.hcparty.HealthcarePartyByNameFilter
 import com.icure.sdk.model.filter.hcparty.HealthcarePartyByTagCodeFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object HealthcarePartyFilters {
     /**
@@ -87,17 +88,25 @@ object HealthcarePartyFilters {
         descending: Boolean = false
     ): BaseSortableFilterOptions<HealthcareParty> = ByName(searchString, descending)
 
-
+    @Serializable
     internal data object All: BaseFilterOptions<HealthcareParty>
+
+    @Serializable
     internal class ByIdentifiers(val identifiers: List<Identifier>): BaseFilterOptions<HealthcareParty>
+
+    @Serializable
     internal class ByCode(
         val codeType: String,
         val codeCode: String?
     ): BaseSortableFilterOptions<HealthcareParty>
+
+    @Serializable
     internal class ByTag(
         val tagType: String,
         val tagCode: String?
     ): BaseSortableFilterOptions<HealthcareParty>
+
+    @Serializable
     internal class ByIds(
         val ids: List<String>
     ): BaseSortableFilterOptions<HealthcareParty> {
@@ -106,6 +115,7 @@ object HealthcarePartyFilters {
         }
     }
 
+    @Serializable
     internal class ByName(
         val searchString: String,
         val descending: Boolean

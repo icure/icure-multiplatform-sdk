@@ -6,6 +6,7 @@ import com.icure.sdk.model.filter.device.AllDevicesFilter
 import com.icure.sdk.model.filter.device.DeviceByHcPartyFilter
 import com.icure.sdk.model.filter.device.DeviceByIdsFilter
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object DeviceFilters {
     /**
@@ -34,10 +35,13 @@ object DeviceFilters {
      * Filter options to match all devices.
      * These options are not sortable.
      */
+    @Serializable
     internal data object All: BaseFilterOptions<Device>
 
+    @Serializable
     internal class ByResponsible(val responsibleId: String): BaseFilterOptions<Device>
 
+    @Serializable
     internal class ByIds(
         val ids: List<String>
     ): BaseSortableFilterOptions<Device> {

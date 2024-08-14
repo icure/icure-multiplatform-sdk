@@ -6,6 +6,7 @@ import com.icure.sdk.model.filter.code.AllCodesFilter
 import com.icure.sdk.model.filter.code.CodeByIdsFilter
 import com.icure.sdk.model.filter.code.CodeByRegionTypeLabelLanguageFilter
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object CodeFilters {
     /**
@@ -56,9 +57,10 @@ object CodeFilters {
         region = region
     )
 
-
+    @Serializable
     internal data object All : FilterOptions<Code>
 
+    @Serializable
     internal class ByIds(
         val ids: List<String>
     ): BaseSortableFilterOptions<Code> {
@@ -67,6 +69,7 @@ object CodeFilters {
         }
     }
 
+    @Serializable
     internal class ByLanguageTypeLabelRegion(
         val language: String,
         val type: String,

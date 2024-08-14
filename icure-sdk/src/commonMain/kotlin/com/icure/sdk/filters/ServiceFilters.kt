@@ -18,6 +18,7 @@ import com.icure.sdk.model.filter.service.ServiceBySecretForeignKeys
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object ServiceFilters {
     /**
@@ -340,15 +341,18 @@ object ServiceFilters {
         ids: List<String>
     ): BaseSortableFilterOptions<Service> = ByIds(ids)
 
+    @Serializable
     internal class AllForDataOwner(
         val dataOwnerId: String
     ) : BaseFilterOptions<Service>
 
+    @Serializable
     internal class ByIdentifiersForDataOwner(
         val identifiers: List<Identifier>,
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Service>
 
+    @Serializable
     internal class ByCodeAndValueDateForDataOwner(
         val codeType: String,
         val codeCode: String?,
@@ -363,6 +367,7 @@ object ServiceFilters {
         }
     }
 
+    @Serializable
     internal class ByTagAndValueDateForDataOwner(
         val tagType: String,
         val tagCode: String?,
@@ -377,27 +382,33 @@ object ServiceFilters {
         }
     }
 
+    @Serializable
     internal class ByPatientsForDataOwner(
         val patients: List<Patient>,
         val dataOwnerId: String
     ): SortableFilterOptions<Service>
 
+    @Serializable
     internal class ByPatientsSecretIdsForDataOwner(
         val secretIds: List<String>,
         val dataOwnerId: String
     ): BaseSortableFilterOptions<Service>
 
+    @Serializable
     internal class ByHealthElementIdFromSubcontactForDataOwner(
         val healthElementIds: List<String>,
         val dataOwnerId: String
     ): BaseSortableFilterOptions<Service>
 
+    @Serializable
     internal data object AllForSelf : FilterOptions<Service>
 
+    @Serializable
     internal class ByIdentifiersForSelf(
         val identifiers: List<Identifier>
     ) : SortableFilterOptions<Service>
 
+    @Serializable
     internal class ByCodeAndValueDateForSelf(
         val codeType: String,
         val codeCode: String?,
@@ -411,6 +422,7 @@ object ServiceFilters {
         }
     }
 
+    @Serializable
     internal class ByTagAndValueDateForSelf(
         val tagType: String,
         val tagCode: String?,
@@ -424,18 +436,22 @@ object ServiceFilters {
         }
     }
 
+    @Serializable
     internal class ByPatientsForSelf(
         val patients: List<Patient>
     ): SortableFilterOptions<Service>
 
+    @Serializable
     internal class ByPatientsSecretIdsForSelf(
         val secretIds: List<String>
     ): SortableFilterOptions<Service>
 
+    @Serializable
     internal class ByHealthElementIdFromSubcontactForSelf(
         val healthElementIds: List<String>
     ): SortableFilterOptions<Service>
 
+    @Serializable
     internal class ByIds(
         val ids: List<String>
     ): BaseSortableFilterOptions<Service> {

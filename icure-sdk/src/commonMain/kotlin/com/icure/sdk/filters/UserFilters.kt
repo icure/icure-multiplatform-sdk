@@ -7,6 +7,7 @@ import com.icure.sdk.model.filter.user.UserByIdsFilter
 import com.icure.sdk.model.filter.user.UserByNameEmailPhoneFilter
 import com.icure.sdk.model.filter.user.UsersByPatientIdFilter
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object UserFilters {
     /**
@@ -39,13 +40,20 @@ object UserFilters {
      */
     fun byNameEmailOrPhone(searchString: String): BaseFilterOptions<User> = ByNameEmailOrPhone(searchString)
 
+    @Serializable
     internal data object All: BaseFilterOptions<User>
+
+    @Serializable
     internal class ByIds(val ids: List<String>): BaseSortableFilterOptions<User> {
         init {
             ids.requireUniqueElements("`ids`")
         }
     }
+
+    @Serializable
     internal class ByPatientId(val patientId: String): BaseFilterOptions<User>
+
+    @Serializable
     internal class ByNameEmailOrPhone(val searchString: String): BaseFilterOptions<User>
 }
 

@@ -6,6 +6,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.message.LatestMessageByHcPartyTransportGuidFilter
 import com.icure.sdk.model.filter.message.MessageByHcPartyFilter
 import com.icure.sdk.utils.InternalIcureApi
+import kotlinx.serialization.Serializable
 
 object MessageFilters {
 	/**
@@ -40,18 +41,6 @@ object MessageFilters {
 	): BaseSortableFilterOptions<Message> =
 		ByTransportGuidDateForDataOwner(transportGuid, dataOwnerId)
 
-	internal class AllForDataOwner(
-		val dataOwnerId: String
-	) : BaseFilterOptions<Message>
-
-	internal data object AllForSelf : FilterOptions<Message>
-
-
-	internal class ByTransportGuidDateForDataOwner(
-		val transportGuid: String,
-		val dataOwnerId: String
-	) : BaseSortableFilterOptions<Message>
-
 	/**
 	 * Creates options for message filtering that will match all messages shared directly (i.e. ignoring hierarchies) with the current data owner that have the
 	 * provided transportGuid.
@@ -65,6 +54,21 @@ object MessageFilters {
 	): SortableFilterOptions<Message> =
 		ByTransportGuidDateForSelf(transportGuid)
 
+	@Serializable
+	internal class AllForDataOwner(
+		val dataOwnerId: String
+	) : BaseFilterOptions<Message>
+
+	@Serializable
+	internal data object AllForSelf : FilterOptions<Message>
+
+	@Serializable
+	internal class ByTransportGuidDateForDataOwner(
+		val transportGuid: String,
+		val dataOwnerId: String
+	) : BaseSortableFilterOptions<Message>
+
+	@Serializable
 	internal class ByTransportGuidDateForSelf(
 		val transportGuid: String
 	) : BaseSortableFilterOptions<Message>

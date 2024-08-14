@@ -15,6 +15,7 @@ import com.icure.sdk.model.filter.healthelement.HealthElementByIdsFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object HealthElementFilters {
     /**
@@ -27,18 +28,12 @@ object HealthElementFilters {
     ): BaseFilterOptions<HealthElement> =
         AllForDataOwner(dataOwnerId)
 
-    internal class AllForDataOwner(
-        val dataOwnerId: String
-    ): BaseFilterOptions<HealthElement>
-
     /**
      * Create options for health element filtering that will match all health element shared directly (i.e. ignoring hierarchies) with the current data owner.
      * @return options for health element filtering
      */
     fun allHealthElementsForSelf(): FilterOptions<HealthElement> =
         AllForSelf
-
-    internal data object AllForSelf: FilterOptions<HealthElement>
 
     /**
      * Options for health element filtering which match all the health elements shared directly (i.e. ignoring hierarchies) with a specific data owner that have at least
@@ -58,11 +53,6 @@ object HealthElementFilters {
     ): BaseSortableFilterOptions<HealthElement> =
         ByIdentifiersForDataOwner(identifiers, dataOwnerId)
 
-    internal class ByIdentifiersForDataOwner(
-        val identifiers: List<Identifier>,
-        val dataOwnerId: String
-    ): BaseSortableFilterOptions<HealthElement>
-
     /**
      * Options for health element filtering which match all the health elements shared directly (i.e. ignoring hierarchies) with the current data owner that have at least
      * an identifier that has the same exact [Identifier.system] and [Identifier.value] as one of the provided
@@ -78,10 +68,6 @@ object HealthElementFilters {
         identifiers: List<Identifier>
     ): SortableFilterOptions<HealthElement> =
         ByIdentifiersForSelf(identifiers)
-
-    internal class ByIdentifiersForSelf(
-        val identifiers: List<Identifier>,
-    ): SortableFilterOptions<HealthElement>
 
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with a specific data owner that have a certain code.
@@ -105,12 +91,6 @@ object HealthElementFilters {
         dataOwnerId = dataOwnerId
     )
 
-    internal class ByCodeForDataOwner(
-        val codeType: String,
-        val codeCode: String?,
-        val dataOwnerId: String
-    ): BaseSortableFilterOptions<HealthElement>
-
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with the current data owner that have a certain code.
      * If you specify only the [codeType] you will get all entities that have at least a code of that type.
@@ -129,11 +109,6 @@ object HealthElementFilters {
         codeType = codeType,
         codeCode = codeCode
     )
-
-    internal class ByCodeForSelf(
-        val codeType: String,
-        val codeCode: String?,
-    ): SortableFilterOptions<HealthElement>
 
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with a specific data owner that have a certain tag.
@@ -157,12 +132,6 @@ object HealthElementFilters {
         dataOwnerId = dataOwnerId
     )
 
-    internal class ByTagForDataOwner(
-        val tagType: String,
-        val tagCode: String?,
-        val dataOwnerId: String
-    ): BaseSortableFilterOptions<HealthElement>
-
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with the current data owner that have a certain tag.
      * If you specify only the [tagType] you will get all entities that have at least a tag of that type.
@@ -181,11 +150,6 @@ object HealthElementFilters {
             tagType = tagType,
             tagCode = tagCode
         )
-
-    internal class ByTagForSelf(
-        val tagType: String,
-        val tagCode: String?,
-    ): SortableFilterOptions<HealthElement>
 
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with a specific data owner that are linked with one
@@ -211,11 +175,6 @@ object HealthElementFilters {
         dataOwnerId = dataOwnerId
     )
 
-    internal class ByPatientsForDataOwner(
-        val patients: List<Patient>,
-        val dataOwnerId: String
-    ) : SortableFilterOptions<HealthElement>
-
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with the current data owner that are linked with one
      * of the provided patients.
@@ -237,10 +196,6 @@ object HealthElementFilters {
             patients = patients
         )
 
-    internal class ByPatientsForSelf(
-        val patients: List<Patient>
-    ) : SortableFilterOptions<HealthElement>
-
 
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with a specific data owner that are linked with a
@@ -258,11 +213,6 @@ object HealthElementFilters {
         dataOwnerId = dataOwnerId
     )
 
-    internal class ByPatientsSecretIdsForDataOwner(
-        val secretIds: List<String>,
-        val dataOwnerId: String
-    ): BaseSortableFilterOptions<HealthElement>
-
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with the current data owner that are linked with a
      * patient through one of the provided secret ids.
@@ -276,10 +226,6 @@ object HealthElementFilters {
             secretIds = secretIds
         )
 
-    internal class ByPatientsSecretIdsForSelf(
-        val secretIds: List<String>
-    ): SortableFilterOptions<HealthElement>
-
     /**
      * Filter options that match all health elements with one of the provided ids.
      * These options are sortable. When sorting using these options the health elements will have the same order as the input ids.
@@ -290,6 +236,74 @@ object HealthElementFilters {
         ids: List<String>
     ): BaseSortableFilterOptions<HealthElement> = ByIds(ids)
 
+    @Serializable
+    internal class AllForDataOwner(
+        val dataOwnerId: String
+    ): BaseFilterOptions<HealthElement>
+
+    @Serializable
+    internal data object AllForSelf: FilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByIdentifiersForDataOwner(
+        val identifiers: List<Identifier>,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByIdentifiersForSelf(
+        val identifiers: List<Identifier>,
+    ): SortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByCodeForDataOwner(
+        val codeType: String,
+        val codeCode: String?,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByCodeForSelf(
+        val codeType: String,
+        val codeCode: String?,
+    ): SortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByTagForDataOwner(
+        val tagType: String,
+        val tagCode: String?,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByTagForSelf(
+        val tagType: String,
+        val tagCode: String?,
+    ): SortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByPatientsForDataOwner(
+        val patients: List<Patient>,
+        val dataOwnerId: String
+    ) : SortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByPatientsForSelf(
+        val patients: List<Patient>
+    ) : SortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByPatientsSecretIdsForDataOwner(
+        val secretIds: List<String>,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<HealthElement>
+
+    @Serializable
+    internal class ByPatientsSecretIdsForSelf(
+        val secretIds: List<String>
+    ): SortableFilterOptions<HealthElement>
+
+    @Serializable
     internal class ByIds(
         val ids: List<String>
     ): BaseSortableFilterOptions<HealthElement> {

@@ -10,6 +10,7 @@ import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByHcPartyAndTyp
 import com.icure.sdk.model.filter.maintenancetask.MaintenanceTaskByIdsFilter
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.requireUniqueElements
+import kotlinx.serialization.Serializable
 
 object MaintenanceTaskFilters {
     /**
@@ -21,14 +22,6 @@ object MaintenanceTaskFilters {
     fun byIds(
         ids: List<String>
     ): BaseSortableFilterOptions<MaintenanceTask> = ByIds(ids)
-
-    internal class ByIds(
-        val ids : List<String>
-    ): BaseSortableFilterOptions<MaintenanceTask> {
-        init {
-            ids.requireUniqueElements("`ids`")
-        }
-    }
 
     /**
      * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with a specific data owner that have at least
@@ -48,11 +41,6 @@ object MaintenanceTaskFilters {
     ): BaseSortableFilterOptions<MaintenanceTask> =
         ByIdentifiersForDataOwner(identifiers, dataOwnerId)
 
-    internal class ByIdentifiersForDataOwner(
-        val identifiers : List<Identifier>,
-        val dataOwnerId: String
-    ): BaseSortableFilterOptions<MaintenanceTask>
-
     /**
      * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with the current data owner that have at least
      * an identifier that has the same exact [Identifier.system] and [Identifier.value] as one of the provided
@@ -69,10 +57,6 @@ object MaintenanceTaskFilters {
     ): SortableFilterOptions<MaintenanceTask> =
         ByIdentifiersForSelf(identifiers)
 
-    internal class ByIdentifiersForSelf(
-        val identifiers : List<Identifier>
-    ): SortableFilterOptions<MaintenanceTask>
-
     /**
      * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with a specific data owner
      * that have the provided type.
@@ -86,11 +70,6 @@ object MaintenanceTaskFilters {
     ): BaseFilterOptions<MaintenanceTask> =
         ByTypeForDataOwner(type, dataOwnerId)
 
-    internal class ByTypeForDataOwner(
-        val type: String,
-        val dataOwnerId: String
-    ): BaseFilterOptions<MaintenanceTask>
-
 
     /**
      * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -102,10 +81,6 @@ object MaintenanceTaskFilters {
         type: String,
     ): FilterOptions<MaintenanceTask> =
         ByTypeForSelf(type)
-
-    internal class ByTypeForSelf(
-        val type: String,
-    ): FilterOptions<MaintenanceTask>
 
     /**
      * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -123,11 +98,6 @@ object MaintenanceTaskFilters {
     ): BaseSortableFilterOptions<MaintenanceTask> =
         AfterDateForDataOwner(date, dataOwnerId)
 
-    internal class AfterDateForDataOwner(
-        val date: Long,
-        val dataOwnerId: String
-    ): BaseSortableFilterOptions<MaintenanceTask>
-
 
     /**
      * Options for maintenance task filtering which match all the maintenance tasks shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -143,6 +113,44 @@ object MaintenanceTaskFilters {
     ): SortableFilterOptions<MaintenanceTask> =
         AfterDateForSelf(date)
 
+    @Serializable
+    internal class ByIds(
+        val ids : List<String>
+    ): BaseSortableFilterOptions<MaintenanceTask> {
+        init {
+            ids.requireUniqueElements("`ids`")
+        }
+    }
+
+    @Serializable
+    internal class ByIdentifiersForDataOwner(
+        val identifiers : List<Identifier>,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<MaintenanceTask>
+
+    @Serializable
+    internal class ByIdentifiersForSelf(
+        val identifiers : List<Identifier>
+    ): SortableFilterOptions<MaintenanceTask>
+
+    @Serializable
+    internal class ByTypeForDataOwner(
+        val type: String,
+        val dataOwnerId: String
+    ): BaseFilterOptions<MaintenanceTask>
+
+    @Serializable
+    internal class ByTypeForSelf(
+        val type: String,
+    ): FilterOptions<MaintenanceTask>
+
+    @Serializable
+    internal class AfterDateForDataOwner(
+        val date: Long,
+        val dataOwnerId: String
+    ): BaseSortableFilterOptions<MaintenanceTask>
+
+    @Serializable
     internal class AfterDateForSelf(
         val date: Long,
     ): SortableFilterOptions<MaintenanceTask>
