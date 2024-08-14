@@ -206,7 +206,7 @@ object HealthElementFilters {
     fun byPatientsForDataOwner(
         dataOwnerId: String,
         patients: List<Patient>
-    ): BaseSortableFilterOptions<HealthElement> = ByPatientsForDataOwner(
+    ): SortableFilterOptions<HealthElement> = ByPatientsForDataOwner(
         patients = patients,
         dataOwnerId = dataOwnerId
     )
@@ -214,7 +214,7 @@ object HealthElementFilters {
     internal class ByPatientsForDataOwner(
         val patients: List<Patient>,
         val dataOwnerId: String
-    ) : BaseSortableFilterOptions<HealthElement>
+    ) : SortableFilterOptions<HealthElement>
 
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with the current data owner that are linked with one

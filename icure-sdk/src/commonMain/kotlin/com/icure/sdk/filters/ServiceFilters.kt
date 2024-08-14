@@ -148,7 +148,7 @@ object ServiceFilters {
     fun byPatientsForDataOwner(
         dataOwnerId: String,
         patients: List<Patient>,
-    ): BaseSortableFilterOptions<Service> = ByPatientsForDataOwner(
+    ): SortableFilterOptions<Service> = ByPatientsForDataOwner(
         patients = patients,
         dataOwnerId = dataOwnerId
     )
@@ -380,7 +380,7 @@ object ServiceFilters {
     internal class ByPatientsForDataOwner(
         val patients: List<Patient>,
         val dataOwnerId: String
-    ): BaseSortableFilterOptions<Service>
+    ): SortableFilterOptions<Service>
 
     internal class ByPatientsSecretIdsForDataOwner(
         val secretIds: List<String>,

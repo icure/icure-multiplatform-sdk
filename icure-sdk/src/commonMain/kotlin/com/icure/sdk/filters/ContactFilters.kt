@@ -230,7 +230,7 @@ object ContactFilters {
 	fun byPatientsForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>
-	): BaseSortableFilterOptions<Contact> = ByPatientsForDataOwner(
+	): SortableFilterOptions<Contact> = ByPatientsForDataOwner(
 		patients = patients,
 		dataOwnerId = dataOwnerId
 	)
