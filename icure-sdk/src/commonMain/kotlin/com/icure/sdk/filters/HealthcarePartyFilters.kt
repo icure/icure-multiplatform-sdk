@@ -85,6 +85,7 @@ object HealthcarePartyFilters {
      */
     fun byName(
         searchString: String,
+        @DefaultValue("false")
         descending: Boolean = false
     ): BaseSortableFilterOptions<HealthcareParty> = ByName(searchString, descending)
 

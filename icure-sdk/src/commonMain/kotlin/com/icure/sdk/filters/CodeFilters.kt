@@ -5,6 +5,7 @@ import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.code.AllCodesFilter
 import com.icure.sdk.model.filter.code.CodeByIdsFilter
 import com.icure.sdk.model.filter.code.CodeByRegionTypeLabelLanguageFilter
+import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.requireUniqueElements
 import kotlinx.serialization.Serializable
 
@@ -48,7 +49,9 @@ object CodeFilters {
     fun byLanguageTypeLabelRegion(
         language: String,
         type: String,
+        @DefaultValue("null")
         label: String? = null,
+        @DefaultValue("null")
         region: String? = null
     ): BaseFilterOptions<Code> = ByLanguageTypeLabelRegion(
         language = language,
