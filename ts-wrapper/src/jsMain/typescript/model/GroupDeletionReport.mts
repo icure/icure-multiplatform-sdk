@@ -4,16 +4,16 @@ import {randomUuid} from '../utils/Id.mjs';
 
 export class GroupDeletionReport {
 
-  type: string;
+	type: string;
 
-  id: string;
+	id: string;
 
-  server: string;
+	server: string;
 
-  constructor(partial: Partial<GroupDeletionReport> & Pick<GroupDeletionReport, "type" | "server">) {
-    this.type = partial.type;
-    this.id = partial.id ?? randomUuid();
-    this.server = partial.server;
-  }
+	constructor(partial: Partial<GroupDeletionReport> & Pick<GroupDeletionReport, "type" | "server">) {
+		this.type = partial.type;
+		this.id = partial.id ?? randomUuid();
+		this.server = partial.server;
+	}
 
 }

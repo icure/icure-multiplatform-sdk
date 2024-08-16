@@ -1,40 +1,42 @@
 // auto-generated file
 import {EntityAccessInformation} from '../../crypto/entities/EntityAccessInformation.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {IdWithRev} from '../../model/IdWithRev.mjs';
-import {ListOfIds} from '../../model/ListOfIds.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {EncryptedPatient, Patient} from '../../model/Patient.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {SortDirection} from '../../model/couchdb/SortDirection.mjs';
-import {EncryptedContent} from '../../model/embed/Content.mjs';
-import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../../subscription/SubscriptionEventType.mjs';
 
 
 export interface PatientBasicApi {
 
-	matchPatientsBy(filter: AbstractFilter<Patient>): Promise<Array<string>>;
+	matchPatientsBy(filter: BaseFilterOptions<Patient>): Promise<Array<string>>;
+
+	matchPatientsBySorted(filter: BaseSortableFilterOptions<Patient>): Promise<Array<string>>;
+
+	filterPatientsBy(filter: BaseFilterOptions<Patient>): Promise<PaginatedListIterator<EncryptedPatient>>;
+
+	filterPatientsBySorted(filter: BaseSortableFilterOptions<Patient>): Promise<PaginatedListIterator<EncryptedPatient>>;
 
 	deletePatient(entityId: string): Promise<DocIdentifier>;
 
 	deletePatients(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	undeletePatient(patientIds: string): Promise<Array<DocIdentifier>>;
+	undeletePatients(patientIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getDataOwnersWithAccessTo(patient: Patient): Promise<EntityAccessInformation>;
 
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Patient>,
-			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedPatient>>;
+	countOfPatients(hcPartyId: string): Promise<number>;
 
 	modifyPatient(entity: EncryptedPatient): Promise<EncryptedPatient>;
 
 	getPatient(entityId: string): Promise<EncryptedPatient>;
 
-	filterPatientsBy(filterChain: FilterChain<Patient>,
-			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined }): Promise<PaginatedList<EncryptedPatient>>;
+	getPatientResolvingMerges(patientId: string,
+			maxMergeDepth: number | undefined): Promise<EncryptedPatient>;
 
 	findPatientsByNameBirthSsinAuto(filterValue: string,
 			options?: { healthcarePartyId?: string | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<EncryptedPatient>>;
@@ -49,10 +51,6 @@ export interface PatientBasicApi {
 
 	listPatientsByHcParty(hcPartyId: string,
 			options?: { sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<EncryptedPatient>>;
-
-	getPatientHcPartyKeysForDelegate(patientId: string): Promise<{ [ key: string ]: string }>;
-
-	countOfPatients(hcPartyId: string): Promise<EncryptedContent>;
 
 	findPatientsByHealthcareParty(options?: { hcPartyId?: string | undefined, sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<EncryptedPatient>>;
 
@@ -69,15 +67,12 @@ export interface PatientBasicApi {
 
 	listDeletedPatientsByName(options?: { firstName?: string | undefined, lastName?: string | undefined }): Promise<Array<EncryptedPatient>>;
 
-	getPatients(patientIds: ListOfIds): Promise<Array<EncryptedPatient>>;
+	getPatients(patientIds: Array<string>): Promise<Array<EncryptedPatient>>;
 
 	getPatientByHealthcarePartyAndIdentifier(hcPartyId: string, id: string,
 			options?: { system?: string | undefined }): Promise<EncryptedPatient>;
 
 	modifyPatients(patientDtos: Array<EncryptedPatient>): Promise<Array<IdWithRev>>;
-
-	modifyPatientReferral(patientId: string, referralId: string,
-			options?: { start?: number | undefined, end?: number | undefined }): Promise<EncryptedPatient>;
 
 	findDuplicatesBySsin(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedPatient>>;
@@ -85,7 +80,9 @@ export interface PatientBasicApi {
 	findDuplicatesByName(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedPatient>>;
 
-	mergePatients(intoId: string, fromId: string, expectedFromRev: string,
-			updatedInto: EncryptedPatient): Promise<EncryptedPatient>;
+	mergePatients(from: Patient, mergedInto: EncryptedPatient): Promise<EncryptedPatient>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: BaseFilterOptions<Patient>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedPatient>>;
 
 }

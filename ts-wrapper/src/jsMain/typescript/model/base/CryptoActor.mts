@@ -7,18 +7,18 @@ import {Versionable} from './Versionable.mjs';
 
 export interface CryptoActor extends Versionable<string>, HasTags {
 
-  hcPartyKeys: { [ key: string ]: Array<HexString> };
+	hcPartyKeys: { [ key: string ]: Array<HexString> };
 
-  aesExchangeKeys: { [ key: string ]: { [ key: string ]: { [ key: string ]: HexString } } };
+	aesExchangeKeys: { [ key: string ]: { [ key: string ]: { [ key: string ]: HexString } } };
 
-  transferKeys: { [ key: string ]: { [ key: string ]: HexString } };
+	transferKeys: { [ key: string ]: { [ key: string ]: HexString } };
 
-  privateKeyShamirPartitions: { [ key: string ]: HexString };
+	privateKeyShamirPartitions: { [ key: string ]: HexString };
 
-  publicKey: SpkiHexString | undefined;
+	publicKey: SpkiHexString | undefined;
 
-  publicKeysForOaepWithSha256: Array<SpkiHexString>;
+	publicKeysForOaepWithSha256: Array<SpkiHexString>;
 
-  readonly $ktClass: string;
+	readonly $ktClass: string;
 
 }

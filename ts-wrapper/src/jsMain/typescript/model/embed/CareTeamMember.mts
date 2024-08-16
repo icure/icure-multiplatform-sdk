@@ -9,62 +9,62 @@ import {Encryptable} from './Encryptable.mjs';
 
 export interface CareTeamMember extends Encryptable, Identifiable<string> {
 
-  careTeamMemberType: CareTeamMemberType | undefined;
+	careTeamMemberType: CareTeamMemberType | undefined;
 
-  healthcarePartyId: string | undefined;
+	healthcarePartyId: string | undefined;
 
-  quality: CodeStub | undefined;
+	quality: CodeStub | undefined;
 
-  readonly isEncrypted: boolean;
+	readonly isEncrypted: boolean;
 
 }
 
 export class DecryptedCareTeamMember {
 
-  id: string;
+	id: string;
 
-  careTeamMemberType: CareTeamMemberType | undefined = undefined;
+	careTeamMemberType: CareTeamMemberType | undefined = undefined;
 
-  healthcarePartyId: string | undefined = undefined;
+	healthcarePartyId: string | undefined = undefined;
 
-  quality: CodeStub | undefined = undefined;
+	quality: CodeStub | undefined = undefined;
 
-  encryptedSelf: Base64String | undefined = undefined;
+	encryptedSelf: Base64String | undefined = undefined;
 
-  readonly isEncrypted: false = false;
+	readonly isEncrypted: false = false;
 
-  constructor(partial: Partial<DecryptedCareTeamMember>) {
-    if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
-    this.id = partial.id ?? randomUuid();
-    if ('careTeamMemberType' in partial) this.careTeamMemberType = partial.careTeamMemberType;
-    if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
-    if ('quality' in partial) this.quality = partial.quality;
-    if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
-  }
+	constructor(partial: Partial<DecryptedCareTeamMember>) {
+		if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
+		this.id = partial.id ?? randomUuid();
+		if ('careTeamMemberType' in partial) this.careTeamMemberType = partial.careTeamMemberType;
+		if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
+		if ('quality' in partial) this.quality = partial.quality;
+		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
+	}
 
 }
 
 export class EncryptedCareTeamMember {
 
-  id: string;
+	id: string;
 
-  careTeamMemberType: CareTeamMemberType | undefined = undefined;
+	careTeamMemberType: CareTeamMemberType | undefined = undefined;
 
-  healthcarePartyId: string | undefined = undefined;
+	healthcarePartyId: string | undefined = undefined;
 
-  quality: CodeStub | undefined = undefined;
+	quality: CodeStub | undefined = undefined;
 
-  encryptedSelf: Base64String | undefined = undefined;
+	encryptedSelf: Base64String | undefined = undefined;
 
-  readonly isEncrypted: true = true;
+	readonly isEncrypted: true = true;
 
-  constructor(partial: Partial<EncryptedCareTeamMember>) {
-    if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
-    this.id = partial.id ?? randomUuid();
-    if ('careTeamMemberType' in partial) this.careTeamMemberType = partial.careTeamMemberType;
-    if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
-    if ('quality' in partial) this.quality = partial.quality;
-    if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
-  }
+	constructor(partial: Partial<EncryptedCareTeamMember>) {
+		if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
+		this.id = partial.id ?? randomUuid();
+		if ('careTeamMemberType' in partial) this.careTeamMemberType = partial.careTeamMemberType;
+		if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
+		if ('quality' in partial) this.quality = partial.quality;
+		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
+	}
 
 }

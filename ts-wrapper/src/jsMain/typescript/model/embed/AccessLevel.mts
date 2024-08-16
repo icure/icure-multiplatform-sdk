@@ -1,6 +1,6 @@
 // auto-generated file
 
 export enum AccessLevel {
-  Read = "Read",
-  Write = "Write"
+	Read = "Read",
+	Write = "Write"
 }

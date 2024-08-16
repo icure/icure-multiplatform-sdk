@@ -5,12 +5,10 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.IcureStubJs
-import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -36,9 +34,6 @@ public external interface InvoiceBasicApiJs {
 	public fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs>
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<EncryptedInvoiceJs>>
-
-	public fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
-			Promise<Array<EncryptedInvoiceJs>>
 
 	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<EncryptedInvoiceJs>>

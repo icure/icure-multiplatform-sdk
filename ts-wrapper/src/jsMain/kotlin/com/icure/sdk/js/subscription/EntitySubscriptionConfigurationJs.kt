@@ -3,6 +3,11 @@
 
 package com.icure.sdk.js.subscription
 
+import kotlin.Double
+import kotlin.String
+import kotlin.js.JsName
+import kotlin.js.JsQualifier
+
 @JsName("EntitySubscriptionConfiguration")
 public external class EntitySubscriptionConfigurationJs(
 	partial: dynamic,

@@ -5,13 +5,13 @@ import {DataOwnerType} from './DataOwnerType.mjs';
 
 export class CryptoActorStubWithType {
 
-  type: DataOwnerType;
+	type: DataOwnerType;
 
-  stub: CryptoActorStub;
+	stub: CryptoActorStub;
 
-  constructor(partial: Partial<CryptoActorStubWithType> & Pick<CryptoActorStubWithType, "type" | "stub">) {
-    this.type = partial.type;
-    this.stub = partial.stub;
-  }
+	constructor(partial: Partial<CryptoActorStubWithType> & Pick<CryptoActorStubWithType, "type" | "stub">) {
+		this.type = partial.type;
+		this.stub = partial.stub;
+	}
 
 }

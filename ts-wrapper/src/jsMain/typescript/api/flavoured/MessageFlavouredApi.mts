@@ -1,19 +1,16 @@
 // auto-generated file
 import {MessageShareOptions} from '../../crypto/entities/MessageShareOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../../icure-sdk-ts.mjs';
 import {Message} from '../../model/Message.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface MessageFlavouredApi<E extends Message> {
 
-	shareWith(delegateId: string, message: E, shareSecretIds: Array<string>,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+	shareWith(delegateId: string, message: E,
+			options: MessageShareOptions): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(message: E,
 			delegates: { [ key: string ]: MessageShareOptions }): Promise<SimpleShareResult<E>>;
@@ -23,14 +20,15 @@ export interface MessageFlavouredApi<E extends Message> {
 	findMessagesByHcPartyPatient(hcPartyId: string, patient: Patient,
 			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
+	filterMessagesBy(filter: FilterOptions<Message>): Promise<PaginatedListIterator<E>>;
+
+	filterMessagesBySorted(filter: SortableFilterOptions<Message>): Promise<PaginatedListIterator<E>>;
+
 	modifyMessage(entity: E): Promise<E>;
 
 	getMessage(entityId: string): Promise<E>;
 
 	getMessages(entityIds: Array<string>): Promise<Array<E>>;
-
-	filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<E>>;
 
 	listMessagesByTransportGuids(hcPartyId: string, transportGuids: Array<string>): Promise<Array<E>>;
 
@@ -59,6 +57,6 @@ export interface MessageFlavouredApi<E extends Message> {
 	setMessagesStatusBits(entityIds: Array<string>, statusBits: number): Promise<Array<E>>;
 
 	setMessagesReadStatus(entityIds: Array<string>, time: number | undefined, readStatus: boolean,
-			userId: string): Promise<Array<E>>;
+			userId: string | undefined): Promise<Array<E>>;
 
 }

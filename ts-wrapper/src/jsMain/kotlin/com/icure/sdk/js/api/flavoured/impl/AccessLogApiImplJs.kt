@@ -4,7 +4,6 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.AccessLogApi
 import com.icure.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.AccessLogApiJs
@@ -47,7 +46,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -80,30 +78,19 @@ internal class AccessLogApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val accessLogConverted: EncryptedAccessLog = accessLog_fromJs(accessLog)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: AccessLogShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: AccessLogShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						accessLogShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = accessLogApi.encrypted.shareWith(
 					delegateIdConverted,
 					accessLogConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -405,30 +392,19 @@ internal class AccessLogApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: AccessLogShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: AccessLogShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						accessLogShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = accessLogApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					accessLogConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -834,6 +810,24 @@ internal class AccessLogApiImplJs(
 
 	}
 
+	override fun decrypt(accessLog: EncryptedAccessLogJs): Promise<DecryptedAccessLogJs> =
+			GlobalScope.promise {
+		val accessLogConverted: EncryptedAccessLog = accessLog_fromJs(accessLog)
+		val result = accessLogApi.decrypt(
+			accessLogConverted,
+		)
+		accessLog_toJs(result)
+	}
+
+	override fun tryDecrypt(accessLog: EncryptedAccessLogJs): Promise<AccessLogJs> =
+			GlobalScope.promise {
+		val accessLogConverted: EncryptedAccessLog = accessLog_fromJs(accessLog)
+		val result = accessLogApi.tryDecrypt(
+			accessLogConverted,
+		)
+		accessLog_toJs(result)
+	}
+
 	override fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = accessLogApi.deleteAccessLog(
@@ -871,30 +865,19 @@ internal class AccessLogApiImplJs(
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val accessLogConverted: DecryptedAccessLog = accessLog_fromJs(accessLog)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+			val optionsConverted: AccessLogShareOptions? = convertingOptionOrDefaultNullable(
 				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
+				"options",
+				null
+			) { options: AccessLogShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					accessLogShareOptions_fromJs(nonNull1)
+				}
 			}
 			val result = accessLogApi.shareWith(
 				delegateIdConverted,
 				accessLogConverted,
+				optionsConverted,
 			)
 			simpleShareResult_toJs(
 				result,

@@ -14,7 +14,6 @@ import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -51,6 +50,10 @@ public external interface InvoiceApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: InvoiceJs, delegates: Array<String>):
 			Promise<Unit>
 
+	public fun decrypt(invoice: EncryptedInvoiceJs): Promise<DecryptedInvoiceJs>
+
+	public fun tryDecrypt(invoice: EncryptedInvoiceJs): Promise<InvoiceJs>
+
 	public fun deleteInvoice(entityId: String): Promise<DocIdentifierJs>
 
 	public fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
@@ -85,9 +88,6 @@ public external interface InvoiceApiJs {
 	public fun getInvoice(entityId: String): Promise<DecryptedInvoiceJs>
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
-
-	public fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
-			Promise<Array<DecryptedInvoiceJs>>
 
 	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>>

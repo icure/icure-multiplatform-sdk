@@ -1,6 +1,5 @@
 // auto-generated file
 import {InvoiceShareOptions} from '../../crypto/entities/InvoiceShareOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {Invoice} from '../../model/Invoice.mjs';
@@ -9,14 +8,12 @@ import {Patient} from '../../model/Patient.mjs';
 import {InvoiceType} from '../../model/embed/InvoiceType.mjs';
 import {EncryptedInvoicingCode} from '../../model/embed/InvoicingCode.mjs';
 import {MediumType} from '../../model/embed/MediumType.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface InvoiceFlavouredApi<E extends Invoice> {
 
 	shareWith(delegateId: string, invoice: E,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { options?: InvoiceShareOptions | undefined }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(invoice: E,
 			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<SimpleShareResult<E>>;
@@ -33,8 +30,6 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 	getInvoice(entityId: string): Promise<E>;
 
 	getInvoices(entityIds: Array<string>): Promise<Array<E>>;
-
-	filterInvoicesBy(filterChain: FilterChain<Invoice>): Promise<Array<E>>;
 
 	findInvoicesByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<E>>;

@@ -37,13 +37,13 @@ export interface FormBasicApi {
 
 	getForms(entityIds: Array<string>): Promise<Array<EncryptedForm>>;
 
-	getFormByLogicalUuid(logicalUuid: string): Promise<EncryptedForm>;
+	getLatestFormByLogicalUuid(logicalUuid: string): Promise<EncryptedForm>;
+
+	getLatestFormByUniqueId(uniqueId: string): Promise<EncryptedForm>;
 
 	getFormsByLogicalUuid(logicalUuid: string): Promise<Array<EncryptedForm>>;
 
 	getFormsByUniqueId(uniqueId: string): Promise<Array<EncryptedForm>>;
-
-	getFormByUniqueId(uniqueId: string): Promise<EncryptedForm>;
 
 	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<EncryptedForm>>;
 

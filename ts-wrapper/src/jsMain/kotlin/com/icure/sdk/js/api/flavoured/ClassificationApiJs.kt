@@ -44,6 +44,10 @@ public external interface ClassificationApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: ClassificationJs,
 			delegates: Array<String>): Promise<Unit>
 
+	public fun decrypt(classification: EncryptedClassificationJs): Promise<DecryptedClassificationJs>
+
+	public fun tryDecrypt(classification: EncryptedClassificationJs): Promise<ClassificationJs>
+
 	public fun deleteClassification(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteClassifications(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>

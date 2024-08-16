@@ -4,16 +4,16 @@ import {DatabaseInfo} from './DatabaseInfo.mjs';
 
 export class GroupDatabasesInfo {
 
-  groupId: string;
+	groupId: string;
 
-  databasesInfo: Array<DatabaseInfo>;
+	databasesInfo: Array<DatabaseInfo>;
 
-  gcpStorageSize: number;
+	gcpStorageSize: number;
 
-  constructor(partial: Partial<GroupDatabasesInfo> & Pick<GroupDatabasesInfo, "groupId" | "databasesInfo" | "gcpStorageSize">) {
-    this.groupId = partial.groupId;
-    this.databasesInfo = partial.databasesInfo;
-    this.gcpStorageSize = partial.gcpStorageSize;
-  }
+	constructor(partial: Partial<GroupDatabasesInfo> & Pick<GroupDatabasesInfo, "groupId" | "databasesInfo" | "gcpStorageSize">) {
+		this.groupId = partial.groupId;
+		this.databasesInfo = partial.databasesInfo;
+		this.gcpStorageSize = partial.gcpStorageSize;
+	}
 
 }

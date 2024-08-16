@@ -4,7 +4,6 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.ReceiptApi
 import com.icure.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.ReceiptApiJs
@@ -40,7 +39,6 @@ import com.icure.sdk.model.Receipt
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -71,30 +69,19 @@ internal class ReceiptApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: ReceiptShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: ReceiptShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						receiptShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = receiptApi.encrypted.shareWith(
 					delegateIdConverted,
 					receiptConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -195,30 +182,19 @@ internal class ReceiptApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val receiptConverted: Receipt = receipt_fromJs(receipt)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: ReceiptShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: ReceiptShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						receiptShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = receiptApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					receiptConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -355,7 +331,7 @@ internal class ReceiptApiImplJs(
 			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
 				_options,
 				"secretId",
-				SecretIdOption.UseAnySharedWithParent
+				com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
 			) { secretId: SecretIdOptionJs ->
 				secretIdOption_fromJs(secretId)
 			}
@@ -477,6 +453,23 @@ internal class ReceiptApiImplJs(
 		receipt_toJs(result)
 	}
 
+	override fun decrypt(receipt: EncryptedReceiptJs): Promise<DecryptedReceiptJs> =
+			GlobalScope.promise {
+		val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
+		val result = receiptApi.decrypt(
+			receiptConverted,
+		)
+		receipt_toJs(result)
+	}
+
+	override fun tryDecrypt(receipt: EncryptedReceiptJs): Promise<ReceiptJs> = GlobalScope.promise {
+		val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
+		val result = receiptApi.tryDecrypt(
+			receiptConverted,
+		)
+		receipt_toJs(result)
+	}
+
 	override fun deleteReceipt(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = receiptApi.deleteReceipt(
@@ -544,30 +537,19 @@ internal class ReceiptApiImplJs(
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val receiptConverted: DecryptedReceipt = receipt_fromJs(receipt)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+			val optionsConverted: ReceiptShareOptions? = convertingOptionOrDefaultNullable(
 				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
+				"options",
+				null
+			) { options: ReceiptShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					receiptShareOptions_fromJs(nonNull1)
+				}
 			}
 			val result = receiptApi.shareWith(
 				delegateIdConverted,
 				receiptConverted,
+				optionsConverted,
 			)
 			simpleShareResult_toJs(
 				result,

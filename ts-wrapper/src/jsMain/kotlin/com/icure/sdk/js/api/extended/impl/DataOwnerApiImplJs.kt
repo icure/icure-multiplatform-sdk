@@ -61,10 +61,10 @@ internal class DataOwnerApiImplJs(
 		dataOwnerWithType_toJs(result)
 	}
 
-	override fun getDataOwnerStub(ownerId: String): Promise<CryptoActorStubWithTypeJs> =
+	override fun getCryptoActorStub(ownerId: String): Promise<CryptoActorStubWithTypeJs> =
 			GlobalScope.promise {
 		val ownerIdConverted: String = ownerId
-		val result = dataOwnerApi.getDataOwnerStub(
+		val result = dataOwnerApi.getCryptoActorStub(
 			ownerIdConverted,
 		)
 		cryptoActorStubWithType_toJs(result)
@@ -110,15 +110,6 @@ internal class DataOwnerApiImplJs(
 		val result = dataOwnerApi.getCurrentDataOwnerType(
 		)
 		result.name
-	}
-
-	override fun getCryptoActorStub(ownerId: String): Promise<CryptoActorStubWithTypeJs> =
-			GlobalScope.promise {
-		val ownerIdConverted: String = ownerId
-		val result = dataOwnerApi.getCryptoActorStub(
-			ownerIdConverted,
-		)
-		cryptoActorStubWithType_toJs(result)
 	}
 
 	override fun clearCurrentDataOwnerIdsCache(): Unit = dataOwnerApi.clearCurrentDataOwnerIdsCache(

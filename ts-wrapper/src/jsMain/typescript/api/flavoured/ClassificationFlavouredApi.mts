@@ -1,17 +1,15 @@
 // auto-generated file
 import {ClassificationShareOptions} from '../../crypto/entities/ClassificationShareOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {Classification} from '../../model/Classification.mjs';
 import {Patient} from '../../model/Patient.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface ClassificationFlavouredApi<E extends Classification> {
 
 	shareWith(delegateId: string, classification: E,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { options?: ClassificationShareOptions | undefined }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(classification: E,
 			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<SimpleShareResult<E>>;

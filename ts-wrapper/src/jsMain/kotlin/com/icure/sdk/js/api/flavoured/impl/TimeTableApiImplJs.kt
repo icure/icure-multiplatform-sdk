@@ -3,7 +3,6 @@ package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.TimeTableApi
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
@@ -41,7 +40,6 @@ import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -73,30 +71,19 @@ internal class TimeTableApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: TimeTableShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: TimeTableShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						timeTableShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = timeTableApi.encrypted.shareWith(
 					delegateIdConverted,
 					timeTableConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -218,30 +205,19 @@ internal class TimeTableApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: TimeTableShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: TimeTableShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						timeTableShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = timeTableApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					timeTableConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -469,6 +445,24 @@ internal class TimeTableApiImplJs(
 
 	}
 
+	override fun decrypt(timeTable: EncryptedTimeTableJs): Promise<DecryptedTimeTableJs> =
+			GlobalScope.promise {
+		val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
+		val result = timeTableApi.decrypt(
+			timeTableConverted,
+		)
+		timeTable_toJs(result)
+	}
+
+	override fun tryDecrypt(timeTable: EncryptedTimeTableJs): Promise<TimeTableJs> =
+			GlobalScope.promise {
+		val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
+		val result = timeTableApi.tryDecrypt(
+			timeTableConverted,
+		)
+		timeTable_toJs(result)
+	}
+
 	override fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = timeTableApi.deleteTimeTable(
@@ -506,30 +500,19 @@ internal class TimeTableApiImplJs(
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val timeTableConverted: DecryptedTimeTable = timeTable_fromJs(timeTable)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+			val optionsConverted: TimeTableShareOptions? = convertingOptionOrDefaultNullable(
 				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
+				"options",
+				null
+			) { options: TimeTableShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					timeTableShareOptions_fromJs(nonNull1)
+				}
 			}
 			val result = timeTableApi.shareWith(
 				delegateIdConverted,
 				timeTableConverted,
+				optionsConverted,
 			)
 			simpleShareResult_toJs(
 				result,

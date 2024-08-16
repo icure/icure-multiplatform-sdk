@@ -1,15 +1,13 @@
 // auto-generated file
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {TimeTableShareOptions} from '../../crypto/entities/TimeTableShareOptions.mjs';
 import {TimeTable} from '../../model/TimeTable.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface TimeTableFlavouredApi<E extends TimeTable> {
 
 	shareWith(delegateId: string, timeTable: E,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { options?: TimeTableShareOptions | undefined }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(timeTable: E,
 			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<SimpleShareResult<E>>;

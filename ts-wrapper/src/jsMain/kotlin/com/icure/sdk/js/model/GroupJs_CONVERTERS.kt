@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
@@ -103,6 +104,9 @@ public fun group_toJs(obj: Group): GroupJs {
 	val superGroup = nullToUndefined(
 		obj.superGroup
 	)
+	val applicationId = nullToUndefined(
+		obj.applicationId
+	)
 	return GroupJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -118,7 +122,8 @@ public fun group_toJs(obj: Group): GroupJs {
 		"sharedEntities:sharedEntities," +
 		"minimumKrakenVersion:minimumKrakenVersion," +
 		"minimumAuthenticationClassForElevatedPrivileges:minimumAuthenticationClassForElevatedPrivileges," +
-		"superGroup:superGroup" +
+		"superGroup:superGroup," +
+		"applicationId:applicationId" +
 	"}"))
 }
 
@@ -190,6 +195,7 @@ public fun group_fromJs(obj: GroupJs): Group {
 	val minimumAuthenticationClassForElevatedPrivileges =
 			AuthenticationClass.valueOf(obj.minimumAuthenticationClassForElevatedPrivileges)
 	val superGroup = undefinedToNull(obj.superGroup)
+	val applicationId = undefinedToNull(obj.applicationId)
 	return Group(
 		id = id,
 		rev = rev,
@@ -206,5 +212,6 @@ public fun group_fromJs(obj: GroupJs): Group {
 		minimumKrakenVersion = minimumKrakenVersion,
 		minimumAuthenticationClassForElevatedPrivileges = minimumAuthenticationClassForElevatedPrivileges,
 		superGroup = superGroup,
+		applicationId = applicationId,
 	)
 }

@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.subscription
 
 import com.icure.sdk.js.model.CheckedConverters.durationToNumber
@@ -5,6 +6,7 @@ import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.numberToDuration
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun entitySubscriptionConfiguration_toJs(obj: EntitySubscriptionConfiguration):

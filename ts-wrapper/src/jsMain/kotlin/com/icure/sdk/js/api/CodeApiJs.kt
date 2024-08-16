@@ -3,11 +3,12 @@
 
 package com.icure.sdk.js.api
 
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.sdk.js.model.BooleanResponseJs
 import com.icure.sdk.js.model.CodeJs
 import com.icure.sdk.js.model.PaginatedListJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
 import kotlin.Unit
@@ -40,6 +41,9 @@ public external interface CodeApiJs {
 
 	public fun createCodes(codeBatch: Array<CodeJs>): Promise<Array<CodeJs>>
 
+	@JsName("createCodesInGroup")
+	public fun createCodes(groupId: String, codeBatch: Array<CodeJs>): Promise<Array<CodeJs>>
+
 	public fun isCodeValid(
 		type: String,
 		code: String,
@@ -55,6 +59,9 @@ public external interface CodeApiJs {
 
 	public fun getCodes(codeIds: Array<String>): Promise<Array<CodeJs>>
 
+	@JsName("getCodesInGroup")
+	public fun getCodes(groupId: String, codeIds: Array<String>): Promise<Array<CodeJs>>
+
 	public fun getCode(codeId: String): Promise<CodeJs>
 
 	public fun getCodeWithParts(
@@ -67,10 +74,18 @@ public external interface CodeApiJs {
 
 	public fun modifyCodes(codeBatch: Array<CodeJs>): Promise<Array<CodeJs>>
 
-	public fun filterCodesBy(filterChain: FilterChainJs<CodeJs>, options: dynamic):
-			Promise<PaginatedListJs<CodeJs>>
+	@JsName("modifyCodesInGroup")
+	public fun modifyCodes(groupId: String, codeBatch: Array<CodeJs>): Promise<Array<CodeJs>>
 
-	public fun matchCodesBy(filter: AbstractFilterJs<CodeJs>): Promise<Array<String>>
+	public fun filterCodesBy(filter: BaseFilterOptionsJs<CodeJs>):
+			Promise<PaginatedListIteratorJs<CodeJs>>
+
+	public fun filterCodesBySorted(filter: BaseSortableFilterOptionsJs<CodeJs>):
+			Promise<PaginatedListIteratorJs<CodeJs>>
+
+	public fun matchCodesBy(filter: BaseFilterOptionsJs<CodeJs>): Promise<Array<String>>
+
+	public fun matchCodesBySorted(filter: BaseSortableFilterOptionsJs<CodeJs>): Promise<Array<String>>
 
 	public fun importCodes(codeType: String): Promise<Unit>
 }

@@ -3,6 +3,8 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
 import com.icure.sdk.js.model.IcureStubJs
@@ -11,10 +13,8 @@ import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
@@ -24,9 +24,30 @@ import kotlin.js.Promise
 
 @JsName("ContactBasicApi")
 public external interface ContactBasicApiJs {
-	public fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>>
+	public fun matchContactsBy(filter: BaseFilterOptionsJs<ContactJs>): Promise<Array<String>>
 
-	public fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>>
+	public fun matchServicesBy(filter: BaseFilterOptionsJs<ServiceJs>): Promise<Array<String>>
+
+	public fun matchContactsBySorted(filter: BaseSortableFilterOptionsJs<ContactJs>):
+			Promise<Array<String>>
+
+	public fun matchServicesBySorted(filter: BaseSortableFilterOptionsJs<ServiceJs>):
+			Promise<Array<String>>
+
+	public fun filterContactsBy(filter: BaseFilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<EncryptedContactJs>>
+
+	public fun filterServicesBy(filter: BaseFilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<EncryptedServiceJs>>
+
+	public fun filterContactsBySorted(filter: BaseSortableFilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<EncryptedContactJs>>
+
+	public fun filterServicesBySorted(filter: BaseSortableFilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<EncryptedServiceJs>>
+
+	public fun subscribeToServiceCreateOrUpdateEvents(filter: BaseFilterOptionsJs<ServiceJs>,
+			options: dynamic): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
 
 	public fun deleteContact(entityId: String): Promise<DocIdentifierJs>
 
@@ -38,18 +59,6 @@ public external interface ContactBasicApiJs {
 	public fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>>
 
-	public fun subscribeToServiceEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ServiceJs>,
-		subscriptionConfig: EntitySubscriptionConfigurationJs,
-	): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ContactJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedContactJs>>
-
 	public fun modifyContact(entity: EncryptedContactJs): Promise<EncryptedContactJs>
 
 	public fun modifyContacts(entities: Array<EncryptedContactJs>): Promise<Array<EncryptedContactJs>>
@@ -57,12 +66,6 @@ public external interface ContactBasicApiJs {
 	public fun getContact(entityId: String): Promise<EncryptedContactJs>
 
 	public fun getContacts(entityIds: Array<String>): Promise<Array<EncryptedContactJs>>
-
-	public fun filterContactsBy(
-		filterChain: FilterChainJs<ContactJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedContactJs>>
 
 	public fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String):
 			Promise<Array<EncryptedContactJs>>
@@ -80,9 +83,6 @@ public external interface ContactBasicApiJs {
 		secretPatientKeys: Array<String>,
 		options: dynamic,
 	): Promise<Array<EncryptedContactJs>>
-
-	public fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: Array<String>):
-			Promise<Array<EncryptedContactJs>>
 
 	public fun getService(serviceId: String): Promise<EncryptedServiceJs>
 
@@ -103,9 +103,9 @@ public external interface ContactBasicApiJs {
 		options: dynamic,
 	): Promise<PaginatedListJs<EncryptedContactJs>>
 
-	public fun filterServicesBy(
-		filterChain: FilterChainJs<ServiceJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedServiceJs>>
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: BaseFilterOptionsJs<ContactJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedContactJs>>
 }

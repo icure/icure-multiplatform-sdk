@@ -1,9 +1,8 @@
 // auto-generated file
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../icure-sdk-ts.mjs';
 import {BooleanResponse} from '../model/BooleanResponse.mjs';
 import {Code} from '../model/Code.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
-import {AbstractFilter} from '../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../model/filter/chain/FilterChain.mjs';
 
 
 export interface CodeApi {
@@ -33,12 +32,16 @@ export interface CodeApi {
 
 	createCodes(codeBatch: Array<Code>): Promise<Array<Code>>;
 
+	createCodes(groupId: string, codeBatch: Array<Code>): Promise<Array<Code>>;
+
 	isCodeValid(type: string, code: string, version: string | undefined): Promise<BooleanResponse>;
 
 	getCodeByRegionLanguageTypeLabel(region: string, label: string, type: string,
 			languages: string | undefined): Promise<Code>;
 
 	getCodes(codeIds: Array<string>): Promise<Array<Code>>;
+
+	getCodes(groupId: string, codeIds: Array<string>): Promise<Array<Code>>;
 
 	getCode(codeId: string): Promise<Code>;
 
@@ -48,10 +51,15 @@ export interface CodeApi {
 
 	modifyCodes(codeBatch: Array<Code>): Promise<Array<Code>>;
 
-	filterCodesBy(filterChain: FilterChain<Code>,
-			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined }): Promise<PaginatedList<Code>>;
+	modifyCodes(groupId: string, codeBatch: Array<Code>): Promise<Array<Code>>;
 
-	matchCodesBy(filter: AbstractFilter<Code>): Promise<Array<string>>;
+	filterCodesBy(filter: BaseFilterOptions<Code>): Promise<PaginatedListIterator<Code>>;
+
+	filterCodesBySorted(filter: BaseSortableFilterOptions<Code>): Promise<PaginatedListIterator<Code>>;
+
+	matchCodesBy(filter: BaseFilterOptions<Code>): Promise<Array<string>>;
+
+	matchCodesBySorted(filter: BaseSortableFilterOptions<Code>): Promise<Array<string>>;
 
 	importCodes(codeType: string): Promise<void>;
 

@@ -45,6 +45,10 @@ public external interface CalendarItemApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: CalendarItemJs,
 			delegates: Array<String>): Promise<Unit>
 
+	public fun decrypt(calendarItem: EncryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>
+
+	public fun tryDecrypt(calendarItem: EncryptedCalendarItemJs): Promise<CalendarItemJs>
+
 	public fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -91,9 +95,6 @@ public external interface CalendarItemApiJs {
 		endDate: Double,
 		agendaId: String,
 	): Promise<Array<DecryptedCalendarItemJs>>
-
-	public fun getCalendarItemsWithIds(entityIds: Array<String>):
-			Promise<Array<DecryptedCalendarItemJs>>
 
 	public fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,

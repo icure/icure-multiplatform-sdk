@@ -4,7 +4,6 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.FormApi
 import com.icure.sdk.crypto.entities.FormShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.FormApiJs
@@ -48,7 +47,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -81,30 +79,19 @@ internal class FormApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val formConverted: EncryptedForm = form_fromJs(form)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: FormShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: FormShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						formShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = formApi.encrypted.shareWith(
 					delegateIdConverted,
 					formConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -263,11 +250,20 @@ internal class FormApiImplJs(
 			)
 		}
 
-		override fun getFormByLogicalUuid(logicalUuid: String): Promise<EncryptedFormJs> =
+		override fun getLatestFormByLogicalUuid(logicalUuid: String): Promise<EncryptedFormJs> =
 				GlobalScope.promise {
 			val logicalUuidConverted: String = logicalUuid
-			val result = formApi.encrypted.getFormByLogicalUuid(
+			val result = formApi.encrypted.getLatestFormByLogicalUuid(
 				logicalUuidConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun getLatestFormByUniqueId(uniqueId: String): Promise<EncryptedFormJs> =
+				GlobalScope.promise {
+			val uniqueIdConverted: String = uniqueId
+			val result = formApi.encrypted.getLatestFormByUniqueId(
+				uniqueIdConverted,
 			)
 			form_toJs(result)
 		}
@@ -298,14 +294,6 @@ internal class FormApiImplJs(
 					form_toJs(x1)
 				},
 			)
-		}
-
-		override fun getFormByUniqueId(uniqueId: String): Promise<EncryptedFormJs> = GlobalScope.promise {
-			val uniqueIdConverted: String = uniqueId
-			val result = formApi.encrypted.getFormByUniqueId(
-				uniqueIdConverted,
-			)
-			form_toJs(result)
 		}
 
 		override fun getChildrenForms(hcPartyId: String, parentId: String):
@@ -381,30 +369,19 @@ internal class FormApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val formConverted: Form = form_fromJs(form)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: FormShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: FormShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						formShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = formApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					formConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -560,10 +537,19 @@ internal class FormApiImplJs(
 			)
 		}
 
-		override fun getFormByLogicalUuid(logicalUuid: String): Promise<FormJs> = GlobalScope.promise {
+		override fun getLatestFormByLogicalUuid(logicalUuid: String): Promise<FormJs> =
+				GlobalScope.promise {
 			val logicalUuidConverted: String = logicalUuid
-			val result = formApi.tryAndRecover.getFormByLogicalUuid(
+			val result = formApi.tryAndRecover.getLatestFormByLogicalUuid(
 				logicalUuidConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun getLatestFormByUniqueId(uniqueId: String): Promise<FormJs> = GlobalScope.promise {
+			val uniqueIdConverted: String = uniqueId
+			val result = formApi.tryAndRecover.getLatestFormByUniqueId(
+				uniqueIdConverted,
 			)
 			form_toJs(result)
 		}
@@ -593,14 +579,6 @@ internal class FormApiImplJs(
 					form_toJs(x1)
 				},
 			)
-		}
-
-		override fun getFormByUniqueId(uniqueId: String): Promise<FormJs> = GlobalScope.promise {
-			val uniqueIdConverted: String = uniqueId
-			val result = formApi.tryAndRecover.getFormByUniqueId(
-				uniqueIdConverted,
-			)
-			form_toJs(result)
 		}
 
 		override fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<FormJs>> =
@@ -799,6 +777,22 @@ internal class FormApiImplJs(
 
 	}
 
+	override fun decrypt(form: EncryptedFormJs): Promise<DecryptedFormJs> = GlobalScope.promise {
+		val formConverted: EncryptedForm = form_fromJs(form)
+		val result = formApi.decrypt(
+			formConverted,
+		)
+		form_toJs(result)
+	}
+
+	override fun tryDecrypt(form: EncryptedFormJs): Promise<FormJs> = GlobalScope.promise {
+		val formConverted: EncryptedForm = form_fromJs(form)
+		val result = formApi.tryDecrypt(
+			formConverted,
+		)
+		form_toJs(result)
+	}
+
 	override fun deleteForm(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = formApi.deleteForm(
@@ -969,30 +963,19 @@ internal class FormApiImplJs(
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val formConverted: DecryptedForm = form_fromJs(form)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+			val optionsConverted: FormShareOptions? = convertingOptionOrDefaultNullable(
 				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
+				"options",
+				null
+			) { options: FormShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					formShareOptions_fromJs(nonNull1)
+				}
 			}
 			val result = formApi.shareWith(
 				delegateIdConverted,
 				formConverted,
+				optionsConverted,
 			)
 			simpleShareResult_toJs(
 				result,
@@ -1151,11 +1134,20 @@ internal class FormApiImplJs(
 		)
 	}
 
-	override fun getFormByLogicalUuid(logicalUuid: String): Promise<DecryptedFormJs> =
+	override fun getLatestFormByLogicalUuid(logicalUuid: String): Promise<DecryptedFormJs> =
 			GlobalScope.promise {
 		val logicalUuidConverted: String = logicalUuid
-		val result = formApi.getFormByLogicalUuid(
+		val result = formApi.getLatestFormByLogicalUuid(
 			logicalUuidConverted,
+		)
+		form_toJs(result)
+	}
+
+	override fun getLatestFormByUniqueId(uniqueId: String): Promise<DecryptedFormJs> =
+			GlobalScope.promise {
+		val uniqueIdConverted: String = uniqueId
+		val result = formApi.getLatestFormByUniqueId(
+			uniqueIdConverted,
 		)
 		form_toJs(result)
 	}
@@ -1186,14 +1178,6 @@ internal class FormApiImplJs(
 				form_toJs(x1)
 			},
 		)
-	}
-
-	override fun getFormByUniqueId(uniqueId: String): Promise<DecryptedFormJs> = GlobalScope.promise {
-		val uniqueIdConverted: String = uniqueId
-		val result = formApi.getFormByUniqueId(
-			uniqueIdConverted,
-		)
-		form_toJs(result)
 	}
 
 	override fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<DecryptedFormJs>>

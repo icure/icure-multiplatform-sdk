@@ -16,7 +16,7 @@ export interface DataOwnerApi {
 
 	getDataOwner(ownerId: string): Promise<DataOwnerWithType>;
 
-	getDataOwnerStub(ownerId: string): Promise<CryptoActorStubWithType>;
+	getCryptoActorStub(ownerId: string): Promise<CryptoActorStubWithType>;
 
 	getCurrentDataOwnerHierarchyIdsFrom(parentId: string): Promise<Array<string>>;
 
@@ -25,8 +25,6 @@ export interface DataOwnerApi {
 	modifyDataOwnerStub(cryptoActorStubWithTypeDto: CryptoActorStubWithType): Promise<CryptoActorStubWithType>;
 
 	getCurrentDataOwnerType(): Promise<DataOwnerType>;
-
-	getCryptoActorStub(ownerId: string): Promise<CryptoActorStubWithType>;
 
 	clearCurrentDataOwnerIdsCache(): void;
 

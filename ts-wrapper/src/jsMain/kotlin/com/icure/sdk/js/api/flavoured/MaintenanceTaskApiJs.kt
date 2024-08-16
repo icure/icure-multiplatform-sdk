@@ -5,15 +5,15 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.MaintenanceTaskShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.DecryptedMaintenanceTaskJs
 import com.icure.sdk.js.model.EncryptedMaintenanceTaskJs
 import com.icure.sdk.js.model.MaintenanceTaskJs
-import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
@@ -43,15 +43,20 @@ public external interface MaintenanceTaskApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: MaintenanceTaskJs,
 			delegates: Array<String>): Promise<Unit>
 
+	public fun decrypt(maintenanceTask: EncryptedMaintenanceTaskJs):
+			Promise<DecryptedMaintenanceTaskJs>
+
+	public fun tryDecrypt(maintenanceTask: EncryptedMaintenanceTaskJs): Promise<MaintenanceTaskJs>
+
+	public fun matchMaintenanceTasksBy(filter: FilterOptionsJs<MaintenanceTaskJs>):
+			Promise<Array<String>>
+
+	public fun matchMaintenanceTasksBySorted(filter: SortableFilterOptionsJs<MaintenanceTaskJs>):
+			Promise<Array<String>>
+
 	public fun deleteMaintenanceTask(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteMaintenanceTasks(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<MaintenanceTaskJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedMaintenanceTaskJs>>
 
 	public fun shareWith(
 		delegateId: String,
@@ -66,11 +71,23 @@ public external interface MaintenanceTaskApiJs {
 	public fun shareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,
 			delegates: Record<String, MaintenanceTaskShareOptionsJs>): Promise<DecryptedMaintenanceTaskJs>
 
+	public fun filterMaintenanceTasksBy(filter: FilterOptionsJs<MaintenanceTaskJs>):
+			Promise<PaginatedListIteratorJs<DecryptedMaintenanceTaskJs>>
+
+	public fun filterMaintenanceTasksBySorted(filter: SortableFilterOptionsJs<MaintenanceTaskJs>):
+			Promise<PaginatedListIteratorJs<DecryptedMaintenanceTaskJs>>
+
 	public fun modifyMaintenanceTask(entity: DecryptedMaintenanceTaskJs):
 			Promise<DecryptedMaintenanceTaskJs>
 
 	public fun getMaintenanceTask(entityId: String): Promise<DecryptedMaintenanceTaskJs>
 
-	public fun filterMaintenanceTasksBy(filterChain: FilterChainJs<MaintenanceTaskJs>,
-			options: dynamic): Promise<PaginatedListJs<DecryptedMaintenanceTaskJs>>
+	public fun getMaintenanceTasks(entityIds: Array<String>):
+			Promise<Array<DecryptedMaintenanceTaskJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<MaintenanceTaskJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedMaintenanceTaskJs>>
 }

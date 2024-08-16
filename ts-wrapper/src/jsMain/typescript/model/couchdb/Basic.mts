@@ -2,13 +2,13 @@
 
 export class Basic {
 
-  username: string;
+	username: string;
 
-  password: string;
+	password: string;
 
-  constructor(partial: Partial<Basic> & Pick<Basic, "username" | "password">) {
-    this.username = partial.username;
-    this.password = partial.password;
-  }
+	constructor(partial: Partial<Basic> & Pick<Basic, "username" | "password">) {
+		this.username = partial.username;
+		this.password = partial.password;
+	}
 
 }

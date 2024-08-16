@@ -3,6 +3,12 @@
 
 package com.icure.sdk.js.model.security
 
+import kotlin.Deprecated
+import kotlin.Nothing
+import kotlin.String
+import kotlin.js.JsName
+import kotlin.js.JsQualifier
+
 @JsName("AlwaysPermissionItem")
 public external class AlwaysPermissionItemJs(
 	partial: dynamic,

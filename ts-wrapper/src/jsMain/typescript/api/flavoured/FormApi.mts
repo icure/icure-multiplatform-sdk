@@ -1,7 +1,6 @@
 // auto-generated file
 import {FormShareOptions} from '../../crypto/entities/FormShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {DecryptedForm, EncryptedForm, Form} from '../../model/Form.mjs';
@@ -10,7 +9,6 @@ import {Patient} from '../../model/Patient.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
 import {FormFlavouredApi} from './FormFlavouredApi.mjs';
 
@@ -36,6 +34,10 @@ export interface FormApi {
 
 	createDelegationDeAnonymizationMetadata(entity: Form, delegates: Array<string>): Promise<void>;
 
+	decrypt(form: EncryptedForm): Promise<DecryptedForm>;
+
+	tryDecrypt(form: EncryptedForm): Promise<Form>;
+
 	deleteForm(entityId: string): Promise<DocIdentifier>;
 
 	deleteForms(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
@@ -60,7 +62,7 @@ export interface FormApi {
 	setTemplateAttachment(formTemplateId: string, payload: Int8Array): Promise<string>;
 
 	shareWith(delegateId: string, form: DecryptedForm,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedForm>>;
+			options?: { options?: FormShareOptions | undefined }): Promise<SimpleShareResult<DecryptedForm>>;
 
 	tryShareWithMany(form: DecryptedForm,
 			delegates: { [ key: string ]: FormShareOptions }): Promise<SimpleShareResult<DecryptedForm>>;
@@ -79,13 +81,13 @@ export interface FormApi {
 
 	getForms(entityIds: Array<string>): Promise<Array<DecryptedForm>>;
 
-	getFormByLogicalUuid(logicalUuid: string): Promise<DecryptedForm>;
+	getLatestFormByLogicalUuid(logicalUuid: string): Promise<DecryptedForm>;
+
+	getLatestFormByUniqueId(uniqueId: string): Promise<DecryptedForm>;
 
 	getFormsByLogicalUuid(logicalUuid: string): Promise<Array<DecryptedForm>>;
 
 	getFormsByUniqueId(uniqueId: string): Promise<Array<DecryptedForm>>;
-
-	getFormByUniqueId(uniqueId: string): Promise<DecryptedForm>;
 
 	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<DecryptedForm>>;
 

@@ -23,7 +23,7 @@ public external interface DataOwnerApiJs {
 
 	public fun getDataOwner(ownerId: String): Promise<DataOwnerWithTypeJs>
 
-	public fun getDataOwnerStub(ownerId: String): Promise<CryptoActorStubWithTypeJs>
+	public fun getCryptoActorStub(ownerId: String): Promise<CryptoActorStubWithTypeJs>
 
 	public fun getCurrentDataOwnerHierarchyIdsFrom(parentId: String): Promise<Array<String>>
 
@@ -33,8 +33,6 @@ public external interface DataOwnerApiJs {
 			Promise<CryptoActorStubWithTypeJs>
 
 	public fun getCurrentDataOwnerType(): Promise<String>
-
-	public fun getCryptoActorStub(ownerId: String): Promise<CryptoActorStubWithTypeJs>
 
 	public fun clearCurrentDataOwnerIdsCache()
 }

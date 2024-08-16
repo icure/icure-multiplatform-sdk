@@ -5,10 +5,11 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.TopicShareOptionsJs
-import com.icure.sdk.js.model.PaginatedListJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.TopicJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
@@ -28,14 +29,16 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 
 	public fun shareWithMany(topic: E, delegates: Record<String, TopicShareOptionsJs>): Promise<E>
 
+	public fun filterTopicsBy(filter: FilterOptionsJs<TopicJs>): Promise<PaginatedListIteratorJs<E>>
+
+	public fun filterTopicsBySorted(filter: SortableFilterOptionsJs<TopicJs>):
+			Promise<PaginatedListIteratorJs<E>>
+
 	public fun modifyTopic(entity: E): Promise<E>
 
 	public fun getTopic(entityId: String): Promise<E>
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<E>>
-
-	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
-			Promise<PaginatedListJs<E>>
 
 	public fun addParticipant(
 		entityId: String,

@@ -7,20 +7,20 @@ import {Identifiable} from './Identifiable.mjs';
 
 export interface Person extends Identifiable<string> {
 
-  civility: string | undefined;
+	civility: string | undefined;
 
-  gender: Gender | undefined;
+	gender: Gender | undefined;
 
-  firstName: string | undefined;
+	firstName: string | undefined;
 
-  lastName: string | undefined;
+	lastName: string | undefined;
 
-  companyName: string | undefined;
+	companyName: string | undefined;
 
-  names: Array<PersonName>;
+	names: Array<PersonName>;
 
-  addresses: Array<Address>;
+	addresses: Array<Address>;
 
-  languages: Array<string>;
+	languages: Array<string>;
 
 }

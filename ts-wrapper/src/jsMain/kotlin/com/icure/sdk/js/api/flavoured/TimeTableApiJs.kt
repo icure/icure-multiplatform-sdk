@@ -43,6 +43,10 @@ public external interface TimeTableApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: TimeTableJs, delegates: Array<String>):
 			Promise<Unit>
 
+	public fun decrypt(timeTable: EncryptedTimeTableJs): Promise<DecryptedTimeTableJs>
+
+	public fun tryDecrypt(timeTable: EncryptedTimeTableJs): Promise<TimeTableJs>
+
 	public fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteTimeTables(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>

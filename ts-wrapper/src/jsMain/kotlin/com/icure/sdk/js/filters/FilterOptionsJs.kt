@@ -10,15 +10,19 @@ import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.utils.InternalIcureApi
 
 @JsExport
+@JsName("FilterOptions")
 interface FilterOptionsJs<T : IdentifiableJs<String>>
 
 @JsExport
+@JsName("SortableFilterOptions")
 interface SortableFilterOptionsJs<T : IdentifiableJs<String>> : FilterOptionsJs<T>
 
 @JsExport
+@JsName("BaseFilterOptions")
 interface BaseFilterOptionsJs<T : IdentifiableJs<String>> : FilterOptionsJs<T>
 
 @JsExport
+@JsName("BaseSortableFilterOptions")
 interface BaseSortableFilterOptionsJs<T : IdentifiableJs<String>> : BaseFilterOptionsJs<T> , SortableFilterOptionsJs<T>
 
 internal class FilterOptionsJsImpl<T_JS : IdentifiableJs<String>> (

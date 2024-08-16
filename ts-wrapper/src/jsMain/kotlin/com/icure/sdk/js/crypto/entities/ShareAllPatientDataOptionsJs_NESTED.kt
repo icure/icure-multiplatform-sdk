@@ -3,7 +3,7 @@
 
 package com.icure.sdk.js.crypto.entities
 
-import com.icure.sdk.js.model.PatientJs
+import com.icure.sdk.js.model.EncryptedPatientJs
 import com.icure.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
@@ -27,7 +27,7 @@ public external class ShareAllPatientDataOptionsJs_EntityResultJs(
 public external class ShareAllPatientDataOptionsJs_ResultJs(
 	partial: dynamic,
 ) {
-	public val patient: PatientJs
+	public val patient: EncryptedPatientJs
 
 	public val statuses: Record<String, ShareAllPatientDataOptionsJs_EntityResultJs>
 }

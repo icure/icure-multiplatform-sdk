@@ -5,16 +5,16 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.TopicShareOptionsJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.DecryptedTopicJs
 import com.icure.sdk.js.model.EncryptedTopicJs
-import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
@@ -46,17 +46,17 @@ public external interface TopicApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: TopicJs, delegates: Array<String>):
 			Promise<Unit>
 
+	public fun decrypt(topic: EncryptedTopicJs): Promise<DecryptedTopicJs>
+
+	public fun tryDecrypt(topic: EncryptedTopicJs): Promise<TopicJs>
+
+	public fun matchTopicsBy(filter: FilterOptionsJs<TopicJs>): Promise<Array<String>>
+
+	public fun matchTopicsBySorted(filter: SortableFilterOptionsJs<TopicJs>): Promise<Array<String>>
+
 	public fun deleteTopic(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteTopics(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
-
-	public fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<TopicJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedTopicJs>>
 
 	public fun shareWith(
 		delegateId: String,
@@ -70,14 +70,17 @@ public external interface TopicApiJs {
 	public fun shareWithMany(topic: DecryptedTopicJs, delegates: Record<String, TopicShareOptionsJs>):
 			Promise<DecryptedTopicJs>
 
+	public fun filterTopicsBy(filter: FilterOptionsJs<TopicJs>):
+			Promise<PaginatedListIteratorJs<DecryptedTopicJs>>
+
+	public fun filterTopicsBySorted(filter: SortableFilterOptionsJs<TopicJs>):
+			Promise<PaginatedListIteratorJs<DecryptedTopicJs>>
+
 	public fun modifyTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs>
 
 	public fun getTopic(entityId: String): Promise<DecryptedTopicJs>
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<DecryptedTopicJs>>
-
-	public fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
-			Promise<PaginatedListJs<DecryptedTopicJs>>
 
 	public fun addParticipant(
 		entityId: String,
@@ -86,4 +89,10 @@ public external interface TopicApiJs {
 	): Promise<DecryptedTopicJs>
 
 	public fun removeParticipant(entityId: String, dataOwnerId: String): Promise<DecryptedTopicJs>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<TopicJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedTopicJs>>
 }

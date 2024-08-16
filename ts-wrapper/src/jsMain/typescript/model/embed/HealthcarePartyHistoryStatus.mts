@@ -4,19 +4,19 @@ import {HealthcarePartyStatus} from './HealthcarePartyStatus.mjs';
 
 export class HealthcarePartyHistoryStatus {
 
-  status: HealthcarePartyStatus;
+	status: HealthcarePartyStatus;
 
-  specialisationCode: string;
+	specialisationCode: string;
 
-  startDate: number;
+	startDate: number;
 
-  active: boolean;
+	active: boolean;
 
-  constructor(partial: Partial<HealthcarePartyHistoryStatus> & Pick<HealthcarePartyHistoryStatus, "status" | "specialisationCode" | "startDate" | "active">) {
-    this.status = partial.status;
-    this.specialisationCode = partial.specialisationCode;
-    this.startDate = partial.startDate;
-    this.active = partial.active;
-  }
+	constructor(partial: Partial<HealthcarePartyHistoryStatus> & Pick<HealthcarePartyHistoryStatus, "status" | "specialisationCode" | "startDate" | "active">) {
+		this.status = partial.status;
+		this.specialisationCode = partial.specialisationCode;
+		this.startDate = partial.startDate;
+		this.active = partial.active;
+	}
 
 }

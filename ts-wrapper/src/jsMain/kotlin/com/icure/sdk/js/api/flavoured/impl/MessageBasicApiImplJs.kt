@@ -2,8 +2,14 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.MessageBasicApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.MessageBasicApiJs
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.sdk.js.filters.baseFilterOptions_fromJs
+import com.icure.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
@@ -16,10 +22,6 @@ import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.abstractFilter_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.message_fromJs
 import com.icure.sdk.js.model.message_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
@@ -27,13 +29,13 @@ import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
 import com.icure.sdk.js.subscription.entitySubscription_toJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -53,14 +55,9 @@ import kotlinx.serialization.json.JsonElement
 internal class MessageBasicApiImplJs(
 	private val messageBasicApi: MessageBasicApi,
 ) : MessageBasicApiJs {
-	override fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>> =
+	override fun matchMessagesBy(filter: BaseFilterOptionsJs<MessageJs>): Promise<Array<String>> =
 			GlobalScope.promise {
-		val filterConverted: AbstractFilter<Message> = abstractFilter_fromJs(
-			filter,
-			{ x1: MessageJs ->
-				message_fromJs(x1)
-			},
-		)
+		val filterConverted: BaseFilterOptions<Message> = baseFilterOptions_fromJs(filter)
 		val result = messageBasicApi.matchMessagesBy(
 			filterConverted,
 		)
@@ -68,6 +65,48 @@ internal class MessageBasicApiImplJs(
 			result,
 			{ x1: String ->
 				x1
+			},
+		)
+	}
+
+	override fun matchMessagesBySorted(filter: BaseSortableFilterOptionsJs<MessageJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<Message> = baseSortableFilterOptions_fromJs(filter)
+		val result = messageBasicApi.matchMessagesBySorted(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun filterMessagesBy(filter: BaseFilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<EncryptedMessageJs>> = GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<Message> = baseFilterOptions_fromJs(filter)
+		val result = messageBasicApi.filterMessagesBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: EncryptedMessage ->
+				message_toJs(x1)
+			},
+		)
+	}
+
+	override fun filterMessagesBySorted(filter: BaseSortableFilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<EncryptedMessageJs>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<Message> = baseSortableFilterOptions_fromJs(filter)
+		val result = messageBasicApi.filterMessagesBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: EncryptedMessage ->
+				message_toJs(x1)
 			},
 		)
 	}
@@ -100,50 +139,6 @@ internal class MessageBasicApiImplJs(
 		)
 	}
 
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<MessageJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedMessageJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Message> = abstractFilter_fromJs(
-				filter,
-				{ x1: MessageJs ->
-					message_fromJs(x1)
-				},
-			)
-			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
-					convertingOptionOrDefaultNullable(
-				_options,
-				"subscriptionConfig",
-				null
-			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
-				subscriptionConfig?.let { nonNull1 ->
-					entitySubscriptionConfiguration_fromJs(nonNull1)
-				}
-			}
-			val result = messageBasicApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				subscriptionConfigConverted,
-			)
-			entitySubscription_toJs(
-				result,
-				{ x1: EncryptedMessage ->
-					message_toJs(x1)
-				},
-			)
-		}
-	}
-
 	override fun modifyMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs> =
 			GlobalScope.promise {
 		val entityConverted: EncryptedMessage = message_fromJs(entity)
@@ -174,32 +169,6 @@ internal class MessageBasicApiImplJs(
 			entityIdsConverted,
 		)
 		listToArray(
-			result,
-			{ x1: EncryptedMessage ->
-				message_toJs(x1)
-			},
-		)
-	}
-
-	override fun filterMessagesBy(
-		filterChain: FilterChainJs<MessageJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedMessageJs>> = GlobalScope.promise {
-		val filterChainConverted: FilterChain<Message> = filterChain_fromJs(
-			filterChain,
-			{ x1: MessageJs ->
-				message_fromJs(x1)
-			},
-		)
-		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
-		val limitConverted: Int? = numberToInt(limit, "limit")
-		val result = messageBasicApi.filterMessagesBy(
-			filterChainConverted,
-			startDocumentIdConverted,
-			limitConverted,
-		)
-		paginatedList_toJs(
 			result,
 			{ x1: EncryptedMessage ->
 				message_toJs(x1)
@@ -469,7 +438,7 @@ internal class MessageBasicApiImplJs(
 		entityIds: Array<String>,
 		time: Double?,
 		readStatus: Boolean,
-		userId: String,
+		userId: String?,
 	): Promise<Array<EncryptedMessageJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -480,7 +449,7 @@ internal class MessageBasicApiImplJs(
 		)
 		val timeConverted: Long? = numberToLong(time, "time")
 		val readStatusConverted: Boolean = readStatus
-		val userIdConverted: String = userId
+		val userIdConverted: String? = undefinedToNull(userId)
 		val result = messageBasicApi.setMessagesReadStatus(
 			entityIdsConverted,
 			timeConverted,
@@ -493,5 +462,44 @@ internal class MessageBasicApiImplJs(
 				message_toJs(x1)
 			},
 		)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: BaseFilterOptionsJs<MessageJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedMessageJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: BaseFilterOptions<Message> = baseFilterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = messageBasicApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedMessage ->
+					message_toJs(x1)
+				},
+			)
+		}
 	}
 }

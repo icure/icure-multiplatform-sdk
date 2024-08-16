@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.model.sdk
 
 import com.icure.sdk.js.model.specializations.spkiHexString_fromJs

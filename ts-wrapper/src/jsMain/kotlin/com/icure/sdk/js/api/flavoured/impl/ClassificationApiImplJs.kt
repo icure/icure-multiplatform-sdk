@@ -4,7 +4,6 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.ClassificationApi
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.ClassificationApiJs
@@ -44,7 +43,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -76,30 +74,19 @@ internal class ClassificationApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val classificationConverted: EncryptedClassification = classification_fromJs(classification)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: ClassificationShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: ClassificationShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						classificationShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = classificationApi.encrypted.shareWith(
 					delegateIdConverted,
 					classificationConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -253,30 +240,19 @@ internal class ClassificationApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val classificationConverted: Classification = classification_fromJs(classification)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: ClassificationShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: ClassificationShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						classificationShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = classificationApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					classificationConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -536,6 +512,24 @@ internal class ClassificationApiImplJs(
 
 	}
 
+	override fun decrypt(classification: EncryptedClassificationJs): Promise<DecryptedClassificationJs>
+			= GlobalScope.promise {
+		val classificationConverted: EncryptedClassification = classification_fromJs(classification)
+		val result = classificationApi.decrypt(
+			classificationConverted,
+		)
+		classification_toJs(result)
+	}
+
+	override fun tryDecrypt(classification: EncryptedClassificationJs): Promise<ClassificationJs> =
+			GlobalScope.promise {
+		val classificationConverted: EncryptedClassification = classification_fromJs(classification)
+		val result = classificationApi.tryDecrypt(
+			classificationConverted,
+		)
+		classification_toJs(result)
+	}
+
 	override fun deleteClassification(entityId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
@@ -574,30 +568,19 @@ internal class ClassificationApiImplJs(
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val classificationConverted: DecryptedClassification = classification_fromJs(classification)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+			val optionsConverted: ClassificationShareOptions? = convertingOptionOrDefaultNullable(
 				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
+				"options",
+				null
+			) { options: ClassificationShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					classificationShareOptions_fromJs(nonNull1)
+				}
 			}
 			val result = classificationApi.shareWith(
 				delegateIdConverted,
 				classificationConverted,
+				optionsConverted,
 			)
 			simpleShareResult_toJs(
 				result,

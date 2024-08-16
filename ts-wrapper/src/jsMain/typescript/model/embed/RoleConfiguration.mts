@@ -2,23 +2,23 @@
 
 export class RoleConfiguration {
 
-  source: RoleConfiguration.Source;
+	source: RoleConfiguration.Source;
 
-  roles: Array<string> = [];
+	roles: Array<string> = [];
 
-  constructor(partial: Partial<RoleConfiguration> & Pick<RoleConfiguration, "source">) {
-    this.source = partial.source;
-    if ('roles' in partial && partial.roles !== undefined) this.roles = partial.roles;
-  }
+	constructor(partial: Partial<RoleConfiguration> & Pick<RoleConfiguration, "source">) {
+		this.source = partial.source;
+		if ('roles' in partial && partial.roles !== undefined) this.roles = partial.roles;
+	}
 
 }
 
 export namespace RoleConfiguration {
 
-  export enum Source {
-    Configuration = "Configuration",
-    Inherited = "Inherited",
-    Default = "Default"
-  }
+	export enum Source {
+		Configuration = "Configuration",
+		Inherited = "Inherited",
+		Default = "Default"
+	}
 
 }

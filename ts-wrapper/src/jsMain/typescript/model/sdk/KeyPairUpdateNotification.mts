@@ -4,13 +4,13 @@ import {SpkiHexString} from '../specializations/SpkiHexString.mjs';
 
 export class KeyPairUpdateNotification {
 
-  newPublicKey: SpkiHexString;
+	newPublicKey: SpkiHexString;
 
-  concernedDataOwnerId: string;
+	concernedDataOwnerId: string;
 
-  constructor(partial: Partial<KeyPairUpdateNotification> & Pick<KeyPairUpdateNotification, "newPublicKey" | "concernedDataOwnerId">) {
-    this.newPublicKey = partial.newPublicKey;
-    this.concernedDataOwnerId = partial.concernedDataOwnerId;
-  }
+	constructor(partial: Partial<KeyPairUpdateNotification> & Pick<KeyPairUpdateNotification, "newPublicKey" | "concernedDataOwnerId">) {
+		this.newPublicKey = partial.newPublicKey;
+		this.concernedDataOwnerId = partial.concernedDataOwnerId;
+	}
 
 }

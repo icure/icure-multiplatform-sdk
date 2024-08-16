@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.model
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
@@ -41,6 +42,7 @@ import com.icure.sdk.model.DecryptedContact
 import com.icure.sdk.model.EncryptedContact
 import com.icure.sdk.model.base.CodeStub
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.base.ParticipantType
 import com.icure.sdk.model.embed.Annotation
 import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.DecryptedSubContact
@@ -137,6 +139,15 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 			service_toJs(x1)
 		},
 	)
+	val participants = mapToObject(
+		obj.participants,
+		{ x1: ParticipantType ->
+			x1.name
+		},
+		{ x1: String ->
+			x1
+		},
+	)
 	val healthcarePartyId = nullToUndefined(
 		obj.healthcarePartyId
 	)
@@ -230,6 +241,7 @@ public fun contact_toJs(obj: DecryptedContact): DecryptedContactJs {
 		"encounterLocation:encounterLocation," +
 		"subContacts:subContacts," +
 		"services:services," +
+		"participants:participants," +
 		"healthcarePartyId:healthcarePartyId," +
 		"modifiedContactId:modifiedContactId," +
 		"secretForeignKeys:secretForeignKeys," +
@@ -297,6 +309,16 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 		"obj.services",
 		{ x1: DecryptedServiceJs ->
 			service_fromJs(x1)
+		},
+	)
+	val participants = objectToMap(
+		obj.participants,
+		"obj.participants",
+		{ x1: String ->
+			ParticipantType.valueOf(x1)
+		},
+		{ x1: String ->
+			x1
 		},
 	)
 	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
@@ -392,6 +414,7 @@ public fun contact_fromJs(obj: DecryptedContactJs): DecryptedContact {
 		encounterLocation = encounterLocation,
 		subContacts = subContacts,
 		services = services,
+		participants = participants,
 		healthcarePartyId = healthcarePartyId,
 		modifiedContactId = modifiedContactId,
 		secretForeignKeys = secretForeignKeys,
@@ -489,6 +512,15 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 			service_toJs(x1)
 		},
 	)
+	val participants = mapToObject(
+		obj.participants,
+		{ x1: ParticipantType ->
+			x1.name
+		},
+		{ x1: String ->
+			x1
+		},
+	)
 	val healthcarePartyId = nullToUndefined(
 		obj.healthcarePartyId
 	)
@@ -582,6 +614,7 @@ public fun contact_toJs(obj: EncryptedContact): EncryptedContactJs {
 		"encounterLocation:encounterLocation," +
 		"subContacts:subContacts," +
 		"services:services," +
+		"participants:participants," +
 		"healthcarePartyId:healthcarePartyId," +
 		"modifiedContactId:modifiedContactId," +
 		"secretForeignKeys:secretForeignKeys," +
@@ -649,6 +682,16 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 		"obj.services",
 		{ x1: EncryptedServiceJs ->
 			service_fromJs(x1)
+		},
+	)
+	val participants = objectToMap(
+		obj.participants,
+		"obj.participants",
+		{ x1: String ->
+			ParticipantType.valueOf(x1)
+		},
+		{ x1: String ->
+			x1
 		},
 	)
 	val healthcarePartyId = undefinedToNull(obj.healthcarePartyId)
@@ -744,6 +787,7 @@ public fun contact_fromJs(obj: EncryptedContactJs): EncryptedContact {
 		encounterLocation = encounterLocation,
 		subContacts = subContacts,
 		services = services,
+		participants = participants,
 		healthcarePartyId = healthcarePartyId,
 		modifiedContactId = modifiedContactId,
 		secretForeignKeys = secretForeignKeys,

@@ -29,7 +29,7 @@ export interface GroupApi {
 			name: string,
 			password: string,
 			initialisationData: DatabaseInitialisation,
-			options?: { type?: GroupType | undefined, server?: string | undefined, q?: number | undefined, n?: number | undefined, superGroup?: string | undefined }
+			options?: { type?: GroupType | undefined, server?: string | undefined, q?: number | undefined, n?: number | undefined, superGroup?: string | undefined, applicationId?: string | undefined }
 	): Promise<Group>;
 
 	registerNewGroupAdministrator(registrationInformation: RegistrationInformation,

@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.model.embed.form.template
 
 import com.icure.sdk.model.embed.form.template.Launcher

@@ -3,12 +3,12 @@
 
 package com.icure.sdk.js.api
 
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.sdk.js.model.DeviceJs
 import com.icure.sdk.js.model.IdWithRevJs
-import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
@@ -29,10 +29,16 @@ public external interface DeviceApiJs {
 
 	public fun updateDevices(devices: Array<DeviceJs>): Promise<Array<IdWithRevJs>>
 
-	public fun filterDevicesBy(filterChain: FilterChainJs<DeviceJs>, options: dynamic):
-			Promise<PaginatedListJs<DeviceJs>>
+	public fun filterDevicesBy(filter: BaseFilterOptionsJs<DeviceJs>):
+			Promise<PaginatedListIteratorJs<DeviceJs>>
 
-	public fun matchDevicesBy(filter: AbstractFilterJs<DeviceJs>): Promise<Array<String>>
+	public fun filterDevicesBySorted(filter: BaseSortableFilterOptionsJs<DeviceJs>):
+			Promise<PaginatedListIteratorJs<DeviceJs>>
+
+	public fun matchDevicesBy(filter: BaseFilterOptionsJs<DeviceJs>): Promise<Array<String>>
+
+	public fun matchDevicesBySorted(filter: BaseSortableFilterOptionsJs<DeviceJs>):
+			Promise<Array<String>>
 
 	public fun deleteDevice(deviceId: String): Promise<DocIdentifierJs>
 

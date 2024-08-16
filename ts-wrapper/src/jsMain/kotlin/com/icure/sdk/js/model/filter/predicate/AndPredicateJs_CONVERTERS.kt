@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.model.filter.predicate
 
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
