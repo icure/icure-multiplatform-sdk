@@ -13,4 +13,8 @@ interface TopicFiltersFactory {
 
 }
 
-const TopicFilters: TopicFiltersFactory = InternalTopicFiltersObj.getInstance();
+export const TopicFilters: TopicFiltersFactory = {
+			allTopicsForDataOwner: (dataOwnerId) => InternalTopicFiltersObj.getInstance().allTopicsForDataOwner(dataOwnerId),
+			allTopicsForSelf: () => InternalTopicFiltersObj.getInstance().allTopicsForSelf(),
+			byParticipant: (participantId) => InternalTopicFiltersObj.getInstance().byParticipant(participantId)
+		};

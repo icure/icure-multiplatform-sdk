@@ -16,4 +16,9 @@ interface MessageFiltersFactory {
 
 }
 
-const MessageFilters: MessageFiltersFactory = InternalMessageFiltersObj.getInstance();
+export const MessageFilters: MessageFiltersFactory = {
+			allMessagesForDataOwner: (dataOwnerId) => InternalMessageFiltersObj.getInstance().allMessagesForDataOwner(dataOwnerId),
+			allMessagesForSelf: () => InternalMessageFiltersObj.getInstance().allMessagesForSelf(),
+			byTransportGuidDateForDataOwner: (dataOwnerId, transportGuid) => InternalMessageFiltersObj.getInstance().byTransportGuidDateForDataOwner(dataOwnerId, transportGuid),
+			byTransportGuidDate: (transportGuid) => InternalMessageFiltersObj.getInstance().byTransportGuidDate(transportGuid)
+		};

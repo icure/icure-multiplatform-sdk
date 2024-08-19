@@ -23,4 +23,11 @@ interface HealthcarePartyFiltersFactory {
 
 }
 
-const HealthcarePartyFilters: HealthcarePartyFiltersFactory = InternalHealthcarePartyFiltersObj.getInstance();
+export const HealthcarePartyFilters: HealthcarePartyFiltersFactory = {
+			all: () => InternalHealthcarePartyFiltersObj.getInstance().all(),
+			byIdentifiers: (identifiers) => InternalHealthcarePartyFiltersObj.getInstance().byIdentifiers(identifiers),
+			byCode: (codeType, options) => InternalHealthcarePartyFiltersObj.getInstance().byCode(codeType, options),
+			byTag: (tagType, options) => InternalHealthcarePartyFiltersObj.getInstance().byTag(tagType, options),
+			byIds: (ids) => InternalHealthcarePartyFiltersObj.getInstance().byIds(ids),
+			byName: (searchString, options) => InternalHealthcarePartyFiltersObj.getInstance().byName(searchString, options)
+		};

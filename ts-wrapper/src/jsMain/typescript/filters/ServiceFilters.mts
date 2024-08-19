@@ -47,4 +47,20 @@ interface ServiceFiltersFactory {
 
 }
 
-const ServiceFilters: ServiceFiltersFactory = InternalServiceFiltersObj.getInstance();
+export const ServiceFilters: ServiceFiltersFactory = {
+			allServicesForDataOwner: (dataOwnerId) => InternalServiceFiltersObj.getInstance().allServicesForDataOwner(dataOwnerId),
+			allServicesForSelf: () => InternalServiceFiltersObj.getInstance().allServicesForSelf(),
+			byIdentifiersForDataOwner: (dataOwnerId, identifiers) => InternalServiceFiltersObj.getInstance().byIdentifiersForDataOwner(dataOwnerId, identifiers),
+			byCodeAndValueDateForDataOwner: (dataOwnerId, codeType, options) => InternalServiceFiltersObj.getInstance().byCodeAndValueDateForDataOwner(dataOwnerId, codeType, options),
+			byTagAndValueDateForDataOwner: (dataOwnerId, tagType, options) => InternalServiceFiltersObj.getInstance().byTagAndValueDateForDataOwner(dataOwnerId, tagType, options),
+			byPatientsForDataOwner: (dataOwnerId, patients) => InternalServiceFiltersObj.getInstance().byPatientsForDataOwner(dataOwnerId, patients),
+			byPatientsSecretIdsForDataOwner: (dataOwnerId, secretIds) => InternalServiceFiltersObj.getInstance().byPatientsSecretIdsForDataOwner(dataOwnerId, secretIds),
+			byHealthElementIdFromSubcontactForDataOwner: (dataOwnerId, healthElementIds) => InternalServiceFiltersObj.getInstance().byHealthElementIdFromSubcontactForDataOwner(dataOwnerId, healthElementIds),
+			byIdentifiersForSelf: (identifiers) => InternalServiceFiltersObj.getInstance().byIdentifiersForSelf(identifiers),
+			byCodeAndValueDateForSelf: (codeType, options) => InternalServiceFiltersObj.getInstance().byCodeAndValueDateForSelf(codeType, options),
+			byTagAndValueDateForSelf: (tagType, options) => InternalServiceFiltersObj.getInstance().byTagAndValueDateForSelf(tagType, options),
+			byPatientsForSelf: (patients) => InternalServiceFiltersObj.getInstance().byPatientsForSelf(patients),
+			byPatientsSecretIdsForSelf: (secretIds) => InternalServiceFiltersObj.getInstance().byPatientsSecretIdsForSelf(secretIds),
+			byHealthElementIdFromSubcontactForSelf: (healthElementIds) => InternalServiceFiltersObj.getInstance().byHealthElementIdFromSubcontactForSelf(healthElementIds),
+			byIds: (ids) => InternalServiceFiltersObj.getInstance().byIds(ids)
+		};

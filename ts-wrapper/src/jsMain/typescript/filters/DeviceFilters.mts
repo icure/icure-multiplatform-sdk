@@ -13,4 +13,8 @@ interface DeviceFiltersFactory {
 
 }
 
-const DeviceFilters: DeviceFiltersFactory = InternalDeviceFiltersObj.getInstance();
+export const DeviceFilters: DeviceFiltersFactory = {
+			all: () => InternalDeviceFiltersObj.getInstance().all(),
+			byResponsible: (responsibleId) => InternalDeviceFiltersObj.getInstance().byResponsible(responsibleId),
+			byIds: (ids) => InternalDeviceFiltersObj.getInstance().byIds(ids)
+		};

@@ -14,4 +14,8 @@ interface CodeFiltersFactory {
 
 }
 
-const CodeFilters: CodeFiltersFactory = InternalCodeFiltersObj.getInstance();
+export const CodeFilters: CodeFiltersFactory = {
+			all: () => InternalCodeFiltersObj.getInstance().all(),
+			byIds: (ids) => InternalCodeFiltersObj.getInstance().byIds(ids),
+			byLanguageTypeLabelRegion: (language, type, options) => InternalCodeFiltersObj.getInstance().byLanguageTypeLabelRegion(language, type, options)
+		};

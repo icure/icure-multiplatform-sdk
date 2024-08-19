@@ -15,4 +15,9 @@ interface UserFiltersFactory {
 
 }
 
-const UserFilters: UserFiltersFactory = InternalUserFiltersObj.getInstance();
+export const UserFilters: UserFiltersFactory = {
+			all: () => InternalUserFiltersObj.getInstance().all(),
+			byIds: (ids) => InternalUserFiltersObj.getInstance().byIds(ids),
+			byPatientId: (patientId) => InternalUserFiltersObj.getInstance().byPatientId(patientId),
+			byNameEmailOrPhone: (searchString) => InternalUserFiltersObj.getInstance().byNameEmailOrPhone(searchString)
+		};

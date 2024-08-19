@@ -24,4 +24,12 @@ interface MaintenanceTaskFiltersFactory {
 
 }
 
-const MaintenanceTaskFilters: MaintenanceTaskFiltersFactory = InternalMaintenanceTaskFiltersObj.getInstance();
+export const MaintenanceTaskFilters: MaintenanceTaskFiltersFactory = {
+			byIds: (ids) => InternalMaintenanceTaskFiltersObj.getInstance().byIds(ids),
+			byIdentifiersForDataOwner: (dataOwnerId, identifiers) => InternalMaintenanceTaskFiltersObj.getInstance().byIdentifiersForDataOwner(dataOwnerId, identifiers),
+			byIdentifiersForSelf: (identifiers) => InternalMaintenanceTaskFiltersObj.getInstance().byIdentifiersForSelf(identifiers),
+			byTypeForDataOwner: (dataOwnerId, type) => InternalMaintenanceTaskFiltersObj.getInstance().byTypeForDataOwner(dataOwnerId, type),
+			byTypeForSelf: (type) => InternalMaintenanceTaskFiltersObj.getInstance().byTypeForSelf(type),
+			afterDateForDataOwner: (dataOwnerId, date) => InternalMaintenanceTaskFiltersObj.getInstance().afterDateForDataOwner(dataOwnerId, date),
+			afterDateForSelf: (date) => InternalMaintenanceTaskFiltersObj.getInstance().afterDateForSelf(date)
+		};
