@@ -4,11 +4,12 @@ package com.icure.sdk.py.api.flavoured.MessageApi.encrypted
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.MessageShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.EncryptedMessage
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
@@ -37,7 +38,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -196,6 +196,71 @@ public fun findMessagesByHcPartyPatientAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class FilterMessagesByParams(
+	public val filter: FilterOptions<Message>,
+)
+
+public fun filterMessagesByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterMessagesByParams>(params)
+	runBlocking {
+		sdk.message.encrypted.filterMessagesBy(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterMessagesByAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterMessagesByParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.encrypted.filterMessagesBy(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterMessagesBySortedParams(
+	public val filter: SortableFilterOptions<Message>,
+)
+
+public fun filterMessagesBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterMessagesBySortedParams>(params)
+	runBlocking {
+		sdk.message.encrypted.filterMessagesBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterMessagesBySortedAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterMessagesBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.encrypted.filterMessagesBySorted(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyMessageParams(
 	public val entity: EncryptedMessage,
 )
@@ -287,39 +352,6 @@ public fun getMessagesAsync(
 		}.toPyStringAsyncCallback(ListSerializer(EncryptedMessage.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class FilterMessagesByParams(
-	@Contextual
-	public val filter: AbstractFilter<Message>,
-)
-
-public fun filterMessagesByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMessagesByParams>(params)
-	runBlocking {
-		sdk.message.encrypted.filterMessagesBy(
-			decodedParams.filter,
-		)
-	}
-}.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
-
-@OptIn(ExperimentalForeignApi::class)
-public fun filterMessagesByAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMessagesByParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.message.encrypted.filterMessagesBy(
-				decodedParams.filter,
-			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
-	}
-}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ListMessagesByTransportGuidsParams(
@@ -725,7 +757,7 @@ private class SetMessagesReadStatusParams(
 	public val entityIds: List<String>,
 	public val time: Long?,
 	public val readStatus: Boolean,
-	public val userId: String,
+	public val userId: String?,
 )
 
 public fun setMessagesReadStatusBlocking(sdk: IcureApis, params: String): String =

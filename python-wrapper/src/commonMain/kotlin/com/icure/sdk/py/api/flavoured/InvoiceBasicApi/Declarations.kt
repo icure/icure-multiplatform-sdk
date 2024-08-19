@@ -4,20 +4,13 @@ package com.icure.sdk.py.api.flavoured.InvoiceBasicApi
 import com.icure.sdk.IcureBaseApis
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
-import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.`data`.LabelledOccurence
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
-import com.icure.sdk.py.utils.PyResult
-import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
-import com.icure.sdk.py.utils.toPyResult
-import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.utils.Serialization.json
@@ -31,14 +24,12 @@ import kotlin.Unit
 import kotlin.collections.List
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
-import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -266,40 +257,6 @@ public fun getInvoicesAsync(
 		}.toPyStringAsyncCallback(ListSerializer(EncryptedInvoice.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class FilterInvoicesByParams(
-	@Contextual
-	public val filter: AbstractFilter<Invoice>,
-)
-
-public fun filterInvoicesByBlocking(sdk: IcureBaseApis, params: String): PyResult =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
-	runBlocking {
-		sdk.invoice.filterInvoicesBy(
-			decodedParams.filter,
-		)
-	}
-}.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedInvoice.serializer())}
-
-@OptIn(ExperimentalForeignApi::class)
-public fun filterInvoicesByAsync(
-	sdk: IcureBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.invoice.filterInvoicesBy(
-				decodedParams.filter,
-			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedInvoice.serializer())}
-	}
-}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class FindInvoicesByHcPartyPatientForeignKeysParams(

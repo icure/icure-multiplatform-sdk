@@ -4,9 +4,10 @@ package com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover
 import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TopicShareOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.py.serialization.TopicSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
@@ -32,7 +33,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -142,6 +142,71 @@ public fun shareWithManyAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class FilterTopicsByParams(
+	public val filter: FilterOptions<Topic>,
+)
+
+public fun filterTopicsByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
+	runBlocking {
+		sdk.topic.tryAndRecover.filterTopicsBy(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, TopicSerializer)}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterTopicsByAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.topic.tryAndRecover.filterTopicsBy(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, TopicSerializer)}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterTopicsBySortedParams(
+	public val filter: SortableFilterOptions<Topic>,
+)
+
+public fun filterTopicsBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterTopicsBySortedParams>(params)
+	runBlocking {
+		sdk.topic.tryAndRecover.filterTopicsBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, TopicSerializer)}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterTopicsBySortedAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterTopicsBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.topic.tryAndRecover.filterTopicsBySorted(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, TopicSerializer)}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyTopicParams(
 	public val entity: Topic,
 )
@@ -233,39 +298,6 @@ public fun getTopicsAsync(
 		}.toPyStringAsyncCallback(ListSerializer(TopicSerializer), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class FilterTopicsByParams(
-	@Contextual
-	public val filter: AbstractFilter<Topic>,
-)
-
-public fun filterTopicsByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
-	runBlocking {
-		sdk.topic.tryAndRecover.filterTopicsBy(
-			decodedParams.filter,
-		)
-	}
-}.toPyResult {
-	PaginatedListIteratorAndSerializer(it, TopicSerializer)}
-
-@OptIn(ExperimentalForeignApi::class)
-public fun filterTopicsByAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.topic.tryAndRecover.filterTopicsBy(
-				decodedParams.filter,
-			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, TopicSerializer)}
-	}
-}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class AddParticipantParams(

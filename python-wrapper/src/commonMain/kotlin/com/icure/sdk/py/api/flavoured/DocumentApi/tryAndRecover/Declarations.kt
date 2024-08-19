@@ -5,7 +5,6 @@ import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Document
-import com.icure.sdk.model.EncryptedDocument
 import com.icure.sdk.model.Patient
 import com.icure.sdk.py.serialization.DocumentSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
@@ -17,11 +16,9 @@ import com.icure.sdk.py.utils.toPyResult
 import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
-import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.OptIn
@@ -447,175 +444,5 @@ public fun findWithoutDelegationAsync(
 				decodedParams.limit,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocumentSerializer), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class SetRawMainAttachmentParams(
-	public val documentId: String,
-	public val rev: String,
-	public val utis: List<String>,
-	public val blobType: String,
-	@Serializable(ByteArraySerializer::class)
-	public val attachment: ByteArray,
-	public val encrypted: Boolean,
-)
-
-public fun setRawMainAttachmentBlocking(sdk: IcureApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawMainAttachmentParams>(params)
-	runBlocking {
-		sdk.document.tryAndRecover.setRawMainAttachment(
-			decodedParams.documentId,
-			decodedParams.rev,
-			decodedParams.utis,
-			decodedParams.attachment,
-			decodedParams.encrypted,
-		)
-	}
-}.toPyString(EncryptedDocument.serializer())
-
-@OptIn(ExperimentalForeignApi::class)
-public fun setRawMainAttachmentAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawMainAttachmentParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.document.tryAndRecover.setRawMainAttachment(
-				decodedParams.documentId,
-				decodedParams.rev,
-				decodedParams.utis,
-				decodedParams.attachment,
-				decodedParams.encrypted,
-			)
-		}.toPyStringAsyncCallback(EncryptedDocument.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class SetRawSecondaryAttachmentParams(
-	public val documentId: String,
-	public val key: String,
-	public val rev: String,
-	public val utis: List<String>,
-	public val blobType: String,
-	@Serializable(ByteArraySerializer::class)
-	public val attachment: ByteArray,
-	public val encrypted: Boolean,
-)
-
-public fun setRawSecondaryAttachmentBlocking(sdk: IcureApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawSecondaryAttachmentParams>(params)
-	runBlocking {
-		sdk.document.tryAndRecover.setRawSecondaryAttachment(
-			decodedParams.documentId,
-			decodedParams.key,
-			decodedParams.rev,
-			decodedParams.utis,
-			decodedParams.blobType,
-			decodedParams.attachment,
-			decodedParams.encrypted,
-		)
-	}
-}.toPyString(EncryptedDocument.serializer())
-
-@OptIn(ExperimentalForeignApi::class)
-public fun setRawSecondaryAttachmentAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawSecondaryAttachmentParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.document.tryAndRecover.setRawSecondaryAttachment(
-				decodedParams.documentId,
-				decodedParams.key,
-				decodedParams.rev,
-				decodedParams.utis,
-				decodedParams.blobType,
-				decodedParams.attachment,
-				decodedParams.encrypted,
-			)
-		}.toPyStringAsyncCallback(EncryptedDocument.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class DeleteMainAttachmentParams(
-	public val entityId: String,
-	public val rev: String,
-)
-
-public fun deleteMainAttachmentBlocking(sdk: IcureApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMainAttachmentParams>(params)
-	runBlocking {
-		sdk.document.tryAndRecover.deleteMainAttachment(
-			decodedParams.entityId,
-			decodedParams.rev,
-		)
-	}
-}.toPyString(DocumentSerializer)
-
-@OptIn(ExperimentalForeignApi::class)
-public fun deleteMainAttachmentAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMainAttachmentParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.document.tryAndRecover.deleteMainAttachment(
-				decodedParams.entityId,
-				decodedParams.rev,
-			)
-		}.toPyStringAsyncCallback(DocumentSerializer, resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class DeleteSecondaryAttachmentParams(
-	public val documentId: String,
-	public val key: String,
-	public val rev: String,
-)
-
-public fun deleteSecondaryAttachmentBlocking(sdk: IcureApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteSecondaryAttachmentParams>(params)
-	runBlocking {
-		sdk.document.tryAndRecover.deleteSecondaryAttachment(
-			decodedParams.documentId,
-			decodedParams.key,
-			decodedParams.rev,
-		)
-	}
-}.toPyString(DocumentSerializer)
-
-@OptIn(ExperimentalForeignApi::class)
-public fun deleteSecondaryAttachmentAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteSecondaryAttachmentParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.document.tryAndRecover.deleteSecondaryAttachment(
-				decodedParams.documentId,
-				decodedParams.key,
-				decodedParams.rev,
-			)
-		}.toPyStringAsyncCallback(DocumentSerializer, resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)

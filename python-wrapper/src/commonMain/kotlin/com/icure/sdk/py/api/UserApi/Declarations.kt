@@ -2,13 +2,14 @@
 package com.icure.sdk.py.api.UserApi
 
 import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.EncryptedPropertyStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.User
 import com.icure.sdk.model.UserGroup
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.TokenWithGroup
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -37,7 +38,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -495,8 +495,7 @@ public fun getTokenAsync(
 
 @Serializable
 private class FilterUsersByParams(
-	@Contextual
-	public val filter: AbstractFilter<User>,
+	public val filter: BaseFilterOptions<User>,
 )
 
 public fun filterUsersByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
@@ -529,8 +528,7 @@ public fun filterUsersByAsync(
 
 @Serializable
 private class MatchUsersByParams(
-	@Contextual
-	public val filter: AbstractFilter<User>,
+	public val filter: BaseFilterOptions<User>,
 )
 
 public fun matchUsersByBlocking(sdk: IcureNonCryptoApis, params: String): String =
@@ -554,6 +552,71 @@ public fun matchUsersByAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.user.matchUsersBy(
+				decodedParams.filter,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterUsersBySortedParams(
+	public val filter: BaseSortableFilterOptions<User>,
+)
+
+public fun filterUsersBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterUsersBySortedParams>(params)
+	runBlocking {
+		sdk.user.filterUsersBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, User.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterUsersBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterUsersBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.filterUsersBySorted(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, User.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class MatchUsersBySortedParams(
+	public val filter: BaseSortableFilterOptions<User>,
+)
+
+public fun matchUsersBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchUsersBySortedParams>(params)
+	runBlocking {
+		sdk.user.matchUsersBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyString(ListSerializer(String.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun matchUsersBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchUsersBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.matchUsersBySorted(
 				decodedParams.filter,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
@@ -986,8 +1049,7 @@ public fun getTokenInAllGroupsAsync(
 @Serializable
 private class FilterUsersInGroupByParams(
 	public val groupId: String,
-	@Contextual
-	public val filter: AbstractFilter<User>,
+	public val filter: BaseFilterOptions<User>,
 )
 
 public fun filterUsersInGroupByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
@@ -1023,8 +1085,7 @@ public fun filterUsersInGroupByAsync(
 @Serializable
 private class MatchUsersInGroupByParams(
 	public val groupId: String,
-	@Contextual
-	public val filter: AbstractFilter<User>,
+	public val filter: BaseFilterOptions<User>,
 )
 
 public fun matchUsersInGroupByBlocking(sdk: IcureNonCryptoApis, params: String): String =
@@ -1049,6 +1110,77 @@ public fun matchUsersInGroupByAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.user.matchUsersInGroupBy(
+				decodedParams.groupId,
+				decodedParams.filter,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterUsersInGroupBySortedParams(
+	public val groupId: String,
+	public val filter: BaseSortableFilterOptions<User>,
+)
+
+public fun filterUsersInGroupBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterUsersInGroupBySortedParams>(params)
+	runBlocking {
+		sdk.user.filterUsersInGroupBySorted(
+			decodedParams.groupId,
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, User.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterUsersInGroupBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterUsersInGroupBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.filterUsersInGroupBySorted(
+				decodedParams.groupId,
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, User.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class MatchUsersInGroupBySortedParams(
+	public val groupId: String,
+	public val filter: BaseSortableFilterOptions<User>,
+)
+
+public fun matchUsersInGroupBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchUsersInGroupBySortedParams>(params)
+	runBlocking {
+		sdk.user.matchUsersInGroupBySorted(
+			decodedParams.groupId,
+			decodedParams.filter,
+		)
+	}
+}.toPyString(ListSerializer(String.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun matchUsersInGroupBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchUsersInGroupBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.matchUsersInGroupBySorted(
 				decodedParams.groupId,
 				decodedParams.filter,
 			)

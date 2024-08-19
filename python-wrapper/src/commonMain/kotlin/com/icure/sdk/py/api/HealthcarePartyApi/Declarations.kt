@@ -2,12 +2,13 @@
 package com.icure.sdk.py.api.HealthcarePartyApi
 
 import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.PublicKey
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
 import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
@@ -33,7 +34,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -596,8 +596,7 @@ public fun modifyHealthcarePartyAsync(
 
 @Serializable
 private class MatchHealthcarePartiesByParams(
-	@Contextual
-	public val filter: AbstractFilter<HealthcareParty>,
+	public val filter: BaseFilterOptions<HealthcareParty>,
 )
 
 public fun matchHealthcarePartiesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
@@ -629,8 +628,7 @@ public fun matchHealthcarePartiesByAsync(
 
 @Serializable
 private class FilterHealthPartiesByParams(
-	@Contextual
-	public val filter: AbstractFilter<HealthcareParty>,
+	public val filter: BaseFilterOptions<HealthcareParty>,
 )
 
 public fun filterHealthPartiesByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
@@ -654,6 +652,71 @@ public fun filterHealthPartiesByAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthcareParty.filterHealthPartiesBy(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class MatchHealthcarePartiesBySortedParams(
+	public val filter: BaseSortableFilterOptions<HealthcareParty>,
+)
+
+public fun matchHealthcarePartiesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchHealthcarePartiesBySortedParams>(params)
+	runBlocking {
+		sdk.healthcareParty.matchHealthcarePartiesBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyString(ListSerializer(String.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun matchHealthcarePartiesBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchHealthcarePartiesBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.matchHealthcarePartiesBySorted(
+				decodedParams.filter,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterHealthPartiesBySortedParams(
+	public val filter: BaseSortableFilterOptions<HealthcareParty>,
+)
+
+public fun filterHealthPartiesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterHealthPartiesBySortedParams>(params)
+	runBlocking {
+		sdk.healthcareParty.filterHealthPartiesBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterHealthPartiesBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterHealthPartiesBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.filterHealthPartiesBySorted(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {

@@ -2,10 +2,11 @@
 package com.icure.sdk.py.api.DeviceApi
 
 import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.Device
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
 import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
@@ -29,7 +30,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -227,8 +227,7 @@ public fun updateDevicesAsync(
 
 @Serializable
 private class FilterDevicesByParams(
-	@Contextual
-	public val filter: AbstractFilter<Device>,
+	public val filter: BaseFilterOptions<Device>,
 )
 
 public fun filterDevicesByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
@@ -260,9 +259,41 @@ public fun filterDevicesByAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class FilterDevicesBySortedParams(
+	public val filter: BaseSortableFilterOptions<Device>,
+)
+
+public fun filterDevicesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterDevicesBySortedParams>(params)
+	runBlocking {
+		sdk.device.filterDevicesBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, Device.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterDevicesBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterDevicesBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.device.filterDevicesBySorted(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, Device.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
 private class MatchDevicesByParams(
-	@Contextual
-	public val filter: AbstractFilter<Device>,
+	public val filter: BaseFilterOptions<Device>,
 )
 
 public fun matchDevicesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
@@ -286,6 +317,38 @@ public fun matchDevicesByAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.device.matchDevicesBy(
+				decodedParams.filter,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class MatchDevicesBySortedParams(
+	public val filter: BaseSortableFilterOptions<Device>,
+)
+
+public fun matchDevicesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchDevicesBySortedParams>(params)
+	runBlocking {
+		sdk.device.matchDevicesBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyString(ListSerializer(String.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun matchDevicesBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchDevicesBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.device.matchDevicesBySorted(
 				decodedParams.filter,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)

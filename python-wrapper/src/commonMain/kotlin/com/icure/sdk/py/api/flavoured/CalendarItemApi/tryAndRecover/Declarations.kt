@@ -400,38 +400,6 @@ public fun getCalendarsByPeriodAndAgendaIdAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class GetCalendarItemsWithIdsParams(
-	public val entityIds: List<String>,
-)
-
-public fun getCalendarItemsWithIdsBlocking(sdk: IcureApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetCalendarItemsWithIdsParams>(params)
-	runBlocking {
-		sdk.calendarItem.tryAndRecover.getCalendarItemsWithIds(
-			decodedParams.entityIds,
-		)
-	}
-}.toPyString(ListSerializer(CalendarItemSerializer))
-
-@OptIn(ExperimentalForeignApi::class)
-public fun getCalendarItemsWithIdsAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetCalendarItemsWithIdsParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.calendarItem.tryAndRecover.getCalendarItemsWithIds(
-				decodedParams.entityIds,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(CalendarItemSerializer), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class FindCalendarItemsByRecurrenceIdParams(
 	public val recurrenceId: String,
 	public val startKey: String?,

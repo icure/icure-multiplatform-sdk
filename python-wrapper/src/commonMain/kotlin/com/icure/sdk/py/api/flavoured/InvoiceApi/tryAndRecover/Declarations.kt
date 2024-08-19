@@ -10,7 +10,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.py.serialization.InvoiceSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -40,7 +39,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -319,39 +317,6 @@ public fun getInvoicesAsync(
 		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class FilterInvoicesByParams(
-	@Contextual
-	public val filter: AbstractFilter<Invoice>,
-)
-
-public fun filterInvoicesByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
-	runBlocking {
-		sdk.invoice.tryAndRecover.filterInvoicesBy(
-			decodedParams.filter,
-		)
-	}
-}.toPyResult {
-	PaginatedListIteratorAndSerializer(it, InvoiceSerializer)}
-
-@OptIn(ExperimentalForeignApi::class)
-public fun filterInvoicesByAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterInvoicesByParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.invoice.tryAndRecover.filterInvoicesBy(
-				decodedParams.filter,
-			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, InvoiceSerializer)}
-	}
-}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class FindInvoicesByHcPartyPatientForeignKeysParams(
