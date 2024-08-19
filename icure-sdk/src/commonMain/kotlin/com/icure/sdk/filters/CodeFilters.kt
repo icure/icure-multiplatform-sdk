@@ -14,7 +14,7 @@ object CodeFilters {
      * Filter options to match all codes.
      * These options are not sortable.
      */
-    fun all(): FilterOptions<Code> = All
+    fun all(): BaseFilterOptions<Code> = All
 
     /**
      * Filter options that match all codes with one of the provided ids.
@@ -61,7 +61,7 @@ object CodeFilters {
     )
 
     @Serializable
-    internal data object All : FilterOptions<Code>
+    internal data object All : BaseFilterOptions<Code>
 
     @Serializable
     internal class ByIds(
