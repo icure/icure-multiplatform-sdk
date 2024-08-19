@@ -1,3 +1,4 @@
+# auto-generated file
 
 KeypairFingerprintV1String = str
 

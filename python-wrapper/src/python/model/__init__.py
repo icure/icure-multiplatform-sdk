@@ -245,2073 +245,6 @@ class IdWithRev:
 		)
 
 @dataclass
-class ContactByHcPartyPatientTagCodeDateFilter:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	patient_secret_foreign_key: Optional[str] = None
-	patient_secret_foreign_keys: Optional[List[str]] = None
-	tag_type: Optional[str] = None
-	tag_code: Optional[str] = None
-	code_type: Optional[str] = None
-	code_code: Optional[str] = None
-	start_of_contact_opening_date: Optional[int] = None
-	end_of_contact_opening_date: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"patientSecretForeignKey": self.patient_secret_foreign_key,
-			"patientSecretForeignKeys": [x0 for x0 in self.patient_secret_foreign_keys] if self.patient_secret_foreign_keys is not None else None,
-			"tagType": self.tag_type,
-			"tagCode": self.tag_code,
-			"codeType": self.code_type,
-			"codeCode": self.code_code,
-			"startOfContactOpeningDate": self.start_of_contact_opening_date,
-			"endOfContactOpeningDate": self.end_of_contact_opening_date,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ContactByHcPartyPatientTagCodeDateFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_key=deserialized_dict.get("patientSecretForeignKey"),
-			patient_secret_foreign_keys=[x0 for x0 in deserialized_dict.get("patientSecretForeignKeys")] if deserialized_dict.get("patientSecretForeignKeys") is not None else None,
-			tag_type=deserialized_dict.get("tagType"),
-			tag_code=deserialized_dict.get("tagCode"),
-			code_type=deserialized_dict.get("codeType"),
-			code_code=deserialized_dict.get("codeCode"),
-			start_of_contact_opening_date=deserialized_dict.get("startOfContactOpeningDate"),
-			end_of_contact_opening_date=deserialized_dict.get("endOfContactOpeningDate"),
-		)
-
-@dataclass
-class ContactByHcPartyTagCodeDateFilter:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	tag_type: Optional[str] = None
-	tag_code: Optional[str] = None
-	code_type: Optional[str] = None
-	code_code: Optional[str] = None
-	start_of_contact_opening_date: Optional[int] = None
-	end_of_contact_opening_date: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"tagType": self.tag_type,
-			"tagCode": self.tag_code,
-			"codeType": self.code_type,
-			"codeCode": self.code_code,
-			"startOfContactOpeningDate": self.start_of_contact_opening_date,
-			"endOfContactOpeningDate": self.end_of_contact_opening_date,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ContactByHcPartyTagCodeDateFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			tag_type=deserialized_dict.get("tagType"),
-			tag_code=deserialized_dict.get("tagCode"),
-			code_type=deserialized_dict.get("codeType"),
-			code_code=deserialized_dict.get("codeCode"),
-			start_of_contact_opening_date=deserialized_dict.get("startOfContactOpeningDate"),
-			end_of_contact_opening_date=deserialized_dict.get("endOfContactOpeningDate"),
-		)
-
-@dataclass
-class ContactByHcPartyFilter:
-	hcp_id: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"hcpId": self.hcp_id,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ContactByHcPartyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			hcp_id=deserialized_dict["hcpId"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class ContactByServiceIdsFilter:
-	desc: Optional[str] = None
-	ids: Optional[List[str]] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"ids": [x0 for x0 in self.ids] if self.ids is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ContactByServiceIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			ids=[x0 for x0 in deserialized_dict.get("ids")] if deserialized_dict.get("ids") is not None else None,
-		)
-
-@dataclass
-class ContactByHcPartyIdentifiersFilter:
-	healthcare_party_id: Optional[str] = None
-	desc: Optional[str] = None
-	identifiers: List['Identifier'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"healthcarePartyId": self.healthcare_party_id,
-			"desc": self.desc,
-			"identifiers": [x0.__serialize__() for x0 in self.identifiers],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ContactByHcPartyIdentifiersFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			desc=deserialized_dict.get("desc"),
-			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-		)
-
-@dataclass
-class HealthcarePartyByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthcarePartyByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class HealthcarePartyByTagCodeFilter:
-	tag_type: Optional[str] = None
-	tag_code: Optional[str] = None
-	code_type: Optional[str] = None
-	code_code: Optional[str] = None
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"tagType": self.tag_type,
-			"tagCode": self.tag_code,
-			"codeType": self.code_type,
-			"codeCode": self.code_code,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthcarePartyByTagCodeFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			tag_type=deserialized_dict.get("tagType"),
-			tag_code=deserialized_dict.get("tagCode"),
-			code_type=deserialized_dict.get("codeType"),
-			code_code=deserialized_dict.get("codeCode"),
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class AllHealthcarePartiesFilter:
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AllHealthcarePartiesFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class HealthcarePartyByIdentifiersFilter:
-	identifiers: List['Identifier'] = field(default_factory=list)
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"identifiers": [x0.__serialize__() for x0 in self.identifiers],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthcarePartyByIdentifiersFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class HealthcarePartyByNameFilter:
-	name: str
-	desc: Optional[str] = None
-	descending: Optional[bool] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"name": self.name,
-			"descending": self.descending,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthcarePartyByNameFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			name=deserialized_dict["name"],
-			descending=deserialized_dict.get("descending"),
-		)
-
-@dataclass
-class HealthElementByHcPartySecretForeignKeysFilter:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	patient_secret_foreign_keys: List[str] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"patientSecretForeignKeys": [x0 for x0 in self.patient_secret_foreign_keys],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthElementByHcPartySecretForeignKeysFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_keys=[x0 for x0 in deserialized_dict["patientSecretForeignKeys"]],
-		)
-
-@dataclass
-class HealthElementByHcPartyTagCodeFilter:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	code_type: Optional[str] = None
-	code_code: Optional[str] = None
-	tag_type: Optional[str] = None
-	tag_code: Optional[str] = None
-	status: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"codeType": self.code_type,
-			"codeCode": self.code_code,
-			"tagType": self.tag_type,
-			"tagCode": self.tag_code,
-			"status": self.status,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthElementByHcPartyTagCodeFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			code_type=deserialized_dict.get("codeType"),
-			code_code=deserialized_dict.get("codeCode"),
-			tag_type=deserialized_dict.get("tagType"),
-			tag_code=deserialized_dict.get("tagCode"),
-			status=deserialized_dict.get("status"),
-		)
-
-@dataclass
-class HealthElementByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthElementByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class HealthElementByHcPartyIdentifiersFilter:
-	desc: Optional[str] = None
-	hc_party_id: Optional[str] = None
-	identifiers: List['Identifier'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"hcPartyId": self.hc_party_id,
-			"identifiers": [x0.__serialize__() for x0 in self.identifiers],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthElementByHcPartyIdentifiersFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			hc_party_id=deserialized_dict.get("hcPartyId"),
-			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-		)
-
-@dataclass
-class HealthElementByHcPartyFilter:
-	hcp_id: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"hcpId": self.hcp_id,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthElementByHcPartyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			hcp_id=deserialized_dict["hcpId"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class CodeIdsByTypeCodeVersionIntervalFilter:
-	desc: Optional[str] = None
-	start_type: Optional[str] = None
-	start_code: Optional[str] = None
-	start_version: Optional[str] = None
-	end_type: Optional[str] = None
-	end_code: Optional[str] = None
-	end_version: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"startType": self.start_type,
-			"startCode": self.start_code,
-			"startVersion": self.start_version,
-			"endType": self.end_type,
-			"endCode": self.end_code,
-			"endVersion": self.end_version,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CodeIdsByTypeCodeVersionIntervalFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			start_type=deserialized_dict.get("startType"),
-			start_code=deserialized_dict.get("startCode"),
-			start_version=deserialized_dict.get("startVersion"),
-			end_type=deserialized_dict.get("endType"),
-			end_code=deserialized_dict.get("endCode"),
-			end_version=deserialized_dict.get("endVersion"),
-		)
-
-@dataclass
-class AllCodesFilter:
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AllCodesFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class CodeByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CodeByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class CodeByRegionTypeLabelLanguageFilter:
-	type: str
-	language: str
-	desc: Optional[str] = None
-	region: Optional[str] = None
-	label: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"region": self.region,
-			"type": self.type,
-			"language": self.language,
-			"label": self.label,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CodeByRegionTypeLabelLanguageFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			region=deserialized_dict.get("region"),
-			type=deserialized_dict["type"],
-			language=deserialized_dict["language"],
-			label=deserialized_dict.get("label"),
-		)
-
-@dataclass
-class MessageByHcPartyTransportGuidFilter:
-	healthcare_party_id: str
-	transport_guid: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"healthcarePartyId": self.healthcare_party_id,
-			"transportGuid": self.transport_guid,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MessageByHcPartyTransportGuidFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			healthcare_party_id=deserialized_dict["healthcarePartyId"],
-			transport_guid=deserialized_dict["transportGuid"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class MessageByHcPartyFilter:
-	hcp_id: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"hcpId": self.hcp_id,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MessageByHcPartyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			hcp_id=deserialized_dict["hcpId"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class LatestMessageByHcPartyTransportGuidFilter:
-	healthcare_party_id: str
-	transport_guid: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"healthcarePartyId": self.healthcare_party_id,
-			"transportGuid": self.transport_guid,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'LatestMessageByHcPartyTransportGuidFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			healthcare_party_id=deserialized_dict["healthcarePartyId"],
-			transport_guid=deserialized_dict["transportGuid"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class UserByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UserByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class AllUsersFilter:
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AllUsersFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class UserByNameEmailPhoneFilter:
-	search_string: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"searchString": self.search_string,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UserByNameEmailPhoneFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			search_string=deserialized_dict["searchString"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class UsersByPatientIdFilter:
-	patient_id: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"patientId": self.patient_id,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UsersByPatientIdFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			patient_id=deserialized_dict["patientId"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class TopicByParticipantFilter:
-	participant_id: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"participantId": self.participant_id,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TopicByParticipantFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			participant_id=deserialized_dict["participantId"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class TopicByHcPartyFilter:
-	hcp_id: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"hcpId": self.hcp_id,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TopicByHcPartyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			hcp_id=deserialized_dict["hcpId"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class UnionFilter:
-	desc: Optional[str] = None
-	filters: List['AbstractFilter'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"filters": [serialize_abstract_filter(x0) for x0 in self.filters],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UnionFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			filters=[deserialize_abstract_filter(x0) for x0 in deserialized_dict["filters"]],
-		)
-
-@dataclass
-class PatientByHcPartyGenderEducationProfession:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	gender: Optional['Gender'] = None
-	education: Optional[str] = None
-	profession: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"gender": self.gender.__serialize__() if self.gender is not None else None,
-			"education": self.education,
-			"profession": self.profession,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyGenderEducationProfession':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
-			education=deserialized_dict.get("education"),
-			profession=deserialized_dict.get("profession"),
-		)
-
-@dataclass
-class PatientByHcPartyDateOfBirthFilter:
-	date_of_birth: int
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"dateOfBirth": self.date_of_birth,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyDateOfBirthFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			date_of_birth=deserialized_dict["dateOfBirth"],
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyAndExternalIdFilter:
-	desc: Optional[str] = None
-	external_id: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"externalId": self.external_id,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyAndExternalIdFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			external_id=deserialized_dict.get("externalId"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyAndSsinsFilter:
-	desc: Optional[str] = None
-	ssins: Optional[List[str]] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"ssins": [x0 for x0 in self.ssins] if self.ssins is not None else None,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyAndSsinsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			ssins=[x0 for x0 in deserialized_dict.get("ssins")] if deserialized_dict.get("ssins") is not None else None,
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyAndActiveFilter:
-	desc: Optional[str] = None
-	active: bool = False
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"active": self.active,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyAndActiveFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			active=deserialized_dict["active"],
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyAndAddressFilter:
-	desc: Optional[str] = None
-	search_string: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	postal_code: Optional[str] = None
-	house_number: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"searchString": self.search_string,
-			"healthcarePartyId": self.healthcare_party_id,
-			"postalCode": self.postal_code,
-			"houseNumber": self.house_number,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyAndAddressFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			search_string=deserialized_dict.get("searchString"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			postal_code=deserialized_dict.get("postalCode"),
-			house_number=deserialized_dict.get("houseNumber"),
-		)
-
-@dataclass
-class PatientByHcPartyNameFilter:
-	desc: Optional[str] = None
-	name: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"name": self.name,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyNameFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			name=deserialized_dict.get("name"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyAndSsinFilter:
-	ssin: str
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"ssin": self.ssin,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyAndSsinFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			ssin=deserialized_dict["ssin"],
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyNameContainsFuzzyFilter:
-	desc: Optional[str] = None
-	search_string: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"searchString": self.search_string,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyNameContainsFuzzyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			search_string=deserialized_dict.get("searchString"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class PatientByHcPartyAndIdentifiersFilter:
-	healthcare_party_id: Optional[str] = None
-	identifiers: List['Identifier'] = field(default_factory=list)
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"healthcarePartyId": self.healthcare_party_id,
-			"identifiers": [x0.__serialize__() for x0 in self.identifiers],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyAndIdentifiersFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class PatientByHcPartyDateOfBirthBetweenFilter:
-	desc: Optional[str] = None
-	min_date_of_birth: Optional[int] = None
-	max_date_of_birth: Optional[int] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"minDateOfBirth": self.min_date_of_birth,
-			"maxDateOfBirth": self.max_date_of_birth,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyDateOfBirthBetweenFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			min_date_of_birth=deserialized_dict.get("minDateOfBirth"),
-			max_date_of_birth=deserialized_dict.get("maxDateOfBirth"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyAndTelecomFilter:
-	desc: Optional[str] = None
-	search_string: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"searchString": self.search_string,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyAndTelecomFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			search_string=deserialized_dict.get("searchString"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class PatientByHcPartyFilter:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientByHcPartyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class DeviceByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeviceByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class DeviceByHcPartyFilter:
-	desc: Optional[str] = None
-	responsible_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"responsibleId": self.responsible_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeviceByHcPartyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			responsible_id=deserialized_dict.get("responsibleId"),
-		)
-
-@dataclass
-class AllDevicesFilter:
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AllDevicesFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class ComplementFilter:
-	super_set: 'AbstractFilter'
-	sub_set: 'AbstractFilter'
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"superSet": serialize_abstract_filter(self.super_set),
-			"subSet": serialize_abstract_filter(self.sub_set),
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ComplementFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			super_set=deserialize_abstract_filter(deserialized_dict["superSet"]),
-			sub_set=deserialize_abstract_filter(deserialized_dict["subSet"]),
-		)
-
-@dataclass
-class ExternalViewFilter:
-	view: str
-	partition: str
-	entity_qualified_name: str
-	start_key: 'ExternalFilterKey'
-	end_key: Optional['ExternalFilterKey']
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"view": self.view,
-			"partition": self.partition,
-			"entityQualifiedName": self.entity_qualified_name,
-			"startKey": serialize_external_filter_key(self.start_key),
-			"endKey": serialize_external_filter_key(self.end_key) if self.end_key is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalViewFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			view=deserialized_dict["view"],
-			partition=deserialized_dict["partition"],
-			entity_qualified_name=deserialized_dict["entityQualifiedName"],
-			start_key=deserialize_external_filter_key(deserialized_dict["startKey"]),
-			end_key=deserialize_external_filter_key(deserialized_dict.get("endKey")) if deserialized_dict.get("endKey") is not None else None,
-		)
-
-@dataclass
-class IntersectionFilter:
-	desc: Optional[str] = None
-	filters: List['AbstractFilter'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"filters": [serialize_abstract_filter(x0) for x0 in self.filters],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IntersectionFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			filters=[deserialize_abstract_filter(x0) for x0 in deserialized_dict["filters"]],
-		)
-
-@dataclass
-class IdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"ids": [x0 for x0 in self.ids],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-		)
-
-@dataclass
-class ServiceBySecretForeignKeys:
-	patient_secret_foreign_keys: List[str]
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"patientSecretForeignKeys": [x0 for x0 in self.patient_secret_foreign_keys],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceBySecretForeignKeys':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_keys=[x0 for x0 in deserialized_dict["patientSecretForeignKeys"]],
-		)
-
-@dataclass
-class ServiceByContactsAndSubcontactsFilter:
-	contacts: List[str]
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	sub_contacts: Optional[List[str]] = None
-	start_value_date: Optional[int] = None
-	end_value_date: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"contacts": [x0 for x0 in self.contacts],
-			"subContacts": [x0 for x0 in self.sub_contacts] if self.sub_contacts is not None else None,
-			"startValueDate": self.start_value_date,
-			"endValueDate": self.end_value_date,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceByContactsAndSubcontactsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			contacts=[x0 for x0 in deserialized_dict["contacts"]],
-			sub_contacts=[x0 for x0 in deserialized_dict.get("subContacts")] if deserialized_dict.get("subContacts") is not None else None,
-			start_value_date=deserialized_dict.get("startValueDate"),
-			end_value_date=deserialized_dict.get("endValueDate"),
-		)
-
-@dataclass
-class ServiceByHcPartyTagCodeDateFilter:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	patient_secret_foreign_key: Optional[str] = None
-	tag_type: Optional[str] = None
-	tag_code: Optional[str] = None
-	code_type: Optional[str] = None
-	code_code: Optional[str] = None
-	start_value_date: Optional[int] = None
-	end_value_date: Optional[int] = None
-	descending: bool = False
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"patientSecretForeignKey": self.patient_secret_foreign_key,
-			"tagType": self.tag_type,
-			"tagCode": self.tag_code,
-			"codeType": self.code_type,
-			"codeCode": self.code_code,
-			"startValueDate": self.start_value_date,
-			"endValueDate": self.end_value_date,
-			"descending": self.descending,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceByHcPartyTagCodeDateFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			patient_secret_foreign_key=deserialized_dict.get("patientSecretForeignKey"),
-			tag_type=deserialized_dict.get("tagType"),
-			tag_code=deserialized_dict.get("tagCode"),
-			code_type=deserialized_dict.get("codeType"),
-			code_code=deserialized_dict.get("codeCode"),
-			start_value_date=deserialized_dict.get("startValueDate"),
-			end_value_date=deserialized_dict.get("endValueDate"),
-			descending=deserialized_dict["descending"],
-		)
-
-@dataclass
-class ServiceByHcPartyHealthElementIdsFilter:
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	health_element_ids: List[str] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"healthElementIds": [x0 for x0 in self.health_element_ids],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceByHcPartyHealthElementIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			health_element_ids=[x0 for x0 in deserialized_dict["healthElementIds"]],
-		)
-
-@dataclass
-class ServiceByHcPartyIdentifiersFilter:
-	healthcare_party_id: Optional[str] = None
-	identifiers: List['Identifier'] = field(default_factory=list)
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"healthcarePartyId": self.healthcare_party_id,
-			"identifiers": [x0.__serialize__() for x0 in self.identifiers],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceByHcPartyIdentifiersFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class ServiceByHcPartyFilter:
-	hcp_id: str
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"hcpId": self.hcp_id,
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceByHcPartyFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			hcp_id=deserialized_dict["hcpId"],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class ServiceByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class MaintenanceTaskByHcPartyAndTypeFilter:
-	type: str
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"type": self.type,
-			"healthcarePartyId": self.healthcare_party_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MaintenanceTaskByHcPartyAndTypeFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			type=deserialized_dict["type"],
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-		)
-
-@dataclass
-class MaintenanceTaskByHcPartyAndIdentifiersFilter:
-	healthcare_party_id: Optional[str] = None
-	identifiers: List['Identifier'] = field(default_factory=list)
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"healthcarePartyId": self.healthcare_party_id,
-			"identifiers": [x0.__serialize__() for x0 in self.identifiers],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MaintenanceTaskByHcPartyAndIdentifiersFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			identifiers=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifiers"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class MaintenanceTaskByIdsFilter:
-	ids: List[str]
-	desc: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"ids": [x0 for x0 in self.ids],
-			"desc": self.desc,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MaintenanceTaskByIdsFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			ids=[x0 for x0 in deserialized_dict["ids"]],
-			desc=deserialized_dict.get("desc"),
-		)
-
-@dataclass
-class MaintenanceTaskAfterDateFilter:
-	date: int
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"date": self.date,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MaintenanceTaskAfterDateFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			date=deserialized_dict["date"],
-		)
-
-@dataclass
-class InvoiceByHcPartyCodeDateFilter:
-	code: str
-	desc: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	start_invoice_date: Optional[int] = None
-	end_invoice_date: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"desc": self.desc,
-			"healthcarePartyId": self.healthcare_party_id,
-			"code": self.code,
-			"startInvoiceDate": self.start_invoice_date,
-			"endInvoiceDate": self.end_invoice_date,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'InvoiceByHcPartyCodeDateFilter':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			desc=deserialized_dict.get("desc"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			code=deserialized_dict["code"],
-			start_invoice_date=deserialized_dict.get("startInvoiceDate"),
-			end_invoice_date=deserialized_dict.get("endInvoiceDate"),
-		)
-
-AbstractFilter = Union['ContactByHcPartyPatientTagCodeDateFilter', 'ContactByHcPartyTagCodeDateFilter', 'ContactByHcPartyFilter', 'ContactByServiceIdsFilter', 'ContactByHcPartyIdentifiersFilter', 'HealthcarePartyByIdsFilter', 'HealthcarePartyByTagCodeFilter', 'AllHealthcarePartiesFilter', 'HealthcarePartyByIdentifiersFilter', 'HealthcarePartyByNameFilter', 'HealthElementByHcPartySecretForeignKeysFilter', 'HealthElementByHcPartyTagCodeFilter', 'HealthElementByIdsFilter', 'HealthElementByHcPartyIdentifiersFilter', 'HealthElementByHcPartyFilter', 'CodeIdsByTypeCodeVersionIntervalFilter', 'AllCodesFilter', 'CodeByIdsFilter', 'CodeByRegionTypeLabelLanguageFilter', 'MessageByHcPartyTransportGuidFilter', 'MessageByHcPartyFilter', 'LatestMessageByHcPartyTransportGuidFilter', 'UserByIdsFilter', 'AllUsersFilter', 'UserByNameEmailPhoneFilter', 'UsersByPatientIdFilter', 'TopicByParticipantFilter', 'TopicByHcPartyFilter', 'UnionFilter', 'PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'ComplementFilter', 'ExternalViewFilter', 'IntersectionFilter', 'IdsFilter', 'ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'MaintenanceTaskByHcPartyAndTypeFilter', 'MaintenanceTaskByHcPartyAndIdentifiersFilter', 'MaintenanceTaskByIdsFilter', 'MaintenanceTaskAfterDateFilter', 'InvoiceByHcPartyCodeDateFilter']
-
-def serialize_abstract_filter(abstract_filter: AbstractFilter) -> object:
-	if isinstance(abstract_filter, ContactByHcPartyPatientTagCodeDateFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ContactByHcPartyPatientTagCodeDateFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ContactByHcPartyTagCodeDateFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ContactByHcPartyTagCodeDateFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ContactByHcPartyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ContactByHcPartyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ContactByServiceIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ContactByServiceIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ContactByHcPartyIdentifiersFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ContactByHcPartyIdentifiersFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthcarePartyByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthcarePartyByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthcarePartyByTagCodeFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthcarePartyByTagCodeFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, AllHealthcarePartiesFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "AllHealthcarePartiesFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthcarePartyByIdentifiersFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthcarePartyByIdentifiersFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthcarePartyByNameFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthcarePartyByNameFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthElementByHcPartySecretForeignKeysFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthElementByHcPartySecretForeignKeysFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthElementByHcPartyTagCodeFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthElementByHcPartyTagCodeFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthElementByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthElementByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthElementByHcPartyIdentifiersFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthElementByHcPartyIdentifiersFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, HealthElementByHcPartyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "HealthElementByHcPartyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, CodeIdsByTypeCodeVersionIntervalFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "CodeIdsByTypeCodeVersionIntervalFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, AllCodesFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "AllCodesFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, CodeByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "CodeByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, CodeByRegionTypeLabelLanguageFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "CodeByRegionTypeLabelLanguageFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, MessageByHcPartyTransportGuidFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "MessageByHcPartyTransportGuidFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, MessageByHcPartyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "MessageByHcPartyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, LatestMessageByHcPartyTransportGuidFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "LatestMessageByHcPartyTransportGuidFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, UserByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "UserByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, AllUsersFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "AllUsersFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, UserByNameEmailPhoneFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "UserByNameEmailPhoneFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, UsersByPatientIdFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "UsersByPatientIdFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, TopicByParticipantFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "TopicByParticipantFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, TopicByHcPartyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "TopicByHcPartyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, UnionFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "UnionFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyGenderEducationProfession):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyGenderEducationProfession"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyDateOfBirthFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyDateOfBirthFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyAndExternalIdFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyAndExternalIdFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyAndSsinsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyAndSsinsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyAndActiveFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyAndActiveFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyAndAddressFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyAndAddressFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyNameFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyNameFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyAndSsinFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyAndSsinFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyNameContainsFuzzyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyNameContainsFuzzyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyAndIdentifiersFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyAndIdentifiersFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyDateOfBirthBetweenFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyDateOfBirthBetweenFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyAndTelecomFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyAndTelecomFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, PatientByHcPartyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "PatientByHcPartyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, DeviceByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "DeviceByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, DeviceByHcPartyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "DeviceByHcPartyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, AllDevicesFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "AllDevicesFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ComplementFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ComplementFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ExternalViewFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ExternalViewFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, IntersectionFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "IntersectionFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, IdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "IdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ServiceBySecretForeignKeys):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ServiceBySecretForeignKeys"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ServiceByContactsAndSubcontactsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ServiceByContactsAndSubcontactsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ServiceByHcPartyTagCodeDateFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ServiceByHcPartyTagCodeDateFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ServiceByHcPartyHealthElementIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ServiceByHcPartyHealthElementIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ServiceByHcPartyIdentifiersFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ServiceByHcPartyIdentifiersFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ServiceByHcPartyFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ServiceByHcPartyFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, ServiceByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "ServiceByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, MaintenanceTaskByHcPartyAndTypeFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "MaintenanceTaskByHcPartyAndTypeFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, MaintenanceTaskByHcPartyAndIdentifiersFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "MaintenanceTaskByHcPartyAndIdentifiersFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, MaintenanceTaskByIdsFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "MaintenanceTaskByIdsFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, MaintenanceTaskAfterDateFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "MaintenanceTaskAfterDateFilter"})
-		return serialized_entity
-	elif isinstance(abstract_filter, InvoiceByHcPartyCodeDateFilter):
-		serialized_entity = abstract_filter.__serialize__()
-		serialized_entity.update({"$type": "InvoiceByHcPartyCodeDateFilter"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(abstract_filter)} is not a known subclass of AbstractFilter")
-
-def deserialize_abstract_filter(data: Union[str, Dict[str, object]]) -> 'AbstractFilter':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("$type")
-	if qualifier is None:
-		raise Exception("Missing qualifier: $type")
-	if qualifier == "ContactByHcPartyPatientTagCodeDateFilter":
-		return ContactByHcPartyPatientTagCodeDateFilter._deserialize(deserialized_dict)
-	elif qualifier == "ContactByHcPartyTagCodeDateFilter":
-		return ContactByHcPartyTagCodeDateFilter._deserialize(deserialized_dict)
-	elif qualifier == "ContactByHcPartyFilter":
-		return ContactByHcPartyFilter._deserialize(deserialized_dict)
-	elif qualifier == "ContactByServiceIdsFilter":
-		return ContactByServiceIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "ContactByHcPartyIdentifiersFilter":
-		return ContactByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthcarePartyByIdsFilter":
-		return HealthcarePartyByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthcarePartyByTagCodeFilter":
-		return HealthcarePartyByTagCodeFilter._deserialize(deserialized_dict)
-	elif qualifier == "AllHealthcarePartiesFilter":
-		return AllHealthcarePartiesFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthcarePartyByIdentifiersFilter":
-		return HealthcarePartyByIdentifiersFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthcarePartyByNameFilter":
-		return HealthcarePartyByNameFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthElementByHcPartySecretForeignKeysFilter":
-		return HealthElementByHcPartySecretForeignKeysFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthElementByHcPartyTagCodeFilter":
-		return HealthElementByHcPartyTagCodeFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthElementByIdsFilter":
-		return HealthElementByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthElementByHcPartyIdentifiersFilter":
-		return HealthElementByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
-	elif qualifier == "HealthElementByHcPartyFilter":
-		return HealthElementByHcPartyFilter._deserialize(deserialized_dict)
-	elif qualifier == "CodeIdsByTypeCodeVersionIntervalFilter":
-		return CodeIdsByTypeCodeVersionIntervalFilter._deserialize(deserialized_dict)
-	elif qualifier == "AllCodesFilter":
-		return AllCodesFilter._deserialize(deserialized_dict)
-	elif qualifier == "CodeByIdsFilter":
-		return CodeByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "CodeByRegionTypeLabelLanguageFilter":
-		return CodeByRegionTypeLabelLanguageFilter._deserialize(deserialized_dict)
-	elif qualifier == "MessageByHcPartyTransportGuidFilter":
-		return MessageByHcPartyTransportGuidFilter._deserialize(deserialized_dict)
-	elif qualifier == "MessageByHcPartyFilter":
-		return MessageByHcPartyFilter._deserialize(deserialized_dict)
-	elif qualifier == "LatestMessageByHcPartyTransportGuidFilter":
-		return LatestMessageByHcPartyTransportGuidFilter._deserialize(deserialized_dict)
-	elif qualifier == "UserByIdsFilter":
-		return UserByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "AllUsersFilter":
-		return AllUsersFilter._deserialize(deserialized_dict)
-	elif qualifier == "UserByNameEmailPhoneFilter":
-		return UserByNameEmailPhoneFilter._deserialize(deserialized_dict)
-	elif qualifier == "UsersByPatientIdFilter":
-		return UsersByPatientIdFilter._deserialize(deserialized_dict)
-	elif qualifier == "TopicByParticipantFilter":
-		return TopicByParticipantFilter._deserialize(deserialized_dict)
-	elif qualifier == "TopicByHcPartyFilter":
-		return TopicByHcPartyFilter._deserialize(deserialized_dict)
-	elif qualifier == "UnionFilter":
-		return UnionFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyGenderEducationProfession":
-		return PatientByHcPartyGenderEducationProfession._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyDateOfBirthFilter":
-		return PatientByHcPartyDateOfBirthFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyAndExternalIdFilter":
-		return PatientByHcPartyAndExternalIdFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyAndSsinsFilter":
-		return PatientByHcPartyAndSsinsFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyAndActiveFilter":
-		return PatientByHcPartyAndActiveFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyAndAddressFilter":
-		return PatientByHcPartyAndAddressFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyNameFilter":
-		return PatientByHcPartyNameFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyAndSsinFilter":
-		return PatientByHcPartyAndSsinFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyNameContainsFuzzyFilter":
-		return PatientByHcPartyNameContainsFuzzyFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByIdsFilter":
-		return PatientByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyAndIdentifiersFilter":
-		return PatientByHcPartyAndIdentifiersFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyDateOfBirthBetweenFilter":
-		return PatientByHcPartyDateOfBirthBetweenFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyAndTelecomFilter":
-		return PatientByHcPartyAndTelecomFilter._deserialize(deserialized_dict)
-	elif qualifier == "PatientByHcPartyFilter":
-		return PatientByHcPartyFilter._deserialize(deserialized_dict)
-	elif qualifier == "DeviceByIdsFilter":
-		return DeviceByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "DeviceByHcPartyFilter":
-		return DeviceByHcPartyFilter._deserialize(deserialized_dict)
-	elif qualifier == "AllDevicesFilter":
-		return AllDevicesFilter._deserialize(deserialized_dict)
-	elif qualifier == "ComplementFilter":
-		return ComplementFilter._deserialize(deserialized_dict)
-	elif qualifier == "ExternalViewFilter":
-		return ExternalViewFilter._deserialize(deserialized_dict)
-	elif qualifier == "IntersectionFilter":
-		return IntersectionFilter._deserialize(deserialized_dict)
-	elif qualifier == "IdsFilter":
-		return IdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "ServiceBySecretForeignKeys":
-		return ServiceBySecretForeignKeys._deserialize(deserialized_dict)
-	elif qualifier == "ServiceByContactsAndSubcontactsFilter":
-		return ServiceByContactsAndSubcontactsFilter._deserialize(deserialized_dict)
-	elif qualifier == "ServiceByHcPartyTagCodeDateFilter":
-		return ServiceByHcPartyTagCodeDateFilter._deserialize(deserialized_dict)
-	elif qualifier == "ServiceByHcPartyHealthElementIdsFilter":
-		return ServiceByHcPartyHealthElementIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "ServiceByHcPartyIdentifiersFilter":
-		return ServiceByHcPartyIdentifiersFilter._deserialize(deserialized_dict)
-	elif qualifier == "ServiceByHcPartyFilter":
-		return ServiceByHcPartyFilter._deserialize(deserialized_dict)
-	elif qualifier == "ServiceByIdsFilter":
-		return ServiceByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "MaintenanceTaskByHcPartyAndTypeFilter":
-		return MaintenanceTaskByHcPartyAndTypeFilter._deserialize(deserialized_dict)
-	elif qualifier == "MaintenanceTaskByHcPartyAndIdentifiersFilter":
-		return MaintenanceTaskByHcPartyAndIdentifiersFilter._deserialize(deserialized_dict)
-	elif qualifier == "MaintenanceTaskByIdsFilter":
-		return MaintenanceTaskByIdsFilter._deserialize(deserialized_dict)
-	elif qualifier == "MaintenanceTaskAfterDateFilter":
-		return MaintenanceTaskAfterDateFilter._deserialize(deserialized_dict)
-	elif qualifier == "InvoiceByHcPartyCodeDateFilter":
-		return InvoiceByHcPartyCodeDateFilter._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of AbstractFilter")
-
-ContactAbstractFilter = Union['ContactByHcPartyPatientTagCodeDateFilter', 'ContactByHcPartyTagCodeDateFilter', 'ContactByHcPartyFilter', 'ContactByServiceIdsFilter', 'ContactByHcPartyIdentifiersFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-HealthcarePartyAbstractFilter = Union['HealthcarePartyByIdsFilter', 'HealthcarePartyByTagCodeFilter', 'AllHealthcarePartiesFilter', 'HealthcarePartyByIdentifiersFilter', 'HealthcarePartyByNameFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-HealthElementAbstractFilter = Union['HealthElementByHcPartySecretForeignKeysFilter', 'HealthElementByHcPartyTagCodeFilter', 'HealthElementByIdsFilter', 'HealthElementByHcPartyIdentifiersFilter', 'HealthElementByHcPartyFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-CodeAbstractFilter = Union['CodeIdsByTypeCodeVersionIntervalFilter', 'AllCodesFilter', 'CodeByIdsFilter', 'CodeByRegionTypeLabelLanguageFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-MessageAbstractFilter = Union['MessageByHcPartyTransportGuidFilter', 'MessageByHcPartyFilter', 'LatestMessageByHcPartyTransportGuidFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-UserAbstractFilter = Union['UserByIdsFilter', 'AllUsersFilter', 'UserByNameEmailPhoneFilter', 'UsersByPatientIdFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-TopicAbstractFilter = Union['TopicByParticipantFilter', 'TopicByHcPartyFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-PatientAbstractFilter = Union['PatientByHcPartyGenderEducationProfession', 'PatientByHcPartyDateOfBirthFilter', 'PatientByHcPartyAndExternalIdFilter', 'PatientByHcPartyAndSsinsFilter', 'PatientByHcPartyAndActiveFilter', 'PatientByHcPartyAndAddressFilter', 'PatientByHcPartyNameFilter', 'PatientByHcPartyAndSsinFilter', 'PatientByHcPartyNameContainsFuzzyFilter', 'PatientByIdsFilter', 'PatientByHcPartyAndIdentifiersFilter', 'PatientByHcPartyDateOfBirthBetweenFilter', 'PatientByHcPartyAndTelecomFilter', 'PatientByHcPartyFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-DeviceAbstractFilter = Union['DeviceByIdsFilter', 'DeviceByHcPartyFilter', 'AllDevicesFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-IdentifiableAbstractFilter = Union['ExternalViewFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-ServiceAbstractFilter = Union['ServiceBySecretForeignKeys', 'ServiceByContactsAndSubcontactsFilter', 'ServiceByHcPartyTagCodeDateFilter', 'ServiceByHcPartyHealthElementIdsFilter', 'ServiceByHcPartyIdentifiersFilter', 'ServiceByHcPartyFilter', 'ServiceByIdsFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-MaintenanceTaskAbstractFilter = Union['MaintenanceTaskByHcPartyAndTypeFilter', 'MaintenanceTaskByHcPartyAndIdentifiersFilter', 'MaintenanceTaskByIdsFilter', 'MaintenanceTaskAfterDateFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-InvoiceAbstractFilter = Union['InvoiceByHcPartyCodeDateFilter', 'UnionFilter', 'ComplementFilter', 'IntersectionFilter', 'IdsFilter']
-
-@dataclass
 class CryptoActorStub:
 	id: str
 	rev: str
@@ -4154,10 +2087,12 @@ class TokenWithGroup:
 @dataclass
 class Enable2faRequest:
 	secret: str
+	otp_length: int
 
 	def __serialize__(self) -> object:
 		return {
 			"secret": self.secret,
+			"otpLength": self.otp_length,
 		}
 
 	@classmethod
@@ -4169,6 +2104,7 @@ class Enable2faRequest:
 			deserialized_dict = data
 		return cls(
 			secret=deserialized_dict["secret"],
+			otp_length=deserialized_dict["otpLength"],
 		)
 
 @dataclass
@@ -7185,22 +5121,35 @@ class EntityAccessInformation:
 			has_unknown_anonymous_data_owners=deserialized_dict["hasUnknownAnonymousDataOwners"],
 		)
 
+class SortDirection(Enum):
+	Asc = "asc"
+	Desc = "desc"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SortDirection':
+		if data == "asc":
+			return SortDirection.Asc
+		elif data == "desc":
+			return SortDirection.Desc
+		else:
+			raise Exception(f"{data} is not a valid value for SortDirection enum.")
+
 class SubscriptionEventType(Enum):
-	Create = "CREATE"
-	Update = "UPDATE"
-	Delete = "DELETE"
+	Create = "Create"
+	Update = "Update"
 
 	def __serialize__(self) -> object:
 		return self.value
 
 	@classmethod
 	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
-		if data == "CREATE":
+		if data == "Create":
 			return SubscriptionEventType.Create
-		elif data == "UPDATE":
+		elif data == "Update":
 			return SubscriptionEventType.Update
-		elif data == "DELETE":
-			return SubscriptionEventType.Delete
 		else:
 			raise Exception(f"{data} is not a valid value for SubscriptionEventType enum.")
 
@@ -7254,166 +5203,6 @@ class EntitySubscriptionConfiguration:
 			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
 			connection_max_retries=deserialized_dict["connectionMaxRetries"],
 		)
-
-class SortDirection(Enum):
-	Asc = "asc"
-	Desc = "desc"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SortDirection':
-		if data == "asc":
-			return SortDirection.Asc
-		elif data == "desc":
-			return SortDirection.Desc
-		else:
-			raise Exception(f"{data} is not a valid value for SortDirection enum.")
-
-@dataclass
-class EncryptedContent:
-	string_value: Optional[str] = None
-	number_value: Optional[float] = None
-	boolean_value: Optional[bool] = None
-	instant_value: Optional[int] = None
-	fuzzy_date_value: Optional[int] = None
-	binary_value: Optional[bytearray] = None
-	document_id: Optional[str] = None
-	measure_value: Optional['Measure'] = None
-	medication_value: Optional['Medication'] = None
-	time_series: Optional['TimeSeries'] = None
-	compound_value: Optional[List['EncryptedService']] = None
-	ratio: Optional[List['Measure']] = None
-	range: Optional[List['Measure']] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"stringValue": self.string_value,
-			"numberValue": self.number_value,
-			"booleanValue": self.boolean_value,
-			"instantValue": self.instant_value,
-			"fuzzyDateValue": self.fuzzy_date_value,
-			"binaryValue": base64.b64encode(self.binary_value).decode('utf-8') if self.binary_value is not None else None,
-			"documentId": self.document_id,
-			"measureValue": self.measure_value.__serialize__() if self.measure_value is not None else None,
-			"medicationValue": self.medication_value.__serialize__() if self.medication_value is not None else None,
-			"timeSeries": self.time_series.__serialize__() if self.time_series is not None else None,
-			"compoundValue": [x0.__serialize__() for x0 in self.compound_value] if self.compound_value is not None else None,
-			"ratio": [x0.__serialize__() for x0 in self.ratio] if self.ratio is not None else None,
-			"range": [x0.__serialize__() for x0 in self.range] if self.range is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedContent':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			string_value=deserialized_dict.get("stringValue"),
-			number_value=deserialized_dict.get("numberValue"),
-			boolean_value=deserialized_dict.get("booleanValue"),
-			instant_value=deserialized_dict.get("instantValue"),
-			fuzzy_date_value=deserialized_dict.get("fuzzyDateValue"),
-			binary_value=bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
-			document_id=deserialized_dict.get("documentId"),
-			measure_value=Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
-			medication_value=Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
-			time_series=TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
-			compound_value=[EncryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
-			ratio=[Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
-			range=[Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
-		)
-
-@dataclass
-class DecryptedContent:
-	string_value: Optional[str] = None
-	number_value: Optional[float] = None
-	boolean_value: Optional[bool] = None
-	instant_value: Optional[int] = None
-	fuzzy_date_value: Optional[int] = None
-	binary_value: Optional[bytearray] = None
-	document_id: Optional[str] = None
-	measure_value: Optional['Measure'] = None
-	medication_value: Optional['Medication'] = None
-	time_series: Optional['TimeSeries'] = None
-	compound_value: Optional[List['DecryptedService']] = None
-	ratio: Optional[List['Measure']] = None
-	range: Optional[List['Measure']] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"stringValue": self.string_value,
-			"numberValue": self.number_value,
-			"booleanValue": self.boolean_value,
-			"instantValue": self.instant_value,
-			"fuzzyDateValue": self.fuzzy_date_value,
-			"binaryValue": base64.b64encode(self.binary_value).decode('utf-8') if self.binary_value is not None else None,
-			"documentId": self.document_id,
-			"measureValue": self.measure_value.__serialize__() if self.measure_value is not None else None,
-			"medicationValue": self.medication_value.__serialize__() if self.medication_value is not None else None,
-			"timeSeries": self.time_series.__serialize__() if self.time_series is not None else None,
-			"compoundValue": [x0.__serialize__() for x0 in self.compound_value] if self.compound_value is not None else None,
-			"ratio": [x0.__serialize__() for x0 in self.ratio] if self.ratio is not None else None,
-			"range": [x0.__serialize__() for x0 in self.range] if self.range is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedContent':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			string_value=deserialized_dict.get("stringValue"),
-			number_value=deserialized_dict.get("numberValue"),
-			boolean_value=deserialized_dict.get("booleanValue"),
-			instant_value=deserialized_dict.get("instantValue"),
-			fuzzy_date_value=deserialized_dict.get("fuzzyDateValue"),
-			binary_value=bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
-			document_id=deserialized_dict.get("documentId"),
-			measure_value=Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
-			medication_value=Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
-			time_series=TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
-			compound_value=[DecryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
-			ratio=[Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
-			range=[Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
-		)
-
-Content = Union['EncryptedContent', 'DecryptedContent']
-
-def serialize_content(content: Content) -> object:
-	if isinstance(content, EncryptedContent):
-		return {
-			"type": "com.icure.sdk.model.embed.EncryptedContent",
-			"entity": content.__serialize__()
-		}
-	elif isinstance(content, DecryptedContent):
-		return {
-			"type": "com.icure.sdk.model.embed.DecryptedContent",
-			"entity": content.__serialize__()
-		}
-	else:
-		raise Exception(f"{type(content)} is not a known subclass of Content")
-
-def deserialize_content(data: Union[str, Dict[str, object]]) -> 'Content':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
-	if qualifier is None:
-		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedContent":
-		EncryptedContent._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedContent":
-		DecryptedContent._deserialize(deserialized_dict["entity"])
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of Content")
 
 @dataclass
 class EncryptedClassification:
@@ -11771,6 +9560,7 @@ class Group:
 	shared_entities: Dict[str, str] = field(default_factory=dict)
 	minimum_kraken_version: Optional[str] = None
 	super_group: Optional[str] = None
+	application_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11789,6 +9579,7 @@ class Group:
 			"minimumKrakenVersion": self.minimum_kraken_version,
 			"minimumAuthenticationClassForElevatedPrivileges": self.minimum_authentication_class_for_elevated_privileges.__serialize__(),
 			"superGroup": self.super_group,
+			"applicationId": self.application_id,
 		}
 
 	@classmethod
@@ -11814,6 +9605,7 @@ class Group:
 			minimum_kraken_version=deserialized_dict.get("minimumKrakenVersion"),
 			minimum_authentication_class_for_elevated_privileges=AuthenticationClass._deserialize(deserialized_dict["minimumAuthenticationClassForElevatedPrivileges"]),
 			super_group=deserialized_dict.get("superGroup"),
+			application_id=deserialized_dict.get("applicationId"),
 		)
 
 class GroupType(Enum):
@@ -12314,133 +10106,6 @@ class Identifier:
 			value=deserialized_dict.get("value"),
 		)
 
-class Gender(Enum):
-	Male = "male"
-	Female = "female"
-	Indeterminate = "indeterminate"
-	Changed = "changed"
-	ChangedToMale = "changedToMale"
-	ChangedToFemale = "changedToFemale"
-	Unknown = "unknown"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Gender':
-		if data == "male":
-			return Gender.Male
-		elif data == "female":
-			return Gender.Female
-		elif data == "indeterminate":
-			return Gender.Indeterminate
-		elif data == "changed":
-			return Gender.Changed
-		elif data == "changedToMale":
-			return Gender.ChangedToMale
-		elif data == "changedToFemale":
-			return Gender.ChangedToFemale
-		elif data == "unknown":
-			return Gender.Unknown
-		else:
-			raise Exception(f"{data} is not a valid value for Gender enum.")
-
-@dataclass
-class ExternalFilterKeyExternalFilterStringKey:
-	key: str
-
-	def __serialize__(self) -> object:
-		return {
-			"key": self.key,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalFilterKeyExternalFilterStringKey':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			key=deserialized_dict["key"],
-		)
-
-@dataclass
-class ExternalFilterKeyExternalFilterLongKey:
-	key: int
-
-	def __serialize__(self) -> object:
-		return {
-			"key": self.key,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalFilterKeyExternalFilterLongKey':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			key=deserialized_dict["key"],
-		)
-
-@dataclass
-class ExternalFilterKeyExternalFilterComplexKey:
-	key: Dict[str, object]
-
-	def __serialize__(self) -> object:
-		return {
-			"key": {k0: v0 for k0, v0 in self.key.items()},
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalFilterKeyExternalFilterComplexKey':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			key=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["key"].items())),
-		)
-
-ExternalFilterKey = Union['ExternalFilterKeyExternalFilterStringKey', 'ExternalFilterKeyExternalFilterLongKey', 'ExternalFilterKeyExternalFilterComplexKey']
-
-def serialize_external_filter_key(external_filter_key: ExternalFilterKey) -> object:
-	if isinstance(external_filter_key, ExternalFilterKeyExternalFilterStringKey):
-		serialized_entity = external_filter_key.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterStringKey"})
-		return serialized_entity
-	elif isinstance(external_filter_key, ExternalFilterKeyExternalFilterLongKey):
-		serialized_entity = external_filter_key.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterLongKey"})
-		return serialized_entity
-	elif isinstance(external_filter_key, ExternalFilterKeyExternalFilterComplexKey):
-		serialized_entity = external_filter_key.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterComplexKey"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(external_filter_key)} is not a known subclass of ExternalFilterKey")
-
-def deserialize_external_filter_key(data: Union[str, Dict[str, object]]) -> 'ExternalFilterKey':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
-	if qualifier is None:
-		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterStringKey":
-		return ExternalFilterKeyExternalFilterStringKey._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterLongKey":
-		return ExternalFilterKeyExternalFilterLongKey._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.utils.ExternalFilterKey.ExternalFilterComplexKey":
-		return ExternalFilterKeyExternalFilterComplexKey._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of ExternalFilterKey")
-
 @dataclass
 class PersonName:
 	last_name: Optional[str] = None
@@ -12625,6 +10290,37 @@ def deserialize_address(data: Union[str, Dict[str, object]]) -> 'Address':
 		DecryptedAddress._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Address")
+
+class Gender(Enum):
+	Male = "male"
+	Female = "female"
+	Indeterminate = "indeterminate"
+	Changed = "changed"
+	ChangedToMale = "changedToMale"
+	ChangedToFemale = "changedToFemale"
+	Unknown = "unknown"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Gender':
+		if data == "male":
+			return Gender.Male
+		elif data == "female":
+			return Gender.Female
+		elif data == "indeterminate":
+			return Gender.Indeterminate
+		elif data == "changed":
+			return Gender.Changed
+		elif data == "changedToMale":
+			return Gender.ChangedToMale
+		elif data == "changedToFemale":
+			return Gender.ChangedToFemale
+		elif data == "unknown":
+			return Gender.Unknown
+		else:
+			raise Exception(f"{data} is not a valid value for Gender enum.")
 
 class DeactivationReason(Enum):
 	Deceased = "deceased"
@@ -15039,237 +12735,6 @@ class DeletedAttachment:
 			deletion_time=deserialized_dict.get("deletionTime"),
 		)
 
-@dataclass
-class Measure:
-	value: Optional[float] = None
-	ref: Optional[float] = None
-	severity: Optional[int] = None
-	severity_code: Optional[str] = None
-	evolution: Optional[int] = None
-	unit: Optional[str] = None
-	unit_codes: Optional[List['CodeStub']] = None
-	comment: Optional[str] = None
-	comparator: Optional[str] = None
-	sign: Optional[str] = None
-	reference_ranges: List['ReferenceRange'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"value": self.value,
-			"ref": self.ref,
-			"severity": self.severity,
-			"severityCode": self.severity_code,
-			"evolution": self.evolution,
-			"unit": self.unit,
-			"unitCodes": [x0.__serialize__() for x0 in self.unit_codes] if self.unit_codes is not None else None,
-			"comment": self.comment,
-			"comparator": self.comparator,
-			"sign": self.sign,
-			"referenceRanges": [x0.__serialize__() for x0 in self.reference_ranges],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Measure':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			value=deserialized_dict.get("value"),
-			ref=deserialized_dict.get("ref"),
-			severity=deserialized_dict.get("severity"),
-			severity_code=deserialized_dict.get("severityCode"),
-			evolution=deserialized_dict.get("evolution"),
-			unit=deserialized_dict.get("unit"),
-			unit_codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict.get("unitCodes")] if deserialized_dict.get("unitCodes") is not None else None,
-			comment=deserialized_dict.get("comment"),
-			comparator=deserialized_dict.get("comparator"),
-			sign=deserialized_dict.get("sign"),
-			reference_ranges=[ReferenceRange._deserialize(x0) for x0 in deserialized_dict["referenceRanges"]],
-		)
-
-@dataclass
-class Medication:
-	compound_prescription: Optional[str] = None
-	substance_product: Optional['Substanceproduct'] = None
-	medicinal_product: Optional['Medicinalproduct'] = None
-	number_of_packages: Optional[int] = None
-	batch: Optional[str] = None
-	expiration_date: Optional[int] = None
-	instruction_for_patient: Optional[str] = None
-	instruction_for_reimbursement: Optional[str] = None
-	comment_for_delivery: Optional[str] = None
-	drug_route: Optional[str] = None
-	temporality: Optional[str] = None
-	frequency: Optional['CodeStub'] = None
-	reimbursement_reason: Optional['CodeStub'] = None
-	substitution_allowed: Optional[bool] = None
-	begin_moment: Optional[int] = None
-	end_moment: Optional[int] = None
-	delivery_moment: Optional[int] = None
-	end_execution_moment: Optional[int] = None
-	duration: Optional['Duration'] = None
-	renewal: Optional['Renewal'] = None
-	known_usage: Optional[bool] = None
-	regimen: Optional[List['RegimenItem']] = None
-	posology: Optional[str] = None
-	agreements: Optional[Dict[str, 'ParagraphAgreement']] = None
-	medication_scheme_id_on_safe: Optional[str] = None
-	medication_scheme_safe_version: Optional[int] = None
-	medication_scheme_time_stamp_on_safe: Optional[int] = None
-	medication_scheme_document_id: Optional[str] = None
-	safe_id_name: Optional[str] = None
-	id_on_safes: Optional[str] = None
-	timestamp_on_safe: Optional[int] = None
-	change_validated: Optional[bool] = None
-	new_safe_medication: Optional[bool] = None
-	medication_use: Optional[str] = None
-	begin_condition: Optional[str] = None
-	end_condition: Optional[str] = None
-	origin: Optional[str] = None
-	medication_changed: Optional[bool] = None
-	posology_changed: Optional[bool] = None
-	suspension: Optional[List['Suspension']] = None
-	prescription_rid: Optional[str] = None
-	status: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"compoundPrescription": self.compound_prescription,
-			"substanceProduct": self.substance_product.__serialize__() if self.substance_product is not None else None,
-			"medicinalProduct": self.medicinal_product.__serialize__() if self.medicinal_product is not None else None,
-			"numberOfPackages": self.number_of_packages,
-			"batch": self.batch,
-			"expirationDate": self.expiration_date,
-			"instructionForPatient": self.instruction_for_patient,
-			"instructionForReimbursement": self.instruction_for_reimbursement,
-			"commentForDelivery": self.comment_for_delivery,
-			"drugRoute": self.drug_route,
-			"temporality": self.temporality,
-			"frequency": self.frequency.__serialize__() if self.frequency is not None else None,
-			"reimbursementReason": self.reimbursement_reason.__serialize__() if self.reimbursement_reason is not None else None,
-			"substitutionAllowed": self.substitution_allowed,
-			"beginMoment": self.begin_moment,
-			"endMoment": self.end_moment,
-			"deliveryMoment": self.delivery_moment,
-			"endExecutionMoment": self.end_execution_moment,
-			"duration": self.duration.__serialize__() if self.duration is not None else None,
-			"renewal": self.renewal.__serialize__() if self.renewal is not None else None,
-			"knownUsage": self.known_usage,
-			"regimen": [x0.__serialize__() for x0 in self.regimen] if self.regimen is not None else None,
-			"posology": self.posology,
-			"agreements": {k0: v0.__serialize__() for k0, v0 in self.agreements.items()} if self.agreements is not None else None,
-			"medicationSchemeIdOnSafe": self.medication_scheme_id_on_safe,
-			"medicationSchemeSafeVersion": self.medication_scheme_safe_version,
-			"medicationSchemeTimeStampOnSafe": self.medication_scheme_time_stamp_on_safe,
-			"medicationSchemeDocumentId": self.medication_scheme_document_id,
-			"safeIdName": self.safe_id_name,
-			"idOnSafes": self.id_on_safes,
-			"timestampOnSafe": self.timestamp_on_safe,
-			"changeValidated": self.change_validated,
-			"newSafeMedication": self.new_safe_medication,
-			"medicationUse": self.medication_use,
-			"beginCondition": self.begin_condition,
-			"endCondition": self.end_condition,
-			"origin": self.origin,
-			"medicationChanged": self.medication_changed,
-			"posologyChanged": self.posology_changed,
-			"suspension": [x0.__serialize__() for x0 in self.suspension] if self.suspension is not None else None,
-			"prescriptionRID": self.prescription_rid,
-			"status": self.status,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Medication':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			compound_prescription=deserialized_dict.get("compoundPrescription"),
-			substance_product=Substanceproduct._deserialize(deserialized_dict.get("substanceProduct")) if deserialized_dict.get("substanceProduct") is not None else None,
-			medicinal_product=Medicinalproduct._deserialize(deserialized_dict.get("medicinalProduct")) if deserialized_dict.get("medicinalProduct") is not None else None,
-			number_of_packages=deserialized_dict.get("numberOfPackages"),
-			batch=deserialized_dict.get("batch"),
-			expiration_date=deserialized_dict.get("expirationDate"),
-			instruction_for_patient=deserialized_dict.get("instructionForPatient"),
-			instruction_for_reimbursement=deserialized_dict.get("instructionForReimbursement"),
-			comment_for_delivery=deserialized_dict.get("commentForDelivery"),
-			drug_route=deserialized_dict.get("drugRoute"),
-			temporality=deserialized_dict.get("temporality"),
-			frequency=CodeStub._deserialize(deserialized_dict.get("frequency")) if deserialized_dict.get("frequency") is not None else None,
-			reimbursement_reason=CodeStub._deserialize(deserialized_dict.get("reimbursementReason")) if deserialized_dict.get("reimbursementReason") is not None else None,
-			substitution_allowed=deserialized_dict.get("substitutionAllowed"),
-			begin_moment=deserialized_dict.get("beginMoment"),
-			end_moment=deserialized_dict.get("endMoment"),
-			delivery_moment=deserialized_dict.get("deliveryMoment"),
-			end_execution_moment=deserialized_dict.get("endExecutionMoment"),
-			duration=Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
-			renewal=Renewal._deserialize(deserialized_dict.get("renewal")) if deserialized_dict.get("renewal") is not None else None,
-			known_usage=deserialized_dict.get("knownUsage"),
-			regimen=[RegimenItem._deserialize(x0) for x0 in deserialized_dict.get("regimen")] if deserialized_dict.get("regimen") is not None else None,
-			posology=deserialized_dict.get("posology"),
-			agreements=dict(map(lambda kv0: (kv0[0], ParagraphAgreement._deserialize(kv0[1])), deserialized_dict.get("agreements").items())) if deserialized_dict.get("agreements") is not None else None,
-			medication_scheme_id_on_safe=deserialized_dict.get("medicationSchemeIdOnSafe"),
-			medication_scheme_safe_version=deserialized_dict.get("medicationSchemeSafeVersion"),
-			medication_scheme_time_stamp_on_safe=deserialized_dict.get("medicationSchemeTimeStampOnSafe"),
-			medication_scheme_document_id=deserialized_dict.get("medicationSchemeDocumentId"),
-			safe_id_name=deserialized_dict.get("safeIdName"),
-			id_on_safes=deserialized_dict.get("idOnSafes"),
-			timestamp_on_safe=deserialized_dict.get("timestampOnSafe"),
-			change_validated=deserialized_dict.get("changeValidated"),
-			new_safe_medication=deserialized_dict.get("newSafeMedication"),
-			medication_use=deserialized_dict.get("medicationUse"),
-			begin_condition=deserialized_dict.get("beginCondition"),
-			end_condition=deserialized_dict.get("endCondition"),
-			origin=deserialized_dict.get("origin"),
-			medication_changed=deserialized_dict.get("medicationChanged"),
-			posology_changed=deserialized_dict.get("posologyChanged"),
-			suspension=[Suspension._deserialize(x0) for x0 in deserialized_dict.get("suspension")] if deserialized_dict.get("suspension") is not None else None,
-			prescription_rid=deserialized_dict.get("prescriptionRID"),
-			status=deserialized_dict.get("status"),
-		)
-
-@dataclass
-class TimeSeries:
-	fields: List[str] = field(default_factory=list)
-	samples: List[List[float]] = field(default_factory=list)
-	min: List[float] = field(default_factory=list)
-	max: List[float] = field(default_factory=list)
-	mean: List[float] = field(default_factory=list)
-	median: List[float] = field(default_factory=list)
-	variance: List[float] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"fields": [x0 for x0 in self.fields],
-			"samples": [[x1 for x1 in x0] for x0 in self.samples],
-			"min": [x0 for x0 in self.min],
-			"max": [x0 for x0 in self.max],
-			"mean": [x0 for x0 in self.mean],
-			"median": [x0 for x0 in self.median],
-			"variance": [x0 for x0 in self.variance],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeSeries':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			fields=[x0 for x0 in deserialized_dict["fields"]],
-			samples=[[x1 for x1 in x0] for x0 in deserialized_dict["samples"]],
-			min=[x0 for x0 in deserialized_dict["min"]],
-			max=[x0 for x0 in deserialized_dict["max"]],
-			mean=[x0 for x0 in deserialized_dict["mean"]],
-			median=[x0 for x0 in deserialized_dict["median"]],
-			variance=[x0 for x0 in deserialized_dict["variance"]],
-		)
-
 class TaskStatus(Enum):
 	Pending = "pending"
 	Ongoing = "ongoing"
@@ -15560,53 +13025,197 @@ def deserialize_sub_contact(data: Union[str, Dict[str, object]]) -> 'SubContact'
 		raise Exception(f"{qualifier} is not a known subclass of SubContact")
 
 class ParticipantType(Enum):
-	Admitter = "Admitter"
-	Attender = "Attender"
-	CallbackContact = "CallbackContact"
-	Consultant = "Consultant"
-	Discharger = "Discharger"
-	Escort = "Escort"
-	Referrer = "Referrer"
-	SecondaryPerformer = "SecondaryPerformer"
-	PrimaryPerformer = "PrimaryPerformer"
-	Participation = "Participation"
-	Translator = "Translator"
-	Emergency = "Emergency"
-	Location = "Location"
+	Admitter = "admitter"
+	Attender = "attender"
+	CallbackContact = "callback"
+	Consultant = "consultant"
+	Discharger = "discharger"
+	Escort = "escort"
+	Referrer = "referrer"
+	SecondaryPerformer = "secondaryPerformer"
+	PrimaryPerformer = "primaryPerformer"
+	Participation = "participation"
+	Translator = "translator"
+	Emergency = "emergency"
+	Location = "location"
 
 	def __serialize__(self) -> object:
 		return self.value
 
 	@classmethod
 	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ParticipantType':
-		if data == "Admitter":
+		if data == "admitter":
 			return ParticipantType.Admitter
-		elif data == "Attender":
+		elif data == "attender":
 			return ParticipantType.Attender
-		elif data == "CallbackContact":
+		elif data == "callback":
 			return ParticipantType.CallbackContact
-		elif data == "Consultant":
+		elif data == "consultant":
 			return ParticipantType.Consultant
-		elif data == "Discharger":
+		elif data == "discharger":
 			return ParticipantType.Discharger
-		elif data == "Escort":
+		elif data == "escort":
 			return ParticipantType.Escort
-		elif data == "Referrer":
+		elif data == "referrer":
 			return ParticipantType.Referrer
-		elif data == "SecondaryPerformer":
+		elif data == "secondaryPerformer":
 			return ParticipantType.SecondaryPerformer
-		elif data == "PrimaryPerformer":
+		elif data == "primaryPerformer":
 			return ParticipantType.PrimaryPerformer
-		elif data == "Participation":
+		elif data == "participation":
 			return ParticipantType.Participation
-		elif data == "Translator":
+		elif data == "translator":
 			return ParticipantType.Translator
-		elif data == "Emergency":
+		elif data == "emergency":
 			return ParticipantType.Emergency
-		elif data == "Location":
+		elif data == "location":
 			return ParticipantType.Location
 		else:
 			raise Exception(f"{data} is not a valid value for ParticipantType enum.")
+
+@dataclass
+class EncryptedContent:
+	string_value: Optional[str] = None
+	number_value: Optional[float] = None
+	boolean_value: Optional[bool] = None
+	instant_value: Optional[int] = None
+	fuzzy_date_value: Optional[int] = None
+	binary_value: Optional[bytearray] = None
+	document_id: Optional[str] = None
+	measure_value: Optional['Measure'] = None
+	medication_value: Optional['Medication'] = None
+	time_series: Optional['TimeSeries'] = None
+	compound_value: Optional[List['EncryptedService']] = None
+	ratio: Optional[List['Measure']] = None
+	range: Optional[List['Measure']] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"stringValue": self.string_value,
+			"numberValue": self.number_value,
+			"booleanValue": self.boolean_value,
+			"instantValue": self.instant_value,
+			"fuzzyDateValue": self.fuzzy_date_value,
+			"binaryValue": base64.b64encode(self.binary_value).decode('utf-8') if self.binary_value is not None else None,
+			"documentId": self.document_id,
+			"measureValue": self.measure_value.__serialize__() if self.measure_value is not None else None,
+			"medicationValue": self.medication_value.__serialize__() if self.medication_value is not None else None,
+			"timeSeries": self.time_series.__serialize__() if self.time_series is not None else None,
+			"compoundValue": [x0.__serialize__() for x0 in self.compound_value] if self.compound_value is not None else None,
+			"ratio": [x0.__serialize__() for x0 in self.ratio] if self.ratio is not None else None,
+			"range": [x0.__serialize__() for x0 in self.range] if self.range is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedContent':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			string_value=deserialized_dict.get("stringValue"),
+			number_value=deserialized_dict.get("numberValue"),
+			boolean_value=deserialized_dict.get("booleanValue"),
+			instant_value=deserialized_dict.get("instantValue"),
+			fuzzy_date_value=deserialized_dict.get("fuzzyDateValue"),
+			binary_value=bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
+			document_id=deserialized_dict.get("documentId"),
+			measure_value=Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
+			medication_value=Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
+			time_series=TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
+			compound_value=[EncryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
+			ratio=[Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
+			range=[Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
+		)
+
+@dataclass
+class DecryptedContent:
+	string_value: Optional[str] = None
+	number_value: Optional[float] = None
+	boolean_value: Optional[bool] = None
+	instant_value: Optional[int] = None
+	fuzzy_date_value: Optional[int] = None
+	binary_value: Optional[bytearray] = None
+	document_id: Optional[str] = None
+	measure_value: Optional['Measure'] = None
+	medication_value: Optional['Medication'] = None
+	time_series: Optional['TimeSeries'] = None
+	compound_value: Optional[List['DecryptedService']] = None
+	ratio: Optional[List['Measure']] = None
+	range: Optional[List['Measure']] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"stringValue": self.string_value,
+			"numberValue": self.number_value,
+			"booleanValue": self.boolean_value,
+			"instantValue": self.instant_value,
+			"fuzzyDateValue": self.fuzzy_date_value,
+			"binaryValue": base64.b64encode(self.binary_value).decode('utf-8') if self.binary_value is not None else None,
+			"documentId": self.document_id,
+			"measureValue": self.measure_value.__serialize__() if self.measure_value is not None else None,
+			"medicationValue": self.medication_value.__serialize__() if self.medication_value is not None else None,
+			"timeSeries": self.time_series.__serialize__() if self.time_series is not None else None,
+			"compoundValue": [x0.__serialize__() for x0 in self.compound_value] if self.compound_value is not None else None,
+			"ratio": [x0.__serialize__() for x0 in self.ratio] if self.ratio is not None else None,
+			"range": [x0.__serialize__() for x0 in self.range] if self.range is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedContent':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			string_value=deserialized_dict.get("stringValue"),
+			number_value=deserialized_dict.get("numberValue"),
+			boolean_value=deserialized_dict.get("booleanValue"),
+			instant_value=deserialized_dict.get("instantValue"),
+			fuzzy_date_value=deserialized_dict.get("fuzzyDateValue"),
+			binary_value=bytearray(base64.b64decode(deserialized_dict.get("binaryValue"))) if deserialized_dict.get("binaryValue") is not None else None,
+			document_id=deserialized_dict.get("documentId"),
+			measure_value=Measure._deserialize(deserialized_dict.get("measureValue")) if deserialized_dict.get("measureValue") is not None else None,
+			medication_value=Medication._deserialize(deserialized_dict.get("medicationValue")) if deserialized_dict.get("medicationValue") is not None else None,
+			time_series=TimeSeries._deserialize(deserialized_dict.get("timeSeries")) if deserialized_dict.get("timeSeries") is not None else None,
+			compound_value=[DecryptedService._deserialize(x0) for x0 in deserialized_dict.get("compoundValue")] if deserialized_dict.get("compoundValue") is not None else None,
+			ratio=[Measure._deserialize(x0) for x0 in deserialized_dict.get("ratio")] if deserialized_dict.get("ratio") is not None else None,
+			range=[Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
+		)
+
+Content = Union['EncryptedContent', 'DecryptedContent']
+
+def serialize_content(content: Content) -> object:
+	if isinstance(content, EncryptedContent):
+		return {
+			"type": "com.icure.sdk.model.embed.EncryptedContent",
+			"entity": content.__serialize__()
+		}
+	elif isinstance(content, DecryptedContent):
+		return {
+			"type": "com.icure.sdk.model.embed.DecryptedContent",
+			"entity": content.__serialize__()
+		}
+	else:
+		raise Exception(f"{type(content)} is not a known subclass of Content")
+
+def deserialize_content(data: Union[str, Dict[str, object]]) -> 'Content':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("type")
+	if qualifier is None:
+		raise Exception("Missing qualifier: type")
+	if qualifier == "com.icure.sdk.model.embed.EncryptedContent":
+		EncryptedContent._deserialize(deserialized_dict["entity"])
+	elif qualifier == "com.icure.sdk.model.embed.DecryptedContent":
+		DecryptedContent._deserialize(deserialized_dict["entity"])
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of Content")
 
 class ReceiptBlobType(Enum):
 	Xades = "xades"
@@ -16736,6 +14345,8 @@ class PartnershipType(Enum):
 	Stepmother = "stepmother"
 	Stepson = "stepson"
 	Tutor = "tutor"
+	Cohabiting = "cohabiting"
+	RegisteredPartner = "registered_partner"
 	NextOfKin = "next_of_kin"
 	FederalAgency = "federal_agency"
 	InsuranceCompany = "insurance_company"
@@ -16807,6 +14418,10 @@ class PartnershipType(Enum):
 			return PartnershipType.Stepson
 		elif data == "tutor":
 			return PartnershipType.Tutor
+		elif data == "cohabiting":
+			return PartnershipType.Cohabiting
+		elif data == "registered_partner":
+			return PartnershipType.RegisteredPartner
 		elif data == "next_of_kin":
 			return PartnershipType.NextOfKin
 		elif data == "federal_agency":
@@ -17179,301 +14794,6 @@ class DelegateShareOptions:
 		)
 
 @dataclass
-class ReferenceRange:
-	low: Optional[float] = None
-	high: Optional[float] = None
-	string_value: Optional[str] = None
-	tags: List['CodeStub'] = field(default_factory=list)
-	codes: List['CodeStub'] = field(default_factory=list)
-	notes: List['Annotation'] = field(default_factory=list)
-	age: Optional['Range'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"low": self.low,
-			"high": self.high,
-			"stringValue": self.string_value,
-			"tags": [x0.__serialize__() for x0 in self.tags],
-			"codes": [x0.__serialize__() for x0 in self.codes],
-			"notes": [x0.__serialize__() for x0 in self.notes],
-			"age": self.age.__serialize__() if self.age is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReferenceRange':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			low=deserialized_dict.get("low"),
-			high=deserialized_dict.get("high"),
-			string_value=deserialized_dict.get("stringValue"),
-			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			age=Range._deserialize(deserialized_dict.get("age")) if deserialized_dict.get("age") is not None else None,
-		)
-
-@dataclass
-class Substanceproduct:
-	intendedcds: List['CodeStub'] = field(default_factory=list)
-	deliveredcds: List['CodeStub'] = field(default_factory=list)
-	intendedname: Optional[str] = None
-	deliveredname: Optional[str] = None
-	product_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"intendedcds": [x0.__serialize__() for x0 in self.intendedcds],
-			"deliveredcds": [x0.__serialize__() for x0 in self.deliveredcds],
-			"intendedname": self.intendedname,
-			"deliveredname": self.deliveredname,
-			"productId": self.product_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Substanceproduct':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			intendedcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
-			deliveredcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
-			intendedname=deserialized_dict.get("intendedname"),
-			deliveredname=deserialized_dict.get("deliveredname"),
-			product_id=deserialized_dict.get("productId"),
-		)
-
-@dataclass
-class Medicinalproduct:
-	intendedcds: List['CodeStub'] = field(default_factory=list)
-	deliveredcds: List['CodeStub'] = field(default_factory=list)
-	intendedname: Optional[str] = None
-	deliveredname: Optional[str] = None
-	product_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"intendedcds": [x0.__serialize__() for x0 in self.intendedcds],
-			"deliveredcds": [x0.__serialize__() for x0 in self.deliveredcds],
-			"intendedname": self.intendedname,
-			"deliveredname": self.deliveredname,
-			"productId": self.product_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Medicinalproduct':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			intendedcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
-			deliveredcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
-			intendedname=deserialized_dict.get("intendedname"),
-			deliveredname=deserialized_dict.get("deliveredname"),
-			product_id=deserialized_dict.get("productId"),
-		)
-
-@dataclass
-class Duration:
-	value: Optional[float] = None
-	unit: Optional['CodeStub'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"value": self.value,
-			"unit": self.unit.__serialize__() if self.unit is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Duration':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			value=deserialized_dict.get("value"),
-			unit=CodeStub._deserialize(deserialized_dict.get("unit")) if deserialized_dict.get("unit") is not None else None,
-		)
-
-@dataclass
-class Renewal:
-	decimal: Optional[int] = None
-	duration: Optional['Duration'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"decimal": self.decimal,
-			"duration": self.duration.__serialize__() if self.duration is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Renewal':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			decimal=deserialized_dict.get("decimal"),
-			duration=Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
-		)
-
-@dataclass
-class RegimenItem:
-	date: Optional[int] = None
-	day_number: Optional[int] = None
-	weekday: Optional['Weekday'] = None
-	day_period: Optional['CodeStub'] = None
-	time_of_day: Optional[int] = None
-	administrated_quantity: Optional['AdministrationQuantity'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"date": self.date,
-			"dayNumber": self.day_number,
-			"weekday": self.weekday.__serialize__() if self.weekday is not None else None,
-			"dayPeriod": self.day_period.__serialize__() if self.day_period is not None else None,
-			"timeOfDay": self.time_of_day,
-			"administratedQuantity": self.administrated_quantity.__serialize__() if self.administrated_quantity is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RegimenItem':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			date=deserialized_dict.get("date"),
-			day_number=deserialized_dict.get("dayNumber"),
-			weekday=Weekday._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
-			day_period=CodeStub._deserialize(deserialized_dict.get("dayPeriod")) if deserialized_dict.get("dayPeriod") is not None else None,
-			time_of_day=deserialized_dict.get("timeOfDay"),
-			administrated_quantity=AdministrationQuantity._deserialize(deserialized_dict.get("administratedQuantity")) if deserialized_dict.get("administratedQuantity") is not None else None,
-		)
-
-@dataclass
-class ParagraphAgreement:
-	timestamp: Optional[int] = None
-	paragraph: Optional[str] = None
-	accepted: Optional[bool] = None
-	in_treatment: Optional[bool] = None
-	canceled: Optional[bool] = None
-	care_provider_reference: Optional[str] = None
-	decision_reference: Optional[str] = None
-	start: Optional[int] = None
-	end: Optional[int] = None
-	cancelation_date: Optional[int] = None
-	quantity_value: Optional[float] = None
-	quantity_unit: Optional[str] = None
-	io_request_reference: Optional[str] = None
-	response_type: Optional[str] = None
-	refusal_justification: Optional[Dict[str, str]] = None
-	verses: Optional[List[int]] = None
-	coverage_type: Optional[str] = None
-	unit_number: Optional[float] = None
-	strength: Optional[float] = None
-	strength_unit: Optional[str] = None
-	agreement_appendices: Optional[List['AgreementAppendix']] = None
-	document_id: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"timestamp": self.timestamp,
-			"paragraph": self.paragraph,
-			"accepted": self.accepted,
-			"inTreatment": self.in_treatment,
-			"canceled": self.canceled,
-			"careProviderReference": self.care_provider_reference,
-			"decisionReference": self.decision_reference,
-			"start": self.start,
-			"end": self.end,
-			"cancelationDate": self.cancelation_date,
-			"quantityValue": self.quantity_value,
-			"quantityUnit": self.quantity_unit,
-			"ioRequestReference": self.io_request_reference,
-			"responseType": self.response_type,
-			"refusalJustification": {k0: v0 for k0, v0 in self.refusal_justification.items()} if self.refusal_justification is not None else None,
-			"verses": [x0 for x0 in self.verses] if self.verses is not None else None,
-			"coverageType": self.coverage_type,
-			"unitNumber": self.unit_number,
-			"strength": self.strength,
-			"strengthUnit": self.strength_unit,
-			"agreementAppendices": [x0.__serialize__() for x0 in self.agreement_appendices] if self.agreement_appendices is not None else None,
-			"documentId": self.document_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ParagraphAgreement':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			timestamp=deserialized_dict.get("timestamp"),
-			paragraph=deserialized_dict.get("paragraph"),
-			accepted=deserialized_dict.get("accepted"),
-			in_treatment=deserialized_dict.get("inTreatment"),
-			canceled=deserialized_dict.get("canceled"),
-			care_provider_reference=deserialized_dict.get("careProviderReference"),
-			decision_reference=deserialized_dict.get("decisionReference"),
-			start=deserialized_dict.get("start"),
-			end=deserialized_dict.get("end"),
-			cancelation_date=deserialized_dict.get("cancelationDate"),
-			quantity_value=deserialized_dict.get("quantityValue"),
-			quantity_unit=deserialized_dict.get("quantityUnit"),
-			io_request_reference=deserialized_dict.get("ioRequestReference"),
-			response_type=deserialized_dict.get("responseType"),
-			refusal_justification=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("refusalJustification").items())) if deserialized_dict.get("refusalJustification") is not None else None,
-			verses=[x0 for x0 in deserialized_dict.get("verses")] if deserialized_dict.get("verses") is not None else None,
-			coverage_type=deserialized_dict.get("coverageType"),
-			unit_number=deserialized_dict.get("unitNumber"),
-			strength=deserialized_dict.get("strength"),
-			strength_unit=deserialized_dict.get("strengthUnit"),
-			agreement_appendices=[AgreementAppendix._deserialize(x0) for x0 in deserialized_dict.get("agreementAppendices")] if deserialized_dict.get("agreementAppendices") is not None else None,
-			document_id=deserialized_dict.get("documentId"),
-		)
-
-@dataclass
-class Suspension:
-	begin_moment: Optional[int] = None
-	end_moment: Optional[int] = None
-	suspension_reason: Optional[str] = None
-	lifecycle: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"beginMoment": self.begin_moment,
-			"endMoment": self.end_moment,
-			"suspensionReason": self.suspension_reason,
-			"lifecycle": self.lifecycle,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Suspension':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			begin_moment=deserialized_dict.get("beginMoment"),
-			end_moment=deserialized_dict.get("endMoment"),
-			suspension_reason=deserialized_dict.get("suspensionReason"),
-			lifecycle=deserialized_dict.get("lifecycle"),
-		)
-
-@dataclass
 class Action:
 	launchers: Optional[List['Launcher']] = field(default_factory=list)
 	expression: Optional[str] = None
@@ -17546,6 +14866,237 @@ class ServiceLink:
 			deserialized_dict = data
 		return cls(
 			service_id=deserialized_dict.get("serviceId"),
+		)
+
+@dataclass
+class Measure:
+	value: Optional[float] = None
+	ref: Optional[float] = None
+	severity: Optional[int] = None
+	severity_code: Optional[str] = None
+	evolution: Optional[int] = None
+	unit: Optional[str] = None
+	unit_codes: Optional[List['CodeStub']] = None
+	comment: Optional[str] = None
+	comparator: Optional[str] = None
+	sign: Optional[str] = None
+	reference_ranges: List['ReferenceRange'] = field(default_factory=list)
+
+	def __serialize__(self) -> object:
+		return {
+			"value": self.value,
+			"ref": self.ref,
+			"severity": self.severity,
+			"severityCode": self.severity_code,
+			"evolution": self.evolution,
+			"unit": self.unit,
+			"unitCodes": [x0.__serialize__() for x0 in self.unit_codes] if self.unit_codes is not None else None,
+			"comment": self.comment,
+			"comparator": self.comparator,
+			"sign": self.sign,
+			"referenceRanges": [x0.__serialize__() for x0 in self.reference_ranges],
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Measure':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			value=deserialized_dict.get("value"),
+			ref=deserialized_dict.get("ref"),
+			severity=deserialized_dict.get("severity"),
+			severity_code=deserialized_dict.get("severityCode"),
+			evolution=deserialized_dict.get("evolution"),
+			unit=deserialized_dict.get("unit"),
+			unit_codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict.get("unitCodes")] if deserialized_dict.get("unitCodes") is not None else None,
+			comment=deserialized_dict.get("comment"),
+			comparator=deserialized_dict.get("comparator"),
+			sign=deserialized_dict.get("sign"),
+			reference_ranges=[ReferenceRange._deserialize(x0) for x0 in deserialized_dict["referenceRanges"]],
+		)
+
+@dataclass
+class Medication:
+	compound_prescription: Optional[str] = None
+	substance_product: Optional['Substanceproduct'] = None
+	medicinal_product: Optional['Medicinalproduct'] = None
+	number_of_packages: Optional[int] = None
+	batch: Optional[str] = None
+	expiration_date: Optional[int] = None
+	instruction_for_patient: Optional[str] = None
+	instruction_for_reimbursement: Optional[str] = None
+	comment_for_delivery: Optional[str] = None
+	drug_route: Optional[str] = None
+	temporality: Optional[str] = None
+	frequency: Optional['CodeStub'] = None
+	reimbursement_reason: Optional['CodeStub'] = None
+	substitution_allowed: Optional[bool] = None
+	begin_moment: Optional[int] = None
+	end_moment: Optional[int] = None
+	delivery_moment: Optional[int] = None
+	end_execution_moment: Optional[int] = None
+	duration: Optional['Duration'] = None
+	renewal: Optional['Renewal'] = None
+	known_usage: Optional[bool] = None
+	regimen: Optional[List['RegimenItem']] = None
+	posology: Optional[str] = None
+	agreements: Optional[Dict[str, 'ParagraphAgreement']] = None
+	medication_scheme_id_on_safe: Optional[str] = None
+	medication_scheme_safe_version: Optional[int] = None
+	medication_scheme_time_stamp_on_safe: Optional[int] = None
+	medication_scheme_document_id: Optional[str] = None
+	safe_id_name: Optional[str] = None
+	id_on_safes: Optional[str] = None
+	timestamp_on_safe: Optional[int] = None
+	change_validated: Optional[bool] = None
+	new_safe_medication: Optional[bool] = None
+	medication_use: Optional[str] = None
+	begin_condition: Optional[str] = None
+	end_condition: Optional[str] = None
+	origin: Optional[str] = None
+	medication_changed: Optional[bool] = None
+	posology_changed: Optional[bool] = None
+	suspension: Optional[List['Suspension']] = None
+	prescription_rid: Optional[str] = None
+	status: Optional[int] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"compoundPrescription": self.compound_prescription,
+			"substanceProduct": self.substance_product.__serialize__() if self.substance_product is not None else None,
+			"medicinalProduct": self.medicinal_product.__serialize__() if self.medicinal_product is not None else None,
+			"numberOfPackages": self.number_of_packages,
+			"batch": self.batch,
+			"expirationDate": self.expiration_date,
+			"instructionForPatient": self.instruction_for_patient,
+			"instructionForReimbursement": self.instruction_for_reimbursement,
+			"commentForDelivery": self.comment_for_delivery,
+			"drugRoute": self.drug_route,
+			"temporality": self.temporality,
+			"frequency": self.frequency.__serialize__() if self.frequency is not None else None,
+			"reimbursementReason": self.reimbursement_reason.__serialize__() if self.reimbursement_reason is not None else None,
+			"substitutionAllowed": self.substitution_allowed,
+			"beginMoment": self.begin_moment,
+			"endMoment": self.end_moment,
+			"deliveryMoment": self.delivery_moment,
+			"endExecutionMoment": self.end_execution_moment,
+			"duration": self.duration.__serialize__() if self.duration is not None else None,
+			"renewal": self.renewal.__serialize__() if self.renewal is not None else None,
+			"knownUsage": self.known_usage,
+			"regimen": [x0.__serialize__() for x0 in self.regimen] if self.regimen is not None else None,
+			"posology": self.posology,
+			"agreements": {k0: v0.__serialize__() for k0, v0 in self.agreements.items()} if self.agreements is not None else None,
+			"medicationSchemeIdOnSafe": self.medication_scheme_id_on_safe,
+			"medicationSchemeSafeVersion": self.medication_scheme_safe_version,
+			"medicationSchemeTimeStampOnSafe": self.medication_scheme_time_stamp_on_safe,
+			"medicationSchemeDocumentId": self.medication_scheme_document_id,
+			"safeIdName": self.safe_id_name,
+			"idOnSafes": self.id_on_safes,
+			"timestampOnSafe": self.timestamp_on_safe,
+			"changeValidated": self.change_validated,
+			"newSafeMedication": self.new_safe_medication,
+			"medicationUse": self.medication_use,
+			"beginCondition": self.begin_condition,
+			"endCondition": self.end_condition,
+			"origin": self.origin,
+			"medicationChanged": self.medication_changed,
+			"posologyChanged": self.posology_changed,
+			"suspension": [x0.__serialize__() for x0 in self.suspension] if self.suspension is not None else None,
+			"prescriptionRID": self.prescription_rid,
+			"status": self.status,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Medication':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			compound_prescription=deserialized_dict.get("compoundPrescription"),
+			substance_product=Substanceproduct._deserialize(deserialized_dict.get("substanceProduct")) if deserialized_dict.get("substanceProduct") is not None else None,
+			medicinal_product=Medicinalproduct._deserialize(deserialized_dict.get("medicinalProduct")) if deserialized_dict.get("medicinalProduct") is not None else None,
+			number_of_packages=deserialized_dict.get("numberOfPackages"),
+			batch=deserialized_dict.get("batch"),
+			expiration_date=deserialized_dict.get("expirationDate"),
+			instruction_for_patient=deserialized_dict.get("instructionForPatient"),
+			instruction_for_reimbursement=deserialized_dict.get("instructionForReimbursement"),
+			comment_for_delivery=deserialized_dict.get("commentForDelivery"),
+			drug_route=deserialized_dict.get("drugRoute"),
+			temporality=deserialized_dict.get("temporality"),
+			frequency=CodeStub._deserialize(deserialized_dict.get("frequency")) if deserialized_dict.get("frequency") is not None else None,
+			reimbursement_reason=CodeStub._deserialize(deserialized_dict.get("reimbursementReason")) if deserialized_dict.get("reimbursementReason") is not None else None,
+			substitution_allowed=deserialized_dict.get("substitutionAllowed"),
+			begin_moment=deserialized_dict.get("beginMoment"),
+			end_moment=deserialized_dict.get("endMoment"),
+			delivery_moment=deserialized_dict.get("deliveryMoment"),
+			end_execution_moment=deserialized_dict.get("endExecutionMoment"),
+			duration=Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
+			renewal=Renewal._deserialize(deserialized_dict.get("renewal")) if deserialized_dict.get("renewal") is not None else None,
+			known_usage=deserialized_dict.get("knownUsage"),
+			regimen=[RegimenItem._deserialize(x0) for x0 in deserialized_dict.get("regimen")] if deserialized_dict.get("regimen") is not None else None,
+			posology=deserialized_dict.get("posology"),
+			agreements=dict(map(lambda kv0: (kv0[0], ParagraphAgreement._deserialize(kv0[1])), deserialized_dict.get("agreements").items())) if deserialized_dict.get("agreements") is not None else None,
+			medication_scheme_id_on_safe=deserialized_dict.get("medicationSchemeIdOnSafe"),
+			medication_scheme_safe_version=deserialized_dict.get("medicationSchemeSafeVersion"),
+			medication_scheme_time_stamp_on_safe=deserialized_dict.get("medicationSchemeTimeStampOnSafe"),
+			medication_scheme_document_id=deserialized_dict.get("medicationSchemeDocumentId"),
+			safe_id_name=deserialized_dict.get("safeIdName"),
+			id_on_safes=deserialized_dict.get("idOnSafes"),
+			timestamp_on_safe=deserialized_dict.get("timestampOnSafe"),
+			change_validated=deserialized_dict.get("changeValidated"),
+			new_safe_medication=deserialized_dict.get("newSafeMedication"),
+			medication_use=deserialized_dict.get("medicationUse"),
+			begin_condition=deserialized_dict.get("beginCondition"),
+			end_condition=deserialized_dict.get("endCondition"),
+			origin=deserialized_dict.get("origin"),
+			medication_changed=deserialized_dict.get("medicationChanged"),
+			posology_changed=deserialized_dict.get("posologyChanged"),
+			suspension=[Suspension._deserialize(x0) for x0 in deserialized_dict.get("suspension")] if deserialized_dict.get("suspension") is not None else None,
+			prescription_rid=deserialized_dict.get("prescriptionRID"),
+			status=deserialized_dict.get("status"),
+		)
+
+@dataclass
+class TimeSeries:
+	fields: List[str] = field(default_factory=list)
+	samples: List[List[float]] = field(default_factory=list)
+	min: List[float] = field(default_factory=list)
+	max: List[float] = field(default_factory=list)
+	mean: List[float] = field(default_factory=list)
+	median: List[float] = field(default_factory=list)
+	variance: List[float] = field(default_factory=list)
+
+	def __serialize__(self) -> object:
+		return {
+			"fields": [x0 for x0 in self.fields],
+			"samples": [[x1 for x1 in x0] for x0 in self.samples],
+			"min": [x0 for x0 in self.min],
+			"max": [x0 for x0 in self.max],
+			"mean": [x0 for x0 in self.mean],
+			"median": [x0 for x0 in self.median],
+			"variance": [x0 for x0 in self.variance],
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeSeries':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			fields=[x0 for x0 in deserialized_dict["fields"]],
+			samples=[[x1 for x1 in x0] for x0 in deserialized_dict["samples"]],
+			min=[x0 for x0 in deserialized_dict["min"]],
+			max=[x0 for x0 in deserialized_dict["max"]],
+			mean=[x0 for x0 in deserialized_dict["mean"]],
+			median=[x0 for x0 in deserialized_dict["median"]],
+			variance=[x0 for x0 in deserialized_dict["variance"]],
 		)
 
 @dataclass
@@ -17732,107 +15283,6 @@ class Basic:
 		return cls(
 			username=deserialized_dict["username"],
 			password=deserialized_dict["password"],
-		)
-
-@dataclass
-class Range:
-	low: Optional[float] = None
-	high: Optional[float] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"low": self.low,
-			"high": self.high,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Range':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			low=deserialized_dict.get("low"),
-			high=deserialized_dict.get("high"),
-		)
-
-@dataclass
-class Weekday:
-	weekday: Optional['CodeStub'] = None
-	week_number: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"weekday": self.weekday.__serialize__() if self.weekday is not None else None,
-			"weekNumber": self.week_number,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Weekday':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			weekday=CodeStub._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
-			week_number=deserialized_dict.get("weekNumber"),
-		)
-
-@dataclass
-class AdministrationQuantity:
-	quantity: Optional[float] = None
-	administration_unit: Optional['CodeStub'] = None
-	unit: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"quantity": self.quantity,
-			"administrationUnit": self.administration_unit.__serialize__() if self.administration_unit is not None else None,
-			"unit": self.unit,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AdministrationQuantity':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			quantity=deserialized_dict.get("quantity"),
-			administration_unit=CodeStub._deserialize(deserialized_dict.get("administrationUnit")) if deserialized_dict.get("administrationUnit") is not None else None,
-			unit=deserialized_dict.get("unit"),
-		)
-
-@dataclass
-class AgreementAppendix:
-	doc_seq: Optional[int] = None
-	verse_seq: Optional[int] = None
-	document_id: Optional[str] = None
-	path: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"docSeq": self.doc_seq,
-			"verseSeq": self.verse_seq,
-			"documentId": self.document_id,
-			"path": self.path,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AgreementAppendix':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			doc_seq=deserialized_dict.get("docSeq"),
-			verse_seq=deserialized_dict.get("verseSeq"),
-			document_id=deserialized_dict.get("documentId"),
-			path=deserialized_dict.get("path"),
 		)
 
 @dataclass
@@ -18674,6 +16124,301 @@ def deserialize_structure_element(data: Union[str, Dict[str, object]]) -> 'Struc
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of StructureElement")
 
+@dataclass
+class ReferenceRange:
+	low: Optional[float] = None
+	high: Optional[float] = None
+	string_value: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	notes: List['Annotation'] = field(default_factory=list)
+	age: Optional['Range'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"low": self.low,
+			"high": self.high,
+			"stringValue": self.string_value,
+			"tags": [x0.__serialize__() for x0 in self.tags],
+			"codes": [x0.__serialize__() for x0 in self.codes],
+			"notes": [x0.__serialize__() for x0 in self.notes],
+			"age": self.age.__serialize__() if self.age is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReferenceRange':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			low=deserialized_dict.get("low"),
+			high=deserialized_dict.get("high"),
+			string_value=deserialized_dict.get("stringValue"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			age=Range._deserialize(deserialized_dict.get("age")) if deserialized_dict.get("age") is not None else None,
+		)
+
+@dataclass
+class Substanceproduct:
+	intendedcds: List['CodeStub'] = field(default_factory=list)
+	deliveredcds: List['CodeStub'] = field(default_factory=list)
+	intendedname: Optional[str] = None
+	deliveredname: Optional[str] = None
+	product_id: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"intendedcds": [x0.__serialize__() for x0 in self.intendedcds],
+			"deliveredcds": [x0.__serialize__() for x0 in self.deliveredcds],
+			"intendedname": self.intendedname,
+			"deliveredname": self.deliveredname,
+			"productId": self.product_id,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Substanceproduct':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			intendedcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
+			deliveredcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
+			intendedname=deserialized_dict.get("intendedname"),
+			deliveredname=deserialized_dict.get("deliveredname"),
+			product_id=deserialized_dict.get("productId"),
+		)
+
+@dataclass
+class Medicinalproduct:
+	intendedcds: List['CodeStub'] = field(default_factory=list)
+	deliveredcds: List['CodeStub'] = field(default_factory=list)
+	intendedname: Optional[str] = None
+	deliveredname: Optional[str] = None
+	product_id: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"intendedcds": [x0.__serialize__() for x0 in self.intendedcds],
+			"deliveredcds": [x0.__serialize__() for x0 in self.deliveredcds],
+			"intendedname": self.intendedname,
+			"deliveredname": self.deliveredname,
+			"productId": self.product_id,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Medicinalproduct':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			intendedcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["intendedcds"]],
+			deliveredcds=[CodeStub._deserialize(x0) for x0 in deserialized_dict["deliveredcds"]],
+			intendedname=deserialized_dict.get("intendedname"),
+			deliveredname=deserialized_dict.get("deliveredname"),
+			product_id=deserialized_dict.get("productId"),
+		)
+
+@dataclass
+class Duration:
+	value: Optional[float] = None
+	unit: Optional['CodeStub'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"value": self.value,
+			"unit": self.unit.__serialize__() if self.unit is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Duration':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			value=deserialized_dict.get("value"),
+			unit=CodeStub._deserialize(deserialized_dict.get("unit")) if deserialized_dict.get("unit") is not None else None,
+		)
+
+@dataclass
+class Renewal:
+	decimal: Optional[int] = None
+	duration: Optional['Duration'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"decimal": self.decimal,
+			"duration": self.duration.__serialize__() if self.duration is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Renewal':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			decimal=deserialized_dict.get("decimal"),
+			duration=Duration._deserialize(deserialized_dict.get("duration")) if deserialized_dict.get("duration") is not None else None,
+		)
+
+@dataclass
+class RegimenItem:
+	date: Optional[int] = None
+	day_number: Optional[int] = None
+	weekday: Optional['Weekday'] = None
+	day_period: Optional['CodeStub'] = None
+	time_of_day: Optional[int] = None
+	administrated_quantity: Optional['AdministrationQuantity'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"date": self.date,
+			"dayNumber": self.day_number,
+			"weekday": self.weekday.__serialize__() if self.weekday is not None else None,
+			"dayPeriod": self.day_period.__serialize__() if self.day_period is not None else None,
+			"timeOfDay": self.time_of_day,
+			"administratedQuantity": self.administrated_quantity.__serialize__() if self.administrated_quantity is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RegimenItem':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			date=deserialized_dict.get("date"),
+			day_number=deserialized_dict.get("dayNumber"),
+			weekday=Weekday._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
+			day_period=CodeStub._deserialize(deserialized_dict.get("dayPeriod")) if deserialized_dict.get("dayPeriod") is not None else None,
+			time_of_day=deserialized_dict.get("timeOfDay"),
+			administrated_quantity=AdministrationQuantity._deserialize(deserialized_dict.get("administratedQuantity")) if deserialized_dict.get("administratedQuantity") is not None else None,
+		)
+
+@dataclass
+class ParagraphAgreement:
+	timestamp: Optional[int] = None
+	paragraph: Optional[str] = None
+	accepted: Optional[bool] = None
+	in_treatment: Optional[bool] = None
+	canceled: Optional[bool] = None
+	care_provider_reference: Optional[str] = None
+	decision_reference: Optional[str] = None
+	start: Optional[int] = None
+	end: Optional[int] = None
+	cancelation_date: Optional[int] = None
+	quantity_value: Optional[float] = None
+	quantity_unit: Optional[str] = None
+	io_request_reference: Optional[str] = None
+	response_type: Optional[str] = None
+	refusal_justification: Optional[Dict[str, str]] = None
+	verses: Optional[List[int]] = None
+	coverage_type: Optional[str] = None
+	unit_number: Optional[float] = None
+	strength: Optional[float] = None
+	strength_unit: Optional[str] = None
+	agreement_appendices: Optional[List['AgreementAppendix']] = None
+	document_id: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"timestamp": self.timestamp,
+			"paragraph": self.paragraph,
+			"accepted": self.accepted,
+			"inTreatment": self.in_treatment,
+			"canceled": self.canceled,
+			"careProviderReference": self.care_provider_reference,
+			"decisionReference": self.decision_reference,
+			"start": self.start,
+			"end": self.end,
+			"cancelationDate": self.cancelation_date,
+			"quantityValue": self.quantity_value,
+			"quantityUnit": self.quantity_unit,
+			"ioRequestReference": self.io_request_reference,
+			"responseType": self.response_type,
+			"refusalJustification": {k0: v0 for k0, v0 in self.refusal_justification.items()} if self.refusal_justification is not None else None,
+			"verses": [x0 for x0 in self.verses] if self.verses is not None else None,
+			"coverageType": self.coverage_type,
+			"unitNumber": self.unit_number,
+			"strength": self.strength,
+			"strengthUnit": self.strength_unit,
+			"agreementAppendices": [x0.__serialize__() for x0 in self.agreement_appendices] if self.agreement_appendices is not None else None,
+			"documentId": self.document_id,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ParagraphAgreement':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			timestamp=deserialized_dict.get("timestamp"),
+			paragraph=deserialized_dict.get("paragraph"),
+			accepted=deserialized_dict.get("accepted"),
+			in_treatment=deserialized_dict.get("inTreatment"),
+			canceled=deserialized_dict.get("canceled"),
+			care_provider_reference=deserialized_dict.get("careProviderReference"),
+			decision_reference=deserialized_dict.get("decisionReference"),
+			start=deserialized_dict.get("start"),
+			end=deserialized_dict.get("end"),
+			cancelation_date=deserialized_dict.get("cancelationDate"),
+			quantity_value=deserialized_dict.get("quantityValue"),
+			quantity_unit=deserialized_dict.get("quantityUnit"),
+			io_request_reference=deserialized_dict.get("ioRequestReference"),
+			response_type=deserialized_dict.get("responseType"),
+			refusal_justification=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("refusalJustification").items())) if deserialized_dict.get("refusalJustification") is not None else None,
+			verses=[x0 for x0 in deserialized_dict.get("verses")] if deserialized_dict.get("verses") is not None else None,
+			coverage_type=deserialized_dict.get("coverageType"),
+			unit_number=deserialized_dict.get("unitNumber"),
+			strength=deserialized_dict.get("strength"),
+			strength_unit=deserialized_dict.get("strengthUnit"),
+			agreement_appendices=[AgreementAppendix._deserialize(x0) for x0 in deserialized_dict.get("agreementAppendices")] if deserialized_dict.get("agreementAppendices") is not None else None,
+			document_id=deserialized_dict.get("documentId"),
+		)
+
+@dataclass
+class Suspension:
+	begin_moment: Optional[int] = None
+	end_moment: Optional[int] = None
+	suspension_reason: Optional[str] = None
+	lifecycle: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"beginMoment": self.begin_moment,
+			"endMoment": self.end_moment,
+			"suspensionReason": self.suspension_reason,
+			"lifecycle": self.lifecycle,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Suspension':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			begin_moment=deserialized_dict.get("beginMoment"),
+			end_moment=deserialized_dict.get("endMoment"),
+			suspension_reason=deserialized_dict.get("suspensionReason"),
+			lifecycle=deserialized_dict.get("lifecycle"),
+		)
+
 class MembershipType(Enum):
 	Doctor = "doctor"
 	Mutuality = "mutuality"
@@ -18754,3 +16499,104 @@ class StateToUpdate(Enum):
 			return StateToUpdate.Required
 		else:
 			raise Exception(f"{data} is not a valid value for StateToUpdate enum.")
+
+@dataclass
+class Range:
+	low: Optional[float] = None
+	high: Optional[float] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"low": self.low,
+			"high": self.high,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Range':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			low=deserialized_dict.get("low"),
+			high=deserialized_dict.get("high"),
+		)
+
+@dataclass
+class Weekday:
+	weekday: Optional['CodeStub'] = None
+	week_number: Optional[int] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"weekday": self.weekday.__serialize__() if self.weekday is not None else None,
+			"weekNumber": self.week_number,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Weekday':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			weekday=CodeStub._deserialize(deserialized_dict.get("weekday")) if deserialized_dict.get("weekday") is not None else None,
+			week_number=deserialized_dict.get("weekNumber"),
+		)
+
+@dataclass
+class AdministrationQuantity:
+	quantity: Optional[float] = None
+	administration_unit: Optional['CodeStub'] = None
+	unit: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"quantity": self.quantity,
+			"administrationUnit": self.administration_unit.__serialize__() if self.administration_unit is not None else None,
+			"unit": self.unit,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AdministrationQuantity':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			quantity=deserialized_dict.get("quantity"),
+			administration_unit=CodeStub._deserialize(deserialized_dict.get("administrationUnit")) if deserialized_dict.get("administrationUnit") is not None else None,
+			unit=deserialized_dict.get("unit"),
+		)
+
+@dataclass
+class AgreementAppendix:
+	doc_seq: Optional[int] = None
+	verse_seq: Optional[int] = None
+	document_id: Optional[str] = None
+	path: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"docSeq": self.doc_seq,
+			"verseSeq": self.verse_seq,
+			"documentId": self.document_id,
+			"path": self.path,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AgreementAppendix':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			doc_seq=deserialized_dict.get("docSeq"),
+			verse_seq=deserialized_dict.get("verseSeq"),
+			document_id=deserialized_dict.get("documentId"),
+			path=deserialized_dict.get("path"),
+		)

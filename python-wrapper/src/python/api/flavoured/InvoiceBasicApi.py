@@ -1,11 +1,11 @@
+# auto-generated file
 import asyncio
 import json
-from icure.model import DocIdentifier, IcureStub, LabelledOccurence, EncryptedInvoice, InvoiceAbstractFilter, serialize_abstract_filter, EncryptedInvoicingCode, MediumType, InvoiceType
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.model import DocIdentifier, IcureStub, LabelledOccurence, EncryptedInvoice, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from typing import List, Optional
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import List, Optional, Dict
 
 class InvoiceBasicApi:
 
@@ -287,56 +287,6 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def filter_invoices_by_async(self, filter: InvoiceAbstractFilter) -> PaginatedListIterator[EncryptedInvoice]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[EncryptedInvoice](
-					producer = success,
-					deserializer = lambda x: EncryptedInvoice._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"filter": serialize_abstract_filter(filter),
-		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.filterInvoicesByAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def filter_invoices_by_blocking(self, filter: InvoiceAbstractFilter) -> PaginatedListIterator[EncryptedInvoice]:
-		payload = {
-			"filter": serialize_abstract_filter(filter),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.filterInvoicesByBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
-		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result.pinned)
-			return PaginatedListIterator[EncryptedInvoice](
-				producer = class_pointer,
-				deserializer = lambda x: EncryptedInvoice._deserialize(x),
-				executor = self.icure_sdk._executor
-			)
-
 	async def find_invoices_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -597,6 +547,63 @@ class InvoiceBasicApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def find_invoices_by_author_async(self, hc_party_id: str, from_date: Optional[int] = None, to_date: Optional[int] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
+				result = PaginatedList(
+					rows = [EncryptedInvoice._deserialize(item) for item in result.rows],
+					next_key_pair = result.next_key_pair,
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"hcPartyId": hc_party_id,
+			"fromDate": from_date,
+			"toDate": to_date,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
+			"limit": limit,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.findInvoicesByAuthorAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def find_invoices_by_author_blocking(self, hc_party_id: str, from_date: Optional[int] = None, to_date: Optional[int] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+		payload = {
+			"hcPartyId": hc_party_id,
+			"fromDate": from_date,
+			"toDate": to_date,
+			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
+			"startDocumentId": start_document_id,
+			"limit": limit,
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.findInvoicesByAuthorBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = PaginatedList._deserialize(result_info.success)
+			return_value = PaginatedList(
+				rows = [EncryptedInvoice._deserialize(item) for item in return_value.rows],
+				next_key_pair = return_value.next_key_pair,
+			)
 			return return_value
 
 	async def list_invoices_by_hcparty_and_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
@@ -1039,90 +1046,6 @@ class InvoiceBasicApi:
 			"to": to,
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_invoices_by_service_ids_async(self, service_ids: List[str]) -> List[EncryptedInvoice]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"serviceIds": [x0 for x0 in service_ids],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByServiceIdsAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_invoices_by_service_ids_blocking(self, service_ids: List[str]) -> List[EncryptedInvoice]:
-		payload = {
-			"serviceIds": [x0 for x0 in service_ids],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listInvoicesByServiceIdsBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_all_hcps_by_status_async(self, status: str, hcp_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"status": status,
-			"from": from_,
-			"to": to,
-			"hcpIds": [x0 for x0 in hcp_ids],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listAllHcpsByStatusAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_all_hcps_by_status_blocking(self, status: str, hcp_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
-		payload = {
-			"status": status,
-			"from": from_,
-			"to": to,
-			"hcpIds": [x0 for x0 in hcp_ids],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceBasicApi.listAllHcpsByStatusBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)

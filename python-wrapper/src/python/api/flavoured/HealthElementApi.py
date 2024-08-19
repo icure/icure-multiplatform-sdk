@@ -1,13 +1,15 @@
+# auto-generated file
 import asyncio
 import json
-from icure.model import DecryptedHealthElement, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, HealthElement, serialize_health_element, EncryptedHealthElement, deserialize_health_element, HealthElementAbstractFilter, serialize_abstract_filter, DocIdentifier, IcureStub, SubscriptionEventType, EntitySubscriptionConfiguration, HealthElementShareOptions, deserialize_simple_share_result_decrypted_health_element, SimpleShareResultDecryptedHealthElement, deserialize_simple_share_result_encrypted_health_element, SimpleShareResultEncryptedHealthElement, deserialize_simple_share_result_health_element, SimpleShareResultHealthElement
+from icure.model import DecryptedHealthElement, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, HealthElement, serialize_health_element, EncryptedHealthElement, deserialize_health_element, DocIdentifier, HealthElementShareOptions, deserialize_simple_share_result_decrypted_health_element, SimpleShareResultDecryptedHealthElement, SubscriptionEventType, EntitySubscriptionConfiguration, deserialize_simple_share_result_encrypted_health_element, SimpleShareResultEncryptedHealthElement, deserialize_simple_share_result_health_element, SimpleShareResultHealthElement
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
 from icure.model.specializations import HexString
-from icure.subscription.EntitySubscription import EntitySubscription
+from icure.filters import FilterOptions, SortableFilterOptions
 from icure.pagination.PaginatedListIterator import PaginatedListIterator
+from icure.subscription.EntitySubscription import EntitySubscription
 
 class HealthElementApi:
 
@@ -141,7 +143,7 @@ class HealthElementApi:
 				return_value = EncryptedHealthElement._deserialize(result_info.success)
 				return return_value
 
-		async def find_health_elements_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedHealthElement]:
+		async def filter_health_elements_by_async(self, filter: FilterOptions[HealthElement]) -> PaginatedListIterator[EncryptedHealthElement]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -156,31 +158,73 @@ class HealthElementApi:
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.findHealthElementsByHcPartyPatientAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.filterHealthElementsByAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def find_health_elements_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedHealthElement]:
+		def filter_health_elements_by_blocking(self, filter: FilterOptions[HealthElement]) -> PaginatedListIterator[EncryptedHealthElement]:
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.findHealthElementsByHcPartyPatientBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.filterHealthElementsByBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedHealthElement](
+					producer = class_pointer,
+					deserializer = lambda x: EncryptedHealthElement._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_health_elements_by_sorted_async(self, filter: SortableFilterOptions[HealthElement]) -> PaginatedListIterator[EncryptedHealthElement]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[EncryptedHealthElement](
+						producer = success,
+						deserializer = lambda x: EncryptedHealthElement._deserialize(x),
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.filterHealthElementsBySortedAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_health_elements_by_sorted_blocking(self, filter: SortableFilterOptions[HealthElement]) -> PaginatedListIterator[EncryptedHealthElement]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.filterHealthElementsBySortedBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -355,97 +399,6 @@ class HealthElementApi:
 				return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def filter_health_elements_by_async(self, filter: HealthElementAbstractFilter) -> PaginatedListIterator[EncryptedHealthElement]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedHealthElement](
-						producer = success,
-						deserializer = lambda x: EncryptedHealthElement._deserialize(x),
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.filterHealthElementsByAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def filter_health_elements_by_blocking(self, filter: HealthElementAbstractFilter) -> PaginatedListIterator[EncryptedHealthElement]:
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.filterHealthElementsByBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[EncryptedHealthElement](
-					producer = class_pointer,
-					deserializer = lambda x: EncryptedHealthElement._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-
-		async def find_health_elements_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedHealthElement]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedHealthElement._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.findHealthElementsByHcPartyPatientForeignKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_health_elements_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedHealthElement]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.encrypted.findHealthElementsByHcPartyPatientForeignKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
 	class HealthElementFlavouredApi:
 
 		def __init__(self, icure_sdk):
@@ -576,7 +529,7 @@ class HealthElementApi:
 				return_value = HealthElement._deserialize(result_info.success)
 				return return_value
 
-		async def find_health_elements_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[HealthElement]:
+		async def filter_health_elements_by_async(self, filter: FilterOptions[HealthElement]) -> PaginatedListIterator[HealthElement]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -591,31 +544,73 @@ class HealthElementApi:
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.findHealthElementsByHcPartyPatientAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.filterHealthElementsByAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def find_health_elements_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[HealthElement]:
+		def filter_health_elements_by_blocking(self, filter: FilterOptions[HealthElement]) -> PaginatedListIterator[HealthElement]:
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.findHealthElementsByHcPartyPatientBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.filterHealthElementsByBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[HealthElement](
+					producer = class_pointer,
+					deserializer = lambda x: deserialize_health_element(x),
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_health_elements_by_sorted_async(self, filter: SortableFilterOptions[HealthElement]) -> PaginatedListIterator[HealthElement]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[HealthElement](
+						producer = success,
+						deserializer = lambda x: deserialize_health_element(x),
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.filterHealthElementsBySortedAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_health_elements_by_sorted_blocking(self, filter: SortableFilterOptions[HealthElement]) -> PaginatedListIterator[HealthElement]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.filterHealthElementsBySortedBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -790,101 +785,10 @@ class HealthElementApi:
 				return_value = [HealthElement._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def filter_health_elements_by_async(self, filter: HealthElementAbstractFilter) -> PaginatedListIterator[HealthElement]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[HealthElement](
-						producer = success,
-						deserializer = lambda x: deserialize_health_element(x),
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.filterHealthElementsByAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def filter_health_elements_by_blocking(self, filter: HealthElementAbstractFilter) -> PaginatedListIterator[HealthElement]:
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.filterHealthElementsByBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[HealthElement](
-					producer = class_pointer,
-					deserializer = lambda x: deserialize_health_element(x),
-					executor = self.icure_sdk._executor
-				)
-
-		async def find_health_elements_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[HealthElement]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [HealthElement._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.findHealthElementsByHcPartyPatientForeignKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_health_elements_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[HealthElement]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.tryAndRecover.findHealthElementsByHcPartyPatientForeignKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [HealthElement._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
 	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
 		self.encrypted = HealthElementApi.HealthElementFlavouredEncryptedApi(self.icure_sdk)
-		self.tryAndRecover = HealthElementApi.HealthElementFlavouredApi(self.icure_sdk)
+		self.try_and_recover = HealthElementApi.HealthElementFlavouredApi(self.icure_sdk)
 
 	async def create_health_element_async(self, entity: DecryptedHealthElement) -> DecryptedHealthElement:
 		loop = asyncio.get_running_loop()
@@ -1244,7 +1148,7 @@ class HealthElementApi:
 			return_value = deserialize_health_element(result_info.success)
 			return return_value
 
-	async def match_health_elements_by_async(self, filter: HealthElementAbstractFilter) -> List[str]:
+	async def match_health_elements_by_async(self, filter: FilterOptions[HealthElement]) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1255,7 +1159,7 @@ class HealthElementApi:
 				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"filter": filter.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1267,11 +1171,50 @@ class HealthElementApi:
 		)
 		return await future
 
-	def match_health_elements_by_blocking(self, filter: HealthElementAbstractFilter) -> List[str]:
+	def match_health_elements_by_blocking(self, filter: FilterOptions[HealthElement]) -> List[str]:
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"filter": filter.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.matchHealthElementsByBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [x1 for x1 in result_info.success]
+			return return_value
+
+	async def match_health_elements_by_sorted_async(self, filter: SortableFilterOptions[HealthElement]) -> List[str]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.matchHealthElementsBySortedAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def match_health_elements_by_sorted_blocking(self, filter: SortableFilterOptions[HealthElement]) -> List[str]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.matchHealthElementsBySortedBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1360,101 +1303,6 @@ class HealthElementApi:
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
-
-	async def find_health_elements_delegations_stubs_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [IcureStub._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_health_elements_delegations_stubs_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: HealthElementAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EntitySubscription[EncryptedHealthElement](
-					producer = success,
-					deserializer = lambda x: EncryptedHealthElement._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"events": [x0.__serialize__() for x0 in events],
-			"filter": serialize_abstract_filter(filter),
-			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
-		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.subscribeToEventsAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: HealthElementAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
-		payload = {
-			"events": [x0.__serialize__() for x0 in events],
-			"filter": serialize_abstract_filter(filter),
-			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.subscribeToEventsBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
-		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result.pinned)
-			return EntitySubscription[EncryptedHealthElement](
-				producer = class_pointer,
-				deserializer = lambda x: EncryptedHealthElement._deserialize(x),
-				executor = self.icure_sdk._executor
-			)
 
 	async def share_with_async(self, delegate_id: str, health_element: DecryptedHealthElement, options: Optional[HealthElementShareOptions] = None) -> SimpleShareResultDecryptedHealthElement:
 		loop = asyncio.get_running_loop()
@@ -1581,7 +1429,7 @@ class HealthElementApi:
 			return_value = DecryptedHealthElement._deserialize(result_info.success)
 			return return_value
 
-	async def find_health_elements_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedHealthElement]:
+	async def filter_health_elements_by_async(self, filter: FilterOptions[HealthElement]) -> PaginatedListIterator[DecryptedHealthElement]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1596,31 +1444,73 @@ class HealthElementApi:
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hcPartyId": hc_party_id,
-			"patient": serialize_patient(patient),
-			"startDate": start_date,
-			"endDate": end_date,
-			"descending": descending,
+			"filter": filter.__serialize__(),
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.findHealthElementsByHcPartyPatientAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.filterHealthElementsByAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def find_health_elements_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedHealthElement]:
+	def filter_health_elements_by_blocking(self, filter: FilterOptions[HealthElement]) -> PaginatedListIterator[DecryptedHealthElement]:
 		payload = {
-			"hcPartyId": hc_party_id,
-			"patient": serialize_patient(patient),
-			"startDate": start_date,
-			"endDate": end_date,
-			"descending": descending,
+			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.findHealthElementsByHcPartyPatientBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.filterHealthElementsByBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedHealthElement](
+				producer = class_pointer,
+				deserializer = lambda x: DecryptedHealthElement._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
+	async def filter_health_elements_by_sorted_async(self, filter: SortableFilterOptions[HealthElement]) -> PaginatedListIterator[DecryptedHealthElement]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = PaginatedListIterator[DecryptedHealthElement](
+					producer = success,
+					deserializer = lambda x: DecryptedHealthElement._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.filterHealthElementsBySortedAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def filter_health_elements_by_sorted_blocking(self, filter: SortableFilterOptions[HealthElement]) -> PaginatedListIterator[DecryptedHealthElement]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.filterHealthElementsBySortedBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1795,7 +1685,7 @@ class HealthElementApi:
 			return_value = [DecryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def filter_health_elements_by_async(self, filter: HealthElementAbstractFilter) -> PaginatedListIterator[DecryptedHealthElement]:
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[HealthElement], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1803,30 +1693,34 @@ class HealthElementApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedListIterator[DecryptedHealthElement](
+				result = EntitySubscription[EncryptedHealthElement](
 					producer = success,
-					deserializer = lambda x: DecryptedHealthElement._deserialize(x),
+					deserializer = lambda x: EncryptedHealthElement._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": filter.__serialize__(),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.filterHealthElementsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.subscribeToEventsAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def filter_health_elements_by_blocking(self, filter: HealthElementAbstractFilter) -> PaginatedListIterator[DecryptedHealthElement]:
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[HealthElement], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": filter.__serialize__(),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.filterHealthElementsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1839,49 +1733,8 @@ class HealthElementApi:
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
-			return PaginatedListIterator[DecryptedHealthElement](
+			return EntitySubscription[EncryptedHealthElement](
 				producer = class_pointer,
-				deserializer = lambda x: DecryptedHealthElement._deserialize(x),
+				deserializer = lambda x: EncryptedHealthElement._deserialize(x),
 				executor = self.icure_sdk._executor
 			)
-
-	async def find_health_elements_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[DecryptedHealthElement]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedHealthElement._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.findHealthElementsByHcPartyPatientForeignKeysAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_health_elements_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[DecryptedHealthElement]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.HealthElementApi.findHealthElementsByHcPartyPatientForeignKeysBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedHealthElement._deserialize(x1) for x1 in result_info.success]
-			return return_value

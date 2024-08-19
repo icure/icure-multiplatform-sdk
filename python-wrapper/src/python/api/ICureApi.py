@@ -1,3 +1,4 @@
+# auto-generated file
 import asyncio
 import json
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols

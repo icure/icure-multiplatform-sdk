@@ -1,3 +1,4 @@
+# auto-generated file
 import json
 import asyncio
 from icure.model import CryptoActor, serialize_crypto_actor, ShamirUpdateRequest, CryptoActorStubWithType

@@ -1,13 +1,13 @@
+# auto-generated file
 import asyncio
 import json
 import base64
 from icure.model import DecryptedForm, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, FormTemplate, FormShareOptions, deserialize_simple_share_result_decrypted_form, SimpleShareResultDecryptedForm, deserialize_simple_share_result_encrypted_form, SimpleShareResultEncryptedForm, deserialize_simple_share_result_form, SimpleShareResultForm
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
 from icure.model.specializations import HexString
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class FormApi:
 
@@ -140,64 +140,6 @@ class FormApi:
 			else:
 				return_value = EncryptedForm._deserialize(result_info.success)
 				return return_value
-
-		async def find_forms_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedForm](
-						producer = success,
-						deserializer = lambda x: EncryptedForm._deserialize(x),
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.findFormsByHcPartyPatientAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_forms_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedForm]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.findFormsByHcPartyPatientBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[EncryptedForm](
-					producer = class_pointer,
-					deserializer = lambda x: EncryptedForm._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
 
 		async def modify_form_async(self, entity: EncryptedForm) -> EncryptedForm:
 			loop = asyncio.get_running_loop()
@@ -355,7 +297,7 @@ class FormApi:
 				return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def get_form_by_logical_uuid_async(self, logical_uuid: str) -> EncryptedForm:
+		async def get_latest_form_by_logical_uuid_async(self, logical_uuid: str) -> EncryptedForm:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -371,18 +313,18 @@ class FormApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByLogicalUuidAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getLatestFormByLogicalUuidAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_form_by_logical_uuid_blocking(self, logical_uuid: str) -> EncryptedForm:
+		def get_latest_form_by_logical_uuid_blocking(self, logical_uuid: str) -> EncryptedForm:
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByLogicalUuidBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getLatestFormByLogicalUuidBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -394,85 +336,7 @@ class FormApi:
 				return_value = EncryptedForm._deserialize(result_info.success)
 				return return_value
 
-		async def get_forms_by_logical_uuid_async(self, logical_uuid: str) -> List[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"logicalUuid": logical_uuid,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByLogicalUuidAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_forms_by_logical_uuid_blocking(self, logical_uuid: str) -> List[EncryptedForm]:
-			payload = {
-				"logicalUuid": logical_uuid,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByLogicalUuidBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def get_forms_by_unique_id_async(self, unique_id: str) -> List[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"uniqueId": unique_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByUniqueIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_forms_by_unique_id_blocking(self, unique_id: str) -> List[EncryptedForm]:
-			payload = {
-				"uniqueId": unique_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormsByUniqueIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def get_form_by_unique_id_async(self, unique_id: str) -> EncryptedForm:
+		async def get_latest_form_by_unique_id_async(self, unique_id: str) -> EncryptedForm:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -488,18 +352,18 @@ class FormApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByUniqueIdAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getLatestFormByUniqueIdAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_form_by_unique_id_blocking(self, unique_id: str) -> EncryptedForm:
+		def get_latest_form_by_unique_id_blocking(self, unique_id: str) -> EncryptedForm:
 			payload = {
 				"uniqueId": unique_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getFormByUniqueIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getLatestFormByUniqueIdBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -509,94 +373,6 @@ class FormApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = EncryptedForm._deserialize(result_info.success)
-				return return_value
-
-		async def get_children_forms_async(self, hc_party_id: str, parent_id: str) -> List[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"parentId": parent_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getChildrenFormsAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_children_forms_blocking(self, hc_party_id: str, parent_id: str) -> List[EncryptedForm]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"parentId": parent_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.getChildrenFormsBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_forms_by_hcparty_and_patient_foreign_keys_async(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretFKeys": secret_fkeys,
-				"healthElementId": health_element_id,
-				"planOfActionId": plan_of_action_id,
-				"formTemplateId": form_template_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.listFormsByHCPartyAndPatientForeignKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_forms_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[EncryptedForm]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretFKeys": secret_fkeys,
-				"healthElementId": health_element_id,
-				"planOfActionId": plan_of_action_id,
-				"formTemplateId": form_template_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.encrypted.listFormsByHCPartyAndPatientForeignKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
 	class FormFlavouredApi:
@@ -728,64 +504,6 @@ class FormApi:
 			else:
 				return_value = Form._deserialize(result_info.success)
 				return return_value
-
-		async def find_forms_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Form](
-						producer = success,
-						deserializer = lambda x: deserialize_form(x),
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.findFormsByHcPartyPatientAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def find_forms_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Form]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.findFormsByHcPartyPatientBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[Form](
-					producer = class_pointer,
-					deserializer = lambda x: deserialize_form(x),
-					executor = self.icure_sdk._executor
-				)
 
 		async def modify_form_async(self, entity: Form) -> Form:
 			loop = asyncio.get_running_loop()
@@ -943,7 +661,7 @@ class FormApi:
 				return_value = [Form._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def get_form_by_logical_uuid_async(self, logical_uuid: str) -> Form:
+		async def get_latest_form_by_logical_uuid_async(self, logical_uuid: str) -> Form:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -959,18 +677,18 @@ class FormApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByLogicalUuidAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getLatestFormByLogicalUuidAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_form_by_logical_uuid_blocking(self, logical_uuid: str) -> Form:
+		def get_latest_form_by_logical_uuid_blocking(self, logical_uuid: str) -> Form:
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByLogicalUuidBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getLatestFormByLogicalUuidBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -982,85 +700,7 @@ class FormApi:
 				return_value = Form._deserialize(result_info.success)
 				return return_value
 
-		async def get_forms_by_logical_uuid_async(self, logical_uuid: str) -> List[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"logicalUuid": logical_uuid,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByLogicalUuidAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_forms_by_logical_uuid_blocking(self, logical_uuid: str) -> List[Form]:
-			payload = {
-				"logicalUuid": logical_uuid,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByLogicalUuidBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Form._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def get_forms_by_unique_id_async(self, unique_id: str) -> List[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"uniqueId": unique_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByUniqueIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_forms_by_unique_id_blocking(self, unique_id: str) -> List[Form]:
-			payload = {
-				"uniqueId": unique_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormsByUniqueIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Form._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def get_form_by_unique_id_async(self, unique_id: str) -> Form:
+		async def get_latest_form_by_unique_id_async(self, unique_id: str) -> Form:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -1076,18 +716,18 @@ class FormApi:
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByUniqueIdAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getLatestFormByUniqueIdAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_form_by_unique_id_blocking(self, unique_id: str) -> Form:
+		def get_latest_form_by_unique_id_blocking(self, unique_id: str) -> Form:
 			payload = {
 				"uniqueId": unique_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getFormByUniqueIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getLatestFormByUniqueIdBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -1097,100 +737,12 @@ class FormApi:
 				raise Exception(result_info.failure)
 			else:
 				return_value = Form._deserialize(result_info.success)
-				return return_value
-
-		async def get_children_forms_async(self, hc_party_id: str, parent_id: str) -> List[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"parentId": parent_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getChildrenFormsAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_children_forms_blocking(self, hc_party_id: str, parent_id: str) -> List[Form]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"parentId": parent_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.getChildrenFormsBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Form._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_forms_by_hcparty_and_patient_foreign_keys_async(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretFKeys": secret_fkeys,
-				"healthElementId": health_element_id,
-				"planOfActionId": plan_of_action_id,
-				"formTemplateId": form_template_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.listFormsByHCPartyAndPatientForeignKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_forms_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[Form]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretFKeys": secret_fkeys,
-				"healthElementId": health_element_id,
-				"planOfActionId": plan_of_action_id,
-				"formTemplateId": form_template_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.listFormsByHCPartyAndPatientForeignKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Form._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
 		self.encrypted = FormApi.FormFlavouredEncryptedApi(self.icure_sdk)
-		self.tryAndRecover = FormApi.FormFlavouredApi(self.icure_sdk)
+		self.try_and_recover = FormApi.FormFlavouredApi(self.icure_sdk)
 
 	async def create_form_async(self, entity: DecryptedForm) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
@@ -1669,131 +1221,6 @@ class FormApi:
 			return_value = FormTemplate._deserialize(result_info.success)
 			return return_value
 
-	async def get_form_templates_by_guid_async(self, form_template_guid: str, speciality_code: str, raw: Optional[bool]) -> List[FormTemplate]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [FormTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"formTemplateGuid": form_template_guid,
-			"specialityCode": speciality_code,
-			"raw": raw,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesByGuidAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_form_templates_by_guid_blocking(self, form_template_guid: str, speciality_code: str, raw: Optional[bool]) -> List[FormTemplate]:
-		payload = {
-			"formTemplateGuid": form_template_guid,
-			"specialityCode": speciality_code,
-			"raw": raw,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesByGuidBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [FormTemplate._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_form_templates_by_speciality_async(self, speciality_code: str, raw: Optional[bool] = None) -> List[FormTemplate]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [FormTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"specialityCode": speciality_code,
-			"raw": raw,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormTemplatesBySpecialityAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_form_templates_by_speciality_blocking(self, speciality_code: str, raw: Optional[bool] = None) -> List[FormTemplate]:
-		payload = {
-			"specialityCode": speciality_code,
-			"raw": raw,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormTemplatesBySpecialityBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [FormTemplate._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def get_form_templates_async(self, load_layout: Optional[bool] = None, raw: Optional[bool] = None) -> List[FormTemplate]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [FormTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"loadLayout": load_layout,
-			"raw": raw,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_form_templates_blocking(self, load_layout: Optional[bool] = None, raw: Optional[bool] = None) -> List[FormTemplate]:
-		payload = {
-			"loadLayout": load_layout,
-			"raw": raw,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormTemplatesBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [FormTemplate._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
 	async def create_form_template_async(self, form_template: FormTemplate) -> FormTemplate:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -2077,64 +1504,6 @@ class FormApi:
 			return_value = DecryptedForm._deserialize(result_info.success)
 			return return_value
 
-	async def find_forms_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedForm](
-					producer = success,
-					deserializer = lambda x: DecryptedForm._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"patient": serialize_patient(patient),
-			"startDate": start_date,
-			"endDate": end_date,
-			"descending": descending,
-		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.findFormsByHcPartyPatientAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_forms_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedForm]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"patient": serialize_patient(patient),
-			"startDate": start_date,
-			"endDate": end_date,
-			"descending": descending,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.findFormsByHcPartyPatientBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
-		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result.pinned)
-			return PaginatedListIterator[DecryptedForm](
-				producer = class_pointer,
-				deserializer = lambda x: DecryptedForm._deserialize(x),
-				executor = self.icure_sdk._executor
-			)
-
 	async def modify_form_async(self, entity: DecryptedForm) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -2291,7 +1660,7 @@ class FormApi:
 			return_value = [DecryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_form_by_logical_uuid_async(self, logical_uuid: str) -> DecryptedForm:
+	async def get_latest_form_by_logical_uuid_async(self, logical_uuid: str) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2307,18 +1676,18 @@ class FormApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByLogicalUuidAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getLatestFormByLogicalUuidAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_form_by_logical_uuid_blocking(self, logical_uuid: str) -> DecryptedForm:
+	def get_latest_form_by_logical_uuid_blocking(self, logical_uuid: str) -> DecryptedForm:
 		payload = {
 			"logicalUuid": logical_uuid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByLogicalUuidBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getLatestFormByLogicalUuidBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -2330,85 +1699,7 @@ class FormApi:
 			return_value = DecryptedForm._deserialize(result_info.success)
 			return return_value
 
-	async def get_forms_by_logical_uuid_async(self, logical_uuid: str) -> List[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"logicalUuid": logical_uuid,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByLogicalUuidAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_forms_by_logical_uuid_blocking(self, logical_uuid: str) -> List[DecryptedForm]:
-		payload = {
-			"logicalUuid": logical_uuid,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByLogicalUuidBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedForm._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def get_forms_by_unique_id_async(self, unique_id: str) -> List[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"uniqueId": unique_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByUniqueIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_forms_by_unique_id_blocking(self, unique_id: str) -> List[DecryptedForm]:
-		payload = {
-			"uniqueId": unique_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormsByUniqueIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedForm._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def get_form_by_unique_id_async(self, unique_id: str) -> DecryptedForm:
+	async def get_latest_form_by_unique_id_async(self, unique_id: str) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2424,18 +1715,18 @@ class FormApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByUniqueIdAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getLatestFormByUniqueIdAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_form_by_unique_id_blocking(self, unique_id: str) -> DecryptedForm:
+	def get_latest_form_by_unique_id_blocking(self, unique_id: str) -> DecryptedForm:
 		payload = {
 			"uniqueId": unique_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getFormByUniqueIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getLatestFormByUniqueIdBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -2445,92 +1736,4 @@ class FormApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = DecryptedForm._deserialize(result_info.success)
-			return return_value
-
-	async def get_children_forms_async(self, hc_party_id: str, parent_id: str) -> List[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"parentId": parent_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getChildrenFormsAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_children_forms_blocking(self, hc_party_id: str, parent_id: str) -> List[DecryptedForm]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"parentId": parent_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.getChildrenFormsBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedForm._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_forms_by_hcparty_and_patient_foreign_keys_async(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretFKeys": secret_fkeys,
-			"healthElementId": health_element_id,
-			"planOfActionId": plan_of_action_id,
-			"formTemplateId": form_template_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormsByHCPartyAndPatientForeignKeysAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_forms_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_fkeys: str, health_element_id: Optional[str] = None, plan_of_action_id: Optional[str] = None, form_template_id: Optional[str] = None) -> List[DecryptedForm]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretFKeys": secret_fkeys,
-			"healthElementId": health_element_id,
-			"planOfActionId": plan_of_action_id,
-			"formTemplateId": form_template_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.listFormsByHCPartyAndPatientForeignKeysBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
