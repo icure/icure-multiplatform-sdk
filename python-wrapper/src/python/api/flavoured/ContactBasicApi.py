@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from icure.filters import BaseFilterOptions, BaseSortableFilterOptions
+from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from icure.model import Contact, Service, EncryptedContact, EncryptedService, EntitySubscriptionConfiguration, DocIdentifier, LabelledOccurence, SubscriptionEventType
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional

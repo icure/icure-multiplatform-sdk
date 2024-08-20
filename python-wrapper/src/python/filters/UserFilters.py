@@ -3,7 +3,7 @@ import json
 from icure.kotlin_types import symbols
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters import BaseFilterOptions, BaseSortableFilterOptions
+from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from icure.model import User
 from typing import List
 
@@ -18,7 +18,7 @@ class UserFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseFilterOptions(json.loads(result_info.success))
+			return_value = BaseFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -34,7 +34,7 @@ class UserFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseSortableFilterOptions(json.loads(result_info.success))
+			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -50,7 +50,7 @@ class UserFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseFilterOptions(json.loads(result_info.success))
+			return_value = BaseFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -66,5 +66,5 @@ class UserFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseFilterOptions(json.loads(result_info.success))
+			return_value = BaseFilterOptions(result_info.success)
 			return return_value

@@ -3,7 +3,7 @@ import json
 from icure.kotlin_types import symbols
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
+from icure.filters.FilterOptions import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
 from icure.model import Service, Identifier, Patient, serialize_patient
 from typing import List, Optional
 
@@ -22,7 +22,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseFilterOptions(json.loads(result_info.success))
+			return_value = BaseFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -34,7 +34,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = FilterOptions(json.loads(result_info.success))
+			return_value = FilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -51,7 +51,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseSortableFilterOptions(json.loads(result_info.success))
+			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -71,7 +71,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseSortableFilterOptions(json.loads(result_info.success))
+			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -91,7 +91,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseSortableFilterOptions(json.loads(result_info.success))
+			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -108,7 +108,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = SortableFilterOptions(json.loads(result_info.success))
+			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -125,7 +125,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseSortableFilterOptions(json.loads(result_info.success))
+			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -142,7 +142,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseSortableFilterOptions(json.loads(result_info.success))
+			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -158,7 +158,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = SortableFilterOptions(json.loads(result_info.success))
+			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -177,7 +177,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = SortableFilterOptions(json.loads(result_info.success))
+			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -196,7 +196,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = SortableFilterOptions(json.loads(result_info.success))
+			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -212,7 +212,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = SortableFilterOptions(json.loads(result_info.success))
+			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -228,7 +228,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = SortableFilterOptions(json.loads(result_info.success))
+			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -244,7 +244,7 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = SortableFilterOptions(json.loads(result_info.success))
+			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -260,5 +260,5 @@ class ServiceFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseSortableFilterOptions(json.loads(result_info.success))
+			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value

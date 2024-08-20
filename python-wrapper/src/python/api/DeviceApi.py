@@ -6,7 +6,7 @@ from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CA
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import List, Optional
-from icure.filters import BaseFilterOptions, BaseSortableFilterOptions
+from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from icure.pagination.PaginatedListIterator import PaginatedListIterator
 
 class DeviceApi:

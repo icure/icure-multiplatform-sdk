@@ -3,7 +3,7 @@ import json
 from icure.kotlin_types import symbols
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters import BaseFilterOptions, FilterOptions
+from icure.filters.FilterOptions import BaseFilterOptions, FilterOptions
 from icure.model import Topic
 
 class TopicFilters:
@@ -21,7 +21,7 @@ class TopicFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = BaseFilterOptions(json.loads(result_info.success))
+			return_value = BaseFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -33,7 +33,7 @@ class TopicFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = FilterOptions(json.loads(result_info.success))
+			return_value = FilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
@@ -49,5 +49,5 @@ class TopicFilters:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = FilterOptions(json.loads(result_info.success))
+			return_value = FilterOptions(result_info.success)
 			return return_value

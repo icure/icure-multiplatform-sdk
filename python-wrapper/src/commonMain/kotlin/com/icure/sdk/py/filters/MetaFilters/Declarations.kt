@@ -9,7 +9,7 @@ import com.icure.sdk.utils.Serialization.json
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ListOfFiltersParam(
+private data class ListOfFiltersParam(
 	val filters: List<FilterOptions<Identifiable<String>>>
 )
 
@@ -36,7 +36,7 @@ fun union(params: String): String = kotlin.runCatching {
 }.toPyString(FilterOptions.serializer())
 
 @Serializable
-data class DifferenceParams(
+private data class DifferenceParams(
 	val of: FilterOptions<Identifiable<String>>,
 	val subtracting: FilterOptions<Identifiable<String>>,
 )

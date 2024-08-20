@@ -7,7 +7,7 @@ from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from icure.model.specializations import HexString
-from icure.filters import FilterOptions, SortableFilterOptions
+from icure.filters.FilterOptions import FilterOptions, SortableFilterOptions
 from icure.pagination.PaginatedListIterator import PaginatedListIterator
 from icure.subscription.EntitySubscription import EntitySubscription
 
