@@ -18,7 +18,7 @@ import com.icure.sdk.js.api.flavoured.ClassificationApiJs
 import com.icure.sdk.js.api.flavoured.ContactApiJs
 import com.icure.sdk.js.api.flavoured.DocumentApiJs
 import com.icure.sdk.js.api.flavoured.FormApiJs
-import com.icure.sdk.js.api.flavoured.HealthcareElementApiJs
+import com.icure.sdk.js.api.flavoured.HealthElementApiJs
 import com.icure.sdk.js.api.flavoured.InvoiceApiJs
 import com.icure.sdk.js.api.flavoured.MaintenanceTaskApiJs
 import com.icure.sdk.js.api.flavoured.MessageApiJs
@@ -32,7 +32,7 @@ import com.icure.sdk.js.api.flavoured.impl.ClassificationApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.ContactApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.DocumentApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.FormApiImplJs
-import com.icure.sdk.js.api.flavoured.impl.HealthcareElementApiImplJs
+import com.icure.sdk.js.api.flavoured.impl.HealthElementApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.InvoiceApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.MaintenanceTaskApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.MessageApiImplJs
@@ -66,7 +66,7 @@ interface IcureSdkJs {
 	val device: DeviceApiJs
 	val document: DocumentApiJs
 	val form: FormApiJs
-	val healthcareElement: HealthcareElementApiJs
+	val healthcareElement: HealthElementApiJs
 	val invoice: InvoiceApiJs
 	val maintenanceTask: MaintenanceTaskApiJs
 	val message: MessageApiJs
@@ -87,12 +87,14 @@ interface IcureSdkJs {
  */
 @JsExport
 fun initializeSdk(
+	applicationId: String?,
 	baseUrl: String,
 	username: String,
 	password: String,
 	options: ApiOptionsJs
 ): Promise<IcureSdkJs> = GlobalScope.promise {
 	IcureSdkJsImpl(IcureSdk.initialize(
+		applicationId,
 		baseUrl,
 		AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
 		VolatileStorageFacade(),
@@ -111,7 +113,7 @@ private class IcureSdkJsImpl(
 	override val device by lazy { DeviceApiImplJs(sdk.device) }
 	override val document by lazy { DocumentApiImplJs(sdk.document) }
 	override val form by lazy { FormApiImplJs(sdk.form) }
-	override val healthcareElement by lazy { HealthcareElementApiImplJs(sdk.healthElement) }
+	override val healthcareElement: HealthElementApiJs by lazy { HealthElementApiImplJs(sdk.healthElement) }
 	override val invoice by lazy { InvoiceApiImplJs(sdk.invoice) }
 	override val maintenanceTask by lazy { MaintenanceTaskApiImplJs(sdk.maintenanceTask) }
 	override val message by lazy { MessageApiImplJs(sdk.message) }

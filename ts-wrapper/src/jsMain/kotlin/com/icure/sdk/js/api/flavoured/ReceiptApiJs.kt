@@ -61,6 +61,10 @@ public external interface ReceiptApiJs {
 		blob: ByteArray,
 	): Promise<ReceiptJs>
 
+	public fun decrypt(receipt: EncryptedReceiptJs): Promise<DecryptedReceiptJs>
+
+	public fun tryDecrypt(receipt: EncryptedReceiptJs): Promise<ReceiptJs>
+
 	public fun deleteReceipt(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteReceipts(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>

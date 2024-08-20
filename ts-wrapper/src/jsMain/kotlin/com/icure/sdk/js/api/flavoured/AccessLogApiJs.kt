@@ -45,6 +45,10 @@ public external interface AccessLogApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: AccessLogJs, delegates: Array<String>):
 			Promise<Unit>
 
+	public fun decrypt(accessLog: EncryptedAccessLogJs): Promise<DecryptedAccessLogJs>
+
+	public fun tryDecrypt(accessLog: EncryptedAccessLogJs): Promise<AccessLogJs>
+
 	public fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteAccessLogs(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>

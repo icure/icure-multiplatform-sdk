@@ -1,10 +1,12 @@
+# auto-generated file
 import asyncio
 import json
-from icure.model import DecryptedContact, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Contact, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, Service, ContactAbstractFilter, serialize_abstract_filter, ServiceAbstractFilter, DocIdentifier, IcureStub, LabelledOccurence, SubscriptionEventType, EntitySubscriptionConfiguration, ContactShareOptions, deserialize_simple_share_result_decrypted_contact, SimpleShareResultDecryptedContact, deserialize_simple_share_result_encrypted_contact, SimpleShareResultEncryptedContact, deserialize_simple_share_result_contact, SimpleShareResultContact
+from icure.filters.FilterOptions import FilterOptions, SortableFilterOptions
+from icure.model import Contact, Service, DecryptedContact, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, EntitySubscriptionConfiguration, DocIdentifier, LabelledOccurence, ContactShareOptions, deserialize_simple_share_result_decrypted_contact, SimpleShareResultDecryptedContact, SubscriptionEventType, deserialize_simple_share_result_encrypted_contact, SimpleShareResultEncryptedContact, deserialize_simple_share_result_contact, SimpleShareResultContact
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from typing import List, Optional, Dict
 from icure.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from typing import List, Optional, Dict
 from icure.model.specializations import HexString
 from icure.subscription.EntitySubscription import EntitySubscription
 from icure.pagination.PaginatedListIterator import PaginatedListIterator
@@ -141,7 +143,7 @@ class ContactApi:
 				return_value = EncryptedContact._deserialize(result_info.success)
 				return return_value
 
-		async def find_contacts_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedContact]:
+		async def filter_contacts_by_async(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -156,31 +158,23 @@ class ContactApi:
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.findContactsByHcPartyPatientAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsByAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def find_contacts_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[EncryptedContact]:
+		def filter_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.findContactsByHcPartyPatientBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsByBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -196,6 +190,156 @@ class ContactApi:
 				return PaginatedListIterator[EncryptedContact](
 					producer = class_pointer,
 					deserializer = lambda x: EncryptedContact._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[object](
+						producer = success,
+						deserializer = lambda x: x,
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesByAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesByBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[object](
+					producer = class_pointer,
+					deserializer = lambda x: x,
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[EncryptedContact](
+						producer = success,
+						deserializer = lambda x: EncryptedContact._deserialize(x),
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsBySortedAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsBySortedBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedContact](
+					producer = class_pointer,
+					deserializer = lambda x: EncryptedContact._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[object](
+						producer = success,
+						deserializer = lambda x: x,
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesBySortedAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesBySortedBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[object](
+					producer = class_pointer,
+					deserializer = lambda x: x,
 					executor = self.icure_sdk._executor
 				)
 
@@ -355,304 +499,6 @@ class ContactApi:
 				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def filter_contacts_by_async(self, filter: ContactAbstractFilter) -> PaginatedListIterator[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedContact](
-						producer = success,
-						deserializer = lambda x: EncryptedContact._deserialize(x),
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsByAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def filter_contacts_by_blocking(self, filter: ContactAbstractFilter) -> PaginatedListIterator[EncryptedContact]:
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterContactsByBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[EncryptedContact](
-					producer = class_pointer,
-					deserializer = lambda x: EncryptedContact._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-
-		async def list_contact_by_hcparty_service_id_async(self, hc_party_id: str, service_id: str) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"serviceId": service_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactByHCPartyServiceIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contact_by_hcparty_service_id_blocking(self, hc_party_id: str, service_id: str) -> List[EncryptedContact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"serviceId": service_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactByHCPartyServiceIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_external_id_async(self, external_id: str) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"externalId": external_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByExternalIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_external_id_blocking(self, external_id: str) -> List[EncryptedContact]:
-			payload = {
-				"externalId": external_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByExternalIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_hcparty_and_form_id_async(self, hc_party_id: str, form_id: str) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formId": form_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_hcparty_and_form_id_blocking(self, hc_party_id: str, form_id: str) -> List[EncryptedContact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formId": form_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_hcparty_and_form_ids_async(self, hc_party_id: str, form_ids: List[str]) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formIds": [x0 for x0 in form_ids],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdsAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_hcparty_and_form_ids_blocking(self, hc_party_id: str, form_ids: List[str]) -> List[EncryptedContact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formIds": [x0 for x0 in form_ids],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndFormIdsBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_hcparty_and_patient_secret_fkeys_async(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-				"planOfActionsIds": plan_of_actions_ids,
-				"skipClosedContacts": skip_closed_contacts,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndPatientSecretFKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_hcparty_and_patient_secret_fkeys_blocking(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[EncryptedContact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-				"planOfActionsIds": plan_of_actions_ids,
-				"skipClosedContacts": skip_closed_contacts,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listContactsByHCPartyAndPatientSecretFKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def close_for_hcparty_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.closeForHCPartyPatientForeignKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def close_for_hcparty_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedContact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.closeForHCPartyPatientForeignKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
 		async def get_service_async(self, service_id: str) -> object:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -730,177 +576,6 @@ class ContactApi:
 			else:
 				return_value = [x1 for x1 in result_info.success]
 				return return_value
-
-		async def get_services_linked_to_async(self, link_type: str, ids: List[str]) -> List[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"linkType": link_type,
-				"ids": [x0 for x0 in ids],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServicesLinkedToAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_services_linked_to_blocking(self, link_type: str, ids: List[str]) -> List[object]:
-			payload = {
-				"linkType": link_type,
-				"ids": [x0 for x0 in ids],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.getServicesLinkedToBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [x1 for x1 in result_info.success]
-				return return_value
-
-		async def list_services_by_association_id_async(self, association_id: str) -> List[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"associationId": association_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByAssociationIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_services_by_association_id_blocking(self, association_id: str) -> List[object]:
-			payload = {
-				"associationId": association_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByAssociationIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [x1 for x1 in result_info.success]
-				return return_value
-
-		async def list_services_by_health_element_id_async(self, hc_party_id: str, health_element_id: str) -> List[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"healthElementId": health_element_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByHealthElementIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_services_by_health_element_id_blocking(self, hc_party_id: str, health_element_id: str) -> List[object]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"healthElementId": health_element_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.listServicesByHealthElementIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [x1 for x1 in result_info.success]
-				return return_value
-
-		async def filter_services_by_async(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[object](
-						producer = success,
-						deserializer = lambda x: x,
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesByAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def filter_services_by_blocking(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[object]:
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.encrypted.filterServicesByBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[object](
-					producer = class_pointer,
-					deserializer = lambda x: x,
-					executor = self.icure_sdk._executor
-				)
 
 	class ContactFlavouredApi:
 
@@ -1032,7 +707,7 @@ class ContactApi:
 				return_value = Contact._deserialize(result_info.success)
 				return return_value
 
-		async def find_contacts_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Contact]:
+		async def filter_contacts_by_async(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[Contact]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -1047,31 +722,23 @@ class ContactApi:
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.findContactsByHcPartyPatientAsync,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsByAsync,
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def find_contacts_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[Contact]:
+		def filter_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[Contact]:
 			payload = {
-				"hcPartyId": hc_party_id,
-				"patient": serialize_patient(patient),
-				"startDate": start_date,
-				"endDate": end_date,
-				"descending": descending,
+				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.findContactsByHcPartyPatientBlocking(
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsByBlocking(
 				self.icure_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -1087,6 +754,156 @@ class ContactApi:
 				return PaginatedListIterator[Contact](
 					producer = class_pointer,
 					deserializer = lambda x: deserialize_contact(x),
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[object](
+						producer = success,
+						deserializer = lambda x: x,
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesByAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesByBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[object](
+					producer = class_pointer,
+					deserializer = lambda x: x,
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[Contact]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[Contact](
+						producer = success,
+						deserializer = lambda x: deserialize_contact(x),
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsBySortedAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[Contact]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsBySortedBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[Contact](
+					producer = class_pointer,
+					deserializer = lambda x: deserialize_contact(x),
+					executor = self.icure_sdk._executor
+				)
+
+		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = PaginatedListIterator[object](
+						producer = success,
+						deserializer = lambda x: x,
+						executor = self.icure_sdk._executor
+					)
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.icure_sdk._executor,
+				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesBySortedAsync,
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+			payload = {
+				"filter": filter.__serialize__(),
+			}
+			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesBySortedBlocking(
+				self.icure_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			if error_str_pointer is not None:
+				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise Exception(error_msg)
+			else:
+				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[object](
+					producer = class_pointer,
+					deserializer = lambda x: x,
 					executor = self.icure_sdk._executor
 				)
 
@@ -1246,304 +1063,6 @@ class ContactApi:
 				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def filter_contacts_by_async(self, filter: ContactAbstractFilter) -> PaginatedListIterator[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Contact](
-						producer = success,
-						deserializer = lambda x: deserialize_contact(x),
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsByAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def filter_contacts_by_blocking(self, filter: ContactAbstractFilter) -> PaginatedListIterator[Contact]:
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterContactsByBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[Contact](
-					producer = class_pointer,
-					deserializer = lambda x: deserialize_contact(x),
-					executor = self.icure_sdk._executor
-				)
-
-		async def list_contact_by_hcparty_service_id_async(self, hc_party_id: str, service_id: str) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"serviceId": service_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactByHCPartyServiceIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contact_by_hcparty_service_id_blocking(self, hc_party_id: str, service_id: str) -> List[Contact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"serviceId": service_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactByHCPartyServiceIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_external_id_async(self, external_id: str) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"externalId": external_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByExternalIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_external_id_blocking(self, external_id: str) -> List[Contact]:
-			payload = {
-				"externalId": external_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByExternalIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_hcparty_and_form_id_async(self, hc_party_id: str, form_id: str) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formId": form_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_hcparty_and_form_id_blocking(self, hc_party_id: str, form_id: str) -> List[Contact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formId": form_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_hcparty_and_form_ids_async(self, hc_party_id: str, form_ids: List[str]) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formIds": [x0 for x0 in form_ids],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdsAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_hcparty_and_form_ids_blocking(self, hc_party_id: str, form_ids: List[str]) -> List[Contact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"formIds": [x0 for x0 in form_ids],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndFormIdsBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def list_contacts_by_hcparty_and_patient_secret_fkeys_async(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-				"planOfActionsIds": plan_of_actions_ids,
-				"skipClosedContacts": skip_closed_contacts,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndPatientSecretFKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_contacts_by_hcparty_and_patient_secret_fkeys_blocking(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[Contact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-				"planOfActionsIds": plan_of_actions_ids,
-				"skipClosedContacts": skip_closed_contacts,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listContactsByHCPartyAndPatientSecretFKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def close_for_hcparty_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.closeForHCPartyPatientForeignKeysAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def close_for_hcparty_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[Contact]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.closeForHCPartyPatientForeignKeysBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
 		async def get_service_async(self, service_id: str) -> object:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -1622,181 +1141,166 @@ class ContactApi:
 				return_value = [x1 for x1 in result_info.success]
 				return return_value
 
-		async def get_services_linked_to_async(self, link_type: str, ids: List[str]) -> List[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"linkType": link_type,
-				"ids": [x0 for x0 in ids],
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServicesLinkedToAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_services_linked_to_blocking(self, link_type: str, ids: List[str]) -> List[object]:
-			payload = {
-				"linkType": link_type,
-				"ids": [x0 for x0 in ids],
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.getServicesLinkedToBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [x1 for x1 in result_info.success]
-				return return_value
-
-		async def list_services_by_association_id_async(self, association_id: str) -> List[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"associationId": association_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByAssociationIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_services_by_association_id_blocking(self, association_id: str) -> List[object]:
-			payload = {
-				"associationId": association_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByAssociationIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [x1 for x1 in result_info.success]
-				return return_value
-
-		async def list_services_by_health_element_id_async(self, hc_party_id: str, health_element_id: str) -> List[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"hcPartyId": hc_party_id,
-				"healthElementId": health_element_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByHealthElementIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def list_services_by_health_element_id_blocking(self, hc_party_id: str, health_element_id: str) -> List[object]:
-			payload = {
-				"hcPartyId": hc_party_id,
-				"healthElementId": health_element_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.listServicesByHealthElementIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [x1 for x1 in result_info.success]
-				return return_value
-
-		async def filter_services_by_async(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[object]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[object](
-						producer = success,
-						deserializer = lambda x: x,
-						executor = self.icure_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesByAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def filter_services_by_blocking(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[object]:
-			payload = {
-				"filter": serialize_abstract_filter(filter),
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.filterServicesByBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[object](
-					producer = class_pointer,
-					deserializer = lambda x: x,
-					executor = self.icure_sdk._executor
-				)
-
 	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
 		self.encrypted = ContactApi.ContactFlavouredEncryptedApi(self.icure_sdk)
-		self.tryAndRecover = ContactApi.ContactFlavouredApi(self.icure_sdk)
+		self.try_and_recover = ContactApi.ContactFlavouredApi(self.icure_sdk)
+
+	async def match_contacts_by_async(self, filter: FilterOptions[Contact]) -> List[str]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchContactsByAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def match_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> List[str]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchContactsByBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [x1 for x1 in result_info.success]
+			return return_value
+
+	async def match_services_by_async(self, filter: FilterOptions[Service]) -> List[str]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchServicesByAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def match_services_by_blocking(self, filter: FilterOptions[Service]) -> List[str]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchServicesByBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [x1 for x1 in result_info.success]
+			return return_value
+
+	async def match_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> List[str]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchContactsBySortedAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def match_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> List[str]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchContactsBySortedBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [x1 for x1 in result_info.success]
+			return return_value
+
+	async def match_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> List[str]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchServicesBySortedAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def match_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> List[str]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchServicesBySortedBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = [x1 for x1 in result_info.success]
+			return return_value
 
 	async def create_contact_async(self, entity: DecryptedContact) -> DecryptedContact:
 		loop = asyncio.get_running_loop()
@@ -2234,7 +1738,7 @@ class ContactApi:
 			return_value = deserialize_service(result_info.success)
 			return return_value
 
-	async def match_contacts_by_async(self, filter: ContactAbstractFilter) -> List[str]:
+	async def subscribe_to_service_create_or_update_events_async(self, filter: FilterOptions[Service], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedService]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2242,75 +1746,49 @@ class ContactApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+				result = EntitySubscription[EncryptedService](
+					producer = success,
+					deserializer = lambda x: EncryptedService._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"filter": filter.__serialize__(),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchContactsByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToServiceCreateOrUpdateEventsAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def match_contacts_by_blocking(self, filter: ContactAbstractFilter) -> List[str]:
+	def subscribe_to_service_create_or_update_events_blocking(self, filter: FilterOptions[Service], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedService]:
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"filter": filter.__serialize__(),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchContactsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToServiceCreateOrUpdateEventsBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
 		else:
-			return_value = [x1 for x1 in result_info.success]
-			return return_value
-
-	async def match_services_by_async(self, filter: ServiceAbstractFilter) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"filter": serialize_abstract_filter(filter),
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchServicesByAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def match_services_by_blocking(self, filter: ServiceAbstractFilter) -> List[str]:
-		payload = {
-			"filter": serialize_abstract_filter(filter),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.matchServicesByBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [x1 for x1 in result_info.success]
-			return return_value
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return EntitySubscription[EncryptedService](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedService._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
 
 	async def delete_contact_async(self, entity_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
@@ -2390,47 +1868,6 @@ class ContactApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def find_contacts_delegations_stubs_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [IcureStub._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_contacts_delegations_stubs_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
 	async def get_service_codes_occurrences_async(self, code_type: str, min_occurrences: int) -> List[LabelledOccurence]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -2471,114 +1908,6 @@ class ContactApi:
 		else:
 			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
 			return return_value
-
-	async def subscribe_to_service_events_async(self, events: List[SubscriptionEventType], filter: ServiceAbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EntitySubscription[EncryptedService](
-					producer = success,
-					deserializer = lambda x: EncryptedService._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"events": [x0.__serialize__() for x0 in events],
-			"filter": serialize_abstract_filter(filter),
-			"subscriptionConfig": subscription_config.__serialize__(),
-		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToServiceEventsAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def subscribe_to_service_events_blocking(self, events: List[SubscriptionEventType], filter: ServiceAbstractFilter, subscription_config: EntitySubscriptionConfiguration) -> EntitySubscription[EncryptedService]:
-		payload = {
-			"events": [x0.__serialize__() for x0 in events],
-			"filter": serialize_abstract_filter(filter),
-			"subscriptionConfig": subscription_config.__serialize__(),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToServiceEventsBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
-		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result.pinned)
-			return EntitySubscription[EncryptedService](
-				producer = class_pointer,
-				deserializer = lambda x: EncryptedService._deserialize(x),
-				executor = self.icure_sdk._executor
-			)
-
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: ContactAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EntitySubscription[EncryptedContact](
-					producer = success,
-					deserializer = lambda x: EncryptedContact._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"events": [x0.__serialize__() for x0 in events],
-			"filter": serialize_abstract_filter(filter),
-			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
-		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToEventsAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: ContactAbstractFilter, subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
-		payload = {
-			"events": [x0.__serialize__() for x0 in events],
-			"filter": serialize_abstract_filter(filter),
-			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToEventsBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
-		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result.pinned)
-			return EntitySubscription[EncryptedContact](
-				producer = class_pointer,
-				deserializer = lambda x: EncryptedContact._deserialize(x),
-				executor = self.icure_sdk._executor
-			)
 
 	async def share_with_async(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultDecryptedContact:
 		loop = asyncio.get_running_loop()
@@ -2705,7 +2034,7 @@ class ContactApi:
 			return_value = DecryptedContact._deserialize(result_info.success)
 			return return_value
 
-	async def find_contacts_by_hc_party_patient_async(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedContact]:
+	async def filter_contacts_by_async(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2720,31 +2049,23 @@ class ContactApi:
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hcPartyId": hc_party_id,
-			"patient": serialize_patient(patient),
-			"startDate": start_date,
-			"endDate": end_date,
-			"descending": descending,
+			"filter": filter.__serialize__(),
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsByHcPartyPatientAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsByAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def find_contacts_by_hc_party_patient_blocking(self, hc_party_id: str, patient: Patient, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: Optional[bool] = None) -> PaginatedListIterator[DecryptedContact]:
+	def filter_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
 		payload = {
-			"hcPartyId": hc_party_id,
-			"patient": serialize_patient(patient),
-			"startDate": start_date,
-			"endDate": end_date,
-			"descending": descending,
+			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.findContactsByHcPartyPatientBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsByBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -2760,6 +2081,156 @@ class ContactApi:
 			return PaginatedListIterator[DecryptedContact](
 				producer = class_pointer,
 				deserializer = lambda x: DecryptedContact._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
+	async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = PaginatedListIterator[DecryptedService](
+					producer = success,
+					deserializer = lambda x: DecryptedService._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesByAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesByBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedService](
+				producer = class_pointer,
+				deserializer = lambda x: DecryptedService._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
+	async def filter_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = PaginatedListIterator[DecryptedContact](
+					producer = success,
+					deserializer = lambda x: DecryptedContact._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsBySortedAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def filter_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsBySortedBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedContact](
+				producer = class_pointer,
+				deserializer = lambda x: DecryptedContact._deserialize(x),
+				executor = self.icure_sdk._executor
+			)
+
+	async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = PaginatedListIterator[DecryptedService](
+					producer = success,
+					deserializer = lambda x: DecryptedService._deserialize(x),
+					executor = self.icure_sdk._executor
+				)
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.icure_sdk._executor,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesBySortedAsync,
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesBySortedBlocking(
+			self.icure_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise Exception(error_msg)
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedService](
+				producer = class_pointer,
+				deserializer = lambda x: DecryptedService._deserialize(x),
 				executor = self.icure_sdk._executor
 			)
 
@@ -2919,304 +2390,6 @@ class ContactApi:
 			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def filter_contacts_by_async(self, filter: ContactAbstractFilter) -> PaginatedListIterator[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedContact](
-					producer = success,
-					deserializer = lambda x: DecryptedContact._deserialize(x),
-					executor = self.icure_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"filter": serialize_abstract_filter(filter),
-		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsByAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def filter_contacts_by_blocking(self, filter: ContactAbstractFilter) -> PaginatedListIterator[DecryptedContact]:
-		payload = {
-			"filter": serialize_abstract_filter(filter),
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterContactsByBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
-		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-			symbols.DisposeString(error_str_pointer)
-			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
-		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
-			symbols.DisposeStablePointer(call_result.pinned)
-			return PaginatedListIterator[DecryptedContact](
-				producer = class_pointer,
-				deserializer = lambda x: DecryptedContact._deserialize(x),
-				executor = self.icure_sdk._executor
-			)
-
-	async def list_contact_by_hcparty_service_id_async(self, hc_party_id: str, service_id: str) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"serviceId": service_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactByHCPartyServiceIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_contact_by_hcparty_service_id_blocking(self, hc_party_id: str, service_id: str) -> List[DecryptedContact]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"serviceId": service_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactByHCPartyServiceIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_contacts_by_external_id_async(self, external_id: str) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"externalId": external_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByExternalIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_contacts_by_external_id_blocking(self, external_id: str) -> List[DecryptedContact]:
-		payload = {
-			"externalId": external_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByExternalIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_contacts_by_hcparty_and_form_id_async(self, hc_party_id: str, form_id: str) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"formId": form_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_contacts_by_hcparty_and_form_id_blocking(self, hc_party_id: str, form_id: str) -> List[DecryptedContact]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"formId": form_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_contacts_by_hcparty_and_form_ids_async(self, hc_party_id: str, form_ids: List[str]) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"formIds": [x0 for x0 in form_ids],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdsAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_contacts_by_hcparty_and_form_ids_blocking(self, hc_party_id: str, form_ids: List[str]) -> List[DecryptedContact]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"formIds": [x0 for x0 in form_ids],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndFormIdsBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_contacts_by_hcparty_and_patient_secret_fkeys_async(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			"planOfActionsIds": plan_of_actions_ids,
-			"skipClosedContacts": skip_closed_contacts,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndPatientSecretFKeysAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_contacts_by_hcparty_and_patient_secret_fkeys_blocking(self, hc_party_id: str, secret_patient_keys: List[str], plan_of_actions_ids: Optional[str] = None, skip_closed_contacts: Optional[bool] = None) -> List[DecryptedContact]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-			"planOfActionsIds": plan_of_actions_ids,
-			"skipClosedContacts": skip_closed_contacts,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listContactsByHCPartyAndPatientSecretFKeysBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def close_for_hcparty_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.closeForHCPartyPatientForeignKeysAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def close_for_hcparty_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[DecryptedContact]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.closeForHCPartyPatientForeignKeysBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
 	async def get_service_async(self, service_id: str) -> DecryptedService:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -3295,7 +2468,7 @@ class ContactApi:
 			return_value = [DecryptedService._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_services_linked_to_async(self, link_type: str, ids: List[str]) -> List[DecryptedService]:
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -3303,151 +2476,34 @@ class ContactApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [DecryptedService._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"linkType": link_type,
-			"ids": [x0 for x0 in ids],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServicesLinkedToAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_services_linked_to_blocking(self, link_type: str, ids: List[str]) -> List[DecryptedService]:
-		payload = {
-			"linkType": link_type,
-			"ids": [x0 for x0 in ids],
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.getServicesLinkedToBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedService._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_services_by_association_id_async(self, association_id: str) -> List[DecryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedService._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"associationId": association_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByAssociationIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_services_by_association_id_blocking(self, association_id: str) -> List[DecryptedService]:
-		payload = {
-			"associationId": association_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByAssociationIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedService._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_services_by_health_element_id_async(self, hc_party_id: str, health_element_id: str) -> List[DecryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedService._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"healthElementId": health_element_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByHealthElementIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_services_by_health_element_id_blocking(self, hc_party_id: str, health_element_id: str) -> List[DecryptedService]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"healthElementId": health_element_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.listServicesByHealthElementIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedService._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def filter_services_by_async(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[DecryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedService](
+				result = EntitySubscription[EncryptedContact](
 					producer = success,
-					deserializer = lambda x: DecryptedService._deserialize(x),
+					deserializer = lambda x: EncryptedContact._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": filter.__serialize__(),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesByAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToEventsAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def filter_services_by_blocking(self, filter: ServiceAbstractFilter) -> PaginatedListIterator[DecryptedService]:
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
 		payload = {
-			"filter": serialize_abstract_filter(filter),
+			"events": [x0.__serialize__() for x0 in events],
+			"filter": filter.__serialize__(),
+			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.filterServicesByBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.subscribeToEventsBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -3460,8 +2516,8 @@ class ContactApi:
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
-			return PaginatedListIterator[DecryptedService](
+			return EntitySubscription[EncryptedContact](
 				producer = class_pointer,
-				deserializer = lambda x: DecryptedService._deserialize(x),
+				deserializer = lambda x: EncryptedContact._deserialize(x),
 				executor = self.icure_sdk._executor
 			)

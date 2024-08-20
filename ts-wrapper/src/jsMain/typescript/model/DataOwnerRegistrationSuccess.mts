@@ -2,16 +2,16 @@
 
 export class DataOwnerRegistrationSuccess {
 
-  userLogin: string;
+	userLogin: string;
 
-  userId: string;
+	userId: string;
 
-  token: string;
+	token: string;
 
-  constructor(partial: Partial<DataOwnerRegistrationSuccess> & Pick<DataOwnerRegistrationSuccess, "userLogin" | "userId" | "token">) {
-    this.userLogin = partial.userLogin;
-    this.userId = partial.userId;
-    this.token = partial.token;
-  }
+	constructor(partial: Partial<DataOwnerRegistrationSuccess> & Pick<DataOwnerRegistrationSuccess, "userLogin" | "userId" | "token">) {
+		this.userLogin = partial.userLogin;
+		this.userId = partial.userId;
+		this.token = partial.token;
+	}
 
 }

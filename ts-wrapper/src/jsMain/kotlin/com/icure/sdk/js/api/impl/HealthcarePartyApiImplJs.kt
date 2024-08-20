@@ -2,9 +2,15 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.HealthcarePartyApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.HealthcarePartyApiJs
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.sdk.js.filters.baseFilterOptions_fromJs
+import com.icure.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
@@ -16,18 +22,14 @@ import com.icure.sdk.js.model.PublicKeyJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.dataOwnerRegistrationSuccess_toJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.abstractFilter_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.healthcareParty_fromJs
 import com.icure.sdk.js.model.healthcareParty_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.publicKey_toJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -387,14 +389,9 @@ internal class HealthcarePartyApiImplJs(
 		healthcareParty_toJs(result)
 	}
 
-	override fun matchHealthcarePartiesBy(filter: AbstractFilterJs<HealthcarePartyJs>):
+	override fun matchHealthcarePartiesBy(filter: BaseFilterOptionsJs<HealthcarePartyJs>):
 			Promise<Array<String>> = GlobalScope.promise {
-		val filterConverted: AbstractFilter<HealthcareParty> = abstractFilter_fromJs(
-			filter,
-			{ x1: HealthcarePartyJs ->
-				healthcareParty_fromJs(x1)
-			},
-		)
+		val filterConverted: BaseFilterOptions<HealthcareParty> = baseFilterOptions_fromJs(filter)
 		val result = healthcarePartyApi.matchHealthcarePartiesBy(
 			filterConverted,
 		)
@@ -406,42 +403,49 @@ internal class HealthcarePartyApiImplJs(
 		)
 	}
 
-	override fun filterHealthPartiesBy(filterChain: FilterChainJs<HealthcarePartyJs>,
-			options: dynamic): Promise<PaginatedListJs<HealthcarePartyJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"startDocumentId",
-				null
-			) { startDocumentId: String? ->
-				undefinedToNull(startDocumentId)
-			}
-			val limitConverted: Int? = convertingOptionOrDefaultNullable(
-				_options,
-				"limit",
-				null
-			) { limit: Double? ->
-				numberToInt(limit, "limit")
-			}
-			val filterChainConverted: FilterChain<HealthcareParty> = filterChain_fromJs(
-				filterChain,
-				{ x1: HealthcarePartyJs ->
-					healthcareParty_fromJs(x1)
-				},
-			)
-			val result = healthcarePartyApi.filterHealthPartiesBy(
-				startDocumentIdConverted,
-				limitConverted,
-				filterChainConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: HealthcareParty ->
-					healthcareParty_toJs(x1)
-				},
-			)
-		}
+	override fun filterHealthPartiesBy(filter: BaseFilterOptionsJs<HealthcarePartyJs>):
+			Promise<PaginatedListIteratorJs<HealthcarePartyJs>> = GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<HealthcareParty> = baseFilterOptions_fromJs(filter)
+		val result = healthcarePartyApi.filterHealthPartiesBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: HealthcareParty ->
+				healthcareParty_toJs(x1)
+			},
+		)
+	}
+
+	override
+			fun matchHealthcarePartiesBySorted(filter: BaseSortableFilterOptionsJs<HealthcarePartyJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<HealthcareParty> =
+				baseSortableFilterOptions_fromJs(filter)
+		val result = healthcarePartyApi.matchHealthcarePartiesBySorted(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun filterHealthPartiesBySorted(filter: BaseSortableFilterOptionsJs<HealthcarePartyJs>):
+			Promise<PaginatedListIteratorJs<HealthcarePartyJs>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<HealthcareParty> =
+				baseSortableFilterOptions_fromJs(filter)
+		val result = healthcarePartyApi.filterHealthPartiesBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: HealthcareParty ->
+				healthcareParty_toJs(x1)
+			},
+		)
 	}
 
 	override fun getHealthcarePartiesInGroup(groupId: String, options: dynamic):

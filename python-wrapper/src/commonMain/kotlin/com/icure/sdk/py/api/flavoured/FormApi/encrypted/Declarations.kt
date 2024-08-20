@@ -314,32 +314,64 @@ public fun getFormsAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class GetFormByLogicalUuidParams(
+private class GetLatestFormByLogicalUuidParams(
 	public val logicalUuid: String,
 )
 
-public fun getFormByLogicalUuidBlocking(sdk: IcureApis, params: String): String =
+public fun getLatestFormByLogicalUuidBlocking(sdk: IcureApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormByLogicalUuidParams>(params)
+	val decodedParams = json.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
 	runBlocking {
-		sdk.form.encrypted.getFormByLogicalUuid(
+		sdk.form.encrypted.getLatestFormByLogicalUuid(
 			decodedParams.logicalUuid,
 		)
 	}
 }.toPyString(EncryptedForm.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getFormByLogicalUuidAsync(
+public fun getLatestFormByLogicalUuidAsync(
 	sdk: IcureApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormByLogicalUuidParams>(params)
+	val decodedParams = json.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.form.encrypted.getFormByLogicalUuid(
+			sdk.form.encrypted.getLatestFormByLogicalUuid(
 				decodedParams.logicalUuid,
+			)
+		}.toPyStringAsyncCallback(EncryptedForm.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetLatestFormByUniqueIdParams(
+	public val uniqueId: String,
+)
+
+public fun getLatestFormByUniqueIdBlocking(sdk: IcureApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetLatestFormByUniqueIdParams>(params)
+	runBlocking {
+		sdk.form.encrypted.getLatestFormByUniqueId(
+			decodedParams.uniqueId,
+		)
+	}
+}.toPyString(EncryptedForm.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getLatestFormByUniqueIdAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetLatestFormByUniqueIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.encrypted.getLatestFormByUniqueId(
+				decodedParams.uniqueId,
 			)
 		}.toPyStringAsyncCallback(EncryptedForm.serializer(), resultCallback)
 	}
@@ -405,37 +437,6 @@ public fun getFormsByUniqueIdAsync(
 				decodedParams.uniqueId,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(EncryptedForm.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class GetFormByUniqueIdParams(
-	public val uniqueId: String,
-)
-
-public fun getFormByUniqueIdBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormByUniqueIdParams>(params)
-	runBlocking {
-		sdk.form.encrypted.getFormByUniqueId(
-			decodedParams.uniqueId,
-		)
-	}
-}.toPyString(EncryptedForm.serializer())
-
-@OptIn(ExperimentalForeignApi::class)
-public fun getFormByUniqueIdAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormByUniqueIdParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.form.encrypted.getFormByUniqueId(
-				decodedParams.uniqueId,
-			)
-		}.toPyStringAsyncCallback(EncryptedForm.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

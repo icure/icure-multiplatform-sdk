@@ -1,18 +1,16 @@
 // auto-generated file
 import {CalendarItemShareOptions} from '../../crypto/entities/CalendarItemShareOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {CalendarItem} from '../../model/CalendarItem.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 
 	shareWith(delegateId: string, calendarItem: E,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { options?: CalendarItemShareOptions | undefined }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(calendarItem: E,
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<SimpleShareResult<E>>;
@@ -37,8 +35,6 @@ export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 
 	getCalendarsByPeriodAndAgendaId(startDate: number, endDate: number,
 			agendaId: string): Promise<Array<E>>;
-
-	getCalendarItemsWithIds(entityIds: Array<string>): Promise<Array<E>>;
 
 	findCalendarItemsByRecurrenceId(recurrenceId: string, startKey: string | undefined,
 			startDocumentId: string | undefined, limit: number): Promise<PaginatedList<E>>;

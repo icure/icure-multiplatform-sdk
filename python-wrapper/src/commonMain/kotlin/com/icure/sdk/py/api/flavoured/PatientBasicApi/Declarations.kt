@@ -3,15 +3,14 @@ package com.icure.sdk.py.api.flavoured.PatientBasicApi
 
 import com.icure.sdk.IcureBaseApis
 import com.icure.sdk.crypto.entities.EntityAccessInformation
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.SortDirection
-import com.icure.sdk.model.embed.EncryptedContent
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.py.serialization.PatientSerializer
 import com.icure.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -23,6 +22,7 @@ import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.SubscriptionEventType
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
@@ -42,16 +42,13 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 
 @Serializable
 private class MatchPatientsByParams(
-	@Contextual
-	public val filter: AbstractFilter<Patient>,
+	public val filter: BaseFilterOptions<Patient>,
 )
 
 public fun matchPatientsByBlocking(sdk: IcureBaseApis, params: String): String =
@@ -80,6 +77,104 @@ public fun matchPatientsByAsync(
 		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class MatchPatientsBySortedParams(
+	public val filter: BaseSortableFilterOptions<Patient>,
+)
+
+public fun matchPatientsBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchPatientsBySortedParams>(params)
+	runBlocking {
+		sdk.patient.matchPatientsBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyString(ListSerializer(String.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun matchPatientsBySortedAsync(
+	sdk: IcureBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchPatientsBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.patient.matchPatientsBySorted(
+				decodedParams.filter,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterPatientsByParams(
+	public val filter: BaseFilterOptions<Patient>,
+)
+
+public fun filterPatientsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterPatientsByParams>(params)
+	runBlocking {
+		sdk.patient.filterPatientsBy(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterPatientsByAsync(
+	sdk: IcureBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterPatientsByParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.patient.filterPatientsBy(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterPatientsBySortedParams(
+	public val filter: BaseSortableFilterOptions<Patient>,
+)
+
+public fun filterPatientsBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterPatientsBySortedParams>(params)
+	runBlocking {
+		sdk.patient.filterPatientsBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterPatientsBySortedAsync(
+	sdk: IcureBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterPatientsBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.patient.filterPatientsBySorted(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class DeletePatientParams(
@@ -144,13 +239,13 @@ public fun deletePatientsAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class UndeletePatientParams(
-	public val patientIds: String,
+private class UndeletePatientsParams(
+	public val patientIds: List<String>,
 )
 
-public fun undeletePatientBlocking(sdk: IcureBaseApis, params: String): String =
+public fun undeletePatientsBlocking(sdk: IcureBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UndeletePatientParams>(params)
+	val decodedParams = json.decodeFromString<UndeletePatientsParams>(params)
 	runBlocking {
 		sdk.patient.undeletePatients(
 			decodedParams.patientIds,
@@ -159,13 +254,13 @@ public fun undeletePatientBlocking(sdk: IcureBaseApis, params: String): String =
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun undeletePatientAsync(
+public fun undeletePatientsAsync(
 	sdk: IcureBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UndeletePatientParams>(params)
+	val decodedParams = json.decodeFromString<UndeletePatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.undeletePatients(
@@ -209,44 +304,36 @@ public fun getDataOwnersWithAccessToAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class SubscribeToEventsParams(
-	public val events: Set<SubscriptionEventType>,
-	@Contextual
-	public val filter: AbstractFilter<Patient>,
-	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
+private class CountOfPatientsParams(
+	public val hcPartyId: String,
 )
 
-public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun countOfPatientsBlocking(sdk: IcureBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	val decodedParams = json.decodeFromString<CountOfPatientsParams>(params)
 	runBlocking {
-		sdk.patient.subscribeToEvents(
-			decodedParams.events,
-			decodedParams.filter,
-			decodedParams.subscriptionConfig,
+		sdk.patient.countOfPatients(
+			decodedParams.hcPartyId,
 		)
 	}
-}.toPyResult {
-	EntitySubscriptionWithSerializer(it, EncryptedPatient.serializer())}
+}.toPyString(Int.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun subscribeToEventsAsync(
+public fun countOfPatientsAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	val decodedParams = json.decodeFromString<CountOfPatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.subscribeToEvents(
-				decodedParams.events,
-				decodedParams.filter,
-				decodedParams.subscriptionConfig,
+			sdk.patient.countOfPatients(
+				decodedParams.hcPartyId,
 			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			EntitySubscriptionWithSerializer(it, EncryptedPatient.serializer())}
+		}.toPyStringAsyncCallback(Int.serializer(), resultCallback)
 	}
-}.failureToPyResultAsyncCallback(resultCallback)
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class ModifyPatientParams(
@@ -311,38 +398,39 @@ public fun getPatientAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class FilterPatientsByParams(
-	@Contextual
-	public val filter: AbstractFilter<Patient>,
+private class GetPatientResolvingMergesParams(
+	public val patientId: String,
+	public val maxMergeDepth: Int?,
 )
 
-public fun filterPatientsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun getPatientResolvingMergesBlocking(sdk: IcureBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterPatientsByParams>(params)
+	val decodedParams = json.decodeFromString<GetPatientResolvingMergesParams>(params)
 	runBlocking {
-		sdk.patient.filterPatientsBy(
-			decodedParams.filter,
+		sdk.patient.getPatientResolvingMerges(
+			decodedParams.patientId,
+			decodedParams.maxMergeDepth,
 		)
 	}
-}.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
+}.toPyString(EncryptedPatient.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun filterPatientsByAsync(
+public fun getPatientResolvingMergesAsync(
 	sdk: IcureBaseApis,
 	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterPatientsByParams>(params)
+	val decodedParams = json.decodeFromString<GetPatientResolvingMergesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.filterPatientsBy(
-				decodedParams.filter,
+			sdk.patient.getPatientResolvingMerges(
+				decodedParams.patientId,
+				decodedParams.maxMergeDepth,
 			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
+		}.toPyStringAsyncCallback(EncryptedPatient.serializer(), resultCallback)
 	}
-}.failureToPyResultAsyncCallback(resultCallback)
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class FindPatientsByNameBirthSsinAutoParams(
@@ -555,70 +643,6 @@ public fun listPatientsByHcPartyAsync(
 				decodedParams.sortDirection,
 			)
 		}.toPyStringAsyncCallback(PaginatedList.serializer(EncryptedPatient.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class GetPatientHcPartyKeysForDelegateParams(
-	public val patientId: String,
-)
-
-public fun getPatientHcPartyKeysForDelegateBlocking(sdk: IcureBaseApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientHcPartyKeysForDelegateParams>(params)
-	runBlocking {
-		sdk.patient.getPatientHcPartyKeysForDelegate(
-			decodedParams.patientId,
-		)
-	}
-}.toPyString(MapSerializer(String.serializer(), String.serializer()))
-
-@OptIn(ExperimentalForeignApi::class)
-public fun getPatientHcPartyKeysForDelegateAsync(
-	sdk: IcureBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientHcPartyKeysForDelegateParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.patient.getPatientHcPartyKeysForDelegate(
-				decodedParams.patientId,
-			)
-		}.toPyStringAsyncCallback(MapSerializer(String.serializer(), String.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class CountOfPatientsParams(
-	public val hcPartyId: String,
-)
-
-public fun countOfPatientsBlocking(sdk: IcureBaseApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CountOfPatientsParams>(params)
-	runBlocking {
-		sdk.patient.countOfPatients(
-			decodedParams.hcPartyId,
-		)
-	}
-}.toPyString(EncryptedContent.serializer())
-
-@OptIn(ExperimentalForeignApi::class)
-public fun countOfPatientsAsync(
-	sdk: IcureBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CountOfPatientsParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.patient.countOfPatients(
-				decodedParams.hcPartyId,
-			)
-		}.toPyStringAsyncCallback(EncryptedContent.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -962,47 +986,6 @@ public fun modifyPatientsAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class ModifyPatientReferralParams(
-	public val patientId: String,
-	public val referralId: String,
-	public val start: Long? = null,
-	public val end: Long? = null,
-)
-
-public fun modifyPatientReferralBlocking(sdk: IcureBaseApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPatientReferralParams>(params)
-	runBlocking {
-		sdk.patient.modifyPatientReferral(
-			decodedParams.patientId,
-			decodedParams.referralId,
-			decodedParams.start,
-			decodedParams.end,
-		)
-	}
-}.toPyString(EncryptedPatient.serializer())
-
-@OptIn(ExperimentalForeignApi::class)
-public fun modifyPatientReferralAsync(
-	sdk: IcureBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPatientReferralParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.patient.modifyPatientReferral(
-				decodedParams.patientId,
-				decodedParams.referralId,
-				decodedParams.start,
-				decodedParams.end,
-			)
-		}.toPyStringAsyncCallback(EncryptedPatient.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class FindDuplicatesBySsinParams(
 	public val hcPartyId: String,
 	public val startKey: String? = null,
@@ -1086,20 +1069,17 @@ public fun findDuplicatesByNameAsync(
 
 @Serializable
 private class MergePatientsParams(
-	public val intoId: String,
-	public val fromId: String,
-	public val expectedFromRev: String,
-	public val updatedInto: EncryptedPatient,
+	@Serializable(PatientSerializer::class)
+	public val from: Patient,
+	public val mergedInto: EncryptedPatient,
 )
 
 public fun mergePatientsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MergePatientsParams>(params)
 	runBlocking {
 		sdk.patient.mergePatients(
-			decodedParams.intoId,
-			decodedParams.fromId,
-			decodedParams.expectedFromRev,
-			decodedParams.updatedInto,
+			decodedParams.from,
+			decodedParams.mergedInto,
 		)
 	}
 }.toPyString(EncryptedPatient.serializer())
@@ -1115,11 +1095,48 @@ public fun mergePatientsAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.mergePatients(
-				decodedParams.intoId,
-				decodedParams.fromId,
-				decodedParams.expectedFromRev,
-				decodedParams.updatedInto,
+				decodedParams.from,
+				decodedParams.mergedInto,
 			)
 		}.toPyStringAsyncCallback(EncryptedPatient.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SubscribeToEventsParams(
+	public val events: Set<SubscriptionEventType>,
+	public val filter: BaseFilterOptions<Patient>,
+	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
+)
+
+public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	runBlocking {
+		sdk.patient.subscribeToEvents(
+			decodedParams.events,
+			decodedParams.filter,
+			decodedParams.subscriptionConfig,
+		)
+	}
+}.toPyResult {
+	EntitySubscriptionWithSerializer(it, EncryptedPatient.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun subscribeToEventsAsync(
+	sdk: IcureBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.patient.subscribeToEvents(
+				decodedParams.events,
+				decodedParams.filter,
+				decodedParams.subscriptionConfig,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			EntitySubscriptionWithSerializer(it, EncryptedPatient.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)

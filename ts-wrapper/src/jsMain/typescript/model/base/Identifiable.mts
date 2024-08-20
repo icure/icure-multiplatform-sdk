@@ -2,6 +2,6 @@
 
 export interface Identifiable<T> {
 
-  id: T;
+	id: T;
 
 }

@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.model.security
 
 import com.icure.sdk.model.security.AlwaysPermissionItem

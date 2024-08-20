@@ -1,3 +1,4 @@
+# auto-generated file
 import asyncio
 import json
 from icure.model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, TimeTable, serialize_time_table, EncryptedTimeTable, deserialize_time_table, DocIdentifier, TimeTableShareOptions, deserialize_simple_share_result_decrypted_time_table, SimpleShareResultDecryptedTimeTable, deserialize_simple_share_result_encrypted_time_table, SimpleShareResultEncryptedTimeTable, deserialize_simple_share_result_time_table, SimpleShareResultTimeTable
@@ -217,88 +218,6 @@ class TimeTableApi:
 				return_value = EncryptedTimeTable._deserialize(result_info.success)
 				return return_value
 
-		async def get_time_tables_by_period_and_agenda_id_async(self, start_date: int, end_date: int, agenda_id: str) -> List[EncryptedTimeTable]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedTimeTable._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"agendaId": agenda_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByPeriodAndAgendaIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_time_tables_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[EncryptedTimeTable]:
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"agendaId": agenda_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByPeriodAndAgendaIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedTimeTable._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def get_time_tables_by_agenda_id_async(self, agenda_id: str) -> List[EncryptedTimeTable]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedTimeTable._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"agendaId": agenda_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByAgendaIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_time_tables_by_agenda_id_blocking(self, agenda_id: str) -> List[EncryptedTimeTable]:
-			payload = {
-				"agendaId": agenda_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.encrypted.getTimeTablesByAgendaIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [EncryptedTimeTable._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
 	class TimeTableFlavouredApi:
 
 		def __init__(self, icure_sdk):
@@ -507,92 +426,10 @@ class TimeTableApi:
 				return_value = TimeTable._deserialize(result_info.success)
 				return return_value
 
-		async def get_time_tables_by_period_and_agenda_id_async(self, start_date: int, end_date: int, agenda_id: str) -> List[TimeTable]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [TimeTable._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"agendaId": agenda_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_time_tables_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[TimeTable]:
-			payload = {
-				"startDate": start_date,
-				"endDate": end_date,
-				"agendaId": agenda_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByPeriodAndAgendaIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [TimeTable._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def get_time_tables_by_agenda_id_async(self, agenda_id: str) -> List[TimeTable]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [TimeTable._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"agendaId": agenda_id,
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByAgendaIdAsync,
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def get_time_tables_by_agenda_id_blocking(self, agenda_id: str) -> List[TimeTable]:
-			payload = {
-				"agendaId": agenda_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.getTimeTablesByAgendaIdBlocking(
-				self.icure_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise Exception(result_info.failure)
-			else:
-				return_value = [TimeTable._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
 	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
 		self.encrypted = TimeTableApi.TimeTableFlavouredEncryptedApi(self.icure_sdk)
-		self.tryAndRecover = TimeTableApi.TimeTableFlavouredApi(self.icure_sdk)
+		self.try_and_recover = TimeTableApi.TimeTableFlavouredApi(self.icure_sdk)
 
 	async def create_time_table_async(self, entity: DecryptedTimeTable) -> DecryptedTimeTable:
 		loop = asyncio.get_running_loop()
@@ -1192,86 +1029,4 @@ class TimeTableApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = DecryptedTimeTable._deserialize(result_info.success)
-			return return_value
-
-	async def get_time_tables_by_period_and_agenda_id_async(self, start_date: int, end_date: int, agenda_id: str) -> List[DecryptedTimeTable]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedTimeTable._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"startDate": start_date,
-			"endDate": end_date,
-			"agendaId": agenda_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByPeriodAndAgendaIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_time_tables_by_period_and_agenda_id_blocking(self, start_date: int, end_date: int, agenda_id: str) -> List[DecryptedTimeTable]:
-		payload = {
-			"startDate": start_date,
-			"endDate": end_date,
-			"agendaId": agenda_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByPeriodAndAgendaIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedTimeTable._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def get_time_tables_by_agenda_id_async(self, agenda_id: str) -> List[DecryptedTimeTable]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedTimeTable._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"agendaId": agenda_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByAgendaIdAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_time_tables_by_agenda_id_blocking(self, agenda_id: str) -> List[DecryptedTimeTable]:
-		payload = {
-			"agendaId": agenda_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.getTimeTablesByAgendaIdBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = [DecryptedTimeTable._deserialize(x1) for x1 in result_info.success]
 			return return_value

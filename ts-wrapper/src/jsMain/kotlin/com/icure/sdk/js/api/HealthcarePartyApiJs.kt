@@ -3,13 +3,14 @@
 
 package com.icure.sdk.js.api
 
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.sdk.js.model.HealthcarePartyJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PublicKeyJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
@@ -62,11 +63,17 @@ public external interface HealthcarePartyApiJs {
 
 	public fun modifyHealthcareParty(healthcarePartyDto: HealthcarePartyJs): Promise<HealthcarePartyJs>
 
-	public fun matchHealthcarePartiesBy(filter: AbstractFilterJs<HealthcarePartyJs>):
+	public fun matchHealthcarePartiesBy(filter: BaseFilterOptionsJs<HealthcarePartyJs>):
 			Promise<Array<String>>
 
-	public fun filterHealthPartiesBy(filterChain: FilterChainJs<HealthcarePartyJs>, options: dynamic):
-			Promise<PaginatedListJs<HealthcarePartyJs>>
+	public fun filterHealthPartiesBy(filter: BaseFilterOptionsJs<HealthcarePartyJs>):
+			Promise<PaginatedListIteratorJs<HealthcarePartyJs>>
+
+	public fun matchHealthcarePartiesBySorted(filter: BaseSortableFilterOptionsJs<HealthcarePartyJs>):
+			Promise<Array<String>>
+
+	public fun filterHealthPartiesBySorted(filter: BaseSortableFilterOptionsJs<HealthcarePartyJs>):
+			Promise<PaginatedListIteratorJs<HealthcarePartyJs>>
 
 	public fun getHealthcarePartiesInGroup(groupId: String, options: dynamic):
 			Promise<Array<HealthcarePartyJs>>

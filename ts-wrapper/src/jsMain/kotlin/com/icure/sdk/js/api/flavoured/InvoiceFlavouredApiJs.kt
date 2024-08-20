@@ -9,7 +9,6 @@ import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -46,8 +45,6 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 	public fun getInvoice(entityId: String): Promise<E>
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<E>>
-
-	public fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>): Promise<Array<E>>
 
 	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<E>>

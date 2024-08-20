@@ -1,3 +1,4 @@
+# auto-generated file
 import asyncio
 import json
 from icure.model import deserialize_data_owner_with_type, DataOwnerWithType, CryptoActorStubWithType, DataOwnerType
@@ -174,7 +175,7 @@ class DataOwnerApi:
 			return_value = deserialize_data_owner_with_type(result_info.success)
 			return return_value
 
-	async def get_data_owner_stub_async(self, owner_id: str) -> CryptoActorStubWithType:
+	async def get_crypto_actor_stub_async(self, owner_id: str) -> CryptoActorStubWithType:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -190,18 +191,18 @@ class DataOwnerApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getDataOwnerStubAsync,
+			symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCryptoActorStubAsync,
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_data_owner_stub_blocking(self, owner_id: str) -> CryptoActorStubWithType:
+	def get_crypto_actor_stub_blocking(self, owner_id: str) -> CryptoActorStubWithType:
 		payload = {
 			"ownerId": owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getDataOwnerStubBlocking(
+		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCryptoActorStubBlocking(
 			self.icure_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -351,45 +352,6 @@ class DataOwnerApi:
 			raise Exception(result_info.failure)
 		else:
 			return_value = DataOwnerType._deserialize(result_info.success)
-			return return_value
-
-	async def get_crypto_actor_stub_async(self, owner_id: str) -> CryptoActorStubWithType:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = CryptoActorStubWithType._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"ownerId": owner_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCryptoActorStubAsync,
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def get_crypto_actor_stub_blocking(self, owner_id: str) -> CryptoActorStubWithType:
-		payload = {
-			"ownerId": owner_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.extended.DataOwnerApi.getCryptoActorStubBlocking(
-			self.icure_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise Exception(result_info.failure)
-		else:
-			return_value = CryptoActorStubWithType._deserialize(result_info.success)
 			return return_value
 
 	def clear_current_data_owner_ids_cache(self) -> None:

@@ -1,22 +1,36 @@
 // auto-generated file
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {Contact, EncryptedContact} from '../../model/Contact.mjs';
 import {IcureStub} from '../../model/IcureStub.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {LabelledOccurence} from '../../model/data/LabelledOccurence.mjs';
 import {EncryptedService, Service} from '../../model/embed/Service.mjs';
-import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../../subscription/SubscriptionEventType.mjs';
 
 
 export interface ContactBasicApi {
 
-	matchContactsBy(filter: AbstractFilter<Contact>): Promise<Array<string>>;
+	matchContactsBy(filter: BaseFilterOptions<Contact>): Promise<Array<string>>;
 
-	matchServicesBy(filter: AbstractFilter<Service>): Promise<Array<string>>;
+	matchServicesBy(filter: BaseFilterOptions<Service>): Promise<Array<string>>;
+
+	matchContactsBySorted(filter: BaseSortableFilterOptions<Contact>): Promise<Array<string>>;
+
+	matchServicesBySorted(filter: BaseSortableFilterOptions<Service>): Promise<Array<string>>;
+
+	filterContactsBy(filter: BaseFilterOptions<Contact>): Promise<PaginatedListIterator<EncryptedContact>>;
+
+	filterServicesBy(filter: BaseFilterOptions<Service>): Promise<PaginatedListIterator<EncryptedService>>;
+
+	filterContactsBySorted(filter: BaseSortableFilterOptions<Contact>): Promise<PaginatedListIterator<EncryptedContact>>;
+
+	filterServicesBySorted(filter: BaseSortableFilterOptions<Service>): Promise<PaginatedListIterator<EncryptedService>>;
+
+	subscribeToServiceCreateOrUpdateEvents(filter: BaseFilterOptions<Service>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedService>>;
 
 	deleteContact(entityId: string): Promise<DocIdentifier>;
 
@@ -28,12 +42,6 @@ export interface ContactBasicApi {
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
 
-	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
-			subscriptionConfig: EntitySubscriptionConfiguration): Promise<EntitySubscription<EncryptedService>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
-			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedContact>>;
-
 	modifyContact(entity: EncryptedContact): Promise<EncryptedContact>;
 
 	modifyContacts(entities: Array<EncryptedContact>): Promise<Array<EncryptedContact>>;
@@ -41,9 +49,6 @@ export interface ContactBasicApi {
 	getContact(entityId: string): Promise<EncryptedContact>;
 
 	getContacts(entityIds: Array<string>): Promise<Array<EncryptedContact>>;
-
-	filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<EncryptedContact>>;
 
 	listContactByHCPartyServiceId(hcPartyId: string,
 			serviceId: string): Promise<Array<EncryptedContact>>;
@@ -59,9 +64,6 @@ export interface ContactBasicApi {
 	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
 			options?: { planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<EncryptedContact>>;
 
-	closeForHCPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<EncryptedContact>>;
-
 	getService(serviceId: string): Promise<EncryptedService>;
 
 	getServices(entityIds: Array<string>): Promise<Array<EncryptedService>>;
@@ -76,7 +78,7 @@ export interface ContactBasicApi {
 	findContactsByOpeningDate(startDate: number, endDate: number, hcPartyId: string,
 			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedContact>>;
 
-	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<EncryptedService>>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: BaseFilterOptions<Contact>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedContact>>;
 
 }

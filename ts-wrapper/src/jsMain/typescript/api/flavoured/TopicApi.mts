@@ -1,22 +1,18 @@
 // auto-generated file
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {TopicShareOptions} from '../../crypto/entities/TopicShareOptions.mjs';
-import {PaginatedList} from '../../model/PaginatedList.mjs';
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../../icure-sdk-ts.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {DecryptedTopic, EncryptedTopic, Topic} from '../../model/Topic.mjs';
 import {TopicRole} from '../../model/TopicRole.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
-import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
 import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../../subscription/SubscriptionEventType.mjs';
 import {TopicFlavouredApi} from './TopicFlavouredApi.mjs';
 
 
@@ -39,17 +35,20 @@ export interface TopicApi {
 
 	createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Array<string>): Promise<void>;
 
+	decrypt(topic: EncryptedTopic): Promise<DecryptedTopic>;
+
+	tryDecrypt(topic: EncryptedTopic): Promise<Topic>;
+
+	matchTopicsBy(filter: FilterOptions<Topic>): Promise<Array<string>>;
+
+	matchTopicsBySorted(filter: SortableFilterOptions<Topic>): Promise<Array<string>>;
+
 	deleteTopic(entityId: string): Promise<DocIdentifier>;
 
 	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	matchTopicsBy(filter: AbstractFilter<Topic>): Promise<Array<string>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Topic>,
-			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedTopic>>;
-
 	shareWith(delegateId: string, topic: DecryptedTopic,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedTopic>>;
+			options?: { options?: TopicShareOptions | undefined }): Promise<SimpleShareResult<DecryptedTopic>>;
 
 	tryShareWithMany(topic: DecryptedTopic,
 			delegates: { [ key: string ]: TopicShareOptions }): Promise<SimpleShareResult<DecryptedTopic>>;
@@ -57,18 +56,22 @@ export interface TopicApi {
 	shareWithMany(topic: DecryptedTopic,
 			delegates: { [ key: string ]: TopicShareOptions }): Promise<DecryptedTopic>;
 
+	filterTopicsBy(filter: FilterOptions<Topic>): Promise<PaginatedListIterator<DecryptedTopic>>;
+
+	filterTopicsBySorted(filter: SortableFilterOptions<Topic>): Promise<PaginatedListIterator<DecryptedTopic>>;
+
 	modifyTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
 
 	getTopic(entityId: string): Promise<DecryptedTopic>;
 
 	getTopics(entityIds: Array<string>): Promise<Array<DecryptedTopic>>;
 
-	filterTopicsBy(filterChain: FilterChain<Topic>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedTopic>>;
-
 	addParticipant(entityId: string, dataOwnerId: string,
 			topicRole: TopicRole): Promise<DecryptedTopic>;
 
 	removeParticipant(entityId: string, dataOwnerId: string): Promise<DecryptedTopic>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<Topic>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedTopic>>;
 
 }

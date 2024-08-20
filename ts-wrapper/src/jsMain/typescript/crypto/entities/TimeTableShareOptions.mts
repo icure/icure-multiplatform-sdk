@@ -5,13 +5,13 @@ import {ShareMetadataBehaviour} from './ShareMetadataBehaviour.mjs';
 
 export class TimeTableShareOptions {
 
-  requestedPermissions: RequestedPermission;
+	requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite;
 
-  shareEncryptionKey: ShareMetadataBehaviour;
+	shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-  constructor(partial: Partial<TimeTableShareOptions> & Pick<TimeTableShareOptions, "requestedPermissions" | "shareEncryptionKey">) {
-    this.requestedPermissions = partial.requestedPermissions;
-    this.shareEncryptionKey = partial.shareEncryptionKey;
-  }
+	constructor(partial: Partial<TimeTableShareOptions>) {
+		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;
+		if ('shareEncryptionKey' in partial && partial.shareEncryptionKey !== undefined) this.shareEncryptionKey = partial.shareEncryptionKey;
+	}
 
 }

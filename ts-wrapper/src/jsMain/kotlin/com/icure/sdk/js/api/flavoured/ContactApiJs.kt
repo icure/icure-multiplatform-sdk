@@ -5,6 +5,8 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.ContactShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.DecryptedContactJs
 import com.icure.sdk.js.model.EncryptedContactJs
@@ -16,9 +18,6 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.embed.DecryptedServiceJs
 import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -36,6 +35,16 @@ public external interface ContactApiJs {
 	public val encrypted: ContactFlavouredApiJs<EncryptedContactJs, EncryptedServiceJs>
 
 	public val tryAndRecover: ContactFlavouredApiJs<ContactJs, ServiceJs>
+
+	public fun matchContactsBy(filter: FilterOptionsJs<ContactJs>): Promise<Array<String>>
+
+	public fun matchServicesBy(filter: FilterOptionsJs<ServiceJs>): Promise<Array<String>>
+
+	public fun matchContactsBySorted(filter: SortableFilterOptionsJs<ContactJs>):
+			Promise<Array<String>>
+
+	public fun matchServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
+			Promise<Array<String>>
 
 	public fun createContact(entity: DecryptedContactJs): Promise<DecryptedContactJs>
 
@@ -56,9 +65,16 @@ public external interface ContactApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: ContactJs, delegates: Array<String>):
 			Promise<Unit>
 
-	public fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>>
+	public fun decrypt(contact: EncryptedContactJs): Promise<DecryptedContactJs>
 
-	public fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>>
+	public fun tryDecrypt(contact: EncryptedContactJs): Promise<ContactJs>
+
+	public fun decryptService(service: EncryptedServiceJs): Promise<DecryptedServiceJs>
+
+	public fun tryDecryptService(service: EncryptedServiceJs): Promise<ServiceJs>
+
+	public fun subscribeToServiceCreateOrUpdateEvents(filter: FilterOptionsJs<ServiceJs>,
+			options: dynamic): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
 
 	public fun deleteContact(entityId: String): Promise<DocIdentifierJs>
 
@@ -69,18 +85,6 @@ public external interface ContactApiJs {
 
 	public fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>>
-
-	public fun subscribeToServiceEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ServiceJs>,
-		subscriptionConfig: EntitySubscriptionConfigurationJs,
-	): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ContactJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedContactJs>>
 
 	public fun shareWith(
 		delegateId: String,
@@ -101,6 +105,18 @@ public external interface ContactApiJs {
 		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedContactJs>>
 
+	public fun filterContactsBy(filter: FilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<DecryptedContactJs>>
+
+	public fun filterServicesBy(filter: FilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<DecryptedServiceJs>>
+
+	public fun filterContactsBySorted(filter: SortableFilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<DecryptedContactJs>>
+
+	public fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<DecryptedServiceJs>>
+
 	public fun modifyContact(entity: DecryptedContactJs): Promise<DecryptedContactJs>
 
 	public fun modifyContacts(entities: Array<DecryptedContactJs>): Promise<Array<DecryptedContactJs>>
@@ -108,12 +124,6 @@ public external interface ContactApiJs {
 	public fun getContact(entityId: String): Promise<DecryptedContactJs>
 
 	public fun getContacts(entityIds: Array<String>): Promise<Array<DecryptedContactJs>>
-
-	public fun filterContactsBy(
-		filterChain: FilterChainJs<ContactJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedContactJs>>
 
 	public fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String):
 			Promise<Array<DecryptedContactJs>>
@@ -131,9 +141,6 @@ public external interface ContactApiJs {
 		secretPatientKeys: Array<String>,
 		options: dynamic,
 	): Promise<Array<DecryptedContactJs>>
-
-	public fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: Array<String>):
-			Promise<Array<DecryptedContactJs>>
 
 	public fun getService(serviceId: String): Promise<DecryptedServiceJs>
 
@@ -154,9 +161,9 @@ public external interface ContactApiJs {
 		options: dynamic,
 	): Promise<PaginatedListJs<DecryptedContactJs>>
 
-	public fun filterServicesBy(
-		filterChain: FilterChainJs<ServiceJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedServiceJs>>
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<ContactJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedContactJs>>
 }

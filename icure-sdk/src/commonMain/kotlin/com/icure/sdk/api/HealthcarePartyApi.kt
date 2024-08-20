@@ -1,13 +1,15 @@
 package com.icure.sdk.api
 
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.mapHealthcarePartyFilterOptions
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.sdk.model.HealthcareParty
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.PublicKey
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.pagination.IdsPageIterator
@@ -104,10 +106,16 @@ interface HealthcarePartyApi {
 	suspend fun getPublicKey(healthcarePartyId: String): PublicKey
 	suspend fun deleteHealthcareParties(healthcarePartyIds: List<String>): List<DocIdentifier>
 	suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HealthcareParty
-	suspend fun matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>): List<String>
+	suspend fun matchHealthcarePartiesBy(filter: BaseFilterOptions<HealthcareParty>): List<String>
 
 	suspend fun filterHealthPartiesBy(
-		filter: AbstractFilter<HealthcareParty>,
+		filter: BaseFilterOptions<HealthcareParty>,
+	): PaginatedListIterator<HealthcareParty>
+
+	suspend fun matchHealthcarePartiesBySorted(filter: BaseSortableFilterOptions<HealthcareParty>): List<String>
+
+	suspend fun filterHealthPartiesBySorted(
+		filter: BaseSortableFilterOptions<HealthcareParty>,
 	): PaginatedListIterator<HealthcareParty>
 
 	suspend fun getHealthcarePartiesInGroup(
@@ -219,11 +227,17 @@ internal class HealthcarePartyApiImpl(
 	override suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty) =
 		rawApi.modifyHealthcareParty(healthcarePartyDto).successBody()
 
-	override suspend fun matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>) =
-		rawApi.matchHealthcarePartiesBy(filter).successBody()
+	override suspend fun matchHealthcarePartiesBy(filter: BaseFilterOptions<HealthcareParty>) =
+		rawApi.matchHealthcarePartiesBy(mapHealthcarePartyFilterOptions(filter)).successBody()
 
-	override suspend fun filterHealthPartiesBy(filter: AbstractFilter<HealthcareParty>): PaginatedListIterator<HealthcareParty> =
+	override suspend fun filterHealthPartiesBy(filter: BaseFilterOptions<HealthcareParty>): PaginatedListIterator<HealthcareParty> =
 		IdsPageIterator(matchHealthcarePartiesBy(filter), this::getHealthcareParties)
+
+	override suspend fun matchHealthcarePartiesBySorted(filter: BaseSortableFilterOptions<HealthcareParty>) =
+		matchHealthcarePartiesBy(filter)
+
+	override suspend fun filterHealthPartiesBySorted(filter: BaseSortableFilterOptions<HealthcareParty>): PaginatedListIterator<HealthcareParty> =
+		filterHealthPartiesBy(filter)
 
 	override suspend fun getHealthcarePartiesInGroup(
 		groupId: String,

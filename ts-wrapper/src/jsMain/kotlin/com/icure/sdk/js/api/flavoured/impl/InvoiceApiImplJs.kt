@@ -4,7 +4,6 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.InvoiceApi
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.InvoiceApiJs
@@ -37,8 +36,6 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.sdk.js.model.embed.invoicingCode_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.invoice_fromJs
 import com.icure.sdk.js.model.invoice_toJs
@@ -60,8 +57,6 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
-import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import kotlin.Array
 import kotlin.Boolean
@@ -95,30 +90,19 @@ internal class InvoiceApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val invoiceConverted: EncryptedInvoice = invoice_fromJs(invoice)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: InvoiceShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: InvoiceShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						invoiceShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = invoiceApi.encrypted.shareWith(
 					delegateIdConverted,
 					invoiceConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -270,25 +254,6 @@ internal class InvoiceApiImplJs(
 			)
 			val result = invoiceApi.encrypted.getInvoices(
 				entityIdsConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedInvoice ->
-					invoice_toJs(x1)
-				},
-			)
-		}
-
-		override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
-				Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
-			val filterChainConverted: FilterChain<Invoice> = filterChain_fromJs(
-				filterChain,
-				{ x1: InvoiceJs ->
-					invoice_fromJs(x1)
-				},
-			)
-			val result = invoiceApi.encrypted.filterInvoicesBy(
-				filterChainConverted,
 			)
 			listToArray(
 				result,
@@ -823,30 +788,19 @@ internal class InvoiceApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val invoiceConverted: Invoice = invoice_fromJs(invoice)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: InvoiceShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: InvoiceShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						invoiceShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = invoiceApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					invoiceConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -996,25 +950,6 @@ internal class InvoiceApiImplJs(
 			)
 			val result = invoiceApi.tryAndRecover.getInvoices(
 				entityIdsConverted,
-			)
-			listToArray(
-				result,
-				{ x1: Invoice ->
-					invoice_toJs(x1)
-				},
-			)
-		}
-
-		override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>): Promise<Array<InvoiceJs>> =
-				GlobalScope.promise {
-			val filterChainConverted: FilterChain<Invoice> = filterChain_fromJs(
-				filterChain,
-				{ x1: InvoiceJs ->
-					invoice_fromJs(x1)
-				},
-			)
-			val result = invoiceApi.tryAndRecover.filterInvoicesBy(
-				filterChainConverted,
 			)
 			listToArray(
 				result,
@@ -1675,6 +1610,23 @@ internal class InvoiceApiImplJs(
 
 	}
 
+	override fun decrypt(invoice: EncryptedInvoiceJs): Promise<DecryptedInvoiceJs> =
+			GlobalScope.promise {
+		val invoiceConverted: EncryptedInvoice = invoice_fromJs(invoice)
+		val result = invoiceApi.decrypt(
+			invoiceConverted,
+		)
+		invoice_toJs(result)
+	}
+
+	override fun tryDecrypt(invoice: EncryptedInvoiceJs): Promise<InvoiceJs> = GlobalScope.promise {
+		val invoiceConverted: EncryptedInvoice = invoice_fromJs(invoice)
+		val result = invoiceApi.tryDecrypt(
+			invoiceConverted,
+		)
+		invoice_toJs(result)
+	}
+
 	override fun deleteInvoice(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = invoiceApi.deleteInvoice(
@@ -1728,30 +1680,19 @@ internal class InvoiceApiImplJs(
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val invoiceConverted: DecryptedInvoice = invoice_fromJs(invoice)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+			val optionsConverted: InvoiceShareOptions? = convertingOptionOrDefaultNullable(
 				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
+				"options",
+				null
+			) { options: InvoiceShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					invoiceShareOptions_fromJs(nonNull1)
+				}
 			}
 			val result = invoiceApi.shareWith(
 				delegateIdConverted,
 				invoiceConverted,
+				optionsConverted,
 			)
 			simpleShareResult_toJs(
 				result,
@@ -1903,25 +1844,6 @@ internal class InvoiceApiImplJs(
 		)
 		val result = invoiceApi.getInvoices(
 			entityIdsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)
-	}
-
-	override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
-			Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
-		val filterChainConverted: FilterChain<Invoice> = filterChain_fromJs(
-			filterChain,
-			{ x1: InvoiceJs ->
-				invoice_fromJs(x1)
-			},
-		)
-		val result = invoiceApi.filterInvoicesBy(
-			filterChainConverted,
 		)
 		listToArray(
 			result,

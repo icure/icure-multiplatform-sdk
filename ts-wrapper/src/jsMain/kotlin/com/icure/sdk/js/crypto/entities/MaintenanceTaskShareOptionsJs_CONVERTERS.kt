@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.crypto.entities
 
 import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions

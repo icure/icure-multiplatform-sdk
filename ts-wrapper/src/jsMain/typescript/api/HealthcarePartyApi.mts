@@ -1,11 +1,10 @@
 // auto-generated file
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../icure-sdk-ts.mjs';
 import {DataOwnerRegistrationSuccess} from '../model/DataOwnerRegistrationSuccess.mjs';
 import {HealthcareParty} from '../model/HealthcareParty.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {PublicKey} from '../model/PublicKey.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
-import {AbstractFilter} from '../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../model/filter/chain/FilterChain.mjs';
 
 
 export interface HealthcarePartyApi {
@@ -49,10 +48,13 @@ export interface HealthcarePartyApi {
 
 	modifyHealthcareParty(healthcarePartyDto: HealthcareParty): Promise<HealthcareParty>;
 
-	matchHealthcarePartiesBy(filter: AbstractFilter<HealthcareParty>): Promise<Array<string>>;
+	matchHealthcarePartiesBy(filter: BaseFilterOptions<HealthcareParty>): Promise<Array<string>>;
 
-	filterHealthPartiesBy(filterChain: FilterChain<HealthcareParty>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<HealthcareParty>>;
+	filterHealthPartiesBy(filter: BaseFilterOptions<HealthcareParty>): Promise<PaginatedListIterator<HealthcareParty>>;
+
+	matchHealthcarePartiesBySorted(filter: BaseSortableFilterOptions<HealthcareParty>): Promise<Array<string>>;
+
+	filterHealthPartiesBySorted(filter: BaseSortableFilterOptions<HealthcareParty>): Promise<PaginatedListIterator<HealthcareParty>>;
 
 	getHealthcarePartiesInGroup(groupId: string,
 			options?: { healthcarePartyIds?: Array<string> | undefined }): Promise<Array<HealthcareParty>>;

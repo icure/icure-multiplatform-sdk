@@ -6,14 +6,14 @@ import {Versionable} from './Versionable.mjs';
 
 export interface HasEncryptionMetadata extends Versionable<string> {
 
-  secretForeignKeys: Array<string>;
+	secretForeignKeys: Array<string>;
 
-  cryptedForeignKeys: { [ key: string ]: Array<Delegation> };
+	cryptedForeignKeys: { [ key: string ]: Array<Delegation> };
 
-  delegations: { [ key: string ]: Array<Delegation> };
+	delegations: { [ key: string ]: Array<Delegation> };
 
-  encryptionKeys: { [ key: string ]: Array<Delegation> };
+	encryptionKeys: { [ key: string ]: Array<Delegation> };
 
-  securityMetadata: SecurityMetadata | undefined;
+	securityMetadata: SecurityMetadata | undefined;
 
 }

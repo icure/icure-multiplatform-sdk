@@ -46,6 +46,7 @@ fun initializeSdk(
 	kotlin.runCatching {
 		val decodedParams = Serialization.json.decodeFromString<PySdkParams>(dataParams)
 		IcureSdk.initialize(
+			null,
 			decodedParams.baseUrl,
 			AuthenticationMethod.UsingCredentials(
 				UsernamePassword(
@@ -80,6 +81,7 @@ fun initializeBaseSdk(
 ): IcureBaseSdk = runBlocking {
 	val decodedParams = Serialization.json.decodeFromString<PyBaseSdkParams>(dataParams)
 	IcureBaseSdk.initialize(
+		null,
 		decodedParams.baseUrl,
 		AuthenticationMethod.UsingCredentials(UsernamePassword(decodedParams.username, decodedParams.password)),
 		decodedParams.asApiOptions()

@@ -2,40 +2,36 @@
 package com.icure.sdk.js.api.flavoured.`impl`
 
 import com.icure.sdk.api.flavoured.TopicBasicApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.TopicBasicApiJs
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.sdk.js.filters.baseFilterOptions_fromJs
+import com.icure.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.listToArray
-import com.icure.sdk.js.model.CheckedConverters.numberToInt
-import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedTopicJs
-import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.TopicJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.abstractFilter_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
-import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.topic_fromJs
 import com.icure.sdk.js.model.topic_toJs
 import com.icure.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
 import com.icure.sdk.js.subscription.entitySubscription_toJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.EncryptedTopic
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.SubscriptionEventType
 import kotlin.Array
-import kotlin.Double
-import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
@@ -49,6 +45,62 @@ import kotlinx.coroutines.promise
 internal class TopicBasicApiImplJs(
 	private val topicBasicApi: TopicBasicApi,
 ) : TopicBasicApiJs {
+	override fun matchTopicsBy(filter: BaseFilterOptionsJs<TopicJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<Topic> = baseFilterOptions_fromJs(filter)
+		val result = topicBasicApi.matchTopicsBy(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun matchTopicsBySorted(filter: BaseSortableFilterOptionsJs<TopicJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<Topic> = baseSortableFilterOptions_fromJs(filter)
+		val result = topicBasicApi.matchTopicsBySorted(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun filterTopicsBy(filter: BaseFilterOptionsJs<TopicJs>):
+			Promise<PaginatedListIteratorJs<EncryptedTopicJs>> = GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<Topic> = baseFilterOptions_fromJs(filter)
+		val result = topicBasicApi.filterTopicsBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: EncryptedTopic ->
+				topic_toJs(x1)
+			},
+		)
+	}
+
+	override fun filterTopicsBySorted(filter: BaseSortableFilterOptionsJs<TopicJs>):
+			Promise<PaginatedListIteratorJs<EncryptedTopicJs>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<Topic> = baseSortableFilterOptions_fromJs(filter)
+		val result = topicBasicApi.filterTopicsBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: EncryptedTopic ->
+				topic_toJs(x1)
+			},
+		)
+	}
+
 	override fun deleteTopic(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = topicBasicApi.deleteTopic(
@@ -75,69 +127,6 @@ internal class TopicBasicApiImplJs(
 				docIdentifier_toJs(x1)
 			},
 		)
-	}
-
-	override fun matchTopicsBy(filter: AbstractFilterJs<TopicJs>): Promise<Array<String>> =
-			GlobalScope.promise {
-		val filterConverted: AbstractFilter<Topic> = abstractFilter_fromJs(
-			filter,
-			{ x1: TopicJs ->
-				topic_fromJs(x1)
-			},
-		)
-		val result = topicBasicApi.matchTopicsBy(
-			filterConverted,
-		)
-		listToArray(
-			result,
-			{ x1: String ->
-				x1
-			},
-		)
-	}
-
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<TopicJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedTopicJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Topic> = abstractFilter_fromJs(
-				filter,
-				{ x1: TopicJs ->
-					topic_fromJs(x1)
-				},
-			)
-			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
-					convertingOptionOrDefaultNullable(
-				_options,
-				"subscriptionConfig",
-				null
-			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
-				subscriptionConfig?.let { nonNull1 ->
-					entitySubscriptionConfiguration_fromJs(nonNull1)
-				}
-			}
-			val result = topicBasicApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				subscriptionConfigConverted,
-			)
-			entitySubscription_toJs(
-				result,
-				{ x1: EncryptedTopic ->
-					topic_toJs(x1)
-				},
-			)
-		}
 	}
 
 	override fun modifyTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs> =
@@ -177,44 +166,6 @@ internal class TopicBasicApiImplJs(
 		)
 	}
 
-	override fun filterTopicsBy(filterChain: FilterChainJs<TopicJs>, options: dynamic):
-			Promise<PaginatedListJs<EncryptedTopicJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"startDocumentId",
-				null
-			) { startDocumentId: String? ->
-				undefinedToNull(startDocumentId)
-			}
-			val limitConverted: Int? = convertingOptionOrDefaultNullable(
-				_options,
-				"limit",
-				null
-			) { limit: Double? ->
-				numberToInt(limit, "limit")
-			}
-			val filterChainConverted: FilterChain<Topic> = filterChain_fromJs(
-				filterChain,
-				{ x1: TopicJs ->
-					topic_fromJs(x1)
-				},
-			)
-			val result = topicBasicApi.filterTopicsBy(
-				startDocumentIdConverted,
-				limitConverted,
-				filterChainConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: EncryptedTopic ->
-					topic_toJs(x1)
-				},
-			)
-		}
-	}
-
 	override fun addParticipant(
 		entityId: String,
 		dataOwnerId: String,
@@ -240,5 +191,44 @@ internal class TopicBasicApiImplJs(
 			dataOwnerIdConverted,
 		)
 		topic_toJs(result)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: BaseFilterOptionsJs<TopicJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedTopicJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: BaseFilterOptions<Topic> = baseFilterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = topicBasicApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedTopic ->
+					topic_toJs(x1)
+				},
+			)
+		}
 	}
 }

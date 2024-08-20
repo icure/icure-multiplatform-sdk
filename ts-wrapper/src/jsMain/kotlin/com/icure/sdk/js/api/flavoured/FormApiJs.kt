@@ -47,6 +47,10 @@ public external interface FormApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: FormJs, delegates: Array<String>):
 			Promise<Unit>
 
+	public fun decrypt(form: EncryptedFormJs): Promise<DecryptedFormJs>
+
+	public fun tryDecrypt(form: EncryptedFormJs): Promise<FormJs>
+
 	public fun deleteForm(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
@@ -98,13 +102,13 @@ public external interface FormApiJs {
 
 	public fun getForms(entityIds: Array<String>): Promise<Array<DecryptedFormJs>>
 
-	public fun getFormByLogicalUuid(logicalUuid: String): Promise<DecryptedFormJs>
+	public fun getLatestFormByLogicalUuid(logicalUuid: String): Promise<DecryptedFormJs>
+
+	public fun getLatestFormByUniqueId(uniqueId: String): Promise<DecryptedFormJs>
 
 	public fun getFormsByLogicalUuid(logicalUuid: String): Promise<Array<DecryptedFormJs>>
 
 	public fun getFormsByUniqueId(uniqueId: String): Promise<Array<DecryptedFormJs>>
-
-	public fun getFormByUniqueId(uniqueId: String): Promise<DecryptedFormJs>
 
 	public fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<DecryptedFormJs>>
 

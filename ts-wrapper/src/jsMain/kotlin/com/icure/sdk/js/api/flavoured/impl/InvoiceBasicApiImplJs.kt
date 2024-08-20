@@ -12,7 +12,6 @@ import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.EncryptedInvoiceJs
 import com.icure.sdk.js.model.IcureStubJs
-import com.icure.sdk.js.model.InvoiceJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.sdk.js.model.`data`.labelledOccurence_toJs
@@ -20,20 +19,16 @@ import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.sdk.js.model.embed.invoicingCode_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.invoice_fromJs
 import com.icure.sdk.js.model.invoice_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.model.EncryptedInvoice
 import com.icure.sdk.model.IcureStub
-import com.icure.sdk.model.Invoice
 import com.icure.sdk.model.`data`.LabelledOccurence
 import com.icure.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.sdk.model.embed.InvoiceType
 import com.icure.sdk.model.embed.MediumType
-import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -144,25 +139,6 @@ internal class InvoiceBasicApiImplJs(
 		)
 		val result = invoiceBasicApi.getInvoices(
 			entityIdsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: EncryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)
-	}
-
-	override fun filterInvoicesBy(filterChain: FilterChainJs<InvoiceJs>):
-			Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
-		val filterChainConverted: FilterChain<Invoice> = filterChain_fromJs(
-			filterChain,
-			{ x1: InvoiceJs ->
-				invoice_fromJs(x1)
-			},
-		)
-		val result = invoiceBasicApi.filterInvoicesBy(
-			filterChainConverted,
 		)
 		listToArray(
 			result,

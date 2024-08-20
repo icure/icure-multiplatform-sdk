@@ -5,7 +5,8 @@ import com.icure.sdk.api.flavoured.PatientApi
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.crypto.entities.PatientShareOptions
 import com.icure.sdk.crypto.entities.ShareAllPatientDataOptions
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.PatientApiJs
@@ -19,35 +20,29 @@ import com.icure.sdk.js.crypto.entities.entityAccessInformation_toJs
 import com.icure.sdk.js.crypto.entities.patientShareOptions_fromJs
 import com.icure.sdk.js.crypto.entities.shareAllPatientDataOptions_Result_toJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
+import com.icure.sdk.js.filters.filterOptions_fromJs
+import com.icure.sdk.js.filters.sortableFilterOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.anyEntityWithTypeInfoToKt
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
+import com.icure.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.sdk.js.model.CheckedConverters.listToArray
-import com.icure.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.sdk.js.model.CheckedConverters.setToArray
 import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
-import com.icure.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.sdk.js.model.DecryptedPatientJs
 import com.icure.sdk.js.model.EncryptedPatientJs
 import com.icure.sdk.js.model.IdWithRevJs
-import com.icure.sdk.js.model.ListOfIdsJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.sdk.js.model.dataOwnerRegistrationSuccess_toJs
-import com.icure.sdk.js.model.embed.EncryptedContentJs
-import com.icure.sdk.js.model.embed.content_toJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.abstractFilter_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.idWithRev_toJs
-import com.icure.sdk.js.model.listOfIds_fromJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.js.model.patient_toJs
@@ -58,21 +53,19 @@ import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
 import com.icure.sdk.js.subscription.entitySubscription_toJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.DecryptedPatient
 import com.icure.sdk.model.EncryptedPatient
 import com.icure.sdk.model.IdWithRev
-import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.couchdb.SortDirection
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -98,56 +91,22 @@ internal class PatientApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			patient: EncryptedPatientJs,
-			shareSecretIds: Array<String>,
-			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedPatientJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val delegateIdConverted: String = delegateId
-				val patientConverted: EncryptedPatient = patient_fromJs(patient)
-				val shareSecretIdsConverted: Set<String> = arrayToSet(
-					shareSecretIds,
-					"shareSecretIds",
-					{ x1: String ->
-						x1
-					},
-				)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
-				}
-				val result = patientApi.encrypted.shareWith(
-					delegateIdConverted,
-					patientConverted,
-					shareSecretIdsConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
-				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedPatient ->
-						patient_toJs(x1)
-					},
-				)
-			}
+			options: PatientShareOptionsJs,
+		): Promise<SimpleShareResultJs<EncryptedPatientJs>> = GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val patientConverted: EncryptedPatient = patient_fromJs(patient)
+			val optionsConverted: PatientShareOptions = patientShareOptions_fromJs(options)
+			val result = patientApi.encrypted.shareWith(
+				delegateIdConverted,
+				patientConverted,
+				optionsConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: EncryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
 		}
 
 		override fun tryShareWithMany(patient: EncryptedPatientJs,
@@ -206,6 +165,34 @@ internal class PatientApiImplJs(
 			patient_toJs(result)
 		}
 
+		override fun filterPatientsBy(filter: FilterOptionsJs<PatientJs>):
+				Promise<PaginatedListIteratorJs<EncryptedPatientJs>> = GlobalScope.promise {
+			val filterConverted: FilterOptions<Patient> = filterOptions_fromJs(filter)
+			val result = patientApi.encrypted.filterPatientsBy(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: EncryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
+				Promise<PaginatedListIteratorJs<EncryptedPatientJs>> = GlobalScope.promise {
+			val filterConverted: SortableFilterOptions<Patient> = sortableFilterOptions_fromJs(filter)
+			val result = patientApi.encrypted.filterPatientsBySorted(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: EncryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+
 		override fun modifyPatient(entity: EncryptedPatientJs): Promise<EncryptedPatientJs> =
 				GlobalScope.promise {
 			val entityConverted: EncryptedPatient = patient_fromJs(entity)
@@ -223,74 +210,15 @@ internal class PatientApiImplJs(
 			patient_toJs(result)
 		}
 
-		override fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>, options: dynamic):
-				Promise<PaginatedListJs<EncryptedPatientJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val filterChainConverted: FilterChain<Patient> = filterChain_fromJs(
-					filterChain,
-					{ x1: PatientJs ->
-						patient_fromJs(x1)
-					},
-				)
-				val startKeyConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"startKey",
-					null
-				) { startKey: String? ->
-					undefinedToNull(startKey)
-				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"startDocumentId",
-					null
-				) { startDocumentId: String? ->
-					undefinedToNull(startDocumentId)
-				}
-				val limitConverted: Int? = convertingOptionOrDefaultNullable(
-					_options,
-					"limit",
-					null
-				) { limit: Double? ->
-					numberToInt(limit, "limit")
-				}
-				val skipConverted: Int? = convertingOptionOrDefaultNullable(
-					_options,
-					"skip",
-					null
-				) { skip: Double? ->
-					numberToInt(skip, "skip")
-				}
-				val sortConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"sort",
-					null
-				) { sort: String? ->
-					undefinedToNull(sort)
-				}
-				val descConverted: Boolean? = convertingOptionOrDefaultNullable(
-					_options,
-					"desc",
-					null
-				) { desc: Boolean? ->
-					undefinedToNull(desc)
-				}
-				val result = patientApi.encrypted.filterPatientsBy(
-					filterChainConverted,
-					startKeyConverted,
-					startDocumentIdConverted,
-					limitConverted,
-					skipConverted,
-					sortConverted,
-					descConverted,
-				)
-				paginatedList_toJs(
-					result,
-					{ x1: EncryptedPatient ->
-						patient_toJs(x1)
-					},
-				)
-			}
+		override fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Double?):
+				Promise<EncryptedPatientJs> = GlobalScope.promise {
+			val patientIdConverted: String = patientId
+			val maxMergeDepthConverted: Int? = numberToInt(maxMergeDepth, "maxMergeDepth")
+			val result = patientApi.encrypted.getPatientResolvingMerges(
+				patientIdConverted,
+				maxMergeDepthConverted,
+			)
+			patient_toJs(result)
 		}
 
 		override fun findPatientsByNameBirthSsinAuto(filterValue: String, options: dynamic):
@@ -517,32 +445,6 @@ internal class PatientApiImplJs(
 					},
 				)
 			}
-		}
-
-		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
-				= GlobalScope.promise {
-			val patientIdConverted: String = patientId
-			val result = patientApi.encrypted.getPatientHcPartyKeysForDelegate(
-				patientIdConverted,
-			)
-			mapToObject(
-				result,
-				{ x1: String ->
-					x1
-				},
-				{ x1: String ->
-					x1
-				},
-			)
-		}
-
-		override fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs> =
-				GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val result = patientApi.encrypted.countOfPatients(
-				hcPartyIdConverted,
-			)
-			content_toJs(result)
 		}
 
 		override fun findPatientsByHealthcareParty(options: dynamic):
@@ -775,9 +677,15 @@ internal class PatientApiImplJs(
 			}
 		}
 
-		override fun getPatients(patientIds: ListOfIdsJs): Promise<Array<EncryptedPatientJs>> =
+		override fun getPatients(patientIds: Array<String>): Promise<Array<EncryptedPatientJs>> =
 				GlobalScope.promise {
-			val patientIdsConverted: ListOfIds = listOfIds_fromJs(patientIds)
+			val patientIdsConverted: List<String> = arrayToList(
+				patientIds,
+				"patientIds",
+				{ x1: String ->
+					x1
+				},
+			)
 			val result = patientApi.encrypted.getPatients(
 				patientIdsConverted,
 			)
@@ -832,39 +740,6 @@ internal class PatientApiImplJs(
 					idWithRev_toJs(x1)
 				},
 			)
-		}
-
-		override fun modifyPatientReferral(
-			patientId: String,
-			referralId: String,
-			options: dynamic,
-		): Promise<EncryptedPatientJs> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val patientIdConverted: String = patientId
-				val referralIdConverted: String = referralId
-				val startConverted: Long? = convertingOptionOrDefaultNullable(
-					_options,
-					"start",
-					null
-				) { start: Double? ->
-					numberToLong(start, "start")
-				}
-				val endConverted: Long? = convertingOptionOrDefaultNullable(
-					_options,
-					"end",
-					null
-				) { end: Double? ->
-					numberToLong(end, "end")
-				}
-				val result = patientApi.encrypted.modifyPatientReferral(
-					patientIdConverted,
-					referralIdConverted,
-					startConverted,
-					endConverted,
-				)
-				patient_toJs(result)
-			}
 		}
 
 		override fun findDuplicatesBySsin(hcPartyId: String, options: dynamic):
@@ -949,21 +824,13 @@ internal class PatientApiImplJs(
 			}
 		}
 
-		override fun mergePatients(
-			intoId: String,
-			fromId: String,
-			expectedFromRev: String,
-			updatedInto: EncryptedPatientJs,
-		): Promise<EncryptedPatientJs> = GlobalScope.promise {
-			val intoIdConverted: String = intoId
-			val fromIdConverted: String = fromId
-			val expectedFromRevConverted: String = expectedFromRev
-			val updatedIntoConverted: EncryptedPatient = patient_fromJs(updatedInto)
+		override fun mergePatients(from: PatientJs, mergedInto: EncryptedPatientJs):
+				Promise<EncryptedPatientJs> = GlobalScope.promise {
+			val fromConverted: Patient = patient_fromJs(from)
+			val mergedIntoConverted: EncryptedPatient = patient_fromJs(mergedInto)
 			val result = patientApi.encrypted.mergePatients(
-				intoIdConverted,
-				fromIdConverted,
-				expectedFromRevConverted,
-				updatedIntoConverted,
+				fromConverted,
+				mergedIntoConverted,
 			)
 			patient_toJs(result)
 		}
@@ -974,56 +841,22 @@ internal class PatientApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			patient: PatientJs,
-			shareSecretIds: Array<String>,
-			options: dynamic,
-		): Promise<SimpleShareResultJs<PatientJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val delegateIdConverted: String = delegateId
-				val patientConverted: Patient = patient_fromJs(patient)
-				val shareSecretIdsConverted: Set<String> = arrayToSet(
-					shareSecretIds,
-					"shareSecretIds",
-					{ x1: String ->
-						x1
-					},
-				)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
-				}
-				val result = patientApi.tryAndRecover.shareWith(
-					delegateIdConverted,
-					patientConverted,
-					shareSecretIdsConverted,
-					shareEncryptionKeysConverted,
-					shareOwningEntityIdsConverted,
-					requestedPermissionConverted,
-				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Patient ->
-						patient_toJs(x1)
-					},
-				)
-			}
+			options: PatientShareOptionsJs,
+		): Promise<SimpleShareResultJs<PatientJs>> = GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val patientConverted: Patient = patient_fromJs(patient)
+			val optionsConverted: PatientShareOptions = patientShareOptions_fromJs(options)
+			val result = patientApi.tryAndRecover.shareWith(
+				delegateIdConverted,
+				patientConverted,
+				optionsConverted,
+			)
+			simpleShareResult_toJs(
+				result,
+				{ x1: Patient ->
+					patient_toJs(x1)
+				},
+			)
 		}
 
 		override fun tryShareWithMany(patient: PatientJs,
@@ -1081,6 +914,34 @@ internal class PatientApiImplJs(
 			patient_toJs(result)
 		}
 
+		override fun filterPatientsBy(filter: FilterOptionsJs<PatientJs>):
+				Promise<PaginatedListIteratorJs<PatientJs>> = GlobalScope.promise {
+			val filterConverted: FilterOptions<Patient> = filterOptions_fromJs(filter)
+			val result = patientApi.tryAndRecover.filterPatientsBy(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: Patient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
+				Promise<PaginatedListIteratorJs<PatientJs>> = GlobalScope.promise {
+			val filterConverted: SortableFilterOptions<Patient> = sortableFilterOptions_fromJs(filter)
+			val result = patientApi.tryAndRecover.filterPatientsBySorted(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: Patient ->
+					patient_toJs(x1)
+				},
+			)
+		}
+
 		override fun modifyPatient(entity: PatientJs): Promise<PatientJs> = GlobalScope.promise {
 			val entityConverted: Patient = patient_fromJs(entity)
 			val result = patientApi.tryAndRecover.modifyPatient(
@@ -1097,74 +958,15 @@ internal class PatientApiImplJs(
 			patient_toJs(result)
 		}
 
-		override fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>, options: dynamic):
-				Promise<PaginatedListJs<PatientJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val filterChainConverted: FilterChain<Patient> = filterChain_fromJs(
-					filterChain,
-					{ x1: PatientJs ->
-						patient_fromJs(x1)
-					},
-				)
-				val startKeyConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"startKey",
-					null
-				) { startKey: String? ->
-					undefinedToNull(startKey)
-				}
-				val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"startDocumentId",
-					null
-				) { startDocumentId: String? ->
-					undefinedToNull(startDocumentId)
-				}
-				val limitConverted: Int? = convertingOptionOrDefaultNullable(
-					_options,
-					"limit",
-					null
-				) { limit: Double? ->
-					numberToInt(limit, "limit")
-				}
-				val skipConverted: Int? = convertingOptionOrDefaultNullable(
-					_options,
-					"skip",
-					null
-				) { skip: Double? ->
-					numberToInt(skip, "skip")
-				}
-				val sortConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"sort",
-					null
-				) { sort: String? ->
-					undefinedToNull(sort)
-				}
-				val descConverted: Boolean? = convertingOptionOrDefaultNullable(
-					_options,
-					"desc",
-					null
-				) { desc: Boolean? ->
-					undefinedToNull(desc)
-				}
-				val result = patientApi.tryAndRecover.filterPatientsBy(
-					filterChainConverted,
-					startKeyConverted,
-					startDocumentIdConverted,
-					limitConverted,
-					skipConverted,
-					sortConverted,
-					descConverted,
-				)
-				paginatedList_toJs(
-					result,
-					{ x1: Patient ->
-						patient_toJs(x1)
-					},
-				)
-			}
+		override fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Double?):
+				Promise<PatientJs> = GlobalScope.promise {
+			val patientIdConverted: String = patientId
+			val maxMergeDepthConverted: Int? = numberToInt(maxMergeDepth, "maxMergeDepth")
+			val result = patientApi.tryAndRecover.getPatientResolvingMerges(
+				patientIdConverted,
+				maxMergeDepthConverted,
+			)
+			patient_toJs(result)
 		}
 
 		override fun findPatientsByNameBirthSsinAuto(filterValue: String, options: dynamic):
@@ -1390,32 +1192,6 @@ internal class PatientApiImplJs(
 					},
 				)
 			}
-		}
-
-		override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
-				= GlobalScope.promise {
-			val patientIdConverted: String = patientId
-			val result = patientApi.tryAndRecover.getPatientHcPartyKeysForDelegate(
-				patientIdConverted,
-			)
-			mapToObject(
-				result,
-				{ x1: String ->
-					x1
-				},
-				{ x1: String ->
-					x1
-				},
-			)
-		}
-
-		override fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs> =
-				GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val result = patientApi.tryAndRecover.countOfPatients(
-				hcPartyIdConverted,
-			)
-			content_toJs(result)
 		}
 
 		override fun findPatientsByHealthcareParty(options: dynamic):
@@ -1648,9 +1424,15 @@ internal class PatientApiImplJs(
 			}
 		}
 
-		override fun getPatients(patientIds: ListOfIdsJs): Promise<Array<PatientJs>> =
+		override fun getPatients(patientIds: Array<String>): Promise<Array<PatientJs>> =
 				GlobalScope.promise {
-			val patientIdsConverted: ListOfIds = listOfIds_fromJs(patientIds)
+			val patientIdsConverted: List<String> = arrayToList(
+				patientIds,
+				"patientIds",
+				{ x1: String ->
+					x1
+				},
+			)
 			val result = patientApi.tryAndRecover.getPatients(
 				patientIdsConverted,
 			)
@@ -1705,39 +1487,6 @@ internal class PatientApiImplJs(
 					idWithRev_toJs(x1)
 				},
 			)
-		}
-
-		override fun modifyPatientReferral(
-			patientId: String,
-			referralId: String,
-			options: dynamic,
-		): Promise<PatientJs> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val patientIdConverted: String = patientId
-				val referralIdConverted: String = referralId
-				val startConverted: Long? = convertingOptionOrDefaultNullable(
-					_options,
-					"start",
-					null
-				) { start: Double? ->
-					numberToLong(start, "start")
-				}
-				val endConverted: Long? = convertingOptionOrDefaultNullable(
-					_options,
-					"end",
-					null
-				) { end: Double? ->
-					numberToLong(end, "end")
-				}
-				val result = patientApi.tryAndRecover.modifyPatientReferral(
-					patientIdConverted,
-					referralIdConverted,
-					startConverted,
-					endConverted,
-				)
-				patient_toJs(result)
-			}
 		}
 
 		override fun findDuplicatesBySsin(hcPartyId: String, options: dynamic):
@@ -1822,21 +1571,13 @@ internal class PatientApiImplJs(
 			}
 		}
 
-		override fun mergePatients(
-			intoId: String,
-			fromId: String,
-			expectedFromRev: String,
-			updatedInto: EncryptedPatientJs,
-		): Promise<PatientJs> = GlobalScope.promise {
-			val intoIdConverted: String = intoId
-			val fromIdConverted: String = fromId
-			val expectedFromRevConverted: String = expectedFromRev
-			val updatedIntoConverted: EncryptedPatient = patient_fromJs(updatedInto)
+		override fun mergePatients(from: PatientJs, mergedInto: PatientJs): Promise<PatientJs> =
+				GlobalScope.promise {
+			val fromConverted: Patient = patient_fromJs(from)
+			val mergedIntoConverted: Patient = patient_fromJs(mergedInto)
 			val result = patientApi.tryAndRecover.mergePatients(
-				intoIdConverted,
-				fromIdConverted,
-				expectedFromRevConverted,
-				updatedIntoConverted,
+				fromConverted,
+				mergedIntoConverted,
 			)
 			patient_toJs(result)
 		}
@@ -1919,42 +1660,12 @@ internal class PatientApiImplJs(
 		}
 	}
 
-	override fun createDelegationsDeAnonymizationMetadata(patient: PatientJs,
-			dataOwnerIds: Array<String>): Promise<Unit> = GlobalScope.promise {
-		val patientConverted: Patient = patient_fromJs(patient)
-		val dataOwnerIdsConverted: Set<String> = arrayToSet(
-			dataOwnerIds,
-			"dataOwnerIds",
-			{ x1: String ->
-				x1
-			},
-		)
-		patientApi.createDelegationDeAnonymizationMetadata(
-			patientConverted,
-			dataOwnerIdsConverted,
-		)
-
-	}
-
 	override fun hasWriteAccess(patient: PatientJs): Promise<Boolean> = GlobalScope.promise {
 		val patientConverted: Patient = patient_fromJs(patient)
 		val result = patientApi.hasWriteAccess(
 			patientConverted,
 		)
 		result
-	}
-
-	override fun decryptPatientIdOf(patient: PatientJs): Promise<Array<String>> = GlobalScope.promise {
-		val patientConverted: Patient = patient_fromJs(patient)
-		val result = patientApi.decryptPatientIdOf(
-			patientConverted,
-		)
-		setToArray(
-			result,
-			{ x1: String ->
-				x1
-			},
-		)
 	}
 
 	override fun createDelegationDeAnonymizationMetadata(entity: PatientJs, delegates: Array<String>):
@@ -1972,6 +1683,23 @@ internal class PatientApiImplJs(
 			delegatesConverted,
 		)
 
+	}
+
+	override fun decrypt(patient: EncryptedPatientJs): Promise<DecryptedPatientJs> =
+			GlobalScope.promise {
+		val patientConverted: EncryptedPatient = patient_fromJs(patient)
+		val result = patientApi.decrypt(
+			patientConverted,
+		)
+		patient_toJs(result)
+	}
+
+	override fun tryDecrypt(patient: EncryptedPatientJs): Promise<PatientJs> = GlobalScope.promise {
+		val patientConverted: EncryptedPatient = patient_fromJs(patient)
+		val result = patientApi.tryDecrypt(
+			patientConverted,
+		)
+		patient_toJs(result)
 	}
 
 	override fun createPatients(patientDtos: Array<DecryptedPatientJs>): Promise<Array<IdWithRevJs>> =
@@ -1994,40 +1722,10 @@ internal class PatientApiImplJs(
 		)
 	}
 
-	override fun registerPatient(
-		hcPartyId: String,
-		groupId: String,
-		token: String?,
-		useShortToken: Boolean?,
-		createAutoDelegation: Boolean,
-		patient: DecryptedPatientJs,
-	): Promise<DataOwnerRegistrationSuccessJs> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val groupIdConverted: String = groupId
-		val tokenConverted: String? = undefinedToNull(token)
-		val useShortTokenConverted: Boolean? = undefinedToNull(useShortToken)
-		val createAutoDelegationConverted: Boolean = createAutoDelegation
-		val patientConverted: DecryptedPatient = patient_fromJs(patient)
-		val result = patientApi.registerPatient(
-			hcPartyIdConverted,
-			groupIdConverted,
-			tokenConverted,
-			useShortTokenConverted,
-			createAutoDelegationConverted,
-			patientConverted,
-		)
-		dataOwnerRegistrationSuccess_toJs(result)
-	}
-
-	override fun shareAllDataOfPatient(
-		user: UserJs,
-		patientId: String,
-		dataOwnerId: String,
-		delegatesWithShareType: Record<String, Array<String>>,
-	): Promise<ShareAllPatientDataOptionsJs_ResultJs> = GlobalScope.promise {
-		val userConverted: User = user_fromJs(user)
+	override fun shareAllDataOfPatient(patientId: String,
+			delegatesWithShareType: Record<String, Array<String>>):
+			Promise<ShareAllPatientDataOptionsJs_ResultJs> = GlobalScope.promise {
 		val patientIdConverted: String = patientId
-		val dataOwnerIdConverted: String = dataOwnerId
 		val delegatesWithShareTypeConverted: Map<String, Set<ShareAllPatientDataOptions.Tag>> =
 				objectToMap(
 			delegatesWithShareType,
@@ -2046,17 +1744,16 @@ internal class PatientApiImplJs(
 			},
 		)
 		val result = patientApi.shareAllDataOfPatient(
-			userConverted,
 			patientIdConverted,
 			delegatesWithShareTypeConverted,
 		)
 		shareAllPatientDataOptions_Result_toJs(result)
 	}
 
-	override fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfoJs<*>,
-			healthcarePartyId: String): Promise<String> = GlobalScope.promise {
+	override
+			fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfoJs<*>):
+			Promise<String> = GlobalScope.promise {
 		val childDocumentConverted: EntityWithTypeInfo<*> = anyEntityWithTypeInfoToKt(childDocument)
-		val healthcarePartyIdConverted: String = healthcarePartyId
 		val result = patientApi.getPatientIdOfChildDocumentForHcpAndHcpParents(
 			childDocumentConverted,
 		)
@@ -2086,15 +1783,24 @@ internal class PatientApiImplJs(
 		result
 	}
 
-	override fun matchPatientsBy(filter: AbstractFilterJs<PatientJs>): Promise<Array<String>> =
+	override fun matchPatientsBy(filter: FilterOptionsJs<PatientJs>): Promise<Array<String>> =
 			GlobalScope.promise {
-		val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
-			filter,
-			{ x1: PatientJs ->
-				patient_fromJs(x1)
+		val filterConverted: FilterOptions<Patient> = filterOptions_fromJs(filter)
+		val result = patientApi.matchPatientsBy(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
 			},
 		)
-		val result = patientApi.matchPatientsBy(
+	}
+
+	override fun matchPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: SortableFilterOptions<Patient> = sortableFilterOptions_fromJs(filter)
+		val result = patientApi.matchPatientsBySorted(
 			filterConverted,
 		)
 		listToArray(
@@ -2133,9 +1839,15 @@ internal class PatientApiImplJs(
 		)
 	}
 
-	override fun undeletePatient(patientIds: String): Promise<Array<DocIdentifierJs>> =
+	override fun undeletePatients(patientIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
-		val patientIdsConverted: String = patientIds
+		val patientIdsConverted: List<String> = arrayToList(
+			patientIds,
+			"patientIds",
+			{ x1: String ->
+				x1
+			},
+		)
 		val result = patientApi.undeletePatients(
 			patientIdsConverted,
 		)
@@ -2156,103 +1868,33 @@ internal class PatientApiImplJs(
 		entityAccessInformation_toJs(result)
 	}
 
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<PatientJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedPatientJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Patient> = abstractFilter_fromJs(
-				filter,
-				{ x1: PatientJs ->
-					patient_fromJs(x1)
-				},
-			)
-			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
-					convertingOptionOrDefaultNullable(
-				_options,
-				"subscriptionConfig",
-				null
-			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
-				subscriptionConfig?.let { nonNull1 ->
-					entitySubscriptionConfiguration_fromJs(nonNull1)
-				}
-			}
-			val result = patientApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				subscriptionConfigConverted,
-			)
-			entitySubscription_toJs(
-				result,
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)
-		}
+	override fun countOfPatients(hcPartyId: String): Promise<Double> = GlobalScope.promise {
+		val hcPartyIdConverted: String = hcPartyId
+		val result = patientApi.countOfPatients(
+			hcPartyIdConverted,
+		)
+		intToNumber(result)
 	}
 
 	override fun shareWith(
 		delegateId: String,
 		patient: DecryptedPatientJs,
-		shareSecretIds: Array<String>,
-		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedPatientJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val delegateIdConverted: String = delegateId
-			val patientConverted: DecryptedPatient = patient_fromJs(patient)
-			val shareSecretIdsConverted: Set<String> = arrayToSet(
-				shareSecretIds,
-				"shareSecretIds",
-				{ x1: String ->
-					x1
-				},
-			)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
-			}
-			val result = patientApi.shareWith(
-				delegateIdConverted,
-				patientConverted,
-				shareSecretIdsConverted,
-				shareEncryptionKeysConverted,
-				shareOwningEntityIdsConverted,
-				requestedPermissionConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedPatient ->
-					patient_toJs(x1)
-				},
-			)
-		}
+		options: PatientShareOptionsJs,
+	): Promise<SimpleShareResultJs<DecryptedPatientJs>> = GlobalScope.promise {
+		val delegateIdConverted: String = delegateId
+		val patientConverted: DecryptedPatient = patient_fromJs(patient)
+		val optionsConverted: PatientShareOptions = patientShareOptions_fromJs(options)
+		val result = patientApi.shareWith(
+			delegateIdConverted,
+			patientConverted,
+			optionsConverted,
+		)
+		simpleShareResult_toJs(
+			result,
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)
 	}
 
 	override fun tryShareWithMany(patient: DecryptedPatientJs,
@@ -2311,6 +1953,34 @@ internal class PatientApiImplJs(
 		patient_toJs(result)
 	}
 
+	override fun filterPatientsBy(filter: FilterOptionsJs<PatientJs>):
+			Promise<PaginatedListIteratorJs<DecryptedPatientJs>> = GlobalScope.promise {
+		val filterConverted: FilterOptions<Patient> = filterOptions_fromJs(filter)
+		val result = patientApi.filterPatientsBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)
+	}
+
+	override fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
+			Promise<PaginatedListIteratorJs<DecryptedPatientJs>> = GlobalScope.promise {
+		val filterConverted: SortableFilterOptions<Patient> = sortableFilterOptions_fromJs(filter)
+		val result = patientApi.filterPatientsBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)
+	}
+
 	override fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs> =
 			GlobalScope.promise {
 		val entityConverted: DecryptedPatient = patient_fromJs(entity)
@@ -2328,74 +1998,15 @@ internal class PatientApiImplJs(
 		patient_toJs(result)
 	}
 
-	override fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>, options: dynamic):
-			Promise<PaginatedListJs<DecryptedPatientJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val filterChainConverted: FilterChain<Patient> = filterChain_fromJs(
-				filterChain,
-				{ x1: PatientJs ->
-					patient_fromJs(x1)
-				},
-			)
-			val startKeyConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"startKey",
-				null
-			) { startKey: String? ->
-				undefinedToNull(startKey)
-			}
-			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"startDocumentId",
-				null
-			) { startDocumentId: String? ->
-				undefinedToNull(startDocumentId)
-			}
-			val limitConverted: Int? = convertingOptionOrDefaultNullable(
-				_options,
-				"limit",
-				null
-			) { limit: Double? ->
-				numberToInt(limit, "limit")
-			}
-			val skipConverted: Int? = convertingOptionOrDefaultNullable(
-				_options,
-				"skip",
-				null
-			) { skip: Double? ->
-				numberToInt(skip, "skip")
-			}
-			val sortConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"sort",
-				null
-			) { sort: String? ->
-				undefinedToNull(sort)
-			}
-			val descConverted: Boolean? = convertingOptionOrDefaultNullable(
-				_options,
-				"desc",
-				null
-			) { desc: Boolean? ->
-				undefinedToNull(desc)
-			}
-			val result = patientApi.filterPatientsBy(
-				filterChainConverted,
-				startKeyConverted,
-				startDocumentIdConverted,
-				limitConverted,
-				skipConverted,
-				sortConverted,
-				descConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: DecryptedPatient ->
-					patient_toJs(x1)
-				},
-			)
-		}
+	override fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Double?):
+			Promise<DecryptedPatientJs> = GlobalScope.promise {
+		val patientIdConverted: String = patientId
+		val maxMergeDepthConverted: Int? = numberToInt(maxMergeDepth, "maxMergeDepth")
+		val result = patientApi.getPatientResolvingMerges(
+			patientIdConverted,
+			maxMergeDepthConverted,
+		)
+		patient_toJs(result)
 	}
 
 	override fun findPatientsByNameBirthSsinAuto(filterValue: String, options: dynamic):
@@ -2622,32 +2233,6 @@ internal class PatientApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>> =
-			GlobalScope.promise {
-		val patientIdConverted: String = patientId
-		val result = patientApi.getPatientHcPartyKeysForDelegate(
-			patientIdConverted,
-		)
-		mapToObject(
-			result,
-			{ x1: String ->
-				x1
-			},
-			{ x1: String ->
-				x1
-			},
-		)
-	}
-
-	override fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs> =
-			GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val result = patientApi.countOfPatients(
-			hcPartyIdConverted,
-		)
-		content_toJs(result)
 	}
 
 	override fun findPatientsByHealthcareParty(options: dynamic):
@@ -2880,9 +2465,15 @@ internal class PatientApiImplJs(
 		}
 	}
 
-	override fun getPatients(patientIds: ListOfIdsJs): Promise<Array<DecryptedPatientJs>> =
+	override fun getPatients(patientIds: Array<String>): Promise<Array<DecryptedPatientJs>> =
 			GlobalScope.promise {
-		val patientIdsConverted: ListOfIds = listOfIds_fromJs(patientIds)
+		val patientIdsConverted: List<String> = arrayToList(
+			patientIds,
+			"patientIds",
+			{ x1: String ->
+				x1
+			},
+		)
 		val result = patientApi.getPatients(
 			patientIdsConverted,
 		)
@@ -2937,39 +2528,6 @@ internal class PatientApiImplJs(
 				idWithRev_toJs(x1)
 			},
 		)
-	}
-
-	override fun modifyPatientReferral(
-		patientId: String,
-		referralId: String,
-		options: dynamic,
-	): Promise<DecryptedPatientJs> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val patientIdConverted: String = patientId
-			val referralIdConverted: String = referralId
-			val startConverted: Long? = convertingOptionOrDefaultNullable(
-				_options,
-				"start",
-				null
-			) { start: Double? ->
-				numberToLong(start, "start")
-			}
-			val endConverted: Long? = convertingOptionOrDefaultNullable(
-				_options,
-				"end",
-				null
-			) { end: Double? ->
-				numberToLong(end, "end")
-			}
-			val result = patientApi.modifyPatientReferral(
-				patientIdConverted,
-				referralIdConverted,
-				startConverted,
-				endConverted,
-			)
-			patient_toJs(result)
-		}
 	}
 
 	override fun findDuplicatesBySsin(hcPartyId: String, options: dynamic):
@@ -3054,22 +2612,53 @@ internal class PatientApiImplJs(
 		}
 	}
 
-	override fun mergePatients(
-		intoId: String,
-		fromId: String,
-		expectedFromRev: String,
-		updatedInto: EncryptedPatientJs,
-	): Promise<DecryptedPatientJs> = GlobalScope.promise {
-		val intoIdConverted: String = intoId
-		val fromIdConverted: String = fromId
-		val expectedFromRevConverted: String = expectedFromRev
-		val updatedIntoConverted: EncryptedPatient = patient_fromJs(updatedInto)
+	override fun mergePatients(from: PatientJs, mergedInto: DecryptedPatientJs):
+			Promise<DecryptedPatientJs> = GlobalScope.promise {
+		val fromConverted: Patient = patient_fromJs(from)
+		val mergedIntoConverted: DecryptedPatient = patient_fromJs(mergedInto)
 		val result = patientApi.mergePatients(
-			intoIdConverted,
-			fromIdConverted,
-			expectedFromRevConverted,
-			updatedIntoConverted,
+			fromConverted,
+			mergedIntoConverted,
 		)
 		patient_toJs(result)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<PatientJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedPatientJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: FilterOptions<Patient> = filterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = patientApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
+		}
 	}
 }

@@ -37,47 +37,33 @@ public external interface DocumentApiJs {
 		options: dynamic,
 	): Promise<DecryptedDocumentJs>
 
-	public fun getAndTryDecryptMainAttachment(
-		document: DocumentJs,
-		attachmentId: String,
-		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
-	): Promise<ByteArray?>
+	public fun getAndTryDecryptMainAttachment(document: DocumentJs, options: dynamic):
+			Promise<ByteArray?>
 
-	public fun getAndTryDecryptMainAttachmentAsPlainText(
-		document: DocumentJs,
-		attachmentId: String,
-		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
-	): Promise<String?>
+	public fun getAndTryDecryptMainAttachmentAsPlainText(document: DocumentJs, options: dynamic):
+			Promise<String?>
 
-	public fun getAndTryDecryptMainAttachmentAsJson(
-		document: DocumentJs,
-		attachmentId: String,
-		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
-	): Promise<dynamic>
+	public fun getAndTryDecryptMainAttachmentAsJson(document: DocumentJs, options: dynamic):
+			Promise<dynamic>
 
-	public fun getAndDecryptMainAttachment(
-		document: DocumentJs,
-		attachmentId: String,
-		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
-	): Promise<ByteArray>
+	public fun getAndDecryptMainAttachment(document: DocumentJs, options: dynamic): Promise<ByteArray>
 
 	public fun encryptAndSetMainAttachment(
 		document: DocumentJs,
-		utis: Array<String>,
+		utis: Array<String>?,
 		attachment: ByteArray,
 	): Promise<EncryptedDocumentJs>
 
 	public fun getAndDecryptSecondaryAttachment(
 		document: DocumentJs,
 		key: String,
-		attachmentId: String,
-		decryptedDocumentValidator: (ByteArray) -> Promise<Boolean>,
+		options: dynamic,
 	): Promise<ByteArray>
 
 	public fun encryptAndSetSecondaryAttachment(
 		document: DocumentJs,
 		key: String,
-		utis: Array<String>,
+		utis: Array<String>?,
 		attachment: ByteArray,
 	): Promise<EncryptedDocumentJs>
 
@@ -90,21 +76,52 @@ public external interface DocumentApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: DocumentJs, delegates: Array<String>):
 			Promise<Unit>
 
+	public fun decrypt(document: EncryptedDocumentJs): Promise<DecryptedDocumentJs>
+
+	public fun tryDecrypt(document: EncryptedDocumentJs): Promise<DocumentJs>
+
+	public fun tryDecryptAttachment(
+		document: DocumentJs,
+		encryptedAttachment: ByteArray,
+		options: dynamic,
+	): Promise<ByteArray?>
+
 	public fun deleteDocument(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getRawMainAttachment(documentId: String, attachmentId: String): Promise<ByteArray>
+	public fun getRawMainAttachment(documentId: String): Promise<ByteArray>
 
-	public fun getMainAttachmentAsPlainText(documentId: String, attachmentId: String): Promise<String>
+	public fun getMainAttachmentAsPlainText(documentId: String): Promise<String>
 
-	public fun getMainAttachmentAsJson(documentId: String, attachmentId: String): Promise<dynamic>
+	public fun getMainAttachmentAsJson(documentId: String): Promise<dynamic>
 
-	public fun getRawSecondaryAttachment(
+	public fun getRawSecondaryAttachment(documentId: String, key: String): Promise<ByteArray>
+
+	public fun setRawMainAttachment(
+		documentId: String,
+		rev: String,
+		utis: Array<String>?,
+		attachment: ByteArray,
+		encrypted: Boolean,
+	): Promise<EncryptedDocumentJs>
+
+	public fun setRawSecondaryAttachment(
 		documentId: String,
 		key: String,
-		attachmentId: String,
-	): Promise<ByteArray>
+		rev: String,
+		utis: Array<String>?,
+		attachment: ByteArray,
+		encrypted: Boolean,
+	): Promise<EncryptedDocumentJs>
+
+	public fun deleteMainAttachment(entityId: String, rev: String): Promise<EncryptedDocumentJs>
+
+	public fun deleteSecondaryAttachment(
+		documentId: String,
+		key: String,
+		rev: String,
+	): Promise<EncryptedDocumentJs>
 
 	public fun shareWith(
 		delegateId: String,
@@ -145,31 +162,4 @@ public external interface DocumentApiJs {
 	): Promise<Array<DecryptedDocumentJs>>
 
 	public fun findWithoutDelegation(limit: Double?): Promise<Array<DecryptedDocumentJs>>
-
-	public fun setRawMainAttachment(
-		documentId: String,
-		rev: String,
-		utis: Array<String>,
-		blobType: String,
-		attachment: ByteArray,
-		encrypted: Boolean,
-	): Promise<EncryptedDocumentJs>
-
-	public fun setRawSecondaryAttachment(
-		documentId: String,
-		key: String,
-		rev: String,
-		utis: Array<String>,
-		blobType: String,
-		attachment: ByteArray,
-		encrypted: Boolean,
-	): Promise<EncryptedDocumentJs>
-
-	public fun deleteMainAttachment(entityId: String, rev: String): Promise<DecryptedDocumentJs>
-
-	public fun deleteSecondaryAttachment(
-		documentId: String,
-		key: String,
-		attachmentId: String,
-	): Promise<DecryptedDocumentJs>
 }

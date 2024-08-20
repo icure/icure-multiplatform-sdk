@@ -1,7 +1,6 @@
 // auto-generated file
 import {InvoiceShareOptions} from '../../crypto/entities/InvoiceShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {IcureStub} from '../../model/IcureStub.mjs';
@@ -15,8 +14,6 @@ import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {InvoiceType} from '../../model/embed/InvoiceType.mjs';
 import {EncryptedInvoicingCode} from '../../model/embed/InvoicingCode.mjs';
 import {MediumType} from '../../model/embed/MediumType.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
 import {InvoiceFlavouredApi} from './InvoiceFlavouredApi.mjs';
 
@@ -42,6 +39,10 @@ export interface InvoiceApi {
 
 	createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Array<string>): Promise<void>;
 
+	decrypt(invoice: EncryptedInvoice): Promise<DecryptedInvoice>;
+
+	tryDecrypt(invoice: EncryptedInvoice): Promise<Invoice>;
+
 	deleteInvoice(entityId: string): Promise<DocIdentifier>;
 
 	findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
@@ -50,7 +51,7 @@ export interface InvoiceApi {
 	getTarificationsCodesOccurrences(minOccurrence: number): Promise<Array<LabelledOccurence>>;
 
 	shareWith(delegateId: string, invoice: DecryptedInvoice,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedInvoice>>;
+			options?: { options?: InvoiceShareOptions | undefined }): Promise<SimpleShareResult<DecryptedInvoice>>;
 
 	tryShareWithMany(invoice: DecryptedInvoice,
 			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<SimpleShareResult<DecryptedInvoice>>;
@@ -68,8 +69,6 @@ export interface InvoiceApi {
 	getInvoice(entityId: string): Promise<DecryptedInvoice>;
 
 	getInvoices(entityIds: Array<string>): Promise<Array<DecryptedInvoice>>;
-
-	filterInvoicesBy(filterChain: FilterChain<Invoice>): Promise<Array<DecryptedInvoice>>;
 
 	findInvoicesByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<DecryptedInvoice>>;

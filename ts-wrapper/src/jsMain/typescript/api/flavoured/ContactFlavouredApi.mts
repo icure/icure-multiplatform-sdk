@@ -1,20 +1,17 @@
 // auto-generated file
 import {ContactShareOptions} from '../../crypto/entities/ContactShareOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../../icure-sdk-ts.mjs';
 import {Contact} from '../../model/Contact.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {Patient} from '../../model/Patient.mjs';
 import {Service} from '../../model/embed/Service.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	shareWith(delegateId: string, contact: E,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { options?: ContactShareOptions | undefined }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(contact: E,
 			delegates: { [ key: string ]: ContactShareOptions }): Promise<SimpleShareResult<E>>;
@@ -24,6 +21,14 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 	findContactsByHcPartyPatient(hcPartyId: string, patient: Patient,
 			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<E>>;
 
+	filterContactsBy(filter: FilterOptions<Contact>): Promise<PaginatedListIterator<E>>;
+
+	filterServicesBy(filter: FilterOptions<Service>): Promise<PaginatedListIterator<S>>;
+
+	filterContactsBySorted(filter: SortableFilterOptions<Contact>): Promise<PaginatedListIterator<E>>;
+
+	filterServicesBySorted(filter: SortableFilterOptions<Service>): Promise<PaginatedListIterator<S>>;
+
 	modifyContact(entity: E): Promise<E>;
 
 	modifyContacts(entities: Array<E>): Promise<Array<E>>;
@@ -31,9 +36,6 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 	getContact(entityId: string): Promise<E>;
 
 	getContacts(entityIds: Array<string>): Promise<Array<E>>;
-
-	filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<E>>;
 
 	listContactByHCPartyServiceId(hcPartyId: string, serviceId: string): Promise<Array<E>>;
 
@@ -45,9 +47,6 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
 			options?: { planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<E>>;
-
-	closeForHCPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<E>>;
 
 	getService(serviceId: string): Promise<S>;
 
@@ -61,8 +60,5 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	findContactsByOpeningDate(startDate: number, endDate: number, hcPartyId: string,
 			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
-
-	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<S>>;
 
 }

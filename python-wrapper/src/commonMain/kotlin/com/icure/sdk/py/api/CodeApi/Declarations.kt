@@ -2,10 +2,11 @@
 package com.icure.sdk.py.api.CodeApi
 
 import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.BooleanResponse
 import com.icure.sdk.model.Code
 import com.icure.sdk.model.PaginatedList
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.sdk.py.utils.PyResult
 import com.icure.sdk.py.utils.failureToPyResultAsyncCallback
@@ -30,7 +31,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -708,8 +708,7 @@ public fun modifyCodesInGroupAsync(
 
 @Serializable
 private class FilterCodesByParams(
-	@Contextual
-	public val filter: AbstractFilter<Code>,
+	public val filter: BaseFilterOptions<Code>,
 )
 
 public fun filterCodesByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
@@ -741,9 +740,41 @@ public fun filterCodesByAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class FilterCodesBySortedParams(
+	public val filter: BaseSortableFilterOptions<Code>,
+)
+
+public fun filterCodesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterCodesBySortedParams>(params)
+	runBlocking {
+		sdk.code.filterCodesBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, Code.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterCodesBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterCodesBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.code.filterCodesBySorted(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, Code.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
 private class MatchCodesByParams(
-	@Contextual
-	public val filter: AbstractFilter<Code>,
+	public val filter: BaseFilterOptions<Code>,
 )
 
 public fun matchCodesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
@@ -767,6 +798,38 @@ public fun matchCodesByAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.code.matchCodesBy(
+				decodedParams.filter,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class MatchCodesBySortedParams(
+	public val filter: BaseSortableFilterOptions<Code>,
+)
+
+public fun matchCodesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchCodesBySortedParams>(params)
+	runBlocking {
+		sdk.code.matchCodesBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyString(ListSerializer(String.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun matchCodesBySortedAsync(
+	sdk: IcureNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchCodesBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.code.matchCodesBySorted(
 				decodedParams.filter,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)

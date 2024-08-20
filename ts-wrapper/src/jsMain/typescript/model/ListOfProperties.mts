@@ -4,10 +4,10 @@ import {DecryptedPropertyStub} from './PropertyStub.mjs';
 
 export class ListOfProperties {
 
-  properties: Array<DecryptedPropertyStub> = [];
+	properties: Array<DecryptedPropertyStub> = [];
 
-  constructor(partial: Partial<ListOfProperties>) {
-    if ('properties' in partial && partial.properties !== undefined) this.properties = partial.properties;
-  }
+	constructor(partial: Partial<ListOfProperties>) {
+		if ('properties' in partial && partial.properties !== undefined) this.properties = partial.properties;
+	}
 
 }

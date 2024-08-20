@@ -2,13 +2,13 @@
 
 export class PublicKey {
 
-  hcPartyId: string | undefined = undefined;
+	hcPartyId: string | undefined = undefined;
 
-  hexString: string | undefined = undefined;
+	hexString: string | undefined = undefined;
 
-  constructor(partial: Partial<PublicKey>) {
-    if ('hcPartyId' in partial) this.hcPartyId = partial.hcPartyId;
-    if ('hexString' in partial) this.hexString = partial.hexString;
-  }
+	constructor(partial: Partial<PublicKey>) {
+		if ('hcPartyId' in partial) this.hcPartyId = partial.hcPartyId;
+		if ('hexString' in partial) this.hexString = partial.hexString;
+	}
 
 }

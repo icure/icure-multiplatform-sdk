@@ -1,3 +1,4 @@
+# auto-generated file
 import asyncio
 import json
 import base64
@@ -507,7 +508,7 @@ class ReceiptApi:
 	def __init__(self, icure_sdk):
 		self.icure_sdk = icure_sdk
 		self.encrypted = ReceiptApi.ReceiptFlavouredEncryptedApi(self.icure_sdk)
-		self.tryAndRecover = ReceiptApi.ReceiptFlavouredApi(self.icure_sdk)
+		self.try_and_recover = ReceiptApi.ReceiptFlavouredApi(self.icure_sdk)
 
 	async def create_receipt_async(self, entity: DecryptedReceipt) -> DecryptedReceipt:
 		loop = asyncio.get_running_loop()

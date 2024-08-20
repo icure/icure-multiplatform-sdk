@@ -2,8 +2,14 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.UserApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.UserApiJs
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.sdk.js.filters.baseFilterOptions_fromJs
+import com.icure.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
@@ -16,10 +22,6 @@ import com.icure.sdk.js.model.UserGroupJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.abstractFilter_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.listOfIds_fromJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.propertyStub_fromJs
@@ -30,12 +32,12 @@ import com.icure.sdk.js.model.security.tokenWithGroup_toJs
 import com.icure.sdk.js.model.userGroup_toJs
 import com.icure.sdk.js.model.user_fromJs
 import com.icure.sdk.js.model.user_toJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.EncryptedPropertyStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.User
 import com.icure.sdk.model.UserGroup
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.TokenWithGroup
 import kotlin.Array
@@ -122,6 +124,25 @@ internal class UserApiImplJs(
 			userIdConverted,
 		)
 		user_toJs(result)
+	}
+
+	override fun getUsers(userIds: Array<String>): Promise<Array<UserJs>> = GlobalScope.promise {
+		val userIdsConverted: List<String> = arrayToList(
+			userIds,
+			"userIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = userApi.getUsers(
+			userIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: User ->
+				user_toJs(x1)
+			},
+		)
 	}
 
 	override fun getUserByEmail(email: String): Promise<UserJs> = GlobalScope.promise {
@@ -241,53 +262,52 @@ internal class UserApiImplJs(
 		}
 	}
 
-	override fun filterUsersBy(filterChain: FilterChainJs<UserJs>, options: dynamic):
-			Promise<PaginatedListJs<UserJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"startDocumentId",
-				null
-			) { startDocumentId: String? ->
-				undefinedToNull(startDocumentId)
-			}
-			val limitConverted: Int? = convertingOptionOrDefaultNullable(
-				_options,
-				"limit",
-				null
-			) { limit: Double? ->
-				numberToInt(limit, "limit")
-			}
-			val filterChainConverted: FilterChain<User> = filterChain_fromJs(
-				filterChain,
-				{ x1: UserJs ->
-					user_fromJs(x1)
-				},
-			)
-			val result = userApi.filterUsersBy(
-				startDocumentIdConverted,
-				limitConverted,
-				filterChainConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: User ->
-					user_toJs(x1)
-				},
-			)
-		}
-	}
-
-	override fun matchUsersBy(filter: AbstractFilterJs<UserJs>): Promise<Array<String>> =
-			GlobalScope.promise {
-		val filterConverted: AbstractFilter<User> = abstractFilter_fromJs(
-			filter,
-			{ x1: UserJs ->
-				user_fromJs(x1)
+	override fun filterUsersBy(filter: BaseFilterOptionsJs<UserJs>):
+			Promise<PaginatedListIteratorJs<UserJs>> = GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<User> = baseFilterOptions_fromJs(filter)
+		val result = userApi.filterUsersBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: User ->
+				user_toJs(x1)
 			},
 		)
+	}
+
+	override fun matchUsersBy(filter: BaseFilterOptionsJs<UserJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<User> = baseFilterOptions_fromJs(filter)
 		val result = userApi.matchUsersBy(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun filterUsersBySorted(filter: BaseSortableFilterOptionsJs<UserJs>):
+			Promise<PaginatedListIteratorJs<UserJs>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<User> = baseSortableFilterOptions_fromJs(filter)
+		val result = userApi.filterUsersBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: User ->
+				user_toJs(x1)
+			},
+		)
+	}
+
+	override fun matchUsersBySorted(filter: BaseSortableFilterOptionsJs<UserJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<User> = baseSortableFilterOptions_fromJs(filter)
+		val result = userApi.matchUsersBySorted(
 			filterConverted,
 		)
 		listToArray(
@@ -305,6 +325,28 @@ internal class UserApiImplJs(
 			result,
 			{ x1: UserGroup ->
 				userGroup_toJs(x1)
+			},
+		)
+	}
+
+	override fun getUsersInGroup(groupId: String, userIds: Array<String>): Promise<Array<UserJs>> =
+			GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val userIdsConverted: List<String> = arrayToList(
+			userIds,
+			"userIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = userApi.getUsersInGroup(
+			groupIdConverted,
+			userIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: User ->
+				user_toJs(x1)
 			},
 		)
 	}
@@ -503,47 +545,69 @@ internal class UserApiImplJs(
 		}
 	}
 
-	override fun filterUsersInGroupBy(
-		groupId: String,
-		filterChain: FilterChainJs<UserJs>,
-		options: dynamic,
-	): Promise<PaginatedListJs<UserJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val groupIdConverted: String = groupId
-			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"startDocumentId",
-				null
-			) { startDocumentId: String? ->
-				undefinedToNull(startDocumentId)
-			}
-			val limitConverted: Int? = convertingOptionOrDefaultNullable(
-				_options,
-				"limit",
-				null
-			) { limit: Double? ->
-				numberToInt(limit, "limit")
-			}
-			val filterChainConverted: FilterChain<User> = filterChain_fromJs(
-				filterChain,
-				{ x1: UserJs ->
-					user_fromJs(x1)
-				},
-			)
-			val result = userApi.filterUsersInGroupBy(
-				groupIdConverted,
-				startDocumentIdConverted,
-				limitConverted,
-				filterChainConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: User ->
-					user_toJs(x1)
-				},
-			)
-		}
+	override fun filterUsersInGroupBy(groupId: String, filter: BaseFilterOptionsJs<UserJs>):
+			Promise<PaginatedListIteratorJs<UserJs>> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val filterConverted: BaseFilterOptions<User> = baseFilterOptions_fromJs(filter)
+		val result = userApi.filterUsersInGroupBy(
+			groupIdConverted,
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: User ->
+				user_toJs(x1)
+			},
+		)
+	}
+
+	override fun matchUsersInGroupBy(groupId: String, filter: BaseFilterOptionsJs<UserJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val filterConverted: BaseFilterOptions<User> = baseFilterOptions_fromJs(filter)
+		val result = userApi.matchUsersInGroupBy(
+			groupIdConverted,
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun filterUsersInGroupBySorted(groupId: String,
+			filter: BaseSortableFilterOptionsJs<UserJs>): Promise<PaginatedListIteratorJs<UserJs>> =
+			GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val filterConverted: BaseSortableFilterOptions<User> = baseSortableFilterOptions_fromJs(filter)
+		val result = userApi.filterUsersInGroupBySorted(
+			groupIdConverted,
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: User ->
+				user_toJs(x1)
+			},
+		)
+	}
+
+	override fun matchUsersInGroupBySorted(groupId: String,
+			filter: BaseSortableFilterOptionsJs<UserJs>): Promise<Array<String>> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val filterConverted: BaseSortableFilterOptions<User> = baseSortableFilterOptions_fromJs(filter)
+		val result = userApi.matchUsersInGroupBySorted(
+			groupIdConverted,
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
 	}
 
 	override fun enable2faForUser(

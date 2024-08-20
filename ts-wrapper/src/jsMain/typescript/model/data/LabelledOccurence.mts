@@ -2,13 +2,13 @@
 
 export class LabelledOccurence {
 
-  label: string;
+	label: string;
 
-  occurence: number;
+	occurence: number;
 
-  constructor(partial: Partial<LabelledOccurence> & Pick<LabelledOccurence, "label" | "occurence">) {
-    this.label = partial.label;
-    this.occurence = partial.occurence;
-  }
+	constructor(partial: Partial<LabelledOccurence> & Pick<LabelledOccurence, "label" | "occurence">) {
+		this.label = partial.label;
+		this.occurence = partial.occurence;
+	}
 
 }

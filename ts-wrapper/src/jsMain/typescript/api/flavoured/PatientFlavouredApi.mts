@@ -1,21 +1,17 @@
 // auto-generated file
 import {PatientShareOptions} from '../../crypto/entities/PatientShareOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../../icure-sdk-ts.mjs';
 import {IdWithRev} from '../../model/IdWithRev.mjs';
-import {ListOfIds} from '../../model/ListOfIds.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {EncryptedPatient, Patient} from '../../model/Patient.mjs';
 import {SortDirection} from '../../model/couchdb/SortDirection.mjs';
-import {EncryptedContent} from '../../model/embed/Content.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface PatientFlavouredApi<E extends Patient> {
 
-	shareWith(delegateId: string, patient: E, shareSecretIds: Array<string>,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+	shareWith(delegateId: string, patient: E,
+			options: PatientShareOptions): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(patient: E,
 			delegates: { [ key: string ]: PatientShareOptions }): Promise<SimpleShareResult<E>>;
@@ -24,12 +20,15 @@ export interface PatientFlavouredApi<E extends Patient> {
 
 	initializeConfidentialSecretId(patient: E): Promise<E>;
 
+	filterPatientsBy(filter: FilterOptions<Patient>): Promise<PaginatedListIterator<E>>;
+
+	filterPatientsBySorted(filter: SortableFilterOptions<Patient>): Promise<PaginatedListIterator<E>>;
+
 	modifyPatient(entity: E): Promise<E>;
 
 	getPatient(entityId: string): Promise<E>;
 
-	filterPatientsBy(filterChain: FilterChain<Patient>,
-			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined }): Promise<PaginatedList<E>>;
+	getPatientResolvingMerges(patientId: string, maxMergeDepth: number | undefined): Promise<E>;
 
 	findPatientsByNameBirthSsinAuto(filterValue: string,
 			options?: { healthcarePartyId?: string | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
@@ -44,10 +43,6 @@ export interface PatientFlavouredApi<E extends Patient> {
 
 	listPatientsByHcParty(hcPartyId: string,
 			options?: { sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
-
-	getPatientHcPartyKeysForDelegate(patientId: string): Promise<{ [ key: string ]: string }>;
-
-	countOfPatients(hcPartyId: string): Promise<EncryptedContent>;
 
 	findPatientsByHealthcareParty(options?: { hcPartyId?: string | undefined, sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<E>>;
 
@@ -64,15 +59,12 @@ export interface PatientFlavouredApi<E extends Patient> {
 
 	listDeletedPatientsByName(options?: { firstName?: string | undefined, lastName?: string | undefined }): Promise<Array<E>>;
 
-	getPatients(patientIds: ListOfIds): Promise<Array<E>>;
+	getPatients(patientIds: Array<string>): Promise<Array<E>>;
 
 	getPatientByHealthcarePartyAndIdentifier(hcPartyId: string, id: string,
 			options?: { system?: string | undefined }): Promise<E>;
 
 	modifyPatients(patientDtos: Array<EncryptedPatient>): Promise<Array<IdWithRev>>;
-
-	modifyPatientReferral(patientId: string, referralId: string,
-			options?: { start?: number | undefined, end?: number | undefined }): Promise<E>;
 
 	findDuplicatesBySsin(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
@@ -80,7 +72,6 @@ export interface PatientFlavouredApi<E extends Patient> {
 	findDuplicatesByName(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
 
-	mergePatients(intoId: string, fromId: string, expectedFromRev: string,
-			updatedInto: EncryptedPatient): Promise<E>;
+	mergePatients(from: Patient, mergedInto: E): Promise<E>;
 
 }

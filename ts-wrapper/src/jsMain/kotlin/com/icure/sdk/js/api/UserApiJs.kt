@@ -3,16 +3,17 @@
 
 package com.icure.sdk.js.api
 
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.sdk.js.model.EncryptedPropertyStubJs
 import com.icure.sdk.js.model.ListOfIdsJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.UserGroupJs
 import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.model.security.Enable2faRequestJs
 import com.icure.sdk.js.model.security.TokenWithGroupJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
 import kotlin.Unit
@@ -29,6 +30,8 @@ public external interface UserApiJs {
 	public fun createUser(user: UserJs): Promise<UserJs>
 
 	public fun getUser(userId: String): Promise<UserJs>
+
+	public fun getUsers(userIds: Array<String>): Promise<Array<UserJs>>
 
 	public fun getUserByEmail(email: String): Promise<UserJs>
 
@@ -53,12 +56,19 @@ public external interface UserApiJs {
 		options: dynamic,
 	): Promise<String>
 
-	public fun filterUsersBy(filterChain: FilterChainJs<UserJs>, options: dynamic):
-			Promise<PaginatedListJs<UserJs>>
+	public fun filterUsersBy(filter: BaseFilterOptionsJs<UserJs>):
+			Promise<PaginatedListIteratorJs<UserJs>>
 
-	public fun matchUsersBy(filter: AbstractFilterJs<UserJs>): Promise<Array<String>>
+	public fun matchUsersBy(filter: BaseFilterOptionsJs<UserJs>): Promise<Array<String>>
+
+	public fun filterUsersBySorted(filter: BaseSortableFilterOptionsJs<UserJs>):
+			Promise<PaginatedListIteratorJs<UserJs>>
+
+	public fun matchUsersBySorted(filter: BaseSortableFilterOptionsJs<UserJs>): Promise<Array<String>>
 
 	public fun getMatchingUsers(): Promise<Array<UserGroupJs>>
+
+	public fun getUsersInGroup(groupId: String, userIds: Array<String>): Promise<Array<UserJs>>
 
 	public fun listUsersInGroup(groupId: String, options: dynamic): Promise<PaginatedListJs<UserJs>>
 
@@ -93,11 +103,17 @@ public external interface UserApiJs {
 		options: dynamic,
 	): Promise<Array<TokenWithGroupJs>>
 
-	public fun filterUsersInGroupBy(
-		groupId: String,
-		filterChain: FilterChainJs<UserJs>,
-		options: dynamic,
-	): Promise<PaginatedListJs<UserJs>>
+	public fun filterUsersInGroupBy(groupId: String, filter: BaseFilterOptionsJs<UserJs>):
+			Promise<PaginatedListIteratorJs<UserJs>>
+
+	public fun matchUsersInGroupBy(groupId: String, filter: BaseFilterOptionsJs<UserJs>):
+			Promise<Array<String>>
+
+	public fun filterUsersInGroupBySorted(groupId: String,
+			filter: BaseSortableFilterOptionsJs<UserJs>): Promise<PaginatedListIteratorJs<UserJs>>
+
+	public fun matchUsersInGroupBySorted(groupId: String, filter: BaseSortableFilterOptionsJs<UserJs>):
+			Promise<Array<String>>
 
 	@JsName("enable2faForUserWithGroup")
 	public fun enable2faForUser(

@@ -2,13 +2,15 @@ package com.icure.sdk.api
 
 import com.icure.sdk.api.raw.RawPermissionApi
 import com.icure.sdk.api.raw.RawUserApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.mapUserFilterOptions
 import com.icure.sdk.model.EncryptedPropertyStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.User
 import com.icure.sdk.model.UserGroup
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.security.Enable2faRequest
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.model.security.TokenWithGroup
@@ -63,9 +65,12 @@ interface UserApi {
 		token: String? = null,
 	): String
 
-	suspend fun filterUsersBy(filter: AbstractFilter<User>): PaginatedListIterator<User>
+	suspend fun filterUsersBy(filter: BaseFilterOptions<User>): PaginatedListIterator<User>
+	suspend fun matchUsersBy(filter: BaseFilterOptions<User>): List<String>
+	suspend fun filterUsersBySorted(filter: BaseSortableFilterOptions<User>): PaginatedListIterator<User>
+	suspend fun matchUsersBySorted(filter: BaseSortableFilterOptions<User>): List<String>
 
-	suspend fun matchUsersBy(filter: AbstractFilter<User>): List<String>
+
 	suspend fun getMatchingUsers(): List<UserGroup>
 
 	suspend fun getUsersInGroup(groupId: String, userIds: List<String>): List<User>
@@ -140,10 +145,17 @@ interface UserApi {
 
 	suspend fun filterUsersInGroupBy(
 		groupId: String,
-		filter: AbstractFilter<User>,
+		filter: BaseFilterOptions<User>,
 	): PaginatedListIterator<User>
 
-	suspend fun matchUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): List<String>
+	suspend fun matchUsersInGroupBy(groupId: String, filter: BaseFilterOptions<User>): List<String>
+
+	suspend fun filterUsersInGroupBySorted(
+		groupId: String,
+		filter: BaseSortableFilterOptions<User>,
+	): PaginatedListIterator<User>
+
+	suspend fun matchUsersInGroupBySorted(groupId: String, filter: BaseSortableFilterOptions<User>): List<String>
 
 	@JsName("enable2faForUserWithGroup")
 	suspend fun enable2faForUser(
@@ -237,16 +249,34 @@ internal class UserApiImpl(
 		token: String?,
 	) = raw.getToken(userId, key, tokenValidity, token).successBody()
 
-	override suspend fun filterUsersBy(filter: AbstractFilter<User>): PaginatedListIterator<User> =
+	override suspend fun matchUsersBy(filter: BaseFilterOptions<User>) =
+		raw.matchUsersBy(mapUserFilterOptions(filter)).successBody()
+
+	override suspend fun filterUsersBy(filter: BaseFilterOptions<User>): PaginatedListIterator<User> =
 		IdsPageIterator(matchUsersBy(filter), this::getUsers)
 
-	override suspend fun matchUsersBy(filter: AbstractFilter<User>) = raw.matchUsersBy(filter).successBody()
+	override suspend fun matchUsersBySorted(filter: BaseSortableFilterOptions<User>) =
+		matchUsersBy(filter)
+
+	override suspend fun filterUsersBySorted(filter: BaseSortableFilterOptions<User>): PaginatedListIterator<User> =
+		filterUsersBy(filter)
+
+	override suspend fun matchUsersInGroupBy(groupId: String, filter: BaseFilterOptions<User>): List<String> =
+		raw.matchUsersInGroupBy(groupId, mapUserFilterOptions(filter)).successBody()
+
+	override suspend fun filterUsersInGroupBy(groupId: String, filter: BaseFilterOptions<User>): PaginatedListIterator<User> =
+		IdsPageIterator(matchUsersInGroupBy(groupId, filter), this::getUsers)
+
+	override suspend fun matchUsersInGroupBySorted(groupId: String, filter: BaseSortableFilterOptions<User>): List<String> =
+		matchUsersInGroupBy(groupId, filter)
+
+	override suspend fun filterUsersInGroupBySorted(groupId: String, filter: BaseSortableFilterOptions<User>): PaginatedListIterator<User> =
+		filterUsersInGroupBy(groupId, filter)
 
 	override suspend fun getMatchingUsers() = raw.getMatchingUsers().successBody()
 
 	override suspend fun getUsersInGroup(groupId: String, userIds: List<String>): List<User> = raw.getUsersInGroup(groupId, ListOfIds(userIds)).successBody()
 
-	override suspend fun matchUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): List<String> = raw.matchUsersInGroupBy(groupId, filter).successBody()
 
 	@Deprecated(
 		"List methods are deprecated",
@@ -307,8 +337,6 @@ internal class UserApiImpl(
 		tokenValidity: Long?,
 	) = raw.getTokenInAllGroups(userIdentifier, key, token, tokenValidity).successBody()
 
-	override suspend fun filterUsersInGroupBy(groupId: String, filter: AbstractFilter<User>): PaginatedListIterator<User> =
-		IdsPageIterator(matchUsersInGroupBy(groupId, filter), this::getUsers)
 
 	override suspend fun enable2faForUser(
 		userId: String,

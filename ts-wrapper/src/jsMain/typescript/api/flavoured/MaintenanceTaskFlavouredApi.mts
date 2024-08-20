@@ -1,17 +1,14 @@
 // auto-generated file
 import {MaintenanceTaskShareOptions} from '../../crypto/entities/MaintenanceTaskShareOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../../icure-sdk-ts.mjs';
 import {MaintenanceTask} from '../../model/MaintenanceTask.mjs';
-import {PaginatedList} from '../../model/PaginatedList.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 
 
 export interface MaintenanceTaskFlavouredApi<E extends MaintenanceTask> {
 
 	shareWith(delegateId: string, maintenanceTask: E,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<E>>;
+			options?: { options?: MaintenanceTaskShareOptions | undefined }): Promise<SimpleShareResult<E>>;
 
 	tryShareWithMany(maintenanceTask: E,
 			delegates: { [ key: string ]: MaintenanceTaskShareOptions }): Promise<SimpleShareResult<E>>;
@@ -19,11 +16,14 @@ export interface MaintenanceTaskFlavouredApi<E extends MaintenanceTask> {
 	shareWithMany(maintenanceTask: E,
 			delegates: { [ key: string ]: MaintenanceTaskShareOptions }): Promise<E>;
 
+	filterMaintenanceTasksBy(filter: FilterOptions<MaintenanceTask>): Promise<PaginatedListIterator<E>>;
+
+	filterMaintenanceTasksBySorted(filter: SortableFilterOptions<MaintenanceTask>): Promise<PaginatedListIterator<E>>;
+
 	modifyMaintenanceTask(entity: E): Promise<E>;
 
 	getMaintenanceTask(entityId: string): Promise<E>;
 
-	filterMaintenanceTasksBy(filterChain: FilterChain<MaintenanceTask>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
+	getMaintenanceTasks(entityIds: Array<string>): Promise<Array<E>>;
 
 }

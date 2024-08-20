@@ -125,30 +125,30 @@ public fun getDataOwnerAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class GetDataOwnerStubParams(
+private class GetCryptoActorStubParams(
 	public val ownerId: String,
 )
 
-public fun getDataOwnerStubBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDataOwnerStubParams>(params)
+public fun getCryptoActorStubBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<GetCryptoActorStubParams>(params)
 	runBlocking {
-		sdk.dataOwner.getDataOwnerStub(
+		sdk.dataOwner.getCryptoActorStub(
 			decodedParams.ownerId,
 		)
 	}
 }.toPyString(CryptoActorStubWithType.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getDataOwnerStubAsync(
+public fun getCryptoActorStubAsync(
 	sdk: IcureApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDataOwnerStubParams>(params)
+	val decodedParams = json.decodeFromString<GetCryptoActorStubParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.dataOwner.getDataOwnerStub(
+			sdk.dataOwner.getCryptoActorStub(
 				decodedParams.ownerId,
 			)
 		}.toPyStringAsyncCallback(CryptoActorStubWithType.serializer(), resultCallback)
@@ -250,37 +250,6 @@ public fun getCurrentDataOwnerTypeAsync(sdk: IcureApis,
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerType()
 		}.toPyStringAsyncCallback(DataOwnerType.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class GetCryptoActorStubParams(
-	public val ownerId: String,
-)
-
-public fun getCryptoActorStubBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetCryptoActorStubParams>(params)
-	runBlocking {
-		sdk.dataOwner.getCryptoActorStub(
-			decodedParams.ownerId,
-		)
-	}
-}.toPyString(CryptoActorStubWithType.serializer())
-
-@OptIn(ExperimentalForeignApi::class)
-public fun getCryptoActorStubAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetCryptoActorStubParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.dataOwner.getCryptoActorStub(
-				decodedParams.ownerId,
-			)
-		}.toPyStringAsyncCallback(CryptoActorStubWithType.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

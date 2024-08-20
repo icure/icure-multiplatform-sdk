@@ -48,4 +48,6 @@ public external class GroupJs(
 	public val minimumAuthenticationClassForElevatedPrivileges: String
 
 	public val superGroup: String?
+
+	public val applicationId: String?
 }

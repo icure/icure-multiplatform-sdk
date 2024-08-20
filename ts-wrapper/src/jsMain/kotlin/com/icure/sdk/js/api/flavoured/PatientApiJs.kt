@@ -8,20 +8,17 @@ import com.icure.sdk.js.crypto.entities.EntityWithTypeInfoJs
 import com.icure.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.sdk.js.crypto.entities.ShareAllPatientDataOptionsJs_ResultJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
-import com.icure.sdk.js.model.DataOwnerRegistrationSuccessJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.DecryptedPatientJs
 import com.icure.sdk.js.model.EncryptedPatientJs
 import com.icure.sdk.js.model.IdWithRevJs
-import com.icure.sdk.js.model.ListOfIdsJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.UserJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.embed.EncryptedContentJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -46,62 +43,47 @@ public external interface PatientApiJs {
 	public fun withEncryptionMetadata(base: DecryptedPatientJs?, options: dynamic):
 			Promise<DecryptedPatientJs>
 
-	public fun createDelegationsDeAnonymizationMetadata(patient: PatientJs,
-			dataOwnerIds: Array<String>): Promise<Unit>
-
 	public fun hasWriteAccess(patient: PatientJs): Promise<Boolean>
-
-	public fun decryptPatientIdOf(patient: PatientJs): Promise<Array<String>>
 
 	public fun createDelegationDeAnonymizationMetadata(entity: PatientJs, delegates: Array<String>):
 			Promise<Unit>
 
+	public fun decrypt(patient: EncryptedPatientJs): Promise<DecryptedPatientJs>
+
+	public fun tryDecrypt(patient: EncryptedPatientJs): Promise<PatientJs>
+
 	public fun createPatients(patientDtos: Array<DecryptedPatientJs>): Promise<Array<IdWithRevJs>>
 
-	public fun registerPatient(
-		hcPartyId: String,
-		groupId: String,
-		token: String?,
-		useShortToken: Boolean?,
-		createAutoDelegation: Boolean,
-		patient: DecryptedPatientJs,
-	): Promise<DataOwnerRegistrationSuccessJs>
+	public fun shareAllDataOfPatient(patientId: String,
+			delegatesWithShareType: Record<String, Array<String>>):
+			Promise<ShareAllPatientDataOptionsJs_ResultJs>
 
-	public fun shareAllDataOfPatient(
-		user: UserJs,
-		patientId: String,
-		dataOwnerId: String,
-		delegatesWithShareType: Record<String, Array<String>>,
-	): Promise<ShareAllPatientDataOptionsJs_ResultJs>
-
-	public fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfoJs<*>,
-			healthcarePartyId: String): Promise<String>
+	public fun getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfoJs<*>):
+			Promise<String>
 
 	public fun getConfidentialSecretIdsOf(patient: PatientJs): Promise<Array<String>>
 
 	public fun forceInitializeExchangeDataToNewlyInvitedPatient(patientId: String): Promise<Boolean>
 
-	public fun matchPatientsBy(filter: AbstractFilterJs<PatientJs>): Promise<Array<String>>
+	public fun matchPatientsBy(filter: FilterOptionsJs<PatientJs>): Promise<Array<String>>
+
+	public fun matchPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
+			Promise<Array<String>>
 
 	public fun deletePatient(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deletePatients(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun undeletePatient(patientIds: String): Promise<Array<DocIdentifierJs>>
+	public fun undeletePatients(patientIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun getDataOwnersWithAccessTo(patient: PatientJs): Promise<EntityAccessInformationJs>
 
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<PatientJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedPatientJs>>
+	public fun countOfPatients(hcPartyId: String): Promise<Double>
 
 	public fun shareWith(
 		delegateId: String,
 		patient: DecryptedPatientJs,
-		shareSecretIds: Array<String>,
-		options: dynamic,
+		options: PatientShareOptionsJs,
 	): Promise<SimpleShareResultJs<DecryptedPatientJs>>
 
 	public fun tryShareWithMany(patient: DecryptedPatientJs,
@@ -113,12 +95,18 @@ public external interface PatientApiJs {
 
 	public fun initializeConfidentialSecretId(patient: DecryptedPatientJs): Promise<DecryptedPatientJs>
 
+	public fun filterPatientsBy(filter: FilterOptionsJs<PatientJs>):
+			Promise<PaginatedListIteratorJs<DecryptedPatientJs>>
+
+	public fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
+			Promise<PaginatedListIteratorJs<DecryptedPatientJs>>
+
 	public fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs>
 
 	public fun getPatient(entityId: String): Promise<DecryptedPatientJs>
 
-	public fun filterPatientsBy(filterChain: FilterChainJs<PatientJs>, options: dynamic):
-			Promise<PaginatedListJs<DecryptedPatientJs>>
+	public fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Double?):
+			Promise<DecryptedPatientJs>
 
 	public fun findPatientsByNameBirthSsinAuto(filterValue: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedPatientJs>>
@@ -133,10 +121,6 @@ public external interface PatientApiJs {
 
 	public fun listPatientsByHcParty(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedPatientJs>>
-
-	public fun getPatientHcPartyKeysForDelegate(patientId: String): Promise<Record<String, String>>
-
-	public fun countOfPatients(hcPartyId: String): Promise<EncryptedContentJs>
 
 	public fun findPatientsByHealthcareParty(options: dynamic):
 			Promise<PaginatedListJs<DecryptedPatientJs>>
@@ -157,7 +141,7 @@ public external interface PatientApiJs {
 
 	public fun listDeletedPatientsByName(options: dynamic): Promise<Array<DecryptedPatientJs>>
 
-	public fun getPatients(patientIds: ListOfIdsJs): Promise<Array<DecryptedPatientJs>>
+	public fun getPatients(patientIds: Array<String>): Promise<Array<DecryptedPatientJs>>
 
 	public fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
@@ -167,22 +151,18 @@ public external interface PatientApiJs {
 
 	public fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>>
 
-	public fun modifyPatientReferral(
-		patientId: String,
-		referralId: String,
-		options: dynamic,
-	): Promise<DecryptedPatientJs>
-
 	public fun findDuplicatesBySsin(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedPatientJs>>
 
 	public fun findDuplicatesByName(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedPatientJs>>
 
-	public fun mergePatients(
-		intoId: String,
-		fromId: String,
-		expectedFromRev: String,
-		updatedInto: EncryptedPatientJs,
-	): Promise<DecryptedPatientJs>
+	public fun mergePatients(from: PatientJs, mergedInto: DecryptedPatientJs):
+			Promise<DecryptedPatientJs>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<PatientJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedPatientJs>>
 }

@@ -1,3 +1,4 @@
+// auto-generated file
 package com.icure.sdk.js.model.specializations
 
 import com.icure.sdk.model.specializations.Sha256HexString

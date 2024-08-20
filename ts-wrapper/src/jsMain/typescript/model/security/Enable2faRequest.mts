@@ -2,10 +2,13 @@
 
 export class Enable2faRequest {
 
-  secret: string;
+	secret: string;
 
-  constructor(partial: Partial<Enable2faRequest> & Pick<Enable2faRequest, "secret">) {
-    this.secret = partial.secret;
-  }
+	otpLength: number;
+
+	constructor(partial: Partial<Enable2faRequest> & Pick<Enable2faRequest, "secret" | "otpLength">) {
+		this.secret = partial.secret;
+		this.otpLength = partial.otpLength;
+	}
 
 }

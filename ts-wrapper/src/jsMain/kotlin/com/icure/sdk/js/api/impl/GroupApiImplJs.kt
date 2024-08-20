@@ -139,6 +139,13 @@ internal class GroupApiImplJs(
 			) { superGroup: String? ->
 				undefinedToNull(superGroup)
 			}
+			val applicationIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"applicationId",
+				null
+			) { applicationId: String? ->
+				undefinedToNull(applicationId)
+			}
 			val initialisationDataConverted: DatabaseInitialisation =
 					databaseInitialisation_fromJs(initialisationData)
 			val result = groupApi.createGroup(
@@ -150,6 +157,7 @@ internal class GroupApiImplJs(
 				qConverted,
 				nConverted,
 				superGroupConverted,
+				applicationIdConverted,
 				initialisationDataConverted,
 			)
 			group_toJs(result)

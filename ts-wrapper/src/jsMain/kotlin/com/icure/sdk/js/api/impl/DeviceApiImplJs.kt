@@ -2,33 +2,29 @@
 package com.icure.sdk.js.api.`impl`
 
 import com.icure.sdk.api.DeviceApi
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.DeviceApiJs
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.sdk.js.filters.baseFilterOptions_fromJs
+import com.icure.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray
-import com.icure.sdk.js.model.CheckedConverters.numberToInt
-import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.DeviceJs
 import com.icure.sdk.js.model.IdWithRevJs
-import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.sdk.js.model.device_fromJs
 import com.icure.sdk.js.model.device_toJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.abstractFilter_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.idWithRev_toJs
-import com.icure.sdk.js.model.paginatedList_toJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
+import com.icure.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.sdk.model.Device
 import com.icure.sdk.model.IdWithRev
 import com.icure.sdk.model.couchdb.DocIdentifier
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
 import kotlin.Array
-import kotlin.Double
-import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
@@ -124,53 +120,52 @@ internal class DeviceApiImplJs(
 		)
 	}
 
-	override fun filterDevicesBy(filterChain: FilterChainJs<DeviceJs>, options: dynamic):
-			Promise<PaginatedListJs<DeviceJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val startDocumentIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"startDocumentId",
-				null
-			) { startDocumentId: String? ->
-				undefinedToNull(startDocumentId)
-			}
-			val limitConverted: Int? = convertingOptionOrDefaultNullable(
-				_options,
-				"limit",
-				null
-			) { limit: Double? ->
-				numberToInt(limit, "limit")
-			}
-			val filterChainConverted: FilterChain<Device> = filterChain_fromJs(
-				filterChain,
-				{ x1: DeviceJs ->
-					device_fromJs(x1)
-				},
-			)
-			val result = deviceApi.filterDevicesBy(
-				startDocumentIdConverted,
-				limitConverted,
-				filterChainConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: Device ->
-					device_toJs(x1)
-				},
-			)
-		}
-	}
-
-	override fun matchDevicesBy(filter: AbstractFilterJs<DeviceJs>): Promise<Array<String>> =
-			GlobalScope.promise {
-		val filterConverted: AbstractFilter<Device> = abstractFilter_fromJs(
-			filter,
-			{ x1: DeviceJs ->
-				device_fromJs(x1)
+	override fun filterDevicesBy(filter: BaseFilterOptionsJs<DeviceJs>):
+			Promise<PaginatedListIteratorJs<DeviceJs>> = GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<Device> = baseFilterOptions_fromJs(filter)
+		val result = deviceApi.filterDevicesBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: Device ->
+				device_toJs(x1)
 			},
 		)
+	}
+
+	override fun filterDevicesBySorted(filter: BaseSortableFilterOptionsJs<DeviceJs>):
+			Promise<PaginatedListIteratorJs<DeviceJs>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<Device> = baseSortableFilterOptions_fromJs(filter)
+		val result = deviceApi.filterDevicesBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: Device ->
+				device_toJs(x1)
+			},
+		)
+	}
+
+	override fun matchDevicesBy(filter: BaseFilterOptionsJs<DeviceJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		val filterConverted: BaseFilterOptions<Device> = baseFilterOptions_fromJs(filter)
 		val result = deviceApi.matchDevicesBy(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun matchDevicesBySorted(filter: BaseSortableFilterOptionsJs<DeviceJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: BaseSortableFilterOptions<Device> = baseSortableFilterOptions_fromJs(filter)
+		val result = deviceApi.matchDevicesBySorted(
 			filterConverted,
 		)
 		listToArray(

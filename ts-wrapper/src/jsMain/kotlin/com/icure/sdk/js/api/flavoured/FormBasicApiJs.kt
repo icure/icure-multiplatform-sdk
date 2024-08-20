@@ -49,13 +49,13 @@ public external interface FormBasicApiJs {
 
 	public fun getForms(entityIds: Array<String>): Promise<Array<EncryptedFormJs>>
 
-	public fun getFormByLogicalUuid(logicalUuid: String): Promise<EncryptedFormJs>
+	public fun getLatestFormByLogicalUuid(logicalUuid: String): Promise<EncryptedFormJs>
+
+	public fun getLatestFormByUniqueId(uniqueId: String): Promise<EncryptedFormJs>
 
 	public fun getFormsByLogicalUuid(logicalUuid: String): Promise<Array<EncryptedFormJs>>
 
 	public fun getFormsByUniqueId(uniqueId: String): Promise<Array<EncryptedFormJs>>
-
-	public fun getFormByUniqueId(uniqueId: String): Promise<EncryptedFormJs>
 
 	public fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<EncryptedFormJs>>
 

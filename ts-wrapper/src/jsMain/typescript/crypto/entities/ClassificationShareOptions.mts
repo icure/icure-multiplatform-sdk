@@ -5,16 +5,16 @@ import {ShareMetadataBehaviour} from './ShareMetadataBehaviour.mjs';
 
 export class ClassificationShareOptions {
 
-  requestedPermissions: RequestedPermission;
+	requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite;
 
-  shareEncryptionKey: ShareMetadataBehaviour;
+	shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-  sharePatientId: ShareMetadataBehaviour;
+	sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-  constructor(partial: Partial<ClassificationShareOptions> & Pick<ClassificationShareOptions, "requestedPermissions" | "shareEncryptionKey" | "sharePatientId">) {
-    this.requestedPermissions = partial.requestedPermissions;
-    this.shareEncryptionKey = partial.shareEncryptionKey;
-    this.sharePatientId = partial.sharePatientId;
-  }
+	constructor(partial: Partial<ClassificationShareOptions>) {
+		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;
+		if ('shareEncryptionKey' in partial && partial.shareEncryptionKey !== undefined) this.shareEncryptionKey = partial.shareEncryptionKey;
+		if ('sharePatientId' in partial && partial.sharePatientId !== undefined) this.sharePatientId = partial.sharePatientId;
+	}
 
 }

@@ -4,13 +4,13 @@ import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 
 export class EntityAccessInformation {
 
-  permissionsByDataOwnerId: { [ key: string ]: AccessLevel };
+	permissionsByDataOwnerId: { [ key: string ]: AccessLevel };
 
-  hasUnknownAnonymousDataOwners: boolean;
+	hasUnknownAnonymousDataOwners: boolean;
 
-  constructor(partial: Partial<EntityAccessInformation> & Pick<EntityAccessInformation, "permissionsByDataOwnerId" | "hasUnknownAnonymousDataOwners">) {
-    this.permissionsByDataOwnerId = partial.permissionsByDataOwnerId;
-    this.hasUnknownAnonymousDataOwners = partial.hasUnknownAnonymousDataOwners;
-  }
+	constructor(partial: Partial<EntityAccessInformation> & Pick<EntityAccessInformation, "permissionsByDataOwnerId" | "hasUnknownAnonymousDataOwners">) {
+		this.permissionsByDataOwnerId = partial.permissionsByDataOwnerId;
+		this.hasUnknownAnonymousDataOwners = partial.hasUnknownAnonymousDataOwners;
+	}
 
 }

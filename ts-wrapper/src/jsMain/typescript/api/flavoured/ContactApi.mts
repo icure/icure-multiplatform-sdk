@@ -1,9 +1,8 @@
 // auto-generated file
 import {ContactShareOptions} from '../../crypto/entities/ContactShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../../icure-sdk-ts.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../../model/Contact.mjs';
 import {IcureStub} from '../../model/IcureStub.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
@@ -13,13 +12,10 @@ import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {LabelledOccurence} from '../../model/data/LabelledOccurence.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
 import {DecryptedService, EncryptedService, Service} from '../../model/embed/Service.mjs';
-import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
 import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../../subscription/SubscriptionEventType.mjs';
 import {ContactFlavouredApi} from './ContactFlavouredApi.mjs';
 
 
@@ -28,6 +24,14 @@ export interface ContactApi {
 	encrypted: ContactFlavouredApi<EncryptedContact, EncryptedService>;
 
 	tryAndRecover: ContactFlavouredApi<Contact, Service>;
+
+	matchContactsBy(filter: FilterOptions<Contact>): Promise<Array<string>>;
+
+	matchServicesBy(filter: FilterOptions<Service>): Promise<Array<string>>;
+
+	matchContactsBySorted(filter: SortableFilterOptions<Contact>): Promise<Array<string>>;
+
+	matchServicesBySorted(filter: SortableFilterOptions<Service>): Promise<Array<string>>;
 
 	createContact(entity: DecryptedContact): Promise<DecryptedContact>;
 
@@ -44,9 +48,16 @@ export interface ContactApi {
 
 	createDelegationDeAnonymizationMetadata(entity: Contact, delegates: Array<string>): Promise<void>;
 
-	matchContactsBy(filter: AbstractFilter<Contact>): Promise<Array<string>>;
+	decrypt(contact: EncryptedContact): Promise<DecryptedContact>;
 
-	matchServicesBy(filter: AbstractFilter<Service>): Promise<Array<string>>;
+	tryDecrypt(contact: EncryptedContact): Promise<Contact>;
+
+	decryptService(service: EncryptedService): Promise<DecryptedService>;
+
+	tryDecryptService(service: EncryptedService): Promise<Service>;
+
+	subscribeToServiceCreateOrUpdateEvents(filter: FilterOptions<Service>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedService>>;
 
 	deleteContact(entityId: string): Promise<DocIdentifier>;
 
@@ -58,14 +69,8 @@ export interface ContactApi {
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
 
-	subscribeToServiceEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Service>,
-			subscriptionConfig: EntitySubscriptionConfiguration): Promise<EntitySubscription<EncryptedService>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Contact>,
-			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedContact>>;
-
 	shareWith(delegateId: string, contact: DecryptedContact,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedContact>>;
+			options?: { options?: ContactShareOptions | undefined }): Promise<SimpleShareResult<DecryptedContact>>;
 
 	tryShareWithMany(contact: DecryptedContact,
 			delegates: { [ key: string ]: ContactShareOptions }): Promise<SimpleShareResult<DecryptedContact>>;
@@ -76,6 +81,14 @@ export interface ContactApi {
 	findContactsByHcPartyPatient(hcPartyId: string, patient: Patient,
 			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean | undefined }): Promise<PaginatedListIterator<DecryptedContact>>;
 
+	filterContactsBy(filter: FilterOptions<Contact>): Promise<PaginatedListIterator<DecryptedContact>>;
+
+	filterServicesBy(filter: FilterOptions<Service>): Promise<PaginatedListIterator<DecryptedService>>;
+
+	filterContactsBySorted(filter: SortableFilterOptions<Contact>): Promise<PaginatedListIterator<DecryptedContact>>;
+
+	filterServicesBySorted(filter: SortableFilterOptions<Service>): Promise<PaginatedListIterator<DecryptedService>>;
+
 	modifyContact(entity: DecryptedContact): Promise<DecryptedContact>;
 
 	modifyContacts(entities: Array<DecryptedContact>): Promise<Array<DecryptedContact>>;
@@ -83,9 +96,6 @@ export interface ContactApi {
 	getContact(entityId: string): Promise<DecryptedContact>;
 
 	getContacts(entityIds: Array<string>): Promise<Array<DecryptedContact>>;
-
-	filterContactsBy(filterChain: FilterChain<Contact>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<DecryptedContact>>;
 
 	listContactByHCPartyServiceId(hcPartyId: string,
 			serviceId: string): Promise<Array<DecryptedContact>>;
@@ -101,9 +111,6 @@ export interface ContactApi {
 	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
 			options?: { planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<DecryptedContact>>;
 
-	closeForHCPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<DecryptedContact>>;
-
 	getService(serviceId: string): Promise<DecryptedService>;
 
 	getServices(entityIds: Array<string>): Promise<Array<DecryptedService>>;
@@ -118,7 +125,7 @@ export interface ContactApi {
 	findContactsByOpeningDate(startDate: number, endDate: number, hcPartyId: string,
 			options?: { startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedContact>>;
 
-	filterServicesBy(filterChain: FilterChain<Service>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<DecryptedService>>;
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<Contact>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedContact>>;
 
 }

@@ -1,12 +1,11 @@
 // auto-generated file
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../icure-sdk-ts.mjs';
 import {ListOfIds} from '../model/ListOfIds.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {EncryptedPropertyStub} from '../model/PropertyStub.mjs';
 import {User} from '../model/User.mjs';
 import {UserGroup} from '../model/UserGroup.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
-import {AbstractFilter} from '../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../model/filter/chain/FilterChain.mjs';
 import {Enable2faRequest} from '../model/security/Enable2faRequest.mjs';
 import {TokenWithGroup} from '../model/security/TokenWithGroup.mjs';
 
@@ -20,6 +19,8 @@ export interface UserApi {
 	createUser(user: User): Promise<User>;
 
 	getUser(userId: string): Promise<User>;
+
+	getUsers(userIds: Array<string>): Promise<Array<User>>;
 
 	getUserByEmail(email: string): Promise<User>;
 
@@ -41,12 +42,17 @@ export interface UserApi {
 	getToken(userId: string, key: string,
 			options?: { tokenValidity?: number | undefined, token?: string | undefined }): Promise<string>;
 
-	filterUsersBy(filterChain: FilterChain<User>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<User>>;
+	filterUsersBy(filter: BaseFilterOptions<User>): Promise<PaginatedListIterator<User>>;
 
-	matchUsersBy(filter: AbstractFilter<User>): Promise<Array<string>>;
+	matchUsersBy(filter: BaseFilterOptions<User>): Promise<Array<string>>;
+
+	filterUsersBySorted(filter: BaseSortableFilterOptions<User>): Promise<PaginatedListIterator<User>>;
+
+	matchUsersBySorted(filter: BaseSortableFilterOptions<User>): Promise<Array<string>>;
 
 	getMatchingUsers(): Promise<Array<UserGroup>>;
+
+	getUsersInGroup(groupId: string, userIds: Array<string>): Promise<Array<User>>;
 
 	listUsersInGroup(groupId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<User>>;
@@ -71,8 +77,16 @@ export interface UserApi {
 	getTokenInAllGroups(userIdentifier: string, key: string,
 			options?: { token?: string | undefined, tokenValidity?: number | undefined }): Promise<Array<TokenWithGroup>>;
 
-	filterUsersInGroupBy(groupId: string, filterChain: FilterChain<User>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<User>>;
+	filterUsersInGroupBy(groupId: string,
+			filter: BaseFilterOptions<User>): Promise<PaginatedListIterator<User>>;
+
+	matchUsersInGroupBy(groupId: string, filter: BaseFilterOptions<User>): Promise<Array<string>>;
+
+	filterUsersInGroupBySorted(groupId: string,
+			filter: BaseSortableFilterOptions<User>): Promise<PaginatedListIterator<User>>;
+
+	matchUsersInGroupBySorted(groupId: string,
+			filter: BaseSortableFilterOptions<User>): Promise<Array<string>>;
 
 	enable2faForUser(userId: string, groupId: string, request: Enable2faRequest): Promise<void>;
 

@@ -2,16 +2,16 @@
 
 export interface CodeIdentification<K> {
 
-  id: K;
+	id: K;
 
-  code: string | undefined;
+	code: string | undefined;
 
-  context: string | undefined;
+	context: string | undefined;
 
-  type: string | undefined;
+	type: string | undefined;
 
-  version: string | undefined;
+	version: string | undefined;
 
-  label: { [ key: string ]: string } | undefined;
+	label: { [ key: string ]: string } | undefined;
 
 }

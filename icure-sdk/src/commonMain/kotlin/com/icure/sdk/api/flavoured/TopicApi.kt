@@ -1,45 +1,28 @@
 package com.icure.sdk.api.flavoured
 
-import com.icure.sdk.api.raw.RawTopicApi
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TopicShareOptions
-import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.DecryptedTopic
 import com.icure.sdk.model.EncryptedTopic
-import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.Topic
 import com.icure.sdk.model.TopicRole
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.embed.DelegationTag
-import com.icure.sdk.model.extensions.autoDelegationsFor
-import com.icure.sdk.model.extensions.dataOwnerId
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.requests.topic.AddParticipant
-import com.icure.sdk.model.requests.topic.RemoveParticipant
 import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.options.ApiConfiguration
-import com.icure.sdk.options.BasicApiConfiguration
-import com.icure.sdk.serialization.SubscriptionSerializer
-import com.icure.sdk.serialization.TopicAbstractFilterSerializer
-import com.icure.sdk.subscription.EntitySubscription
-import com.icure.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.sdk.subscription.Subscribable
-import com.icure.sdk.subscription.WebSocketSubscription
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.EntityEncryptionException
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.Serialization
-import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import kotlinx.serialization.json.decodeFromJsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
-interface TopicBasicFlavourlessApi : Subscribable<Topic, EncryptedTopic> {
+interface TopicBasicFlavourlessApi {
 
 	/**
 	 * Deletes a topic. If you don't have write access to the topic the method will fail.
@@ -56,12 +39,6 @@ interface TopicBasicFlavourlessApi : Subscribable<Topic, EncryptedTopic> {
 	 * because you had no write access to them) they will not be included in this list.
 	 */
 	suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier>
-	/**
-	 * Get the ids of all health elements matching the provided filter.
-	 * @param filter a health element filter
-	 * @return a list of health element ids
-	 */
-	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): List<String>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -92,12 +69,6 @@ interface TopicBasicFlavouredApi<E : Topic> {
 	 * @return all topics that you can access with one of the provided ids.
 	 */
 	suspend fun getTopics(entityIds: List<String>): List<E>
-
-	/**
-	 * @param filter a topic filter
-	 * @return an iterator that iterates over all topics matching the provided filter.
-	 */
-	suspend fun filterTopicsBy(filter: AbstractFilter<Topic>): PaginatedListIterator<E>
 
 	/**
 	 * Add a participant to the topic. The participant will be able to create messages associated to the topic.
@@ -169,10 +140,40 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 		topic: E,
 		delegates: Map<String, TopicShareOptions>
 	): E
+
+	/**
+	 * Get an iterator that iterates through all topics matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterTopicsBySorted] instead.
+	 *
+	 * @param filter a topic filter
+	 * @return an iterator that iterates over all topics matching the provided filter.
+	 */
+	suspend fun filterTopicsBy(
+		filter: FilterOptions<Topic>
+	): PaginatedListIterator<E>
+
+	/**
+	 * Get an iterator that iterates through all topics matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterTopicsBy].
+	 *
+	 * @param filter a topic filter
+	 * @return an iterator that iterates over all topics matching the provided filter.
+	 */
+	suspend fun filterTopicsBySorted(
+		filter: SortableFilterOptions<Topic>
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
-interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic> {
+interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>, Subscribable<Topic, EncryptedTopic, FilterOptions<Topic>> {
 	/**
 	 * Create a new topic. The provided topic must have the encryption metadata initialized.
 	 * @param entity a topic with initialized encryption metadata
@@ -288,229 +289,84 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: TopicFlavouredApi<Topic>
+
+	/**
+	 * Get the ids of all topics matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchTopicsBySorted] instead.
+	 *
+	 * @param filter a topic filter
+	 * @return a list of topic ids
+	 */
+	suspend fun matchTopicsBy(filter: FilterOptions<Topic>): List<String>
+
+	/**
+	 * Get the ids of all topics matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchTopicsBy].
+	 *
+	 * @param filter a topic filter
+	 * @return a list of topic ids
+	 */
+	suspend fun matchTopicsBySorted(filter: SortableFilterOptions<Topic>): List<String>
 }
 
-interface TopicBasicApi : TopicBasicFlavourlessApi, TopicBasicFlavouredApi<EncryptedTopic>
+interface TopicBasicApi : TopicBasicFlavourlessApi, TopicBasicFlavouredApi<EncryptedTopic>, Subscribable<Topic, EncryptedTopic, BaseFilterOptions<Topic>> {
+	/**
+	 * Get the ids of all topics matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchTopicsBySorted] instead.
+	 *
+	 * @param filter a topic filter
+	 * @return a list of topic ids
+	 */
+	suspend fun matchTopicsBy(filter: BaseFilterOptions<Topic>): List<String>
 
-@InternalIcureApi
-private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
-	protected val rawApi: RawTopicApi,
-	private val config: BasicApiConfiguration,
-) :
-	TopicBasicFlavouredApi<E> {
-	override suspend fun modifyTopic(entity: E): E =
-		rawApi.modifyTopic(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+	/**
+	 * Get the ids of all topics matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchTopicsBy].
+	 *
+	 * @param filter a topic filter
+	 * @return a list of topic ids
+	 */
+	suspend fun matchTopicsBySorted(filter: BaseSortableFilterOptions<Topic>): List<String>
 
-	override suspend fun getTopic(entityId: String): E = rawApi.getTopic(entityId).successBody().let { maybeDecrypt(it) }
+	/**
+	 * Get an iterator that iterates through all topics matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterTopicsBySorted] instead.
+	 *
+	 * @param filter a topic filter
+	 * @return an iterator that iterates over all topics matching the provided filter.
+	 */
+	suspend fun filterTopicsBy(
+		filter: BaseFilterOptions<Topic>
+	): PaginatedListIterator<EncryptedTopic>
 
-	override suspend fun getTopics(entityIds: List<String>): List<E> =
-		rawApi.getTopics(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
-	override suspend fun filterTopicsBy(filter: AbstractFilter<Topic>): PaginatedListIterator<E> =
-		IdsPageIterator(
-			rawApi.matchTopicsBy(filter).successBody(),
-			this::getTopics
-		)
-	override suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole) =
-		rawApi.addParticipant(entityId, AddParticipant(dataOwnerId, topicRole)).successBody().let { maybeDecrypt(it) }
-	override suspend fun removeParticipant(entityId: String, dataOwnerId: String) =
-		rawApi.removeParticipant(entityId, RemoveParticipant(dataOwnerId)).successBody().let { maybeDecrypt(it) }
-
-	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedTopic
-	abstract suspend fun maybeDecrypt(entity: EncryptedTopic): E
+	/**
+	 * Get an iterator that iterates through all topics matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterTopicsBy].
+	 *
+	 * @param filter a topic filter
+	 * @return an iterator that iterates over all topics matching the provided filter.
+	 */
+	suspend fun filterTopicsBySorted(
+		filter: BaseSortableFilterOptions<Topic>
+	): PaginatedListIterator<EncryptedTopic>
 }
-
-@InternalIcureApi
-private abstract class AbstractTopicFlavouredApi<E : Topic>(
-	rawApi: RawTopicApi,
-	private val config: ApiConfiguration
-) : AbstractTopicBasicFlavouredApi<E>(rawApi, config), TopicFlavouredApi<E> {
-	protected val crypto get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.topic
-
-	override suspend fun shareWith(
-		delegateId: String,
-		topic: E,
-		options: TopicShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			topic.withTypeInfo(),
-			true,
-			mapOf(
-				delegateId to (options ?: TopicShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			topic.withTypeInfo(),
-			true,
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun shareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): E =
-		tryShareWithMany(topic, delegates).updatedEntityOrThrow()
-}
-
-@InternalIcureApi
-private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private val config: BasicApiConfiguration) : TopicBasicFlavourlessApi {
-	override suspend fun deleteTopic(entityId: String) = rawApi.deleteTopic(entityId).successBody()
-	override suspend fun deleteTopics(entityIds: List<String>) = rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
-	override suspend fun matchTopicsBy(filter: AbstractFilter<Topic>) = rawApi.matchTopicsBy(filter).successBody()
-
-	override suspend fun subscribeToEvents(
-		events: Set<com.icure.sdk.subscription.SubscriptionEventType>,
-		filter: AbstractFilter<Topic>,
-		subscriptionConfig: EntitySubscriptionConfiguration?
-	): EntitySubscription<EncryptedTopic> {
-		return WebSocketSubscription.initialize(
-			client = config.httpClient,
-			hostname = config.apiUrl,
-			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
-			entitySerializer = EncryptedTopic.serializer(),
-			events = events,
-			filter = filter,
-			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
-			subscriptionRequestSerializer = {
-				Serialization.json.encodeToString(SubscriptionSerializer(TopicAbstractFilterSerializer), it)
-			},
-			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
-			config = subscriptionConfig
-		)
-	}
-}
-
-@InternalIcureApi
-internal class TopicApiImpl(
-	private val rawApi: RawTopicApi,
-	private val config: ApiConfiguration,
-) : TopicApi, TopicFlavouredApi<DecryptedTopic> by object : AbstractTopicFlavouredApi<DecryptedTopic>(
-	rawApi,
-	config
-) {
-	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTopic): EncryptedTopic =
-		crypto.entity.encryptEntity(
-			entity.withTypeInfo(),
-			DecryptedTopic.serializer(),
-			fieldsToEncrypt,
-		) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
-
-	override suspend fun maybeDecrypt(entity: EncryptedTopic): DecryptedTopic {
-		return crypto.entity.tryDecryptEntity(
-			entity.withTypeInfo(),
-			EncryptedTopic.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
-	}
-}, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi, config) {
-	override val encrypted: TopicFlavouredApi<EncryptedTopic> =
-		object : AbstractTopicFlavouredApi<EncryptedTopic>(rawApi, config) {
-			override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
-				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTopic.serializer(), fieldsToEncrypt)
-
-			override suspend fun maybeDecrypt(entity: EncryptedTopic): EncryptedTopic = entity
-		}
-
-	override val tryAndRecover: TopicFlavouredApi<Topic> =
-		object : AbstractTopicFlavouredApi<Topic>(rawApi, config) {
-			override suspend fun maybeDecrypt(entity: EncryptedTopic): Topic =
-				crypto.entity.tryDecryptEntity(
-					entity.withTypeInfo(),
-					EncryptedTopic.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
-					?: entity
-
-			override suspend fun validateAndMaybeEncrypt(entity: Topic): EncryptedTopic = when (entity) {
-				is EncryptedTopic -> crypto.entity.validateEncryptedEntity(
-					entity.withTypeInfo(),
-					EncryptedTopic.serializer(),
-					fieldsToEncrypt,
-				)
-
-				is DecryptedTopic -> crypto.entity.encryptEntity(
-					entity.withTypeInfo(),
-					DecryptedTopic.serializer(),
-					fieldsToEncrypt,
-				) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
-			}
-		}
-
-	override suspend fun createTopic(entity: DecryptedTopic): DecryptedTopic {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createTopic(
-			encrypt(entity),
-		).successBody().let { decrypt(it) }
-	}
-
-	private val crypto get() = config.crypto
-	private val fieldsToEncrypt get() = config.encryption.topic
-
-	override suspend fun withEncryptionMetadata(
-		base: DecryptedTopic?,
-		patient: Patient?,
-		user: User?,
-		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
-		// Temporary, needs a lot more stuff to match typescript implementation
-	): DecryptedTopic =
-		crypto.entity.entityWithInitializedEncryptedMetadata(
-			(base ?: DecryptedTopic(crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			).withTypeInfo(),
-			patient?.id,
-			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
-			initializeEncryptionKey = true,
-			initializeSecretId = false,
-			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
-		).updatedEntity
-
-	override suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString> = crypto.entity.encryptionKeysOf(topic.withTypeInfo(), null)
-
-	override suspend fun hasWriteAccess(topic: Topic): Boolean = crypto.entity.hasWriteAccess(topic.withTypeInfo())
-
-	override suspend fun decryptPatientIdOf(topic: Topic): Set<String> = crypto.entity.owningEntityIdsOf(topic.withTypeInfo(), null)
-
-	override suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>) {
-		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
-	}
-
-	private suspend fun encrypt(entity: DecryptedTopic) = crypto.entity.encryptEntity(
-		entity.withTypeInfo(),
-		DecryptedTopic.serializer(),
-		fieldsToEncrypt,
-	) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
-
-	private suspend fun decryptOrNull(entity: EncryptedTopic): DecryptedTopic? = crypto.entity.tryDecryptEntity(
-		entity.withTypeInfo(),
-		EncryptedTopic.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
-
-	override suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic =
-		decryptOrNull(topic) ?: throw EntityEncryptionException("Topic cannot be decrypted")
-
-	override suspend fun tryDecrypt(topic: EncryptedTopic): Topic =
-		decryptOrNull(topic) ?: topic
-}
-
-@InternalIcureApi
-internal class TopicBasicApiImpl(
-	rawApi: RawTopicApi,
-	private val config: BasicApiConfiguration
-) : TopicBasicApi, TopicBasicFlavouredApi<EncryptedTopic> by object :
-	AbstractTopicBasicFlavouredApi<EncryptedTopic>(rawApi, config) {
-	override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
-		config.crypto.validationService.validateEncryptedEntity(
-			entity.withTypeInfo(),
-			EncryptedTopic.serializer(),
-			config.encryption.topic
-		)
-
-	override suspend fun maybeDecrypt(entity: EncryptedTopic): EncryptedTopic = entity
-}, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi, config)

@@ -5,11 +5,12 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.ContactShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.ContactJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.embed.ServiceJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -38,6 +39,18 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 		options: dynamic,
 	): Promise<PaginatedListIteratorJs<E>>
 
+	public fun filterContactsBy(filter: FilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<E>>
+
+	public fun filterServicesBy(filter: FilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<S>>
+
+	public fun filterContactsBySorted(filter: SortableFilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<E>>
+
+	public fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<S>>
+
 	public fun modifyContact(entity: E): Promise<E>
 
 	public fun modifyContacts(entities: Array<E>): Promise<Array<E>>
@@ -45,12 +58,6 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun getContact(entityId: String): Promise<E>
 
 	public fun getContacts(entityIds: Array<String>): Promise<Array<E>>
-
-	public fun filterContactsBy(
-		filterChain: FilterChainJs<ContactJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<E>>
 
 	public fun listContactByHCPartyServiceId(hcPartyId: String, serviceId: String): Promise<Array<E>>
 
@@ -66,9 +73,6 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 		secretPatientKeys: Array<String>,
 		options: dynamic,
 	): Promise<Array<E>>
-
-	public fun closeForHCPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: Array<String>):
-			Promise<Array<E>>
 
 	public fun getService(serviceId: String): Promise<S>
 
@@ -87,10 +91,4 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 		hcPartyId: String,
 		options: dynamic,
 	): Promise<PaginatedListJs<E>>
-
-	public fun filterServicesBy(
-		filterChain: FilterChainJs<ServiceJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<S>>
 }

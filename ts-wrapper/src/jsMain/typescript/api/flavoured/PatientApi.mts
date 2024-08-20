@@ -3,25 +3,19 @@ import {EntityAccessInformation} from '../../crypto/entities/EntityAccessInforma
 import {EntityWithTypeInfo} from '../../crypto/entities/EntityWithTypeInfo.mjs';
 import {PatientShareOptions} from '../../crypto/entities/PatientShareOptions.mjs';
 import {ShareAllPatientDataOptions} from '../../crypto/entities/ShareAllPatientDataOptions.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
-import {DataOwnerRegistrationSuccess} from '../../model/DataOwnerRegistrationSuccess.mjs';
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../../icure-sdk-ts.mjs';
 import {IdWithRev} from '../../model/IdWithRev.mjs';
-import {ListOfIds} from '../../model/ListOfIds.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {DecryptedPatient, EncryptedPatient, Patient} from '../../model/Patient.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {SortDirection} from '../../model/couchdb/SortDirection.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
-import {EncryptedContent} from '../../model/embed/Content.mjs';
-import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
 import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../../subscription/SubscriptionEventType.mjs';
 import {PatientFlavouredApi} from './PatientFlavouredApi.mjs';
 
 
@@ -40,51 +34,41 @@ export interface PatientApi {
 	withEncryptionMetadata(base: DecryptedPatient | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel } }): Promise<DecryptedPatient>;
 
-	createDelegationsDeAnonymizationMetadata(patient: Patient,
-			dataOwnerIds: Array<string>): Promise<void>;
-
 	hasWriteAccess(patient: Patient): Promise<boolean>;
-
-	decryptPatientIdOf(patient: Patient): Promise<Array<string>>;
 
 	createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Array<string>): Promise<void>;
 
+	decrypt(patient: EncryptedPatient): Promise<DecryptedPatient>;
+
+	tryDecrypt(patient: EncryptedPatient): Promise<Patient>;
+
 	createPatients(patientDtos: Array<DecryptedPatient>): Promise<Array<IdWithRev>>;
 
-	registerPatient(
-			hcPartyId: string,
-			groupId: string,
-			token: string | undefined,
-			useShortToken: boolean | undefined,
-			createAutoDelegation: boolean,
-			patient: DecryptedPatient
-	): Promise<DataOwnerRegistrationSuccess>;
-
-	shareAllDataOfPatient(user: User, patientId: string, dataOwnerId: string,
+	shareAllDataOfPatient(patientId: string,
 			delegatesWithShareType: { [ key: string ]: Array<ShareAllPatientDataOptions.Tag> }): Promise<ShareAllPatientDataOptions.Result>;
 
-	getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<any>,
-			healthcarePartyId: string): Promise<string>;
+	getPatientIdOfChildDocumentForHcpAndHcpParents(childDocument: EntityWithTypeInfo<any>): Promise<string>;
 
 	getConfidentialSecretIdsOf(patient: Patient): Promise<Array<string>>;
 
 	forceInitializeExchangeDataToNewlyInvitedPatient(patientId: string): Promise<boolean>;
 
-	matchPatientsBy(filter: AbstractFilter<Patient>): Promise<Array<string>>;
+	matchPatientsBy(filter: FilterOptions<Patient>): Promise<Array<string>>;
+
+	matchPatientsBySorted(filter: SortableFilterOptions<Patient>): Promise<Array<string>>;
 
 	deletePatient(entityId: string): Promise<DocIdentifier>;
 
 	deletePatients(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	undeletePatient(patientIds: string): Promise<Array<DocIdentifier>>;
+	undeletePatients(patientIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getDataOwnersWithAccessTo(patient: Patient): Promise<EntityAccessInformation>;
 
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Patient>,
-			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedPatient>>;
+	countOfPatients(hcPartyId: string): Promise<number>;
 
-	shareWith(delegateId: string, patient: DecryptedPatient, shareSecretIds: Array<string>,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedPatient>>;
+	shareWith(delegateId: string, patient: DecryptedPatient,
+			options: PatientShareOptions): Promise<SimpleShareResult<DecryptedPatient>>;
 
 	tryShareWithMany(patient: DecryptedPatient,
 			delegates: { [ key: string ]: PatientShareOptions }): Promise<SimpleShareResult<DecryptedPatient>>;
@@ -94,12 +78,16 @@ export interface PatientApi {
 
 	initializeConfidentialSecretId(patient: DecryptedPatient): Promise<DecryptedPatient>;
 
+	filterPatientsBy(filter: FilterOptions<Patient>): Promise<PaginatedListIterator<DecryptedPatient>>;
+
+	filterPatientsBySorted(filter: SortableFilterOptions<Patient>): Promise<PaginatedListIterator<DecryptedPatient>>;
+
 	modifyPatient(entity: DecryptedPatient): Promise<DecryptedPatient>;
 
 	getPatient(entityId: string): Promise<DecryptedPatient>;
 
-	filterPatientsBy(filterChain: FilterChain<Patient>,
-			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skip?: number | undefined, sort?: string | undefined, desc?: boolean | undefined }): Promise<PaginatedList<DecryptedPatient>>;
+	getPatientResolvingMerges(patientId: string,
+			maxMergeDepth: number | undefined): Promise<DecryptedPatient>;
 
 	findPatientsByNameBirthSsinAuto(filterValue: string,
 			options?: { healthcarePartyId?: string | undefined, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<DecryptedPatient>>;
@@ -114,10 +102,6 @@ export interface PatientApi {
 
 	listPatientsByHcParty(hcPartyId: string,
 			options?: { sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<DecryptedPatient>>;
-
-	getPatientHcPartyKeysForDelegate(patientId: string): Promise<{ [ key: string ]: string }>;
-
-	countOfPatients(hcPartyId: string): Promise<EncryptedContent>;
 
 	findPatientsByHealthcareParty(options?: { hcPartyId?: string | undefined, sortField?: string, startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, sortDirection?: SortDirection }): Promise<PaginatedList<DecryptedPatient>>;
 
@@ -134,15 +118,12 @@ export interface PatientApi {
 
 	listDeletedPatientsByName(options?: { firstName?: string | undefined, lastName?: string | undefined }): Promise<Array<DecryptedPatient>>;
 
-	getPatients(patientIds: ListOfIds): Promise<Array<DecryptedPatient>>;
+	getPatients(patientIds: Array<string>): Promise<Array<DecryptedPatient>>;
 
 	getPatientByHealthcarePartyAndIdentifier(hcPartyId: string, id: string,
 			options?: { system?: string | undefined }): Promise<DecryptedPatient>;
 
 	modifyPatients(patientDtos: Array<EncryptedPatient>): Promise<Array<IdWithRev>>;
-
-	modifyPatientReferral(patientId: string, referralId: string,
-			options?: { start?: number | undefined, end?: number | undefined }): Promise<DecryptedPatient>;
 
 	findDuplicatesBySsin(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedPatient>>;
@@ -150,7 +131,9 @@ export interface PatientApi {
 	findDuplicatesByName(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedPatient>>;
 
-	mergePatients(intoId: string, fromId: string, expectedFromRev: string,
-			updatedInto: EncryptedPatient): Promise<DecryptedPatient>;
+	mergePatients(from: Patient, mergedInto: DecryptedPatient): Promise<DecryptedPatient>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<Patient>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedPatient>>;
 
 }

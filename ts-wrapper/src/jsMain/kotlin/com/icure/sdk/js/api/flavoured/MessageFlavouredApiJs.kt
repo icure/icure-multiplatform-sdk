@@ -5,10 +5,11 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.MessageShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -24,8 +25,7 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 	public fun shareWith(
 		delegateId: String,
 		message: E,
-		shareSecretIds: Array<String>,
-		options: dynamic,
+		options: MessageShareOptionsJs,
 	): Promise<SimpleShareResultJs<E>>
 
 	public fun tryShareWithMany(message: E, delegates: Record<String, MessageShareOptionsJs>):
@@ -39,17 +39,17 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 		options: dynamic,
 	): Promise<PaginatedListIteratorJs<E>>
 
+	public fun filterMessagesBy(filter: FilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<E>>
+
+	public fun filterMessagesBySorted(filter: SortableFilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<E>>
+
 	public fun modifyMessage(entity: E): Promise<E>
 
 	public fun getMessage(entityId: String): Promise<E>
 
 	public fun getMessages(entityIds: Array<String>): Promise<Array<E>>
-
-	public fun filterMessagesBy(
-		filterChain: FilterChainJs<MessageJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<E>>
 
 	public fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 			Promise<Array<E>>
@@ -98,6 +98,6 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 		entityIds: Array<String>,
 		time: Double?,
 		readStatus: Boolean,
-		userId: String,
+		userId: String?,
 	): Promise<Array<E>>
 }

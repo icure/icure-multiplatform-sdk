@@ -5,14 +5,14 @@ package com.icure.sdk.js.api.flavoured
 
 import com.icure.sdk.js.crypto.entities.MessageShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.sdk.js.model.DecryptedMessageJs
 import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -33,6 +33,8 @@ public external interface MessageApiJs {
 
 	public fun createMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
 
+	public fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
+
 	public fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
@@ -48,25 +50,23 @@ public external interface MessageApiJs {
 	public fun createDelegationDeAnonymizationMetadata(entity: MessageJs, delegates: Array<String>):
 			Promise<Unit>
 
-	public fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
+	public fun decrypt(message: EncryptedMessageJs): Promise<DecryptedMessageJs>
 
-	public fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>>
+	public fun tryDecrypt(message: EncryptedMessageJs): Promise<MessageJs>
+
+	public fun matchMessagesBy(filter: FilterOptionsJs<MessageJs>): Promise<Array<String>>
+
+	public fun matchMessagesBySorted(filter: SortableFilterOptionsJs<MessageJs>):
+			Promise<Array<String>>
 
 	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<MessageJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedMessageJs>>
-
 	public fun shareWith(
 		delegateId: String,
 		message: DecryptedMessageJs,
-		shareSecretIds: Array<String>,
-		options: dynamic,
+		options: MessageShareOptionsJs,
 	): Promise<SimpleShareResultJs<DecryptedMessageJs>>
 
 	public fun tryShareWithMany(message: DecryptedMessageJs,
@@ -82,17 +82,17 @@ public external interface MessageApiJs {
 		options: dynamic,
 	): Promise<PaginatedListIteratorJs<DecryptedMessageJs>>
 
+	public fun filterMessagesBy(filter: FilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<DecryptedMessageJs>>
+
+	public fun filterMessagesBySorted(filter: SortableFilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<DecryptedMessageJs>>
+
 	public fun modifyMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
 
 	public fun getMessage(entityId: String): Promise<DecryptedMessageJs>
 
 	public fun getMessages(entityIds: Array<String>): Promise<Array<DecryptedMessageJs>>
-
-	public fun filterMessagesBy(
-		filterChain: FilterChainJs<MessageJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedMessageJs>>
 
 	public fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 			Promise<Array<DecryptedMessageJs>>
@@ -143,6 +143,12 @@ public external interface MessageApiJs {
 		entityIds: Array<String>,
 		time: Double?,
 		readStatus: Boolean,
-		userId: String,
+		userId: String?,
 	): Promise<Array<DecryptedMessageJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<MessageJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedMessageJs>>
 }

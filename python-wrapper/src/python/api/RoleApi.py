@@ -1,3 +1,4 @@
+# auto-generated file
 import asyncio
 from icure.model import Role
 from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols

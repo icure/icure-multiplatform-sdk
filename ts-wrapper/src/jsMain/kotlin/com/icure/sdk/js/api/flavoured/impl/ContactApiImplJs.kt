@@ -4,7 +4,8 @@ package com.icure.sdk.js.api.flavoured.`impl`
 import com.icure.sdk.api.flavoured.ContactApi
 import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.ContactApiJs
@@ -15,6 +16,10 @@ import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.crypto.entities.contactShareOptions_fromJs
 import com.icure.sdk.js.crypto.entities.secretIdOption_fromJs
 import com.icure.sdk.js.crypto.entities.simpleShareResult_toJs
+import com.icure.sdk.js.filters.FilterOptionsJs
+import com.icure.sdk.js.filters.SortableFilterOptionsJs
+import com.icure.sdk.js.filters.filterOptions_fromJs
+import com.icure.sdk.js.filters.sortableFilterOptions_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
@@ -42,10 +47,6 @@ import com.icure.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.embed.service_fromJs
 import com.icure.sdk.js.model.embed.service_toJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.abstractFilter_fromJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
-import com.icure.sdk.js.model.filter.chain.filterChain_fromJs
 import com.icure.sdk.js.model.icureStub_toJs
 import com.icure.sdk.js.model.paginatedList_toJs
 import com.icure.sdk.js.model.patient_fromJs
@@ -70,12 +71,9 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.model.embed.DecryptedService
 import com.icure.sdk.model.embed.EncryptedService
 import com.icure.sdk.model.embed.Service
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.filter.chain.FilterChain
-import com.icure.sdk.model.notification.SubscriptionEventType
-import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -108,30 +106,19 @@ internal class ContactApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val contactConverted: EncryptedContact = contact_fromJs(contact)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: ContactShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: ContactShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						contactShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = contactApi.encrypted.shareWith(
 					delegateIdConverted,
 					contactConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -235,6 +222,62 @@ internal class ContactApiImplJs(
 			}
 		}
 
+		override fun filterContactsBy(filter: FilterOptionsJs<ContactJs>):
+				Promise<PaginatedListIteratorJs<EncryptedContactJs>> = GlobalScope.promise {
+			val filterConverted: FilterOptions<Contact> = filterOptions_fromJs(filter)
+			val result = contactApi.encrypted.filterContactsBy(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterServicesBy(filter: FilterOptionsJs<ServiceJs>):
+				Promise<PaginatedListIteratorJs<EncryptedServiceJs>> = GlobalScope.promise {
+			val filterConverted: FilterOptions<Service> = filterOptions_fromJs(filter)
+			val result = contactApi.encrypted.filterServicesBy(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: EncryptedService ->
+					service_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterContactsBySorted(filter: SortableFilterOptionsJs<ContactJs>):
+				Promise<PaginatedListIteratorJs<EncryptedContactJs>> = GlobalScope.promise {
+			val filterConverted: SortableFilterOptions<Contact> = sortableFilterOptions_fromJs(filter)
+			val result = contactApi.encrypted.filterContactsBySorted(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
+				Promise<PaginatedListIteratorJs<EncryptedServiceJs>> = GlobalScope.promise {
+			val filterConverted: SortableFilterOptions<Service> = sortableFilterOptions_fromJs(filter)
+			val result = contactApi.encrypted.filterServicesBySorted(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: EncryptedService ->
+					service_toJs(x1)
+				},
+			)
+		}
+
 		override fun modifyContact(entity: EncryptedContactJs): Promise<EncryptedContactJs> =
 				GlobalScope.promise {
 			val entityConverted: EncryptedContact = contact_fromJs(entity)
@@ -285,32 +328,6 @@ internal class ContactApiImplJs(
 				entityIdsConverted,
 			)
 			listToArray(
-				result,
-				{ x1: EncryptedContact ->
-					contact_toJs(x1)
-				},
-			)
-		}
-
-		override fun filterContactsBy(
-			filterChain: FilterChainJs<ContactJs>,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<EncryptedContactJs>> = GlobalScope.promise {
-			val filterChainConverted: FilterChain<Contact> = filterChain_fromJs(
-				filterChain,
-				{ x1: ContactJs ->
-					contact_fromJs(x1)
-				},
-			)
-			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
-			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = contactApi.encrypted.filterContactsBy(
-				filterChainConverted,
-				startDocumentIdConverted,
-				limitConverted,
-			)
-			paginatedList_toJs(
 				result,
 				{ x1: EncryptedContact ->
 					contact_toJs(x1)
@@ -428,28 +445,6 @@ internal class ContactApiImplJs(
 					},
 				)
 			}
-		}
-
-		override fun closeForHCPartyPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = contactApi.encrypted.closeForHCPartyPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedContact ->
-					contact_toJs(x1)
-				},
-			)
 		}
 
 		override fun getService(serviceId: String): Promise<EncryptedServiceJs> = GlobalScope.promise {
@@ -580,32 +575,6 @@ internal class ContactApiImplJs(
 				)
 			}
 		}
-
-		override fun filterServicesBy(
-			filterChain: FilterChainJs<ServiceJs>,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<EncryptedServiceJs>> = GlobalScope.promise {
-			val filterChainConverted: FilterChain<Service> = filterChain_fromJs(
-				filterChain,
-				{ x1: ServiceJs ->
-					service_fromJs(x1)
-				},
-			)
-			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
-			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = contactApi.encrypted.filterServicesBy(
-				filterChainConverted,
-				startDocumentIdConverted,
-				limitConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: EncryptedService ->
-					service_toJs(x1)
-				},
-			)
-		}
 	}
 
 	override val tryAndRecover: ContactFlavouredApiJs<ContactJs, ServiceJs> = object :
@@ -619,30 +588,19 @@ internal class ContactApiImplJs(
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
 				val contactConverted: Contact = contact_fromJs(contact)
-				val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+				val optionsConverted: ContactShareOptions? = convertingOptionOrDefaultNullable(
 					_options,
-					"shareEncryptionKeys",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareEncryptionKeys: String ->
-					ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-				}
-				val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-					_options,
-					"shareOwningEntityIds",
-					com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-				) { shareOwningEntityIds: String ->
-					ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-				}
-				val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-					_options,
-					"requestedPermission",
-					com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-				) { requestedPermission: String ->
-					RequestedPermission.valueOf(requestedPermission)
+					"options",
+					null
+				) { options: ContactShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						contactShareOptions_fromJs(nonNull1)
+					}
 				}
 				val result = contactApi.tryAndRecover.shareWith(
 					delegateIdConverted,
 					contactConverted,
+					optionsConverted,
 				)
 				simpleShareResult_toJs(
 					result,
@@ -745,6 +703,62 @@ internal class ContactApiImplJs(
 			}
 		}
 
+		override fun filterContactsBy(filter: FilterOptionsJs<ContactJs>):
+				Promise<PaginatedListIteratorJs<ContactJs>> = GlobalScope.promise {
+			val filterConverted: FilterOptions<Contact> = filterOptions_fromJs(filter)
+			val result = contactApi.tryAndRecover.filterContactsBy(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: Contact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterServicesBy(filter: FilterOptionsJs<ServiceJs>):
+				Promise<PaginatedListIteratorJs<ServiceJs>> = GlobalScope.promise {
+			val filterConverted: FilterOptions<Service> = filterOptions_fromJs(filter)
+			val result = contactApi.tryAndRecover.filterServicesBy(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: Service ->
+					service_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterContactsBySorted(filter: SortableFilterOptionsJs<ContactJs>):
+				Promise<PaginatedListIteratorJs<ContactJs>> = GlobalScope.promise {
+			val filterConverted: SortableFilterOptions<Contact> = sortableFilterOptions_fromJs(filter)
+			val result = contactApi.tryAndRecover.filterContactsBySorted(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: Contact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+
+		override fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
+				Promise<PaginatedListIteratorJs<ServiceJs>> = GlobalScope.promise {
+			val filterConverted: SortableFilterOptions<Service> = sortableFilterOptions_fromJs(filter)
+			val result = contactApi.tryAndRecover.filterServicesBySorted(
+				filterConverted,
+			)
+			paginatedListIterator_toJs(
+				result,
+				{ x1: Service ->
+					service_toJs(x1)
+				},
+			)
+		}
+
 		override fun modifyContact(entity: ContactJs): Promise<ContactJs> = GlobalScope.promise {
 			val entityConverted: Contact = contact_fromJs(entity)
 			val result = contactApi.tryAndRecover.modifyContact(
@@ -794,32 +808,6 @@ internal class ContactApiImplJs(
 				entityIdsConverted,
 			)
 			listToArray(
-				result,
-				{ x1: Contact ->
-					contact_toJs(x1)
-				},
-			)
-		}
-
-		override fun filterContactsBy(
-			filterChain: FilterChainJs<ContactJs>,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<ContactJs>> = GlobalScope.promise {
-			val filterChainConverted: FilterChain<Contact> = filterChain_fromJs(
-				filterChain,
-				{ x1: ContactJs ->
-					contact_fromJs(x1)
-				},
-			)
-			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
-			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = contactApi.tryAndRecover.filterContactsBy(
-				filterChainConverted,
-				startDocumentIdConverted,
-				limitConverted,
-			)
-			paginatedList_toJs(
 				result,
 				{ x1: Contact ->
 					contact_toJs(x1)
@@ -937,28 +925,6 @@ internal class ContactApiImplJs(
 					},
 				)
 			}
-		}
-
-		override fun closeForHCPartyPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<ContactJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = contactApi.tryAndRecover.closeForHCPartyPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: Contact ->
-					contact_toJs(x1)
-				},
-			)
 		}
 
 		override fun getService(serviceId: String): Promise<ServiceJs> = GlobalScope.promise {
@@ -1089,32 +1055,62 @@ internal class ContactApiImplJs(
 				)
 			}
 		}
+	}
 
-		override fun filterServicesBy(
-			filterChain: FilterChainJs<ServiceJs>,
-			startDocumentId: String?,
-			limit: Double?,
-		): Promise<PaginatedListJs<ServiceJs>> = GlobalScope.promise {
-			val filterChainConverted: FilterChain<Service> = filterChain_fromJs(
-				filterChain,
-				{ x1: ServiceJs ->
-					service_fromJs(x1)
-				},
-			)
-			val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
-			val limitConverted: Int? = numberToInt(limit, "limit")
-			val result = contactApi.tryAndRecover.filterServicesBy(
-				filterChainConverted,
-				startDocumentIdConverted,
-				limitConverted,
-			)
-			paginatedList_toJs(
-				result,
-				{ x1: Service ->
-					service_toJs(x1)
-				},
-			)
-		}
+	override fun matchContactsBy(filter: FilterOptionsJs<ContactJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		val filterConverted: FilterOptions<Contact> = filterOptions_fromJs(filter)
+		val result = contactApi.matchContactsBy(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun matchServicesBy(filter: FilterOptionsJs<ServiceJs>): Promise<Array<String>> =
+			GlobalScope.promise {
+		val filterConverted: FilterOptions<Service> = filterOptions_fromJs(filter)
+		val result = contactApi.matchServicesBy(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun matchContactsBySorted(filter: SortableFilterOptionsJs<ContactJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: SortableFilterOptions<Contact> = sortableFilterOptions_fromJs(filter)
+		val result = contactApi.matchContactsBySorted(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
+	}
+
+	override fun matchServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
+			Promise<Array<String>> = GlobalScope.promise {
+		val filterConverted: SortableFilterOptions<Service> = sortableFilterOptions_fromJs(filter)
+		val result = contactApi.matchServicesBySorted(
+			filterConverted,
+		)
+		listToArray(
+			result,
+			{ x1: String ->
+				x1
+			},
+		)
 	}
 
 	override fun createContact(entity: DecryptedContactJs): Promise<DecryptedContactJs> =
@@ -1252,42 +1248,67 @@ internal class ContactApiImplJs(
 
 	}
 
-	override fun matchContactsBy(filter: AbstractFilterJs<ContactJs>): Promise<Array<String>> =
+	override fun decrypt(contact: EncryptedContactJs): Promise<DecryptedContactJs> =
 			GlobalScope.promise {
-		val filterConverted: AbstractFilter<Contact> = abstractFilter_fromJs(
-			filter,
-			{ x1: ContactJs ->
-				contact_fromJs(x1)
-			},
+		val contactConverted: EncryptedContact = contact_fromJs(contact)
+		val result = contactApi.decrypt(
+			contactConverted,
 		)
-		val result = contactApi.matchContactsBy(
-			filterConverted,
-		)
-		listToArray(
-			result,
-			{ x1: String ->
-				x1
-			},
-		)
+		contact_toJs(result)
 	}
 
-	override fun matchServicesBy(filter: AbstractFilterJs<ServiceJs>): Promise<Array<String>> =
+	override fun tryDecrypt(contact: EncryptedContactJs): Promise<ContactJs> = GlobalScope.promise {
+		val contactConverted: EncryptedContact = contact_fromJs(contact)
+		val result = contactApi.tryDecrypt(
+			contactConverted,
+		)
+		contact_toJs(result)
+	}
+
+	override fun decryptService(service: EncryptedServiceJs): Promise<DecryptedServiceJs> =
 			GlobalScope.promise {
-		val filterConverted: AbstractFilter<Service> = abstractFilter_fromJs(
-			filter,
-			{ x1: ServiceJs ->
-				service_fromJs(x1)
-			},
+		val serviceConverted: EncryptedService = service_fromJs(service)
+		val result = contactApi.decryptService(
+			serviceConverted,
 		)
-		val result = contactApi.matchServicesBy(
-			filterConverted,
+		service_toJs(result)
+	}
+
+	override fun tryDecryptService(service: EncryptedServiceJs): Promise<ServiceJs> =
+			GlobalScope.promise {
+		val serviceConverted: EncryptedService = service_fromJs(service)
+		val result = contactApi.tryDecryptService(
+			serviceConverted,
 		)
-		listToArray(
-			result,
-			{ x1: String ->
-				x1
-			},
-		)
+		service_toJs(result)
+	}
+
+	override fun subscribeToServiceCreateOrUpdateEvents(filter: FilterOptionsJs<ServiceJs>,
+			options: dynamic): Promise<EntitySubscriptionJs<EncryptedServiceJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val filterConverted: FilterOptions<Service> = filterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = contactApi.subscribeToServiceCreateOrUpdateEvents(
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedService ->
+					service_toJs(x1)
+				},
+			)
+		}
 	}
 
 	override fun deleteContact(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
@@ -1356,83 +1377,6 @@ internal class ContactApiImplJs(
 		)
 	}
 
-	override fun subscribeToServiceEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ServiceJs>,
-		subscriptionConfig: EntitySubscriptionConfigurationJs,
-	): Promise<EntitySubscriptionJs<EncryptedServiceJs>> = GlobalScope.promise {
-		val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-			events,
-			"events",
-			{ x1: String ->
-				SubscriptionEventType.valueOf(x1)
-			},
-		)
-		val filterConverted: AbstractFilter<Service> = abstractFilter_fromJs(
-			filter,
-			{ x1: ServiceJs ->
-				service_fromJs(x1)
-			},
-		)
-		val subscriptionConfigConverted: EntitySubscriptionConfiguration =
-				entitySubscriptionConfiguration_fromJs(subscriptionConfig)
-		val result = contactApi.subscribeToServiceEvents(
-			eventsConverted,
-			filterConverted,
-			subscriptionConfigConverted,
-		)
-		entitySubscription_toJs(
-			result,
-			{ x1: EncryptedService ->
-				service_toJs(x1)
-			},
-		)
-	}
-
-	override fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<ContactJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedContactJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
-				events,
-				"events",
-				{ x1: String ->
-					SubscriptionEventType.valueOf(x1)
-				},
-			)
-			val filterConverted: AbstractFilter<Contact> = abstractFilter_fromJs(
-				filter,
-				{ x1: ContactJs ->
-					contact_fromJs(x1)
-				},
-			)
-			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
-					convertingOptionOrDefaultNullable(
-				_options,
-				"subscriptionConfig",
-				null
-			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
-				subscriptionConfig?.let { nonNull1 ->
-					entitySubscriptionConfiguration_fromJs(nonNull1)
-				}
-			}
-			val result = contactApi.subscribeToEvents(
-				eventsConverted,
-				filterConverted,
-				subscriptionConfigConverted,
-			)
-			entitySubscription_toJs(
-				result,
-				{ x1: EncryptedContact ->
-					contact_toJs(x1)
-				},
-			)
-		}
-	}
-
 	override fun shareWith(
 		delegateId: String,
 		contact: DecryptedContactJs,
@@ -1442,30 +1386,19 @@ internal class ContactApiImplJs(
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
 			val contactConverted: DecryptedContact = contact_fromJs(contact)
-			val shareEncryptionKeysConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
+			val optionsConverted: ContactShareOptions? = convertingOptionOrDefaultNullable(
 				_options,
-				"shareEncryptionKeys",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareEncryptionKeys: String ->
-				ShareMetadataBehaviour.valueOf(shareEncryptionKeys)
-			}
-			val shareOwningEntityIdsConverted: ShareMetadataBehaviour = convertingOptionOrDefaultNonNull(
-				_options,
-				"shareOwningEntityIds",
-				com.icure.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable
-			) { shareOwningEntityIds: String ->
-				ShareMetadataBehaviour.valueOf(shareOwningEntityIds)
-			}
-			val requestedPermissionConverted: RequestedPermission = convertingOptionOrDefaultNonNull(
-				_options,
-				"requestedPermission",
-				com.icure.sdk.model.requests.RequestedPermission.MaxWrite
-			) { requestedPermission: String ->
-				RequestedPermission.valueOf(requestedPermission)
+				"options",
+				null
+			) { options: ContactShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					contactShareOptions_fromJs(nonNull1)
+				}
 			}
 			val result = contactApi.shareWith(
 				delegateIdConverted,
 				contactConverted,
+				optionsConverted,
 			)
 			simpleShareResult_toJs(
 				result,
@@ -1569,6 +1502,62 @@ internal class ContactApiImplJs(
 		}
 	}
 
+	override fun filterContactsBy(filter: FilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<DecryptedContactJs>> = GlobalScope.promise {
+		val filterConverted: FilterOptions<Contact> = filterOptions_fromJs(filter)
+		val result = contactApi.filterContactsBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: DecryptedContact ->
+				contact_toJs(x1)
+			},
+		)
+	}
+
+	override fun filterServicesBy(filter: FilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<DecryptedServiceJs>> = GlobalScope.promise {
+		val filterConverted: FilterOptions<Service> = filterOptions_fromJs(filter)
+		val result = contactApi.filterServicesBy(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: DecryptedService ->
+				service_toJs(x1)
+			},
+		)
+	}
+
+	override fun filterContactsBySorted(filter: SortableFilterOptionsJs<ContactJs>):
+			Promise<PaginatedListIteratorJs<DecryptedContactJs>> = GlobalScope.promise {
+		val filterConverted: SortableFilterOptions<Contact> = sortableFilterOptions_fromJs(filter)
+		val result = contactApi.filterContactsBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: DecryptedContact ->
+				contact_toJs(x1)
+			},
+		)
+	}
+
+	override fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
+			Promise<PaginatedListIteratorJs<DecryptedServiceJs>> = GlobalScope.promise {
+		val filterConverted: SortableFilterOptions<Service> = sortableFilterOptions_fromJs(filter)
+		val result = contactApi.filterServicesBySorted(
+			filterConverted,
+		)
+		paginatedListIterator_toJs(
+			result,
+			{ x1: DecryptedService ->
+				service_toJs(x1)
+			},
+		)
+	}
+
 	override fun modifyContact(entity: DecryptedContactJs): Promise<DecryptedContactJs> =
 			GlobalScope.promise {
 		val entityConverted: DecryptedContact = contact_fromJs(entity)
@@ -1619,32 +1608,6 @@ internal class ContactApiImplJs(
 			entityIdsConverted,
 		)
 		listToArray(
-			result,
-			{ x1: DecryptedContact ->
-				contact_toJs(x1)
-			},
-		)
-	}
-
-	override fun filterContactsBy(
-		filterChain: FilterChainJs<ContactJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedContactJs>> = GlobalScope.promise {
-		val filterChainConverted: FilterChain<Contact> = filterChain_fromJs(
-			filterChain,
-			{ x1: ContactJs ->
-				contact_fromJs(x1)
-			},
-		)
-		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
-		val limitConverted: Int? = numberToInt(limit, "limit")
-		val result = contactApi.filterContactsBy(
-			filterChainConverted,
-			startDocumentIdConverted,
-			limitConverted,
-		)
-		paginatedList_toJs(
 			result,
 			{ x1: DecryptedContact ->
 				contact_toJs(x1)
@@ -1762,28 +1725,6 @@ internal class ContactApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun closeForHCPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<DecryptedContactJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = contactApi.closeForHCPartyPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedContact ->
-				contact_toJs(x1)
-			},
-		)
 	}
 
 	override fun getService(serviceId: String): Promise<DecryptedServiceJs> = GlobalScope.promise {
@@ -1915,29 +1856,42 @@ internal class ContactApiImplJs(
 		}
 	}
 
-	override fun filterServicesBy(
-		filterChain: FilterChainJs<ServiceJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<DecryptedServiceJs>> = GlobalScope.promise {
-		val filterChainConverted: FilterChain<Service> = filterChain_fromJs(
-			filterChain,
-			{ x1: ServiceJs ->
-				service_fromJs(x1)
-			},
-		)
-		val startDocumentIdConverted: String? = undefinedToNull(startDocumentId)
-		val limitConverted: Int? = numberToInt(limit, "limit")
-		val result = contactApi.filterServicesBy(
-			filterChainConverted,
-			startDocumentIdConverted,
-			limitConverted,
-		)
-		paginatedList_toJs(
-			result,
-			{ x1: DecryptedService ->
-				service_toJs(x1)
-			},
-		)
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<ContactJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedContactJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: FilterOptions<Contact> = filterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = contactApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)
+		}
 	}
 }

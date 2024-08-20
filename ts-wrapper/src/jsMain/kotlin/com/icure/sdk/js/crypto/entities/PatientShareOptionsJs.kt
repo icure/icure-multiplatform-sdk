@@ -12,9 +12,9 @@ import kotlin.js.JsQualifier
 public external class PatientShareOptionsJs(
 	partial: dynamic,
 ) {
+	public val shareSecretIds: Array<String>
+
 	public val requestedPermissions: String
 
 	public val shareEncryptionKey: String
-
-	public val shareSecretIds: Array<String>
 }

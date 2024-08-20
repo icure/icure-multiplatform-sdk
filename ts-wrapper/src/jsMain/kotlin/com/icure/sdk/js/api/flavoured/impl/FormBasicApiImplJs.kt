@@ -250,11 +250,20 @@ internal class FormBasicApiImplJs(
 		)
 	}
 
-	override fun getFormByLogicalUuid(logicalUuid: String): Promise<EncryptedFormJs> =
+	override fun getLatestFormByLogicalUuid(logicalUuid: String): Promise<EncryptedFormJs> =
 			GlobalScope.promise {
 		val logicalUuidConverted: String = logicalUuid
-		val result = formBasicApi.getFormByLogicalUuid(
+		val result = formBasicApi.getLatestFormByLogicalUuid(
 			logicalUuidConverted,
+		)
+		form_toJs(result)
+	}
+
+	override fun getLatestFormByUniqueId(uniqueId: String): Promise<EncryptedFormJs> =
+			GlobalScope.promise {
+		val uniqueIdConverted: String = uniqueId
+		val result = formBasicApi.getLatestFormByUniqueId(
+			uniqueIdConverted,
 		)
 		form_toJs(result)
 	}
@@ -285,14 +294,6 @@ internal class FormBasicApiImplJs(
 				form_toJs(x1)
 			},
 		)
-	}
-
-	override fun getFormByUniqueId(uniqueId: String): Promise<EncryptedFormJs> = GlobalScope.promise {
-		val uniqueIdConverted: String = uniqueId
-		val result = formBasicApi.getFormByUniqueId(
-			uniqueIdConverted,
-		)
-		form_toJs(result)
 	}
 
 	override fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<EncryptedFormJs>>

@@ -1,33 +1,32 @@
 // auto-generated file
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {EncryptedMessage, Message} from '../../model/Message.mjs';
 import {PaginatedList} from '../../model/PaginatedList.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
-import {AbstractFilter} from '../../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../../model/filter/chain/FilterChain.mjs';
-import {SubscriptionEventType} from '../../model/notification/SubscriptionEventType.mjs';
 import {EntitySubscription} from '../../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../../subscription/SubscriptionEventType.mjs';
 
 
 export interface MessageBasicApi {
 
-	matchMessagesBy(filter: AbstractFilter<Message>): Promise<Array<string>>;
+	matchMessagesBy(filter: BaseFilterOptions<Message>): Promise<Array<string>>;
+
+	matchMessagesBySorted(filter: BaseSortableFilterOptions<Message>): Promise<Array<string>>;
+
+	filterMessagesBy(filter: BaseFilterOptions<Message>): Promise<PaginatedListIterator<EncryptedMessage>>;
+
+	filterMessagesBySorted(filter: BaseSortableFilterOptions<Message>): Promise<PaginatedListIterator<EncryptedMessage>>;
 
 	deleteMessage(entityId: string): Promise<DocIdentifier>;
 
 	deleteMessages(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
-
-	subscribeToEvents(events: Array<SubscriptionEventType>, filter: AbstractFilter<Message>,
-			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedMessage>>;
 
 	modifyMessage(entity: EncryptedMessage): Promise<EncryptedMessage>;
 
 	getMessage(entityId: string): Promise<EncryptedMessage>;
 
 	getMessages(entityIds: Array<string>): Promise<Array<EncryptedMessage>>;
-
-	filterMessagesBy(filterChain: FilterChain<Message>, startDocumentId: string | undefined,
-			limit: number | undefined): Promise<PaginatedList<EncryptedMessage>>;
 
 	listMessagesByTransportGuids(hcPartyId: string,
 			transportGuids: Array<string>): Promise<Array<EncryptedMessage>>;
@@ -60,6 +59,9 @@ export interface MessageBasicApi {
 			statusBits: number): Promise<Array<EncryptedMessage>>;
 
 	setMessagesReadStatus(entityIds: Array<string>, time: number | undefined, readStatus: boolean,
-			userId: string): Promise<Array<EncryptedMessage>>;
+			userId: string | undefined): Promise<Array<EncryptedMessage>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: BaseFilterOptions<Message>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedMessage>>;
 
 }

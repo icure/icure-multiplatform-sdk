@@ -42,13 +42,13 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 
 	public fun getForms(entityIds: Array<String>): Promise<Array<E>>
 
-	public fun getFormByLogicalUuid(logicalUuid: String): Promise<E>
+	public fun getLatestFormByLogicalUuid(logicalUuid: String): Promise<E>
+
+	public fun getLatestFormByUniqueId(uniqueId: String): Promise<E>
 
 	public fun getFormsByLogicalUuid(logicalUuid: String): Promise<Array<E>>
 
 	public fun getFormsByUniqueId(uniqueId: String): Promise<Array<E>>
-
-	public fun getFormByUniqueId(uniqueId: String): Promise<E>
 
 	public fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<E>>
 

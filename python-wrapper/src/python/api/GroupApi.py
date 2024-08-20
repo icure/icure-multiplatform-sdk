@@ -1,3 +1,4 @@
+# auto-generated file
 import asyncio
 import json
 from icure.model import Group, DatabaseInitialisation, GroupType, RegistrationInformation, PermissionType, RegistrationSuccess, PaginatedList, Operation, UserType, RoleConfiguration, GroupDeletionReport, ListOfProperties, DesignDocument, IdWithRev, GroupDatabasesInfo, ReplicationInfo, DocIdentifier
@@ -81,7 +82,7 @@ class GroupApi:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
 
-	async def create_group_async(self, id: str, name: str, password: str, initialisation_data: DatabaseInitialisation, type: Optional[GroupType] = None, server: Optional[str] = None, q: Optional[int] = None, n: Optional[int] = None, super_group: Optional[str] = None) -> Group:
+	async def create_group_async(self, id: str, name: str, password: str, initialisation_data: DatabaseInitialisation, type: Optional[GroupType] = None, server: Optional[str] = None, q: Optional[int] = None, n: Optional[int] = None, super_group: Optional[str] = None, application_id: Optional[str] = None) -> Group:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -100,6 +101,7 @@ class GroupApi:
 			"q": q,
 			"n": n,
 			"superGroup": super_group,
+			"applicationId": application_id,
 			"initialisationData": initialisation_data.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -112,7 +114,7 @@ class GroupApi:
 		)
 		return await future
 
-	def create_group_blocking(self, id: str, name: str, password: str, initialisation_data: DatabaseInitialisation, type: Optional[GroupType] = None, server: Optional[str] = None, q: Optional[int] = None, n: Optional[int] = None, super_group: Optional[str] = None) -> Group:
+	def create_group_blocking(self, id: str, name: str, password: str, initialisation_data: DatabaseInitialisation, type: Optional[GroupType] = None, server: Optional[str] = None, q: Optional[int] = None, n: Optional[int] = None, super_group: Optional[str] = None, application_id: Optional[str] = None) -> Group:
 		payload = {
 			"id": id,
 			"name": name,
@@ -122,6 +124,7 @@ class GroupApi:
 			"q": q,
 			"n": n,
 			"superGroup": super_group,
+			"applicationId": application_id,
 			"initialisationData": initialisation_data.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.sdk.py.api.GroupApi.createGroupBlocking(

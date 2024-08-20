@@ -5,6 +5,8 @@ import com.icure.sdk.IcureApis
 import com.icure.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.DecryptedHealthElement
 import com.icure.sdk.model.EncryptedHealthElement
 import com.icure.sdk.model.HealthElement
@@ -13,8 +15,6 @@ import com.icure.sdk.model.Patient
 import com.icure.sdk.model.User
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.filter.AbstractFilter
-import com.icure.sdk.model.notification.SubscriptionEventType
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.py.serialization.HealthElementSerializer
 import com.icure.sdk.py.serialization.PatientSerializer
@@ -28,6 +28,7 @@ import com.icure.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.sdk.subscription.SubscriptionEventType
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Byte
@@ -47,7 +48,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.SetSerializer
@@ -360,8 +360,7 @@ public fun tryDecryptAsync(
 
 @Serializable
 private class MatchHealthElementsByParams(
-	@Contextual
-	public val filter: AbstractFilter<HealthElement>,
+	public val filter: FilterOptions<HealthElement>,
 )
 
 public fun matchHealthElementsByBlocking(sdk: IcureApis, params: String): String =
@@ -385,6 +384,38 @@ public fun matchHealthElementsByAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthElement.matchHealthElementsBy(
+				decodedParams.filter,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class MatchHealthElementsBySortedParams(
+	public val filter: SortableFilterOptions<HealthElement>,
+)
+
+public fun matchHealthElementsBySortedBlocking(sdk: IcureApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchHealthElementsBySortedParams>(params)
+	runBlocking {
+		sdk.healthElement.matchHealthElementsBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyString(ListSerializer(String.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun matchHealthElementsBySortedAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<MatchHealthElementsBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.matchHealthElementsBySorted(
 				decodedParams.filter,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
@@ -491,46 +522,6 @@ public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysAsync(
 		}.toPyStringAsyncCallback(ListSerializer(IcureStub.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class SubscribeToEventsParams(
-	public val events: Set<SubscriptionEventType>,
-	@Contextual
-	public val filter: AbstractFilter<HealthElement>,
-	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
-)
-
-public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
-	runBlocking {
-		sdk.healthElement.subscribeToEvents(
-			decodedParams.events,
-			decodedParams.filter,
-			decodedParams.subscriptionConfig,
-		)
-	}
-}.toPyResult {
-	EntitySubscriptionWithSerializer(it, EncryptedHealthElement.serializer())}
-
-@OptIn(ExperimentalForeignApi::class)
-public fun subscribeToEventsAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.healthElement.subscribeToEvents(
-				decodedParams.events,
-				decodedParams.filter,
-				decodedParams.subscriptionConfig,
-			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			EntitySubscriptionWithSerializer(it, EncryptedHealthElement.serializer())}
-	}
-}.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
 private class ShareWithParams(
@@ -686,6 +677,72 @@ public fun findHealthElementsByHcPartyPatientAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class FilterHealthElementsByParams(
+	public val filter: FilterOptions<HealthElement>,
+)
+
+public fun filterHealthElementsByBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterHealthElementsByParams>(params)
+	runBlocking {
+		sdk.healthElement.filterHealthElementsBy(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterHealthElementsByAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterHealthElementsByParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.filterHealthElementsBy(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class FilterHealthElementsBySortedParams(
+	public val filter: SortableFilterOptions<HealthElement>,
+)
+
+public fun filterHealthElementsBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterHealthElementsBySortedParams>(params)
+	runBlocking {
+		sdk.healthElement.filterHealthElementsBySorted(
+			decodedParams.filter,
+		)
+	}
+}.toPyResult {
+	PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun filterHealthElementsBySortedAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<FilterHealthElementsBySortedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.filterHealthElementsBySorted(
+				decodedParams.filter,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyHealthElementParams(
 	public val entity: DecryptedHealthElement,
 )
@@ -812,40 +869,6 @@ public fun getHealthElementsAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class FilterHealthElementsByParams(
-	@Contextual
-	public val filter: AbstractFilter<HealthElement>,
-)
-
-public fun filterHealthElementsByBlocking(sdk: IcureApis, params: String): PyResult =
-		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterHealthElementsByParams>(params)
-	runBlocking {
-		sdk.healthElement.filterHealthElementsBy(
-			decodedParams.filter,
-		)
-	}
-}.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
-
-@OptIn(ExperimentalForeignApi::class)
-public fun filterHealthElementsByAsync(
-	sdk: IcureApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterHealthElementsByParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.healthElement.filterHealthElementsBy(
-				decodedParams.filter,
-			)
-		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
-	}
-}.failureToPyResultAsyncCallback(resultCallback)
-
-@Serializable
 private class FindHealthElementsByHcPartyPatientForeignKeysParams(
 	public val hcPartyId: String,
 	public val secretPatientKeys: List<String>,
@@ -881,3 +904,42 @@ public fun findHealthElementsByHcPartyPatientForeignKeysAsync(
 		}.toPyStringAsyncCallback(ListSerializer(DecryptedHealthElement.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SubscribeToEventsParams(
+	public val events: Set<SubscriptionEventType>,
+	public val filter: FilterOptions<HealthElement>,
+	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
+)
+
+public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	runBlocking {
+		sdk.healthElement.subscribeToEvents(
+			decodedParams.events,
+			decodedParams.filter,
+			decodedParams.subscriptionConfig,
+		)
+	}
+}.toPyResult {
+	EntitySubscriptionWithSerializer(it, EncryptedHealthElement.serializer())}
+
+@OptIn(ExperimentalForeignApi::class)
+public fun subscribeToEventsAsync(
+	sdk: IcureApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.subscribeToEvents(
+				decodedParams.events,
+				decodedParams.filter,
+				decodedParams.subscriptionConfig,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			EntitySubscriptionWithSerializer(it, EncryptedHealthElement.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)

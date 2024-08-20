@@ -1,7 +1,6 @@
 // auto-generated file
 import {CalendarItemShareOptions} from '../../crypto/entities/CalendarItemShareOptions.mjs';
 import {SecretIdOption} from '../../crypto/entities/SecretIdOption.mjs';
-import {ShareMetadataBehaviour} from '../../crypto/entities/ShareMetadataBehaviour.mjs';
 import {SimpleShareResult} from '../../crypto/entities/SimpleShareResult.mjs';
 import {PaginatedListIterator} from '../../icure-sdk-ts.mjs';
 import {CalendarItem, DecryptedCalendarItem, EncryptedCalendarItem} from '../../model/CalendarItem.mjs';
@@ -10,7 +9,6 @@ import {Patient} from '../../model/Patient.mjs';
 import {User} from '../../model/User.mjs';
 import {DocIdentifier} from '../../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
-import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
 import {HexString} from '../../model/specializations/HexString.mjs';
 import {CalendarItemFlavouredApi} from './CalendarItemFlavouredApi.mjs';
 
@@ -35,12 +33,16 @@ export interface CalendarItemApi {
 	createDelegationDeAnonymizationMetadata(entity: CalendarItem,
 			delegates: Array<string>): Promise<void>;
 
+	decrypt(calendarItem: EncryptedCalendarItem): Promise<DecryptedCalendarItem>;
+
+	tryDecrypt(calendarItem: EncryptedCalendarItem): Promise<CalendarItem>;
+
 	deleteCalendarItem(entityId: string): Promise<DocIdentifier>;
 
 	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, calendarItem: DecryptedCalendarItem,
-			options?: { shareEncryptionKeys?: ShareMetadataBehaviour, shareOwningEntityIds?: ShareMetadataBehaviour, requestedPermission?: RequestedPermission }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
+			options?: { options?: CalendarItemShareOptions | undefined }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
 
 	tryShareWithMany(calendarItem: DecryptedCalendarItem,
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
@@ -65,8 +67,6 @@ export interface CalendarItemApi {
 
 	getCalendarsByPeriodAndAgendaId(startDate: number, endDate: number,
 			agendaId: string): Promise<Array<DecryptedCalendarItem>>;
-
-	getCalendarItemsWithIds(entityIds: Array<string>): Promise<Array<DecryptedCalendarItem>>;
 
 	findCalendarItemsByRecurrenceId(recurrenceId: string, startKey: string | undefined,
 			startDocumentId: string | undefined,

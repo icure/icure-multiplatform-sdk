@@ -9,14 +9,35 @@ export interface DocumentBasicApi {
 
 	deleteDocuments(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	getRawMainAttachment(documentId: string, attachmentId: string): Promise<Int8Array>;
+	getRawMainAttachment(documentId: string): Promise<Int8Array>;
 
-	getMainAttachmentAsPlainText(documentId: string, attachmentId: string): Promise<string>;
+	getMainAttachmentAsPlainText(documentId: string): Promise<string>;
 
-	getMainAttachmentAsJson(documentId: string, attachmentId: string): Promise<any>;
+	getMainAttachmentAsJson(documentId: string): Promise<any>;
 
-	getRawSecondaryAttachment(documentId: string, key: string,
-			attachmentId: string): Promise<Int8Array>;
+	getRawSecondaryAttachment(documentId: string, key: string): Promise<Int8Array>;
+
+	setRawMainAttachment(
+			documentId: string,
+			rev: string,
+			utis: Array<string> | undefined,
+			attachment: Int8Array,
+			encrypted: boolean
+	): Promise<EncryptedDocument>;
+
+	setRawSecondaryAttachment(
+			documentId: string,
+			key: string,
+			rev: string,
+			utis: Array<string> | undefined,
+			attachment: Int8Array,
+			encrypted: boolean
+	): Promise<EncryptedDocument>;
+
+	deleteMainAttachment(entityId: string, rev: string): Promise<EncryptedDocument>;
+
+	deleteSecondaryAttachment(documentId: string, key: string,
+			rev: string): Promise<EncryptedDocument>;
 
 	modifyDocument(entity: EncryptedDocument): Promise<EncryptedDocument>;
 
@@ -34,29 +55,5 @@ export interface DocumentBasicApi {
 			secretMessageKeys: Array<string>): Promise<Array<EncryptedDocument>>;
 
 	findWithoutDelegation(limit: number | undefined): Promise<Array<EncryptedDocument>>;
-
-	setRawMainAttachment(
-			documentId: string,
-			rev: string,
-			utis: Array<string>,
-			blobType: string,
-			attachment: Int8Array,
-			encrypted: boolean
-	): Promise<EncryptedDocument>;
-
-	setRawSecondaryAttachment(
-			documentId: string,
-			key: string,
-			rev: string,
-			utis: Array<string>,
-			blobType: string,
-			attachment: Int8Array,
-			encrypted: boolean
-	): Promise<EncryptedDocument>;
-
-	deleteMainAttachment(entityId: string, rev: string): Promise<EncryptedDocument>;
-
-	deleteSecondaryAttachment(documentId: string, key: string,
-			attachmentId: string): Promise<EncryptedDocument>;
 
 }

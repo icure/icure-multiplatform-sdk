@@ -2,6 +2,6 @@
 
 export interface Named {
 
-  name: string | undefined;
+	name: string | undefined;
 
 }

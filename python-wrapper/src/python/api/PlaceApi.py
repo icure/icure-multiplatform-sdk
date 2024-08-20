@@ -1,3 +1,4 @@
+# auto-generated file
 import asyncio
 import json
 from icure.model import Place, DocIdentifier, PaginatedList

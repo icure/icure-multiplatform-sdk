@@ -37,9 +37,6 @@ public external interface CalendarItemBasicApiJs {
 		agendaId: String,
 	): Promise<Array<EncryptedCalendarItemJs>>
 
-	public fun getCalendarItemsWithIds(entityIds: Array<String>):
-			Promise<Array<EncryptedCalendarItemJs>>
-
 	public fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String?,

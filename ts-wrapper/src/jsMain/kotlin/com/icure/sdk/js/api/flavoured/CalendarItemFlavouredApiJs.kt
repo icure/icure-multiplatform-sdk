@@ -61,8 +61,6 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 		agendaId: String,
 	): Promise<Array<E>>
 
-	public fun getCalendarItemsWithIds(entityIds: Array<String>): Promise<Array<E>>
-
 	public fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String?,

@@ -1,6 +1,6 @@
 // auto-generated file
 
 export enum Laterality {
-  Left = "Left",
-  Right = "Right"
+	Left = "Left",
+	Right = "Right"
 }

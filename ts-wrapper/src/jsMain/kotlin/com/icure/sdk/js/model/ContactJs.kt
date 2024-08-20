@@ -54,6 +54,8 @@ public sealed external interface ContactJs : StoredDocumentJs, ICureDocumentJs<S
 
 	public val services: Array<out ServiceJs>
 
+	public val participants: Record<String, out String>
+
 	public val healthcarePartyId: String?
 
 	public val modifiedContactId: String?
@@ -110,6 +112,8 @@ public external class DecryptedContactJs(
 	override val subContacts: Array<DecryptedSubContactJs>
 
 	override val services: Array<DecryptedServiceJs>
+
+	override val participants: Record<String, String>
 
 	override val healthcarePartyId: String?
 
@@ -179,6 +183,8 @@ public external class EncryptedContactJs(
 	override val subContacts: Array<EncryptedSubContactJs>
 
 	override val services: Array<EncryptedServiceJs>
+
+	override val participants: Record<String, String>
 
 	override val healthcarePartyId: String?
 

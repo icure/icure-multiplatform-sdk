@@ -141,26 +141,6 @@ internal class CalendarItemBasicApiImplJs(
 		)
 	}
 
-	override fun getCalendarItemsWithIds(entityIds: Array<String>):
-			Promise<Array<EncryptedCalendarItemJs>> = GlobalScope.promise {
-		val entityIdsConverted: List<String> = arrayToList(
-			entityIds,
-			"entityIds",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = calendarItemBasicApi.getCalendarItemsWithIds(
-			entityIdsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: EncryptedCalendarItem ->
-				calendarItem_toJs(x1)
-			},
-		)
-	}
-
 	override fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String?,

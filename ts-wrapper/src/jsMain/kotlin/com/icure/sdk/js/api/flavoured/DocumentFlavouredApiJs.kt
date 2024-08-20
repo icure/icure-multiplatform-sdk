@@ -6,13 +6,10 @@ package com.icure.sdk.js.api.flavoured
 import com.icure.sdk.js.crypto.entities.DocumentShareOptionsJs
 import com.icure.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.sdk.js.model.DocumentJs
-import com.icure.sdk.js.model.EncryptedDocumentJs
 import com.icure.sdk.js.model.PatientJs
 import com.icure.sdk.js.utils.Record
 import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
-import kotlin.Boolean
-import kotlin.ByteArray
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
@@ -58,31 +55,4 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 	): Promise<Array<E>>
 
 	public fun findWithoutDelegation(limit: Double?): Promise<Array<E>>
-
-	public fun setRawMainAttachment(
-		documentId: String,
-		rev: String,
-		utis: Array<String>,
-		blobType: String,
-		attachment: ByteArray,
-		encrypted: Boolean,
-	): Promise<EncryptedDocumentJs>
-
-	public fun setRawSecondaryAttachment(
-		documentId: String,
-		key: String,
-		rev: String,
-		utis: Array<String>,
-		blobType: String,
-		attachment: ByteArray,
-		encrypted: Boolean,
-	): Promise<EncryptedDocumentJs>
-
-	public fun deleteMainAttachment(entityId: String, rev: String): Promise<E>
-
-	public fun deleteSecondaryAttachment(
-		documentId: String,
-		key: String,
-		attachmentId: String,
-	): Promise<E>
 }

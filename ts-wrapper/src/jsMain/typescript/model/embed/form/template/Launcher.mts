@@ -4,16 +4,16 @@ import {Trigger} from './Trigger.mjs';
 
 export class Launcher {
 
-  name: string;
+	name: string;
 
-  triggerer: Trigger;
+	triggerer: Trigger;
 
-  shouldPassValue: boolean = false;
+	shouldPassValue: boolean = false;
 
-  constructor(partial: Partial<Launcher> & Pick<Launcher, "name" | "triggerer">) {
-    this.name = partial.name;
-    this.triggerer = partial.triggerer;
-    if ('shouldPassValue' in partial && partial.shouldPassValue !== undefined) this.shouldPassValue = partial.shouldPassValue;
-  }
+	constructor(partial: Partial<Launcher> & Pick<Launcher, "name" | "triggerer">) {
+		this.name = partial.name;
+		this.triggerer = partial.triggerer;
+		if ('shouldPassValue' in partial && partial.shouldPassValue !== undefined) this.shouldPassValue = partial.shouldPassValue;
+	}
 
 }

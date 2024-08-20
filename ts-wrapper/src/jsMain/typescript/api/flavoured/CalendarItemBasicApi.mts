@@ -22,8 +22,6 @@ export interface CalendarItemBasicApi {
 	getCalendarsByPeriodAndAgendaId(startDate: number, endDate: number,
 			agendaId: string): Promise<Array<EncryptedCalendarItem>>;
 
-	getCalendarItemsWithIds(entityIds: Array<string>): Promise<Array<EncryptedCalendarItem>>;
-
 	findCalendarItemsByRecurrenceId(recurrenceId: string, startKey: string | undefined,
 			startDocumentId: string | undefined,
 			limit: number): Promise<PaginatedList<EncryptedCalendarItem>>;

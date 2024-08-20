@@ -103,6 +103,7 @@ private class CreateGroupParams(
 	public val q: Int? = null,
 	public val n: Int? = null,
 	public val superGroup: String? = null,
+	public val applicationId: String? = null,
 	public val initialisationData: DatabaseInitialisation,
 )
 
@@ -119,6 +120,7 @@ public fun createGroupBlocking(sdk: IcureNonCryptoApis, params: String): String 
 			decodedParams.q,
 			decodedParams.n,
 			decodedParams.superGroup,
+			decodedParams.applicationId,
 			decodedParams.initialisationData,
 		)
 	}
@@ -143,6 +145,7 @@ public fun createGroupAsync(
 				decodedParams.q,
 				decodedParams.n,
 				decodedParams.superGroup,
+				decodedParams.applicationId,
 				decodedParams.initialisationData,
 			)
 		}.toPyStringAsyncCallback(Group.serializer(), resultCallback)

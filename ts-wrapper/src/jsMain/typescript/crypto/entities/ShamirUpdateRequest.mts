@@ -2,13 +2,13 @@
 
 export class ShamirUpdateRequest {
 
-  notariesIds: Array<string>;
+	notariesIds: Array<string>;
 
-  minShares: number;
+	minShares: number;
 
-  constructor(partial: Partial<ShamirUpdateRequest> & Pick<ShamirUpdateRequest, "notariesIds" | "minShares">) {
-    this.notariesIds = partial.notariesIds;
-    this.minShares = partial.minShares;
-  }
+	constructor(partial: Partial<ShamirUpdateRequest> & Pick<ShamirUpdateRequest, "notariesIds" | "minShares">) {
+		this.notariesIds = partial.notariesIds;
+		this.minShares = partial.minShares;
+	}
 
 }

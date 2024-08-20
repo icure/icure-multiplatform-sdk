@@ -1,10 +1,8 @@
 // auto-generated file
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../icure-sdk-ts.mjs';
 import {Device} from '../model/Device.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
-import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
-import {AbstractFilter} from '../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../model/filter/chain/FilterChain.mjs';
 
 
 export interface DeviceApi {
@@ -21,10 +19,13 @@ export interface DeviceApi {
 
 	updateDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
 
-	filterDevicesBy(filterChain: FilterChain<Device>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Device>>;
+	filterDevicesBy(filter: BaseFilterOptions<Device>): Promise<PaginatedListIterator<Device>>;
 
-	matchDevicesBy(filter: AbstractFilter<Device>): Promise<Array<string>>;
+	filterDevicesBySorted(filter: BaseSortableFilterOptions<Device>): Promise<PaginatedListIterator<Device>>;
+
+	matchDevicesBy(filter: BaseFilterOptions<Device>): Promise<Array<string>>;
+
+	matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>): Promise<Array<string>>;
 
 	deleteDevice(deviceId: string): Promise<DocIdentifier>;
 

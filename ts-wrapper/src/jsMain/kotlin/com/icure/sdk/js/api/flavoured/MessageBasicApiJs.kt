@@ -3,13 +3,14 @@
 
 package com.icure.sdk.js.api.flavoured
 
+import com.icure.sdk.js.filters.BaseFilterOptionsJs
+import com.icure.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.sdk.js.model.EncryptedMessageJs
 import com.icure.sdk.js.model.MessageJs
 import com.icure.sdk.js.model.PaginatedListJs
 import com.icure.sdk.js.model.couchdb.DocIdentifierJs
-import com.icure.sdk.js.model.filter.AbstractFilterJs
-import com.icure.sdk.js.model.filter.chain.FilterChainJs
 import com.icure.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -20,29 +21,26 @@ import kotlin.js.Promise
 
 @JsName("MessageBasicApi")
 public external interface MessageBasicApiJs {
-	public fun matchMessagesBy(filter: AbstractFilterJs<MessageJs>): Promise<Array<String>>
+	public fun matchMessagesBy(filter: BaseFilterOptionsJs<MessageJs>): Promise<Array<String>>
+
+	public fun matchMessagesBySorted(filter: BaseSortableFilterOptionsJs<MessageJs>):
+			Promise<Array<String>>
+
+	public fun filterMessagesBy(filter: BaseFilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<EncryptedMessageJs>>
+
+	public fun filterMessagesBySorted(filter: BaseSortableFilterOptionsJs<MessageJs>):
+			Promise<PaginatedListIteratorJs<EncryptedMessageJs>>
 
 	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
-
-	public fun subscribeToEvents(
-		events: Array<String>,
-		filter: AbstractFilterJs<MessageJs>,
-		options: dynamic,
-	): Promise<EntitySubscriptionJs<EncryptedMessageJs>>
 
 	public fun modifyMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs>
 
 	public fun getMessage(entityId: String): Promise<EncryptedMessageJs>
 
 	public fun getMessages(entityIds: Array<String>): Promise<Array<EncryptedMessageJs>>
-
-	public fun filterMessagesBy(
-		filterChain: FilterChainJs<MessageJs>,
-		startDocumentId: String?,
-		limit: Double?,
-	): Promise<PaginatedListJs<EncryptedMessageJs>>
 
 	public fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 			Promise<Array<EncryptedMessageJs>>
@@ -93,6 +91,12 @@ public external interface MessageBasicApiJs {
 		entityIds: Array<String>,
 		time: Double?,
 		readStatus: Boolean,
-		userId: String,
+		userId: String?,
 	): Promise<Array<EncryptedMessageJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: BaseFilterOptionsJs<MessageJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedMessageJs>>
 }
