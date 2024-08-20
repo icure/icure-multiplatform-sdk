@@ -243,7 +243,7 @@ private class ConstantSecretProvider(
 	private val authSecretDetails: AuthSecretDetails.Cacheable
 ) : AuthSecretProvider {
 	override suspend fun getSecret(
-		acceptedSecrets: List<AuthenticationClass>,
+		acceptedSecrets: Set<AuthenticationClass>,
 		previousAttempts: List<AuthSecretDetails>,
 		authProcessApi: AuthenticationProcessApi
 	): AuthSecretDetails {

@@ -70,7 +70,7 @@ class SmartAuthProviderTest : StringSpec({
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
-					acceptedSecrets: List<AuthenticationClass>,
+					acceptedSecrets: Set<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
 					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
@@ -138,7 +138,7 @@ class SmartAuthProviderTest : StringSpec({
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
-					acceptedSecrets: List<AuthenticationClass>,
+					acceptedSecrets: Set<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
 					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
@@ -232,7 +232,7 @@ class SmartAuthProviderTest : StringSpec({
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
-					acceptedSecrets: List<AuthenticationClass>,
+					acceptedSecrets: Set<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
 					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
@@ -301,7 +301,7 @@ class SmartAuthProviderTest : StringSpec({
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
-					acceptedSecrets: List<AuthenticationClass>,
+					acceptedSecrets: Set<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
 					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
@@ -341,7 +341,7 @@ class SmartAuthProviderTest : StringSpec({
 			loginUsername = hcpDetails.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
-					acceptedSecrets: List<AuthenticationClass>,
+					acceptedSecrets: Set<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
 					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {
@@ -388,7 +388,7 @@ class SmartAuthProviderTest : StringSpec({
 			loginUsername = firstUser.username,
 			secretProvider = object : AuthSecretProvider {
 				override suspend fun getSecret(
-					acceptedSecrets: List<AuthenticationClass>,
+					acceptedSecrets: Set<AuthenticationClass>,
 					previousAttempts: List<AuthSecretDetails>,
 					authProcessApi: AuthenticationProcessApi
 				): AuthSecretDetails {

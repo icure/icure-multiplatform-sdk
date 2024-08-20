@@ -1,7 +1,6 @@
 package com.icure.sdk.js
 
 import com.icure.sdk.IcureSdk
-import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.js.api.CryptoApiJs
 import com.icure.sdk.js.api.DeviceApiJs
@@ -46,8 +45,8 @@ import com.icure.sdk.js.api.impl.PermissionApiImplJs
 import com.icure.sdk.js.api.impl.RecoveryApiImplJs
 import com.icure.sdk.js.api.impl.UserApiImplJs
 import com.icure.sdk.js.options.ApiOptionsJs
+import com.icure.sdk.js.options.external.AuthenticationMethodJs
 import com.icure.sdk.js.options.toKt
-import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.storage.impl.VolatileStorageFacade
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
@@ -89,14 +88,13 @@ interface IcureSdkJs {
 fun initializeSdk(
 	applicationId: String?,
 	baseUrl: String,
-	username: String,
-	password: String,
+	authenticationMethod: AuthenticationMethodJs,
 	options: ApiOptionsJs
 ): Promise<IcureSdkJs> = GlobalScope.promise {
 	IcureSdkJsImpl(IcureSdk.initialize(
 		applicationId,
 		baseUrl,
-		AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
+		authenticationMethod.toKt(),
 		VolatileStorageFacade(),
 		BasicCryptoStrategies,
 		options.toKt()

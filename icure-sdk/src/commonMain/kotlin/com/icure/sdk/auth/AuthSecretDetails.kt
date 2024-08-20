@@ -1,6 +1,5 @@
 package com.icure.sdk.auth
 
-import com.icure.sdk.auth.AuthenticationProcessApi.AuthenticationProcessRequest
 import com.icure.sdk.model.embed.AuthenticationClass
 
 sealed interface AuthSecretDetails {

@@ -44,6 +44,7 @@ internal sealed interface DoGetTokenResult {
 private class AuthProcessApiImpl(
 	private val messageGatewayApi: RawMessageGatewayApi
 ) : AuthenticationProcessApi {
+	@OptIn(InternalIcureApi::class)
 	override suspend fun executeProcess(
 		messageGatewayUrl: String,
 		externalServicesSpecId: String,
@@ -53,7 +54,7 @@ private class AuthProcessApiImpl(
 		captchaType: AuthenticationProcessCaptchaType,
 		captchaKey: String,
 		processTemplateParameters: AuthenticationProcessTemplateParameters
-	): AuthenticationProcessApi.AuthenticationProcessRequest {
+	): AuthenticationProcessRequest {
 		val requestId = messageGatewayApi.startProcess(
 			messageGatewayUrl = messageGatewayUrl,
 			externalServicesSpecId = externalServicesSpecId,
@@ -65,7 +66,7 @@ private class AuthProcessApiImpl(
 			firstName = processTemplateParameters.firstName,
 			lastName = processTemplateParameters.lastName
 		)
-		return AuthenticationProcessApi.AuthenticationProcessRequest(
+		return AuthenticationProcessRequest(
 			messageGwUrl = messageGatewayUrl,
 			specId = externalServicesSpecId,
 			requestId = requestId
@@ -199,7 +200,7 @@ internal class SmartTokenProvider(
 		}.let { allAcceptedSecrets ->
 			if (loginUsername != null) allAcceptedSecrets else allAcceptedSecrets.filterNot { it.requiresLoginUsername }
 		}
-		val secretDetails = authSecretProvider.getSecret(acceptedSecrets, previousAttempts, authProcessApi)
+		val secretDetails = authSecretProvider.getSecret(acceptedSecrets.toSet(), previousAttempts, authProcessApi)
 		if(secretDetails.type !in acceptedSecrets) {
 			throw IllegalArgumentException("Accepted secret types are ${acceptedSecrets.joinToString(", ")}, but got a secret of type ${secretDetails.type}.")
 		}
@@ -222,7 +223,7 @@ internal class SmartTokenProvider(
 		ensure ((minimumAuthenticationClass?.level ?: 0) <= AuthenticationClass.TwoFactorAuthentication.level) {
 			"Internal error: asking for totp to login but minimumAuthenticationClassLevel is higher than TWO_FACTOR_AUTHENTICATION's level."
 		}
-		val details = authSecretProvider.getSecret(listOf(AuthenticationClass.TwoFactorAuthentication), previousAttempts, authProcessApi)
+		val details = authSecretProvider.getSecret(setOf(AuthenticationClass.TwoFactorAuthentication), previousAttempts, authProcessApi)
 		if (details !is AuthSecretDetails.TwoFactorAuthTokenDetails) {
 			throw IllegalStateException("Was expecting a 2fa token but got a secret of type ${details::class.simpleName}.")
 		}

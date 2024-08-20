@@ -5,17 +5,6 @@ package com.icure.sdk.auth
  */
 interface AuthenticationProcessApi {
 	/**
-	 * Contains information about an authentication process request, result of the [executeProcess] method.
-	 * You are not supposed to initialize this class yourself or use its content directly.
-	 */
-	class AuthenticationProcessRequest internal constructor(
-		internal val messageGwUrl: String,
-		internal val specId: String,
-		internal val requestId: String
-	)
-
-
-	/**
 	 * Executes an authentication process.
 	 * @param messageGatewayUrl the url of the iCure message gateway you want to use. Usually this should be
 	 * @param externalServicesSpecId an identifier that allows the message gateway to connect the request to your
@@ -27,6 +16,7 @@ interface AuthenticationProcessApi {
 	 * @param captchaType the type of captcha you use with your processes.
 	 * @param captchaKey the key obtained by resolving the captcha. Used to prevent abuse of the message gateway and
 	 * connected external services.
+	 * @param processTemplateParameters additional parameters needed by some process templates.
 	 */
 	suspend fun executeProcess(
 		messageGatewayUrl: String,
