@@ -1083,7 +1083,7 @@ class InvoiceApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1099,7 +1099,7 @@ class InvoiceApi:
 		def share_with_blocking(self, delegate_id: str, invoice: Invoice, options: Optional[InvoiceShareOptions] = None) -> SimpleShareResultInvoice:
 			payload = {
 				"delegateId": delegate_id,
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.shareWithBlocking(
@@ -1125,7 +1125,7 @@ class InvoiceApi:
 					result = deserialize_simple_share_result_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1140,7 +1140,7 @@ class InvoiceApi:
 
 		def try_share_with_many_blocking(self, invoice: Invoice, delegates: Dict[str, InvoiceShareOptions]) -> SimpleShareResultInvoice:
 			payload = {
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.tryShareWithManyBlocking(
@@ -1163,10 +1163,10 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Invoice._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -1181,7 +1181,7 @@ class InvoiceApi:
 
 		def share_with_many_blocking(self, invoice: Invoice, delegates: Dict[str, InvoiceShareOptions]) -> Invoice:
 			payload = {
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.shareWithManyBlocking(
@@ -1193,7 +1193,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Invoice._deserialize(result_info.success)
+				return_value = deserialize_invoice(result_info.success)
 				return return_value
 
 		async def modify_invoice_async(self, entity: Invoice) -> Invoice:
@@ -1204,10 +1204,10 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Invoice._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_invoice(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1221,7 +1221,7 @@ class InvoiceApi:
 
 		def modify_invoice_blocking(self, entity: Invoice) -> Invoice:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_invoice(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.modifyInvoiceBlocking(
 				self.icure_sdk._native,
@@ -1232,7 +1232,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Invoice._deserialize(result_info.success)
+				return_value = deserialize_invoice(result_info.success)
 				return return_value
 
 		async def modify_invoices_async(self, entities: List[Invoice]) -> List[Invoice]:
@@ -1243,10 +1243,10 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_invoice(x0) for x0 in entities],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1260,7 +1260,7 @@ class InvoiceApi:
 
 		def modify_invoices_blocking(self, entities: List[Invoice]) -> List[Invoice]:
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_invoice(x0) for x0 in entities],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.modifyInvoicesBlocking(
 				self.icure_sdk._native,
@@ -1271,7 +1271,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def get_invoice_async(self, entity_id: str) -> Invoice:
@@ -1282,7 +1282,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Invoice._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -1310,7 +1310,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Invoice._deserialize(result_info.success)
+				return_value = deserialize_invoice(result_info.success)
 				return return_value
 
 		async def get_invoices_async(self, entity_ids: List[str]) -> List[Invoice]:
@@ -1321,7 +1321,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -1349,7 +1349,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def find_invoices_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[Invoice]:
@@ -1360,7 +1360,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
@@ -1390,7 +1390,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def reassign_invoice_async(self, invoice: Invoice) -> Invoice:
@@ -1401,10 +1401,10 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Invoice._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1418,7 +1418,7 @@ class InvoiceApi:
 
 		def reassign_invoice_blocking(self, invoice: Invoice) -> Invoice:
 			payload = {
-				"invoice": invoice.__serialize__(),
+				"invoice": serialize_invoice(invoice),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.InvoiceApi.tryAndRecover.reassignInvoiceBlocking(
 				self.icure_sdk._native,
@@ -1429,7 +1429,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Invoice._deserialize(result_info.success)
+				return_value = deserialize_invoice(result_info.success)
 				return return_value
 
 		async def merge_to_async(self, invoice_id: str, ids: List[str]) -> Invoice:
@@ -1440,7 +1440,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Invoice._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"invoiceId": invoice_id,
@@ -1470,7 +1470,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Invoice._deserialize(result_info.success)
+				return_value = deserialize_invoice(result_info.success)
 				return return_value
 
 		async def validate_async(self, invoice_id: str, scheme: str, forced_value: str) -> Invoice:
@@ -1481,7 +1481,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Invoice._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"invoiceId": invoice_id,
@@ -1513,7 +1513,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Invoice._deserialize(result_info.success)
+				return_value = deserialize_invoice(result_info.success)
 				return return_value
 
 		async def append_codes_async(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: List[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> List[Invoice]:
@@ -1524,7 +1524,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"userId": user_id,
@@ -1566,7 +1566,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def remove_codes_async(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: List[str]) -> List[Invoice]:
@@ -1577,7 +1577,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"userId": user_id,
@@ -1611,7 +1611,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def find_invoices_by_author_async(self, hc_party_id: str, from_date: Optional[int] = None, to_date: Optional[int] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
@@ -1679,7 +1679,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
@@ -1709,7 +1709,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_invoices_by_hc_party_and_group_id_async(self, hc_party_id: str, group_id: str) -> List[Invoice]:
@@ -1720,7 +1720,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
@@ -1750,7 +1750,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[Invoice]:
@@ -1761,7 +1761,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
@@ -1799,7 +1799,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_invoices_by_contact_ids_async(self, contact_ids: List[str]) -> List[Invoice]:
@@ -1810,7 +1810,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"contactIds": [x0 for x0 in contact_ids],
@@ -1838,7 +1838,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_invoices_by_recipients_ids_async(self, recipients_ids: List[str]) -> List[Invoice]:
@@ -1849,7 +1849,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"recipientsIds": [x0 for x0 in recipients_ids],
@@ -1877,7 +1877,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_to_insurances_async(self, user_ids: List[str]) -> List[Invoice]:
@@ -1888,7 +1888,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"userIds": [x0 for x0 in user_ids],
@@ -1916,7 +1916,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_to_insurances_unsent_async(self, user_ids: List[str]) -> List[Invoice]:
@@ -1927,7 +1927,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"userIds": [x0 for x0 in user_ids],
@@ -1955,7 +1955,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_to_patients_async(self, hc_party_id: str) -> List[Invoice]:
@@ -1966,7 +1966,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
@@ -1994,7 +1994,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_to_patients_unsent_async(self, hc_party_id: Optional[str]) -> List[Invoice]:
@@ -2005,7 +2005,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
@@ -2033,7 +2033,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_invoices_by_ids_async(self, ids: List[str]) -> List[Invoice]:
@@ -2044,7 +2044,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"ids": [x0 for x0 in ids],
@@ -2072,7 +2072,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 		async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[Invoice]:
@@ -2083,7 +2083,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Invoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_invoice(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"hcPartyId": hc_party_id,
@@ -2119,7 +2119,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Invoice._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

@@ -316,7 +316,7 @@ class DocumentApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"document": document.__serialize__(),
+				"document": serialize_document(document),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -332,7 +332,7 @@ class DocumentApi:
 		def share_with_blocking(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultDocument:
 			payload = {
 				"delegateId": delegate_id,
-				"document": document.__serialize__(),
+				"document": serialize_document(document),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.shareWithBlocking(
@@ -358,7 +358,7 @@ class DocumentApi:
 					result = deserialize_simple_share_result_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document": document.__serialize__(),
+				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -373,7 +373,7 @@ class DocumentApi:
 
 		def try_share_with_many_blocking(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> SimpleShareResultDocument:
 			payload = {
-				"document": document.__serialize__(),
+				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.tryShareWithManyBlocking(
@@ -396,10 +396,10 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document": document.__serialize__(),
+				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -414,7 +414,7 @@ class DocumentApi:
 
 		def share_with_many_blocking(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> Document:
 			payload = {
-				"document": document.__serialize__(),
+				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.shareWithManyBlocking(
@@ -426,7 +426,7 @@ class DocumentApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Document._deserialize(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
 		async def modify_document_async(self, entity: Document) -> Document:
@@ -437,10 +437,10 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_document(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -454,7 +454,7 @@ class DocumentApi:
 
 		def modify_document_blocking(self, entity: Document) -> Document:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_document(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.modifyDocumentBlocking(
 				self.icure_sdk._native,
@@ -465,7 +465,7 @@ class DocumentApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Document._deserialize(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
 		async def get_document_async(self, entity_id: str) -> Document:
@@ -476,7 +476,7 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -504,7 +504,7 @@ class DocumentApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Document._deserialize(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
 		async def get_documents_async(self, entity_ids: List[str]) -> List[Document]:
@@ -515,7 +515,7 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Document._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_document(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -543,7 +543,7 @@ class DocumentApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Document._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_document(x1) for x1 in result_info.success]
 				return return_value
 
 		async def modify_documents_async(self, entities: List[Document]) -> List[Document]:
@@ -554,10 +554,10 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Document._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_document(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_document(x0) for x0 in entities],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -571,7 +571,7 @@ class DocumentApi:
 
 		def modify_documents_blocking(self, entities: List[Document]) -> List[Document]:
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_document(x0) for x0 in entities],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.DocumentApi.tryAndRecover.modifyDocumentsBlocking(
 				self.icure_sdk._native,
@@ -582,7 +582,7 @@ class DocumentApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Document._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_document(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

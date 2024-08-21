@@ -594,7 +594,7 @@ class ContactApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"contact": contact.__serialize__(),
+				"contact": serialize_contact(contact),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -610,7 +610,7 @@ class ContactApi:
 		def share_with_blocking(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> SimpleShareResultContact:
 			payload = {
 				"delegateId": delegate_id,
-				"contact": contact.__serialize__(),
+				"contact": serialize_contact(contact),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.shareWithBlocking(
@@ -636,7 +636,7 @@ class ContactApi:
 					result = deserialize_simple_share_result_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"contact": contact.__serialize__(),
+				"contact": serialize_contact(contact),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -651,7 +651,7 @@ class ContactApi:
 
 		def try_share_with_many_blocking(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> SimpleShareResultContact:
 			payload = {
-				"contact": contact.__serialize__(),
+				"contact": serialize_contact(contact),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.tryShareWithManyBlocking(
@@ -674,10 +674,10 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Contact._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"contact": contact.__serialize__(),
+				"contact": serialize_contact(contact),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -692,7 +692,7 @@ class ContactApi:
 
 		def share_with_many_blocking(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> Contact:
 			payload = {
-				"contact": contact.__serialize__(),
+				"contact": serialize_contact(contact),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.shareWithManyBlocking(
@@ -704,7 +704,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Contact._deserialize(result_info.success)
+				return_value = deserialize_contact(result_info.success)
 				return return_value
 
 		async def filter_contacts_by_async(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[Contact]:
@@ -915,10 +915,10 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Contact._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_contact(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -932,7 +932,7 @@ class ContactApi:
 
 		def modify_contact_blocking(self, entity: Contact) -> Contact:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_contact(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.modifyContactBlocking(
 				self.icure_sdk._native,
@@ -943,7 +943,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Contact._deserialize(result_info.success)
+				return_value = deserialize_contact(result_info.success)
 				return return_value
 
 		async def modify_contacts_async(self, entities: List[Contact]) -> List[Contact]:
@@ -954,10 +954,10 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_contact(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_contact(x0) for x0 in entities],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -971,7 +971,7 @@ class ContactApi:
 
 		def modify_contacts_blocking(self, entities: List[Contact]) -> List[Contact]:
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_contact(x0) for x0 in entities],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ContactApi.tryAndRecover.modifyContactsBlocking(
 				self.icure_sdk._native,
@@ -982,7 +982,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_contact(x1) for x1 in result_info.success]
 				return return_value
 
 		async def get_contact_async(self, entity_id: str) -> Contact:
@@ -993,7 +993,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Contact._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_contact(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -1021,7 +1021,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Contact._deserialize(result_info.success)
+				return_value = deserialize_contact(result_info.success)
 				return return_value
 
 		async def get_contacts_async(self, entity_ids: List[str]) -> List[Contact]:
@@ -1032,7 +1032,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Contact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_contact(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -1060,7 +1060,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Contact._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_contact(x1) for x1 in result_info.success]
 				return return_value
 
 		async def get_service_async(self, service_id: str) -> object:

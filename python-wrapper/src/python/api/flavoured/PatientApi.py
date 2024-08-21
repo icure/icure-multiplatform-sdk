@@ -537,7 +537,7 @@ class PatientApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 				"options": options.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -553,7 +553,7 @@ class PatientApi:
 		def share_with_blocking(self, delegate_id: str, patient: Patient, options: PatientShareOptions) -> SimpleShareResultPatient:
 			payload = {
 				"delegateId": delegate_id,
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 				"options": options.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.shareWithBlocking(
@@ -579,7 +579,7 @@ class PatientApi:
 					result = deserialize_simple_share_result_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -594,7 +594,7 @@ class PatientApi:
 
 		def try_share_with_many_blocking(self, patient: Patient, delegates: Dict[str, PatientShareOptions]) -> SimpleShareResultPatient:
 			payload = {
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.tryShareWithManyBlocking(
@@ -617,10 +617,10 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Patient._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -635,7 +635,7 @@ class PatientApi:
 
 		def share_with_many_blocking(self, patient: Patient, delegates: Dict[str, PatientShareOptions]) -> Patient:
 			payload = {
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.shareWithManyBlocking(
@@ -647,7 +647,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Patient._deserialize(result_info.success)
+				return_value = deserialize_patient(result_info.success)
 				return return_value
 
 		async def initialize_confidential_secret_id_async(self, patient: Patient) -> Patient:
@@ -658,10 +658,10 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Patient._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -675,7 +675,7 @@ class PatientApi:
 
 		def initialize_confidential_secret_id_blocking(self, patient: Patient) -> Patient:
 			payload = {
-				"patient": patient.__serialize__(),
+				"patient": serialize_patient(patient),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.initializeConfidentialSecretIdBlocking(
 				self.icure_sdk._native,
@@ -686,7 +686,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Patient._deserialize(result_info.success)
+				return_value = deserialize_patient(result_info.success)
 				return return_value
 
 		async def filter_patients_by_async(self, filter: FilterOptions[Patient]) -> PaginatedListIterator[Patient]:
@@ -797,10 +797,10 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Patient._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_patient(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -814,7 +814,7 @@ class PatientApi:
 
 		def modify_patient_blocking(self, entity: Patient) -> Patient:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_patient(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.modifyPatientBlocking(
 				self.icure_sdk._native,
@@ -825,7 +825,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Patient._deserialize(result_info.success)
+				return_value = deserialize_patient(result_info.success)
 				return return_value
 
 		async def get_patient_async(self, entity_id: str) -> Patient:
@@ -836,7 +836,7 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Patient._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -864,7 +864,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Patient._deserialize(result_info.success)
+				return_value = deserialize_patient(result_info.success)
 				return return_value
 
 		async def get_patient_resolving_merges_async(self, patient_id: str, max_merge_depth: Optional[int]) -> Patient:
@@ -875,7 +875,7 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Patient._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"patientId": patient_id,
@@ -905,7 +905,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Patient._deserialize(result_info.success)
+				return_value = deserialize_patient(result_info.success)
 				return return_value
 
 		async def get_patients_async(self, patient_ids: List[str]) -> List[Patient]:
@@ -916,7 +916,7 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Patient._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_patient(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"patientIds": [x0 for x0 in patient_ids],
@@ -944,7 +944,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Patient._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_patient(x1) for x1 in result_info.success]
 				return return_value
 
 		async def modify_patients_async(self, patient_dtos: List[EncryptedPatient]) -> List[IdWithRev]:
@@ -994,11 +994,11 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Patient._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"from": serialize_patient(from_),
-				"mergedInto": merged_into.__serialize__(),
+				"mergedInto": serialize_patient(merged_into),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -1013,7 +1013,7 @@ class PatientApi:
 		def merge_patients_blocking(self, from_: Patient, merged_into: Patient) -> Patient:
 			payload = {
 				"from": serialize_patient(from_),
-				"mergedInto": merged_into.__serialize__(),
+				"mergedInto": serialize_patient(merged_into),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.PatientApi.tryAndRecover.mergePatientsBlocking(
 				self.icure_sdk._native,
@@ -1024,7 +1024,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Patient._deserialize(result_info.success)
+				return_value = deserialize_patient(result_info.success)
 				return return_value
 
 	def __init__(self, icure_sdk):

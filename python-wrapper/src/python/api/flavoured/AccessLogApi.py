@@ -274,7 +274,7 @@ class AccessLogApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"accessLog": access_log.__serialize__(),
+				"accessLog": serialize_access_log(access_log),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -290,7 +290,7 @@ class AccessLogApi:
 		def share_with_blocking(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultAccessLog:
 			payload = {
 				"delegateId": delegate_id,
-				"accessLog": access_log.__serialize__(),
+				"accessLog": serialize_access_log(access_log),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.shareWithBlocking(
@@ -316,7 +316,7 @@ class AccessLogApi:
 					result = deserialize_simple_share_result_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"accessLog": access_log.__serialize__(),
+				"accessLog": serialize_access_log(access_log),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -331,7 +331,7 @@ class AccessLogApi:
 
 		def try_share_with_many_blocking(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultAccessLog:
 			payload = {
-				"accessLog": access_log.__serialize__(),
+				"accessLog": serialize_access_log(access_log),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.tryShareWithManyBlocking(
@@ -354,10 +354,10 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = AccessLog._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"accessLog": access_log.__serialize__(),
+				"accessLog": serialize_access_log(access_log),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -372,7 +372,7 @@ class AccessLogApi:
 
 		def share_with_many_blocking(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> AccessLog:
 			payload = {
-				"accessLog": access_log.__serialize__(),
+				"accessLog": serialize_access_log(access_log),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.shareWithManyBlocking(
@@ -384,7 +384,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = AccessLog._deserialize(result_info.success)
+				return_value = deserialize_access_log(result_info.success)
 				return return_value
 
 		async def modify_access_log_async(self, entity: AccessLog) -> AccessLog:
@@ -395,10 +395,10 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = AccessLog._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_access_log(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -412,7 +412,7 @@ class AccessLogApi:
 
 		def modify_access_log_blocking(self, entity: AccessLog) -> AccessLog:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_access_log(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.AccessLogApi.tryAndRecover.modifyAccessLogBlocking(
 				self.icure_sdk._native,
@@ -423,7 +423,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = AccessLog._deserialize(result_info.success)
+				return_value = deserialize_access_log(result_info.success)
 				return return_value
 
 		async def get_access_log_async(self, entity_id: str) -> AccessLog:
@@ -434,7 +434,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = AccessLog._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -462,7 +462,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = AccessLog._deserialize(result_info.success)
+				return_value = deserialize_access_log(result_info.success)
 				return return_value
 
 		async def get_access_logs_async(self, entity_ids: List[str]) -> List[AccessLog]:
@@ -473,7 +473,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [AccessLog._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_access_log(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -501,7 +501,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [AccessLog._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_access_log(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

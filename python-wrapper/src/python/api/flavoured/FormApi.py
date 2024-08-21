@@ -392,7 +392,7 @@ class FormApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"form": form.__serialize__(),
+				"form": serialize_form(form),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -408,7 +408,7 @@ class FormApi:
 		def share_with_blocking(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> SimpleShareResultForm:
 			payload = {
 				"delegateId": delegate_id,
-				"form": form.__serialize__(),
+				"form": serialize_form(form),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.shareWithBlocking(
@@ -434,7 +434,7 @@ class FormApi:
 					result = deserialize_simple_share_result_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"form": form.__serialize__(),
+				"form": serialize_form(form),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -449,7 +449,7 @@ class FormApi:
 
 		def try_share_with_many_blocking(self, form: Form, delegates: Dict[str, FormShareOptions]) -> SimpleShareResultForm:
 			payload = {
-				"form": form.__serialize__(),
+				"form": serialize_form(form),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.tryShareWithManyBlocking(
@@ -472,10 +472,10 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"form": form.__serialize__(),
+				"form": serialize_form(form),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -490,7 +490,7 @@ class FormApi:
 
 		def share_with_many_blocking(self, form: Form, delegates: Dict[str, FormShareOptions]) -> Form:
 			payload = {
-				"form": form.__serialize__(),
+				"form": serialize_form(form),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.shareWithManyBlocking(
@@ -502,7 +502,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Form._deserialize(result_info.success)
+				return_value = deserialize_form(result_info.success)
 				return return_value
 
 		async def modify_form_async(self, entity: Form) -> Form:
@@ -513,10 +513,10 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_form(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -530,7 +530,7 @@ class FormApi:
 
 		def modify_form_blocking(self, entity: Form) -> Form:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_form(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.modifyFormBlocking(
 				self.icure_sdk._native,
@@ -541,7 +541,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Form._deserialize(result_info.success)
+				return_value = deserialize_form(result_info.success)
 				return return_value
 
 		async def modify_forms_async(self, entities: List[Form]) -> List[Form]:
@@ -552,10 +552,10 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_form(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_form(x0) for x0 in entities],
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -569,7 +569,7 @@ class FormApi:
 
 		def modify_forms_blocking(self, entities: List[Form]) -> List[Form]:
 			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
+				"entities": [serialize_form(x0) for x0 in entities],
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.FormApi.tryAndRecover.modifyFormsBlocking(
 				self.icure_sdk._native,
@@ -580,7 +580,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Form._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_form(x1) for x1 in result_info.success]
 				return return_value
 
 		async def get_form_async(self, entity_id: str) -> Form:
@@ -591,7 +591,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -619,7 +619,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Form._deserialize(result_info.success)
+				return_value = deserialize_form(result_info.success)
 				return return_value
 
 		async def get_forms_async(self, entity_ids: List[str]) -> List[Form]:
@@ -630,7 +630,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Form._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_form(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -658,7 +658,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Form._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_form(x1) for x1 in result_info.success]
 				return return_value
 
 		async def get_latest_form_by_logical_uuid_async(self, logical_uuid: str) -> Form:
@@ -669,7 +669,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"logicalUuid": logical_uuid,
@@ -697,7 +697,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Form._deserialize(result_info.success)
+				return_value = deserialize_form(result_info.success)
 				return return_value
 
 		async def get_latest_form_by_unique_id_async(self, unique_id: str) -> Form:
@@ -708,7 +708,7 @@ class FormApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Form._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_form(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"uniqueId": unique_id,
@@ -736,7 +736,7 @@ class FormApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Form._deserialize(result_info.success)
+				return_value = deserialize_form(result_info.success)
 				return return_value
 
 	def __init__(self, icure_sdk):

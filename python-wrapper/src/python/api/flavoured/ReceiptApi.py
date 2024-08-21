@@ -275,7 +275,7 @@ class ReceiptApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"receipt": receipt.__serialize__(),
+				"receipt": serialize_receipt(receipt),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -291,7 +291,7 @@ class ReceiptApi:
 		def share_with_blocking(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultReceipt:
 			payload = {
 				"delegateId": delegate_id,
-				"receipt": receipt.__serialize__(),
+				"receipt": serialize_receipt(receipt),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithBlocking(
@@ -317,7 +317,7 @@ class ReceiptApi:
 					result = deserialize_simple_share_result_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"receipt": receipt.__serialize__(),
+				"receipt": serialize_receipt(receipt),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -332,7 +332,7 @@ class ReceiptApi:
 
 		def try_share_with_many_blocking(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultReceipt:
 			payload = {
-				"receipt": receipt.__serialize__(),
+				"receipt": serialize_receipt(receipt),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.tryShareWithManyBlocking(
@@ -355,10 +355,10 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Receipt._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"receipt": receipt.__serialize__(),
+				"receipt": serialize_receipt(receipt),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -373,7 +373,7 @@ class ReceiptApi:
 
 		def share_with_many_blocking(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> Receipt:
 			payload = {
-				"receipt": receipt.__serialize__(),
+				"receipt": serialize_receipt(receipt),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.shareWithManyBlocking(
@@ -385,7 +385,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Receipt._deserialize(result_info.success)
+				return_value = deserialize_receipt(result_info.success)
 				return return_value
 
 		async def modify_receipt_async(self, entity: Receipt) -> Receipt:
@@ -396,10 +396,10 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Receipt._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_receipt(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -413,7 +413,7 @@ class ReceiptApi:
 
 		def modify_receipt_blocking(self, entity: Receipt) -> Receipt:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_receipt(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ReceiptApi.tryAndRecover.modifyReceiptBlocking(
 				self.icure_sdk._native,
@@ -424,7 +424,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Receipt._deserialize(result_info.success)
+				return_value = deserialize_receipt(result_info.success)
 				return return_value
 
 		async def get_receipt_async(self, entity_id: str) -> Receipt:
@@ -435,7 +435,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Receipt._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -463,7 +463,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Receipt._deserialize(result_info.success)
+				return_value = deserialize_receipt(result_info.success)
 				return return_value
 
 		async def list_by_reference_async(self, reference: str) -> List[Receipt]:
@@ -474,7 +474,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Receipt._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_receipt(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"reference": reference,
@@ -502,7 +502,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Receipt._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_receipt(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

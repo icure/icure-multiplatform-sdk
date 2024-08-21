@@ -274,7 +274,7 @@ class ClassificationApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"classification": classification.__serialize__(),
+				"classification": serialize_classification(classification),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -290,7 +290,7 @@ class ClassificationApi:
 		def share_with_blocking(self, delegate_id: str, classification: Classification, options: Optional[ClassificationShareOptions] = None) -> SimpleShareResultClassification:
 			payload = {
 				"delegateId": delegate_id,
-				"classification": classification.__serialize__(),
+				"classification": serialize_classification(classification),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithBlocking(
@@ -316,7 +316,7 @@ class ClassificationApi:
 					result = deserialize_simple_share_result_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"classification": classification.__serialize__(),
+				"classification": serialize_classification(classification),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -331,7 +331,7 @@ class ClassificationApi:
 
 		def try_share_with_many_blocking(self, classification: Classification, delegates: Dict[str, ClassificationShareOptions]) -> SimpleShareResultClassification:
 			payload = {
-				"classification": classification.__serialize__(),
+				"classification": serialize_classification(classification),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.tryShareWithManyBlocking(
@@ -354,10 +354,10 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Classification._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"classification": classification.__serialize__(),
+				"classification": serialize_classification(classification),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -372,7 +372,7 @@ class ClassificationApi:
 
 		def share_with_many_blocking(self, classification: Classification, delegates: Dict[str, ClassificationShareOptions]) -> Classification:
 			payload = {
-				"classification": classification.__serialize__(),
+				"classification": serialize_classification(classification),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.shareWithManyBlocking(
@@ -384,7 +384,7 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Classification._deserialize(result_info.success)
+				return_value = deserialize_classification(result_info.success)
 				return return_value
 
 		async def modify_classification_async(self, entity: Classification) -> Classification:
@@ -395,10 +395,10 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Classification._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_classification(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -412,7 +412,7 @@ class ClassificationApi:
 
 		def modify_classification_blocking(self, entity: Classification) -> Classification:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_classification(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.ClassificationApi.tryAndRecover.modifyClassificationBlocking(
 				self.icure_sdk._native,
@@ -423,7 +423,7 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Classification._deserialize(result_info.success)
+				return_value = deserialize_classification(result_info.success)
 				return return_value
 
 		async def get_classification_async(self, entity_id: str) -> Classification:
@@ -434,7 +434,7 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Classification._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_classification(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -462,7 +462,7 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Classification._deserialize(result_info.success)
+				return_value = deserialize_classification(result_info.success)
 				return return_value
 
 		async def get_classifications_async(self, entity_ids: List[str]) -> List[Classification]:
@@ -473,7 +473,7 @@ class ClassificationApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Classification._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_classification(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -501,7 +501,7 @@ class ClassificationApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Classification._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_classification(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

@@ -317,7 +317,7 @@ class CalendarItemApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"calendarItem": calendar_item.__serialize__(),
+				"calendarItem": serialize_calendar_item(calendar_item),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -333,7 +333,7 @@ class CalendarItemApi:
 		def share_with_blocking(self, delegate_id: str, calendar_item: CalendarItem, options: Optional[CalendarItemShareOptions] = None) -> SimpleShareResultCalendarItem:
 			payload = {
 				"delegateId": delegate_id,
-				"calendarItem": calendar_item.__serialize__(),
+				"calendarItem": serialize_calendar_item(calendar_item),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.shareWithBlocking(
@@ -359,7 +359,7 @@ class CalendarItemApi:
 					result = deserialize_simple_share_result_calendar_item(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"calendarItem": calendar_item.__serialize__(),
+				"calendarItem": serialize_calendar_item(calendar_item),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -374,7 +374,7 @@ class CalendarItemApi:
 
 		def try_share_with_many_blocking(self, calendar_item: CalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> SimpleShareResultCalendarItem:
 			payload = {
-				"calendarItem": calendar_item.__serialize__(),
+				"calendarItem": serialize_calendar_item(calendar_item),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.tryShareWithManyBlocking(
@@ -397,10 +397,10 @@ class CalendarItemApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"calendarItem": calendar_item.__serialize__(),
+				"calendarItem": serialize_calendar_item(calendar_item),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -415,7 +415,7 @@ class CalendarItemApi:
 
 		def share_with_many_blocking(self, calendar_item: CalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> CalendarItem:
 			payload = {
-				"calendarItem": calendar_item.__serialize__(),
+				"calendarItem": serialize_calendar_item(calendar_item),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.shareWithManyBlocking(
@@ -427,7 +427,7 @@ class CalendarItemApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = CalendarItem._deserialize(result_info.success)
+				return_value = deserialize_calendar_item(result_info.success)
 				return return_value
 
 		async def link_to_patient_async(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> CalendarItem:
@@ -438,7 +438,7 @@ class CalendarItemApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
@@ -470,7 +470,7 @@ class CalendarItemApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = CalendarItem._deserialize(result_info.success)
+				return_value = deserialize_calendar_item(result_info.success)
 				return return_value
 
 		async def modify_calendar_item_async(self, entity: CalendarItem) -> CalendarItem:
@@ -481,10 +481,10 @@ class CalendarItemApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_calendar_item(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -498,7 +498,7 @@ class CalendarItemApi:
 
 		def modify_calendar_item_blocking(self, entity: CalendarItem) -> CalendarItem:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_calendar_item(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.CalendarItemApi.tryAndRecover.modifyCalendarItemBlocking(
 				self.icure_sdk._native,
@@ -509,7 +509,7 @@ class CalendarItemApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = CalendarItem._deserialize(result_info.success)
+				return_value = deserialize_calendar_item(result_info.success)
 				return return_value
 
 		async def get_calendar_item_async(self, entity_id: str) -> CalendarItem:
@@ -520,7 +520,7 @@ class CalendarItemApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = CalendarItem._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -548,7 +548,7 @@ class CalendarItemApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = CalendarItem._deserialize(result_info.success)
+				return_value = deserialize_calendar_item(result_info.success)
 				return return_value
 
 		async def get_calendar_items_async(self, entity_ids: List[str]) -> List[CalendarItem]:
@@ -559,7 +559,7 @@ class CalendarItemApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [CalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_calendar_item(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -587,7 +587,7 @@ class CalendarItemApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [CalendarItem._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_calendar_item(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

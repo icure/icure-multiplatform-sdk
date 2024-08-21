@@ -235,7 +235,7 @@ class TimeTableApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"timeTable": time_table.__serialize__(),
+				"timeTable": serialize_time_table(time_table),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -251,7 +251,7 @@ class TimeTableApi:
 		def share_with_blocking(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultTimeTable:
 			payload = {
 				"delegateId": delegate_id,
-				"timeTable": time_table.__serialize__(),
+				"timeTable": serialize_time_table(time_table),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithBlocking(
@@ -277,7 +277,7 @@ class TimeTableApi:
 					result = deserialize_simple_share_result_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"timeTable": time_table.__serialize__(),
+				"timeTable": serialize_time_table(time_table),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -292,7 +292,7 @@ class TimeTableApi:
 
 		def try_share_with_many_blocking(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultTimeTable:
 			payload = {
-				"timeTable": time_table.__serialize__(),
+				"timeTable": serialize_time_table(time_table),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.tryShareWithManyBlocking(
@@ -315,10 +315,10 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = TimeTable._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"timeTable": time_table.__serialize__(),
+				"timeTable": serialize_time_table(time_table),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -333,7 +333,7 @@ class TimeTableApi:
 
 		def share_with_many_blocking(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> TimeTable:
 			payload = {
-				"timeTable": time_table.__serialize__(),
+				"timeTable": serialize_time_table(time_table),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.shareWithManyBlocking(
@@ -345,7 +345,7 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = TimeTable._deserialize(result_info.success)
+				return_value = deserialize_time_table(result_info.success)
 				return return_value
 
 		async def modify_time_table_async(self, entity: TimeTable) -> TimeTable:
@@ -356,10 +356,10 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = TimeTable._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_time_table(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -373,7 +373,7 @@ class TimeTableApi:
 
 		def modify_time_table_blocking(self, entity: TimeTable) -> TimeTable:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_time_table(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TimeTableApi.tryAndRecover.modifyTimeTableBlocking(
 				self.icure_sdk._native,
@@ -384,7 +384,7 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = TimeTable._deserialize(result_info.success)
+				return_value = deserialize_time_table(result_info.success)
 				return return_value
 
 		async def get_time_table_async(self, entity_id: str) -> TimeTable:
@@ -395,7 +395,7 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = TimeTable._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -423,7 +423,7 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = TimeTable._deserialize(result_info.success)
+				return_value = deserialize_time_table(result_info.success)
 				return return_value
 
 	def __init__(self, icure_sdk):

@@ -377,7 +377,7 @@ class MaintenanceTaskApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"maintenanceTask": maintenance_task.__serialize__(),
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -393,7 +393,7 @@ class MaintenanceTaskApi:
 		def share_with_blocking(self, delegate_id: str, maintenance_task: MaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> SimpleShareResultMaintenanceTask:
 			payload = {
 				"delegateId": delegate_id,
-				"maintenanceTask": maintenance_task.__serialize__(),
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.shareWithBlocking(
@@ -419,7 +419,7 @@ class MaintenanceTaskApi:
 					result = deserialize_simple_share_result_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"maintenanceTask": maintenance_task.__serialize__(),
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -434,7 +434,7 @@ class MaintenanceTaskApi:
 
 		def try_share_with_many_blocking(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> SimpleShareResultMaintenanceTask:
 			payload = {
-				"maintenanceTask": maintenance_task.__serialize__(),
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.tryShareWithManyBlocking(
@@ -457,10 +457,10 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = MaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"maintenanceTask": maintenance_task.__serialize__(),
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -475,7 +475,7 @@ class MaintenanceTaskApi:
 
 		def share_with_many_blocking(self, maintenance_task: MaintenanceTask, delegates: Dict[str, MaintenanceTaskShareOptions]) -> MaintenanceTask:
 			payload = {
-				"maintenanceTask": maintenance_task.__serialize__(),
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.shareWithManyBlocking(
@@ -487,7 +487,7 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = MaintenanceTask._deserialize(result_info.success)
+				return_value = deserialize_maintenance_task(result_info.success)
 				return return_value
 
 		async def filter_maintenance_tasks_by_async(self, filter: FilterOptions[MaintenanceTask]) -> PaginatedListIterator[MaintenanceTask]:
@@ -598,10 +598,10 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = MaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_maintenance_task(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -615,7 +615,7 @@ class MaintenanceTaskApi:
 
 		def modify_maintenance_task_blocking(self, entity: MaintenanceTask) -> MaintenanceTask:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_maintenance_task(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MaintenanceTaskApi.tryAndRecover.modifyMaintenanceTaskBlocking(
 				self.icure_sdk._native,
@@ -626,7 +626,7 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = MaintenanceTask._deserialize(result_info.success)
+				return_value = deserialize_maintenance_task(result_info.success)
 				return return_value
 
 		async def get_maintenance_task_async(self, entity_id: str) -> MaintenanceTask:
@@ -637,7 +637,7 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = MaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -665,7 +665,7 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = MaintenanceTask._deserialize(result_info.success)
+				return_value = deserialize_maintenance_task(result_info.success)
 				return return_value
 
 		async def get_maintenance_tasks_async(self, entity_ids: List[str]) -> List[MaintenanceTask]:
@@ -676,7 +676,7 @@ class MaintenanceTaskApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [MaintenanceTask._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_maintenance_task(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -704,7 +704,7 @@ class MaintenanceTaskApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [MaintenanceTask._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_maintenance_task(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

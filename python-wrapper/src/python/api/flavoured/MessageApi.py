@@ -422,7 +422,7 @@ class MessageApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"message": message.__serialize__(),
+				"message": serialize_message(message),
 				"options": options.__serialize__(),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -438,7 +438,7 @@ class MessageApi:
 		def share_with_blocking(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResultMessage:
 			payload = {
 				"delegateId": delegate_id,
-				"message": message.__serialize__(),
+				"message": serialize_message(message),
 				"options": options.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.shareWithBlocking(
@@ -464,7 +464,7 @@ class MessageApi:
 					result = deserialize_simple_share_result_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"message": message.__serialize__(),
+				"message": serialize_message(message),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -479,7 +479,7 @@ class MessageApi:
 
 		def try_share_with_many_blocking(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultMessage:
 			payload = {
-				"message": message.__serialize__(),
+				"message": serialize_message(message),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.tryShareWithManyBlocking(
@@ -502,10 +502,10 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Message._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"message": message.__serialize__(),
+				"message": serialize_message(message),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -520,7 +520,7 @@ class MessageApi:
 
 		def share_with_many_blocking(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> Message:
 			payload = {
-				"message": message.__serialize__(),
+				"message": serialize_message(message),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.shareWithManyBlocking(
@@ -532,7 +532,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Message._deserialize(result_info.success)
+				return_value = deserialize_message(result_info.success)
 				return return_value
 
 		async def filter_messages_by_async(self, filter: FilterOptions[Message]) -> PaginatedListIterator[Message]:
@@ -643,10 +643,10 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Message._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_message(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -660,7 +660,7 @@ class MessageApi:
 
 		def modify_message_blocking(self, entity: Message) -> Message:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_message(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.MessageApi.tryAndRecover.modifyMessageBlocking(
 				self.icure_sdk._native,
@@ -671,7 +671,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Message._deserialize(result_info.success)
+				return_value = deserialize_message(result_info.success)
 				return return_value
 
 		async def get_message_async(self, entity_id: str) -> Message:
@@ -682,7 +682,7 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Message._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -710,7 +710,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Message._deserialize(result_info.success)
+				return_value = deserialize_message(result_info.success)
 				return return_value
 
 		async def get_messages_async(self, entity_ids: List[str]) -> List[Message]:
@@ -721,7 +721,7 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_message(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -749,7 +749,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Message._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_message(x1) for x1 in result_info.success]
 				return return_value
 
 		async def set_messages_read_status_async(self, entity_ids: List[str], time: Optional[int], read_status: bool, user_id: Optional[str]) -> List[Message]:
@@ -760,7 +760,7 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Message._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_message(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -794,7 +794,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Message._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_message(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

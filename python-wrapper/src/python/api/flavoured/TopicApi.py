@@ -461,7 +461,7 @@ class TopicApi:
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"topic": topic.__serialize__(),
+				"topic": serialize_topic(topic),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -477,7 +477,7 @@ class TopicApi:
 		def share_with_blocking(self, delegate_id: str, topic: Topic, options: Optional[TopicShareOptions] = None) -> SimpleShareResultTopic:
 			payload = {
 				"delegateId": delegate_id,
-				"topic": topic.__serialize__(),
+				"topic": serialize_topic(topic),
 				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithBlocking(
@@ -503,7 +503,7 @@ class TopicApi:
 					result = deserialize_simple_share_result_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"topic": topic.__serialize__(),
+				"topic": serialize_topic(topic),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -518,7 +518,7 @@ class TopicApi:
 
 		def try_share_with_many_blocking(self, topic: Topic, delegates: Dict[str, TopicShareOptions]) -> SimpleShareResultTopic:
 			payload = {
-				"topic": topic.__serialize__(),
+				"topic": serialize_topic(topic),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.tryShareWithManyBlocking(
@@ -541,10 +541,10 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"topic": topic.__serialize__(),
+				"topic": serialize_topic(topic),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -559,7 +559,7 @@ class TopicApi:
 
 		def share_with_many_blocking(self, topic: Topic, delegates: Dict[str, TopicShareOptions]) -> Topic:
 			payload = {
-				"topic": topic.__serialize__(),
+				"topic": serialize_topic(topic),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.shareWithManyBlocking(
@@ -571,7 +571,7 @@ class TopicApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Topic._deserialize(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
 		async def filter_topics_by_async(self, filter: FilterOptions[Topic]) -> PaginatedListIterator[Topic]:
@@ -682,10 +682,10 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_topic(entity),
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -699,7 +699,7 @@ class TopicApi:
 
 		def modify_topic_blocking(self, entity: Topic) -> Topic:
 			payload = {
-				"entity": entity.__serialize__(),
+				"entity": serialize_topic(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.sdk.py.api.flavoured.TopicApi.tryAndRecover.modifyTopicBlocking(
 				self.icure_sdk._native,
@@ -710,7 +710,7 @@ class TopicApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Topic._deserialize(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
 		async def get_topic_async(self, entity_id: str) -> Topic:
@@ -721,7 +721,7 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -749,7 +749,7 @@ class TopicApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Topic._deserialize(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
 		async def get_topics_async(self, entity_ids: List[str]) -> List[Topic]:
@@ -760,7 +760,7 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Topic._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_topic(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -788,7 +788,7 @@ class TopicApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [Topic._deserialize(x1) for x1 in result_info.success]
+				return_value = [deserialize_topic(x1) for x1 in result_info.success]
 				return return_value
 
 		async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> Topic:
@@ -799,7 +799,7 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -831,7 +831,7 @@ class TopicApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Topic._deserialize(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
 		async def remove_participant_async(self, entity_id: str, data_owner_id: str) -> Topic:
@@ -842,7 +842,7 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic._deserialize(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
@@ -872,7 +872,7 @@ class TopicApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = Topic._deserialize(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
 	def __init__(self, icure_sdk):
