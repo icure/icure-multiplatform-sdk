@@ -7,11 +7,14 @@ import com.icure.sdk.api.raw.wrap
 import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.serialization.DocumentAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -318,6 +321,17 @@ class RawDocumentApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
+		}.wrap()
+
+	override suspend fun matchDocumentsBy(filter: AbstractFilter<Document>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "document", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(DocumentAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

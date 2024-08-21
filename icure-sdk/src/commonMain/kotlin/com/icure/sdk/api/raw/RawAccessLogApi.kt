@@ -1,9 +1,11 @@
 package com.icure.sdk.api.raw
 
+import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.EncryptedAccessLog
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
@@ -69,6 +71,8 @@ public interface RawAccessLogApi {
 	suspend fun modifyAccessLog(accessLogDto: EncryptedAccessLog): HttpResponse<EncryptedAccessLog>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedAccessLog>>>
+
+	suspend fun matchAccessLogsBy(filter: AbstractFilter<AccessLog>): HttpResponse<List<String>>
 	// endregion
 
 	// region cloud endpoints
@@ -81,5 +85,10 @@ public interface RawAccessLogApi {
 		startDocumentId: String? = null,
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedAccessLog>>
+
+	suspend fun matchAccessLogsInGroupBy(
+		filter: AbstractFilter<AccessLog>,
+		groupId: String,
+	): HttpResponse<List<String>>
 	// endregion
 }

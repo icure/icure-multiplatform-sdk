@@ -14,7 +14,7 @@ import kotlin.String
 @Serializable
 data class HealthElementByHcPartyTagCodeFilter(
 	override val desc: String? = null,
-	public val healthcarePartyId: String? = null,
+	public val healthcarePartyId: String,
 	public val codeType: String? = null,
 	public val codeCode: String? = null,
 	public val tagType: String? = null,

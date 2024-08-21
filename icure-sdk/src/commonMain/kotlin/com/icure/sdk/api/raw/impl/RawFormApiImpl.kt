@@ -8,12 +8,15 @@ import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedForm
+import com.icure.sdk.model.Form
 import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.serialization.FormAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -26,6 +29,13 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import kotlin.Boolean
+import kotlin.ByteArray
+import kotlin.Long
+import kotlin.Nothing
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -403,6 +413,17 @@ class RawFormApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
+		}.wrap()
+
+	override suspend fun matchFormsBy(filter: AbstractFilter<Form>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "form", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(FormAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

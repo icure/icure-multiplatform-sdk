@@ -367,5 +367,19 @@ class RawHealthcarePartyApiImpl(
 			setBody(hcp)
 		}.wrap()
 
+	override suspend fun matchHealthcarePartiesInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<HealthcareParty>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "hcparty", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(HealthcarePartyAbstractFilterSerializer, filter)
+		}.wrap()
+
 	// endregion
 }

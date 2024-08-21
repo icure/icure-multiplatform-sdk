@@ -9,9 +9,12 @@ import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.model.EncryptedTimeTable
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.serialization.TimeTableAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -124,6 +127,17 @@ class RawTimeTableApiImpl(
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchAccessLogsBy(filter: AbstractFilter<TimeTable>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "timeTable", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(TimeTableAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>> =

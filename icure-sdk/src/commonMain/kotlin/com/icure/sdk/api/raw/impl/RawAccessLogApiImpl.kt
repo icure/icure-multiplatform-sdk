@@ -7,12 +7,15 @@ import com.icure.sdk.api.raw.wrap
 import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.EncryptedAccessLog
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.serialization.AccessLogAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -222,6 +225,17 @@ class RawAccessLogApiImpl(
 			setBody(request)
 		}.wrap()
 
+	override suspend fun matchAccessLogsBy(filter: AbstractFilter<AccessLog>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "accesslog", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(AccessLogAbstractFilterSerializer, filter)
+		}.wrap()
+
 	// endregion
 
 	// region cloud endpoints
@@ -246,6 +260,20 @@ class RawAccessLogApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchAccessLogsInGroupBy(
+		filter: AbstractFilter<AccessLog>,
+		groupId: String,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "accesslog", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(AccessLogAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

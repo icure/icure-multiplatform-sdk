@@ -4,6 +4,7 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.MedicalLocation
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.utils.InternalIcureApi
 import kotlin.Int
 import kotlin.String
@@ -27,5 +28,9 @@ public interface RawMedicalLocationApi {
 	): HttpResponse<PaginatedList<MedicalLocation>>
 
 	suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation): HttpResponse<MedicalLocation>
+
+	suspend fun getMedicalLocationsByIds(accessLogIds: ListOfIds): HttpResponse<List<MedicalLocation>>
+
+	suspend fun matchMedicalLocationsBy(filter: AbstractFilter<MedicalLocation>): HttpResponse<List<String>>
 	// endregion
 }

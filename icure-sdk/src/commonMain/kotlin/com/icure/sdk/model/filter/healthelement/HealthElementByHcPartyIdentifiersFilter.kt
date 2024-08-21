@@ -16,7 +16,7 @@ import kotlin.collections.List
 @Serializable
 data class HealthElementByHcPartyIdentifiersFilter(
 	override val desc: String? = null,
-	public val hcPartyId: String? = null,
+	public val hcPartyId: String,
 	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
 ) : AbstractFilter<HealthElement> {

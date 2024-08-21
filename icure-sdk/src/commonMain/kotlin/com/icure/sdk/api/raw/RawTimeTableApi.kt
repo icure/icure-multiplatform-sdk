@@ -2,7 +2,9 @@ package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedTimeTable
 import com.icure.sdk.model.ListOfIds
+import com.icure.sdk.model.TimeTable
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
@@ -33,6 +35,8 @@ public interface RawTimeTableApi {
 	): HttpResponse<List<EncryptedTimeTable>>
 
 	suspend fun getTimeTablesByAgendaId(agendaId: String): HttpResponse<List<EncryptedTimeTable>>
+
+	suspend fun matchAccessLogsBy(filter: AbstractFilter<TimeTable>): HttpResponse<List<String>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>>
 	// endregion

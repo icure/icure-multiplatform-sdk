@@ -124,5 +124,10 @@ public interface RawHealthcarePartyApi {
 		useShortToken: Boolean? = null,
 		hcp: HealthcareParty,
 	): HttpResponse<DataOwnerRegistrationSuccess>
+
+	suspend fun matchHealthcarePartiesInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<HealthcareParty>,
+	): HttpResponse<List<String>>
 	// endregion
 }

@@ -373,5 +373,19 @@ class RawCodeApiImpl(
 			setBody(codeBatch)
 		}.wrap()
 
+	override suspend fun matchCodesBy(
+		groupId: String,
+		filter: AbstractFilter<Code>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "code", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(CodeAbstractFilterSerializer, filter)
+		}.wrap()
+
 	// endregion
 }

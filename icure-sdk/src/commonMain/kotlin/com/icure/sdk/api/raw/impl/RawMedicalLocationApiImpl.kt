@@ -9,6 +9,8 @@ import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.MedicalLocation
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.serialization.MedicalLocationAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -95,6 +97,28 @@ class RawMedicalLocationApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(medicalLocationDto)
+		}.wrap()
+
+	override suspend fun getMedicalLocationsByIds(accessLogIds: ListOfIds): HttpResponse<List<MedicalLocation>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "medicallocation", "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(accessLogIds)
+		}.wrap()
+
+	override suspend fun matchMedicalLocationsBy(filter: AbstractFilter<MedicalLocation>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "medicallocation", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(MedicalLocationAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

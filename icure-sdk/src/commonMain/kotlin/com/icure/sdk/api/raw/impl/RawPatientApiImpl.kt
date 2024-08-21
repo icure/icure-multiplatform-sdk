@@ -582,5 +582,19 @@ class RawPatientApiImpl(
 			setBody(p)
 		}.wrap()
 
+	override suspend fun matchPatientsInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<Patient>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(PatientAbstractFilterSerializer, filter)
+		}.wrap()
+
 	// endregion
 }

@@ -152,6 +152,20 @@ class RawTopicApiImpl(
 			setBodyWithSerializer(TopicAbstractFilterSerializer, filter)
 		}.wrap()
 
+	override suspend fun matchTopicsBy(
+		groupId: String,
+		filter: AbstractFilter<Topic>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "topic", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(TopicAbstractFilterSerializer, filter)
+		}.wrap()
+
 	override suspend fun addParticipant(
 		topicId: String,
 		request: AddParticipant,
