@@ -240,7 +240,7 @@ private class ByFuzzyNameForSelfParams(
 
 public fun byFuzzyNameForSelf(params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ByFuzzyNameForSelfParams>(params)
-	PatientFilters.byFuzzyNameForSelf(
+	PatientFilters.byNameForSelf(
 		decodedParams.searchString,
 	)
 }.toPyString(FilterOptions.serializer(PatientSerializer))

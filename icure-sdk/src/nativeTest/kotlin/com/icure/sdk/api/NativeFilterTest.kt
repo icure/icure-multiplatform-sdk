@@ -1,11 +1,12 @@
 package com.icure.sdk.api
 
+import com.icure.sdk.filters.PatientFilters
 import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.filter.patient.PatientByHcPartyDateOfBirthBetweenFilter
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.test.uuid
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
 class NativeFilterTest : StringSpec({
@@ -31,12 +32,12 @@ class NativeFilterTest : StringSpec({
 		patient.dateOfBirth shouldBe 19960707
 
 		val iterator = api.patient.filterPatientsBy(
-			PatientByHcPartyDateOfBirthBetweenFilter(
-					healthcarePartyId = hcpUser.healthcarePartyId,
-					minDateOfBirth = 19950101,
-					maxDateOfBirth = 19970101
-				)
+			PatientFilters.byDateOfBirthBetweenForDataOwner(
+				dataOwnerId = hcpUser.healthcarePartyId.shouldNotBeNull(),
+				fromDate = 19950101,
+				toDate = 19970101
 			)
+		)
 		val result = mutableListOf<DecryptedPatient>()
 		while(iterator.hasNext()) {
 			result += iterator.next()

@@ -29,6 +29,7 @@ data class DecryptedPropertyStub(
 	override val id: String? = null,
 	override val type: PropertyTypeStub? = null,
 	override val typedValue: DecryptedTypedValue? = null,
+	public val deletionDate: Long? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
 	// region PropertyStub-DecryptedPropertyStub
