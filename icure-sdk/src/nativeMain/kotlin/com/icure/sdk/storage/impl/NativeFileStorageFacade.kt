@@ -46,4 +46,4 @@ class NativeFileStorageFacade(
 
 
 @Suppress("FunctionName")
-actual fun FileStorageFacade(directory: String): StorageFacade = NativeFileStorageFacade(directory)
+actual suspend fun FileStorageFacade(directory: String): StorageFacade = NativeFileStorageFacade(directory)

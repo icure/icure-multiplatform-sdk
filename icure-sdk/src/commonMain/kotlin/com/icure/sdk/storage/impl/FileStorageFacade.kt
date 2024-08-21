@@ -8,4 +8,4 @@ import com.icure.sdk.storage.StorageFacade
  * @throws UnsupportedOperationException if the current platform does not support file system storage.
  */
 @Suppress("FunctionName")
-expect fun FileStorageFacade(directory: String): StorageFacade
+expect suspend fun FileStorageFacade(directory: String): StorageFacade

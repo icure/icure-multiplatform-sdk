@@ -24,18 +24,6 @@ interface CommonOptions {
 	 */
 	val httpClient: HttpClient?
 	/**
-	 * Specify which client to use for performing websocket requests.
-	 * You will be responsible for closing the client after you are done using the sdk.
-	 *
-	 * If [httpClient] is not null and this is null the sdk will use the [httpClient] also to perform the websocket
-	 * requests. This means that if [httpClient] is not null and does not support websockets you must also provide
-	 * a value for this, else you will not be able to use features that rely on websockets, such as realtime
-	 * notifications.
-	 *
-	 * If both this and [httpClient] are null a shared instance of the client will be used.
-	 */
-	val websocketClient: HttpClient?
-	/**
 	 * The instance of [Json] used by the provided [httpClient] (leave null if [httpClient] is null).
 	 */
 	val httpClientJson: Json?
@@ -87,7 +75,6 @@ data class ApiOptions(
 	 */
 	val disableParentKeysInitialisation: Boolean = false,
 	override val httpClient: HttpClient? = null,
-	override val websocketClient: HttpClient? = null,
 	override val httpClientJson: Json? = null,
 	/**
 	 * If true (default) the sdk will automatically create the transfer keys for the current user if a new keypair is
@@ -113,7 +100,6 @@ data class ApiOptions(
 data class BasicApiOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
 	override val httpClient: HttpClient? = null,
-	override val websocketClient: HttpClient? = null,
 	override val httpClientJson: Json? = null,
 	override val cryptoService: CryptoService = defaultCryptoService,
 	override val saltPasswordWithApplicationId: Boolean = true,

@@ -156,7 +156,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
 	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
 	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
-	 * If you need ordered data use [filterHealth ElementsBySorted] instead.
+	 * If you need ordered data use [filterHealthElementsBySorted] instead.
 	 *
 	 * @param filter a health element filter
 	 * @return an iterator that iterates over all health elements matching the provided filter.
@@ -170,7 +170,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	 * the api if needed.
 	 *
 	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
-	 * but the operation may take longer than [filterHealth ElementsBy].
+	 * but the operation may take longer than [filterHealthElementsBy].
 	 *
 	 * @param filter a health element filter
 	 * @return an iterator that iterates over all health elements matching the provided filter.
@@ -313,7 +313,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
 	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
 	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
-	 * If you need ordered data use [matchHealth ElementsBySorted] instead.
+	 * If you need ordered data use [matchHealthElementsBySorted] instead.
 	 *
 	 * @param filter a health element filter
 	 * @return a list of health element ids
@@ -324,7 +324,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	 * Get the ids of all health elements matching the provided filter.
 	 *
 	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
-	 * but the operation may take longer than [matchHealth ElementsBy].
+	 * but the operation may take longer than [matchHealthElementsBy].
 	 *
 	 * @param filter a health element filter
 	 * @return a list of health element ids
@@ -339,7 +339,7 @@ interface HealthElementBasicApi : HealthElementBasicFlavourlessApi, HealthElemen
 	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
 	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
 	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
-	 * If you need ordered data use [matchHealth ElementsBySorted] instead.
+	 * If you need ordered data use [matchHealthElementsBySorted] instead.
 	 *
 	 * @param filter a health element filter
 	 * @return a list of health element ids
@@ -350,7 +350,7 @@ interface HealthElementBasicApi : HealthElementBasicFlavourlessApi, HealthElemen
 	 * Get the ids of all health elements matching the provided filter.
 	 *
 	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
-	 * but the operation may take longer than [matchHealth ElementsBy].
+	 * but the operation may take longer than [matchHealthElementsBy].
 	 *
 	 * @param filter a health element filter
 	 * @return a list of health element ids
@@ -364,7 +364,7 @@ interface HealthElementBasicApi : HealthElementBasicFlavourlessApi, HealthElemen
 	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
 	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
 	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
-	 * If you need ordered data use [filterHealth ElementsBySorted] instead.
+	 * If you need ordered data use [filterHealthElementsBySorted] instead.
 	 *
 	 * @param filter a health element filter
 	 * @return an iterator that iterates over all health elements matching the provided filter.
@@ -378,7 +378,7 @@ interface HealthElementBasicApi : HealthElementBasicFlavourlessApi, HealthElemen
 	 * the api if needed.
 	 *
 	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
-	 * but the operation may take longer than [filterHealth ElementsBy].
+	 * but the operation may take longer than [filterHealthElementsBy].
 	 *
 	 * @param filter a health element filter
 	 * @return an iterator that iterates over all health elements matching the provided filter.

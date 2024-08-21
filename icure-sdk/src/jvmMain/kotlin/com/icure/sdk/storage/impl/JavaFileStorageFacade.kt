@@ -46,4 +46,4 @@ class JavaFileStorageFacade(
 
 
 @Suppress("FunctionName")
-actual fun FileStorageFacade(directory: String): StorageFacade = JavaFileStorageFacade(directory)
+actual suspend fun FileStorageFacade(directory: String): StorageFacade = JavaFileStorageFacade(directory)
