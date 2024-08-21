@@ -1,8 +1,10 @@
 package com.icure.sdk.api.raw
 
+import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
@@ -101,5 +103,7 @@ public interface RawDocumentApi {
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedDocument>>>
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
+
+	suspend fun matchDocumentsBy(filter: AbstractFilter<Document>): HttpResponse<List<String>>
 	// endregion
 }

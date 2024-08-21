@@ -7,12 +7,15 @@ import com.icure.sdk.api.raw.wrap
 import com.icure.sdk.auth.services.AuthProvider
 import com.icure.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.model.Classification
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
+import com.icure.sdk.serialization.ClassificationAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -161,6 +164,17 @@ class RawClassificationApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(secretPatientKeys)
+		}.wrap()
+
+	override suspend fun matchCalendarItemsBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "classification", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(ClassificationAbstractFilterSerializer, filter)
 		}.wrap()
 
 	override suspend fun bulkShare(

@@ -536,5 +536,19 @@ class RawUserApiImpl(
 			setBody(userDto)
 		}.wrap()
 
+	override suspend fun matchUsersBy(
+		groupId: String,
+		filter: AbstractFilter<User>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(UserAbstractFilterSerializer, filter)
+		}.wrap()
+
 	// endregion
 }

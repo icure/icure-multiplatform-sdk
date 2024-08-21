@@ -1,10 +1,12 @@
 package com.icure.sdk.api.raw
 
 import com.icure.sdk.model.EncryptedForm
+import com.icure.sdk.model.Form
 import com.icure.sdk.model.FormTemplate
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
@@ -123,5 +125,7 @@ public interface RawFormApi {
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedForm>>>
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
+
+	suspend fun matchFormsBy(filter: AbstractFilter<Form>): HttpResponse<List<String>>
 	// endregion
 }

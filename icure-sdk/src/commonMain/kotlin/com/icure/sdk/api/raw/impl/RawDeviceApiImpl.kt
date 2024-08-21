@@ -27,6 +27,10 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -223,6 +227,20 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId, deviceIds)
 			}
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchDevicesInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<Device>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "device", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(DeviceAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

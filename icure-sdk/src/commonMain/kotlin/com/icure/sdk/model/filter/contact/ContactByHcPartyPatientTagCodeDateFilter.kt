@@ -16,7 +16,6 @@ import kotlin.collections.List
 data class ContactByHcPartyPatientTagCodeDateFilter(
 	override val desc: String? = null,
 	public val healthcarePartyId: String? = null,
-	public val patientSecretForeignKey: String? = null,
 	public val patientSecretForeignKeys: List<String>? = null,
 	public val tagType: String? = null,
 	public val tagCode: String? = null,

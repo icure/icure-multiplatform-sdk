@@ -44,6 +44,11 @@ public interface RawTopicApi {
 
 	suspend fun matchTopicsBy(filter: AbstractFilter<Topic>): HttpResponse<List<String>>
 
+	suspend fun matchTopicsBy(
+		groupId: String,
+		filter: AbstractFilter<Topic>,
+	): HttpResponse<List<String>>
+
 	suspend fun addParticipant(
 		topicId: String,
 		request: AddParticipant,

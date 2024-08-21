@@ -396,5 +396,19 @@ class RawMessageApiImpl(
 			setBody(messageDto)
 		}.wrap()
 
+	override suspend fun matchMessagesBy(
+		groupId: String,
+		filter: AbstractFilter<Message>,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "message", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(MessageAbstractFilterSerializer, filter)
+		}.wrap()
+
 	// endregion
 }

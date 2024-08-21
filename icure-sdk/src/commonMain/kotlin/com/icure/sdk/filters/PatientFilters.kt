@@ -18,7 +18,7 @@ import com.icure.sdk.model.filter.patient.PatientByHcPartyDateOfBirthBetweenFilt
 import com.icure.sdk.model.filter.patient.PatientByHcPartyDateOfBirthFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyGenderEducationProfession
-import com.icure.sdk.model.filter.patient.PatientByHcPartyNameContainsFuzzyFilter
+import com.icure.sdk.model.filter.patient.PatientByHcPartyNameFilter
 import com.icure.sdk.model.filter.patient.PatientByIdsFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
@@ -115,7 +115,7 @@ object PatientFilters {
         dataOwnerId: String,
         searchString: String
     ): BaseFilterOptions<Patient> =
-        ByFuzzyNameForDataOwner(searchString, dataOwnerId)
+        ByNameForDataOwner(searchString, dataOwnerId)
 
     /**
      * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have the
@@ -292,10 +292,10 @@ object PatientFilters {
      *
      * @param searchString part of a patient name.
      */
-    fun byFuzzyNameForSelf(
+    fun byNameForSelf(
         searchString: String
     ): FilterOptions<Patient> =
-        ByFuzzyNameForSelf(searchString)
+        ByNameForSelf(searchString)
 
     /**
      * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have the
@@ -444,7 +444,7 @@ object PatientFilters {
     ): BaseSortableFilterOptions<Patient>
 
     @Serializable
-    internal class ByFuzzyNameForDataOwner(
+    internal class ByNameForDataOwner(
         val searchString: String,
         val dataOwnerId: String
     ) : BaseSortableFilterOptions<Patient>
@@ -512,7 +512,7 @@ object PatientFilters {
     ): SortableFilterOptions<Patient>
 
     @Serializable
-    internal class ByFuzzyNameForSelf(
+    internal class ByNameForSelf(
         val searchString: String
     ) : SortableFilterOptions<Patient>
 
@@ -622,9 +622,9 @@ internal suspend fun mapPatientFilterOptions(
             healthcarePartyId = filterOptions.dataOwnerId
         )
     }
-    is PatientFilters.ByFuzzyNameForDataOwner -> {
-        PatientByHcPartyNameContainsFuzzyFilter(
-            searchString = filterOptions.searchString,
+    is PatientFilters.ByNameForDataOwner -> {
+        PatientByHcPartyNameFilter(
+            name = filterOptions.searchString,
             healthcarePartyId = filterOptions.dataOwnerId
         )
     }
@@ -708,10 +708,10 @@ internal suspend fun mapPatientFilterOptions(
             healthcarePartyId = selfDataOwnerId
         )
     }
-    is PatientFilters.ByFuzzyNameForSelf -> {
+    is PatientFilters.ByNameForSelf -> {
         filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
-        PatientByHcPartyNameContainsFuzzyFilter(
-            searchString = filterOptions.searchString,
+        PatientByHcPartyNameFilter(
+            name = filterOptions.searchString,
             healthcarePartyId = selfDataOwnerId
         )
     }

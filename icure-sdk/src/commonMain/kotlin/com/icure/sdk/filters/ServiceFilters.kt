@@ -482,7 +482,7 @@ internal suspend fun mapServiceFilterOptions(
     }
     is ServiceFilters.ByCodeAndValueDateForDataOwner -> {
         ServiceByHcPartyTagCodeDateFilter(
-            patientSecretForeignKey = null,
+            patientSecretForeignKeys = null,
             tagType = null,
             tagCode = null,
             codeType = filterOptions.codeType,
@@ -522,7 +522,7 @@ internal suspend fun mapServiceFilterOptions(
     }
     is ServiceFilters.ByTagAndValueDateForDataOwner -> {
         ServiceByHcPartyTagCodeDateFilter(
-            patientSecretForeignKey = null,
+            patientSecretForeignKeys = null,
             tagType = filterOptions.tagType,
             tagCode = filterOptions.tagCode,
             codeType = null,
@@ -535,7 +535,7 @@ internal suspend fun mapServiceFilterOptions(
     is ServiceFilters.ByCodeAndValueDateForSelf -> {
         filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
         ServiceByHcPartyTagCodeDateFilter(
-            patientSecretForeignKey = null,
+            patientSecretForeignKeys = null,
             tagType = null,
             tagCode = null,
             codeType = filterOptions.codeType,
@@ -578,7 +578,7 @@ internal suspend fun mapServiceFilterOptions(
     is ServiceFilters.ByTagAndValueDateForSelf -> {
         filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
         ServiceByHcPartyTagCodeDateFilter(
-            patientSecretForeignKey = null,
+            patientSecretForeignKeys = null,
             tagType = filterOptions.tagType,
             tagCode = filterOptions.tagCode,
             codeType = null,

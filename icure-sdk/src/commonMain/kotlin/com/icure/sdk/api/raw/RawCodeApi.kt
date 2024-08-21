@@ -127,5 +127,10 @@ public interface RawCodeApi {
 		groupId: String,
 		codeBatch: List<Code>,
 	): HttpResponse<List<Code>>
+
+	suspend fun matchCodesBy(
+		groupId: String,
+		filter: AbstractFilter<Code>,
+	): HttpResponse<List<String>>
 	// endregion
 }

@@ -4,6 +4,7 @@ import com.icure.sdk.model.Agenda
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.utils.InternalIcureApi
 import kotlin.Int
 import kotlin.String
@@ -33,5 +34,7 @@ public interface RawAgendaApi {
 	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>>
 
 	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda>
+
+	suspend fun matchCodesBy(filter: AbstractFilter<Agenda>): HttpResponse<List<String>>
 	// endregion
 }

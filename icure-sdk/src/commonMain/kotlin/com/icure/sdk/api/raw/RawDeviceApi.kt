@@ -71,5 +71,10 @@ public interface RawDeviceApi {
 		groupId: String,
 		deviceIds: String,
 	): HttpResponse<List<DocIdentifier>>
+
+	suspend fun matchDevicesInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<Device>,
+	): HttpResponse<List<String>>
 	// endregion
 }

@@ -9,6 +9,8 @@ import com.icure.sdk.model.Agenda
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.serialization.AgendaAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -20,6 +22,10 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -122,6 +128,17 @@ class RawAgendaApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(agendaDto)
+		}.wrap()
+
+	override suspend fun matchCodesBy(filter: AbstractFilter<Agenda>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(AgendaAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

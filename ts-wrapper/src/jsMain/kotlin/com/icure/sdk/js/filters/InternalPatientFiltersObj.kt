@@ -253,7 +253,7 @@ public object InternalPatientFiltersObj {
 
 	public fun byFuzzyNameForSelf(searchString: String): FilterOptionsJs<PatientJs> {
 		val searchStringConverted: String = searchString
-		val result = PatientFilters.byFuzzyNameForSelf(
+		val result = PatientFilters.byNameForSelf(
 			searchStringConverted,
 		)
 		return FilterOptionsJsImpl(result)

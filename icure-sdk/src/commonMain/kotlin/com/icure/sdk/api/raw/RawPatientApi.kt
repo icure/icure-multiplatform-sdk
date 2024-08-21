@@ -200,5 +200,10 @@ public interface RawPatientApi {
 		createAutoDelegation: Boolean = true,
 		p: EncryptedPatient,
 	): HttpResponse<DataOwnerRegistrationSuccess>
+
+	suspend fun matchPatientsInGroupBy(
+		groupId: String,
+		filter: AbstractFilter<Patient>,
+	): HttpResponse<List<String>>
 	// endregion
 }

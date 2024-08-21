@@ -1,10 +1,12 @@
 package com.icure.sdk.api.raw
 
+import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.EncryptedCalendarItem
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
@@ -31,8 +33,6 @@ public interface RawCalendarItemApi {
 	suspend fun deleteCalendarItems(calendarItemIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
 	suspend fun deleteCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier>
-
-	suspend fun deleteCalendarItemsWithPost(calendarItemIds: String): HttpResponse<List<DocIdentifier>>
 
 	suspend fun getCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem>
 
@@ -97,6 +97,8 @@ public interface RawCalendarItemApi {
 		startDocumentId: String? = null,
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedCalendarItem>>
+
+	suspend fun matchCalendarItemsBy(filter: AbstractFilter<CalendarItem>): HttpResponse<List<String>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>>
 

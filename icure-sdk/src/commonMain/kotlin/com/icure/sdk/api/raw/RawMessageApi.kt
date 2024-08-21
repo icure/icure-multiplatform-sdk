@@ -121,5 +121,10 @@ public interface RawMessageApi {
 	// region cloud endpoints
 
 	suspend fun createMessageInTopic(messageDto: EncryptedMessage): HttpResponse<EncryptedMessage>
+
+	suspend fun matchMessagesBy(
+		groupId: String,
+		filter: AbstractFilter<Message>,
+	): HttpResponse<List<String>>
 	// endregion
 }

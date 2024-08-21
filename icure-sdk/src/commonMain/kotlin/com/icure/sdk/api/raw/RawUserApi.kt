@@ -180,5 +180,10 @@ public interface RawUserApi {
 		groupId: String,
 		userDto: User,
 	): HttpResponse<User>
+
+	suspend fun matchUsersBy(
+		groupId: String,
+		filter: AbstractFilter<User>,
+	): HttpResponse<List<String>>
 	// endregion
 }

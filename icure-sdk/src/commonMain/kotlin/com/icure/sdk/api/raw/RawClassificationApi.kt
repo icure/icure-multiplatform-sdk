@@ -1,9 +1,11 @@
 package com.icure.sdk.api.raw
 
+import com.icure.sdk.model.Classification
 import com.icure.sdk.model.EncryptedClassification
 import com.icure.sdk.model.IcureStub
 import com.icure.sdk.model.ListOfIds
 import com.icure.sdk.model.couchdb.DocIdentifier
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.sdk.model.requests.EntityBulkShareResult
 import com.icure.sdk.utils.InternalIcureApi
@@ -48,6 +50,8 @@ public interface RawClassificationApi {
 		hcPartyId: String,
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>>
+
+	suspend fun matchCalendarItemsBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedClassification>>>
 
