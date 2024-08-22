@@ -4,9 +4,14 @@ import com.icure.sdk.IcureBaseApis
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Contact
+import com.icure.sdk.model.embed.SubContact
+import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.contact.ContactByDataOwnerFormIdsFilter
+import com.icure.sdk.model.filter.contact.ContactByDataOwnerPatientOpeningDateFilter
+import com.icure.sdk.model.filter.contact.ContactByExternalIdFilter
 import com.icure.sdk.model.filter.contact.ContactByHcPartyFilter
 import com.icure.sdk.model.filter.contact.ContactByHcPartyIdentifiersFilter
 import com.icure.sdk.model.filter.contact.ContactByHcPartyPatientTagCodeDateFilter
@@ -20,19 +25,173 @@ object ContactFilters {
 	/**
 	 * Create options for contact filtering that will match all contacts shared directly (i.e. ignoring hierarchies) with a specific data owner.
 	 * @param dataOwnerId a data owner id
-	 * @return options for contact filtering
 	 */
 	fun allContactsForDataOwner(
 		dataOwnerId: String
-	): BaseFilterOptions<Contact> =
-		AllByDataOwner(dataOwnerId)
+	): BaseFilterOptions<Contact> = AllByDataOwner(dataOwnerId)
 
 	/**
 	 * Create options for contact filtering that will match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner.
-	 * @return options for contact filtering
 	 */
-	fun allContactsForSelf(): FilterOptions<Contact> =
-		AllForSelf
+	fun allContactsForSelf(): FilterOptions<Contact> = AllForSelf
+
+	/**
+	 * Options for contact filtering which match all the contacts shared directly (i.e. ignoring hierarchies) with a specific data owner where
+	 * there is at least one [Contact.subContacts] or [Contact.services] with one of the provided [formIds] in [SubContact.formId] or
+	 * [Service.formIds], respectively.
+	 *
+	 * @param dataOwnerId a data owner id.
+	 * @param formIds a set of form ids.
+	 */
+	fun byFormIdsForDataOwner(
+		dataOwnerId: String,
+		formIds: Set<String>
+	): BaseFilterOptions<Contact> = ByFormIdsForDataOwner(dataOwnerId, formIds)
+
+	/**
+	 * Options for contact filtering which match all the contacts shared directly (i.e. ignoring hierarchies) with the current data owner where
+	 * there is at least one [Contact.subContacts] or [Contact.services] with one of the provided [formIds] in [SubContact.formId] or
+	 * [Service.formIds], respectively.
+	 *
+	 * @param formIds a set of form ids.
+	 */
+	fun byFormIdsForSelf(
+		formIds: Set<String>
+	): FilterOptions<Contact> = ByFormIdsForSelf(formIds)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * that are linked with one of the provided patients.
+	 * This Options also allows to restrict the contacts based on [Contact.openingDate]:
+	 * - if the [from] fuzzy date is not null, only the contacts where [Contact.openingDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the contacts where [Contact.openingDate] is less than or equal to [to] will be returned.
+	 *
+	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
+	 * those for filtering.
+	 * If you already have the secret ids of the patient you may instead use [byPatientSecretIdsOpeningDateForDataOwner].
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 * Note that these may not be used in methods of apis from [IcureBaseApis].
+	 *
+	 * These options are sortable. When sorting using these options the contacts will be sorted by [Contact.openingDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param dataOwnerId a data owner id
+	 * @param patients a list of patients.
+	 * @param from the minimum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Contact.openingDate] (default: ascending).
+	 */
+	fun byPatientsOpeningDateForDataOwner(
+		dataOwnerId: String,
+		patients: List<Patient>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForDataOwner(dataOwnerId, patients, from, to, descending)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * that are linked with one of the provided patients.
+	 * This Options also allows to restrict the contacts based on [Contact.openingDate]:
+	 * - if the [from] fuzzy date is not null, only the contacts where [Contact.openingDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the contacts where [Contact.openingDate] is less than or equal to [to] will be returned.
+	 *
+	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
+	 * those for filtering.
+	 * If you already have the secret ids of the patient you may instead use [byPatientSecretIdsOpeningDateForSelf].
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 * Note that these may not be used in methods of apis from [IcureBaseApis].
+	 *
+	 * These options are sortable. When sorting using these options the contacts will be sorted by [Contact.openingDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param patients a list of patients.
+	 * @param from the minimum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Contact.openingDate] (default: ascending).
+	 */
+	fun byPatientsOpeningDateForSelf(
+		patients: List<Patient>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForSelf(patients, from, to, descending)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * that are linked with one of the provided patients through one of the provided secret ids.
+	 * This Options also allows to restrict the contacts based on [Contact.openingDate]:
+	 * - if the [from] fuzzy date is not null, only the contacts where [Contact.openingDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the contacts where [Contact.openingDate] is less than or equal to [to] will be returned.
+	 *
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 *
+	 * These options are sortable. When sorting using these options the contacts will be sorted by [Contact.openingDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param dataOwnerId the id of a data owner.
+	 * @param secretIds a list of patient secret ids.
+	 * @param from the minimum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Contact.openingDate] (default: ascending).
+	 */
+	fun byPatientSecretIdsOpeningDateForDataOwner(
+		dataOwnerId: String,
+		secretIds: List<String>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : BaseSortableFilterOptions<Contact> = ByPatientSecretIdsOpeningDateForDataOwner(dataOwnerId, secretIds, from, to, descending)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * that are linked with one of the provided patients through one of the provided secret ids.
+	 * This Options also allows to restrict the contacts based on [Contact.openingDate]:
+	 * - if the [from] fuzzy date is not null, only the contacts where [Contact.openingDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the contacts where [Contact.openingDate] is less than or equal to [to] will be returned.
+	 *
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 * Note that these may not be used in methods of apis from [IcureBaseApis].
+	 *
+	 * These options are sortable. When sorting using these options the contacts will be sorted by [Contact.openingDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param secretIds a list of patient secret ids.
+	 * @param from the minimum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Contact.openingDate] (default: ascending).
+	 */
+	fun byPatientSecretIdsOpeningDateForSelf(
+		secretIds: List<String>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : SortableFilterOptions<Contact> = ByPatientSecretIdsOpeningDateForSelf(secretIds, from, to, descending)
+
+	/**
+	 * Options for contact filtering which match all the contacts where [Contact.externalId] is equal to [externalId].
+	 *
+	 * @param externalId the external id to search.
+	 */
+	fun byExternalId(
+		externalId: String
+	) : BaseFilterOptions<Contact> = ByExternalId(externalId)
 
 	/**
 	 * Options for contact filtering which match all the contacts shared directly (i.e. ignoring hierarchies) with the current data owner that
@@ -42,13 +201,12 @@ object ContactFilters {
 	 * These options are sortable. When sorting using these options the contacts will be in the same order as the input
 	 * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
 	 * sorting.
+	 *
 	 * @param identifiers a list of identifiers
-	 * @return options for contact filtering
 	 */
 	fun byIdentifiersForSelf(
 		identifiers: List<Identifier>
-	): SortableFilterOptions<Contact> =
-		ByIdentifiersForSelf(identifiers)
+	): SortableFilterOptions<Contact> = ByIdentifiersForSelf(identifiers)
 
 	/**
 	 * Options for contact filtering which match all the contacts shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -60,13 +218,11 @@ object ContactFilters {
 	 * sorting.
 	 * @param dataOwnerId a data owner id
 	 * @param identifiers a list of identifiers
-	 * @return options for contact filtering
 	 */
 	fun byIdentifiersForDataOwner(
 		dataOwnerId: String,
 		identifiers: List<Identifier>
-	): BaseSortableFilterOptions<Contact> =
-		ByIdentifiersForDataOwner(identifiers, dataOwnerId)
+	): BaseSortableFilterOptions<Contact> = ByIdentifiersForDataOwner(identifiers, dataOwnerId)
 
 	/**
 	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with a specific
@@ -187,7 +343,6 @@ object ContactFilters {
 	 * These options are sortable. When sorting using these options the contacts will be sorted first by [tagCode] then
 	 * by [Contact.openingDate].
 	 *
-	 * @param dataOwnerId a data owner id
 	 * @param tagType a tag type
 	 * @param tagCode a code for the provided tag type, or null if you want the filter to accept any entity
 	 * with a tag of the provided type.
@@ -218,13 +373,14 @@ object ContactFilters {
 	 *
 	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
 	 * those for filtering.
-	 * If you already have the secret ids of the patient you may instead use [byPatientsSecretIds].
+	 * If you already have the secret ids of the patient you may instead use [byPatientsSecretIdsForDataOwner].
 	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
 	 * simply be ignored.
 	 * Note that these may not be used in methods of apis from [IcureBaseApis].
 	 *
 	 * These options are sortable. When sorting using these options the contacts will be sorted by the patients, using
 	 * the same order as the input patients.
+	 *
 	 * @param dataOwnerId a data owner id
 	 * @param patients a list of patients.
 	 */
@@ -242,13 +398,14 @@ object ContactFilters {
 	 *
 	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
 	 * those for filtering.
-	 * If you already have the secret ids of the patient you may instead use [byPatientsSecretIds].
+	 * If you already have the secret ids of the patient you may instead use [byPatientsSecretIdsForSelf].
 	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
 	 * simply be ignored.
 	 * Note that these may not be used in methods of apis from [IcureBaseApis].
 	 *
 	 * These options are sortable. When sorting using these options the contacts will be sorted by the patients, using
 	 * the same order as the input patients.
+	 *
 	 * @param patients a list of patients.
 	 */
 	fun byPatientsForSelf(
@@ -262,6 +419,7 @@ object ContactFilters {
 	 * patient through one of the provided secret ids.
 	 * These options are sortable. When sorting using these options the contacts will be sorted by the linked patients
 	 * secret id, using the same order as the input.
+	 *
 	 * @param dataOwnerId a data owner id
 	 * @param secretIds a list of patients secret ids
 	 */
@@ -278,6 +436,7 @@ object ContactFilters {
 	 * patient through one of the provided secret ids.
 	 * These options are sortable. When sorting using these options the contacts will be sorted by the linked patients
 	 * secret id, using the same order as the input.
+	 *
 	 * @param secretIds a list of patients secret ids
 	 */
 	fun byPatientsSecretIdsForSelf(
@@ -291,6 +450,7 @@ object ContactFilters {
 	 * Options for contact filtering which match all contacts that have at least a service with an id in [serviceIds].
 	 * These options are sortable. When sorting using these options the contacts will be sorted in the same order as the
 	 * input service ids. If a contact has multiple services only the first matching service is considered.
+	 *
 	 * @param serviceIds a list of service ids
 	 */
 	fun byServiceIds(
@@ -306,6 +466,56 @@ object ContactFilters {
 
 	@Serializable
 	internal data object AllForSelf : FilterOptions<Contact>
+
+	@Serializable
+	internal class ByFormIdsForDataOwner(
+		val dataOwnerId: String,
+		val formIds: Set<String>
+	) : BaseFilterOptions<Contact>
+
+	@Serializable
+	internal class ByFormIdsForSelf(
+		val formIds: Set<String>
+	) : FilterOptions<Contact>
+
+	@Serializable
+	internal class ByPatientsOpeningDateForDataOwner(
+		val dataOwnerId: String,
+		val patients: List<Patient>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : SortableFilterOptions<Contact>
+
+	@Serializable
+	internal class ByPatientsOpeningDateForSelf(
+		val patients: List<Patient>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : SortableFilterOptions<Contact>
+
+	@Serializable
+	internal class ByPatientSecretIdsOpeningDateForDataOwner(
+		val dataOwnerId: String,
+		val secretIds: List<String>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : BaseSortableFilterOptions<Contact>
+
+	@Serializable
+	internal class ByPatientSecretIdsOpeningDateForSelf(
+		val secretIds: List<String>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : SortableFilterOptions<Contact>
+
+	@Serializable
+	internal class ByExternalId(
+		val externalId: String
+	) : BaseFilterOptions<Contact>
 
 	@Serializable
 	internal class ByIdentifiersForDataOwner(
@@ -412,15 +622,58 @@ internal suspend fun mapContactFilterOptions(
 ): AbstractFilter<Contact> = mapIfMetaFilterOptions(filterOptions) {
 	mapContactFilterOptions(it, selfDataOwnerId, entityEncryptionService)
 } ?: when (filterOptions) {
-	is ContactFilters.AllByDataOwner -> {
-		ContactByHcPartyFilter(
-			hcpId = filterOptions.dataOwnerId
-		)
-	}
-	ContactFilters.AllForSelf -> {
+	is ContactFilters.AllByDataOwner -> ContactByHcPartyFilter(hcpId = filterOptions.dataOwnerId)
+	is ContactFilters.AllForSelf -> {
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByHcPartyFilter(hcpId = selfDataOwnerId)
 	}
+	is ContactFilters.ByFormIdsForDataOwner -> ContactByDataOwnerFormIdsFilter(dataOwnerId = filterOptions.dataOwnerId, formIds = filterOptions.formIds)
+	is ContactFilters.ByFormIdsForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByDataOwnerFormIdsFilter(dataOwnerId = selfDataOwnerId, formIds = filterOptions.formIds)
+	}
+	is ContactFilters.ByPatientsOpeningDateForDataOwner -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByDataOwnerPatientOpeningDateFilter(
+			dataOwnerId = filterOptions.dataOwnerId,
+			secretForeignKeys = filterOptions.patients.flatMap {
+				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+			}.toSet(),
+			startDate = filterOptions.to,
+			endDate = filterOptions.from,
+			descending = filterOptions.descending
+		)
+	}
+	is ContactFilters.ByPatientsOpeningDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByDataOwnerPatientOpeningDateFilter(
+			dataOwnerId = selfDataOwnerId,
+			secretForeignKeys = filterOptions.patients.flatMap {
+				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+			}.toSet(),
+			startDate = filterOptions.to,
+			endDate = filterOptions.from,
+			descending = filterOptions.descending
+		)
+	}
+	is ContactFilters.ByPatientSecretIdsOpeningDateForDataOwner -> ContactByDataOwnerPatientOpeningDateFilter(
+		dataOwnerId = filterOptions.dataOwnerId,
+		secretForeignKeys = filterOptions.secretIds.toSet(),
+		startDate = filterOptions.to,
+		endDate = filterOptions.from,
+		descending = filterOptions.descending
+	)
+	is ContactFilters.ByPatientSecretIdsOpeningDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByDataOwnerPatientOpeningDateFilter(
+			dataOwnerId = selfDataOwnerId,
+			secretForeignKeys = filterOptions.secretIds.toSet(),
+			startDate = filterOptions.to,
+			endDate = filterOptions.from,
+			descending = filterOptions.descending
+		)
+	}
+	is ContactFilters.ByExternalId -> ContactByExternalIdFilter(filterOptions.externalId)
 	is ContactFilters.ByCodeAndOpeningDateForDataOwner -> {
 		ContactByHcPartyTagCodeDateFilter(
 			tagType = null,
@@ -444,12 +697,10 @@ internal suspend fun mapContactFilterOptions(
 			healthcarePartyId = selfDataOwnerId
 		)
 	}
-	is ContactFilters.ByIdentifiersForDataOwner -> {
-		ContactByHcPartyIdentifiersFilter(
-			identifiers = filterOptions.identifiers,
-			healthcarePartyId = filterOptions.dataOwnerId
-		)
-	}
+	is ContactFilters.ByIdentifiersForDataOwner -> ContactByHcPartyIdentifiersFilter(
+		identifiers = filterOptions.identifiers,
+		healthcarePartyId = filterOptions.dataOwnerId
+	)
 	is ContactFilters.ByIdentifiersForSelf -> {
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByHcPartyIdentifiersFilter(
@@ -516,7 +767,5 @@ internal suspend fun mapContactFilterOptions(
 			healthcarePartyId = selfDataOwnerId
 		)
 	}
-	else -> {
-		throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Contacts")
-	}
+	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Contacts")
 }

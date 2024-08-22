@@ -18,7 +18,7 @@ object ClassificationFilters {
 	 * that are linked with one of the provided patients.
 	 * This Options also allows to restrict the classifications based on [Classification.created]:
 	 * - if the [from] timestamp is not null, only the classifications where [Classification.created] is greater than or equal to [from] will be returned.
-	 * - if the [to] fuzzy date is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
+	 * - if the [to] timestamp is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
 	 *
 	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
 	 * those for filtering.
@@ -52,7 +52,7 @@ object ClassificationFilters {
 	 * that are linked with one of the provided patients.
 	 * This Options also allows to restrict the classifications based on [Classification.created]:
 	 * - if the [from] timestamp is not null, only the classifications where [Classification.created] is greater than or equal to [from] will be returned.
-	 * - if the [to] fuzzy date is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
+	 * - if the [to] timestamp is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
 	 *
 	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
 	 * those for filtering.
@@ -84,7 +84,7 @@ object ClassificationFilters {
 	 * that are linked with one of the provided patients through one of the provided secret ids.
 	 * This Options also allows to restrict the classifications based on [Classification.created]:
 	 * - if the [from] timestamp is not null, only the classifications where [Classification.created] is greater than or equal to [from] will be returned.
-	 * - if the [to] fuzzy date is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
+	 * - if the [to] timestamp is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
 	 *
 	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
 	 * simply be ignored.
@@ -114,7 +114,7 @@ object ClassificationFilters {
 	 * that are linked with one of the provided patients through one of the provided secret ids.
 	 * This Options also allows to restrict the classifications based on [Classification.created]:
 	 * - if the [from] timestamp is not null, only the classifications where [Classification.created] is greater than or equal to [from] will be returned.
-	 * - if the [to] fuzzy date is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
+	 * - if the [to] timestamp is not null, only the classifications where [Classification.created] is less than or equal to [to] will be returned.
 	 *
 	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
 	 * simply be ignored.
