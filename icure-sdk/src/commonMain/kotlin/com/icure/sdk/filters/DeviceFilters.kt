@@ -17,6 +17,7 @@ object DeviceFilters {
 
     /**
      * Filter options to match all devices where the [Device.responsible] is the provided [responsibleId]
+     *
      * @param responsibleId the id of the responsible
      */
     fun byResponsible(responsibleId: String): BaseFilterOptions<Device> = ByResponsible(responsibleId)
@@ -24,6 +25,7 @@ object DeviceFilters {
     /**
      * Filter options that match all devices with one of the provided ids.
      * These options are sortable. When sorting using these options the devices will have the same order as the input ids.
+     *
      * @param ids a list of unique device ids.
      * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */

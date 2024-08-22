@@ -223,5 +223,5 @@ internal suspend fun mapClassificationFilterOptions(
 			descending = filterOptions.descending
 		)
 	}
-	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Agendas")
+	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Classifications")
 }

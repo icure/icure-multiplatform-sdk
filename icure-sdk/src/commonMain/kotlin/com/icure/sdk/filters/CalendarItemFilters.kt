@@ -328,5 +328,5 @@ internal suspend fun mapCalendarItemFilterOptions(
 		)
 	}
 	is CalendarItemFilters.ByRecurrenceId -> CalendarItemByRecurrenceIdFilter(recurrenceId = filterOptions.recurrenceId)
-	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Agendas")
+	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Calendar Items")
 }
