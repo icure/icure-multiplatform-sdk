@@ -1,30 +1,9 @@
 package com.icure.sdk.js
 
 import com.icure.sdk.IcureSdk
-import com.icure.sdk.crypto.impl.BasicCryptoStrategies
-import com.icure.sdk.js.api.CryptoApiJs
-import com.icure.sdk.js.api.DeviceApiJs
-import com.icure.sdk.js.api.PermissionApiJs
-import com.icure.sdk.js.api.RecoveryApiJs
-import com.icure.sdk.js.api.UserApiJs
-import com.icure.sdk.js.api.extended.DataOwnerApiJs
-import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApiJs
 import com.icure.sdk.js.api.extended.impl.DataOwnerApiImplJs
 import com.icure.sdk.js.api.extended.impl.IcureMaintenanceTaskApiImplJs
-import com.icure.sdk.js.api.flavoured.AccessLogApiJs
-import com.icure.sdk.js.api.flavoured.CalendarItemApiJs
-import com.icure.sdk.js.api.flavoured.ClassificationApiJs
-import com.icure.sdk.js.api.flavoured.ContactApiJs
-import com.icure.sdk.js.api.flavoured.DocumentApiJs
-import com.icure.sdk.js.api.flavoured.FormApiJs
 import com.icure.sdk.js.api.flavoured.HealthElementApiJs
-import com.icure.sdk.js.api.flavoured.InvoiceApiJs
-import com.icure.sdk.js.api.flavoured.MaintenanceTaskApiJs
-import com.icure.sdk.js.api.flavoured.MessageApiJs
-import com.icure.sdk.js.api.flavoured.PatientApiJs
-import com.icure.sdk.js.api.flavoured.ReceiptApiJs
-import com.icure.sdk.js.api.flavoured.TimeTableApiJs
-import com.icure.sdk.js.api.flavoured.TopicApiJs
 import com.icure.sdk.js.api.flavoured.impl.AccessLogApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.CalendarItemApiImplJs
 import com.icure.sdk.js.api.flavoured.impl.ClassificationApiImplJs
@@ -44,61 +23,34 @@ import com.icure.sdk.js.api.impl.DeviceApiImplJs
 import com.icure.sdk.js.api.impl.PermissionApiImplJs
 import com.icure.sdk.js.api.impl.RecoveryApiImplJs
 import com.icure.sdk.js.api.impl.UserApiImplJs
-import com.icure.sdk.js.options.ApiOptionsJs
+import com.icure.sdk.js.externalsdk.IcureSdkJs
+import com.icure.sdk.js.options.external.ApiOptionsJs
 import com.icure.sdk.js.options.external.AuthenticationMethodJs
 import com.icure.sdk.js.options.toKt
-import com.icure.sdk.storage.impl.VolatileStorageFacade
+import com.icure.sdk.js.storage.loadStorageOptions
+import com.icure.sdk.options.ApiOptions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
 
-/**
- * SDK for pure typescript. You should not use this from kotlin.
- */
-@JsExport
-@JsName("IcureSdk")
-interface IcureSdkJs {
-	val accessLog: AccessLogApiJs
-	val calendarItem: CalendarItemApiJs
-	val classification: ClassificationApiJs
-	val contact: ContactApiJs
-	val device: DeviceApiJs
-	val document: DocumentApiJs
-	val form: FormApiJs
-	val healthcareElement: HealthElementApiJs
-	val invoice: InvoiceApiJs
-	val maintenanceTask: MaintenanceTaskApiJs
-	val message: MessageApiJs
-	val patient: PatientApiJs
-	val permission: PermissionApiJs
-	val receipt: ReceiptApiJs
-	val timeTable: TimeTableApiJs
-	val topic: TopicApiJs
-	val crypto: CryptoApiJs
-	val dataOwner: DataOwnerApiJs
-	val user: UserApiJs
-	val icureMaintenanceTask: IcureMaintenanceTaskApiJs
-	val recovery: RecoveryApiJs
-}
 
-/**
- * Provides access to the SDK from pure typescript. You should not use this from kotlin.
- */
 @JsExport
-fun initializeSdk(
-	applicationId: String?,
-	baseUrl: String,
-	authenticationMethod: AuthenticationMethodJs,
-	options: ApiOptionsJs
-): Promise<IcureSdkJs> = GlobalScope.promise {
-	IcureSdkJsImpl(IcureSdk.initialize(
-		applicationId,
-		baseUrl,
-		authenticationMethod.toKt(),
-		VolatileStorageFacade(),
-		BasicCryptoStrategies,
-		options.toKt()
-	))
+object InternalSdkInitializers {
+	fun initializeSdk(
+		applicationId: String?,
+		baseUrl: String,
+		authenticationMethod: AuthenticationMethodJs,
+		storageFacade: dynamic,
+		options: ApiOptionsJs?
+	): Promise<IcureSdkJs> = GlobalScope.promise {
+		IcureSdkJsImpl(IcureSdk.initialize(
+			applicationId,
+			baseUrl,
+			authenticationMethod.toKt(),
+			loadStorageOptions(storageFacade),
+			options?.toKt() ?: ApiOptions(),
+		))
+	}
 }
 
 private class IcureSdkJsImpl(
@@ -125,4 +77,8 @@ private class IcureSdkJsImpl(
 	override val user by lazy { UserApiImplJs(sdk.user) }
 	override val icureMaintenanceTask by lazy { IcureMaintenanceTaskApiImplJs(sdk.icureMaintenanceTask) }
 	override val recovery by lazy { RecoveryApiImplJs(sdk.recovery) }
+
+	override fun switchGroup(groupId: String): Promise<IcureSdkJs> = GlobalScope.promise {
+		IcureSdkJsImpl(sdk.switchGroup(groupId))
+	}
 }

@@ -1,6 +1,10 @@
 @file:JsQualifier("options")
 package com.icure.sdk.js.options.external
 
+import com.icure.kryptom.crypto.external.XCryptoService
+import com.icure.sdk.js.crypto.CryptoStrategiesJs
+import com.icure.sdk.js.model.UserGroupJs
+import com.icure.sdk.js.storage.KeyStorageFacadeJs
 import kotlin.js.Promise
 
 @JsName("AuthenticationMethod")
@@ -56,4 +60,36 @@ external interface AuthenticationProcessApiJs {
 external interface AuthenticationProcessTemplateParametersJs {
 	val firstName: String?
 	val lastName: String?
+}
+
+@JsName("ApiOptions")
+external interface ApiOptionsJs {
+	val encryptedFields: EncryptedFieldsConfigurationJs?
+	val disableParentKeysInitialisation: Boolean?
+	val createTransferKeys: Boolean?
+	val cryptoService: XCryptoService?
+	val saltPasswordWithApplicationId: Boolean?
+	val groupSelector: ((availableGroups: Array<UserGroupJs>) -> Promise<String>)?
+	val autoCreateEncryptionKeyForExistingLegacyData: Boolean?
+	val keyStorage: KeyStorageFacadeJs?
+	val cryptoStrategies: CryptoStrategiesJs?
+}
+
+@JsName("EncryptedFieldsConfiguration")
+external interface EncryptedFieldsConfigurationJs {
+	val accessLog: Array<String>?
+	val calendarItem: Array<String>?
+	val contact: Array<String>?
+	val service: Array<String>?
+	val healthElement: Array<String>?
+	val maintenanceTask: Array<String>?
+	val patient: Array<String>?
+	val message: Array<String>?
+	val topic: Array<String>?
+	val document: Array<String>?
+	val form: Array<String>?
+	val receipt: Array<String>?
+	val classification: Array<String>?
+	val timeTable: Array<String>?
+	val invoice: Array<String>?
 }

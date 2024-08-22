@@ -130,6 +130,7 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.sdk.crypto.impl.BaseExchangeDataManagerImpl
 import com.icure.sdk.crypto.impl.BaseExchangeKeysManagerImpl
+import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.crypto.impl.CachedLruExchangeDataManager
 import com.icure.sdk.crypto.impl.DelegationsDeAnonymizationImpl
 import com.icure.sdk.crypto.impl.EntityEncryptionServiceImpl
@@ -245,7 +246,6 @@ interface IcureSdk : IcureApis {
 		 * @param authenticationMethod specifies how the sdk should authenticate.
 		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
 		 * information including the user keys if [ApiOptions.keyStorage] is not provided.
-		 * @param cryptoStrategies implementation of crypto strategies for your application
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@OptIn(InternalIcureApi::class)
@@ -254,9 +254,9 @@ interface IcureSdk : IcureApis {
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
 			baseStorage: StorageFacade,
-			cryptoStrategies: CryptoStrategies,
 			options: ApiOptions = ApiOptions()
 		): IcureSdk {
+			val cryptoStrategies = options.cryptoStrategies ?: BasicCryptoStrategies
 			val client = options.httpClient ?: sharedHttpClient
 			val json = options.httpClientJson ?: Serialization.json
 			val cryptoService = options.cryptoService
@@ -307,7 +307,6 @@ interface IcureSdk : IcureApis {
 		 * connected external services.
 		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
 		 * information including the user keys if [ApiOptions.keyStorage] is not provided.
-		 * @param cryptoStrategies implementation of crypto strategies for your application
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@OptIn(InternalIcureApi::class)
@@ -322,7 +321,6 @@ interface IcureSdk : IcureApis {
 			captchaType: AuthenticationProcessCaptchaType,
 			captchaKey: String,
 			baseStorage: StorageFacade,
-			cryptoStrategies: CryptoStrategies,
 			options: ApiOptions = ApiOptions(),
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters()
 		): AuthenticationWithProcessStep {
@@ -342,7 +340,6 @@ interface IcureSdk : IcureApis {
 				applicationId = applicationId,
 				baseUrl = baseUrl,
 				baseStorage = baseStorage,
-				cryptoStrategies = cryptoStrategies,
 				options = options,
 				api = api,
 				messageGatewayUrl = messageGatewayUrl,
@@ -359,7 +356,6 @@ private class AuthenticationWithProcessStepImpl(
 	private val applicationId: String?,
 	private val baseUrl: String,
 	private val baseStorage: StorageFacade,
-	private val cryptoStrategies: CryptoStrategies,
 	private val options: ApiOptions,
 	private val api: RawMessageGatewayApi,
 	private val messageGatewayUrl: String,
@@ -395,7 +391,6 @@ private class AuthenticationWithProcessStepImpl(
 				JwtRefresh(ensureNonNull(loginResult.refreshToken)  { "Successful login gave null refresh token"}),
 			)),
 			baseStorage,
-			cryptoStrategies,
 			options
 		)
 	}

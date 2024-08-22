@@ -2,6 +2,7 @@ package com.icure.sdk.options
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.model.UserGroup
 import com.icure.sdk.storage.KeyStorageFacade
 import com.icure.sdk.storage.StorageFacade
@@ -57,7 +58,7 @@ interface CommonOptions {
  * A function taking in input the information on all groups and user that some credentials can authenticate as, and
  * the group id of one of the input values.
  */
-typealias GroupSelector = (availableGroups: List<UserGroup>) -> String
+typealias GroupSelector = suspend (availableGroups: List<UserGroup>) -> String
 
 data class ApiOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
@@ -94,8 +95,16 @@ data class ApiOptions(
 	 */
 	val keyStorage: KeyStorageFacade? = null,
 	override val saltPasswordWithApplicationId: Boolean = true,
-): CommonOptions {
-}
+	/**
+	 * Custom crypto strategies. If not provided the sdk will use crypto strategies that:
+	 * - Allow for the creation of a new key of the data owner
+	 * - Do not use any custom key recovery solutions
+	 * - Considers any keys recovered using iCure's recovery methods as unverified
+	 * - Considers all public keys of other data owners as verified
+	 * - Considers patients as anonymous data owners
+	 */
+	val cryptoStrategies: CryptoStrategies? = null
+): CommonOptions
 
 data class BasicApiOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),

@@ -145,9 +145,9 @@ data class DataOwnerDetails private constructor (
 					false
 				).also { fillStorage(it) }
 			},
-			cryptoStrategies,
 			ApiOptions(
-				disableParentKeysInitialisation = false
+				disableParentKeysInitialisation = false,
+				cryptoStrategies = cryptoStrategies
 			)
 		)
 

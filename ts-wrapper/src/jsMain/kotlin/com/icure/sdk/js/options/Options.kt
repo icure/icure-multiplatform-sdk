@@ -1,46 +1,34 @@
 package com.icure.sdk.js.options
 
-import com.icure.kryptom.crypto.external.XCryptoService
+import com.icure.kryptom.crypto.external.adaptCryptoServiceForExternal
 import com.icure.kryptom.crypto.external.adaptExternalCryptoService
+import com.icure.sdk.js.crypto.CryptoStrategiesBridge
+import com.icure.sdk.js.model.userGroup_toJs
+import com.icure.sdk.js.options.external.ApiOptionsJs
+import com.icure.sdk.js.options.external.EncryptedFieldsConfigurationJs
+import com.icure.sdk.js.storage.loadKeyStorageOptions
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.EncryptedFieldsConfiguration
+import kotlinx.coroutines.await
 
-@JsExport
-@JsName("ApiOptions")
-external interface ApiOptionsJs {
-	val encryptedFields: EncryptedFieldsConfigurationJs?
-	val disableParentKeysInitialisation: Boolean?
-	val createTransferKeys: Boolean?
-	val cryptoService: XCryptoService?
-}
-
-@JsExport
-@JsName("EncryptedFieldsConfiguration")
-external interface EncryptedFieldsConfigurationJs {
-	val accessLog: Array<String>?
-	val calendarItem: Array<String>?
-	val contact: Array<String>?
-	val service: Array<String>?
-	val healthElement: Array<String>?
-	val maintenanceTask: Array<String>?
-	val patient: Array<String>?
-	val message: Array<String>?
-	val topic: Array<String>?
-	val document: Array<String>?
-	val form: Array<String>?
-	val receipt: Array<String>?
-	val classification: Array<String>?
-	val timeTable: Array<String>?
-	val invoice: Array<String>?
-}
-
-fun ApiOptionsJs.toKt(): ApiOptions {
+suspend fun ApiOptionsJs.toKt(): ApiOptions {
 	val defaultApiOptions = ApiOptions()
 	return ApiOptions(
 		encryptedFields = this.encryptedFields?.toKt() ?: defaultApiOptions.encryptedFields,
 		disableParentKeysInitialisation = this.disableParentKeysInitialisation ?: defaultApiOptions.disableParentKeysInitialisation,
 		createTransferKeys = this.createTransferKeys ?: defaultApiOptions.createTransferKeys,
-		cryptoService = this.cryptoService?.let { adaptExternalCryptoService(it) } ?: defaultApiOptions.cryptoService
+		cryptoService = this.cryptoService?.let { adaptExternalCryptoService(it) } ?: defaultApiOptions.cryptoService,
+		saltPasswordWithApplicationId = this.saltPasswordWithApplicationId ?: defaultApiOptions.saltPasswordWithApplicationId,
+		groupSelector = this.groupSelector?.let { groupSelectorJs ->
+			{ ktGroups ->
+				groupSelectorJs(ktGroups.map { userGroup_toJs(it) }.toTypedArray()).await()
+			}
+		} ?: defaultApiOptions.groupSelector,
+		autoCreateEncryptionKeyForExistingLegacyData = this.autoCreateEncryptionKeyForExistingLegacyData ?: defaultApiOptions.autoCreateEncryptionKeyForExistingLegacyData,
+		keyStorage = this.keyStorage?.let { loadKeyStorageOptions(it) } ?: defaultApiOptions.keyStorage,
+		cryptoStrategies = this.cryptoStrategies?.let {
+			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultApiOptions.cryptoService))
+		} ?: defaultApiOptions.cryptoStrategies
 	)
 }
 
