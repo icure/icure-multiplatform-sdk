@@ -7,7 +7,10 @@ import com.icure.sdk.model.filter.hcparty.AllHealthcarePartiesFilter
 import com.icure.sdk.model.filter.hcparty.HealthcarePartyByIdentifiersFilter
 import com.icure.sdk.model.filter.hcparty.HealthcarePartyByIdsFilter
 import com.icure.sdk.model.filter.hcparty.HealthcarePartyByNameFilter
+import com.icure.sdk.model.filter.hcparty.HealthcarePartyByNationalIdentifierFilter
+import com.icure.sdk.model.filter.hcparty.HealthcarePartyByParentIdFilter
 import com.icure.sdk.model.filter.hcparty.HealthcarePartyByTagCodeFilter
+import com.icure.sdk.model.filter.hcparty.HealthcarePartyByTypeSpecialtyPostCodeFilter
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.requireUniqueElements
 import kotlinx.serialization.Serializable
@@ -27,6 +30,7 @@ object HealthcarePartyFilters {
      * These options are sortable. When sorting using these options the healthcare parties will be in the same order as
      * the input identifiers. In case an entity has multiple identifiers only the first matching identifier is considered
      * for the sorting.
+     *
      * @param identifiers a list of identifiers
      */
     fun byIdentifiers(identifiers: List<Identifier>): BaseFilterOptions<HealthcareParty> = ByIdentifiers(identifiers)
@@ -66,6 +70,7 @@ object HealthcarePartyFilters {
     /**
      * Filter options that match all healthcare parties with one of the provided ids.
      * These options are sortable. When sorting using these options the healthcare parties will have the same order as the input ids.
+     *
      * @param ids a list of unique healthcare party ids.
      * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
@@ -80,7 +85,8 @@ object HealthcarePartyFilters {
      * These options are sortable. When sorting using these options the healthcare parties will be sorted lexicographically
      * by the matching part of the last_name+first_name or speciality substring. If a healthcare party has multiple
      * matching substrings only the first will be returned.
-     * @param searchString a string to search for
+     *
+     * @param searchString a string to search for.
      * @param descending when using these options to sort if true inverts the sorting order.
      */
     fun byName(
@@ -88,6 +94,48 @@ object HealthcarePartyFilters {
         @DefaultValue("false")
         descending: Boolean = false
     ): BaseSortableFilterOptions<HealthcareParty> = ByName(searchString, descending)
+
+	/**
+	 * Get all the healthcare parties where [HealthcareParty.ssin], [HealthcareParty.nihii],
+	 * [HealthcareParty.cbe], or [HealthcareParty.ehp] start with the provided [searchString].
+	 *
+	 * These options are sortable. When sorting using these options, the healthcare parties will be sorted lexicographically by the
+	 * aforementioned identifiers. If multiple identifiers match the search string, only the first one will be considered.
+	 *
+	 * @param searchString a string to search for.
+	 * @param descending whether to sort the results in descending or ascending order (default: ascending).
+	 */
+	fun byNationalIdentifier(
+		searchString: String,
+		@DefaultValue("false")
+		descending: Boolean = false
+	): BaseSortableFilterOptions<HealthcareParty> = ByNationalIdentifier(searchString, descending)
+
+	/**
+	 * Get all the healthcare parties where [HealthcareParty.parentId] is equal to [parentId].
+	 *
+	 * @param parentId the healthcare party parent id.
+	 */
+	fun byParentId(
+		parentId: String
+	): BaseFilterOptions<HealthcareParty> = ByParentId(parentId)
+
+	/**
+	 * Get all the healthcare parties where [HealthcareParty.speciality] is equal to [specialty], [HealthcareParty.nihiiSpecCode] is equal
+	 * to [specCode], and have an address in [HealthcareParty.addresses] with a postal code that is between [startPostCode] (inclusive) and
+	 * [endPostCode] (inclusive).
+	 *
+	 * @param specialty the healthcare party specialty.
+	 * @param specCode the specialty code.
+	 * @param startPostCode the minimum postal code.
+	 * @param endPostCode the maximum postal code.
+	 */
+	fun byTypeSpecialtyPostCode(
+		specialty: String,
+		specCode: String,
+		startPostCode: String,
+		endPostCode: String,
+	): BaseFilterOptions<HealthcareParty> = ByTypeSpecialtyPostCode(specialty, specCode, startPostCode, endPostCode)
 
     @Serializable
     internal data object All: BaseFilterOptions<HealthcareParty>
@@ -121,13 +169,32 @@ object HealthcarePartyFilters {
         val searchString: String,
         val descending: Boolean
     ): BaseSortableFilterOptions<HealthcareParty>
+
+	@Serializable
+	internal class ByNationalIdentifier(
+		val searchString: String,
+		val descending: Boolean
+	): BaseSortableFilterOptions<HealthcareParty>
+
+	@Serializable
+	internal class ByParentId(
+		val parentId: String
+	): BaseFilterOptions<HealthcareParty>
+
+	@Serializable
+	internal class ByTypeSpecialtyPostCode(
+		val specialty: String,
+		val specCode: String,
+		val startPostCode: String,
+		val endPostCode: String
+	): BaseFilterOptions<HealthcareParty>
 }
 
 
 internal suspend fun mapHealthcarePartyFilterOptions(
     filterOptions: FilterOptions<HealthcareParty>
 ): AbstractFilter<HealthcareParty> = mapIfMetaFilterOptions(filterOptions, ::mapHealthcarePartyFilterOptions) ?: when (filterOptions) {
-    HealthcarePartyFilters.All -> AllHealthcarePartiesFilter()
+    is HealthcarePartyFilters.All -> AllHealthcarePartiesFilter()
     is HealthcarePartyFilters.ByIds -> HealthcarePartyByIdsFilter(ids = filterOptions.ids.toSet())
     is HealthcarePartyFilters.ByIdentifiers -> HealthcarePartyByIdentifiersFilter(identifiers = filterOptions.identifiers)
     is HealthcarePartyFilters.ByCode -> HealthcarePartyByTagCodeFilter(
@@ -146,5 +213,16 @@ internal suspend fun mapHealthcarePartyFilterOptions(
         codeType = null,
         codeCode = null,
     )
+	is HealthcarePartyFilters.ByNationalIdentifier -> HealthcarePartyByNationalIdentifierFilter(
+		searchValue = filterOptions.searchString,
+		descending = filterOptions.descending
+	)
+	is HealthcarePartyFilters.ByParentId -> HealthcarePartyByParentIdFilter(parentId = filterOptions.parentId)
+	is HealthcarePartyFilters.ByTypeSpecialtyPostCode -> HealthcarePartyByTypeSpecialtyPostCodeFilter(
+		specialty = filterOptions.specialty,
+		specCode = filterOptions.specCode,
+		startPostCode = filterOptions.startPostCode,
+		endPostCode = filterOptions.endPostCode
+	)
     else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering HealthcareParties")
 }
