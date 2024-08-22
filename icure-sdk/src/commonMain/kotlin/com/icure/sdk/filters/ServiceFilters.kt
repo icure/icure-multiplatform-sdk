@@ -136,7 +136,7 @@ object ServiceFilters {
      *
      * When using these options the sdk will automatically extract the secret ids from the provided patients and use
      * those for filtering.
-     * If you already have the secret ids of the patient you may instead use [byPatientsSecretIds].
+     * If you already have the secret ids of the patient you may instead use [byPatientsSecretIdsForDataOwner].
      * If the current data owner does not have access to any secret id of one of the provide patients the patient will
      * simply be ignored.
      * Note that these may not be used in methods of apis from [IcureBaseApis].
