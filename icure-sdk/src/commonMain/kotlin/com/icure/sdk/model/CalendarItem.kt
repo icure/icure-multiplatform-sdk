@@ -111,6 +111,10 @@ sealed interface CalendarItem :
 	override val securityMetadata: SecurityMetadata?
 	// region CalendarItem-CalendarItem
 
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.CalendarItem"
+	}
+
 	// endregion
 }
 
