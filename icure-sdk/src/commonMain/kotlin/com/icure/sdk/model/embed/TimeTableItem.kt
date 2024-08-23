@@ -19,6 +19,10 @@ data class TimeTableItem(
 	public val notAfterInMinutes: Int? = null,
 	public val zoneId: String? = null,
 	@DefaultValue("emptyList()")
+	public val days: List<String> = emptyList(),
+	@DefaultValue("emptyList()")
+	public val recurrenceTypes: List<String> = emptyList(),
+	@DefaultValue("emptyList()")
 	public val hours: List<TimeTableHour> = emptyList(),
 	public val calendarItemTypeId: String? = null,
 	@DefaultValue("false")

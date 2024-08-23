@@ -101,6 +101,8 @@ data class HealthcareParty(
 	public val flatRateTarifications: List<DecryptedFlatRateTarification> = emptyList(),
 	@DefaultValue("emptyMap()")
 	public val importedData: Map<String, String> = emptyMap(),
+	@DefaultValue("emptyMap()")
+	public val options: Map<String, String> = emptyMap(),
 	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
 	@DefaultValue("emptyMap()")
