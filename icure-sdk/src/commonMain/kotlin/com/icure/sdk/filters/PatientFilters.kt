@@ -7,6 +7,7 @@ import com.icure.sdk.model.embed.Address
 import com.icure.sdk.model.embed.Gender
 import com.icure.sdk.model.embed.Telecom
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.patient.PatientByDataOwnerModifiedAfterFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyAndActiveFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyAndAddressFilter
 import com.icure.sdk.model.filter.patient.PatientByHcPartyAndExternalIdFilter
@@ -28,6 +29,7 @@ import kotlinx.serialization.Serializable
 object PatientFilters {
     /**
      * Create options for patient filtering that will match all patients shared directly (i.e. ignoring hierarchies) with a specific data owner.
+     *
      * @param dataOwnerId a data owner id
      * @return options for patient filtering
      */
@@ -38,6 +40,7 @@ object PatientFilters {
 
     /**
      * Create options for patient filtering that will match all patients shared directly (i.e. ignoring hierarchies) with the current data owner.
+     *
      * @return options for patient filtering
      */
     fun allPatientsForSelf(): FilterOptions<Patient> =
@@ -46,6 +49,7 @@ object PatientFilters {
     /**
      * Filter options that match all patients with one of the provided ids.
      * These options are sortable. When sorting using these options the patients will have the same order as the input ids.
+     *
      * @param ids a list of unique patient ids.
      * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
@@ -62,6 +66,7 @@ object PatientFilters {
      * These options are sortable. When sorting using these options the patients will be in the same order as the input
      * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
      * sorting.
+     *
      * @param identifiers a list of identifiers
      * @param dataOwnerId a data owner id
      * @return options for patient filtering
@@ -77,6 +82,7 @@ object PatientFilters {
      * [Patient.ssin] matching one of the provided ssins.
      * These options are sortable. When sorting using these options the patients will be in the same order as the
      * provided ssins.
+     *
      * @param ssins a list of ssins
      * @param dataOwnerId a data owner id
      */
@@ -89,6 +95,7 @@ object PatientFilters {
      * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner that have
      * [Patient.dateOfBirth] between the provided values (inclusive).
      * These options are sortable. When sorting using these options the patients will be ordered by date of birth.
+     *
      * @param fromDate the start date in YYYYMMDD format (inclusive)
      * @param toDate the end date in YYYYMMDD format (inclusive)
      * @param dataOwnerId a data owner id
@@ -251,6 +258,7 @@ object PatientFilters {
      * These options are sortable. When sorting using these options the patients will be in the same order as the input
      * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
      * sorting.
+     *
      * @param identifiers a list of identifiers
      * @return options for patient filtering
      */
@@ -264,6 +272,7 @@ object PatientFilters {
      * [Patient.ssin] matching one of the provided ssins.
      * These options are sortable. When sorting using these options the patients will be in the same order as the
      * provided ssins.
+     *
      * @param ssins a list of ssins
      */
     fun bySsinsForSelf(
@@ -274,6 +283,7 @@ object PatientFilters {
      * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have
      * [Patient.dateOfBirth] between the provided values (inclusive).
      * These options are sortable. When sorting using these options the patients will be ordered by date of birth.
+     *
      * @param fromDate the start date in YYYYMMDD format (inclusive)
      * @param toDate the end date in YYYYMMDD format (inclusive)
      */
@@ -294,8 +304,7 @@ object PatientFilters {
      */
     fun byNameForSelf(
         searchString: String
-    ): FilterOptions<Patient> =
-        ByNameForSelf(searchString)
+    ): FilterOptions<Patient> = ByNameForSelf(searchString)
 
     /**
      * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have the
@@ -371,7 +380,7 @@ object PatientFilters {
         ByAddressPostalCodeHouseNumberForSelf(
             searchString = searchString,
             postalCode = postalCode,
-            houseNumber = houseNumber,
+            houseNumber = houseNumber
         )
 
     /**
@@ -386,10 +395,7 @@ object PatientFilters {
      */
     fun byAddressForSelf(
         searchString: String
-    ) : SortableFilterOptions<Patient> =
-        ByAddressForSelf(
-            searchString = searchString,
-        )
+    ) : SortableFilterOptions<Patient> = ByAddressForSelf(searchString = searchString)
 
     /**
      * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner that have [Patient.externalId]
@@ -402,10 +408,55 @@ object PatientFilters {
      */
     fun byExternalIdForSelf(
         externalIdPrefix: String
-    ) : SortableFilterOptions<Patient> =
-        ByExternalIdForSelf(
-            externalIdPrefix = externalIdPrefix,
-        )
+    ) : SortableFilterOptions<Patient> = ByExternalIdForSelf(externalIdPrefix = externalIdPrefix)
+
+	/**
+	 * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * where the modification timestamp is between [from] (inclusive) and [to] (inclusive).
+	 * If [from] is not provided, all the patients modified before [to] will be returned.
+	 * If [to] is not provided, all the patients modified after [from] will be returned.
+	 * If a patient was never modified (i.e. [Patient.modified] is null), the [Patient.created] timestamp will be used instead.
+	 *
+	 * These options are sortable. When sorting using these options the patients will be ordered by [Patient.modified] (or [Patient.created]
+	 * if modified is null).
+	 *
+	 * @param dataOwnerId a data owner id.
+	 * @param from the minimum timestamp for the last modification (default: no minimum).
+	 * @param to the maximum timestamp for the last modification (default: no maximum).
+	 * @param descending whether to sort the results in ascending or descending order by [Patient.modified] (default: ascending).
+ 	 */
+	fun byModificationDateForDataOwner(
+		dataOwnerId: String,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	): BaseSortableFilterOptions<Patient> = ByModificationDateForDataOwner(dataOwnerId, from, to, descending)
+
+	/**
+	 * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * where the modification timestamp is between [from] (inclusive) and [to] (inclusive).
+	 * If [from] is not provided, all the patients modified before [to] will be returned.
+	 * If [to] is not provided, all the patients modified after [from] will be returned.
+	 * If a patient was never modified (i.e. [Patient.modified] is null), the [Patient.created] timestamp will be used instead.
+	 *
+	 * These options are sortable. When sorting using these options the patients will be ordered by [Patient.modified] (or [Patient.created]
+	 * if modified is null).
+	 *
+	 * @param from the minimum timestamp for the last modification (default: no minimum).
+	 * @param to the maximum timestamp for the last modification (default: no maximum).
+	 * @param descending whether to sort the results in ascending or descending order by [Patient.modified] (default: ascending).
+	 */
+	fun byModificationDateForSelf(
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	): SortableFilterOptions<Patient> = ByModificationDateForSelf(from, to, descending)
 
     @Serializable
     internal class ByIds(
@@ -555,6 +606,21 @@ object PatientFilters {
     internal class ByExternalIdForSelf(
         val externalIdPrefix: String
     ) : SortableFilterOptions<Patient>
+
+	@Serializable
+	internal class ByModificationDateForDataOwner(
+		val dataOwnerId: String,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	): BaseSortableFilterOptions<Patient>
+
+	@Serializable
+	internal class ByModificationDateForSelf(
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	): SortableFilterOptions<Patient>
 }
 
 
@@ -751,7 +817,22 @@ internal suspend fun mapPatientFilterOptions(
             healthcarePartyId = selfDataOwnerId
         )
     }
-    else -> {
-        throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
-    }
+	is PatientFilters.ByModificationDateForDataOwner -> PatientByDataOwnerModifiedAfterFilter(
+		dataOwnerId = filterOptions.dataOwnerId,
+		startDate = filterOptions.from,
+		endDate = filterOptions.to,
+		descending = filterOptions.descending,
+		desc = null
+	)
+	is PatientFilters.ByModificationDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		PatientByDataOwnerModifiedAfterFilter(
+			dataOwnerId = selfDataOwnerId,
+			startDate = filterOptions.from,
+			endDate = filterOptions.to,
+			descending = filterOptions.descending,
+			desc = null
+		)
+	}
+	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
 }
