@@ -16,5 +16,6 @@ data class TimeTableByAgendaIdFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<TimeTable> {
 	// region TimeTableByAgendaIdFilter-TimeTableByAgendaIdFilter
+
 	// endregion
 }

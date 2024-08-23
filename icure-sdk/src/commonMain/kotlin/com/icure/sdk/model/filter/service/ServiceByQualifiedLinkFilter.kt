@@ -19,5 +19,6 @@ data class ServiceByQualifiedLinkFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Service> {
 	// region ServiceByQualifiedLinkFilter-ServiceByQualifiedLinkFilter
+
 	// endregion
 }

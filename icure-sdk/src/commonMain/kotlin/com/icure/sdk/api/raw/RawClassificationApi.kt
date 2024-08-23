@@ -51,7 +51,7 @@ public interface RawClassificationApi {
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>>
 
-	suspend fun matchCalendarItemsBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>>
+	suspend fun matchClassificationBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedClassification>>>
 

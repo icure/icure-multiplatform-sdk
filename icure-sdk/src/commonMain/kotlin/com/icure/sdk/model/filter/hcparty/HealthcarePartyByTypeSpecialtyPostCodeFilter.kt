@@ -19,5 +19,6 @@ data class HealthcarePartyByTypeSpecialtyPostCodeFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<HealthcareParty> {
 	// region HealthcarePartyByTypeSpecialtyPostCodeFilter-HealthcarePartyByTypeSpecialtyPostCodeFilter
+
 	// endregion
 }

@@ -17,5 +17,6 @@ data class CodeByQualifiedLinkFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Code> {
 	// region CodeByQualifiedLinkFilter-CodeByQualifiedLinkFilter
+
 	// endregion
 }

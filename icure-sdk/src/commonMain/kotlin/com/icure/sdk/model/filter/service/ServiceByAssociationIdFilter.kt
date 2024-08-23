@@ -16,5 +16,6 @@ data class ServiceByAssociationIdFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Service> {
 	// region ServiceByAssociationIdFilter-ServiceByAssociationIdFilter
+
 	// endregion
 }

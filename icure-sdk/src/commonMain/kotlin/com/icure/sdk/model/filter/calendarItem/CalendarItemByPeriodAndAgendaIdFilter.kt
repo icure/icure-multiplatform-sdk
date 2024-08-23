@@ -21,5 +21,6 @@ data class CalendarItemByPeriodAndAgendaIdFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<CalendarItem> {
 	// region CalendarItemByPeriodAndAgendaIdFilter-CalendarItemByPeriodAndAgendaIdFilter
+
 	// endregion
 }

@@ -18,5 +18,6 @@ data class FormByLogicalUuidFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Form> {
 	// region FormByLogicalUuidFilter-FormByLogicalUuidFilter
+
 	// endregion
 }

@@ -23,5 +23,6 @@ data class AccessLogByUserIdUserTypeDateFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<AccessLog> {
 	// region AccessLogByUserIdUserTypeDateFilter-AccessLogByUserIdUserTypeDateFilter
+
 	// endregion
 }

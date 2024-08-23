@@ -23,5 +23,6 @@ data class AccessLogByDateFilter(
 	public val descending: Boolean?,
 ) : AbstractFilter<AccessLog> {
 	// region AccessLogByDateFilter-AccessLogByDateFilter
+
 	// endregion
 }

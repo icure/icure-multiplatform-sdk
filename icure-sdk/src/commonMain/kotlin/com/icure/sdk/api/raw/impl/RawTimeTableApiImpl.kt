@@ -90,6 +90,17 @@ class RawTimeTableApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun getTimeTables(timeTableIds: ListOfIds): HttpResponse<List<EncryptedTimeTable>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "timeTable", "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(timeTableIds)
+		}.wrap()
+
 	override suspend fun modifyTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable> =
 		put(authProvider) {
 			url {

@@ -19,5 +19,6 @@ data class CodeByRegionTypeCodeVersionFilters(
 	override val desc: String?,
 ) : AbstractFilter<Code> {
 	// region CodeByRegionTypeCodeVersionFilters-CodeByRegionTypeCodeVersionFilters
+
 	// endregion
 }

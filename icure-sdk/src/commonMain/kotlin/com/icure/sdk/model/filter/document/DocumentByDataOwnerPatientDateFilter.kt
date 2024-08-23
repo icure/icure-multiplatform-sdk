@@ -26,5 +26,6 @@ data class DocumentByDataOwnerPatientDateFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Document> {
 	// region DocumentByDataOwnerPatientDateFilter-DocumentByDataOwnerPatientDateFilter
+
 	// endregion
 }

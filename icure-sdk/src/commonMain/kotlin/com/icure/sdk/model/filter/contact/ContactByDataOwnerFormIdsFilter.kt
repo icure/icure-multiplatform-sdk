@@ -18,5 +18,6 @@ data class ContactByDataOwnerFormIdsFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Contact> {
 	// region ContactByDataOwnerFormIdsFilter-ContactByDataOwnerFormIdsFilter
+
 	// endregion
 }
