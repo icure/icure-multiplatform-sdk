@@ -140,7 +140,7 @@ class RawTimeTableApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun matchAccessLogsBy(filter: AbstractFilter<TimeTable>): HttpResponse<List<String>> =
+	override suspend fun matchTimeTablesBy(filter: AbstractFilter<TimeTable>): HttpResponse<List<String>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
