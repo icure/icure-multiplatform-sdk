@@ -6,14 +6,17 @@ import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.base.LinkQualification
 import com.icure.sdk.model.embed.Service
 import com.icure.sdk.model.embed.SubContact
 import com.icure.sdk.model.filter.AbstractFilter
+import com.icure.sdk.model.filter.service.ServiceByAssociationIdFilter
 import com.icure.sdk.model.filter.service.ServiceByHcPartyFilter
 import com.icure.sdk.model.filter.service.ServiceByHcPartyHealthElementIdsFilter
 import com.icure.sdk.model.filter.service.ServiceByHcPartyIdentifiersFilter
 import com.icure.sdk.model.filter.service.ServiceByHcPartyTagCodeDateFilter
 import com.icure.sdk.model.filter.service.ServiceByIdsFilter
+import com.icure.sdk.model.filter.service.ServiceByQualifiedLinkFilter
 import com.icure.sdk.model.filter.service.ServiceBySecretForeignKeys
 import com.icure.sdk.utils.DefaultValue
 import com.icure.sdk.utils.InternalIcureApi
@@ -182,7 +185,7 @@ object ServiceFilters {
      * @param healthElementIds a list of health element ids
      * @param dataOwnerId a data owner id
      */
-    fun byHealthElementIdFromSubcontactForDataOwner(
+    fun byHealthElementIdFromSubContactForDataOwner(
         dataOwnerId: String,
         healthElementIds: List<String>,
     ): BaseSortableFilterOptions<Service> = ByHealthElementIdFromSubcontactForDataOwner(
@@ -224,7 +227,6 @@ object ServiceFilters {
      * that is after this value (inclusive).
      * @param endOfServiceValueDate if provided the options will match only services with a value date
      * that is before this value (inclusive).
-     * @param dataOwnerId a data owner id
      * @throws IllegalArgumentException if you provide a range for the value date but no [codeCode].
      */
     fun byCodeAndValueDateForSelf(
@@ -259,7 +261,6 @@ object ServiceFilters {
      * that is after this value (inclusive).
      * @param endOfServiceValueDate if provided the options will match only services with a value date
      * that is before this value (inclusive).
-     * @param dataOwnerId a data owner id
      * @throws IllegalArgumentException if you provide a range for the value date but no [tagCode].
      */
     fun byTagAndValueDateForSelf(
@@ -283,7 +284,7 @@ object ServiceFilters {
      *
      * When using these options the sdk will automatically extract the secret ids from the provided patients and use
      * those for filtering.
-     * If you already have the secret ids of the patient you may instead use [byPatientsSecretIds].
+     * If you already have the secret ids of the patient you may instead use [byPatientsSecretIdsForSelf].
      * If the current data owner does not have access to any secret id of one of the provide patients the patient will
      * simply be ignored.
      * Note that these may not be used in methods of apis from [IcureBaseApis].
@@ -291,7 +292,6 @@ object ServiceFilters {
      * These options are sortable. When sorting using these options the services will be sorted by the patients, using
      * the same order as the input patients.
      * @param patients a list of patients.
-     * @param dataOwnerId a data owner id
      */
     fun byPatientsForSelf(
         patients: List<Patient>,
@@ -323,9 +323,8 @@ object ServiceFilters {
      * input health element ids. If a service exists in multiple subcontacts only the first subcontact with matching
      * health element service is considered for the ordering.
      * @param healthElementIds a list of health element ids
-     * @param dataOwnerId a data owner id
      */
-    fun byHealthElementIdFromSubcontactForSelf(
+    fun byHealthElementIdFromSubContactForSelf(
         healthElementIds: List<String>,
     ): SortableFilterOptions<Service> = ByHealthElementIdFromSubcontactForSelf(
         healthElementIds = healthElementIds,
@@ -340,6 +339,31 @@ object ServiceFilters {
     fun byIds(
         ids: List<String>
     ): BaseSortableFilterOptions<Service> = ByIds(ids)
+
+	/**
+	 * Filter options that match all the services where in at least one of the maps in [Service.qualifiedLinks] values there is a key equal
+	 * to [associationId].
+	 *
+	 * @param associationId the association id to search for.
+	 */
+	fun byAssociationId(
+		associationId: String,
+	): BaseFilterOptions<Service> = ByAssociationId(associationId)
+
+	/**
+	 * Filter options that match all the services where in the values of the maps that are in the values of [Service.qualifiedLinks] there
+	 * is a value contained in [linkValues].
+	 * If a [linkQualification] is provided, the search will be restricted to the map corresponding to the [linkQualification] key in
+	 * [Service.qualifiedLinks].
+	 *
+	 * @param linkValues the values to search in the values of the maps that are values of [Service.qualifiedLinks].
+	 * @param linkQualification a key of [Service.qualifiedLinks].
+	 */
+	fun byQualifiedLink(
+		linkValues: List<String>,
+		@DefaultValue("null")
+		linkQualification: LinkQualification? = null
+	): BaseFilterOptions<Service> = ByQualifiedLink(linkValues, linkQualification)
 
     @Serializable
     internal class AllForDataOwner(
@@ -459,6 +483,17 @@ object ServiceFilters {
             ids.requireUniqueElements("`ids`")
         }
     }
+
+	@Serializable
+	internal class ByAssociationId(
+		val associationId: String
+	): BaseFilterOptions<Service>
+
+	@Serializable
+	internal class ByQualifiedLink(
+		val linkValues: List<String>,
+		val linkQualification: LinkQualification?
+	): BaseFilterOptions<Service>
 }
 
 @InternalIcureApi
@@ -588,10 +623,8 @@ internal suspend fun mapServiceFilterOptions(
             healthcarePartyId = selfDataOwnerId
         )
     }
-    is ServiceFilters.ByIds -> {
-        ServiceByIdsFilter(ids = filterOptions.ids.toSet())
-    }
-    else -> {
-        throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Services")
-    }
+    is ServiceFilters.ByIds -> ServiceByIdsFilter(ids = filterOptions.ids.toSet())
+	is ServiceFilters.ByAssociationId -> ServiceByAssociationIdFilter(associationId = filterOptions.associationId)
+	is ServiceFilters.ByQualifiedLink -> ServiceByQualifiedLinkFilter(linkValues = filterOptions.linkValues, linkQualification = filterOptions.linkQualification)
+    else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Services")
 }
