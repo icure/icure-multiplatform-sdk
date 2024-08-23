@@ -1,4 +1,4 @@
-import {XCryptoService} from "../crypto/CryptoService";
+import {XCryptoService} from "../crypto/CryptoService.mjs";
 import {UserGroup} from "../model/UserGroup.mjs";
 import {KeyStorageFacade} from "../storage/StorageFacade.mjs";
 import {CryptoStrategies} from "../crypto/CryptoStrategies.mjs";

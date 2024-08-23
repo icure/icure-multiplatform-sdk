@@ -251,12 +251,7 @@ private class KeyLoader(
 					newKeyRequest.keyPair
 
 				CryptoStrategies.KeyGenerationRequestResult.Deny ->
-					throw IllegalStateException(
-						"""
-						No verified key available for the current data owner and crypto strategies do not allow for the 
-						creation of a new key. Aborting api initialisation
-						"""
-					)
+					throw IllegalStateException("No verified key available for the current data owner and crypto strategies do not allow for the creation of a new key. Aborting api initialisation")
 			}
 			val newKeySpki = cryptoService.rsa.exportSpkiHex(newKey.public)
 			val selfWithNewKey = selfInfo.toStub().let {

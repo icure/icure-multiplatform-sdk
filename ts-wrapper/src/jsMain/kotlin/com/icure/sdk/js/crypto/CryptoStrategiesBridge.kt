@@ -127,16 +127,32 @@ private fun CryptoStrategies.KeyDataRecoveryRequest.toJs(): KeyDataRecoveryReque
 	return js("{ dataOwnerDetails: dataOwnerDetails, unknownKeys: unknownKeys, unavailableKeys: unavailableKeys}") as KeyDataRecoveryRequestJs
 }
 private fun RecoveredKeyDataJs.toKt() = CryptoStrategies.RecoveredKeyData(
-	recoveredKeys = CheckedConverters.objectToMap(
+	recoveredKeys = convertRecoveryKeyDataEntry(
 		recoveredKeys,
-		"RecoveredKeyData.recoveredKeys",
-		{ KeypairFingerprintV1String(it) },
-		{ RsaKeypair(it.private.toKryptomEncryption(), it.public.toKryptomEncryption()) }
-	),
-	keyAuthenticity = CheckedConverters.objectToMap(
+		"recoveredKeys"
+	) { RsaKeypair(it.private.toKryptomEncryption(), it.public.toKryptomEncryption()) },
+	keyAuthenticity = convertRecoveryKeyDataEntry(
 		keyAuthenticity,
-		"RecoveredKeyData.keyAuthenticity",
-		{ KeypairFingerprintV1String(it) },
-		{ it }
-	)
+		"keyAuthenticity"
+	) { it }
 )
+private fun <V_JS, V_KT> convertRecoveryKeyDataEntry(
+	data: Record<String, V_JS>,
+	name: String,
+	convertValue: (V_JS) -> V_KT
+) = CheckedConverters.objectToMap(
+	data,
+	"RecoveredKeyData.$name",
+	{ it },
+	convertValue
+).let { mapByString ->
+	mapByString.mapKeys { (key, _) ->
+		if (key.length > KeypairFingerprintV1String.LENGTH) {
+			key.takeLast(32).also {
+				require (!mapByString.containsKey(it)) {
+					"Duplicate entry for key in RecoveredKeyData.$name, existing both as fingerprint and in full format: $it"
+				}
+			}.let(::KeypairFingerprintV1String)
+		} else KeypairFingerprintV1String(key)
+	}
+}

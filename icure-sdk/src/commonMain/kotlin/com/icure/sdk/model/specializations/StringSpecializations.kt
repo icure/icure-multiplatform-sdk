@@ -136,6 +136,7 @@ value class KeypairFingerprintV1String(
 ) {
 	companion object {
 		private const val TRAILING_CONSTANT = "0203010001"
+		const val LENGTH = 32
 		private val pattern = Regex("^[0-9a-f]{22}$TRAILING_CONSTANT\$")
 
 		fun fromPublicKeySpki(publicKeySpki: SpkiHexString): KeypairFingerprintV1String {

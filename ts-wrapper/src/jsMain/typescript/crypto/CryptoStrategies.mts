@@ -6,7 +6,7 @@ import {KeyStorageFacade, StorageFacade} from "../storage/StorageFacade.mjs";
 import {RecoveryResult} from "./entities/RecoveryResult.mjs";
 import {RecoveryDataKey} from "./entities/RecoveryDataKey.mjs";
 import {RecoveryApi} from "../api/RecoveryApi.mjs";
-import {XCryptoService, XRsaKeypair} from "./CryptoService";
+import {XCryptoService, XRsaKeypair} from "./CryptoService.mjs";
 
 /**
  * Allows customizing the behavior of the crypto api to better suit your needs.
@@ -114,16 +114,22 @@ export namespace CryptoStrategies {
    */
   export interface RecoveredKeyData {
     /**
-     * All keys recovered for the data owner (will be automatically considered as verified), by fingerprint.
+     * All keys recovered for the data owner, by public key.
+     * The sdk will automatically consider all recovered keys as verified.
+     * The public key should be in hex-encoded spki format or a fingerprint (last 32 characters of the hex-encoded spki
+     * representation)
      */
-    readonly recoveredKeys: { [fp: KeypairFingerprintV1String]: XRsaKeypair }
+    readonly recoveredKeys: { [fp: KeypairFingerprintV1String | SpkiHexString]: XRsaKeypair }
     /**
-     * associates each public key fingerprint its authenticity. Note that if any of the keys from `unknownKeys` is
-     * completely missing from this object the key will be considered as unverified in this api instance (same as
-     * if associated to false), but this value won't be cached (will be again part of `unknownKeys` in future
-     * instances.
+     * Marks if the user has recognized any public key associated to him as authentic / verified.
+     * The key of the object should be a public key in hex-encoded spki format or its fingerprint (last 32 characters of
+     * the hex-encoded spki representation).
+     * If any of the keys from `unknownKeys` is completely missing from this object the key will be considered as
+     * unverified in this api instance (same as false). However, in this case the unverified status of the key won't be
+     * saved: next time that an api is instantiated, even if the storage was not reset sdk will ask again to verify the
+     * authenticity of that key.
      */
-    readonly keyAuthenticity: { [fp: KeypairFingerprintV1String]: boolean }
+    readonly keyAuthenticity: { [fp: KeypairFingerprintV1String | SpkiHexString]: boolean }
   }
 }
 
@@ -132,7 +138,7 @@ export namespace CryptoStrategies {
  * This interface includes recovery methods that require some input from your application (e.g. a recovery key created from a different device).
  * Other recovery methods (such as transfer keys) are used automatically by the sdk when available and don't require any input from your application.
  */
-interface KeyPairRecoverer {
+export interface KeyPairRecoverer {
   /**
    * Recover a keypair using a recovery key created in the past using the {@link RecoveryApi.createRecoveryInfoForAvailableKeyPairs} method.
    * @param recoveryKey the result of a past call to {@link RecoveryApi.createRecoveryInfoForAvailableKeyPairs}.
