@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.DocumentApi
+import com.icure.sdk.api.DocumentApi
 import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull

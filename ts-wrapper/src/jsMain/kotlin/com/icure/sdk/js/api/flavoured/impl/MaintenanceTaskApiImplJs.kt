@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.MaintenanceTaskApi
+import com.icure.sdk.api.MaintenanceTaskApi
 import com.icure.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.sdk.filters.FilterOptions
 import com.icure.sdk.filters.SortableFilterOptions

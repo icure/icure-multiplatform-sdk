@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.extended.`impl`
 
-import com.icure.sdk.api.extended.IcureMaintenanceTaskApi
+import com.icure.sdk.api.IcureMaintenanceTaskApi
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet

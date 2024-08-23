@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.crypto.`impl`
 
-import com.icure.sdk.api.crypto.ShamirKeysManagerApi
+import com.icure.sdk.api.ShamirKeysManagerApi
 import com.icure.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.sdk.js.api.crypto.ShamirKeysManagerApiJs
 import com.icure.sdk.js.crypto.entities.ShamirUpdateRequestJs

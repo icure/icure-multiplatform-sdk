@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.AccessLogApi
+import com.icure.sdk.api.AccessLogApi
 import com.icure.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull

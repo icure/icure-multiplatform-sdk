@@ -7,7 +7,7 @@ import com.icure.kryptom.crypto.PrivateRsaKey
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.api.raw.RawDeviceApi
 import com.icure.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.sdk.api.raw.RawPatientApi

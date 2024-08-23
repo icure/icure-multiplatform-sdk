@@ -1,7 +1,7 @@
 package com.icure.sdk.crypto
 
 import com.icure.kryptom.crypto.CryptoService
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.utils.InternalIcureApi
 
 @InternalIcureApi

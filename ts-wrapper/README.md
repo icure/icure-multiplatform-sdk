@@ -367,7 +367,7 @@ external interface PatientApiJs {
 }
 
 internal class PatientApiImplJs(
-	private val patientApi: com.icure.sdk.api.flavoured.PatientApi
+	private val patientApi: com.icure.sdk.api.PatientApi
 ): PatientApiJs {
 	override fun modifyPatient(patient: DecryptedPatient): Promise<DecryptedPatient> = GlobalScope.promise {
 		patientToJs(patientApi.modifyPatient(patientToKt(patient)))

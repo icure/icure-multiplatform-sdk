@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.ClassificationBasicApi
+import com.icure.sdk.api.ClassificationBasicApi
 import com.icure.sdk.js.api.flavoured.ClassificationBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray

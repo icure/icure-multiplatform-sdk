@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.ContactApi
+import com.icure.sdk.api.ContactApi
 import com.icure.sdk.crypto.entities.ContactShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.filters.FilterOptions

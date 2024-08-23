@@ -3,7 +3,7 @@ package com.icure.sdk.crypto.impl
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.crypto.EntityValidationService
 import com.icure.sdk.crypto.JsonEncryptionService

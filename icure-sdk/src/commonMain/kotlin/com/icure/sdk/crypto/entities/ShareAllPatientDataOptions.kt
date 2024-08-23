@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto.entities
 
-import com.icure.sdk.api.flavoured.PatientApi
+import com.icure.sdk.api.PatientApi
 import com.icure.sdk.model.EncryptedPatient
 import kotlinx.serialization.Serializable
 

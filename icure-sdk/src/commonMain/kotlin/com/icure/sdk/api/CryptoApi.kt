@@ -1,9 +1,5 @@
 package com.icure.sdk.api
 
-import com.icure.sdk.api.crypto.ShamirKeysManagerApi
-import com.icure.sdk.crypto.InternalCryptoServices
-import com.icure.sdk.utils.InternalIcureApi
-
 
 /**
  * Gives access to cryptographic operations that should be managed by the user, such as the creation of recovery data for keys.
@@ -19,12 +15,3 @@ interface CryptoApi {
 	suspend fun forceReload()
 }
 
-@InternalIcureApi
-internal class CryptoApiImpl(
-	override val shamirKeysManager: ShamirKeysManagerApi,
-	internal val internal: InternalCryptoServices
-) : CryptoApi {
-	override suspend fun forceReload() {
-		internal.forceReload()
-	}
-}

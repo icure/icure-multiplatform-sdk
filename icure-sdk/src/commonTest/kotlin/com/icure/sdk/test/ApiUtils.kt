@@ -1,7 +1,7 @@
 package com.icure.sdk.test
 
 import com.icure.sdk.api.CryptoApi
-import com.icure.sdk.api.CryptoApiImpl
+import com.icure.sdk.api.impl.CryptoApiImpl
 import com.icure.sdk.utils.InternalIcureApi
 
 @OptIn(InternalIcureApi::class)

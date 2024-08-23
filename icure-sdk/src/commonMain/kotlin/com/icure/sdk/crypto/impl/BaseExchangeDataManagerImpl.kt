@@ -7,7 +7,7 @@ import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
 import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.RsaVerificationKeyProvider

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.FormBasicApi
+import com.icure.sdk.api.FormBasicApi
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.FormBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList

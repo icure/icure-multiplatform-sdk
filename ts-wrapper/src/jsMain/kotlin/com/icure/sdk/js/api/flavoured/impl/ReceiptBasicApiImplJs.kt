@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.ReceiptBasicApi
+import com.icure.sdk.api.ReceiptBasicApi
 import com.icure.sdk.js.api.flavoured.ReceiptBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray

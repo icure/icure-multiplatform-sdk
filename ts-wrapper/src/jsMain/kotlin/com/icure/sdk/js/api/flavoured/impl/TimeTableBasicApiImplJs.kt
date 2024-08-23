@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.TimeTableBasicApi
+import com.icure.sdk.api.TimeTableBasicApi
 import com.icure.sdk.js.api.flavoured.TimeTableBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.listToArray

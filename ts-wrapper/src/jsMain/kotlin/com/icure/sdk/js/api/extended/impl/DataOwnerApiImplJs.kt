@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.extended.`impl`
 
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.js.api.extended.DataOwnerApiJs
 import com.icure.sdk.js.model.CheckedConverters.listToArray
 import com.icure.sdk.js.model.CryptoActorStubWithTypeJs

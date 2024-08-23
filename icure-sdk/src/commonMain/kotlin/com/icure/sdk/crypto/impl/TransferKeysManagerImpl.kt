@@ -6,7 +6,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.crypto.ExchangeDataManager
 import com.icure.sdk.crypto.TransferKeysManager
 import com.icure.sdk.crypto.UserEncryptionKeysManager

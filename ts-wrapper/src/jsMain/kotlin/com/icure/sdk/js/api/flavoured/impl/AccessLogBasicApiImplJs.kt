@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.flavoured.`impl`
 
-import com.icure.sdk.api.flavoured.AccessLogBasicApi
+import com.icure.sdk.api.AccessLogBasicApi
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.flavoured.AccessLogBasicApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList

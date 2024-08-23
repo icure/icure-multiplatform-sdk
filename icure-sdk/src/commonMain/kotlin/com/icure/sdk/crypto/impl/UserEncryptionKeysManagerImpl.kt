@@ -4,7 +4,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.RsaService
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.IcureKeyRecovery
 import com.icure.sdk.crypto.KeyPairRecoverer

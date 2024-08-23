@@ -1,6 +1,6 @@
 package com.icure.sdk.crypto.fake
 
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.DataOwnerWithType

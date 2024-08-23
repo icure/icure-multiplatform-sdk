@@ -2,7 +2,7 @@ package com.icure.sdk.crypto.impl
 
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
-import com.icure.sdk.api.extended.DataOwnerApi
+import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.crypto.BaseExchangeKeysManager
 import com.icure.sdk.crypto.ExchangeKeysManager
 import com.icure.sdk.crypto.UserEncryptionKeysManager
