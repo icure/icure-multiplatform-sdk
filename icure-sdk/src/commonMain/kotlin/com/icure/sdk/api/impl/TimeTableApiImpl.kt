@@ -10,6 +10,11 @@ import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
+import com.icure.sdk.filters.mapTimeTableFilterOptions
 import com.icure.sdk.model.DecryptedTimeTable
 import com.icure.sdk.model.EncryptedTimeTable
 import com.icure.sdk.model.ListOfIds
@@ -27,6 +32,8 @@ import com.icure.sdk.utils.EntityEncryptionException
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.pagination.IdsPageIterator
+import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
@@ -47,6 +54,9 @@ private abstract class AbstractTimeTableBasicFlavouredApi<E : TimeTable>(protect
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedTimeTable
 	abstract suspend fun maybeDecrypt(entity: EncryptedTimeTable): E
+
+	override suspend fun getTimeTables(timeTableIds: List<String>): List<E> =
+		rawApi.getTimeTables(ListOfIds(timeTableIds)).successBody().map { maybeDecrypt(it) }
 }
 
 @InternalIcureApi
@@ -83,6 +93,21 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 
 	override suspend fun shareWithMany(timeTable: E, delegates: Map<String, TimeTableShareOptions>): E =
 		tryShareWithMany(timeTable, delegates).updatedEntityOrThrow()
+
+	override suspend fun filterTimeTablesBySorted(filter: SortableFilterOptions<TimeTable>): PaginatedListIterator<E> =
+		filterTimeTablesBy(filter)
+
+	override suspend fun filterTimeTablesBy(filter: FilterOptions<TimeTable>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchAccessLogsBy(
+				mapTimeTableFilterOptions(
+					filter,
+					config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+					config.crypto.entity
+				)
+			).successBody(),
+			::getTimeTables
+		)
 }
 
 @InternalIcureApi
@@ -201,11 +226,23 @@ internal class TimeTableApiImpl(
 
 	override suspend fun tryDecrypt(timeTable: EncryptedTimeTable): TimeTable =
 		decryptOrNull(timeTable) ?: timeTable
+
+	override suspend fun matchTimeTablesBy(filter: FilterOptions<TimeTable>): List<String> =
+		rawApi.matchAccessLogsBy(
+			mapTimeTableFilterOptions(
+				filter,
+				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+				config.crypto.entity
+			)
+		).successBody()
+
+	override suspend fun matchTimeTablesBySorted(filter: SortableFilterOptions<TimeTable>): List<String> =
+		matchTimeTablesBy(filter)
 }
 
 @InternalIcureApi
 internal class TimeTableBasicApiImpl(
-	rawApi: RawTimeTableApi,
+	private val rawApi: RawTimeTableApi,
 	private val config: BasicApiConfiguration
 ) : TimeTableBasicApi, TimeTableBasicFlavouredApi<EncryptedTimeTable> by object :
 	AbstractTimeTableBasicFlavouredApi<EncryptedTimeTable>(rawApi) {
@@ -213,4 +250,25 @@ internal class TimeTableBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTimeTable.serializer(), config.encryption.timeTable)
 
 	override suspend fun maybeDecrypt(entity: EncryptedTimeTable): EncryptedTimeTable = entity
-}, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi)
+}, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi) {
+	override suspend fun matchTimeTablesBy(filter: BaseFilterOptions<TimeTable>): List<String> =
+		rawApi.matchAccessLogsBy(
+			mapTimeTableFilterOptions(
+				filter,
+				null,
+				null
+			)
+		).successBody()
+
+	override suspend fun matchTimeTablesBySorted(filter: BaseSortableFilterOptions<TimeTable>): List<String> =
+		matchTimeTablesBy(filter)
+
+	override suspend fun filterTimeTablesBy(filter: BaseFilterOptions<TimeTable>): PaginatedListIterator<EncryptedTimeTable> =
+		IdsPageIterator(
+			matchTimeTablesBy(filter),
+			::getTimeTables
+		)
+
+	override suspend fun filterTimeTablesBySorted(filter: BaseSortableFilterOptions<TimeTable>): PaginatedListIterator<EncryptedTimeTable> =
+		filterTimeTablesBy(filter)
+}

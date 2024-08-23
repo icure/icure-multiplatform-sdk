@@ -128,6 +128,5 @@ interface CodeApi {
 	suspend fun matchCodesBySorted(filter: BaseSortableFilterOptions<Code>): List<String>
 
 	suspend fun importCodes(codeType: String)
-
 }
 

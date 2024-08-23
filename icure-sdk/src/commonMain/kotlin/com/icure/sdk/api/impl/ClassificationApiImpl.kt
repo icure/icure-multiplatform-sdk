@@ -10,6 +10,11 @@ import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
+import com.icure.sdk.filters.mapClassificationFilterOptions
 import com.icure.sdk.model.Classification
 import com.icure.sdk.model.DecryptedClassification
 import com.icure.sdk.model.EncryptedClassification
@@ -101,6 +106,20 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 		rawApi.getClassifications(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
 
+	override suspend fun filterClassificationsBySorted(filter: SortableFilterOptions<Classification>): PaginatedListIterator<E> =
+		filterClassificationsBy(filter)
+
+	override suspend fun filterClassificationsBy(filter: FilterOptions<Classification>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchClassificationBy(
+				mapClassificationFilterOptions(
+					filter,
+					config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+					config.crypto.entity
+				)
+			).successBody(),
+			::getClassifications
+		)
 }
 
 @InternalIcureApi
@@ -226,11 +245,23 @@ internal class ClassificationApiImpl(
 
 	override suspend fun tryDecrypt(classification: EncryptedClassification): Classification =
 		decryptOrNull(classification) ?: classification
+
+	override suspend fun matchClassificationsBy(filter: FilterOptions<Classification>): List<String> =
+		rawApi.matchClassificationBy(
+			mapClassificationFilterOptions(
+				filter,
+				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+				config.crypto.entity
+			)
+		).successBody()
+
+	override suspend fun matchClassificationsBySorted(filter: SortableFilterOptions<Classification>): List<String> =
+		matchClassificationsBy(filter)
 }
 
 @InternalIcureApi
 internal class ClassificationBasicApiImpl(
-	rawApi: RawClassificationApi,
+	private val rawApi: RawClassificationApi,
 	private val config: BasicApiConfiguration,
 ) : ClassificationBasicApi, ClassificationBasicFlavouredApi<EncryptedClassification> by object :
 	AbstractClassificationBasicFlavouredApi<EncryptedClassification>(rawApi) {
@@ -238,4 +269,22 @@ internal class ClassificationBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), config.encryption.classification)
 
 	override suspend fun maybeDecrypt(entity: EncryptedClassification): EncryptedClassification = entity
-}, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi)
+}, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
+	override suspend fun matchClassificationsBy(filter: BaseFilterOptions<Classification>): List<String> =
+		rawApi.matchClassificationBy(
+			mapClassificationFilterOptions(
+				filter,
+				null,
+				null
+			)
+		).successBody()
+
+	override suspend fun matchClassificationsBySorted(filter: BaseSortableFilterOptions<Classification>): List<String> =
+		matchClassificationsBy(filter)
+
+	override suspend fun filterClassificationsBy(filter: BaseFilterOptions<Classification>): PaginatedListIterator<EncryptedClassification> =
+		IdsPageIterator(matchClassificationsBy(filter), ::getClassifications)
+
+	override suspend fun filterClassificationsBySorted(filter: BaseSortableFilterOptions<Classification>): PaginatedListIterator<EncryptedClassification> =
+		filterClassificationsBy(filter)
+}

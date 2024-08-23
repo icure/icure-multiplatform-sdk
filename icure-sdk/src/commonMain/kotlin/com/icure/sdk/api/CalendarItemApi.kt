@@ -3,6 +3,10 @@ package com.icure.sdk.api
 import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.DecryptedCalendarItem
 import com.icure.sdk.model.EncryptedCalendarItem
@@ -150,6 +154,36 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	 * @return the updated calendar item.
 	 */
 	suspend fun linkToPatient(calendarItem: CalendarItem, patient: Patient, shareLinkWithDelegates: Set<String>): E
+
+	/**
+	 * Get an iterator that iterates through all calendarItems matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterCalendarItemsBySorted] instead.
+	 *
+	 * @param filter a calendarItem filter
+	 * @return an iterator that iterates over all calendarItems matching the provided filter.
+	 */
+	suspend fun filterCalendarItemsBy(
+		filter: FilterOptions<CalendarItem>
+	): PaginatedListIterator<E>
+
+	/**
+	 * Get an iterator that iterates through all calendarItems matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterCalendarItemsBy].
+	 *
+	 * @param filter a calendarItem filter
+	 * @return an iterator that iterates over all calendarItems matching the provided filter.
+	 */
+	suspend fun filterCalendarItemsBySorted(
+		filter: SortableFilterOptions<CalendarItem>
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -269,6 +303,84 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
+
+	/**
+	 * Get the ids of all calendarItems matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchCalendarItemsBySorted] instead.
+	 *
+	 * @param filter a calendarItem filter
+	 * @return a list of calendarItem ids
+	 */
+	suspend fun matchCalendarItemsBy(filter: FilterOptions<CalendarItem>): List<String>
+
+	/**
+	 * Get the ids of all calendarItems matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchCalendarItemsBy].
+	 *
+	 * @param filter a calendarItem filter
+	 * @return a list of calendarItem ids
+	 */
+	suspend fun matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): List<String>
 }
 
-interface CalendarItemBasicApi : CalendarItemBasicFlavourlessApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem>
+interface CalendarItemBasicApi : CalendarItemBasicFlavourlessApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem> {
+	/**
+	 * Get the ids of all calendarItems matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchCalendarItemsBySorted] instead.
+	 *
+	 * @param filter a calendarItem filter
+	 * @return a list of calendarItem ids
+	 */
+	suspend fun matchCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): List<String>
+
+	/**
+	 * Get the ids of all calendarItems matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchCalendarItemsBy].
+	 *
+	 * @param filter a calendarItem filter
+	 * @return a list of calendarItem ids
+	 */
+	suspend fun matchCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): List<String>
+
+	/**
+	 * Get an iterator that iterates through all calendarItems matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterCalendarItemsBySorted] instead.
+	 *
+	 * @param filter a calendarItem filter
+	 * @return an iterator that iterates over all calendarItems matching the provided filter.
+	 */
+	suspend fun filterCalendarItemsBy(
+		filter: BaseFilterOptions<CalendarItem>
+	): PaginatedListIterator<EncryptedCalendarItem>
+
+	/**
+	 * Get an iterator that iterates through all calendarItems matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterCalendarItemsBy].
+	 *
+	 * @param filter a calendarItem filter
+	 * @return an iterator that iterates over all calendarItems matching the provided filter.
+	 */
+	suspend fun filterCalendarItemsBySorted(
+		filter: BaseSortableFilterOptions<CalendarItem>
+	): PaginatedListIterator<EncryptedCalendarItem>
+}

@@ -13,6 +13,11 @@ import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
+import com.icure.sdk.filters.mapCalendarItemFilterOptions
 import com.icure.sdk.model.CalendarItem
 import com.icure.sdk.model.DecryptedCalendarItem
 import com.icure.sdk.model.EncryptedCalendarItem
@@ -166,6 +171,21 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		}
 		return maybeDecrypt((shareResult.updatedEntities.first() as EncryptedCalendarItem).copy(secretForeignKeys = secretForeignKeys))
 	}
+
+	override suspend fun filterCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): PaginatedListIterator<E> =
+		filterCalendarItemsBy(filter)
+
+	override suspend fun filterCalendarItemsBy(filter: FilterOptions<CalendarItem>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchCalendarItemsBy(
+				mapCalendarItemFilterOptions(
+					filter,
+					config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+					config.crypto.entity
+				)
+			).successBody(),
+			::getCalendarItems
+		)
 }
 
 @InternalIcureApi
@@ -289,11 +309,22 @@ internal class CalendarItemApiImpl(
 	override suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem =
 		decryptOrNull(calendarItem) ?: calendarItem
 
+	override suspend fun matchCalendarItemsBy(filter: FilterOptions<CalendarItem>): List<String> =
+		rawApi.matchCalendarItemsBy(
+			mapCalendarItemFilterOptions(
+				filter,
+				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+				config.crypto.entity
+			)
+		).successBody()
+
+	override suspend fun matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): List<String> =
+		matchCalendarItemsBy(filter)
 }
 
 @InternalIcureApi
 internal class CalendarItemBasicApiImpl(
-	rawApi: RawCalendarItemApi,
+	private val rawApi: RawCalendarItemApi,
 	private val config: BasicApiConfiguration
 ) : CalendarItemBasicApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem> by object :
 	AbstractCalendarItemBasicFlavouredApi<EncryptedCalendarItem>(rawApi) {
@@ -301,4 +332,16 @@ internal class CalendarItemBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedCalendarItem.serializer(), config.encryption.calendarItem)
 
 	override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): EncryptedCalendarItem = entity
-}, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi)
+}, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi) {
+	override suspend fun matchCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): List<String> =
+		rawApi.matchCalendarItemsBy(mapCalendarItemFilterOptions(filter, null, null)).successBody()
+
+	override suspend fun matchCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): List<String> =
+		matchCalendarItemsBy(filter)
+
+	override suspend fun filterCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): PaginatedListIterator<EncryptedCalendarItem> =
+		IdsPageIterator(matchCalendarItemsBy(filter), ::getCalendarItems)
+
+	override suspend fun filterCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): PaginatedListIterator<EncryptedCalendarItem> =
+		filterCalendarItemsBy(filter)
+}

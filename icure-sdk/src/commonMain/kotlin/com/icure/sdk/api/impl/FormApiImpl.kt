@@ -10,6 +10,11 @@ import com.icure.sdk.crypto.entities.FormShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
+import com.icure.sdk.filters.mapFormFilterOptions
 import com.icure.sdk.model.DecryptedForm
 import com.icure.sdk.model.EncryptedForm
 import com.icure.sdk.model.Form
@@ -124,6 +129,21 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 	) { ids ->
 		rawApi.getForms(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
+
+	override suspend fun filterFormsBySorted(filter: SortableFilterOptions<Form>): PaginatedListIterator<E> =
+		filterFormsBy(filter)
+
+	override suspend fun filterFormsBy(filter: FilterOptions<Form>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchFormsBy(
+				mapFormFilterOptions(
+					filter,
+					config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+					config.crypto.entity
+				)
+			).successBody(),
+			::getForms
+		)
 }
 
 @InternalIcureApi
@@ -170,6 +190,7 @@ private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasi
 		formTemplateId: String,
 		payload: ByteArray,
     ) = rawApi.setTemplateAttachment(formTemplateId, payload).successBody()
+
 }
 
 @InternalIcureApi
@@ -296,16 +317,44 @@ internal class FormApiImpl(
 	override suspend fun tryDecrypt(form: EncryptedForm): Form =
 		decryptOrNull(form) ?: form
 
+	override suspend fun matchFormsBy(filter: FilterOptions<Form>): List<String> =
+		rawApi.matchFormsBy(
+			mapFormFilterOptions(
+				filter,
+				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+				config.crypto.entity
+			)
+		).successBody()
+
+	override suspend fun matchFormsBySorted(filter: SortableFilterOptions<Form>): List<String> =
+		matchFormsBy(filter)
 }
 
 @InternalIcureApi
 internal class FormBasicApiImpl(
-	rawApi: RawFormApi,
+	private val rawApi: RawFormApi,
 	private val config: BasicApiConfiguration
-) : FormBasicApi, FormBasicFlavouredApi<EncryptedForm> by object :
-	AbstractFormBasicFlavouredApi<EncryptedForm>(rawApi) {
+) : FormBasicApi, FormBasicFlavouredApi<EncryptedForm> by object : AbstractFormBasicFlavouredApi<EncryptedForm>(rawApi) {
 	override suspend fun validateAndMaybeEncrypt(entity: EncryptedForm): EncryptedForm =
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), config.encryption.form)
 
 	override suspend fun maybeDecrypt(entity: EncryptedForm): EncryptedForm = entity
-}, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi)
+}, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
+	override suspend fun matchFormsBy(filter: BaseFilterOptions<Form>): List<String> =
+		rawApi.matchFormsBy(
+			mapFormFilterOptions(
+				filter,
+				null,
+				null
+			)
+		).successBody()
+
+	override suspend fun matchFormsBySorted(filter: BaseSortableFilterOptions<Form>): List<String> =
+		matchFormsBy(filter)
+
+	override suspend fun filterFormsBy(filter: BaseFilterOptions<Form>): PaginatedListIterator<EncryptedForm> =
+		IdsPageIterator(matchFormsBy(filter), ::getForms)
+
+	override suspend fun filterFormsBySorted(filter: BaseSortableFilterOptions<Form>): PaginatedListIterator<EncryptedForm> =
+		filterFormsBySorted(filter)
+}

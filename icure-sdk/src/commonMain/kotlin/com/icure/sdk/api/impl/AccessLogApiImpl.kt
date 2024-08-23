@@ -12,6 +12,11 @@ import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
+import com.icure.sdk.filters.mapAccessLogFilterOptions
 import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.DecryptedAccessLog
 import com.icure.sdk.model.EncryptedAccessLog
@@ -144,6 +149,14 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 		rawApi.getAccessLogByIds(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
 
+	override suspend fun filterAccessLogsBySorted(filter: SortableFilterOptions<AccessLog>): PaginatedListIterator<E> =
+		filterAccessLogsBy(filter)
+
+	override suspend fun filterAccessLogsBy(filter: FilterOptions<AccessLog>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchAccessLogsBy(mapAccessLogFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)).successBody(),
+			::getAccessLogs
+		)
 }
 
 @InternalIcureApi
@@ -266,11 +279,17 @@ internal class AccessLogApiImpl(
 
 	override suspend fun tryDecrypt(accessLog: EncryptedAccessLog): AccessLog =
 		decryptOrNull(accessLog) ?: accessLog
+
+	override suspend fun matchAccessLogsBy(filter: FilterOptions<AccessLog>): List<String> =
+		rawApi.matchAccessLogsBy(mapAccessLogFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)).successBody()
+
+	override suspend fun matchAccessLogsBySorted(filter: SortableFilterOptions<AccessLog>): List<String> =
+		matchAccessLogsBy(filter)
 }
 
 @InternalIcureApi
 internal class AccessLogBasicApiImpl(
-	rawApi: RawAccessLogApi,
+	private val rawApi: RawAccessLogApi,
 	private val config: BasicApiConfiguration
 ) : AccessLogBasicApi, AccessLogBasicFlavouredApi<EncryptedAccessLog> by object :
 	AbstractAccessLogBasicFlavouredApi<EncryptedAccessLog>(rawApi) {
@@ -282,4 +301,16 @@ internal class AccessLogBasicApiImpl(
 		)
 
 	override suspend fun maybeDecrypt(entity: EncryptedAccessLog): EncryptedAccessLog = entity
-}, AccessLogBasicFlavourlessApi by AbstractAccessLogBasicFlavourlessApi(rawApi)
+}, AccessLogBasicFlavourlessApi by AbstractAccessLogBasicFlavourlessApi(rawApi) {
+	override suspend fun matchAccessLogsBy(filter: BaseFilterOptions<AccessLog>): List<String> =
+		rawApi.matchAccessLogsBy(mapAccessLogFilterOptions(filter, null, null)).successBody()
+
+	override suspend fun matchAccessLogsBySorted(filter: BaseSortableFilterOptions<AccessLog>): List<String> =
+		matchAccessLogsBy(filter)
+
+	override suspend fun filterAccessLogsBy(filter: BaseFilterOptions<AccessLog>): PaginatedListIterator<EncryptedAccessLog> =
+		IdsPageIterator(matchAccessLogsBy(filter), ::getAccessLogs)
+
+	override suspend fun filterAccessLogsBySorted(filter: BaseSortableFilterOptions<AccessLog>): PaginatedListIterator<EncryptedAccessLog> =
+		filterAccessLogsBy(filter)
+}

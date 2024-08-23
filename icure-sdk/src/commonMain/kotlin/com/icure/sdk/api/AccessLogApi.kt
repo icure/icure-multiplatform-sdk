@@ -3,6 +3,10 @@ package com.icure.sdk.api
 import com.icure.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.AccessLog
 import com.icure.sdk.model.DecryptedAccessLog
 import com.icure.sdk.model.EncryptedAccessLog
@@ -156,6 +160,35 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 
+	/**
+	 * Get an iterator that iterates through all access logs matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterAccessLogsBySorted] instead.
+	 *
+	 * @param filter a access log filter
+	 * @return an iterator that iterates over all access logs matching the provided filter.
+	 */
+	suspend fun filterAccessLogsBy(
+		filter: FilterOptions<AccessLog>
+	): PaginatedListIterator<E>
+
+	/**
+	 * Get an iterator that iterates through all access logs matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterAccessLogsBy].
+	 *
+	 * @param filter a access log filter
+	 * @return an iterator that iterates over all access logs matching the provided filter.
+	 */
+	suspend fun filterAccessLogsBySorted(
+		filter: SortableFilterOptions<AccessLog>
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -275,6 +308,84 @@ interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<Dec
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: AccessLogFlavouredApi<AccessLog>
+
+	/**
+	 * Get the ids of all access logs matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchAccessLogsBySorted] instead.
+	 *
+	 * @param filter a access log filter
+	 * @return a list of access log ids
+	 */
+	suspend fun matchAccessLogsBy(filter: FilterOptions<AccessLog>): List<String>
+
+	/**
+	 * Get the ids of all access logs matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchAccessLogsBy].
+	 *
+	 * @param filter a access log filter
+	 * @return a list of access log ids
+	 */
+	suspend fun matchAccessLogsBySorted(filter: SortableFilterOptions<AccessLog>): List<String>
 }
 
-interface AccessLogBasicApi : AccessLogBasicFlavourlessApi, AccessLogBasicFlavouredApi<EncryptedAccessLog>
+interface AccessLogBasicApi : AccessLogBasicFlavourlessApi, AccessLogBasicFlavouredApi<EncryptedAccessLog> {
+	/**
+	 * Get the ids of all access logs matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchAccessLogsBySorted] instead.
+	 *
+	 * @param filter a access log filter
+	 * @return a list of access log ids
+	 */
+	suspend fun matchAccessLogsBy(filter: BaseFilterOptions<AccessLog>): List<String>
+
+	/**
+	 * Get the ids of all access logs matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchAccessLogsBy].
+	 *
+	 * @param filter a access log filter
+	 * @return a list of access log ids
+	 */
+	suspend fun matchAccessLogsBySorted(filter: BaseSortableFilterOptions<AccessLog>): List<String>
+
+	/**
+	 * Get an iterator that iterates through all access logs matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterAccessLogsBySorted] instead.
+	 *
+	 * @param filter a access log filter
+	 * @return an iterator that iterates over all access logs matching the provided filter.
+	 */
+	suspend fun filterAccessLogsBy(
+		filter: BaseFilterOptions<AccessLog>
+	): PaginatedListIterator<EncryptedAccessLog>
+
+	/**
+	 * Get an iterator that iterates through all access logs matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterAccessLogsBy].
+	 *
+	 * @param filter a access log filter
+	 * @return an iterator that iterates over all access logs matching the provided filter.
+	 */
+	suspend fun filterAccessLogsBySorted(
+		filter: BaseSortableFilterOptions<AccessLog>
+	): PaginatedListIterator<EncryptedAccessLog>
+}

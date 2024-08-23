@@ -10,6 +10,11 @@ import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
+import com.icure.sdk.filters.mapDocumentFilterOptions
 import com.icure.sdk.model.DecryptedDocument
 import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
@@ -127,6 +132,21 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	) { ids ->
 		rawApi.getDocuments(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
 	}
+
+	override suspend fun filterDocumentsBySorted(filter: SortableFilterOptions<Document>): PaginatedListIterator<E> =
+		filterDocumentsBy(filter)
+
+	override suspend fun filterDocumentsBy(filter: FilterOptions<Document>): PaginatedListIterator<E> =
+		IdsPageIterator(
+			rawApi.matchDocumentsBy(
+				mapDocumentFilterOptions(
+					filter,
+					config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+					null
+				)
+			).successBody(),
+			::getDocuments
+		)
 }
 
 @InternalIcureApi
@@ -368,11 +388,23 @@ internal class DocumentApiImpl(
 		decryptedAttachmentValidator: (suspend (document: ByteArray) -> Boolean)?
 	): ByteArray? =
 		crypto.entity.tryDecryptAttachmentOf(document.withTypeInfo(), encryptedAttachment, decryptedAttachmentValidator)
+
+	override suspend fun matchDocumentsBy(filter: FilterOptions<Document>): List<String> =
+		rawApi.matchDocumentsBy(
+			mapDocumentFilterOptions(
+				filter,
+				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+				null
+			)
+		).successBody()
+
+	override suspend fun matchDocumentsBySorted(filter: SortableFilterOptions<Document>): List<String> =
+		matchDocumentsBy(filter)
 }
 
 @InternalIcureApi
 internal class DocumentBasicApiImpl(
-	rawApi: RawDocumentApi,
+	private val rawApi: RawDocumentApi,
 	private val config: BasicApiConfiguration
 ) : DocumentBasicApi, DocumentBasicFlavouredApi<EncryptedDocument> by object :
 	AbstractDocumentBasicFlavouredApi<EncryptedDocument>(rawApi) {
@@ -380,4 +412,21 @@ internal class DocumentBasicApiImpl(
 		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedDocument.serializer(), config.encryption.document)
 
 	override suspend fun maybeDecrypt(entity: EncryptedDocument): EncryptedDocument = entity
-}, DocumentBasicFlavourlessApi by AbstractDocumentBasicFlavourlessApi(rawApi)
+}, DocumentBasicFlavourlessApi by AbstractDocumentBasicFlavourlessApi(rawApi) {
+	override suspend fun matchDocumentsBy(filter: BaseFilterOptions<Document>): List<String> =
+		rawApi.matchDocumentsBy(
+			mapDocumentFilterOptions(filter, null, null)
+		).successBody()
+
+	override suspend fun matchDocumentsBySorted(filter: BaseSortableFilterOptions<Document>): List<String> =
+		matchDocumentsBy(filter)
+
+	override suspend fun filterDocumentsBy(filter: BaseFilterOptions<Document>): PaginatedListIterator<EncryptedDocument> =
+		IdsPageIterator(
+			matchDocumentsBy(filter),
+			::getDocuments
+		)
+
+	override suspend fun filterDocumentsBySorted(filter: BaseSortableFilterOptions<Document>): PaginatedListIterator<EncryptedDocument> =
+		filterDocumentsBy(filter)
+}

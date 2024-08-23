@@ -3,6 +3,10 @@ package com.icure.sdk.api
 import com.icure.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.Classification
 import com.icure.sdk.model.DecryptedClassification
 import com.icure.sdk.model.EncryptedClassification
@@ -125,6 +129,35 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
 
+	/**
+	 * Get an iterator that iterates through all classifications matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterClassificationsBySorted] instead.
+	 *
+	 * @param filter a classification filter
+	 * @return an iterator that iterates over all classifications matching the provided filter.
+	 */
+	suspend fun filterClassificationsBy(
+		filter: FilterOptions<Classification>
+	): PaginatedListIterator<E>
+
+	/**
+	 * Get an iterator that iterates through all classifications matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterClassificationsBy].
+	 *
+	 * @param filter a classification filter
+	 * @return an iterator that iterates over all classifications matching the provided filter.
+	 */
+	suspend fun filterClassificationsBySorted(
+		filter: SortableFilterOptions<Classification>
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -244,7 +277,85 @@ interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationF
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: ClassificationFlavouredApi<Classification>
+
+	/**
+	 * Get the ids of all classifications matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchClassificationsBySorted] instead.
+	 *
+	 * @param filter a classification filter
+	 * @return a list of classification ids
+	 */
+	suspend fun matchClassificationsBy(filter: FilterOptions<Classification>): List<String>
+
+	/**
+	 * Get the ids of all classifications matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchClassificationsBy].
+	 *
+	 * @param filter a classification filter
+	 * @return a list of classification ids
+	 */
+	suspend fun matchClassificationsBySorted(filter: SortableFilterOptions<Classification>): List<String>
 }
 
-interface ClassificationBasicApi : ClassificationBasicFlavourlessApi, ClassificationBasicFlavouredApi<EncryptedClassification>
+interface ClassificationBasicApi : ClassificationBasicFlavourlessApi, ClassificationBasicFlavouredApi<EncryptedClassification> {
+	/**
+	 * Get the ids of all classifications matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchClassificationsBySorted] instead.
+	 *
+	 * @param filter a classification filter
+	 * @return a list of classification ids
+	 */
+	suspend fun matchClassificationsBy(filter: BaseFilterOptions<Classification>): List<String>
+
+	/**
+	 * Get the ids of all classifications matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchClassificationsBy].
+	 *
+	 * @param filter a classification filter
+	 * @return a list of classification ids
+	 */
+	suspend fun matchClassificationsBySorted(filter: BaseSortableFilterOptions<Classification>): List<String>
+
+	/**
+	 * Get an iterator that iterates through all classifications matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterClassificationsBySorted] instead.
+	 *
+	 * @param filter a classification filter
+	 * @return an iterator that iterates over all classifications matching the provided filter.
+	 */
+	suspend fun filterClassificationsBy(
+		filter: BaseFilterOptions<Classification>
+	): PaginatedListIterator<EncryptedClassification>
+
+	/**
+	 * Get an iterator that iterates through all classifications matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterClassificationsBy].
+	 *
+	 * @param filter a classification filter
+	 * @return an iterator that iterates over all classifications matching the provided filter.
+	 */
+	suspend fun filterClassificationsBySorted(
+		filter: BaseSortableFilterOptions<Classification>
+	): PaginatedListIterator<EncryptedClassification>
+}
 

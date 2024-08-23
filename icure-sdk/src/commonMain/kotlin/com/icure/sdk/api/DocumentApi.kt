@@ -3,6 +3,10 @@ package com.icure.sdk.api
 import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
+import com.icure.sdk.filters.BaseFilterOptions
+import com.icure.sdk.filters.BaseSortableFilterOptions
+import com.icure.sdk.filters.FilterOptions
+import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.DecryptedDocument
 import com.icure.sdk.model.Document
 import com.icure.sdk.model.EncryptedDocument
@@ -261,6 +265,37 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 		@DefaultValue("null")
 		descending: Boolean? = null,
 	): PaginatedListIterator<E>
+
+
+	/**
+	 * Get an iterator that iterates through all documents matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterDocumentsBySorted] instead.
+	 *
+	 * @param filter a document filter
+	 * @return an iterator that iterates over all documents matching the provided filter.
+	 */
+	suspend fun filterDocumentsBy(
+		filter: FilterOptions<Document>
+	): PaginatedListIterator<E>
+
+	/**
+	 * Get an iterator that iterates through all documents matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterDocumentsBy].
+	 *
+	 * @param filter a document filter
+	 * @return an iterator that iterates over all documents matching the provided filter.
+	 */
+	suspend fun filterDocumentsBySorted(
+		filter: SortableFilterOptions<Document>
+	): PaginatedListIterator<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -508,7 +543,84 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: DocumentFlavouredApi<Document>
+	/**
+	 * Get the ids of all documents matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchDocumentsBySorted] instead.
+	 *
+	 * @param filter a document filter
+	 * @return a list of document ids
+	 */
+	suspend fun matchDocumentsBy(filter: FilterOptions<Document>): List<String>
+
+	/**
+	 * Get the ids of all documents matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchDocumentsBy].
+	 *
+	 * @param filter a document filter
+	 * @return a list of document ids
+	 */
+	suspend fun matchDocumentsBySorted(filter: SortableFilterOptions<Document>): List<String>
 }
 
-interface DocumentBasicApi : DocumentBasicFlavourlessApi, DocumentBasicFlavouredApi<EncryptedDocument>
+interface DocumentBasicApi : DocumentBasicFlavourlessApi, DocumentBasicFlavouredApi<EncryptedDocument> {
+	/**
+	 * Get the ids of all documents matching the provided filter.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [matchDocumentsBySorted] instead.
+	 *
+	 * @param filter a document filter
+	 * @return a list of document ids
+	 */
+	suspend fun matchDocumentsBy(filter: BaseFilterOptions<Document>): List<String>
+
+	/**
+	 * Get the ids of all documents matching the provided filter.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [matchDocumentsBy].
+	 *
+	 * @param filter a document filter
+	 * @return a list of document ids
+	 */
+	suspend fun matchDocumentsBySorted(filter: BaseSortableFilterOptions<Document>): List<String>
+
+	/**
+	 * Get an iterator that iterates through all documents matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method does not guarantee that the returned data will be ordered when using sortable filter options.
+	 * Even if the data obtained from an invocation of the method appears to be ordered, any changes to the stored data,
+	 * or to the internal iCure implementations, may cause future invocations to return unordered data.
+	 * If you need ordered data use [filterDocumentsBySorted] instead.
+	 *
+	 * @param filter a document filter
+	 * @return an iterator that iterates over all documents matching the provided filter.
+	 */
+	suspend fun filterDocumentsBy(
+		filter: BaseFilterOptions<Document>
+	): PaginatedListIterator<EncryptedDocument>
+
+	/**
+	 * Get an iterator that iterates through all documents matching the provided filter, executing multiple requests to
+	 * the api if needed.
+	 *
+	 * This method guarantees that the returned data will be ordered using the rules specified by the provided filter,
+	 * but the operation may take longer than [filterDocumentsBy].
+	 *
+	 * @param filter a document filter
+	 * @return an iterator that iterates over all documents matching the provided filter.
+	 */
+	suspend fun filterDocumentsBySorted(
+		filter: BaseSortableFilterOptions<Document>
+	): PaginatedListIterator<EncryptedDocument>
+}
 
