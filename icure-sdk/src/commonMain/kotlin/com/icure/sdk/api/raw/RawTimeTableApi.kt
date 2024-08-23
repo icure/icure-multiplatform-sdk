@@ -38,7 +38,7 @@ public interface RawTimeTableApi {
 
 	suspend fun getTimeTablesByAgendaId(agendaId: String): HttpResponse<List<EncryptedTimeTable>>
 
-	suspend fun matchAccessLogsBy(filter: AbstractFilter<TimeTable>): HttpResponse<List<String>>
+	suspend fun matchTimeTablesBy(filter: AbstractFilter<TimeTable>): HttpResponse<List<String>>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>>
 	// endregion

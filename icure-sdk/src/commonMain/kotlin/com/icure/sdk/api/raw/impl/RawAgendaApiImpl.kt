@@ -141,5 +141,16 @@ class RawAgendaApiImpl(
 			setBodyWithSerializer(AgendaAbstractFilterSerializer, filter)
 		}.wrap()
 
+	override suspend fun getAgendasByIds(agendaIds: ListOfIds): HttpResponse<List<Agenda>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(agendaIds)
+		}.wrap()
+
 	// endregion
 }
