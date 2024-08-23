@@ -99,7 +99,7 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 
 	override suspend fun filterTimeTablesBy(filter: FilterOptions<TimeTable>): PaginatedListIterator<E> =
 		IdsPageIterator(
-			rawApi.matchAccessLogsBy(
+			rawApi.matchTimeTablesBy(
 				mapTimeTableFilterOptions(
 					filter,
 					config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
@@ -228,7 +228,7 @@ internal class TimeTableApiImpl(
 		decryptOrNull(timeTable) ?: timeTable
 
 	override suspend fun matchTimeTablesBy(filter: FilterOptions<TimeTable>): List<String> =
-		rawApi.matchAccessLogsBy(
+		rawApi.matchTimeTablesBy(
 			mapTimeTableFilterOptions(
 				filter,
 				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
@@ -252,7 +252,7 @@ internal class TimeTableBasicApiImpl(
 	override suspend fun maybeDecrypt(entity: EncryptedTimeTable): EncryptedTimeTable = entity
 }, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi) {
 	override suspend fun matchTimeTablesBy(filter: BaseFilterOptions<TimeTable>): List<String> =
-		rawApi.matchAccessLogsBy(
+		rawApi.matchTimeTablesBy(
 			mapTimeTableFilterOptions(
 				filter,
 				null,

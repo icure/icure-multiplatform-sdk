@@ -1,6 +1,5 @@
 package com.icure.sdk.filters
 
-import com.icure.sdk.crypto.EntityEncryptionService
 import com.icure.sdk.model.Agenda
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.agenda.AgendaByUserIdFilter
@@ -9,7 +8,6 @@ import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
 object AgendaFilters {
-
 	/**
 	 * Options for agenda filtering that returns all the agendas where [Agenda.userId] is equal to [userId].
 	 *
@@ -42,11 +40,9 @@ object AgendaFilters {
 
 @InternalIcureApi
 internal suspend fun mapAgendaFilterOptions(
-	filterOptions: FilterOptions<Agenda>,
-	selfDataOwnerId: String?,
-	entityEncryptionService: EntityEncryptionService?
+	filterOptions: FilterOptions<Agenda>
 ): AbstractFilter<Agenda> = mapIfMetaFilterOptions(filterOptions) {
-	mapAgendaFilterOptions(it, selfDataOwnerId, entityEncryptionService)
+	mapAgendaFilterOptions(it)
 } ?: when (filterOptions) {
 	is AgendaFilters.ByUserId -> AgendaByUserIdFilter(
 		userId = filterOptions.userId,

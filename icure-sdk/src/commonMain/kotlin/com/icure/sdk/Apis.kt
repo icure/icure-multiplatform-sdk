@@ -1,54 +1,56 @@
 package com.icure.sdk
 
-import com.icure.sdk.api.ApplicationSettingsApi
-import com.icure.sdk.api.CodeApi
-import com.icure.sdk.api.CryptoApi
-import com.icure.sdk.api.DeviceApi
-import com.icure.sdk.api.DocumentTemplateApi
-import com.icure.sdk.api.EntityReferenceApi
-import com.icure.sdk.api.EntityTemplateApi
-import com.icure.sdk.api.FrontEndMigrationApi
-import com.icure.sdk.api.GroupApi
-import com.icure.sdk.api.HealthcarePartyApi
-import com.icure.sdk.api.ICureApi
-import com.icure.sdk.api.InsuranceApi
-import com.icure.sdk.api.KeywordApi
-import com.icure.sdk.api.PermissionApi
-import com.icure.sdk.api.PlaceApi
-import com.icure.sdk.api.RecoveryApi
-import com.icure.sdk.api.RoleApi
-import com.icure.sdk.api.TarificationApi
-import com.icure.sdk.api.UserApi
-import com.icure.sdk.api.DataOwnerApi
-import com.icure.sdk.api.IcureMaintenanceTaskApi
 import com.icure.sdk.api.AccessLogApi
 import com.icure.sdk.api.AccessLogBasicApi
+import com.icure.sdk.api.AgendaApi
+import com.icure.sdk.api.ApplicationSettingsApi
 import com.icure.sdk.api.CalendarItemApi
 import com.icure.sdk.api.CalendarItemBasicApi
 import com.icure.sdk.api.ClassificationApi
 import com.icure.sdk.api.ClassificationBasicApi
+import com.icure.sdk.api.CodeApi
 import com.icure.sdk.api.ContactApi
 import com.icure.sdk.api.ContactBasicApi
+import com.icure.sdk.api.CryptoApi
+import com.icure.sdk.api.DataOwnerApi
+import com.icure.sdk.api.DeviceApi
 import com.icure.sdk.api.DocumentApi
 import com.icure.sdk.api.DocumentBasicApi
+import com.icure.sdk.api.DocumentTemplateApi
+import com.icure.sdk.api.EntityReferenceApi
+import com.icure.sdk.api.EntityTemplateApi
 import com.icure.sdk.api.FormApi
 import com.icure.sdk.api.FormBasicApi
+import com.icure.sdk.api.FrontEndMigrationApi
+import com.icure.sdk.api.GroupApi
 import com.icure.sdk.api.HealthElementApi
 import com.icure.sdk.api.HealthElementBasicApi
+import com.icure.sdk.api.HealthcarePartyApi
+import com.icure.sdk.api.ICureApi
+import com.icure.sdk.api.IcureMaintenanceTaskApi
+import com.icure.sdk.api.InsuranceApi
 import com.icure.sdk.api.InvoiceApi
 import com.icure.sdk.api.InvoiceBasicApi
+import com.icure.sdk.api.KeywordApi
 import com.icure.sdk.api.MaintenanceTaskApi
 import com.icure.sdk.api.MaintenanceTaskBasicApi
+import com.icure.sdk.api.MedicalLocationApi
 import com.icure.sdk.api.MessageApi
 import com.icure.sdk.api.MessageBasicApi
 import com.icure.sdk.api.PatientApi
 import com.icure.sdk.api.PatientBasicApi
+import com.icure.sdk.api.PermissionApi
+import com.icure.sdk.api.PlaceApi
 import com.icure.sdk.api.ReceiptApi
 import com.icure.sdk.api.ReceiptBasicApi
+import com.icure.sdk.api.RecoveryApi
+import com.icure.sdk.api.RoleApi
+import com.icure.sdk.api.TarificationApi
 import com.icure.sdk.api.TimeTableApi
 import com.icure.sdk.api.TimeTableBasicApi
 import com.icure.sdk.api.TopicApi
 import com.icure.sdk.api.TopicBasicApi
+import com.icure.sdk.api.UserApi
 
 /**
  * Apis that are completely independent of the cryptographic context.
@@ -72,6 +74,8 @@ interface IcureNonCryptoApis {
 	val role: RoleApi
 	val tarification: TarificationApi
 	val user: UserApi
+	val medicalLocationApi: MedicalLocationApi
+	val agendaApi: AgendaApi
 }
 
 /**

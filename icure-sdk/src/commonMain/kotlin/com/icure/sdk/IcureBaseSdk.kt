@@ -1,52 +1,57 @@
 package com.icure.sdk
 
 import com.icure.sdk.IcureSdk.Companion.sharedHttpClient
+import com.icure.sdk.api.AgendaApi
 import com.icure.sdk.api.ApplicationSettingsApi
-import com.icure.sdk.api.impl.ApplicationSettingsApiImpl
-import com.icure.sdk.api.impl.CodeApiImpl
-import com.icure.sdk.api.impl.DeviceApiImpl
 import com.icure.sdk.api.DocumentTemplateApi
-import com.icure.sdk.api.impl.DocumentTemplateApiImpl
 import com.icure.sdk.api.EntityReferenceApi
-import com.icure.sdk.api.impl.EntityReferenceApiImpl
 import com.icure.sdk.api.EntityTemplateApi
-import com.icure.sdk.api.impl.EntityTemplateApiImpl
 import com.icure.sdk.api.FrontEndMigrationApi
-import com.icure.sdk.api.impl.FrontEndMigrationApiImpl
 import com.icure.sdk.api.GroupApi
-import com.icure.sdk.api.impl.GroupApiImpl
-import com.icure.sdk.api.impl.HealthcarePartyApiImpl
 import com.icure.sdk.api.ICureApi
-import com.icure.sdk.api.impl.ICureApiImpl
 import com.icure.sdk.api.InsuranceApi
-import com.icure.sdk.api.impl.InsuranceApiImpl
 import com.icure.sdk.api.KeywordApi
-import com.icure.sdk.api.impl.KeywordApiImpl
-import com.icure.sdk.api.impl.PermissionApiImpl
+import com.icure.sdk.api.MedicalLocationApi
 import com.icure.sdk.api.PlaceApi
-import com.icure.sdk.api.impl.PlaceApiImpl
 import com.icure.sdk.api.RoleApi
-import com.icure.sdk.api.impl.RoleApiImpl
 import com.icure.sdk.api.TarificationApi
-import com.icure.sdk.api.impl.TarificationApiImpl
 import com.icure.sdk.api.UserApi
-import com.icure.sdk.api.impl.UserApiImpl
 import com.icure.sdk.api.impl.AccessLogBasicApiImpl
+import com.icure.sdk.api.impl.AgendaApiImpl
+import com.icure.sdk.api.impl.ApplicationSettingsApiImpl
 import com.icure.sdk.api.impl.CalendarItemBasicApiImpl
 import com.icure.sdk.api.impl.ClassificationBasicApiImpl
-import com.icure.sdk.api.impl.DocumentBasicApiImpl
-import com.icure.sdk.api.impl.FormBasicApiImpl
-import com.icure.sdk.api.impl.InvoiceBasicApiImpl
-import com.icure.sdk.api.impl.ReceiptBasicApiImpl
-import com.icure.sdk.api.impl.TimeTableBasicApiImpl
+import com.icure.sdk.api.impl.CodeApiImpl
 import com.icure.sdk.api.impl.ContactBasicApiImpl
+import com.icure.sdk.api.impl.DeviceApiImpl
+import com.icure.sdk.api.impl.DocumentBasicApiImpl
+import com.icure.sdk.api.impl.DocumentTemplateApiImpl
+import com.icure.sdk.api.impl.EntityReferenceApiImpl
+import com.icure.sdk.api.impl.EntityTemplateApiImpl
+import com.icure.sdk.api.impl.FormBasicApiImpl
+import com.icure.sdk.api.impl.FrontEndMigrationApiImpl
+import com.icure.sdk.api.impl.GroupApiImpl
 import com.icure.sdk.api.impl.HealthElementBasicApiImpl
+import com.icure.sdk.api.impl.HealthcarePartyApiImpl
+import com.icure.sdk.api.impl.ICureApiImpl
+import com.icure.sdk.api.impl.InsuranceApiImpl
+import com.icure.sdk.api.impl.InvoiceBasicApiImpl
+import com.icure.sdk.api.impl.KeywordApiImpl
 import com.icure.sdk.api.impl.MaintenanceTaskBasicApiImpl
+import com.icure.sdk.api.impl.MedicalLocationApiImpl
 import com.icure.sdk.api.impl.MessageBasicApiImpl
 import com.icure.sdk.api.impl.PatientBasicApiImpl
+import com.icure.sdk.api.impl.PermissionApiImpl
+import com.icure.sdk.api.impl.PlaceApiImpl
+import com.icure.sdk.api.impl.ReceiptBasicApiImpl
+import com.icure.sdk.api.impl.RoleApiImpl
+import com.icure.sdk.api.impl.TarificationApiImpl
+import com.icure.sdk.api.impl.TimeTableBasicApiImpl
 import com.icure.sdk.api.impl.TopicBasicApiImpl
+import com.icure.sdk.api.impl.UserApiImpl
 import com.icure.sdk.api.raw.RawMessageGatewayApi
 import com.icure.sdk.api.raw.impl.RawAccessLogApiImpl
+import com.icure.sdk.api.raw.impl.RawAgendaApiImpl
 import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.sdk.api.raw.impl.RawApplicationSettingsApiImpl
 import com.icure.sdk.api.raw.impl.RawCalendarItemApiImpl
@@ -68,6 +73,7 @@ import com.icure.sdk.api.raw.impl.RawInsuranceApiImpl
 import com.icure.sdk.api.raw.impl.RawInvoiceApiImpl
 import com.icure.sdk.api.raw.impl.RawKeywordApiImpl
 import com.icure.sdk.api.raw.impl.RawMaintenanceTaskApiImpl
+import com.icure.sdk.api.raw.impl.RawMedicalLocationApiImpl
 import com.icure.sdk.api.raw.impl.RawMessageApiImpl
 import com.icure.sdk.api.raw.impl.RawPatientApiImpl
 import com.icure.sdk.api.raw.impl.RawPermissionApiImpl
@@ -450,6 +456,12 @@ private class IcureBaseApisImpl(
 	}
 	override val tarification: TarificationApi by lazy {
 		TarificationApiImpl(RawTarificationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+	}
+	override val medicalLocationApi: MedicalLocationApi by lazy {
+		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+	}
+	override val agendaApi: AgendaApi by lazy {
+		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, client, json = httpClientJson))
 	}
 }
 
