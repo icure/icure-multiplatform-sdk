@@ -291,6 +291,7 @@ object ServiceFilters {
      *
      * These options are sortable. When sorting using these options the services will be sorted by the patients, using
      * the same order as the input patients.
+     *
      * @param patients a list of patients.
      */
     fun byPatientsForSelf(
@@ -304,6 +305,7 @@ object ServiceFilters {
      * patient through one of the provided secret ids.
      * These options are sortable. When sorting using these options the services will be sorted by the linked patients
      * secret id, using the same order as the input.
+     *
      * @param secretIds a list of patients secret ids
      * @param dataOwnerId a data owner id
      */
@@ -322,6 +324,7 @@ object ServiceFilters {
      * These options are sortable. When sorting using these options the services will be sorted in the same order as the
      * input health element ids. If a service exists in multiple subcontacts only the first subcontact with matching
      * health element service is considered for the ordering.
+     *
      * @param healthElementIds a list of health element ids
      */
     fun byHealthElementIdFromSubContactForSelf(
@@ -333,6 +336,7 @@ object ServiceFilters {
     /**
      * Filter options that match all services with one of the provided ids.
      * These options are sortable. When sorting using these options the services will have the same order as the input ids.
+     *
      * @param ids a list of unique service ids.
      * @throws IllegalArgumentException if the provided [ids] list contains duplicate elements
      */
