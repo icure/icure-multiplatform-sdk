@@ -26,5 +26,6 @@ data class HealthElementByDataOwnerPatientOpeningDate(
 	public val descending: Boolean = false,
 ) : AbstractFilter<HealthElement> {
 	// region HealthElementByDataOwnerPatientOpeningDate-HealthElementByDataOwnerPatientOpeningDate
+
 	// endregion
 }

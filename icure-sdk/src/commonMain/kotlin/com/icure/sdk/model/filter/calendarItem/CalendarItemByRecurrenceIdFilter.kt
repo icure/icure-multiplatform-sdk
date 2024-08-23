@@ -16,5 +16,6 @@ data class CalendarItemByRecurrenceIdFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<CalendarItem> {
 	// region CalendarItemByRecurrenceIdFilter-CalendarItemByRecurrenceIdFilter
+
 	// endregion
 }

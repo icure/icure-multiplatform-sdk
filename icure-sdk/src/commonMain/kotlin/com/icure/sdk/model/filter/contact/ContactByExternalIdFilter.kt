@@ -16,5 +16,6 @@ data class ContactByExternalIdFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Contact> {
 	// region ContactByExternalIdFilter-ContactByExternalIdFilter
+
 	// endregion
 }

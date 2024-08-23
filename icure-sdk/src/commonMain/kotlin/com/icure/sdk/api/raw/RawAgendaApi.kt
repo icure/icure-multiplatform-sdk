@@ -35,6 +35,6 @@ public interface RawAgendaApi {
 
 	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda>
 
-	suspend fun matchCodesBy(filter: AbstractFilter<Agenda>): HttpResponse<List<String>>
+	suspend fun matchAgendasBy(filter: AbstractFilter<Agenda>): HttpResponse<List<String>>
 	// endregion
 }

@@ -26,6 +26,8 @@ public interface RawTimeTableApi {
 
 	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable>
 
+	suspend fun getTimeTables(timeTableIds: ListOfIds): HttpResponse<List<EncryptedTimeTable>>
+
 	suspend fun modifyTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable>
 
 	suspend fun getTimeTablesByPeriodAndAgendaId(

@@ -166,7 +166,7 @@ class RawClassificationApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	override suspend fun matchCalendarItemsBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>> =
+	override suspend fun matchClassificationBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)

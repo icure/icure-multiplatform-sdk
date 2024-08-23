@@ -18,5 +18,6 @@ data class FormByUniqueUuidFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Form> {
 	// region FormByUniqueUuidFilter-FormByUniqueUuidFilter
+
 	// endregion
 }

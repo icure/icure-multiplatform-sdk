@@ -16,5 +16,6 @@ data class AgendaReadableByUserIdFilter(
 	override val desc: String?,
 ) : AbstractFilter<Agenda> {
 	// region AgendaReadableByUserIdFilter-AgendaReadableByUserIdFilter
+
 	// endregion
 }

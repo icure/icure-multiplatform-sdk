@@ -23,5 +23,6 @@ data class FormByDataOwnerPatientOpeningDateFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Form> {
 	// region FormByDataOwnerPatientOpeningDateFilter-FormByDataOwnerPatientOpeningDateFilter
+
 	// endregion
 }

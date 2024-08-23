@@ -17,5 +17,6 @@ data class MessageByInvoiceIdsFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Message> {
 	// region MessageByInvoiceIdsFilter-MessageByInvoiceIdsFilter
+
 	// endregion
 }

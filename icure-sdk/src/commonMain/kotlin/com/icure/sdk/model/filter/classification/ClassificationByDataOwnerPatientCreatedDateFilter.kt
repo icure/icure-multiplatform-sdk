@@ -23,5 +23,6 @@ data class ClassificationByDataOwnerPatientCreatedDateFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Classification> {
 	// region ClassificationByDataOwnerPatientCreatedDateFilter-ClassificationByDataOwnerPatientCreatedDateFilter
+
 	// endregion
 }

@@ -130,7 +130,7 @@ class RawAgendaApiImpl(
 			setBody(agendaDto)
 		}.wrap()
 
-	override suspend fun matchCodesBy(filter: AbstractFilter<Agenda>): HttpResponse<List<String>> =
+	override suspend fun matchAgendasBy(filter: AbstractFilter<Agenda>): HttpResponse<List<String>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)

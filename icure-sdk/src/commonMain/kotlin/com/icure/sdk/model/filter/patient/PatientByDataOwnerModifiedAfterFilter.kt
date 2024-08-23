@@ -19,5 +19,6 @@ data class PatientByDataOwnerModifiedAfterFilter(
 	override val desc: String?,
 ) : AbstractFilter<Patient> {
 	// region PatientByDataOwnerModifiedAfterFilter-PatientByDataOwnerModifiedAfterFilter
+
 	// endregion
 }

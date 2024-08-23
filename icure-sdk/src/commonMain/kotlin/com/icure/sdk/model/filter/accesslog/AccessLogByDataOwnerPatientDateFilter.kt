@@ -26,5 +26,6 @@ data class AccessLogByDataOwnerPatientDateFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<AccessLog> {
 	// region AccessLogByDataOwnerPatientDateFilter-AccessLogByDataOwnerPatientDateFilter
+
 	// endregion
 }

@@ -23,5 +23,6 @@ data class CalendarItemByDataOwnerPatientStartTimeFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<CalendarItem> {
 	// region CalendarItemByDataOwnerPatientStartTimeFilter-CalendarItemByDataOwnerPatientStartTimeFilter
+
 	// endregion
 }

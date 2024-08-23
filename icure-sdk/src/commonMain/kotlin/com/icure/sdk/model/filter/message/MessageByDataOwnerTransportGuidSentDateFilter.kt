@@ -25,5 +25,6 @@ data class MessageByDataOwnerTransportGuidSentDateFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Message> {
 	// region MessageByDataOwnerTransportGuidSentDateFilter-MessageByDataOwnerTransportGuidSentDateFilter
+
 	// endregion
 }

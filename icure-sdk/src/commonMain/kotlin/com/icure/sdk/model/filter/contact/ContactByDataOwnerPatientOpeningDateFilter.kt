@@ -23,5 +23,6 @@ data class ContactByDataOwnerPatientOpeningDateFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Contact> {
 	// region ContactByDataOwnerPatientOpeningDateFilter-ContactByDataOwnerPatientOpeningDateFilter
+
 	// endregion
 }
