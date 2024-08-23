@@ -18,7 +18,7 @@ interface PaginatedListIteratorJs<T : Any> {
 	 * @return the next element [T] of the page.
 	 * @throws NoSuchElementException if there are no elements left.
 	 */
-	fun next(): Promise<T>
+	fun next(limit: Int): Promise<T>
 
 	/**
 	 * @return the next element [T] of the page, or null if there are no elements left.

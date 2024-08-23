@@ -9,6 +9,7 @@ import com.icure.sdk.model.embed.AccessLevel
 import com.icure.sdk.test.createHcpUser
 import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.utils.RequestStatusException
+import com.icure.sdk.utils.pagination.forEach
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
@@ -102,8 +103,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 
 			hcpIds.forEach { hcpId ->
 				val iterator = api.healthElement.findHealthElementsByHcPartyPatient(hcpId, patient)
-				while (iterator.hasNext()) {
-					val element = iterator.next()
+				iterator.forEach { element ->
 					if (hes.all { it.id != element.id }) {
 						hes.add(element)
 					}

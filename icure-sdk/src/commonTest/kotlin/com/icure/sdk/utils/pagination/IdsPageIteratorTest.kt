@@ -3,6 +3,7 @@ package com.icure.sdk.utils.pagination
 import com.icure.kryptom.crypto.defaultCryptoService
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import kotlin.random.Random
@@ -17,8 +18,7 @@ class IdsPageIteratorTest : StringSpec({
 
 	suspend fun <T: Any> IdsPageIterator<T>.shouldHaveNoMoreElements() {
 		hasNext() shouldBe false
-		tryNext() shouldBe null
-		shouldThrow<NoSuchElementException> { next() }
+		next(1).shouldBeEmpty()
 	}
 
 	fun createIterator() = IdsPageIterator(
@@ -32,24 +32,11 @@ class IdsPageIteratorTest : StringSpec({
 		val iterator = createIterator()
 		val results = mutableListOf<Datum>()
 
-		while(iterator.hasNext()) {
-			results.add(iterator.next())
+		iterator.forEach {
+			results.add(it)
 		}
 
 		results shouldContainExactlyInAnyOrder elements.values
-		iterator.shouldHaveNoMoreElements()
-	}
-
-	"A IdsPageIterator can iterate over multiple pages using tryNext" {
-		val iterator = createIterator()
-		val results = mutableListOf<Datum?>()
-
-		do {
-			val result = iterator.tryNext()
-			results.add(result)
-		} while (result != null)
-
-		results shouldContainExactlyInAnyOrder elements.values + null
 		iterator.shouldHaveNoMoreElements()
 	}
 
@@ -59,7 +46,7 @@ class IdsPageIteratorTest : StringSpec({
 
 		while(iterator.hasNext()) {
 			(1 .. 10).forEach { _ -> iterator.hasNext() }
-			results.add(iterator.next())
+			results.addAll(iterator.next(100))
 		}
 
 		results shouldContainExactlyInAnyOrder elements.values
@@ -77,7 +64,7 @@ class IdsPageIteratorTest : StringSpec({
 		}
 		shouldThrow<CustomException> {
 			while(iterator.hasNext()) {
-				iterator.next()
+				iterator.next(100)
 			}
 		}
 	}
@@ -96,7 +83,7 @@ class IdsPageIteratorTest : StringSpec({
 		) { ids -> elements.filterKeys { ids.contains(it) }.values.toList() }
 		val results = mutableListOf<Datum>()
 		while(iterator.hasNext()) {
-			results.add(iterator.next())
+			results.addAll(iterator.next(100))
 		}
 
 		results shouldContainExactlyInAnyOrder elements.values

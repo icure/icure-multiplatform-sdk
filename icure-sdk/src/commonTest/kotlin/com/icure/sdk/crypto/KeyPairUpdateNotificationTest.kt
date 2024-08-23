@@ -14,6 +14,7 @@ import com.icure.sdk.test.createPatientUser
 import com.icure.sdk.test.initializeTestEnvironment
 import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.currentEpochMs
+import com.icure.sdk.utils.pagination.forEach
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
@@ -52,8 +53,8 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	suspend fun IcureSdk.getMaintenanceTasks(): List<DecryptedMaintenanceTask> {
 		val iterator = maintenanceTask.filterMaintenanceTasksBy(MaintenanceTaskFilters.afterDateForSelf(date = testStart - 1000L))
 		val tasks = mutableListOf<DecryptedMaintenanceTask>()
-		while(iterator.hasNext()) {
-			tasks.add(iterator.next())
+		iterator.forEach {
+			tasks.add(it)
 		}
 		return tasks
 	}

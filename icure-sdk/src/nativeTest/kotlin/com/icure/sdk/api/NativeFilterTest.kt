@@ -40,7 +40,7 @@ class NativeFilterTest : StringSpec({
 		)
 		val result = mutableListOf<DecryptedPatient>()
 		while(iterator.hasNext()) {
-			result += iterator.next()
+			result += iterator.next(100)
 		}
 		result.size shouldBe 1
 		result.first() shouldBe patient

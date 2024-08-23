@@ -8,7 +8,6 @@ import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.pagination.PaginatedListIterator
-import com.icure.sdk.utils.pagination.next
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer

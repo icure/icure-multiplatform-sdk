@@ -13,8 +13,8 @@ fun <T : Any, T_JS : Any> paginatedListIterator_toJs(
 		paginatedListIterator.hasNext()
 	}
 
-	override fun next(): Promise<T_JS> = GlobalScope.promise {
-		paginatedListIterator.next().let(tConverter)
+	override fun next(limit: Int): Promise<T_JS> = GlobalScope.promise {
+		paginatedListIterator.next(limit).map(tConverter)
 	}
 
 	override fun tryNext(): Promise<T_JS?> = GlobalScope.promise {

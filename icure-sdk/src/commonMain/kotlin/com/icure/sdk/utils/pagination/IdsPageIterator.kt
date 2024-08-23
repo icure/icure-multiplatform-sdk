@@ -1,33 +1,49 @@
 package com.icure.sdk.utils.pagination
 
 class IdsPageIterator<T : Any>(
-	ids: List<String>,
+	private var ids: List<String>,
 	private val retrieve: suspend (ids: List<String>) -> List<T>
 ) : PaginatedListIterator<T> {
-
-	private val idsToRetrieve = ids.toMutableList()
-	private var retrieved = listOf<T>()
-	private var retrievedIndex = 0
-	private val batchSize = 100
+	private var buffer = listOf<T>()
+	private val defaultBatchSize = 100
 
 	override tailrec suspend fun hasNext(): Boolean = when {
-		retrievedIndex < retrieved.size -> true
-		idsToRetrieve.isNotEmpty() -> {
-			val batchToRetrieve = idsToRetrieve.take(batchSize)
-			idsToRetrieve.removeAll(batchToRetrieve)
-			retrieved = retrieve(batchToRetrieve)
-			retrievedIndex = 0
+		buffer.isNotEmpty() -> true
+		ids.isNotEmpty() -> {
+			retrieveBatch(1)
 			hasNext()
 		}
 		else -> false
 	}
 
-	override suspend fun tryNext(): T? = if(hasNext()) {
-		val element = retrieved[retrievedIndex]
-		retrievedIndex++
-		element
-	} else null
+	private suspend fun retrieveBatch(minBatchSize: Int) {
+		val batchSize = maxOf(minBatchSize, defaultBatchSize)
+		val toRetrieve = ids.take(batchSize)
+		if (toRetrieve.isNotEmpty()) {
+			ids = ids.drop(batchSize)
+			buffer = retrieve(toRetrieve)
+		} else {
+			buffer = emptyList()
+		}
+	}
 
-	override suspend fun next(): T = tryNext() ?: throw NoSuchElementException("There are no more elements available for this iterator")
+	private fun consumeBuffer(maxAmount: Int): List<T> = buffer.take(maxAmount).also {
+		buffer = buffer.drop(maxAmount)
+	}
 
+	override suspend fun next(limit: Int): List<T> =
+		if (buffer.isNotEmpty()) {
+			val buffered = consumeBuffer(limit)
+			if (buffered.size < limit && ids.isNotEmpty()) {
+				val remainingCount = limit - buffered.size
+				retrieveBatch(remainingCount)
+				val remainingItems = consumeBuffer(remainingCount)
+				buffered + remainingItems
+			} else {
+				buffered
+			}
+		} else {
+			retrieveBatch(limit)
+			consumeBuffer(limit)
+		}
 }

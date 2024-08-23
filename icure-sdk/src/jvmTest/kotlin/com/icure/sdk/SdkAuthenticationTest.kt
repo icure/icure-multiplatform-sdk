@@ -2,7 +2,6 @@ package com.icure.sdk
 
 import com.icure.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.sdk.auth.AuthenticationProcessTelecomType
-import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.storage.impl.VolatileStorageFacade
 import com.icure.sdk.test.MockMessageGatewayUtils
 import com.icure.sdk.test.baseUrl
@@ -33,8 +32,7 @@ class SdkAuthenticationTest : StringSpec({
 			hcpDetails.testEmail,
 			AuthenticationProcessCaptchaType.Recaptcha,
 			"onmock",
-			VolatileStorageFacade(),
-			BasicCryptoStrategies
+			VolatileStorageFacade()
 		)
 		val authCode = MockMessageGatewayUtils.getLatestEmailTo(hcpDetails.testEmail).subject
 		val sdk = authStep.completeAuthentication(authCode)
