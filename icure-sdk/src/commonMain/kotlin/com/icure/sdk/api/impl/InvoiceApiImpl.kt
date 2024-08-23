@@ -5,7 +5,6 @@ import com.icure.sdk.api.InvoiceBasicApi
 import com.icure.sdk.api.InvoiceBasicFlavouredApi
 import com.icure.sdk.api.InvoiceBasicFlavourlessApi
 import com.icure.sdk.api.InvoiceFlavouredApi
-import com.icure.sdk.utils.pagination.encodeStartKey
 import com.icure.sdk.api.raw.RawEntityReferenceApi
 import com.icure.sdk.api.raw.RawInvoiceApi
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
@@ -36,6 +35,7 @@ import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.currentFuzzyDateTime
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
+import com.icure.sdk.utils.pagination.encodeStartKey
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -265,7 +265,7 @@ internal class InvoiceApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedInvoice.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi) {
@@ -283,7 +283,7 @@ internal class InvoiceApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedInvoice.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Invoice): EncryptedInvoice = when (entity) {
@@ -397,7 +397,7 @@ internal class InvoiceApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedInvoice): DecryptedInvoice? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedInvoice.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
 
 	override suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice =
 		decryptOrNull(invoice) ?: throw EntityEncryptionException("Invoice cannot be decrypted")

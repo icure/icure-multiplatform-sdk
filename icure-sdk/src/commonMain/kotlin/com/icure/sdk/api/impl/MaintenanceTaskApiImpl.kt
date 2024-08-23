@@ -132,7 +132,7 @@ internal class MaintenanceTaskApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedMaintenanceTask.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(config.jsonPatcher.patchMaintenanceTask(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, MaintenanceTaskBasicFlavourlessApi by AbstractMaintenanceTaskBasicFlavourlessApi(rawApi, config) {
@@ -150,7 +150,7 @@ internal class MaintenanceTaskApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedMaintenanceTask.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(config.jsonPatcher.patchMaintenanceTask(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: MaintenanceTask): EncryptedMaintenanceTask = when (entity) {
@@ -219,7 +219,7 @@ internal class MaintenanceTaskApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedMaintenanceTask): DecryptedMaintenanceTask? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedMaintenanceTask.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(config.jsonPatcher.patchMaintenanceTask(it)) }
 
 	override suspend fun decrypt(maintenanceTask: EncryptedMaintenanceTask): DecryptedMaintenanceTask =
 		decryptOrNull(maintenanceTask) ?: throw EntityEncryptionException("MaintenanceTask cannot be decrypted")

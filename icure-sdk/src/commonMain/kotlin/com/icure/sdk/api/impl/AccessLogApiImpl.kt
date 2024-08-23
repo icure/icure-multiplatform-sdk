@@ -182,7 +182,7 @@ internal class AccessLogApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedAccessLog.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(config.jsonPatcher.patchAccessLog(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, AccessLogBasicFlavourlessApi by AbstractAccessLogBasicFlavourlessApi(rawApi) {
@@ -202,7 +202,7 @@ internal class AccessLogApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedAccessLog.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(config.jsonPatcher.patchAccessLog(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: AccessLog): EncryptedAccessLog = when (entity) {
@@ -272,7 +272,7 @@ internal class AccessLogApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedAccessLog): DecryptedAccessLog? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedAccessLog.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(config.jsonPatcher.patchAccessLog(it)) }
 
 	override suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog =
 		decryptOrNull(accessLog) ?: throw EntityEncryptionException("AccessLog cannot be decrypted")

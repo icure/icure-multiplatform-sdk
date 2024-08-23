@@ -29,6 +29,7 @@ internal interface ApiConfiguration : BasicApiConfiguration {
 	val autofillAuthor: Boolean
 	val storage: IcureStorageFacade
 	override val crypto: InternalCryptoServices
+	val jsonPatcher: JsonPatcher
 }
 
 @InternalIcureApi
@@ -40,7 +41,8 @@ internal data class ApiConfigurationImpl(
 	override val autofillAuthor: Boolean,
 	override val crypto: InternalCryptoServices,
 	override val encryption: EntitiesEncryptedFieldsManifests,
-	override val storage: IcureStorageFacade
+	override val storage: IcureStorageFacade,
+	override val jsonPatcher: JsonPatcher
 ) : ApiConfiguration
 
 @InternalIcureApi

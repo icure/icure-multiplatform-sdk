@@ -167,7 +167,7 @@ internal class HealthElementApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 	}
 }, HealthElementBasicFlavourlessApi by AbstractHealthElementBasicFlavourlessApi(rawApi, config) {
@@ -186,7 +186,7 @@ internal class HealthElementApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedHealthElement.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: HealthElement): EncryptedHealthElement = when (entity) {
@@ -269,7 +269,7 @@ internal class HealthElementApiImpl(
 		crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
 
 	override suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement =
 		decryptOrNull(healthElement) ?: throw EntityEncryptionException("HealthElement cannot be decrypted")

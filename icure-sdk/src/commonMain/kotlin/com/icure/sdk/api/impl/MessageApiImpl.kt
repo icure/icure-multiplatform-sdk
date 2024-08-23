@@ -5,7 +5,6 @@ import com.icure.sdk.api.MessageBasicApi
 import com.icure.sdk.api.MessageBasicFlavouredApi
 import com.icure.sdk.api.MessageBasicFlavourlessApi
 import com.icure.sdk.api.MessageFlavouredApi
-import com.icure.sdk.utils.pagination.encodeStartKey
 import com.icure.sdk.api.raw.RawMessageApi
 import com.icure.sdk.crypto.entities.MessageShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
@@ -42,6 +41,7 @@ import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.currentEpochMs
 import com.icure.sdk.utils.pagination.IdsPageIterator
 import com.icure.sdk.utils.pagination.PaginatedListIterator
+import com.icure.sdk.utils.pagination.encodeStartKey
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -224,7 +224,7 @@ internal class MessageApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedMessage.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi, config) {
@@ -242,7 +242,7 @@ internal class MessageApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedMessage.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Message): EncryptedMessage = when (entity) {
@@ -314,7 +314,7 @@ internal class MessageApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedMessage): DecryptedMessage? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedMessage.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }
 
 	override suspend fun decrypt(message: EncryptedMessage): DecryptedMessage =
 		decryptOrNull(message) ?: throw EntityEncryptionException("Message cannot be decrypted")

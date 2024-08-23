@@ -166,6 +166,7 @@ import com.icure.sdk.options.ApiConfigurationImpl
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.sdk.options.JsonPatcher
 import com.icure.sdk.options.getAuthProviderInGroup
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.StorageFacade
@@ -570,7 +571,8 @@ private suspend fun initializeApiCrypto(
 		!selfIsAnonymous,
 		crypto,
 		manifests,
-		iCureStorage
+		iCureStorage,
+		options.jsonPatcher ?: object : JsonPatcher {}
 	)
 }
 

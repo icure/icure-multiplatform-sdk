@@ -150,7 +150,7 @@ internal class ClassificationApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
@@ -168,7 +168,7 @@ internal class ClassificationApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedClassification.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Classification): EncryptedClassification = when (entity) {
@@ -238,7 +238,7 @@ internal class ClassificationApiImpl(
 		crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
 
 	override suspend fun decrypt(classification: EncryptedClassification): DecryptedClassification =
 		decryptOrNull(classification) ?: throw EntityEncryptionException("Classification cannot be decrypted")

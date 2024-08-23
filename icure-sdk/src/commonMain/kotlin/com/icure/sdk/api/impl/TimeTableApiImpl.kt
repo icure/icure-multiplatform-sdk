@@ -133,7 +133,7 @@ internal class TimeTableApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedTimeTable.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(config.jsonPatcher.patchTimeTable(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, TimeTableBasicFlavourlessApi by AbstractTimeTableBasicFlavourlessApi(rawApi) {
@@ -151,7 +151,7 @@ internal class TimeTableApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedTimeTable.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(config.jsonPatcher.patchTimeTable(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: TimeTable): EncryptedTimeTable = when (entity) {
@@ -219,7 +219,7 @@ internal class TimeTableApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedTimeTable): DecryptedTimeTable? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedTimeTable.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedTimeTable>(config.jsonPatcher.patchTimeTable(it)) }
 
 	override suspend fun decrypt(timeTable: EncryptedTimeTable): DecryptedTimeTable =
 		decryptOrNull(timeTable) ?: throw EntityEncryptionException("TimeTable cannot be decrypted")

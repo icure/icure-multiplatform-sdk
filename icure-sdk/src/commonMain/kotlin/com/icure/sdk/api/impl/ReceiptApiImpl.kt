@@ -107,7 +107,7 @@ internal class ReceiptApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedReceipt.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(config.jsonPatcher.patchReceipt(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, ReceiptBasicFlavourlessApi by AbstractReceiptBasicFlavourlessApi(rawApi) {
@@ -125,7 +125,7 @@ internal class ReceiptApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedReceipt.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(config.jsonPatcher.patchReceipt(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Receipt): EncryptedReceipt = when (entity) {
@@ -233,7 +233,7 @@ internal class ReceiptApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedReceipt): DecryptedReceipt? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedReceipt.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(config.jsonPatcher.patchReceipt(it)) }
 
 	override suspend fun decrypt(receipt: EncryptedReceipt): DecryptedReceipt =
 		decryptOrNull(receipt) ?: throw EntityEncryptionException("Receipt cannot be decrypted")

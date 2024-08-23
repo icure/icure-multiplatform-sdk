@@ -332,7 +332,7 @@ internal class PatientApiImpl(
 		crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedPatient.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be decrypted")
 
 }, PatientBasicFlavourlessApi by AbstractPatientBasicFlavourlessApi(rawApi, config) {
@@ -351,7 +351,7 @@ internal class PatientApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedPatient.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Patient): EncryptedPatient = when (entity) {
@@ -628,7 +628,7 @@ internal class PatientApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedPatient): DecryptedPatient? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedPatient.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }
 
 	override suspend fun forceInitializeExchangeDataToNewlyInvitedPatient(patientId: String): Boolean {
 		val patient = encrypted.getPatient(patientId)

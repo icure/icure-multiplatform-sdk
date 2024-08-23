@@ -213,7 +213,7 @@ internal class CalendarItemApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedCalendarItem.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(config.jsonPatcher.patchCalendarItem(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, CalendarItemBasicFlavourlessApi by AbstractCalendarItemBasicFlavourlessApi(rawApi) {
@@ -231,7 +231,7 @@ internal class CalendarItemApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedCalendarItem.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(config.jsonPatcher.patchCalendarItem(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: CalendarItem): EncryptedCalendarItem = when (entity) {
@@ -296,7 +296,7 @@ internal class CalendarItemApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedCalendarItem): DecryptedCalendarItem? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedCalendarItem.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(config.jsonPatcher.patchCalendarItem(it)) }
 
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>) {

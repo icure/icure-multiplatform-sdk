@@ -103,7 +103,11 @@ data class ApiOptions(
 	 * - Considers all public keys of other data owners as verified
 	 * - Considers patients as anonymous data owners
 	 */
-	val cryptoStrategies: CryptoStrategies? = null
+	val cryptoStrategies: CryptoStrategies? = null,
+	/**
+	 * Patcher for the decrypted entities json.
+	 */
+	val jsonPatcher: JsonPatcher? = null
 ): CommonOptions
 
 data class BasicApiOptions(

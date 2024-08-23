@@ -212,7 +212,7 @@ internal class DocumentApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedDocument.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(config.jsonPatcher.patchDocument(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, DocumentBasicFlavourlessApi by AbstractDocumentBasicFlavourlessApi(rawApi) {
@@ -230,7 +230,7 @@ internal class DocumentApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedDocument.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(config.jsonPatcher.patchDocument(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Document): EncryptedDocument = when (entity) {
@@ -374,7 +374,7 @@ internal class DocumentApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedDocument): DecryptedDocument? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedDocument.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(config.jsonPatcher.patchDocument(it)) }
 
 	override suspend fun decrypt(document: EncryptedDocument): DecryptedDocument =
 		decryptOrNull(document) ?: throw EntityEncryptionException("Document cannot be decrypted")

@@ -210,7 +210,7 @@ internal class FormApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedForm.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
@@ -228,7 +228,7 @@ internal class FormApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedForm.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Form): EncryptedForm = when (entity) {
@@ -309,7 +309,7 @@ internal class FormApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedForm): DecryptedForm? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
 
 	override suspend fun decrypt(form: EncryptedForm): DecryptedForm =
 		decryptOrNull(form) ?: throw EntityEncryptionException("Form cannot be decrypted")

@@ -138,7 +138,7 @@ internal class TopicApiImpl(
 		return crypto.entity.tryDecryptEntity(
 			entity.withTypeInfo(),
 			EncryptedTopic.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
 			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
 	}
 }, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi, config) {
@@ -156,7 +156,7 @@ internal class TopicApiImpl(
 				crypto.entity.tryDecryptEntity(
 					entity.withTypeInfo(),
 					EncryptedTopic.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
+				) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
 					?: entity
 
 			override suspend fun validateAndMaybeEncrypt(entity: Topic): EncryptedTopic = when (entity) {
@@ -225,7 +225,7 @@ internal class TopicApiImpl(
 	private suspend fun decryptOrNull(entity: EncryptedTopic): DecryptedTopic? = crypto.entity.tryDecryptEntity(
 		entity.withTypeInfo(),
 		EncryptedTopic.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(it) }
+	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
 
 	override suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic =
 		decryptOrNull(topic) ?: throw EntityEncryptionException("Topic cannot be decrypted")

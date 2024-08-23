@@ -126,7 +126,7 @@ class DelegationsDeAnonymizationImpl(
 					EntityWithTypeInfo(encryptedMap, entityType),
 					EncryptedSecureDelegationKeyMap.serializer()
 				) {
-					Serialization.json.decodeFromJsonElement(it)
+					Serialization.json.decodeFromJsonElement<DecryptedSecureDelegationKeyMap>(it)
 				}
 			}
 		} else emptyList()
