@@ -1,5 +1,6 @@
 package com.icure.sdk.subscription
 
+import com.icure.sdk.serialization.DurationAsMillisecondsSerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
@@ -24,6 +25,7 @@ data class EntitySubscriptionConfiguration(
 	 * If the (re)connection fails how long to wait before another attempt.
 	 */
 	@DefaultValue("2.seconds")
+	@Serializable(with = DurationAsMillisecondsSerializer::class)
 	val reconnectionDelay: Duration = 2.seconds,
 	/**
 	 * Factor for increasing the delay between (re)connection attempts in case of repeated failures.

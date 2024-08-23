@@ -42,15 +42,17 @@ class EntitySubscriptionEvent(Generic[E]):
     def type(self) -> 'EntitySubscriptionEvent.Type':
         return self.__type
 
+    @property
     def error_message(self) -> str:
-        if self.type == EntitySubscriptionEvent.Type.UnexpectedError:
+        if self.type != EntitySubscriptionEvent.Type.UnexpectedError:
             raise Exception("`error_message` is available only for EntitySubscriptionEvent of type UnexpectedError")
         return self.__error_message
 
+    @property
     def entity(self) -> E:
-        if self.type == EntitySubscriptionEvent.Type.EntityNotification:
+        if self.type != EntitySubscriptionEvent.Type.EntityNotification:
             raise Exception("`entity` is available only for EntitySubscriptionEvent of type EntityNotification")
-        return self.__error_message
+        return self.__entity
 
     @classmethod
     def deserialize_entity_subscription_event(
