@@ -72,6 +72,37 @@ export interface ApiOptions {
   readonly cryptoStrategies?: CryptoStrategies
 }
 
+export interface BasicApiOptions {
+  /**
+   * Configure which fields of entities should be encrypted
+   */
+  readonly encryptedFields?: EncryptedFieldsConfiguration
+  /**
+   * Service for encryption primitives.
+   */
+  readonly cryptoService?: XCryptoService
+  /**
+   * If true (default) the password of the user will be salted together with the application id before sending it to
+   * the iCure backend for login or when changing the user password.
+   * This is done in addition to the server-side salting of the password before storing them.
+   *
+   * By enabling this option iCure never gets access to the plain text password of users.
+   * Note that changing this value in a second moment requires also modifying the password of the user on the iCure
+   * databases to reflect the change.
+   */
+  readonly saltPasswordWithApplicationId?: boolean
+  /**
+   * An instance of iCure SDK is initialized for working as a specific user in a single group.
+   * However, the user credentials may match multiple users in different groups (but at most one per group).
+   * If that is the case, this function will be used to pick the actual user for which the sdk will be initialized.
+   *
+   * This is mandatory in multi-group applications, where a single user could exist in multiple groups.
+   * If this parameter is null and the user credentials match multiple users the api initialisation will fail.
+   * In single-group applications this parameter won't be used, so it can be left as null.
+   */
+  readonly groupSelector?: (availableGroups: Array<UserGroup>) => Promise<string>
+}
+
 export interface EncryptedFieldsConfiguration {
   readonly accessLog?: Array<string>
   readonly calendarItem?: Array<string>

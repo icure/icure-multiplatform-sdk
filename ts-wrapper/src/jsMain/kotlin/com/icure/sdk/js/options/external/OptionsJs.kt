@@ -75,6 +75,14 @@ external interface ApiOptionsJs {
 	val cryptoStrategies: CryptoStrategiesJs?
 }
 
+@JsName("BasicApiOptions")
+external interface BasicApiOptionsJs {
+	val encryptedFields: EncryptedFieldsConfigurationJs?
+	val cryptoService: XCryptoService?
+	val saltPasswordWithApplicationId: Boolean?
+	val groupSelector: ((availableGroups: Array<UserGroupJs>) -> Promise<String>)?
+}
+
 @JsName("EncryptedFieldsConfiguration")
 external interface EncryptedFieldsConfigurationJs {
 	val accessLog: Array<String>?

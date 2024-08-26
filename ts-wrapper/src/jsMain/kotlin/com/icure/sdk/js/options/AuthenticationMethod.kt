@@ -169,10 +169,13 @@ private class AuthenticationProcessApiBridge(
 			userTelecom,
 			AuthenticationProcessCaptchaType.valueOf(captchaType),
 			captchaKey,
-			AuthenticationProcessTemplateParameters(
-				firstName = processTemplateParameters?.firstName,
-				lastName = processTemplateParameters?.lastName
-			)
+			processTemplateParameters?.toKt() ?: AuthenticationProcessTemplateParameters()
 		).toJs()
 	}
 }
+
+internal fun AuthenticationProcessTemplateParametersJs.toKt() =
+	AuthenticationProcessTemplateParameters(
+		firstName = this.firstName,
+		lastName = this.lastName
+	)

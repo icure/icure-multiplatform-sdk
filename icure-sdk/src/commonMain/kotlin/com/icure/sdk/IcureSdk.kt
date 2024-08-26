@@ -314,6 +314,7 @@ interface IcureSdk : IcureApis {
 		 * connected external services.
 		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
 		 * information including the user keys if [ApiOptions.keyStorage] is not provided.
+		 * @param authenticationProcessTemplateParameters optional parameters which may be used by sms/email templates.
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@OptIn(InternalIcureApi::class)
@@ -328,8 +329,8 @@ interface IcureSdk : IcureApis {
 			captchaType: AuthenticationProcessCaptchaType,
 			captchaKey: String,
 			baseStorage: StorageFacade,
-			options: ApiOptions = ApiOptions(),
-			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters()
+			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
+			options: ApiOptions = ApiOptions()
 		): AuthenticationWithProcessStep {
 			val api = RawMessageGatewayApi(options.httpClient ?: sharedHttpClient)
 			val requestId = api.startProcess(

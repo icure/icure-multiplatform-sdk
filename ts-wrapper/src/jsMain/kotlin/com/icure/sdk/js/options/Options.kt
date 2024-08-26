@@ -5,9 +5,11 @@ import com.icure.kryptom.crypto.external.adaptExternalCryptoService
 import com.icure.sdk.js.crypto.CryptoStrategiesBridge
 import com.icure.sdk.js.model.userGroup_toJs
 import com.icure.sdk.js.options.external.ApiOptionsJs
+import com.icure.sdk.js.options.external.BasicApiOptionsJs
 import com.icure.sdk.js.options.external.EncryptedFieldsConfigurationJs
 import com.icure.sdk.js.storage.loadKeyStorageOptions
 import com.icure.sdk.options.ApiOptions
+import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EncryptedFieldsConfiguration
 import kotlinx.coroutines.await
 
@@ -29,6 +31,20 @@ suspend fun ApiOptionsJs.toKt(): ApiOptions {
 		cryptoStrategies = this.cryptoStrategies?.let {
 			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultApiOptions.cryptoService))
 		} ?: defaultApiOptions.cryptoStrategies
+	)
+}
+
+suspend fun BasicApiOptionsJs.toKt(): BasicApiOptions {
+	val defaultApiOptions = BasicApiOptions()
+	return BasicApiOptions(
+		encryptedFields = this.encryptedFields?.toKt() ?: defaultApiOptions.encryptedFields,
+		cryptoService = this.cryptoService?.let { adaptExternalCryptoService(it) } ?: defaultApiOptions.cryptoService,
+		saltPasswordWithApplicationId = this.saltPasswordWithApplicationId ?: defaultApiOptions.saltPasswordWithApplicationId,
+		groupSelector = this.groupSelector?.let { groupSelectorJs ->
+			{ ktGroups ->
+				groupSelectorJs(ktGroups.map { userGroup_toJs(it) }.toTypedArray()).await()
+			}
+		} ?: defaultApiOptions.groupSelector,
 	)
 }
 
