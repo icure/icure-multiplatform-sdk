@@ -16,6 +16,7 @@ import com.icure.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.sdk.model.embed.GroupType
 import com.icure.sdk.model.embed.RoleConfiguration
 import com.icure.sdk.model.embed.UserType
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
 import com.icure.sdk.utils.InternalIcureApi
@@ -71,6 +72,8 @@ public interface RawGroupApi {
 	): HttpResponse<PaginatedList<Group>>
 
 	suspend fun getGroup(id: String): HttpResponse<Group>
+
+	suspend fun getCodes(groupIds: ListOfIds): HttpResponse<List<Group>>
 
 	suspend fun getNameOfGroupParent(id: String): HttpResponse<String>
 
@@ -146,5 +149,7 @@ public interface RawGroupApi {
 	suspend fun getHierarchy(id: String): HttpResponse<List<String>>
 
 	suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>>
+
+	suspend fun matchGroupsBy(filter: AbstractFilter<Group>): HttpResponse<List<String>>
 	// endregion
 }

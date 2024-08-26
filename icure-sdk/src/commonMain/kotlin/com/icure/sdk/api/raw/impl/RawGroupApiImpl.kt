@@ -21,8 +21,10 @@ import com.icure.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.sdk.model.embed.GroupType
 import com.icure.sdk.model.embed.RoleConfiguration
 import com.icure.sdk.model.embed.UserType
+import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.security.Operation
 import com.icure.sdk.model.security.PermissionType
+import com.icure.sdk.serialization.GroupAbstractFilterSerializer
 import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -168,6 +170,17 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getCodes(groupIds: ListOfIds): HttpResponse<List<Group>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(groupIds)
 		}.wrap()
 
 	override suspend fun getNameOfGroupParent(id: String): HttpResponse<String> =
@@ -409,6 +422,17 @@ class RawGroupApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchGroupsBy(filter: AbstractFilter<Group>): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(GroupAbstractFilterSerializer, filter)
 		}.wrap()
 
 	// endregion

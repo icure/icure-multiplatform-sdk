@@ -3,6 +3,7 @@ package com.icure.sdk.model.embed
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
+import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -18,10 +19,10 @@ data class TimeTableItem(
 	public val notBeforeInMinutes: Int? = null,
 	public val notAfterInMinutes: Int? = null,
 	public val zoneId: String? = null,
-	@DefaultValue("emptyList()")
-	public val days: List<String> = emptyList(),
-	@DefaultValue("emptyList()")
-	public val recurrenceTypes: List<String> = emptyList(),
+	@Deprecated("Will be replaced by rrule")
+	days: List<String> = emptyList(),
+	@Deprecated("Will be replaced by rrule")
+	recurrenceTypes: List<String> = emptyList(),
 	@DefaultValue("emptyList()")
 	public val hours: List<TimeTableHour> = emptyList(),
 	public val calendarItemTypeId: String? = null,

@@ -24,6 +24,7 @@ import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
+import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -101,8 +102,8 @@ data class HealthcareParty(
 	public val flatRateTarifications: List<DecryptedFlatRateTarification> = emptyList(),
 	@DefaultValue("emptyMap()")
 	public val importedData: Map<String, String> = emptyMap(),
-	@DefaultValue("emptyMap()")
-	public val options: Map<String, String> = emptyMap(),
+	@Deprecated("Use properties instead")
+	options: Map<String, String> = emptyMap(),
 	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
 	@DefaultValue("emptyMap()")
