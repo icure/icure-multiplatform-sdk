@@ -123,8 +123,9 @@ sealed interface AuthenticationMethod {
 private fun CommonOptions.getPasswordClientSideSalt(applicationId: String?) =
 	applicationId?.takeIf { saltPasswordWithApplicationId }
 
+// This does not have the internal modifier because we need it in other components like kmehr
 @InternalIcureApi
-internal fun AuthenticationMethod.getAuthProvider(
+fun AuthenticationMethod.getAuthProvider(
 	authApi: RawAnonymousAuthApi,
 	cryptoService: CryptoService,
 	applicationId: String?,
