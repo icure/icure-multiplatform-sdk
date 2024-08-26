@@ -73,6 +73,7 @@ external interface ApiOptionsJs {
 	val autoCreateEncryptionKeyForExistingLegacyData: Boolean?
 	val keyStorage: KeyStorageFacadeJs?
 	val cryptoStrategies: CryptoStrategiesJs?
+	val jsonPatcher: JsonPatcherJs?
 }
 
 @JsName("BasicApiOptions")
@@ -100,4 +101,23 @@ external interface EncryptedFieldsConfigurationJs {
 	val classification: Array<String>?
 	val timeTable: Array<String>?
 	val invoice: Array<String>?
+}
+
+@JsName("JsonPatcher")
+external interface JsonPatcherJs {
+	val patchAccessLog: ((json: dynamic) -> dynamic)?
+	val patchCalendarItem: ((json: dynamic) -> dynamic)?
+	val patchContact: ((json: dynamic) -> dynamic)?
+	val patchIndividualService: ((json: dynamic) -> dynamic)?
+	val patchHealthElement: ((json: dynamic) -> dynamic)?
+	val patchMaintenanceTask: ((json: dynamic) -> dynamic)?
+	val patchPatient: ((json: dynamic) -> dynamic)?
+	val patchMessage: ((json: dynamic) -> dynamic)?
+	val patchTopic: ((json: dynamic) -> dynamic)?
+	val patchDocument: ((json: dynamic) -> dynamic)?
+	val patchForm: ((json: dynamic) -> dynamic)?
+	val patchReceipt: ((json: dynamic) -> dynamic)?
+	val patchClassification: ((json: dynamic) -> dynamic)?
+	val patchTimeTable: ((json: dynamic) -> dynamic)?
+	val patchInvoice: ((json: dynamic) -> dynamic)?
 }

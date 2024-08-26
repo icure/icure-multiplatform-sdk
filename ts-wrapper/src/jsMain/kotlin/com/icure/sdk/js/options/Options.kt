@@ -7,11 +7,18 @@ import com.icure.sdk.js.model.userGroup_toJs
 import com.icure.sdk.js.options.external.ApiOptionsJs
 import com.icure.sdk.js.options.external.BasicApiOptionsJs
 import com.icure.sdk.js.options.external.EncryptedFieldsConfigurationJs
+import com.icure.sdk.js.options.external.JsonPatcherJs
 import com.icure.sdk.js.storage.loadKeyStorageOptions
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EncryptedFieldsConfiguration
+import com.icure.sdk.options.JsonPatcher
 import kotlinx.coroutines.await
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.decodeFromDynamic
+import kotlinx.serialization.json.encodeToDynamic
 
 suspend fun ApiOptionsJs.toKt(): ApiOptions {
 	val defaultApiOptions = ApiOptions()
@@ -30,7 +37,8 @@ suspend fun ApiOptionsJs.toKt(): ApiOptions {
 		keyStorage = this.keyStorage?.let { loadKeyStorageOptions(it) } ?: defaultApiOptions.keyStorage,
 		cryptoStrategies = this.cryptoStrategies?.let {
 			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultApiOptions.cryptoService))
-		} ?: defaultApiOptions.cryptoStrategies
+		} ?: defaultApiOptions.cryptoStrategies,
+		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultApiOptions.jsonPatcher
 	)
 }
 
@@ -69,3 +77,86 @@ private fun EncryptedFieldsConfigurationJs.toKt(): EncryptedFieldsConfiguration 
 	)
 }
 
+private class JsonPatcherBridge(
+	js: JsonPatcherJs
+): JsonPatcher {
+	private val doPatchAccessLog: (JsonElement) -> JsonElement = js.patchAccessLog?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchAccessLog(decryptedJson: JsonElement): JsonElement = doPatchAccessLog(decryptedJson)
+
+	private val doPatchCalendarItem: (JsonElement) -> JsonElement = js.patchCalendarItem?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchCalendarItem(decryptedJson: JsonElement): JsonElement = doPatchCalendarItem(decryptedJson)
+
+	private val doPatchContact: (JsonElement) -> JsonElement = js.patchContact?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchContact(decryptedJson: JsonElement): JsonElement = doPatchContact(decryptedJson)
+
+	private val doPatchIndividualService: (JsonElement) -> JsonElement = js.patchIndividualService?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchIndividualService(decryptedJson: JsonElement): JsonElement = doPatchIndividualService(decryptedJson)
+
+	private val doPatchHealthElement: (JsonElement) -> JsonElement = js.patchHealthElement?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchHealthElement(decryptedJson: JsonElement): JsonElement = doPatchHealthElement(decryptedJson)
+
+	private val doPatchMaintenanceTask: (JsonElement) -> JsonElement = js.patchMaintenanceTask?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchMaintenanceTask(decryptedJson: JsonElement): JsonElement = doPatchMaintenanceTask(decryptedJson)
+
+	private val doPatchPatient: (JsonElement) -> JsonElement = js.patchPatient?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchPatient(decryptedJson: JsonElement): JsonElement = doPatchPatient(decryptedJson)
+
+	private val doPatchMessage: (JsonElement) -> JsonElement = js.patchMessage?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchMessage(decryptedJson: JsonElement): JsonElement = doPatchMessage(decryptedJson)
+
+	private val doPatchTopic: (JsonElement) -> JsonElement = js.patchTopic?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchTopic(decryptedJson: JsonElement): JsonElement = doPatchTopic(decryptedJson)
+
+	private val doPatchDocument: (JsonElement) -> JsonElement = js.patchDocument?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchDocument(decryptedJson: JsonElement): JsonElement = doPatchDocument(decryptedJson)
+
+	private val doPatchForm: (JsonElement) -> JsonElement = js.patchForm?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchForm(decryptedJson: JsonElement): JsonElement = doPatchForm(decryptedJson)
+
+	private val doPatchReceipt: (JsonElement) -> JsonElement = js.patchReceipt?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchReceipt(decryptedJson: JsonElement): JsonElement = doPatchReceipt(decryptedJson)
+
+	private val doPatchClassification: (JsonElement) -> JsonElement = js.patchClassification?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchClassification(decryptedJson: JsonElement): JsonElement = doPatchClassification(decryptedJson)
+
+	private val doPatchTimeTable: (JsonElement) -> JsonElement = js.patchTimeTable?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchTimeTable(decryptedJson: JsonElement): JsonElement = doPatchTimeTable(decryptedJson)
+
+	private val doPatchInvoice: (JsonElement) -> JsonElement = js.patchInvoice?.let { doPatchJs ->
+		adaptJsPatchMethod(doPatchJs)
+	} ?: { it }
+	override fun patchInvoice(decryptedJson: JsonElement): JsonElement = doPatchInvoice(decryptedJson)
+
+	@OptIn(ExperimentalSerializationApi::class)
+	private inline fun adaptJsPatchMethod(crossinline doPatchJs: (dynamic) -> dynamic): (JsonElement) -> JsonElement = { x ->
+		Json.decodeFromDynamic(doPatchJs(Json.encodeToDynamic(x)))
+	}
+}

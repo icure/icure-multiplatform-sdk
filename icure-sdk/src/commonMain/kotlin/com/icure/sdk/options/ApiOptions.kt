@@ -106,6 +106,8 @@ data class ApiOptions(
 	val cryptoStrategies: CryptoStrategies? = null,
 	/**
 	 * Patcher for the decrypted entities json.
+	 * This allows adapting to changes in the data model of entities even if the changes are done to the encrypted part
+	 * of the entity.
 	 */
 	val jsonPatcher: JsonPatcher? = null
 ): CommonOptions
