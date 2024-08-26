@@ -4,10 +4,17 @@ import com.icure.sdk.model.Agenda
 import com.icure.sdk.model.filter.AbstractFilter
 import com.icure.sdk.model.filter.agenda.AgendaByUserIdFilter
 import com.icure.sdk.model.filter.agenda.AgendaReadableByUserIdFilter
+import com.icure.sdk.model.filter.agenda.AllAgendasFilter
 import com.icure.sdk.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
 object AgendaFilters {
+	/**
+	 * Filter options to match all agendas.
+	 * These options are not sortable.
+	 */
+	fun all(): BaseFilterOptions<Agenda> = All
+
 	/**
 	 * Options for agenda filtering that returns all the agendas where [Agenda.userId] is equal to [userId].
 	 *
@@ -27,6 +34,9 @@ object AgendaFilters {
 	): BaseFilterOptions<Agenda> = ReadableByUserId(userId)
 
 	@Serializable
+	internal data object All : BaseFilterOptions<Agenda>
+
+	@Serializable
 	internal class ByUserId(
 		val userId: String
 	): BaseFilterOptions<Agenda>
@@ -44,6 +54,7 @@ internal suspend fun mapAgendaFilterOptions(
 ): AbstractFilter<Agenda> = mapIfMetaFilterOptions(filterOptions) {
 	mapAgendaFilterOptions(it)
 } ?: when (filterOptions) {
+	is AgendaFilters.All -> AllAgendasFilter()
 	is AgendaFilters.ByUserId -> AgendaByUserIdFilter(
 		userId = filterOptions.userId,
 		desc = null
