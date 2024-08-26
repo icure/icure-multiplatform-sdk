@@ -13,6 +13,7 @@ import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.utils.Serialization.json
 import kotlin.Boolean
 import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
@@ -234,12 +235,12 @@ public fun byDateOfBirthBetweenForSelf(params: String): String = kotlin.runCatch
 }.toPyString(SortableFilterOptions.serializer(PatientSerializer))
 
 @Serializable
-private class ByFuzzyNameForSelfParams(
+private class ByNameForSelfParams(
 	public val searchString: String,
 )
 
-public fun byFuzzyNameForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByFuzzyNameForSelfParams>(params)
+public fun byNameForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByNameForSelfParams>(params)
 	PatientFilters.byNameForSelf(
 		decodedParams.searchString,
 	)
@@ -322,5 +323,39 @@ public fun byExternalIdForSelf(params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ByExternalIdForSelfParams>(params)
 	PatientFilters.byExternalIdForSelf(
 		decodedParams.externalIdPrefix,
+	)
+}.toPyString(SortableFilterOptions.serializer(PatientSerializer))
+
+@Serializable
+private class ByModificationDateForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byModificationDateForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByModificationDateForDataOwnerParams>(params)
+	PatientFilters.byModificationDateForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(BaseSortableFilterOptions.serializer(PatientSerializer))
+
+@Serializable
+private class ByModificationDateForSelfParams(
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byModificationDateForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByModificationDateForSelfParams>(params)
+	PatientFilters.byModificationDateForSelf(
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
 	)
 }.toPyString(SortableFilterOptions.serializer(PatientSerializer))

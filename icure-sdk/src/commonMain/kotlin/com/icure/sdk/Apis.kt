@@ -74,8 +74,8 @@ interface IcureNonCryptoApis {
 	val role: RoleApi
 	val tarification: TarificationApi
 	val user: UserApi
-	val medicalLocationApi: MedicalLocationApi
-	val agendaApi: AgendaApi
+	val medicalLocation: MedicalLocationApi
+	val agenda: AgendaApi
 }
 
 /**

@@ -4,7 +4,7 @@ package com.icure.sdk.js.api.`impl`
 import com.icure.sdk.api.CryptoApi
 import com.icure.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.sdk.js.api.CryptoApiJs
-import com.icure.sdk.js.api.crypto.ShamirKeysManagerApiJs
+import com.icure.sdk.js.api.ShamirKeysManagerApiJs
 import com.icure.sdk.js.crypto.entities.ShamirUpdateRequestJs
 import com.icure.sdk.js.crypto.entities.shamirUpdateRequest_fromJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet

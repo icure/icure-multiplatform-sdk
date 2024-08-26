@@ -457,10 +457,10 @@ private class IcureBaseApisImpl(
 	override val tarification: TarificationApi by lazy {
 		TarificationApiImpl(RawTarificationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
 	}
-	override val medicalLocationApi: MedicalLocationApi by lazy {
+	override val medicalLocation: MedicalLocationApi by lazy {
 		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
 	}
-	override val agendaApi: AgendaApi by lazy {
+	override val agenda: AgendaApi by lazy {
 		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, client, json = httpClientJson))
 	}
 }

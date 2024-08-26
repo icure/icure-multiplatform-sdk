@@ -11,9 +11,11 @@ import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.py.serialization.ContactSerializer
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.utils.Serialization.json
+import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
+import kotlin.collections.Set
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -31,6 +33,120 @@ public fun allContactsForDataOwner(params: String): String = kotlin.runCatching 
 public fun allContactsForSelf(): String = kotlin.runCatching {
 	ContactFilters.allContactsForSelf()
 }.toPyString(FilterOptions.serializer(ContactSerializer))
+
+@Serializable
+private class ByFormIdsForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val formIds: Set<String>,
+)
+
+public fun byFormIdsForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByFormIdsForDataOwnerParams>(params)
+	ContactFilters.byFormIdsForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.formIds,
+	)
+}.toPyString(BaseFilterOptions.serializer(ContactSerializer))
+
+@Serializable
+private class ByFormIdsForSelfParams(
+	public val formIds: Set<String>,
+)
+
+public fun byFormIdsForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByFormIdsForSelfParams>(params)
+	ContactFilters.byFormIdsForSelf(
+		decodedParams.formIds,
+	)
+}.toPyString(FilterOptions.serializer(ContactSerializer))
+
+@Serializable
+private class ByPatientsOpeningDateForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val patients: List<Patient>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientsOpeningDateForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientsOpeningDateForDataOwnerParams>(params)
+	ContactFilters.byPatientsOpeningDateForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.patients,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(SortableFilterOptions.serializer(ContactSerializer))
+
+@Serializable
+private class ByPatientsOpeningDateForSelfParams(
+	public val patients: List<Patient>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientsOpeningDateForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientsOpeningDateForSelfParams>(params)
+	ContactFilters.byPatientsOpeningDateForSelf(
+		decodedParams.patients,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(SortableFilterOptions.serializer(ContactSerializer))
+
+@Serializable
+private class ByPatientSecretIdsOpeningDateForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val secretIds: List<String>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientSecretIdsOpeningDateForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientSecretIdsOpeningDateForDataOwnerParams>(params)
+	ContactFilters.byPatientSecretIdsOpeningDateForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.secretIds,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(BaseSortableFilterOptions.serializer(ContactSerializer))
+
+@Serializable
+private class ByPatientSecretIdsOpeningDateForSelfParams(
+	public val secretIds: List<String>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientSecretIdsOpeningDateForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientSecretIdsOpeningDateForSelfParams>(params)
+	ContactFilters.byPatientSecretIdsOpeningDateForSelf(
+		decodedParams.secretIds,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(SortableFilterOptions.serializer(ContactSerializer))
+
+@Serializable
+private class ByExternalIdParams(
+	public val externalId: String,
+)
+
+public fun byExternalId(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByExternalIdParams>(params)
+	ContactFilters.byExternalId(
+		decodedParams.externalId,
+	)
+}.toPyString(BaseFilterOptions.serializer(ContactSerializer))
 
 @Serializable
 private class ByIdentifiersForSelfParams(

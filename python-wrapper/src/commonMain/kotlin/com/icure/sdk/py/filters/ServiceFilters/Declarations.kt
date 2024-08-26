@@ -8,6 +8,7 @@ import com.icure.sdk.filters.ServiceFilters
 import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.base.LinkQualification
 import com.icure.sdk.py.serialization.ServiceSerializer
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.utils.Serialization.json
@@ -115,16 +116,16 @@ public fun byPatientsSecretIdsForDataOwner(params: String): String = kotlin.runC
 }.toPyString(BaseSortableFilterOptions.serializer(ServiceSerializer))
 
 @Serializable
-private class ByHealthElementIdFromSubcontactForDataOwnerParams(
+private class ByHealthElementIdFromSubContactForDataOwnerParams(
 	public val dataOwnerId: String,
 	public val healthElementIds: List<String>,
 )
 
-public fun byHealthElementIdFromSubcontactForDataOwner(params: String): String =
+public fun byHealthElementIdFromSubContactForDataOwner(params: String): String =
 		kotlin.runCatching {
 	val decodedParams =
-			json.decodeFromString<ByHealthElementIdFromSubcontactForDataOwnerParams>(params)
-	ServiceFilters.byHealthElementIdFromSubcontactForDataOwner(
+			json.decodeFromString<ByHealthElementIdFromSubContactForDataOwnerParams>(params)
+	ServiceFilters.byHealthElementIdFromSubContactForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.healthElementIds,
 	)
@@ -203,13 +204,13 @@ public fun byPatientsSecretIdsForSelf(params: String): String = kotlin.runCatchi
 }.toPyString(SortableFilterOptions.serializer(ServiceSerializer))
 
 @Serializable
-private class ByHealthElementIdFromSubcontactForSelfParams(
+private class ByHealthElementIdFromSubContactForSelfParams(
 	public val healthElementIds: List<String>,
 )
 
-public fun byHealthElementIdFromSubcontactForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByHealthElementIdFromSubcontactForSelfParams>(params)
-	ServiceFilters.byHealthElementIdFromSubcontactForSelf(
+public fun byHealthElementIdFromSubContactForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByHealthElementIdFromSubContactForSelfParams>(params)
+	ServiceFilters.byHealthElementIdFromSubContactForSelf(
 		decodedParams.healthElementIds,
 	)
 }.toPyString(SortableFilterOptions.serializer(ServiceSerializer))
@@ -225,3 +226,29 @@ public fun byIds(params: String): String = kotlin.runCatching {
 		decodedParams.ids,
 	)
 }.toPyString(BaseSortableFilterOptions.serializer(ServiceSerializer))
+
+@Serializable
+private class ByAssociationIdParams(
+	public val associationId: String,
+)
+
+public fun byAssociationId(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByAssociationIdParams>(params)
+	ServiceFilters.byAssociationId(
+		decodedParams.associationId,
+	)
+}.toPyString(BaseFilterOptions.serializer(ServiceSerializer))
+
+@Serializable
+private class ByQualifiedLinkParams(
+	public val linkValues: List<String>,
+	public val linkQualification: LinkQualification? = null,
+)
+
+public fun byQualifiedLink(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByQualifiedLinkParams>(params)
+	ServiceFilters.byQualifiedLink(
+		decodedParams.linkValues,
+		decodedParams.linkQualification,
+	)
+}.toPyString(BaseFilterOptions.serializer(ServiceSerializer))

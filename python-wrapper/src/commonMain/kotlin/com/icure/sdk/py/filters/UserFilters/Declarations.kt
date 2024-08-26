@@ -40,6 +40,18 @@ public fun byPatientId(params: String): String = kotlin.runCatching {
 }.toPyString(BaseFilterOptions.serializer(User.serializer()))
 
 @Serializable
+private class ByHealthcarePartyIdParams(
+	public val healthcarePartyId: String,
+)
+
+public fun byHealthcarePartyId(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByHealthcarePartyIdParams>(params)
+	UserFilters.byHealthcarePartyId(
+		decodedParams.healthcarePartyId,
+	)
+}.toPyString(BaseFilterOptions.serializer(User.serializer()))
+
+@Serializable
 private class ByNameEmailOrPhoneParams(
 	public val searchString: String,
 )

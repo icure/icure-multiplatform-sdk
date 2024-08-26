@@ -2,6 +2,7 @@
 import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalServiceFiltersObj, SortableFilterOptions} from '../icure-sdk-ts.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {Identifier} from '../model/base/Identifier.mjs';
+import {LinkQualification} from '../model/base/LinkQualification.mjs';
 import {Service} from '../model/embed/Service.mjs';
 
 
@@ -26,7 +27,7 @@ interface ServiceFiltersFactory {
 	byPatientsSecretIdsForDataOwner(dataOwnerId: string,
 			secretIds: Array<string>): BaseSortableFilterOptions<Service>;
 
-	byHealthElementIdFromSubcontactForDataOwner(dataOwnerId: string,
+	byHealthElementIdFromSubContactForDataOwner(dataOwnerId: string,
 			healthElementIds: Array<string>): BaseSortableFilterOptions<Service>;
 
 	byIdentifiersForSelf(identifiers: Array<Identifier>): SortableFilterOptions<Service>;
@@ -41,9 +42,14 @@ interface ServiceFiltersFactory {
 
 	byPatientsSecretIdsForSelf(secretIds: Array<string>): SortableFilterOptions<Service>;
 
-	byHealthElementIdFromSubcontactForSelf(healthElementIds: Array<string>): SortableFilterOptions<Service>;
+	byHealthElementIdFromSubContactForSelf(healthElementIds: Array<string>): SortableFilterOptions<Service>;
 
 	byIds(ids: Array<string>): BaseSortableFilterOptions<Service>;
+
+	byAssociationId(associationId: string): BaseFilterOptions<Service>;
+
+	byQualifiedLink(linkValues: Array<string>,
+			options?: { linkQualification?: LinkQualification | undefined }): BaseFilterOptions<Service>;
 
 }
 
@@ -55,12 +61,14 @@ export const ServiceFilters: ServiceFiltersFactory = {
 			byTagAndValueDateForDataOwner: (dataOwnerId, tagType, options) => InternalServiceFiltersObj.getInstance().byTagAndValueDateForDataOwner(dataOwnerId, tagType, options),
 			byPatientsForDataOwner: (dataOwnerId, patients) => InternalServiceFiltersObj.getInstance().byPatientsForDataOwner(dataOwnerId, patients),
 			byPatientsSecretIdsForDataOwner: (dataOwnerId, secretIds) => InternalServiceFiltersObj.getInstance().byPatientsSecretIdsForDataOwner(dataOwnerId, secretIds),
-			byHealthElementIdFromSubcontactForDataOwner: (dataOwnerId, healthElementIds) => InternalServiceFiltersObj.getInstance().byHealthElementIdFromSubcontactForDataOwner(dataOwnerId, healthElementIds),
+			byHealthElementIdFromSubContactForDataOwner: (dataOwnerId, healthElementIds) => InternalServiceFiltersObj.getInstance().byHealthElementIdFromSubContactForDataOwner(dataOwnerId, healthElementIds),
 			byIdentifiersForSelf: (identifiers) => InternalServiceFiltersObj.getInstance().byIdentifiersForSelf(identifiers),
 			byCodeAndValueDateForSelf: (codeType, options) => InternalServiceFiltersObj.getInstance().byCodeAndValueDateForSelf(codeType, options),
 			byTagAndValueDateForSelf: (tagType, options) => InternalServiceFiltersObj.getInstance().byTagAndValueDateForSelf(tagType, options),
 			byPatientsForSelf: (patients) => InternalServiceFiltersObj.getInstance().byPatientsForSelf(patients),
 			byPatientsSecretIdsForSelf: (secretIds) => InternalServiceFiltersObj.getInstance().byPatientsSecretIdsForSelf(secretIds),
-			byHealthElementIdFromSubcontactForSelf: (healthElementIds) => InternalServiceFiltersObj.getInstance().byHealthElementIdFromSubcontactForSelf(healthElementIds),
-			byIds: (ids) => InternalServiceFiltersObj.getInstance().byIds(ids)
+			byHealthElementIdFromSubContactForSelf: (healthElementIds) => InternalServiceFiltersObj.getInstance().byHealthElementIdFromSubContactForSelf(healthElementIds),
+			byIds: (ids) => InternalServiceFiltersObj.getInstance().byIds(ids),
+			byAssociationId: (associationId) => InternalServiceFiltersObj.getInstance().byAssociationId(associationId),
+			byQualifiedLink: (linkValues, options) => InternalServiceFiltersObj.getInstance().byQualifiedLink(linkValues, options)
 		};

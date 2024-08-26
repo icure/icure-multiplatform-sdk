@@ -83,3 +83,47 @@ public fun byName(params: String): String = kotlin.runCatching {
 		decodedParams.descending,
 	)
 }.toPyString(BaseSortableFilterOptions.serializer(HealthcareParty.serializer()))
+
+@Serializable
+private class ByNationalIdentifierParams(
+	public val searchString: String,
+	public val descending: Boolean = false,
+)
+
+public fun byNationalIdentifier(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByNationalIdentifierParams>(params)
+	HealthcarePartyFilters.byNationalIdentifier(
+		decodedParams.searchString,
+		decodedParams.descending,
+	)
+}.toPyString(BaseSortableFilterOptions.serializer(HealthcareParty.serializer()))
+
+@Serializable
+private class ByParentIdParams(
+	public val parentId: String,
+)
+
+public fun byParentId(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByParentIdParams>(params)
+	HealthcarePartyFilters.byParentId(
+		decodedParams.parentId,
+	)
+}.toPyString(BaseFilterOptions.serializer(HealthcareParty.serializer()))
+
+@Serializable
+private class ByTypeSpecialtyPostCodeParams(
+	public val specialty: String,
+	public val specCode: String,
+	public val startPostCode: String,
+	public val endPostCode: String,
+)
+
+public fun byTypeSpecialtyPostCode(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByTypeSpecialtyPostCodeParams>(params)
+	HealthcarePartyFilters.byTypeSpecialtyPostCode(
+		decodedParams.specialty,
+		decodedParams.specCode,
+		decodedParams.startPostCode,
+		decodedParams.endPostCode,
+	)
+}.toPyString(BaseFilterOptions.serializer(HealthcareParty.serializer()))

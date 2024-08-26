@@ -1,27 +1,27 @@
 @file:JsQualifier("sdk")
 package com.icure.sdk.js.externalsdk
 
+import com.icure.sdk.js.api.AccessLogApiJs
+import com.icure.sdk.js.api.CalendarItemApiJs
+import com.icure.sdk.js.api.ClassificationApiJs
+import com.icure.sdk.js.api.ContactApiJs
 import com.icure.sdk.js.api.CryptoApiJs
+import com.icure.sdk.js.api.DataOwnerApiJs
 import com.icure.sdk.js.api.DeviceApiJs
+import com.icure.sdk.js.api.DocumentApiJs
+import com.icure.sdk.js.api.FormApiJs
+import com.icure.sdk.js.api.HealthElementApiJs
+import com.icure.sdk.js.api.IcureMaintenanceTaskApiJs
+import com.icure.sdk.js.api.InvoiceApiJs
+import com.icure.sdk.js.api.MaintenanceTaskApiJs
+import com.icure.sdk.js.api.MessageApiJs
+import com.icure.sdk.js.api.PatientApiJs
 import com.icure.sdk.js.api.PermissionApiJs
+import com.icure.sdk.js.api.ReceiptApiJs
 import com.icure.sdk.js.api.RecoveryApiJs
+import com.icure.sdk.js.api.TimeTableApiJs
+import com.icure.sdk.js.api.TopicApiJs
 import com.icure.sdk.js.api.UserApiJs
-import com.icure.sdk.js.api.extended.DataOwnerApiJs
-import com.icure.sdk.js.api.extended.IcureMaintenanceTaskApiJs
-import com.icure.sdk.js.api.flavoured.AccessLogApiJs
-import com.icure.sdk.js.api.flavoured.CalendarItemApiJs
-import com.icure.sdk.js.api.flavoured.ClassificationApiJs
-import com.icure.sdk.js.api.flavoured.ContactApiJs
-import com.icure.sdk.js.api.flavoured.DocumentApiJs
-import com.icure.sdk.js.api.flavoured.FormApiJs
-import com.icure.sdk.js.api.flavoured.HealthElementApiJs
-import com.icure.sdk.js.api.flavoured.InvoiceApiJs
-import com.icure.sdk.js.api.flavoured.MaintenanceTaskApiJs
-import com.icure.sdk.js.api.flavoured.MessageApiJs
-import com.icure.sdk.js.api.flavoured.PatientApiJs
-import com.icure.sdk.js.api.flavoured.ReceiptApiJs
-import com.icure.sdk.js.api.flavoured.TimeTableApiJs
-import com.icure.sdk.js.api.flavoured.TopicApiJs
 import kotlin.js.Promise
 
 /**

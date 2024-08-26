@@ -11,6 +11,9 @@ import com.icure.sdk.model.base.Identifier
 import com.icure.sdk.py.serialization.HealthElementSerializer
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.utils.Serialization.json
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
@@ -180,3 +183,105 @@ public fun byIds(params: String): String = kotlin.runCatching {
 		decodedParams.ids,
 	)
 }.toPyString(BaseSortableFilterOptions.serializer(HealthElementSerializer))
+
+@Serializable
+private class ByPatientsOpeningDateForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val patients: List<Patient>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientsOpeningDateForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientsOpeningDateForDataOwnerParams>(params)
+	HealthElementFilters.byPatientsOpeningDateForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.patients,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(SortableFilterOptions.serializer(HealthElementSerializer))
+
+@Serializable
+private class ByPatientsOpeningDateForSelfParams(
+	public val patients: List<Patient>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientsOpeningDateForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientsOpeningDateForSelfParams>(params)
+	HealthElementFilters.byPatientsOpeningDateForSelf(
+		decodedParams.patients,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(SortableFilterOptions.serializer(HealthElementSerializer))
+
+@Serializable
+private class ByPatientSecretIdsOpeningDateForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val secretIds: List<String>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientSecretIdsOpeningDateForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientSecretIdsOpeningDateForDataOwnerParams>(params)
+	HealthElementFilters.byPatientSecretIdsOpeningDateForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.secretIds,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(BaseSortableFilterOptions.serializer(HealthElementSerializer))
+
+@Serializable
+private class ByPatientSecretIdsOpeningDateForSelfParams(
+	public val secretIds: List<String>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+public fun byPatientSecretIdsOpeningDateForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByPatientSecretIdsOpeningDateForSelfParams>(params)
+	HealthElementFilters.byPatientSecretIdsOpeningDateForSelf(
+		decodedParams.secretIds,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(SortableFilterOptions.serializer(HealthElementSerializer))
+
+@Serializable
+private class ByStatusForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val status: Int,
+)
+
+public fun byStatusForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByStatusForDataOwnerParams>(params)
+	HealthElementFilters.byStatusForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.status,
+	)
+}.toPyString(BaseFilterOptions.serializer(HealthElementSerializer))
+
+@Serializable
+private class ByStatusForSelfParams(
+	public val status: Int,
+)
+
+public fun byStatusForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = json.decodeFromString<ByStatusForSelfParams>(params)
+	HealthElementFilters.byStatusForSelf(
+		decodedParams.status,
+	)
+}.toPyString(FilterOptions.serializer(HealthElementSerializer))

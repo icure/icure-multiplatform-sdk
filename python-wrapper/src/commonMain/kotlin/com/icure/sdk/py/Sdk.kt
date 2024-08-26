@@ -41,7 +41,7 @@ class SdkInitializationResult internal constructor(
 @OptIn(ExperimentalForeignApi::class)
 fun initializeSdk(
 	dataParams: String,
-	cryptoStrategies: COpaquePointer
+	cryptoStrategies: COpaquePointer?
 ): SdkInitializationResult = runBlocking {
 	kotlin.runCatching {
 		val decodedParams = Serialization.json.decodeFromString<PySdkParams>(dataParams)
@@ -55,8 +55,9 @@ fun initializeSdk(
 				)
 			),
 			FileStorageFacade(decodedParams.storagePath),
-			cryptoStrategies.asStableRef<CryptoStrategies>().get(),
-			decodedParams.asApiOptions()
+			decodedParams.asApiOptions().copy(
+				cryptoStrategies = cryptoStrategies?.asStableRef<CryptoStrategies>()?.get()
+			)
 		)
 	}.fold(
 		onSuccess = { SdkInitializationResult(it, null) },

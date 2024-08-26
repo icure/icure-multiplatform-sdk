@@ -13,10 +13,10 @@ import kotlin.js.JsExport
 
 @JsExport
 public object InternalCodeFiltersObj {
-	public fun all(): FilterOptionsJs<CodeJs> {
+	public fun all(): BaseFilterOptionsJs<CodeJs> {
 		val result = CodeFilters.all(
 		)
-		return FilterOptionsJsImpl(result)
+		return BaseFilterOptionsJsImpl(result)
 	}
 
 	public fun byIds(ids: Array<String>): BaseSortableFilterOptionsJs<CodeJs> {
@@ -31,6 +31,56 @@ public object InternalCodeFiltersObj {
 			idsConverted,
 		)
 		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byQualifiedLink(linkType: String, options: dynamic): BaseFilterOptionsJs<CodeJs> {
+		val _options = options ?: js("{}")
+		val linkTypeConverted: String = linkType
+		val linkedIdConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"linkedId",
+			null
+		) { linkedId: String? ->
+			undefinedToNull(linkedId)
+		}
+		val result = CodeFilters.byQualifiedLink(
+			linkTypeConverted,
+			linkedIdConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun byRegionTypeCodeVersion(region: String, options: dynamic): BaseFilterOptionsJs<CodeJs> {
+		val _options = options ?: js("{}")
+		val regionConverted: String = region
+		val typeConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"type",
+			null
+		) { type: String? ->
+			undefinedToNull(type)
+		}
+		val codeConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"code",
+			null
+		) { code: String? ->
+			undefinedToNull(code)
+		}
+		val versionConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"version",
+			null
+		) { version: String? ->
+			undefinedToNull(version)
+		}
+		val result = CodeFilters.byRegionTypeCodeVersion(
+			regionConverted,
+			typeConverted,
+			codeConverted,
+			versionConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
 	}
 
 	public fun byLanguageTypeLabelRegion(
@@ -60,6 +110,46 @@ public object InternalCodeFiltersObj {
 			typeConverted,
 			labelConverted,
 			regionConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun byLanguageTypesLabelRegionVersion(
+		language: String,
+		types: Array<String>,
+		label: String,
+		options: dynamic,
+	): BaseFilterOptionsJs<CodeJs> {
+		val _options = options ?: js("{}")
+		val languageConverted: String = language
+		val typesConverted: List<String> = arrayToList(
+			types,
+			"types",
+			{ x1: String ->
+				x1
+			},
+		)
+		val labelConverted: String = label
+		val regionConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"region",
+			null
+		) { region: String? ->
+			undefinedToNull(region)
+		}
+		val versionConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"version",
+			null
+		) { version: String? ->
+			undefinedToNull(version)
+		}
+		val result = CodeFilters.byLanguageTypesLabelRegionVersion(
+			languageConverted,
+			typesConverted,
+			labelConverted,
+			regionConverted,
+			versionConverted,
 		)
 		return BaseFilterOptionsJsImpl(result)
 	}

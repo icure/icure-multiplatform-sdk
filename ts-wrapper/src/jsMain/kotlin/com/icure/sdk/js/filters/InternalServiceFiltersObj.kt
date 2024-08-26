@@ -13,6 +13,7 @@ import com.icure.sdk.js.model.embed.ServiceJs
 import com.icure.sdk.js.model.patient_fromJs
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.base.Identifier
+import com.icure.sdk.model.base.LinkQualification
 import kotlin.Array
 import kotlin.Double
 import kotlin.Long
@@ -165,7 +166,7 @@ public object InternalServiceFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
-	public fun byHealthElementIdFromSubcontactForDataOwner(dataOwnerId: String,
+	public fun byHealthElementIdFromSubContactForDataOwner(dataOwnerId: String,
 			healthElementIds: Array<String>): BaseSortableFilterOptionsJs<ServiceJs> {
 		val dataOwnerIdConverted: String = dataOwnerId
 		val healthElementIdsConverted: List<String> = arrayToList(
@@ -175,7 +176,7 @@ public object InternalServiceFiltersObj {
 				x1
 			},
 		)
-		val result = ServiceFilters.byHealthElementIdFromSubcontactForDataOwner(
+		val result = ServiceFilters.byHealthElementIdFromSubContactForDataOwner(
 			dataOwnerIdConverted,
 			healthElementIdsConverted,
 		)
@@ -294,7 +295,7 @@ public object InternalServiceFiltersObj {
 		return SortableFilterOptionsJsImpl(result)
 	}
 
-	public fun byHealthElementIdFromSubcontactForSelf(healthElementIds: Array<String>):
+	public fun byHealthElementIdFromSubContactForSelf(healthElementIds: Array<String>):
 			SortableFilterOptionsJs<ServiceJs> {
 		val healthElementIdsConverted: List<String> = arrayToList(
 			healthElementIds,
@@ -303,7 +304,7 @@ public object InternalServiceFiltersObj {
 				x1
 			},
 		)
-		val result = ServiceFilters.byHealthElementIdFromSubcontactForSelf(
+		val result = ServiceFilters.byHealthElementIdFromSubContactForSelf(
 			healthElementIdsConverted,
 		)
 		return SortableFilterOptionsJsImpl(result)
@@ -321,5 +322,39 @@ public object InternalServiceFiltersObj {
 			idsConverted,
 		)
 		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byAssociationId(associationId: String): BaseFilterOptionsJs<ServiceJs> {
+		val associationIdConverted: String = associationId
+		val result = ServiceFilters.byAssociationId(
+			associationIdConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun byQualifiedLink(linkValues: Array<String>, options: dynamic):
+			BaseFilterOptionsJs<ServiceJs> {
+		val _options = options ?: js("{}")
+		val linkValuesConverted: List<String> = arrayToList(
+			linkValues,
+			"linkValues",
+			{ x1: String ->
+				x1
+			},
+		)
+		val linkQualificationConverted: LinkQualification? = convertingOptionOrDefaultNullable(
+			_options,
+			"linkQualification",
+			null
+		) { linkQualification: String? ->
+			linkQualification?.let { nonNull1 ->
+				LinkQualification.valueOf(nonNull1)
+			}
+		}
+		val result = ServiceFilters.byQualifiedLink(
+			linkValuesConverted,
+			linkQualificationConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
 	}
 }

@@ -47,7 +47,7 @@ interface PatientFiltersFactory {
 
 	byDateOfBirthBetweenForSelf(fromDate: number, toDate: number): SortableFilterOptions<Patient>;
 
-	byFuzzyNameForSelf(searchString: string): FilterOptions<Patient>;
+	byNameForSelf(searchString: string): FilterOptions<Patient>;
 
 	byGenderEducationProfessionForSelf(gender: Gender,
 			options?: { education?: string | undefined, profession?: string | undefined }): SortableFilterOptions<Patient>;
@@ -62,6 +62,11 @@ interface PatientFiltersFactory {
 	byAddressForSelf(searchString: string): SortableFilterOptions<Patient>;
 
 	byExternalIdForSelf(externalIdPrefix: string): SortableFilterOptions<Patient>;
+
+	byModificationDateForDataOwner(dataOwnerId: string,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): BaseSortableFilterOptions<Patient>;
+
+	byModificationDateForSelf(options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<Patient>;
 
 }
 
@@ -82,11 +87,13 @@ export const PatientFilters: PatientFiltersFactory = {
 			byIdentifiersForSelf: (identifiers) => InternalPatientFiltersObj.getInstance().byIdentifiersForSelf(identifiers),
 			bySsinsForSelf: (ssins) => InternalPatientFiltersObj.getInstance().bySsinsForSelf(ssins),
 			byDateOfBirthBetweenForSelf: (fromDate, toDate) => InternalPatientFiltersObj.getInstance().byDateOfBirthBetweenForSelf(fromDate, toDate),
-			byFuzzyNameForSelf: (searchString) => InternalPatientFiltersObj.getInstance().byFuzzyNameForSelf(searchString),
+			byNameForSelf: (searchString) => InternalPatientFiltersObj.getInstance().byNameForSelf(searchString),
 			byGenderEducationProfessionForSelf: (gender, options) => InternalPatientFiltersObj.getInstance().byGenderEducationProfessionForSelf(gender, options),
 			byActiveForSelf: (active) => InternalPatientFiltersObj.getInstance().byActiveForSelf(active),
 			byTelecomForSelf: (searchString) => InternalPatientFiltersObj.getInstance().byTelecomForSelf(searchString),
 			byAddressPostalCodeHouseNumberForSelf: (searchString, postalCode, options) => InternalPatientFiltersObj.getInstance().byAddressPostalCodeHouseNumberForSelf(searchString, postalCode, options),
 			byAddressForSelf: (searchString) => InternalPatientFiltersObj.getInstance().byAddressForSelf(searchString),
-			byExternalIdForSelf: (externalIdPrefix) => InternalPatientFiltersObj.getInstance().byExternalIdForSelf(externalIdPrefix)
+			byExternalIdForSelf: (externalIdPrefix) => InternalPatientFiltersObj.getInstance().byExternalIdForSelf(externalIdPrefix),
+			byModificationDateForDataOwner: (dataOwnerId, options) => InternalPatientFiltersObj.getInstance().byModificationDateForDataOwner(dataOwnerId, options),
+			byModificationDateForSelf: (options) => InternalPatientFiltersObj.getInstance().byModificationDateForSelf(options)
 		};

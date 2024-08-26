@@ -39,6 +39,14 @@ public object InternalUserFiltersObj {
 		return BaseFilterOptionsJsImpl(result)
 	}
 
+	public fun byHealthcarePartyId(healthcarePartyId: String): BaseFilterOptionsJs<UserJs> {
+		val healthcarePartyIdConverted: String = healthcarePartyId
+		val result = UserFilters.byHealthcarePartyId(
+			healthcarePartyIdConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
 	public fun byNameEmailOrPhone(searchString: String): BaseFilterOptionsJs<UserJs> {
 		val searchStringConverted: String = searchString
 		val result = UserFilters.byNameEmailOrPhone(

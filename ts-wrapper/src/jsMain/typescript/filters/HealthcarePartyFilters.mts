@@ -21,6 +21,14 @@ interface HealthcarePartyFiltersFactory {
 	byName(searchString: string,
 			options?: { descending?: boolean }): BaseSortableFilterOptions<HealthcareParty>;
 
+	byNationalIdentifier(searchString: string,
+			options?: { descending?: boolean }): BaseSortableFilterOptions<HealthcareParty>;
+
+	byParentId(parentId: string): BaseFilterOptions<HealthcareParty>;
+
+	byTypeSpecialtyPostCode(specialty: string, specCode: string, startPostCode: string,
+			endPostCode: string): BaseFilterOptions<HealthcareParty>;
+
 }
 
 export const HealthcarePartyFilters: HealthcarePartyFiltersFactory = {
@@ -29,5 +37,8 @@ export const HealthcarePartyFilters: HealthcarePartyFiltersFactory = {
 			byCode: (codeType, options) => InternalHealthcarePartyFiltersObj.getInstance().byCode(codeType, options),
 			byTag: (tagType, options) => InternalHealthcarePartyFiltersObj.getInstance().byTag(tagType, options),
 			byIds: (ids) => InternalHealthcarePartyFiltersObj.getInstance().byIds(ids),
-			byName: (searchString, options) => InternalHealthcarePartyFiltersObj.getInstance().byName(searchString, options)
+			byName: (searchString, options) => InternalHealthcarePartyFiltersObj.getInstance().byName(searchString, options),
+			byNationalIdentifier: (searchString, options) => InternalHealthcarePartyFiltersObj.getInstance().byNationalIdentifier(searchString, options),
+			byParentId: (parentId) => InternalHealthcarePartyFiltersObj.getInstance().byParentId(parentId),
+			byTypeSpecialtyPostCode: (specialty, specCode, startPostCode, endPostCode) => InternalHealthcarePartyFiltersObj.getInstance().byTypeSpecialtyPostCode(specialty, specCode, startPostCode, endPostCode)
 		};

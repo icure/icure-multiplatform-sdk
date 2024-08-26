@@ -40,6 +40,22 @@ interface HealthElementFiltersFactory {
 
 	byIds(ids: Array<string>): BaseSortableFilterOptions<HealthElement>;
 
+	byPatientsOpeningDateForDataOwner(dataOwnerId: string, patients: Array<Patient>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<HealthElement>;
+
+	byPatientsOpeningDateForSelf(patients: Array<Patient>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<HealthElement>;
+
+	byPatientSecretIdsOpeningDateForDataOwner(dataOwnerId: string, secretIds: Array<string>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): BaseSortableFilterOptions<HealthElement>;
+
+	byPatientSecretIdsOpeningDateForSelf(secretIds: Array<string>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<HealthElement>;
+
+	byStatusForDataOwner(dataOwnerId: string, status: number): BaseFilterOptions<HealthElement>;
+
+	byStatusForSelf(status: number): FilterOptions<HealthElement>;
+
 }
 
 export const HealthElementFilters: HealthElementFiltersFactory = {
@@ -55,5 +71,11 @@ export const HealthElementFilters: HealthElementFiltersFactory = {
 			byPatientsForSelf: (patients) => InternalHealthElementFiltersObj.getInstance().byPatientsForSelf(patients),
 			byPatientsSecretIdsForDataOwner: (dataOwnerId, secretIds) => InternalHealthElementFiltersObj.getInstance().byPatientsSecretIdsForDataOwner(dataOwnerId, secretIds),
 			byPatientsSecretIdsForSelf: (secretIds) => InternalHealthElementFiltersObj.getInstance().byPatientsSecretIdsForSelf(secretIds),
-			byIds: (ids) => InternalHealthElementFiltersObj.getInstance().byIds(ids)
+			byIds: (ids) => InternalHealthElementFiltersObj.getInstance().byIds(ids),
+			byPatientsOpeningDateForDataOwner: (dataOwnerId, patients, options) => InternalHealthElementFiltersObj.getInstance().byPatientsOpeningDateForDataOwner(dataOwnerId, patients, options),
+			byPatientsOpeningDateForSelf: (patients, options) => InternalHealthElementFiltersObj.getInstance().byPatientsOpeningDateForSelf(patients, options),
+			byPatientSecretIdsOpeningDateForDataOwner: (dataOwnerId, secretIds, options) => InternalHealthElementFiltersObj.getInstance().byPatientSecretIdsOpeningDateForDataOwner(dataOwnerId, secretIds, options),
+			byPatientSecretIdsOpeningDateForSelf: (secretIds, options) => InternalHealthElementFiltersObj.getInstance().byPatientSecretIdsOpeningDateForSelf(secretIds, options),
+			byStatusForDataOwner: (dataOwnerId, status) => InternalHealthElementFiltersObj.getInstance().byStatusForDataOwner(dataOwnerId, status),
+			byStatusForSelf: (status) => InternalHealthElementFiltersObj.getInstance().byStatusForSelf(status)
 		};

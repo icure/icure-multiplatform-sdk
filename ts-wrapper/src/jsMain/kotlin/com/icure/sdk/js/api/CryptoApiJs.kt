@@ -3,7 +3,6 @@
 
 package com.icure.sdk.js.api
 
-import com.icure.sdk.js.api.crypto.ShamirKeysManagerApiJs
 import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier

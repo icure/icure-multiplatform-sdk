@@ -106,4 +106,49 @@ public object InternalHealthcarePartyFiltersObj {
 		)
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
+
+	public fun byNationalIdentifier(searchString: String, options: dynamic):
+			BaseSortableFilterOptionsJs<HealthcarePartyJs> {
+		val _options = options ?: js("{}")
+		val searchStringConverted: String = searchString
+		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
+			_options,
+			"descending",
+			false
+		) { descending: Boolean ->
+			descending
+		}
+		val result = HealthcarePartyFilters.byNationalIdentifier(
+			searchStringConverted,
+			descendingConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byParentId(parentId: String): BaseFilterOptionsJs<HealthcarePartyJs> {
+		val parentIdConverted: String = parentId
+		val result = HealthcarePartyFilters.byParentId(
+			parentIdConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun byTypeSpecialtyPostCode(
+		specialty: String,
+		specCode: String,
+		startPostCode: String,
+		endPostCode: String,
+	): BaseFilterOptionsJs<HealthcarePartyJs> {
+		val specialtyConverted: String = specialty
+		val specCodeConverted: String = specCode
+		val startPostCodeConverted: String = startPostCode
+		val endPostCodeConverted: String = endPostCode
+		val result = HealthcarePartyFilters.byTypeSpecialtyPostCode(
+			specialtyConverted,
+			specCodeConverted,
+			startPostCodeConverted,
+			endPostCodeConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
 }
