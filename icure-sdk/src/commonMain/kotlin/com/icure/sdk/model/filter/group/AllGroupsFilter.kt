@@ -15,5 +15,6 @@ data class AllGroupsFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Group> {
 	// region AllGroupsFilter-AllGroupsFilter
+
 	// endregion
 }
