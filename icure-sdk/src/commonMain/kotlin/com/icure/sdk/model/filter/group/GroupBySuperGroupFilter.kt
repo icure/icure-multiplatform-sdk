@@ -16,5 +16,6 @@ class GroupBySuperGroupFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Group> {
 	// region GroupBySuperGroupFilter-GroupBySuperGroupFilter
+
 	// endregion
 }

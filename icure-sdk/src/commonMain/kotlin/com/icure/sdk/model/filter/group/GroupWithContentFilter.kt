@@ -17,5 +17,6 @@ data class GroupWithContentFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Group> {
 	// region GroupWithContentFilter-GroupWithContentFilter
+
 	// endregion
 }
