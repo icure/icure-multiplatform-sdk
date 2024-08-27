@@ -42,10 +42,10 @@ internal sealed interface DoGetTokenResult {
 
 }
 
+@OptIn(InternalIcureApi::class)
 private class AuthProcessApiImpl(
 	private val messageGatewayApi: RawMessageGatewayApi
 ) : AuthenticationProcessApi {
-	@OptIn(InternalIcureApi::class)
 	override suspend fun executeProcess(
 		messageGatewayUrl: String,
 		externalServicesSpecId: String,

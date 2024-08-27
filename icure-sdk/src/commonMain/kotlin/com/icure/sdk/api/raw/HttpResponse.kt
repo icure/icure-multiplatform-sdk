@@ -9,7 +9,7 @@ import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
 
 @InternalIcureApi
-class HttpResponse<T : Any?>(val response: io.ktor.client.statement.HttpResponse, val provider: BodyProvider<T>) {
+class HttpResponse<T>(val response: io.ktor.client.statement.HttpResponse, val provider: BodyProvider<T>) {
 	val status: HttpStatusCode = response.status
 	val headers: Map<String, List<String>> = response.headers.mapEntries()
 
@@ -24,17 +24,17 @@ class HttpResponse<T : Any?>(val response: io.ktor.client.statement.HttpResponse
 	}
 }
 
-@OptIn(InternalIcureApi::class)
+@InternalIcureApi
 suspend fun <T : Any> HttpResponse<T>.successBodyOrNull(): T? = if (status.isSuccess()) provider.body(response) else null
 
-@OptIn(InternalIcureApi::class)
+@InternalIcureApi
 suspend fun <T : Any> HttpResponse<T>.successBodyOrNull404(): T? = if (status == HttpStatusCode.NotFound) null else successBody()
 
-interface BodyProvider<T : Any?> {
+interface BodyProvider<T> {
 	suspend fun body(response: io.ktor.client.statement.HttpResponse): T
 }
 
-class TypedBodyProvider<T : Any?>(private val type: TypeInfo) : BodyProvider<T> {
+class TypedBodyProvider<T>(private val type: TypeInfo) : BodyProvider<T> {
 	@Suppress("UNCHECKED_CAST")
 	override suspend fun body(response: io.ktor.client.statement.HttpResponse): T =
 		response.call.body(type) as T
@@ -46,13 +46,13 @@ class MappedBodyProvider<S : Any, T : Any>(private val provider: BodyProvider<S>
 }
 
 @InternalIcureApi
-inline fun <reified T : Any?> io.ktor.client.statement.HttpResponse.wrap(): HttpResponse<T> =
+inline fun <reified T> io.ktor.client.statement.HttpResponse.wrap(): HttpResponse<T> =
 	HttpResponse(this, TypedBodyProvider(typeInfo<T>()))
 
 fun io.ktor.client.statement.HttpResponse.requireSuccess(): Unit {
 	if (!status.isSuccess()) throw RequestStatusException(call.request.method, call.request.url.toString(), status.value)
 }
 
-@OptIn(InternalIcureApi::class)
+@InternalIcureApi
 fun <T : Any, V : Any> HttpResponse<T>.map(block: T.() -> V): HttpResponse<V> =
 	HttpResponse(response, MappedBodyProvider(provider, block))

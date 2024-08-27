@@ -13,10 +13,11 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
+@InternalIcureApi
 class RawMessageGatewayApi(
 	private val client: HttpClient
 ) {
-	@OptIn(InternalIcureApi::class)
+
 	suspend fun startProcess(
 		messageGatewayUrl: String,
 		externalServicesSpecId: String,
