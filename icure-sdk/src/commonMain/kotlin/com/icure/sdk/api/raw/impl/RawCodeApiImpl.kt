@@ -210,7 +210,7 @@ class RawCodeApiImpl(
 		label: String,
 		type: String,
 		languages: String?,
-	): HttpResponse<Code> =
+	): HttpResponse<Code?> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
