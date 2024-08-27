@@ -2,62 +2,119 @@ package com.icure.sdk.py
 
 import com.icure.sdk.IcureBaseSdk
 import com.icure.sdk.IcureSdk
-import com.icure.sdk.auth.UsernamePassword
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.BasicApiOptions
 import com.icure.sdk.options.EncryptedFieldsConfiguration
+import com.icure.sdk.options.JsonPatcher
+import com.icure.sdk.py.PyStorage.StorageFacadeOptions
+import com.icure.sdk.py.options.PyAuthMethod
+import com.icure.sdk.storage.KeyStorageFacade
+import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.FileStorageFacade
+import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
+import com.icure.sdk.utils.ensureNonNull
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.asStableRef
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
+
 @Serializable
+@InternalIcureApi
 private data class PySdkParams(
+	val applicationId: String? = null,
 	val baseUrl: String,
-	val username: String,
-	val password: String,
-	val storagePath: String,
+	val authenticationMethod: PyAuthMethod,
+	val storageFacade: StorageFacadeOptions,
 	val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
 	val disableParentKeysInitialisation: Boolean = false,
 	val createTransferKeys: Boolean = true,
+	val keyStorage: StorageFacadeOptions? = null,
+	val saltPasswordWithApplicationId: Boolean = true,
 ) {
-	fun asApiOptions() = ApiOptions(
-		encryptedFields = encryptedFields,
-		disableParentKeysInitialisation = disableParentKeysInitialisation,
-		createTransferKeys = createTransferKeys
-	)
+	@OptIn(ExperimentalForeignApi::class)
+	suspend fun getStorageAndApiOptions(
+		cryptoStrategies: COpaquePointer?,
+		customStorageFacade: COpaquePointer?,
+		customKeyStorage: COpaquePointer?,
+		customJsonPatcher: COpaquePointer?
+	): RichPyApiParams {
+		val strategies: CryptoStrategies? = cryptoStrategies?.asStableRef<CryptoStrategies>()?.get()
+		val loadedStorageFacade: StorageFacade = when (storageFacade) {
+			StorageFacadeOptions.Custom -> ensureNonNull(customStorageFacade) {
+				"Storage facade options are custom but no implementation provided"
+			}.asStableRef<StorageFacade>().get()
+			is StorageFacadeOptions.File -> FileStorageFacade(storageFacade.directory)
+		}
+		val keyStorage: KeyStorageFacade? = keyStorage?.let { options ->
+			val storageFacadeForKeys: StorageFacade = when (options) {
+				StorageFacadeOptions.Custom -> ensureNonNull(customKeyStorage) {
+					"Key storage facade as string options are custom but no implementation provided"
+				}.asStableRef<StorageFacade>().get()
+				this.storageFacade -> loadedStorageFacade
+				is StorageFacadeOptions.File -> FileStorageFacade(options.directory)
+			}
+			JsonAndBase64KeyStorage(storageFacadeForKeys)
+		}
+		return RichPyApiParams(
+			ApiOptions(
+				encryptedFields = encryptedFields,
+				disableParentKeysInitialisation = disableParentKeysInitialisation,
+				createTransferKeys = createTransferKeys,
+				keyStorage = keyStorage,
+				cryptoStrategies = strategies,
+				jsonPatcher = customJsonPatcher?.asStableRef<JsonPatcher>()?.get()
+			),
+			loadedStorageFacade,
+			authenticationMethod.toKt()
+		)
+	}
 }
+
+private data class RichPyApiParams(
+	val apiOptions: ApiOptions,
+	val storageFacade: StorageFacade,
+	val authenticationMethod: AuthenticationMethod
+)
 
 class SdkInitializationResult internal constructor(
 	val success: IcureSdk?,
 	val failure: String?
 )
 
-@OptIn(ExperimentalForeignApi::class)
+/**
+ * In python some api options aren't supported since they aren't inline with the principle of python only being used
+ * for server automations, for example:
+ * - Group selection -> the server automatically knows which group it should log in to.
+ * - Authentication with secret provider -> there is no user to interface with in the secret provider
+ */
+@OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 fun initializeSdk(
 	dataParams: String,
-	cryptoStrategies: COpaquePointer?
+	cryptoStrategies: COpaquePointer?,
+	customStorageFacade: COpaquePointer?,
+	customKeyStorage: COpaquePointer?,
+	customJsonPatcher: COpaquePointer?,
 ): SdkInitializationResult = runBlocking {
 	kotlin.runCatching {
 		val decodedParams = Serialization.json.decodeFromString<PySdkParams>(dataParams)
+		val richParams = decodedParams.getStorageAndApiOptions(
+			cryptoStrategies = cryptoStrategies,
+			customStorageFacade = customStorageFacade,
+			customKeyStorage = customKeyStorage,
+			customJsonPatcher = customJsonPatcher,
+		)
 		IcureSdk.initialize(
-			null,
+			decodedParams.applicationId,
 			decodedParams.baseUrl,
-			AuthenticationMethod.UsingCredentials(
-				UsernamePassword(
-					decodedParams.username,
-					decodedParams.password
-				)
-			),
-			FileStorageFacade(decodedParams.storagePath),
-			decodedParams.asApiOptions().copy(
-				cryptoStrategies = cryptoStrategies?.asStableRef<CryptoStrategies>()?.get()
-			)
+			richParams.authenticationMethod,
+			richParams.storageFacade,
+			richParams.apiOptions
 		)
 	}.fold(
 		onSuccess = { SdkInitializationResult(it, null) },
@@ -67,24 +124,48 @@ fun initializeSdk(
 
 @Serializable
 private data class PyBaseSdkParams(
+	val applicationId: String? = null,
 	val baseUrl: String,
-	val username: String,
-	val password: String,
-	val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration()
+	val authenticationMethod: PyAuthMethod,
+	val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
+	val saltPasswordWithApplicationId: Boolean = true,
 ) {
-	fun asApiOptions() = BasicApiOptions(
-		encryptedFields = encryptedFields
-	)
+	fun getRichApiParams(): RichPyBaseApiParams {
+		val options = BasicApiOptions(
+			encryptedFields = encryptedFields,
+			saltPasswordWithApplicationId = saltPasswordWithApplicationId,
+		)
+		return RichPyBaseApiParams(
+			options,
+			authenticationMethod.toKt()
+		)
+	}
 }
 
+private data class RichPyBaseApiParams(
+	val apiOptions: BasicApiOptions,
+	val authenticationMethod: AuthenticationMethod
+)
+
+class BaseSdkInitializationResult internal constructor(
+	val success: IcureBaseSdk?,
+	val failure: String?
+)
+
 fun initializeBaseSdk(
-	dataParams: String,
-): IcureBaseSdk = runBlocking {
-	val decodedParams = Serialization.json.decodeFromString<PyBaseSdkParams>(dataParams)
-	IcureBaseSdk.initialize(
-		null,
-		decodedParams.baseUrl,
-		AuthenticationMethod.UsingCredentials(UsernamePassword(decodedParams.username, decodedParams.password)),
-		decodedParams.asApiOptions()
+	dataParams: String
+): BaseSdkInitializationResult = runBlocking {
+	kotlin.runCatching {
+		val decodedParams = Serialization.json.decodeFromString<PyBaseSdkParams>(dataParams)
+		val richParams = decodedParams.getRichApiParams()
+		IcureBaseSdk.initialize(
+			decodedParams.applicationId,
+			decodedParams.baseUrl,
+			richParams.authenticationMethod,
+			richParams.apiOptions
+		)
+	}.fold(
+		onSuccess = { BaseSdkInitializationResult(it, null) },
+		onFailure = { BaseSdkInitializationResult(null, it.stackTraceToString()) }
 	)
 }

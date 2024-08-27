@@ -24,6 +24,7 @@ import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensureNonNull
 import io.ktor.client.HttpClient
+import kotlinx.serialization.Serializable
 
 sealed interface AuthenticationMethod {
 	/**
@@ -112,9 +113,13 @@ sealed interface AuthenticationMethod {
 		 */
 		val cacheSecrets: Boolean = false
 	) : AuthenticationMethod {
+		@Serializable
 		sealed interface InitialSecret {
+			@Serializable
 			data class Password(val password: String) : InitialSecret
+			@Serializable
 			data class LongLivedToken(val token: String) : InitialSecret
+			@Serializable
 			data class OAuth(val secret: String, val oauthType: ThirdPartyProvider) : InitialSecret
 		}
 	}

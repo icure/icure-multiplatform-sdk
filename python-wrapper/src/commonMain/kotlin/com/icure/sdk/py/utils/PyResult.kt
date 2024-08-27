@@ -218,4 +218,19 @@ internal class PyCallbackResultHolder<T>(
 	}
 }
 
+@OptIn(ExperimentalForeignApi::class)
+internal fun <T> withResultHolder(
+	resultSerializer: KSerializer<T>,
+	executeCallback: (resultHolderPtr: COpaquePointer) -> Unit
+): T {
+	val holder = PyCallbackResultHolder(resultSerializer)
+	val stableRef = StableRef.create(holder)
+	return try {
+		executeCallback(stableRef.asCPointer())
+		holder.getOrThrow()
+	} finally {
+		stableRef.dispose()
+	}
+}
+
 private class PythonInvocationException(pyStackTrace: String) : Exception(pyStackTrace)
