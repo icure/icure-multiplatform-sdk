@@ -7,6 +7,7 @@ import com.icure.sdk.api.InvoiceBasicFlavourlessApi
 import com.icure.sdk.api.InvoiceFlavouredApi
 import com.icure.sdk.api.raw.RawEntityReferenceApi
 import com.icure.sdk.api.raw.RawInvoiceApi
+import com.icure.sdk.api.raw.successBodyOrNull
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult

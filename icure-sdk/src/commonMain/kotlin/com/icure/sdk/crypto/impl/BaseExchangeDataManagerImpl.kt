@@ -9,6 +9,7 @@ import com.icure.kryptom.utils.hexToByteArray
 import com.icure.kryptom.utils.toHexString
 import com.icure.sdk.api.DataOwnerApi
 import com.icure.sdk.api.raw.RawExchangeDataApi
+import com.icure.sdk.api.raw.successBodyOrNull404
 import com.icure.sdk.crypto.BaseExchangeDataManager
 import com.icure.sdk.crypto.RsaVerificationKeyProvider
 import com.icure.sdk.crypto.entities.DecryptionResult

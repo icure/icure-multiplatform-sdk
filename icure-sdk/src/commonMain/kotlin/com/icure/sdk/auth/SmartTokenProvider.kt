@@ -4,6 +4,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.base64Encode
 import com.icure.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.sdk.api.raw.RawMessageGatewayApi
+import com.icure.sdk.api.raw.successBodyOrNull
 import com.icure.sdk.model.LoginCredentials
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.utils.InternalIcureApi

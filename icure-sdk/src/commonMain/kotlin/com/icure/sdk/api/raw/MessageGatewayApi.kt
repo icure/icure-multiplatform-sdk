@@ -3,6 +3,7 @@ package com.icure.sdk.api.raw
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.sdk.auth.AuthenticationProcessTelecomType
+import com.icure.sdk.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -15,6 +16,7 @@ import kotlinx.serialization.json.JsonPrimitive
 class RawMessageGatewayApi(
 	private val client: HttpClient
 ) {
+	@OptIn(InternalIcureApi::class)
 	suspend fun startProcess(
 		messageGatewayUrl: String,
 		externalServicesSpecId: String,
