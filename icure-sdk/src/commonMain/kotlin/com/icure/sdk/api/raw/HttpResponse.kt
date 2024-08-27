@@ -37,7 +37,7 @@ interface BodyProvider<T> {
 class TypedBodyProvider<T>(private val type: TypeInfo) : BodyProvider<T> {
 	@Suppress("UNCHECKED_CAST")
 	override suspend fun body(response: io.ktor.client.statement.HttpResponse): T =
-		response.call.body(type) as T
+		response.call.bodyNullable(type) as T
 }
 
 class MappedBodyProvider<S : Any, T : Any>(private val provider: BodyProvider<S>, private val block: S.() -> T) : BodyProvider<T> {
@@ -49,7 +49,7 @@ class MappedBodyProvider<S : Any, T : Any>(private val provider: BodyProvider<S>
 inline fun <reified T> io.ktor.client.statement.HttpResponse.wrap(): HttpResponse<T> =
 	HttpResponse(this, TypedBodyProvider(typeInfo<T>()))
 
-fun io.ktor.client.statement.HttpResponse.requireSuccess(): Unit {
+fun io.ktor.client.statement.HttpResponse.requireSuccess() {
 	if (!status.isSuccess()) throw RequestStatusException(call.request.method, call.request.url.toString(), status.value)
 }
 
