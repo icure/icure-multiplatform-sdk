@@ -80,7 +80,7 @@ public interface RawCodeApi {
 		label: String,
 		type: String,
 		languages: String?,
-	): HttpResponse<Code>
+	): HttpResponse<Code?>
 
 	suspend fun getCodes(codeIds: ListOfIds): HttpResponse<List<Code>>
 
