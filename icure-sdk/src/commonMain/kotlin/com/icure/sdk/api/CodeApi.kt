@@ -98,7 +98,7 @@ interface CodeApi {
 		label: String,
 		type: String,
 		languages: String?,
-	): Code
+	): Code?
 
 	suspend fun getCodes(codeIds: List<String>): List<Code>
 	@JsName("getCodesInGroup")
