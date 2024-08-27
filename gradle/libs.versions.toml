@@ -38,6 +38,7 @@ ktorSerializationJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-
 ktorServerCore = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
 ktorServerNetty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
 ktorServerWebsockets = { group = "io.ktor", name = "ktor-server-websockets", version.ref = "ktor" }
+ktorServerContentNegotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
 
 # Kotlinx
 coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -67,4 +68,4 @@ okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 
 [bundles]
-ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets"]
+ktorServer = ["ktorServerCore", "ktorServerNetty", "ktorServerWebsockets", "ktorServerContentNegotiation"]

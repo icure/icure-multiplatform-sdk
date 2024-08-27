@@ -1,9 +1,6 @@
 name: Release packages
 
 on:
-    push:
-        branches:
-            - develop
     pull_request:
         types:
             - closed
@@ -11,6 +8,7 @@ on:
             - develop
 jobs:
     release:
+        if: github.event.pull_request.merged == true
         runs-on: self-hosted
         steps:
             -   name: Check if curl is installed, otherwise install it
