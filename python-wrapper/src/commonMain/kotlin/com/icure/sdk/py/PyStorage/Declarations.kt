@@ -11,6 +11,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.StableRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
@@ -29,11 +30,12 @@ internal sealed interface StorageFacadeOptions {
 	data object Custom: StorageFacadeOptions
 }
 
-@OptIn(ExperimentalForeignApi::class)
+// Even for methods that return Unit we use resultHolder to manage exceptions
+@OptIn(ExperimentalForeignApi::class, ExperimentalSerializationApi::class)
 fun createCustomStorageFacade(
 	pyGetItem: CPointer<CFunction<(resultHolder: COpaquePointer, key: CValues<ByteVar>) -> Unit>>,
-	pySetItem: CPointer<CFunction<(key: CValues<ByteVar>, value: CValues<ByteVar>) -> Unit>>,
-	pyRemoveItem: CPointer<CFunction<(key: CValues<ByteVar>) -> Unit>>,
+	pySetItem: CPointer<CFunction<(resultHolder: COpaquePointer, key: CValues<ByteVar>, value: CValues<ByteVar>) -> Unit>>,
+	pyRemoveItem: CPointer<CFunction<(resultHolder: COpaquePointer, key: CValues<ByteVar>) -> Unit>>,
 ): COpaquePointer {
 	val storageFacade: StorageFacade = object : StorageFacade {
 		override suspend fun getItem(key: String): String? =
@@ -45,11 +47,15 @@ fun createCustomStorageFacade(
 			}
 
 		override suspend fun setItem(key: String, value: String) {
-			pySetItem(key.cstr, value.cstr)
+			withResultHolder(Unit.serializer()) { resultHolderPtr ->
+				pySetItem(resultHolderPtr, key.cstr, value.cstr)
+			}
 		}
 
 		override suspend fun removeItem(key: String) {
-			pyRemoveItem(key.cstr)
+			withResultHolder(Unit.serializer()) { resultHolderPtr ->
+				pyRemoveItem(resultHolderPtr, key.cstr)
+			}
 		}
 	}
 	return StableRef.create(storageFacade).asCPointer()

@@ -3,7 +3,11 @@ package com.icure.sdk.options
 import kotlinx.serialization.json.JsonElement
 
 /**
- * Allows patching the json value of decrypted entities before deserialization.
+ * Provides methods to patch the json representing a certain type of entity after decryption and before validation and
+ * proper deserialization.
+ * Each of these methods takes in input the parsed json of the decrypted entity and must return the patched json.
+ * All the patchers are optional, if you don't define a patcher the json of the entity will be used by the sdk as is
+ * without any patching.
  */
 interface JsonPatcher {
 	/**
