@@ -26,7 +26,7 @@ import {
 } from "../options/AuthenticationMethod.mjs";
 import {StorageFacade} from "../storage/StorageFacade.mjs";
 import {IcureStorageOptions, InternalSdkInitializers} from "../icure-sdk-ts.mjs";
-import {ApiOptions, BasicApiOptions} from "../options/ApiOptions.mjs";
+import {SdkOptions, BasicSdkOptions} from "../options/SdkOptions.mjs";
 import {ApplicationSettingsApi} from "../api/ApplicationSettingsApi.mjs";
 import {CodeApi} from "../api/CodeApi.mjs";
 import {DocumentTemplateApi} from "../api/DocumentTemplateApi.mjs";
@@ -172,7 +172,7 @@ export namespace IcureSdk {
    * @param baseUrl the url of the iCure backend to use
    * @param authenticationMethod specifies how the sdk should authenticate.
    * @param baseStorage an implementation of {@link StorageFacade} or standard icure storage options, used for persistent
-   * storage of various information including the user keys if {@link ApiOptions.keyStorage}1 is not provided.
+   * storage of various information including the user keys if {@link SdkOptions.keyStorage}1 is not provided.
    * @param options optional parameters for the initialization of the sdk.
    */
   export async function initialize(
@@ -180,7 +180,7 @@ export namespace IcureSdk {
     baseUrl: string,
     authenticationMethod: AuthenticationMethod,
     baseStorage: StorageFacade | IcureStorageOptions,
-    options?: ApiOptions
+    options?: SdkOptions
   ): Promise<IcureSdk> {
     return await InternalSdkInitializers.getInstance().initializeSdk(
       applicationId,
@@ -224,7 +224,7 @@ export namespace IcureSdk {
     captchaKey: string,
     baseStorage: StorageFacade | IcureStorageOptions,
     authenticationProcessTemplateParameters?: AuthenticationProcessTemplateParameters,
-    options?: ApiOptions
+    options?: SdkOptions
   ): Promise<AuthenticationWithProcessStep> {
     return await InternalSdkInitializers.getInstance().initializeWithProcess(
       applicationId,
@@ -269,7 +269,7 @@ export namespace IcureBaseSdk {
     applicationId: string | undefined,
     baseUrl: string,
     authenticationMethod: AuthenticationMethod,
-    options?: BasicApiOptions
+    options?: BasicSdkOptions
   ): Promise<IcureBaseSdk> {
     return await InternalSdkInitializers.getInstance().initializeBase(
       applicationId,

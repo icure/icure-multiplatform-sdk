@@ -13,7 +13,7 @@ import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.options.ApiOptions
+import com.icure.sdk.options.SdkOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.storage.IcureStorageFacade
@@ -122,7 +122,7 @@ data class DataOwnerDetails private constructor (
 			RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
 			defaultCryptoService,
 			null,
-			ApiOptions(saltPasswordWithApplicationId = false),
+			SdkOptions(saltPasswordWithApplicationId = false),
 			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 		)
 
@@ -145,7 +145,7 @@ data class DataOwnerDetails private constructor (
 					false
 				).also { fillStorage(it) }
 			},
-			ApiOptions(
+			SdkOptions(
 				disableParentKeysInitialisation = false,
 				cryptoStrategies = cryptoStrategies
 			)

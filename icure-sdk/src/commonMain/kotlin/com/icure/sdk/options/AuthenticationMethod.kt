@@ -125,7 +125,7 @@ sealed interface AuthenticationMethod {
 	}
 }
 
-private fun CommonOptions.getPasswordClientSideSalt(applicationId: String?) =
+private fun CommonSdkOptions.getPasswordClientSideSalt(applicationId: String?) =
 	applicationId?.takeIf { saltPasswordWithApplicationId }
 
 // This does not have the internal modifier because we need it in other components like kmehr
@@ -134,7 +134,7 @@ fun AuthenticationMethod.getAuthProvider(
 	authApi: RawAnonymousAuthApi,
 	cryptoService: CryptoService,
 	applicationId: String?,
-	options: CommonOptions,
+	options: CommonSdkOptions,
 	messageGatewayApi: RawMessageGatewayApi
 ): AuthProvider = when(this) {
 	is AuthenticationMethod.UsingCredentials -> when (this.credentials) {
@@ -202,7 +202,7 @@ internal suspend fun AuthenticationMethod.getAuthProviderInGroup(
 	httpClient: HttpClient,
 	cryptoService: CryptoService,
 	applicationId: String?,
-	options: CommonOptions,
+	options: CommonSdkOptions,
 	groupSelector: GroupSelector?
 ): AuthProvider {
 	val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, httpClient, json = Serialization.json)

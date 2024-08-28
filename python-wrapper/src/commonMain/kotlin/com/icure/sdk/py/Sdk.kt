@@ -3,11 +3,11 @@ package com.icure.sdk.py
 import com.icure.sdk.IcureBaseSdk
 import com.icure.sdk.IcureSdk
 import com.icure.sdk.crypto.CryptoStrategies
-import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
-import com.icure.sdk.options.BasicApiOptions
+import com.icure.sdk.options.BasicSdkOptions
 import com.icure.sdk.options.EncryptedFieldsConfiguration
 import com.icure.sdk.options.JsonPatcher
+import com.icure.sdk.options.SdkOptions
 import com.icure.sdk.py.PyStorage.StorageFacadeOptions
 import com.icure.sdk.py.options.PyAuthMethod
 import com.icure.sdk.storage.KeyStorageFacade
@@ -62,7 +62,7 @@ private data class PySdkParams(
 			JsonAndBase64KeyStorage(storageFacadeForKeys)
 		}
 		return RichPyApiParams(
-			ApiOptions(
+			SdkOptions(
 				encryptedFields = encryptedFields,
 				disableParentKeysInitialisation = disableParentKeysInitialisation,
 				createTransferKeys = createTransferKeys,
@@ -77,7 +77,7 @@ private data class PySdkParams(
 }
 
 private data class RichPyApiParams(
-	val apiOptions: ApiOptions,
+	val sdkOptions: SdkOptions,
 	val storageFacade: StorageFacade,
 	val authenticationMethod: AuthenticationMethod
 )
@@ -114,7 +114,7 @@ fun initializeSdk(
 			decodedParams.baseUrl,
 			richParams.authenticationMethod,
 			richParams.storageFacade,
-			richParams.apiOptions
+			richParams.sdkOptions
 		)
 	}.fold(
 		onSuccess = { SdkInitializationResult(it, null) },
@@ -131,7 +131,7 @@ private data class PyBaseSdkParams(
 	val saltPasswordWithApplicationId: Boolean = true,
 ) {
 	fun getRichApiParams(): RichPyBaseApiParams {
-		val options = BasicApiOptions(
+		val options = BasicSdkOptions(
 			encryptedFields = encryptedFields,
 			saltPasswordWithApplicationId = saltPasswordWithApplicationId,
 		)
@@ -143,7 +143,7 @@ private data class PyBaseSdkParams(
 }
 
 private data class RichPyBaseApiParams(
-	val apiOptions: BasicApiOptions,
+	val apiOptions: BasicSdkOptions,
 	val authenticationMethod: AuthenticationMethod
 )
 

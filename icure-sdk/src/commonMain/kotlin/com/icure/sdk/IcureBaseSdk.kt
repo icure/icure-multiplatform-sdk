@@ -93,7 +93,7 @@ import com.icure.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.BasicApiConfiguration
 import com.icure.sdk.options.BasicApiConfigurationImpl
-import com.icure.sdk.options.BasicApiOptions
+import com.icure.sdk.options.BasicSdkOptions
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.options.getAuthProviderInGroup
@@ -123,7 +123,7 @@ interface IcureUnboundBaseSdk : IcureBaseApis {
 		fun initialize(
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
-			options: BasicApiOptions = BasicApiOptions()
+			options: BasicSdkOptions = BasicSdkOptions()
 		): IcureUnboundBaseSdk {
 			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
 			val client = options.httpClient ?: sharedHttpClient
@@ -187,7 +187,7 @@ interface IcureBaseSdk : IcureBaseApis {
 			applicationId: String?,
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
-			options: BasicApiOptions = BasicApiOptions()
+			options: BasicSdkOptions = BasicSdkOptions()
 		): IcureBaseSdk {
 			val client = options.httpClient ?: sharedHttpClient
 			val json = options.httpClientJson ?: Serialization.json

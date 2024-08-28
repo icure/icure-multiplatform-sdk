@@ -163,10 +163,10 @@ import com.icure.sdk.model.extensions.toStub
 import com.icure.sdk.model.requests.RequestedPermission
 import com.icure.sdk.options.ApiConfiguration
 import com.icure.sdk.options.ApiConfigurationImpl
-import com.icure.sdk.options.ApiOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.sdk.options.JsonPatcher
+import com.icure.sdk.options.SdkOptions
 import com.icure.sdk.options.getAuthProviderInGroup
 import com.icure.sdk.storage.IcureStorageFacade
 import com.icure.sdk.storage.StorageFacade
@@ -252,7 +252,7 @@ interface IcureSdk : IcureApis {
 		 * @param baseUrl the url of the iCure backend to use
 		 * @param authenticationMethod specifies how the sdk should authenticate.
 		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
-		 * information including the user keys if [ApiOptions.keyStorage] is not provided.
+		 * information including the user keys if [SdkOptions.keyStorage] is not provided.
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
 		@OptIn(InternalIcureApi::class)
@@ -261,7 +261,7 @@ interface IcureSdk : IcureApis {
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
 			baseStorage: StorageFacade,
-			options: ApiOptions = ApiOptions()
+			options: SdkOptions = SdkOptions()
 		): IcureSdk {
 			val cryptoStrategies = options.cryptoStrategies ?: BasicCryptoStrategies
 			val client = options.httpClient ?: sharedHttpClient
@@ -313,7 +313,7 @@ interface IcureSdk : IcureApis {
 		 * @param captchaKey the key obtained by resolving the captcha. Used to prevent abuse of the message gateway and
 		 * connected external services.
 		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
-		 * information including the user keys if [ApiOptions.keyStorage] is not provided.
+		 * information including the user keys if [SdkOptions.keyStorage] is not provided.
 		 * @param authenticationProcessTemplateParameters optional parameters which may be used by sms/email templates.
 		 * @param options optional parameters for the initialization of the sdk.
 		 */
@@ -330,7 +330,7 @@ interface IcureSdk : IcureApis {
 			captchaKey: String,
 			baseStorage: StorageFacade,
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
-			options: ApiOptions = ApiOptions()
+			options: SdkOptions = SdkOptions()
 		): AuthenticationWithProcessStep {
 			val api = RawMessageGatewayApi(options.httpClient ?: sharedHttpClient)
 			val requestId = api.startProcess(
@@ -364,7 +364,7 @@ private class AuthenticationWithProcessStepImpl(
 	private val applicationId: String?,
 	private val baseUrl: String,
 	private val baseStorage: StorageFacade,
-	private val options: ApiOptions,
+	private val options: SdkOptions,
 	private val api: RawMessageGatewayApi,
 	private val messageGatewayUrl: String,
 	private val externalServicesSpecId: String,
@@ -413,7 +413,7 @@ private suspend fun initializeApiCrypto(
 	cryptoStrategies: CryptoStrategies,
 	cryptoService: CryptoService,
 	iCureStorage: IcureStorageFacade,
-	options: ApiOptions
+	options: SdkOptions
 ): ApiConfiguration {
 	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json))
 	val self = dataOwnerApi.getCurrentDataOwner()
@@ -582,7 +582,7 @@ private class IcureApiImpl(
 	private val authProvider: AuthProvider,
 	private val httpClientJson: Json,
 	private val config: ApiConfiguration,
-	private val options: ApiOptions
+	private val options: SdkOptions
 ): IcureSdk {
 	private val apiUrl get() = config.apiUrl
 	private val client get() = config.httpClient

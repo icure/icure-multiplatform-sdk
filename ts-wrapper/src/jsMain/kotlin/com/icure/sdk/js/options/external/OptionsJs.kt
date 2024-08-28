@@ -62,8 +62,8 @@ external interface AuthenticationProcessTemplateParametersJs {
 	val lastName: String?
 }
 
-@JsName("ApiOptions")
-external interface ApiOptionsJs {
+@JsName("SdkOptions")
+external interface SdkOptionsJs {
 	val encryptedFields: EncryptedFieldsConfigurationJs?
 	val disableParentKeysInitialisation: Boolean?
 	val createTransferKeys: Boolean?
@@ -76,8 +76,8 @@ external interface ApiOptionsJs {
 	val jsonPatcher: JsonPatcherJs?
 }
 
-@JsName("BasicApiOptions")
-external interface BasicApiOptionsJs {
+@JsName("BasicSdkOptions")
+external interface BasicSdkOptionsJs {
 	val encryptedFields: EncryptedFieldsConfigurationJs?
 	val cryptoService: XCryptoService?
 	val saltPasswordWithApplicationId: Boolean?

@@ -4,7 +4,7 @@ import {KeyStorageFacade} from "../storage/StorageFacade.mjs";
 import {CryptoStrategies} from "../crypto/CryptoStrategies.mjs";
 import {IcureKeyStorageOptions} from "../icure-sdk-ts.mjs";
 
-export interface ApiOptions {
+export interface SdkOptions {
   /**
    * Configure which fields of entities should be encrypted
    */
@@ -78,7 +78,7 @@ export interface ApiOptions {
   readonly jsonPatcher?: JsonPatcher
 }
 
-export interface BasicApiOptions {
+export interface BasicSdkOptions {
   /**
    * Configure which fields of entities should be encrypted
    */

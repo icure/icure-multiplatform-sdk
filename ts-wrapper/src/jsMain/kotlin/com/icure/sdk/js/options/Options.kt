@@ -4,15 +4,15 @@ import com.icure.kryptom.crypto.external.adaptCryptoServiceForExternal
 import com.icure.kryptom.crypto.external.adaptExternalCryptoService
 import com.icure.sdk.js.crypto.CryptoStrategiesBridge
 import com.icure.sdk.js.model.userGroup_toJs
-import com.icure.sdk.js.options.external.ApiOptionsJs
-import com.icure.sdk.js.options.external.BasicApiOptionsJs
+import com.icure.sdk.js.options.external.BasicSdkOptionsJs
 import com.icure.sdk.js.options.external.EncryptedFieldsConfigurationJs
 import com.icure.sdk.js.options.external.JsonPatcherJs
+import com.icure.sdk.js.options.external.SdkOptionsJs
 import com.icure.sdk.js.storage.loadKeyStorageOptions
-import com.icure.sdk.options.ApiOptions
-import com.icure.sdk.options.BasicApiOptions
+import com.icure.sdk.options.BasicSdkOptions
 import com.icure.sdk.options.EncryptedFieldsConfiguration
 import com.icure.sdk.options.JsonPatcher
+import com.icure.sdk.options.SdkOptions
 import kotlinx.coroutines.await
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -20,31 +20,31 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 
-suspend fun ApiOptionsJs.toKt(): ApiOptions {
-	val defaultApiOptions = ApiOptions()
-	return ApiOptions(
-		encryptedFields = this.encryptedFields?.toKt() ?: defaultApiOptions.encryptedFields,
-		disableParentKeysInitialisation = this.disableParentKeysInitialisation ?: defaultApiOptions.disableParentKeysInitialisation,
-		createTransferKeys = this.createTransferKeys ?: defaultApiOptions.createTransferKeys,
-		cryptoService = this.cryptoService?.let { adaptExternalCryptoService(it) } ?: defaultApiOptions.cryptoService,
-		saltPasswordWithApplicationId = this.saltPasswordWithApplicationId ?: defaultApiOptions.saltPasswordWithApplicationId,
+suspend fun SdkOptionsJs.toKt(): SdkOptions {
+	val defaultSdkOptions = SdkOptions()
+	return SdkOptions(
+		encryptedFields = this.encryptedFields?.toKt() ?: defaultSdkOptions.encryptedFields,
+		disableParentKeysInitialisation = this.disableParentKeysInitialisation ?: defaultSdkOptions.disableParentKeysInitialisation,
+		createTransferKeys = this.createTransferKeys ?: defaultSdkOptions.createTransferKeys,
+		cryptoService = this.cryptoService?.let { adaptExternalCryptoService(it) } ?: defaultSdkOptions.cryptoService,
+		saltPasswordWithApplicationId = this.saltPasswordWithApplicationId ?: defaultSdkOptions.saltPasswordWithApplicationId,
 		groupSelector = this.groupSelector?.let { groupSelectorJs ->
 			{ ktGroups ->
 				groupSelectorJs(ktGroups.map { userGroup_toJs(it) }.toTypedArray()).await()
 			}
-		} ?: defaultApiOptions.groupSelector,
-		autoCreateEncryptionKeyForExistingLegacyData = this.autoCreateEncryptionKeyForExistingLegacyData ?: defaultApiOptions.autoCreateEncryptionKeyForExistingLegacyData,
-		keyStorage = this.keyStorage?.let { loadKeyStorageOptions(it) } ?: defaultApiOptions.keyStorage,
+		} ?: defaultSdkOptions.groupSelector,
+		autoCreateEncryptionKeyForExistingLegacyData = this.autoCreateEncryptionKeyForExistingLegacyData ?: defaultSdkOptions.autoCreateEncryptionKeyForExistingLegacyData,
+		keyStorage = this.keyStorage?.let { loadKeyStorageOptions(it) } ?: defaultSdkOptions.keyStorage,
 		cryptoStrategies = this.cryptoStrategies?.let {
-			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultApiOptions.cryptoService))
-		} ?: defaultApiOptions.cryptoStrategies,
-		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultApiOptions.jsonPatcher
+			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultSdkOptions.cryptoService))
+		} ?: defaultSdkOptions.cryptoStrategies,
+		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultSdkOptions.jsonPatcher
 	)
 }
 
-suspend fun BasicApiOptionsJs.toKt(): BasicApiOptions {
-	val defaultApiOptions = BasicApiOptions()
-	return BasicApiOptions(
+suspend fun BasicSdkOptionsJs.toKt(): BasicSdkOptions {
+	val defaultApiOptions = BasicSdkOptions()
+	return BasicSdkOptions(
 		encryptedFields = this.encryptedFields?.toKt() ?: defaultApiOptions.encryptedFields,
 		cryptoService = this.cryptoService?.let { adaptExternalCryptoService(it) } ?: defaultApiOptions.cryptoService,
 		saltPasswordWithApplicationId = this.saltPasswordWithApplicationId ?: defaultApiOptions.saltPasswordWithApplicationId,

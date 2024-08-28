@@ -13,7 +13,7 @@ import com.icure.sdk.auth.services.SmartAuthProvider
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.model.security.AuthenticationToken
 import com.icure.sdk.model.security.Enable2faRequest
-import com.icure.sdk.options.ApiOptions
+import com.icure.sdk.options.SdkOptions
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.getAuthProvider
 import com.icure.sdk.test.MockMessageGatewayUtils
@@ -193,7 +193,7 @@ class SmartAuthProviderTest : StringSpec({
 				authApi,
 				defaultCryptoService,
 				null,
-				ApiOptions(),
+				SdkOptions(),
 				RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 			)
 		).getCurrentUser().successBody()
@@ -204,7 +204,7 @@ class SmartAuthProviderTest : StringSpec({
 					authApi,
 					defaultCryptoService,
 					null,
-					ApiOptions(),
+					SdkOptions(),
 					RawMessageGatewayApi(IcureSdk.sharedHttpClient)
 				)
 			).getCurrentUser()

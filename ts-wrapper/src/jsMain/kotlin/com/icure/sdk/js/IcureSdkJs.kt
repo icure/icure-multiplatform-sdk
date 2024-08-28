@@ -110,14 +110,14 @@ import com.icure.sdk.js.api.impl.UserApiImplJs
 import com.icure.sdk.js.externalsdk.AuthenticationWithProcessStepJs
 import com.icure.sdk.js.externalsdk.IcureBaseSdkJs
 import com.icure.sdk.js.externalsdk.IcureSdkJs
-import com.icure.sdk.js.options.external.ApiOptionsJs
+import com.icure.sdk.js.options.external.SdkOptionsJs
 import com.icure.sdk.js.options.external.AuthenticationMethodJs
 import com.icure.sdk.js.options.external.AuthenticationProcessTemplateParametersJs
-import com.icure.sdk.js.options.external.BasicApiOptionsJs
+import com.icure.sdk.js.options.external.BasicSdkOptionsJs
 import com.icure.sdk.js.options.toKt
 import com.icure.sdk.js.storage.loadStorageOptions
-import com.icure.sdk.options.ApiOptions
-import com.icure.sdk.options.BasicApiOptions
+import com.icure.sdk.options.SdkOptions
+import com.icure.sdk.options.BasicSdkOptions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
@@ -130,14 +130,14 @@ object InternalSdkInitializers {
 		baseUrl: String,
 		authenticationMethod: AuthenticationMethodJs,
 		storageFacade: dynamic,
-		options: ApiOptionsJs?
+		options: SdkOptionsJs?
 	): Promise<IcureSdkJs> = GlobalScope.promise {
 		IcureSdkJsImpl(IcureSdk.initialize(
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
 			loadStorageOptions(storageFacade),
-			options?.toKt() ?: ApiOptions(),
+			options?.toKt() ?: SdkOptions(),
 		))
 	}
 
@@ -153,7 +153,7 @@ object InternalSdkInitializers {
 		captchaKey: String,
 		baseStorage: dynamic,
 		authenticationProcessTemplateParameters: AuthenticationProcessTemplateParametersJs?,
-		options: ApiOptionsJs?
+		options: SdkOptionsJs?
 	): Promise<AuthenticationWithProcessStepJs> = GlobalScope.promise {
 		val ktStep = IcureSdk.initializeWithProcess(
 			applicationId,
@@ -167,7 +167,7 @@ object InternalSdkInitializers {
 			captchaKey,
 			loadStorageOptions(baseStorage),
 			authenticationProcessTemplateParameters?.toKt() ?: AuthenticationProcessTemplateParameters(),
-			options?.toKt() ?: ApiOptions()
+			options?.toKt() ?: SdkOptions()
 		)
 		object : AuthenticationWithProcessStepJs {
 			override fun completeAuthentication(validationCode: String): Promise<IcureSdkJs> = GlobalScope.promise {
@@ -180,13 +180,13 @@ object InternalSdkInitializers {
 		applicationId: String?,
 		baseUrl: String,
 		authenticationMethod: AuthenticationMethodJs,
-		options: BasicApiOptionsJs?
+		options: BasicSdkOptionsJs?
 	): Promise<IcureBaseSdkJs> = GlobalScope.promise {
 		IcureBaseSdkJsImpl(IcureBaseSdk.initialize(
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
-			options?.toKt() ?: BasicApiOptions()
+			options?.toKt() ?: BasicSdkOptions()
 		))
 	}
 }

@@ -10,7 +10,7 @@ import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-interface CommonOptions {
+interface CommonSdkOptions {
 	/**
 	 * Configure which fields of entities should be encrypted
 	 */
@@ -60,7 +60,7 @@ interface CommonOptions {
  */
 typealias GroupSelector = suspend (availableGroups: List<UserGroup>) -> String
 
-data class ApiOptions(
+data class SdkOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
 	/**
 	 * Has only effect when logging in as an hcp user.
@@ -110,16 +110,16 @@ data class ApiOptions(
 	 * of the entity.
 	 */
 	val jsonPatcher: JsonPatcher? = null
-): CommonOptions
+): CommonSdkOptions
 
-data class BasicApiOptions(
+data class BasicSdkOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
 	override val httpClient: HttpClient? = null,
 	override val httpClientJson: Json? = null,
 	override val cryptoService: CryptoService = defaultCryptoService,
 	override val saltPasswordWithApplicationId: Boolean = true,
 	override val groupSelector: GroupSelector? = null,
-): CommonOptions
+): CommonSdkOptions
 
 @Serializable
 data class EncryptedFieldsConfiguration(
