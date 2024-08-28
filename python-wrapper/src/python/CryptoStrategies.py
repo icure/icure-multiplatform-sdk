@@ -2,11 +2,15 @@ import base64
 import json
 from dataclasses import dataclass
 from enum import Enum
-from icure.model import serialize_data_owner_with_type, deserialize_data_owner_with_type, CryptoActorStubWithType, DataOwnerWithType, RecoveryDataUseFailureReason
+from icure.model import serialize_data_owner_with_type, deserialize_data_owner_with_type, CryptoActorStubWithType, DataOwnerWithType, RecoveryDataUseFailureReason, deserialize_recovery_result, RecoveryResultFailure
 from icure.model.specializations import SpkiHexString, KeypairFingerprintV1String
 from icure.model.SingletonMeta import SingletonMeta
-from typing import Dict, List, Union, Callable
+from icure.model.CallResult import create_result_from_json
+from typing import Dict, List, Union, Callable, Optional
 from abc import ABC, abstractmethod
+from ctypes import c_void_p, CFUNCTYPE, c_char_p, cast
+import traceback
+from icure.kotlin_types import symbols
 
 
 @dataclass
@@ -301,3 +305,99 @@ class CryptoStrategies(ABC):
         :returns true if the delegations for the provided data owner should be anonymous.
         """
         pass
+
+_C_RecoverAndVerifySelfHierarchyKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_void_p)
+_C_GenerateNewKeyForDataOwner = CFUNCTYPE(None, c_void_p, c_char_p)
+_C_VerifyDelegatePublicKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_char_p)
+_C_DataOwnerRequiresAnonymousDelegation = CFUNCTYPE(None, c_void_p, c_char_p)
+
+class _CryptoStrategiesBridge:
+    __py_strategies: CryptoStrategies
+    __CALLBACK_RecoverAndVerifySelfHierarchyKeys: _C_RecoverAndVerifySelfHierarchyKeys
+    __CALLBACK_GenerateNewKeyForDataOwner: _C_GenerateNewKeyForDataOwner
+    __CALLBACK_VerifyDelegatePublicKeys: _C_VerifyDelegatePublicKeys
+    __CALLBACK_DataOwnerRequiresAnonymousDelegation: _C_DataOwnerRequiresAnonymousDelegation
+    __kt_crypto_strategies: Optional[c_void_p]
+
+    def __init__(self, py_strategies: CryptoStrategies):
+        self.__kt_crypto_strategies = None
+        self.__py_strategies = py_strategies
+
+    def __del__(self):
+        if self.__kt_crypto_strategies is not None:
+            symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__kt_crypto_strategies)
+
+    def recover_and_verify_self_hierarchy_keys(self, result_holder, keys_data, key_pair_recoverer):
+        try:
+            keys_data_json = json.loads(cast(keys_data, c_char_p).value.decode('utf-8'))
+            def use_key_pair_recover(recovery_key, auto_delete):
+                result_bytes = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.recoverWithRecoveryKey(
+                    key_pair_recoverer,
+                    recovery_key.encode('utf-8'),
+                    auto_delete
+                )
+                result = create_result_from_json(cast(result_bytes, c_char_p).value.decode('utf-8'))
+                symbols.DisposeString(result_bytes)
+                if result.failure is not None:
+                    raise Exception(result.failure)
+                recovery_result = deserialize_recovery_result(result.success)
+                if isinstance(recovery_result, RecoveryResultFailure):
+                    return recovery_result.reason
+                return {
+                    k: {
+                        k1: ExportedKeyData._deserialize(v1) for k1, v1 in v.items()
+                    } for k, v in recovery_result.data.items()
+                }
+            result = self.__py_strategies.recover_and_verify_self_hierarchy_keys(
+                [KeyDataRecoveryRequest._deserialize(x) for x in keys_data_json],
+                use_key_pair_recover
+            )
+            result_json = {
+                k: v.__serialize__() for k, v in result.items()
+            }
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+
+    def generate_new_key_for_data_owner(self, result_holder, self_data_owner):
+        try:
+            result = self.__py_strategies.generate_new_key_for_data_owner(
+                deserialize_data_owner_with_type(cast(self_data_owner, c_char_p).value.decode('utf-8'))
+            )
+            result_json = serialize_key_generation_request_result(result)
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+
+    def verify_delegate_public_keys(self, result_holder, delegate, public_keys):
+        try:
+            result = self.__py_strategies.verify_delegate_public_keys(
+                CryptoActorStubWithType._deserialize(cast(delegate, c_char_p).value.decode('utf-8')),
+                json.loads(cast(public_keys, c_char_p).value.decode('utf-8'))
+            )
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
+
+    def data_owner_requires_anonymous_delegation(self, result_holder, data_owner):
+        try:
+            result = self.__py_strategies.data_owner_requires_anonymous_delegation(
+                CryptoActorStubWithType._deserialize(cast(data_owner, c_char_p).value.decode('utf-8'))
+            )
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+        except:
+            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+
+    def get_kt(self) -> c_void_p:
+        if self.__kt_crypto_strategies is None:
+            self.__CALLBACK_RecoverAndVerifySelfHierarchyKeys = _C_RecoverAndVerifySelfHierarchyKeys(self.recover_and_verify_self_hierarchy_keys)
+            self.__CALLBACK_GenerateNewKeyForDataOwner = _C_GenerateNewKeyForDataOwner(self.generate_new_key_for_data_owner)
+            self.__CALLBACK_VerifyDelegatePublicKeys = _C_VerifyDelegatePublicKeys(self.verify_delegate_public_keys)
+            self.__CALLBACK_DataOwnerRequiresAnonymousDelegation = _C_DataOwnerRequiresAnonymousDelegation(self.data_owner_requires_anonymous_delegation)
+            self.__kt_crypto_strategies = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.create(
+                self.__CALLBACK_RecoverAndVerifySelfHierarchyKeys,
+                self.__CALLBACK_GenerateNewKeyForDataOwner,
+                self.__CALLBACK_VerifyDelegatePublicKeys,
+                self.__CALLBACK_DataOwnerRequiresAnonymousDelegation,
+            )
+        return self.__kt_crypto_strategies

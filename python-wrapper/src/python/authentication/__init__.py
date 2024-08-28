@@ -1,0 +1,1 @@
+from icure.authentication.AuthenticationMethod import UsernamePassword, UsernameLongToken, ThirdPartyAuthentication, ThirdPartyProvider, AuthenticationMethod

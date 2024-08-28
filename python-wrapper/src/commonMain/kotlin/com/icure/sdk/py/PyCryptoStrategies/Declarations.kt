@@ -14,8 +14,8 @@ import com.icure.sdk.model.DataOwnerWithType
 import com.icure.sdk.model.specializations.HexString
 import com.icure.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.py.utils.PyCallbackResultHolder
 import com.icure.sdk.py.utils.toPyString
+import com.icure.sdk.py.utils.withResultHolder
 import com.icure.sdk.serialization.ByteArraySerializer
 import com.icure.sdk.utils.Serialization
 import kotlinx.cinterop.ByteVar
@@ -29,7 +29,6 @@ import kotlinx.cinterop.asStableRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
@@ -175,19 +174,4 @@ private class ExportedRsaKeyPair(
 ) {
 	suspend fun toKt(): RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm> =
 		defaultCryptoService.rsa.loadKeyPairPkcs8(RsaAlgorithm.RsaEncryptionAlgorithm.fromIdentifier(algorithm), private)
-}
-
-@OptIn(ExperimentalForeignApi::class)
-private fun <T> withResultHolder(
-	resultSerializer: KSerializer<T>,
-	executeCallback: (resultHolderPtr: COpaquePointer) -> Unit
-): T {
-	val holder = PyCallbackResultHolder(resultSerializer)
-	val stableRef = StableRef.create(holder)
-	return try {
-		executeCallback(stableRef.asCPointer())
-		holder.getOrThrow()
-	} finally {
-		stableRef.dispose()
-	}
 }
