@@ -130,7 +130,7 @@ data class EncryptedFieldsConfiguration(
 	val healthElement: Set<String> = setOf("descr", "note", "notes[].markdown"),
 	val maintenanceTask: Set<String> = setOf("properties"),
 	val patient: Set<String> = setOf("note", "notes[].markdown"),
-	val message: Set<String> = emptySet(),
+	val message: Set<String> = setOf("subject"),
 	val topic: Set<String> = setOf("description", "linkedServices", "linkedHealthElements"),
 	val document: Set<String> = emptySet(),
 	val form: Set<String> = emptySet(),

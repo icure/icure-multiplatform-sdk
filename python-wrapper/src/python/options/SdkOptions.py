@@ -13,7 +13,7 @@ class EncryptedFieldsConfiguration:
     health_element: List[str] = field(default_factory=lambda: ["descr", "note", "notes[].markdown"])
     maintenance_task: List[str] = field(default_factory=lambda: ["properties"])
     patient: List[str] = field(default_factory=lambda: ["note", "notes[].markdown"])
-    message: List[str] = field(default_factory=lambda: [])
+    message: List[str] = field(default_factory=lambda: ["subject"])
     topic: List[str] = field(default_factory=lambda: ["description", "linkedServices", "linkedHealthElements"])
     document: List[str] = field(default_factory=lambda: [])
     form: List[str] = field(default_factory=lambda: [])
