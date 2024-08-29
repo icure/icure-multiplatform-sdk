@@ -521,12 +521,12 @@ internal class ContactApiImpl(
 
 	override suspend fun matchContactsBy(filter: FilterOptions<Contact>): List<String> =
 		rawApi.matchContactsBy(
-			mapContactFilterOptions(filter, null, null)
+			mapContactFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)
 		).successBody()
 
 	override suspend fun matchServicesBy(filter: FilterOptions<Service>): List<String> =
 		rawApi.matchServicesBy(
-			mapServiceFilterOptions(filter, null, null)
+			mapServiceFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)
 		).successBody()
 
 	override suspend fun matchContactsBySorted(filter: SortableFilterOptions<Contact>): List<String> =
