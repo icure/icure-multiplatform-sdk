@@ -193,7 +193,7 @@ class ContactApi:
 					executor = self.icure_sdk._executor
 				)
 
-		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -201,9 +201,9 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedListIterator[object](
+					result = PaginatedListIterator[EncryptedService](
 						producer = success,
-						deserializer = lambda x: x,
+						deserializer = lambda x: EncryptedService._deserialize(x),
 						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -220,7 +220,7 @@ class ContactApi:
 			)
 			return await future
 
-		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
@@ -237,9 +237,9 @@ class ContactApi:
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[object](
+				return PaginatedListIterator[EncryptedService](
 					producer = class_pointer,
-					deserializer = lambda x: x,
+					deserializer = lambda x: EncryptedService._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
 
@@ -293,7 +293,7 @@ class ContactApi:
 					executor = self.icure_sdk._executor
 				)
 
-		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -301,9 +301,9 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedListIterator[object](
+					result = PaginatedListIterator[EncryptedService](
 						producer = success,
-						deserializer = lambda x: x,
+						deserializer = lambda x: EncryptedService._deserialize(x),
 						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -320,7 +320,7 @@ class ContactApi:
 			)
 			return await future
 
-		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
@@ -337,9 +337,9 @@ class ContactApi:
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[object](
+				return PaginatedListIterator[EncryptedService](
 					producer = class_pointer,
-					deserializer = lambda x: x,
+					deserializer = lambda x: EncryptedService._deserialize(x),
 					executor = self.icure_sdk._executor
 				)
 
@@ -499,7 +499,7 @@ class ContactApi:
 				return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def get_service_async(self, service_id: str) -> object:
+		async def get_service_async(self, service_id: str) -> EncryptedService:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -507,7 +507,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = json.loads(success.decode('utf-8'))
+					result = EncryptedService._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"serviceId": service_id,
@@ -522,7 +522,7 @@ class ContactApi:
 			)
 			return await future
 
-		def get_service_blocking(self, service_id: str) -> object:
+		def get_service_blocking(self, service_id: str) -> EncryptedService:
 			payload = {
 				"serviceId": service_id,
 			}
@@ -535,10 +535,10 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = result_info.success
+				return_value = EncryptedService._deserialize(result_info.success)
 				return return_value
 
-		async def get_services_async(self, entity_ids: List[str]) -> List[object]:
+		async def get_services_async(self, entity_ids: List[str]) -> List[EncryptedService]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -546,7 +546,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+					result = [EncryptedService._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -561,7 +561,7 @@ class ContactApi:
 			)
 			return await future
 
-		def get_services_blocking(self, entity_ids: List[str]) -> List[object]:
+		def get_services_blocking(self, entity_ids: List[str]) -> List[EncryptedService]:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -574,7 +574,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [x1 for x1 in result_info.success]
+				return_value = [EncryptedService._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
 	class ContactFlavouredApi:
@@ -757,7 +757,7 @@ class ContactApi:
 					executor = self.icure_sdk._executor
 				)
 
-		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[Service]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -765,9 +765,9 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedListIterator[object](
+					result = PaginatedListIterator[Service](
 						producer = success,
-						deserializer = lambda x: x,
+						deserializer = lambda x: deserialize_service(x),
 						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -784,7 +784,7 @@ class ContactApi:
 			)
 			return await future
 
-		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[object]:
+		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[Service]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
@@ -801,9 +801,9 @@ class ContactApi:
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[object](
+				return PaginatedListIterator[Service](
 					producer = class_pointer,
-					deserializer = lambda x: x,
+					deserializer = lambda x: deserialize_service(x),
 					executor = self.icure_sdk._executor
 				)
 
@@ -857,7 +857,7 @@ class ContactApi:
 					executor = self.icure_sdk._executor
 				)
 
-		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[Service]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -865,9 +865,9 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = PaginatedListIterator[object](
+					result = PaginatedListIterator[Service](
 						producer = success,
-						deserializer = lambda x: x,
+						deserializer = lambda x: deserialize_service(x),
 						executor = self.icure_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -884,7 +884,7 @@ class ContactApi:
 			)
 			return await future
 
-		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[object]:
+		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[Service]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
@@ -901,9 +901,9 @@ class ContactApi:
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[object](
+				return PaginatedListIterator[Service](
 					producer = class_pointer,
-					deserializer = lambda x: x,
+					deserializer = lambda x: deserialize_service(x),
 					executor = self.icure_sdk._executor
 				)
 
@@ -1063,7 +1063,7 @@ class ContactApi:
 				return_value = [deserialize_contact(x1) for x1 in result_info.success]
 				return return_value
 
-		async def get_service_async(self, service_id: str) -> object:
+		async def get_service_async(self, service_id: str) -> Service:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -1071,7 +1071,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = json.loads(success.decode('utf-8'))
+					result = deserialize_service(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"serviceId": service_id,
@@ -1086,7 +1086,7 @@ class ContactApi:
 			)
 			return await future
 
-		def get_service_blocking(self, service_id: str) -> object:
+		def get_service_blocking(self, service_id: str) -> Service:
 			payload = {
 				"serviceId": service_id,
 			}
@@ -1099,10 +1099,10 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = result_info.success
+				return_value = deserialize_service(result_info.success)
 				return return_value
 
-		async def get_services_async(self, entity_ids: List[str]) -> List[object]:
+		async def get_services_async(self, entity_ids: List[str]) -> List[Service]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -1110,7 +1110,7 @@ class ContactApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [x1 for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_service(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
@@ -1125,7 +1125,7 @@ class ContactApi:
 			)
 			return await future
 
-		def get_services_blocking(self, entity_ids: List[str]) -> List[object]:
+		def get_services_blocking(self, entity_ids: List[str]) -> List[Service]:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
@@ -1138,7 +1138,7 @@ class ContactApi:
 			if result_info.failure is not None:
 				raise Exception(result_info.failure)
 			else:
-				return_value = [x1 for x1 in result_info.success]
+				return_value = [deserialize_service(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, icure_sdk):

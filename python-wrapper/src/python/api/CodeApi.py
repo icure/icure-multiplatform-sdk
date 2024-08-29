@@ -303,7 +303,7 @@ class CodeApi:
 			return_value = BooleanResponse._deserialize(result_info.success)
 			return return_value
 
-	async def get_code_by_region_language_type_label_async(self, region: str, label: str, type: str, languages: Optional[str]) -> Code:
+	async def get_code_by_region_language_type_label_async(self, region: str, label: str, type: str, languages: Optional[str]) -> Optional[Code]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -311,7 +311,7 @@ class CodeApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = Code._deserialize(json.loads(success.decode('utf-8')))
+				result = Code._deserialize(json.loads(success.decode('utf-8'))) if json.loads(success.decode('utf-8')) is not None else None
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"region": region,
@@ -329,7 +329,7 @@ class CodeApi:
 		)
 		return await future
 
-	def get_code_by_region_language_type_label_blocking(self, region: str, label: str, type: str, languages: Optional[str]) -> Code:
+	def get_code_by_region_language_type_label_blocking(self, region: str, label: str, type: str, languages: Optional[str]) -> Optional[Code]:
 		payload = {
 			"region": region,
 			"label": label,
@@ -345,7 +345,7 @@ class CodeApi:
 		if result_info.failure is not None:
 			raise Exception(result_info.failure)
 		else:
-			return_value = Code._deserialize(result_info.success)
+			return_value = Code._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def get_codes_async(self, code_ids: List[str]) -> List[Code]:
