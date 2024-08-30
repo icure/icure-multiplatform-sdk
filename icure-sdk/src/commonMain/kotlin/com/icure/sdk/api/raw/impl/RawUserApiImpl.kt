@@ -102,13 +102,14 @@ class RawUserApiImpl(
 		}.wrap()
 
 	override suspend fun getUsers(userIds: ListOfIds): HttpResponse<List<User>> =
-		get(authProvider) {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", "byIds")
-				parameter("ts", GMTDate().timestamp)
 			}
+			contentType(Application.Json)
 			accept(Application.Json)
+			setBody(userIds)
 		}.wrap()
 
 	override suspend fun getUserByEmail(email: String): HttpResponse<User> =
@@ -438,13 +439,14 @@ class RawUserApiImpl(
 		groupId: String,
 		userIds: ListOfIds,
 	): HttpResponse<List<User>> =
-		get(authProvider) {
+		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", "inGroup", groupId, "byIds")
-				parameter("ts", GMTDate().timestamp)
 			}
+			contentType(Application.Json)
 			accept(Application.Json)
+			setBody(userIds)
 		}.wrap()
 
 	override suspend fun matchUsersInGroupBy(
