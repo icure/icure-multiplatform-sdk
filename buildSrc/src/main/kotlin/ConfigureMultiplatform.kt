@@ -53,10 +53,11 @@ fun Project.configureKotlinLinux(
  * Configures targets and source sets for multiplatform modules.
  */
 fun Project.configureMultiplatform(
-	kotlinMultiplatformExtension: KotlinMultiplatformExtension
+	kotlinMultiplatformExtension: KotlinMultiplatformExtension,
+	xcFrameworkName: String? = null
 ) = with(kotlinMultiplatformExtension) {
 	val localProperties = getLocalProperties()
-	val frameworkName = project.name.replaceFirstChar { it.uppercase() }
+	val frameworkName = xcFrameworkName ?: project.name.replaceFirstChar { it.uppercase() }
 	val xcf = XCFramework(frameworkName)
 	jvm {
 		compilations.all {
