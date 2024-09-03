@@ -55,7 +55,7 @@ public external interface CodeApiJs {
 		label: String,
 		type: String,
 		languages: String?,
-	): Promise<CodeJs>
+	): Promise<CodeJs?>
 
 	public fun getCodes(codeIds: Array<String>): Promise<Array<CodeJs>>
 

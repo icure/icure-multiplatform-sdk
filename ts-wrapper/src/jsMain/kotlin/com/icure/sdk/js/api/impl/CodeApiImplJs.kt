@@ -14,6 +14,7 @@ import com.icure.sdk.js.model.BooleanResponseJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.sdk.js.model.CheckedConverters.listToArray
+import com.icure.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.sdk.js.model.CodeJs
@@ -386,7 +387,7 @@ internal class CodeApiImplJs(
 		label: String,
 		type: String,
 		languages: String?,
-	): Promise<CodeJs> = GlobalScope.promise {
+	): Promise<CodeJs?> = GlobalScope.promise {
 		val regionConverted: String = region
 		val labelConverted: String = label
 		val typeConverted: String = type
@@ -397,7 +398,11 @@ internal class CodeApiImplJs(
 			typeConverted,
 			languagesConverted,
 		)
-		code_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				code_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getCodes(codeIds: Array<String>): Promise<Array<CodeJs>> = GlobalScope.promise {

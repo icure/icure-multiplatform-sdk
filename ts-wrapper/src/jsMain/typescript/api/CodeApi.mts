@@ -37,7 +37,7 @@ export interface CodeApi {
 	isCodeValid(type: string, code: string, version: string | undefined): Promise<BooleanResponse>;
 
 	getCodeByRegionLanguageTypeLabel(region: string, label: string, type: string,
-			languages: string | undefined): Promise<Code>;
+			languages: string | undefined): Promise<Code | undefined>;
 
 	getCodes(codeIds: Array<string>): Promise<Array<Code>>;
 
