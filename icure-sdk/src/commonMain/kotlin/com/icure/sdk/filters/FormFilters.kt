@@ -2,7 +2,10 @@ package com.icure.sdk.filters
 
 import com.icure.sdk.IcureBaseApis
 import com.icure.sdk.crypto.EntityEncryptionService
-import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.sdk.model.Form
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.filter.AbstractFilter
@@ -35,7 +38,6 @@ object FormFilters {
 	 * @param parentId the form parent id.
 	 */
 	fun byParentIdForSelf(
-		dataOwnerId: String,
 		parentId: String,
 	): FilterOptions<Form> = ByParentIdForSelf(parentId)
 
@@ -62,6 +64,7 @@ object FormFilters {
 	 * @param to the maximum fuzzy date for [Form.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Form.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -71,7 +74,13 @@ object FormFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<Form> = ByPatientsOpeningDateForDataOwner(dataOwnerId, patients, from, to, descending)
+	) : SortableFilterOptions<Form> = ByPatientsOpeningDateForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for form filtering which match all forms shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -95,6 +104,7 @@ object FormFilters {
 	 * @param to the maximum fuzzy date for [Form.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Form.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -103,7 +113,12 @@ object FormFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<Form> = ByPatientsOpeningDateForSelf(patients, from, to, descending)
+	) : SortableFilterOptions<Form> = ByPatientsOpeningDateForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for form filtering which match all forms shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -206,17 +221,19 @@ object FormFilters {
 	): FilterOptions<Form>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
 	) : SortableFilterOptions<Form>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -270,7 +287,7 @@ internal suspend fun mapFormFilterOptions(
 		FormByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
@@ -282,7 +299,7 @@ internal suspend fun mapFormFilterOptions(
 		FormByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = selfDataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,

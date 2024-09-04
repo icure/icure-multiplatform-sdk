@@ -1,6 +1,9 @@
 package com.icure.sdk.utils
 
 import com.icure.sdk.model.base.Identifiable
+import com.icure.sdk.model.embed.DecryptedPlanOfAction
+import com.icure.sdk.model.embed.EncryptedPlanOfAction
+import com.icure.sdk.model.embed.PlanOfAction
 import com.icure.sdk.model.embed.form.template.CheckBox
 import com.icure.sdk.model.embed.form.template.DatePicker
 import com.icure.sdk.model.embed.form.template.DateTimePicker
@@ -20,6 +23,7 @@ import com.icure.sdk.serialization.AnyAbstractFilterSerializer
 import com.icure.sdk.serialization.CodeAbstractFilterSerializer
 import com.icure.sdk.serialization.ContactAbstractFilterSerializer
 import com.icure.sdk.serialization.DeviceAbstractFilterSerializer
+import com.icure.sdk.serialization.EncryptableSerializationModule
 import com.icure.sdk.serialization.FilterChainSerializer
 import com.icure.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.sdk.serialization.HealthcarePartyAbstractFilterSerializer
@@ -36,6 +40,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.plus
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 
@@ -117,5 +122,14 @@ object Serialization {
 		explicitNulls = true
 		ignoreUnknownKeys = true
 		serializersModule = ICureSerializerModule
+	}
+
+	@InternalIcureApi
+	val fullLanguageInteropJson = Json {
+		encodeDefaults = true
+		explicitNulls = true
+		ignoreUnknownKeys = false
+		serializersModule = ICureSerializerModule.plus(EncryptableSerializationModule.module)
+		classDiscriminator = "kotlinType"
 	}
 }

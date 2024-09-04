@@ -17,6 +17,7 @@ import com.icure.sdk.model.specializations.SpkiHexString
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.withResultHolder
 import com.icure.sdk.serialization.ByteArraySerializer
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.CFunction
@@ -34,7 +35,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 fun create(
 	pyRecoverAndVerifySelfHierarchyKeys: CPointer<CFunction<(resultHolder: COpaquePointer, keysData: CValues<ByteVar>, keyPairRecoverer: COpaquePointer) -> Unit>>,
 	pyGenerateNewKeyForDataOwner: CPointer<CFunction<(resultHolder: COpaquePointer, self: CValues<ByteVar>) -> Unit>>,
@@ -52,7 +53,7 @@ fun create(
 				withResultHolder(MapSerializer(String.serializer(), PyRecoveredKeyData.serializer())) { resultHolder ->
 					pyRecoverAndVerifySelfHierarchyKeys(
 						resultHolder,
-						Serialization.fullJson.encodeToString(ListSerializer(CryptoStrategies.KeyDataRecoveryRequest.serializer()), keysData).cstr,
+						Serialization.fullLanguageInteropJson.encodeToString(ListSerializer(CryptoStrategies.KeyDataRecoveryRequest.serializer()), keysData).cstr,
 						keyPairRecovererStableRef.asCPointer()
 					)
 				}.toKt()
@@ -67,7 +68,7 @@ fun create(
 		): CryptoStrategies.KeyGenerationRequestResult = withResultHolder(PyKeyGenerationRequestResult.serializer()) { resultHolderPtr ->
 			pyGenerateNewKeyForDataOwner(
 				resultHolderPtr,
-				Serialization.fullJson.encodeToString(DataOwnerWithType.serializer(), self).cstr
+				Serialization.fullLanguageInteropJson.encodeToString(DataOwnerWithType.serializer(), self).cstr
 			)
 		}.toKt()
 
@@ -78,8 +79,8 @@ fun create(
 		): List<SpkiHexString> = withResultHolder(ListSerializer(SpkiHexString.serializer())) { resultHolder ->
 			pyVerifyDelegatePublicKeys.invoke(
 				resultHolder,
-				Serialization.fullJson.encodeToString(CryptoActorStubWithType.serializer(), delegate).cstr,
-				Serialization.fullJson.encodeToString(ListSerializer(SpkiHexString.serializer()), publicKeys).cstr,
+				Serialization.fullLanguageInteropJson.encodeToString(CryptoActorStubWithType.serializer(), delegate).cstr,
+				Serialization.fullLanguageInteropJson.encodeToString(ListSerializer(SpkiHexString.serializer()), publicKeys).cstr,
 			)
 		}
 
@@ -88,7 +89,7 @@ fun create(
 		): Boolean = withResultHolder(Boolean.serializer()) { resultHolder ->
 			pyDataOwnerRequiresAnonymousDelegation.invoke(
 				resultHolder,
-				Serialization.fullJson.encodeToString(CryptoActorStubWithType.serializer(), dataOwner).cstr
+				Serialization.fullLanguageInteropJson.encodeToString(CryptoActorStubWithType.serializer(), dataOwner).cstr
 			)
 		}
 	}

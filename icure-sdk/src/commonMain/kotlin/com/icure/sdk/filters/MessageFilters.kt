@@ -2,7 +2,10 @@ package com.icure.sdk.filters
 
 import com.icure.sdk.IcureBaseApis
 import com.icure.sdk.crypto.EntityEncryptionService
-import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.sdk.model.Message
 import com.icure.sdk.model.Patient
 import com.icure.sdk.model.filter.AbstractFilter
@@ -107,6 +110,7 @@ object MessageFilters {
 	 * @param to the maximum value for [Message.sent] (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Message.sent] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsSentDateForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -116,7 +120,13 @@ object MessageFilters {
 		to: Instant? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<Message> = ByPatientsSentDateForDataOwner(dataOwnerId, patients, from, to, descending)
+	): SortableFilterOptions<Message> = ByPatientsSentDateForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for message filtering which match all messages shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -140,6 +150,7 @@ object MessageFilters {
 	 * @param to the maximum value for [Message.sent] (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Message.sent] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsSentDateForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -148,7 +159,12 @@ object MessageFilters {
 		to: Instant? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<Message> = ByPatientsSentDateForSelf(patients, from, to, descending)
+	): SortableFilterOptions<Message> = ByPatientsSentDateForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for message filtering which match all messages shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -350,17 +366,19 @@ object MessageFilters {
 	) : FilterOptions<Message>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsSentDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
 	): SortableFilterOptions<Message>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsSentDateForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -471,7 +489,7 @@ internal suspend fun mapMessageFilterOptions(
 		MessageByDataOwnerPatientSentDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
@@ -483,7 +501,7 @@ internal suspend fun mapMessageFilterOptions(
 		MessageByDataOwnerPatientSentDateFilter(
 			dataOwnerId = selfDataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,

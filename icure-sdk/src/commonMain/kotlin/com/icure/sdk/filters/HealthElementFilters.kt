@@ -2,6 +2,10 @@ package com.icure.sdk.filters
 
 import com.icure.sdk.IcureBaseApis
 import com.icure.sdk.crypto.EntityEncryptionService
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.sdk.crypto.entities.withTypeInfo
 import com.icure.sdk.model.HealthElement
 import com.icure.sdk.model.Patient
@@ -264,6 +268,7 @@ object HealthElementFilters {
 	 * @param to the maximum fuzzy date for [HealthElement.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [HealthElement.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -273,7 +278,13 @@ object HealthElementFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForDataOwner(dataOwnerId, patients, from, to, descending)
+	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -297,6 +308,7 @@ object HealthElementFilters {
 	 * @param to the maximum fuzzy date for [HealthElement.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [HealthElement.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -305,7 +317,12 @@ object HealthElementFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForSelf(patients, from, to, descending)
+	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -467,17 +484,19 @@ object HealthElementFilters {
     }
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
 	) : SortableFilterOptions<HealthElement>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -619,7 +638,7 @@ internal suspend fun mapHealthElementFilterOptions(
 		HealthElementByDataOwnerPatientOpeningDate(
 			healthcarePartyId = filterOptions.dataOwnerId,
 			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
@@ -631,7 +650,7 @@ internal suspend fun mapHealthElementFilterOptions(
 		HealthElementByDataOwnerPatientOpeningDate(
 			healthcarePartyId = selfDataOwnerId,
 			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,

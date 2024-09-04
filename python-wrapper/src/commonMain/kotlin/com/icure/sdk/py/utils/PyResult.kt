@@ -1,5 +1,6 @@
 package com.icure.sdk.py.utils
 
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
@@ -26,11 +27,12 @@ private fun Throwable.stringForPy() =
  *
  * The caller of the method will be in charge of disposing the string.
  */
+@OptIn(InternalIcureApi::class)
 internal fun <T : Any> Result<T?>.toPyString(
 	serializer: KSerializer<T>,
 ) =
 	map { res ->
-		res?.let { Serialization.fullJson.encodeToJsonElement(serializer, it) } ?: JsonNull
+		res?.let { Serialization.fullLanguageInteropJson.encodeToJsonElement(serializer, it) } ?: JsonNull
 	}.toPyJson()
 
 /**
@@ -40,13 +42,13 @@ internal fun <T : Any> Result<T?>.toPyString(
  * The string should not be used after the callback terminates, since the strings will be automatically disposed by
  * kotlin after the callback completes (they should be copied or decoded before the callback returns).
  */
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 internal fun <T : Any> Result<T?>.toPyStringAsyncCallback(
 	serializer: KSerializer<T>,
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) {
 	map { res ->
-		res?.let { Serialization.fullJson.encodeToJsonElement(serializer, it) } ?: JsonNull
+		res?.let { Serialization.fullLanguageInteropJson.encodeToJsonElement(serializer, it) } ?: JsonNull
 	}.toPyJsonAsyncCallback(callback)
 }
 

@@ -6,6 +6,7 @@ import com.icure.sdk.py.utils.toPyJson
 import com.icure.sdk.py.utils.toPyJsonAsyncCallback
 import com.icure.sdk.py.utils.toPyString
 import com.icure.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.cinterop.ByteVarOf
@@ -84,8 +85,9 @@ internal class PaginatedListIteratorAndSerializer<T : Any>(
 ) {
 	suspend fun hasNext(): Boolean =
 		iterator.hasNext()
+	@OptIn(InternalIcureApi::class)
 	suspend fun nextAsJson(limit: Int): JsonElement =
-		Serialization.fullJson.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
+		Serialization.fullLanguageInteropJson.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
 }
 
 @OptIn(ExperimentalForeignApi::class)

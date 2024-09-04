@@ -2,7 +2,10 @@ package com.icure.sdk.filters
 
 import com.icure.sdk.IcureBaseApis
 import com.icure.sdk.crypto.EntityEncryptionService
-import com.icure.sdk.crypto.entities.withTypeInfo
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.sdk.model.Contact
 import com.icure.sdk.model.embed.SubContact
 import com.icure.sdk.model.embed.Service
@@ -82,6 +85,7 @@ object ContactFilters {
 	 * @param to the maximum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Contact.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -91,7 +95,13 @@ object ContactFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForDataOwner(dataOwnerId, patients, from, to, descending)
+	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -115,6 +125,7 @@ object ContactFilters {
 	 * @param to the maximum fuzzy date for [Contact.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Contact.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -123,7 +134,12 @@ object ContactFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForSelf(patients, from, to, descending)
+	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -384,11 +400,12 @@ object ContactFilters {
 	 * @param dataOwnerId a data owner id
 	 * @param patients a list of patients.
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>
 	): SortableFilterOptions<Contact> = ByPatientsForDataOwner(
-		patients = patients,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
 		dataOwnerId = dataOwnerId
 	)
 
@@ -408,10 +425,11 @@ object ContactFilters {
 	 *
 	 * @param patients a list of patients.
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsForSelf(
 		patients: List<Patient>
 	): SortableFilterOptions<Contact> = ByPatientsForSelf(
-		patients = patients
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) }
 	)
 
 	/**
@@ -479,17 +497,19 @@ object ContactFilters {
 	) : FilterOptions<Contact>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
 	) : SortableFilterOptions<Contact>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -587,14 +607,16 @@ object ContactFilters {
 	}
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsForDataOwner(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val dataOwnerId: String
 	): BaseSortableFilterOptions<Contact>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 	): SortableFilterOptions<Contact>
 
 	@Serializable
@@ -637,7 +659,7 @@ internal suspend fun mapContactFilterOptions(
 		ContactByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
@@ -649,7 +671,7 @@ internal suspend fun mapContactFilterOptions(
 		ContactByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = selfDataOwnerId,
 			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
@@ -712,7 +734,7 @@ internal suspend fun mapContactFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByHcPartyPatientTagCodeDateFilter(
 			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			},
 			healthcarePartyId = filterOptions.dataOwnerId
 		)
@@ -721,7 +743,7 @@ internal suspend fun mapContactFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByHcPartyPatientTagCodeDateFilter(
 			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			},
 			healthcarePartyId = selfDataOwnerId
 		)

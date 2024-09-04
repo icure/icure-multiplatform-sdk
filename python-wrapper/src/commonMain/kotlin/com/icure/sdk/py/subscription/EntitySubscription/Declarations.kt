@@ -6,6 +6,7 @@ import com.icure.sdk.py.utils.toPyJsonAsyncCallback
 import com.icure.sdk.subscription.EntitySubscription
 import com.icure.sdk.subscription.EntitySubscriptionCloseReason
 import com.icure.sdk.subscription.EntitySubscriptionEvent
+import com.icure.sdk.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
@@ -101,8 +102,9 @@ internal data class EntitySubscriptionWithSerializer<E : Identifiable<String>>(
 		runBlocking { subscription.close() }
 	}
 
+	@OptIn(InternalIcureApi::class)
 	val closeReason get(): JsonElement = subscription.closeReason?.let {
-		Serialization.fullJson.encodeToJsonElement(closeReasonSerializer, it)
+		Serialization.fullLanguageInteropJson.encodeToJsonElement(closeReasonSerializer, it)
 	} ?: JsonNull
 
 	suspend fun waitForEvent(timeoutMs: Int): JsonElement =
@@ -113,8 +115,9 @@ internal data class EntitySubscriptionWithSerializer<E : Identifiable<String>>(
 	fun getEvent(): JsonElement =
 		subscription.eventChannel.tryReceive().getOrNull().json()
 
+	@OptIn(InternalIcureApi::class)
 	private fun EntitySubscriptionEvent<E>?.json() = if (this != null) {
-		Serialization.fullJson.encodeToJsonElement(eventSerializer, this)
+		Serialization.fullLanguageInteropJson.encodeToJsonElement(eventSerializer, this)
 	} else JsonNull
 }
 
