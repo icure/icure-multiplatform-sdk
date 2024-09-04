@@ -1,4 +1,4 @@
-package com.icure.sdk.utils
+package com.icure.cardinal.sdk.utils
 
-actual val currentPlatform: IcurePlatform
-	get() = IcurePlatform.Ios
+actual val currentPlatform: CardinalPlatform
+	get() = CardinalPlatform.Ios

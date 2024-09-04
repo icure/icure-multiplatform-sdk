@@ -37,7 +37,7 @@ import com.icure.sdk.js.options.external.ShortLivedTokenDetailsJs
 import com.icure.sdk.js.options.external.TwoFactorAuthTokenDetailsJs
 import com.icure.sdk.model.embed.AuthenticationClass
 import com.icure.sdk.options.AuthenticationMethod
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.promise

@@ -1,15 +1,15 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.entities.ShamirUpdateRequest
-import com.icure.sdk.crypto.impl.exportSpkiHex
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.sdk.KeyPairUpdateNotification
-import com.icure.sdk.test.DataOwnerDetails
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.utils.EntityEncryptionException
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.cardinal.sdk.crypto.entities.ShamirUpdateRequest
+import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.sdk.KeyPairUpdateNotification
+import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.utils.EntityEncryptionException
+import com.icure.utils.InternalIcureApi
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.PermissionApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.security.Permission
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.sdk.py.utils.toPyString
@@ -28,7 +28,7 @@ private class ModifyUserPermissionsParams(
 	public val permissions: Permission,
 )
 
-public fun modifyUserPermissionsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyUserPermissionsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyUserPermissionsParams>(params)
 	runBlocking {
@@ -41,7 +41,7 @@ public fun modifyUserPermissionsBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyUserPermissionsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

@@ -1,35 +1,35 @@
-package com.icure.sdk.auth
+package com.icure.cardinal.sdk.auth
 
 import com.icure.kotp.ShaVersion
 import com.icure.kotp.Totp
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.raw.RawMessageGatewayApi
-import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
-import com.icure.sdk.api.raw.impl.RawUserApiImpl
-import com.icure.sdk.auth.services.AuthProvider
-import com.icure.sdk.auth.services.SmartAuthProvider
-import com.icure.sdk.model.embed.AuthenticationClass
-import com.icure.sdk.model.security.AuthenticationToken
-import com.icure.sdk.model.security.Enable2faRequest
-import com.icure.sdk.options.SdkOptions
-import com.icure.sdk.options.AuthenticationMethod
-import com.icure.sdk.options.getAuthProvider
-import com.icure.sdk.test.MockMessageGatewayUtils
-import com.icure.sdk.test.baseUrl
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.createUserInMultipleGroups
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.test.mockMessageGatewayUrl
-import com.icure.sdk.test.mockSpecId
-import com.icure.sdk.test.shouldBeNextRevOf
-import com.icure.sdk.test.testGroupAdminAuth
-import com.icure.sdk.test.testGroupId
-import com.icure.sdk.test.uuid
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.RequestStatusException
-import com.icure.sdk.utils.Serialization
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
+import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
+import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
+import com.icure.cardinal.sdk.auth.services.AuthProvider
+import com.icure.cardinal.sdk.auth.services.SmartAuthProvider
+import com.icure.cardinal.sdk.model.embed.AuthenticationClass
+import com.icure.cardinal.sdk.model.security.AuthenticationToken
+import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.cardinal.sdk.options.AuthenticationMethod
+import com.icure.cardinal.sdk.options.getAuthProvider
+import com.icure.cardinal.sdk.test.MockMessageGatewayUtils
+import com.icure.cardinal.sdk.test.baseUrl
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.createUserInMultipleGroups
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.test.mockMessageGatewayUrl
+import com.icure.cardinal.sdk.test.mockSpecId
+import com.icure.cardinal.sdk.test.shouldBeNextRevOf
+import com.icure.cardinal.sdk.test.testGroupAdminAuth
+import com.icure.cardinal.sdk.test.testGroupId
+import com.icure.cardinal.sdk.test.uuid
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.RequestStatusException
+import com.icure.cardinal.sdk.utils.Serialization
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -47,14 +47,14 @@ class SmartAuthProviderTest : StringSpec({
 
 	val authApi = RawAnonymousAuthApiImpl(
 		apiUrl = baseUrl,
-		httpClient = IcureSdk.sharedHttpClient,
+		httpClient = CardinalSdk.sharedHttpClient,
 		json = Serialization.json
 	)
 
 	fun getUserApiWithProvider(authProvider: AuthProvider) = RawUserApiImpl(
 		apiUrl = baseUrl,
 		authProvider = authProvider,
-		httpClient = IcureSdk.sharedHttpClient,
+		httpClient = CardinalSdk.sharedHttpClient,
 		json = Serialization.json
 	)
 
@@ -104,7 +104,7 @@ class SmartAuthProviderTest : StringSpec({
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
 			allowSecretRetry = true,
-			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -117,7 +117,7 @@ class SmartAuthProviderTest : StringSpec({
 		val hcpDetails = createHcpUser()
 		val api = hcpDetails.api()
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
 		val userToken = uuid()
 		val userPwd = uuid()
 		val userWithLongTokenAndPwd = adminUserApi.modifyUser(
@@ -174,7 +174,7 @@ class SmartAuthProviderTest : StringSpec({
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
 			allowSecretRetry = true,
-			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -194,7 +194,7 @@ class SmartAuthProviderTest : StringSpec({
 				defaultCryptoService,
 				null,
 				SdkOptions(),
-				RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+				RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 			)
 		).getCurrentUser().successBody()
 		retrievedWithNewPwd shouldBe userWithNewPwd
@@ -205,7 +205,7 @@ class SmartAuthProviderTest : StringSpec({
 					defaultCryptoService,
 					null,
 					SdkOptions(),
-					RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+					RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 				)
 			).getCurrentUser()
 		}.statusCode shouldBe 401
@@ -216,7 +216,7 @@ class SmartAuthProviderTest : StringSpec({
 		val api = hcpDetails.api()
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
@@ -272,7 +272,7 @@ class SmartAuthProviderTest : StringSpec({
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
 			allowSecretRetry = true,
-			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -285,7 +285,7 @@ class SmartAuthProviderTest : StringSpec({
 		val api = hcpDetails.api()
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
@@ -320,7 +320,7 @@ class SmartAuthProviderTest : StringSpec({
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
 			allowSecretRetry = true,
-			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 		)
 
 		val userApi = getUserApiWithProvider(authProvider)
@@ -372,7 +372,7 @@ class SmartAuthProviderTest : StringSpec({
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
 			allowSecretRetry = true,
-			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 		)
 		val userApi = getUserApiWithProvider(authProvider)
 		userApi.getCurrentUser().response.status.isSuccess() shouldBe true
@@ -406,7 +406,7 @@ class SmartAuthProviderTest : StringSpec({
 			passwordClientSideSalt = null,
 			cacheSecrets = true,
 			allowSecretRetry = true,
-			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 		)
 		val defaultGroupUserApi = getUserApiWithProvider(authProvider)
 		val defaultGroupUser = defaultGroupUserApi.getCurrentUser().successBody()

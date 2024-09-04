@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.InvoiceApi.tryAndRecover
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Invoice
@@ -50,7 +50,7 @@ private class ShareWithParams(
 	public val options: InvoiceShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.shareWith(
@@ -63,7 +63,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -86,7 +86,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, InvoiceShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.tryShareWithMany(
@@ -98,7 +98,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -120,7 +120,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, InvoiceShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.shareWithMany(
@@ -132,7 +132,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -158,7 +158,7 @@ private class FindInvoicesByHcPartyPatientParams(
 	public val descending: Boolean? = null,
 )
 
-public fun findInvoicesByHcPartyPatientBlocking(sdk: IcureApis, params: String): PyResult =
+public fun findInvoicesByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindInvoicesByHcPartyPatientParams>(params)
 	runBlocking {
@@ -175,7 +175,7 @@ public fun findInvoicesByHcPartyPatientBlocking(sdk: IcureApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findInvoicesByHcPartyPatientAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -199,7 +199,7 @@ private class ModifyInvoiceParams(
 	public val entity: Invoice,
 )
 
-public fun modifyInvoiceBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyInvoiceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyInvoiceParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.modifyInvoice(
@@ -210,7 +210,7 @@ public fun modifyInvoiceBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyInvoiceAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -230,7 +230,7 @@ private class ModifyInvoicesParams(
 	public val entities: List<Invoice>,
 )
 
-public fun modifyInvoicesBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyInvoicesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyInvoicesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.modifyInvoices(
@@ -241,7 +241,7 @@ public fun modifyInvoicesBlocking(sdk: IcureApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyInvoicesAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -261,7 +261,7 @@ private class GetInvoiceParams(
 	public val entityId: String,
 )
 
-public fun getInvoiceBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getInvoiceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetInvoiceParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.getInvoice(
@@ -272,7 +272,7 @@ public fun getInvoiceBlocking(sdk: IcureApis, params: String): String = kotlin.r
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getInvoiceAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -292,7 +292,7 @@ private class GetInvoicesParams(
 	public val entityIds: List<String>,
 )
 
-public fun getInvoicesBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getInvoicesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetInvoicesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.getInvoices(
@@ -303,7 +303,7 @@ public fun getInvoicesBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getInvoicesAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -324,7 +324,7 @@ private class FindInvoicesByHcPartyPatientForeignKeysParams(
 	public val secretPatientKeys: List<String>,
 )
 
-public fun findInvoicesByHcPartyPatientForeignKeysBlocking(sdk: IcureApis, params: String): String =
+public fun findInvoicesByHcPartyPatientForeignKeysBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindInvoicesByHcPartyPatientForeignKeysParams>(params)
 	runBlocking {
@@ -337,7 +337,7 @@ public fun findInvoicesByHcPartyPatientForeignKeysBlocking(sdk: IcureApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findInvoicesByHcPartyPatientForeignKeysAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -358,7 +358,7 @@ private class ReassignInvoiceParams(
 	public val invoice: Invoice,
 )
 
-public fun reassignInvoiceBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun reassignInvoiceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ReassignInvoiceParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.reassignInvoice(
@@ -369,7 +369,7 @@ public fun reassignInvoiceBlocking(sdk: IcureApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun reassignInvoiceAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -390,7 +390,7 @@ private class MergeToParams(
 	public val ids: List<String>,
 )
 
-public fun mergeToBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun mergeToBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MergeToParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.mergeTo(
@@ -402,7 +402,7 @@ public fun mergeToBlocking(sdk: IcureApis, params: String): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun mergeToAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -425,7 +425,7 @@ private class ValidateParams(
 	public val forcedValue: String,
 )
 
-public fun validateBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun validateBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ValidateParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.validate(
@@ -438,7 +438,7 @@ public fun validateBlocking(sdk: IcureApis, params: String): String = kotlin.run
 
 @OptIn(ExperimentalForeignApi::class)
 public fun validateAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -467,7 +467,7 @@ private class AppendCodesParams(
 	public val invoicingCodes: List<EncryptedInvoicingCode>,
 )
 
-public fun appendCodesBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun appendCodesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<AppendCodesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.appendCodes(
@@ -485,7 +485,7 @@ public fun appendCodesBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun appendCodesAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -515,7 +515,7 @@ private class RemoveCodesParams(
 	public val tarificationIds: List<String>,
 )
 
-public fun removeCodesBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun removeCodesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RemoveCodesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.removeCodes(
@@ -529,7 +529,7 @@ public fun removeCodesBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun removeCodesAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -557,7 +557,7 @@ private class FindInvoicesByAuthorParams(
 	public val limit: Int? = null,
 )
 
-public fun findInvoicesByAuthorBlocking(sdk: IcureApis, params: String): String =
+public fun findInvoicesByAuthorBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindInvoicesByAuthorParams>(params)
 	runBlocking {
@@ -574,7 +574,7 @@ public fun findInvoicesByAuthorBlocking(sdk: IcureApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findInvoicesByAuthorAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -600,7 +600,7 @@ private class ListInvoicesByHCPartyAndPatientForeignKeysParams(
 	public val secretPatientKeys: List<String>,
 )
 
-public fun listInvoicesByHCPartyAndPatientForeignKeysBlocking(sdk: IcureApis, params: String):
+public fun listInvoicesByHCPartyAndPatientForeignKeysBlocking(sdk: CardinalApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInvoicesByHCPartyAndPatientForeignKeysParams>(params)
 	runBlocking {
@@ -613,7 +613,7 @@ public fun listInvoicesByHCPartyAndPatientForeignKeysBlocking(sdk: IcureApis, pa
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByHCPartyAndPatientForeignKeysAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -635,7 +635,7 @@ private class ListInvoicesByHcPartyAndGroupIdParams(
 	public val groupId: String,
 )
 
-public fun listInvoicesByHcPartyAndGroupIdBlocking(sdk: IcureApis, params: String): String =
+public fun listInvoicesByHcPartyAndGroupIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInvoicesByHcPartyAndGroupIdParams>(params)
 	runBlocking {
@@ -648,7 +648,7 @@ public fun listInvoicesByHcPartyAndGroupIdBlocking(sdk: IcureApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByHcPartyAndGroupIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -674,8 +674,8 @@ private class ListInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateParams(
 	public val to: Long? = null,
 )
 
-public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(sdk: IcureApis,
-		params: String): String = kotlin.runCatching {
+public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(sdk: CardinalApis,
+                                                                          params: String): String = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<ListInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateParams>(params)
 	runBlocking {
@@ -692,7 +692,7 @@ public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(sdk: I
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -718,7 +718,7 @@ private class ListInvoicesByContactIdsParams(
 	public val contactIds: List<String>,
 )
 
-public fun listInvoicesByContactIdsBlocking(sdk: IcureApis, params: String): String =
+public fun listInvoicesByContactIdsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInvoicesByContactIdsParams>(params)
 	runBlocking {
@@ -730,7 +730,7 @@ public fun listInvoicesByContactIdsBlocking(sdk: IcureApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByContactIdsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -750,7 +750,7 @@ private class ListInvoicesByRecipientsIdsParams(
 	public val recipientsIds: List<String>,
 )
 
-public fun listInvoicesByRecipientsIdsBlocking(sdk: IcureApis, params: String): String =
+public fun listInvoicesByRecipientsIdsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInvoicesByRecipientsIdsParams>(params)
 	runBlocking {
@@ -762,7 +762,7 @@ public fun listInvoicesByRecipientsIdsBlocking(sdk: IcureApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByRecipientsIdsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -782,7 +782,7 @@ private class ListToInsurancesParams(
 	public val userIds: List<String>,
 )
 
-public fun listToInsurancesBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun listToInsurancesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListToInsurancesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listToInsurances(
@@ -793,7 +793,7 @@ public fun listToInsurancesBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listToInsurancesAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -813,7 +813,7 @@ private class ListToInsurancesUnsentParams(
 	public val userIds: List<String>,
 )
 
-public fun listToInsurancesUnsentBlocking(sdk: IcureApis, params: String): String =
+public fun listToInsurancesUnsentBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListToInsurancesUnsentParams>(params)
 	runBlocking {
@@ -825,7 +825,7 @@ public fun listToInsurancesUnsentBlocking(sdk: IcureApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listToInsurancesUnsentAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -845,7 +845,7 @@ private class ListToPatientsParams(
 	public val hcPartyId: String,
 )
 
-public fun listToPatientsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun listToPatientsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListToPatientsParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listToPatients(
@@ -856,7 +856,7 @@ public fun listToPatientsBlocking(sdk: IcureApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listToPatientsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -876,7 +876,7 @@ private class ListToPatientsUnsentParams(
 	public val hcPartyId: String?,
 )
 
-public fun listToPatientsUnsentBlocking(sdk: IcureApis, params: String): String =
+public fun listToPatientsUnsentBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListToPatientsUnsentParams>(params)
 	runBlocking {
@@ -888,7 +888,7 @@ public fun listToPatientsUnsentBlocking(sdk: IcureApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listToPatientsUnsentAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -908,7 +908,7 @@ private class ListInvoicesByIdsParams(
 	public val ids: List<String>,
 )
 
-public fun listInvoicesByIdsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun listInvoicesByIdsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInvoicesByIdsParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByIds(
@@ -919,7 +919,7 @@ public fun listInvoicesByIdsBlocking(sdk: IcureApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByIdsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -943,7 +943,7 @@ private class ListInvoicesByHcpartySendingModeStatusDateParams(
 	public val to: Long,
 )
 
-public fun listInvoicesByHcpartySendingModeStatusDateBlocking(sdk: IcureApis, params: String):
+public fun listInvoicesByHcpartySendingModeStatusDateBlocking(sdk: CardinalApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInvoicesByHcpartySendingModeStatusDateParams>(params)
 	runBlocking {
@@ -959,7 +959,7 @@ public fun listInvoicesByHcpartySendingModeStatusDateBlocking(sdk: IcureApis, pa
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByHcpartySendingModeStatusDateAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -983,7 +983,7 @@ private class ListInvoicesByServiceIdsParams(
 	public val serviceIds: List<String>,
 )
 
-public fun listInvoicesByServiceIdsBlocking(sdk: IcureApis, params: String): String =
+public fun listInvoicesByServiceIdsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInvoicesByServiceIdsParams>(params)
 	runBlocking {
@@ -995,7 +995,7 @@ public fun listInvoicesByServiceIdsBlocking(sdk: IcureApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInvoicesByServiceIdsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -1018,7 +1018,7 @@ private class ListAllHcpsByStatusParams(
 	public val hcpIds: List<String>,
 )
 
-public fun listAllHcpsByStatusBlocking(sdk: IcureApis, params: String): String =
+public fun listAllHcpsByStatusBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListAllHcpsByStatusParams>(params)
 	runBlocking {
@@ -1033,7 +1033,7 @@ public fun listAllHcpsByStatusBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listAllHcpsByStatusAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

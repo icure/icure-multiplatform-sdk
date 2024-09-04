@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.DocumentBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.Document
@@ -44,7 +44,7 @@ private class MatchDocumentsByParams(
 	public val filter: BaseFilterOptions<Document>,
 )
 
-public fun matchDocumentsByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchDocumentsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchDocumentsByParams>(params)
 	runBlocking {
@@ -56,7 +56,7 @@ public fun matchDocumentsByBlocking(sdk: IcureBaseApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchDocumentsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -76,7 +76,7 @@ private class MatchDocumentsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Document>,
 )
 
-public fun matchDocumentsBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchDocumentsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchDocumentsBySortedParams>(params)
 	runBlocking {
@@ -88,7 +88,7 @@ public fun matchDocumentsBySortedBlocking(sdk: IcureBaseApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchDocumentsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -108,7 +108,7 @@ private class FilterDocumentsByParams(
 	public val filter: BaseFilterOptions<Document>,
 )
 
-public fun filterDocumentsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterDocumentsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterDocumentsByParams>(params)
 	runBlocking {
@@ -121,7 +121,7 @@ public fun filterDocumentsByBlocking(sdk: IcureBaseApis, params: String): PyResu
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterDocumentsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -141,7 +141,7 @@ private class FilterDocumentsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Document>,
 )
 
-public fun filterDocumentsBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterDocumentsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterDocumentsBySortedParams>(params)
 	runBlocking {
@@ -154,7 +154,7 @@ public fun filterDocumentsBySortedBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterDocumentsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -174,7 +174,7 @@ private class DeleteDocumentParams(
 	public val entityId: String,
 )
 
-public fun deleteDocumentBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteDocumentBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDocumentParams>(params)
 	runBlocking {
 		sdk.document.deleteDocument(
@@ -185,7 +185,7 @@ public fun deleteDocumentBlocking(sdk: IcureBaseApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteDocumentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -205,7 +205,7 @@ private class DeleteDocumentsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteDocumentsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteDocumentsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDocumentsParams>(params)
 	runBlocking {
@@ -217,7 +217,7 @@ public fun deleteDocumentsBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteDocumentsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -237,7 +237,7 @@ private class GetRawMainAttachmentParams(
 	public val documentId: String,
 )
 
-public fun getRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getRawMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetRawMainAttachmentParams>(params)
 	runBlocking {
@@ -249,7 +249,7 @@ public fun getRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getRawMainAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -269,7 +269,7 @@ private class GetMainAttachmentAsPlainTextParams(
 	public val documentId: String,
 )
 
-public fun getMainAttachmentAsPlainTextBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getMainAttachmentAsPlainTextBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMainAttachmentAsPlainTextParams>(params)
 	runBlocking {
@@ -281,7 +281,7 @@ public fun getMainAttachmentAsPlainTextBlocking(sdk: IcureBaseApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getMainAttachmentAsPlainTextAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -301,7 +301,7 @@ private class GetMainAttachmentAsJsonParams(
 	public val documentId: String,
 )
 
-public fun getMainAttachmentAsJsonBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getMainAttachmentAsJsonBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMainAttachmentAsJsonParams>(params)
 	runBlocking {
@@ -313,7 +313,7 @@ public fun getMainAttachmentAsJsonBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getMainAttachmentAsJsonAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -334,7 +334,7 @@ private class GetRawSecondaryAttachmentParams(
 	public val key: String,
 )
 
-public fun getRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getRawSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetRawSecondaryAttachmentParams>(params)
 	runBlocking {
@@ -347,7 +347,7 @@ public fun getRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getRawSecondaryAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -373,7 +373,7 @@ private class SetRawMainAttachmentParams(
 	public val encrypted: Boolean,
 )
 
-public fun setRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun setRawMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetRawMainAttachmentParams>(params)
 	runBlocking {
@@ -389,7 +389,7 @@ public fun setRawMainAttachmentBlocking(sdk: IcureBaseApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun setRawMainAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -419,7 +419,7 @@ private class SetRawSecondaryAttachmentParams(
 	public val encrypted: Boolean,
 )
 
-public fun setRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun setRawSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetRawSecondaryAttachmentParams>(params)
 	runBlocking {
@@ -436,7 +436,7 @@ public fun setRawSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun setRawSecondaryAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -462,7 +462,7 @@ private class DeleteMainAttachmentParams(
 	public val rev: String,
 )
 
-public fun deleteMainAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteMainAttachmentParams>(params)
 	runBlocking {
@@ -475,7 +475,7 @@ public fun deleteMainAttachmentBlocking(sdk: IcureBaseApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteMainAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -498,7 +498,7 @@ private class DeleteSecondaryAttachmentParams(
 	public val rev: String,
 )
 
-public fun deleteSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteSecondaryAttachmentParams>(params)
 	runBlocking {
@@ -512,7 +512,7 @@ public fun deleteSecondaryAttachmentBlocking(sdk: IcureBaseApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteSecondaryAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -534,7 +534,7 @@ private class ModifyDocumentParams(
 	public val entity: EncryptedDocument,
 )
 
-public fun modifyDocumentBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun modifyDocumentBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentParams>(params)
 	runBlocking {
 		sdk.document.modifyDocument(
@@ -545,7 +545,7 @@ public fun modifyDocumentBlocking(sdk: IcureBaseApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyDocumentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -565,7 +565,7 @@ private class GetDocumentParams(
 	public val entityId: String,
 )
 
-public fun getDocumentBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getDocumentBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentParams>(params)
 	runBlocking {
 		sdk.document.getDocument(
@@ -576,7 +576,7 @@ public fun getDocumentBlocking(sdk: IcureBaseApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -596,7 +596,7 @@ private class GetDocumentByExternalUuidParams(
 	public val externalUuid: String,
 )
 
-public fun getDocumentByExternalUuidBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getDocumentByExternalUuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentByExternalUuidParams>(params)
 	runBlocking {
@@ -608,7 +608,7 @@ public fun getDocumentByExternalUuidBlocking(sdk: IcureBaseApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentByExternalUuidAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -628,7 +628,7 @@ private class GetDocumentsByExternalUuidParams(
 	public val externalUuid: String,
 )
 
-public fun getDocumentsByExternalUuidBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getDocumentsByExternalUuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentsByExternalUuidParams>(params)
 	runBlocking {
@@ -640,7 +640,7 @@ public fun getDocumentsByExternalUuidBlocking(sdk: IcureBaseApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentsByExternalUuidAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -660,7 +660,7 @@ private class GetDocumentsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getDocumentsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getDocumentsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentsParams>(params)
 	runBlocking {
 		sdk.document.getDocuments(
@@ -671,7 +671,7 @@ public fun getDocumentsBlocking(sdk: IcureBaseApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -691,7 +691,7 @@ private class ModifyDocumentsParams(
 	public val entities: List<EncryptedDocument>,
 )
 
-public fun modifyDocumentsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun modifyDocumentsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentsParams>(params)
 	runBlocking {
@@ -703,7 +703,7 @@ public fun modifyDocumentsBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyDocumentsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -725,7 +725,7 @@ private class ListDocumentsByHcPartyMessageForeignKeysParams(
 	public val secretMessageKeys: List<String>,
 )
 
-public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: IcureBaseApis, params: String):
+public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: CardinalBaseApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
 	runBlocking {
@@ -739,7 +739,7 @@ public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: IcureBaseApis, 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listDocumentsByHcPartyMessageForeignKeysAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -761,7 +761,7 @@ private class FindWithoutDelegationParams(
 	public val limit: Int?,
 )
 
-public fun findWithoutDelegationBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findWithoutDelegationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindWithoutDelegationParams>(params)
 	runBlocking {
@@ -773,7 +773,7 @@ public fun findWithoutDelegationBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findWithoutDelegationAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

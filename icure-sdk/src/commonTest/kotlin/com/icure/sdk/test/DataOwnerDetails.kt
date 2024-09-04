@@ -1,27 +1,27 @@
-package com.icure.sdk.test
+package com.icure.cardinal.sdk.test
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.raw.RawMessageGatewayApi
-import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
-import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.crypto.CryptoStrategies
-import com.icure.sdk.crypto.impl.BasicCryptoStrategies
-import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.options.SdkOptions
-import com.icure.sdk.options.AuthenticationMethod
-import com.icure.sdk.options.getAuthProvider
-import com.icure.sdk.storage.IcureStorageFacade
-import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
-import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
-import com.icure.sdk.storage.impl.VolatileStorageFacade
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.Serialization
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
+import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
+import com.icure.cardinal.sdk.auth.UsernamePassword
+import com.icure.cardinal.sdk.crypto.CryptoStrategies
+import com.icure.cardinal.sdk.crypto.impl.BasicCryptoStrategies
+import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.cardinal.sdk.options.AuthenticationMethod
+import com.icure.cardinal.sdk.options.getAuthProvider
+import com.icure.cardinal.sdk.storage.CardinalStorageFacade
+import com.icure.cardinal.sdk.storage.impl.DefaultStorageEntryKeysFactory
+import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
+import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.Serialization
 
 @OptIn(InternalIcureApi::class)
 @ConsistentCopyVisibility
@@ -57,7 +57,7 @@ data class DataOwnerDetails private constructor (
 	/**
 	 * Creates a new api with access to the original key of the user and his parents.
 	 */
-	suspend fun api(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): IcureSdk =
+	suspend fun api(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): CardinalSdk =
 		initApi(cryptoStrategies) { addInitialKeysToStorage(it) }
 
 	/**
@@ -67,7 +67,7 @@ data class DataOwnerDetails private constructor (
 	suspend fun apiWithKeys(
 		vararg keys: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
 		cryptoStrategies: CryptoStrategies = BasicCryptoStrategies
-	): IcureSdk =
+	): CardinalSdk =
 		initApi(cryptoStrategies) { storage ->
 			keys.forEach { key ->
 				storage.saveEncryptionKeypair(
@@ -82,7 +82,7 @@ data class DataOwnerDetails private constructor (
 	 * Creates an api simulating the loss of all keys for the user, prompting the creation of a new key.
 	 * @return the api and the new key
 	 */
-	suspend fun apiWithLostKeys(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): Pair<IcureSdk, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
+	suspend fun apiWithLostKeys(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): Pair<CardinalSdk, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
 		val newKey = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
 		return Pair(
 			initApi(
@@ -119,25 +119,25 @@ data class DataOwnerDetails private constructor (
 		AuthenticationMethod.UsingCredentials(
 			UsernamePassword(username, password),
 		).getAuthProvider(
-			RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
+			RawAnonymousAuthApiImpl(baseUrl, CardinalSdk.sharedHttpClient, json = Serialization.json),
 			defaultCryptoService,
 			null,
 			SdkOptions(saltPasswordWithApplicationId = false),
-			messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 		)
 
 
 	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(
 		cryptoStrategies: CryptoStrategies,
-		fillStorage: suspend (storage: IcureStorageFacade) -> Unit
-	): IcureSdk =
-		IcureSdk.initialize(
+		fillStorage: suspend (storage: CardinalStorageFacade) -> Unit
+	): CardinalSdk =
+		CardinalSdk.initialize(
 			null,
 			baseUrl,
 			AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
 			VolatileStorageFacade().also {
-				IcureStorageFacade(
+				CardinalStorageFacade(
 					JsonAndBase64KeyStorage(it),
 					it,
 					DefaultStorageEntryKeysFactory,
@@ -151,7 +151,7 @@ data class DataOwnerDetails private constructor (
 			)
 		)
 
-	private suspend fun addInitialKeysToStorage(storage: IcureStorageFacade) {
+	private suspend fun addInitialKeysToStorage(storage: CardinalStorageFacade) {
 		storage.saveEncryptionKeypair(
 			dataOwnerId,
 			keypair,

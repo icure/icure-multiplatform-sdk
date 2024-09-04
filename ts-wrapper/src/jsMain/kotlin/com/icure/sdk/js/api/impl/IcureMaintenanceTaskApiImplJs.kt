@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.`impl`
 
-import com.icure.sdk.api.IcureMaintenanceTaskApi
+import com.icure.sdk.api.CardinalMaintenanceTaskApi
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.IcureMaintenanceTaskApiJs
 import com.icure.sdk.js.model.CheckedConverters.arrayToSet
@@ -23,13 +23,13 @@ import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class IcureMaintenanceTaskApiImplJs(
-	private val icureMaintenanceTaskApi: IcureMaintenanceTaskApi,
+	private val cardinalMaintenanceTaskApi: CardinalMaintenanceTaskApi,
 ) : IcureMaintenanceTaskApiJs {
 	override fun applyKeyPairUpdate(updateRequest: KeyPairUpdateNotificationJs): Promise<Unit> =
 			GlobalScope.promise {
 		val updateRequestConverted: KeyPairUpdateNotification =
 				keyPairUpdateNotification_fromJs(updateRequest)
-		icureMaintenanceTaskApi.applyKeyPairUpdate(
+		cardinalMaintenanceTaskApi.applyKeyPairUpdate(
 			updateRequestConverted,
 		)
 
@@ -53,7 +53,7 @@ internal class IcureMaintenanceTaskApiImplJs(
 					},
 				)
 			}
-			icureMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
+			cardinalMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
 				keyConverted,
 				requestToOwnerTypesConverted,
 			)
@@ -65,7 +65,7 @@ internal class IcureMaintenanceTaskApiImplJs(
 			GlobalScope.promise {
 		val dataOwnerIdConverted: String = dataOwnerId
 		val keyConverted: SpkiHexString = spkiHexString_fromJs(key)
-		icureMaintenanceTaskApi.createKeyPairUpdateNotificationTo(
+		cardinalMaintenanceTaskApi.createKeyPairUpdateNotificationTo(
 			dataOwnerIdConverted,
 			keyConverted,
 		)

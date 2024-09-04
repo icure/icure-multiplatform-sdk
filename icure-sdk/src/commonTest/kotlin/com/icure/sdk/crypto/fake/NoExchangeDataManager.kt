@@ -1,14 +1,14 @@
-package com.icure.sdk.crypto.fake
+package com.icure.cardinal.sdk.crypto.fake
 
-import com.icure.sdk.crypto.BaseExchangeDataManager
-import com.icure.sdk.crypto.ExchangeDataManager
-import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
-import com.icure.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
-import com.icure.sdk.model.specializations.Base64String
-import com.icure.sdk.model.specializations.SecureDelegationKeyString
-import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
+import com.icure.cardinal.sdk.crypto.ExchangeDataManager
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.cardinal.sdk.model.specializations.Base64String
+import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
+import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.utils.InternalIcureApi
 
 @OptIn(InternalIcureApi::class)
 object NoExchangeDataManager : ExchangeDataManager {

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.RoleApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.Role
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.sdk.py.utils.toPyString
@@ -20,15 +20,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.builtins.ListSerializer
 
-public fun getAllRolesBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatching {
+public fun getAllRolesBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.role.getAllRoles()
 	}
 }.toPyString(ListSerializer(Role.serializer()))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getAllRolesAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getAllRolesAsync(sdk: CardinalNonCryptoApis,
+                            resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {

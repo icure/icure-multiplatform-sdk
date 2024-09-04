@@ -1,8 +1,8 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.entities.ShamirSecretShare
-import com.icure.sdk.crypto.impl.ShamirSecretSharingService
+import com.icure.cardinal.sdk.crypto.entities.ShamirSecretShare
+import com.icure.cardinal.sdk.crypto.impl.ShamirSecretSharingService
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

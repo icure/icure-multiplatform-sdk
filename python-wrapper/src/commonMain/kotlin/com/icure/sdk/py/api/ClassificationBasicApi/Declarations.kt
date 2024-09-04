@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.ClassificationBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.Classification
@@ -39,7 +39,7 @@ private class MatchClassificationsByParams(
 	public val filter: BaseFilterOptions<Classification>,
 )
 
-public fun matchClassificationsByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchClassificationsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchClassificationsByParams>(params)
 	runBlocking {
@@ -51,7 +51,7 @@ public fun matchClassificationsByBlocking(sdk: IcureBaseApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchClassificationsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -71,7 +71,7 @@ private class MatchClassificationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Classification>,
 )
 
-public fun matchClassificationsBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchClassificationsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchClassificationsBySortedParams>(params)
 	runBlocking {
@@ -83,7 +83,7 @@ public fun matchClassificationsBySortedBlocking(sdk: IcureBaseApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchClassificationsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -103,7 +103,7 @@ private class FilterClassificationsByParams(
 	public val filter: BaseFilterOptions<Classification>,
 )
 
-public fun filterClassificationsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterClassificationsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterClassificationsByParams>(params)
 	runBlocking {
@@ -116,7 +116,7 @@ public fun filterClassificationsByBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterClassificationsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -136,7 +136,7 @@ private class FilterClassificationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Classification>,
 )
 
-public fun filterClassificationsBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterClassificationsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterClassificationsBySortedParams>(params)
 	runBlocking {
@@ -149,7 +149,7 @@ public fun filterClassificationsBySortedBlocking(sdk: IcureBaseApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterClassificationsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -169,7 +169,7 @@ private class DeleteClassificationParams(
 	public val entityId: String,
 )
 
-public fun deleteClassificationBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteClassificationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteClassificationParams>(params)
 	runBlocking {
@@ -181,7 +181,7 @@ public fun deleteClassificationBlocking(sdk: IcureBaseApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteClassificationAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -201,7 +201,7 @@ private class DeleteClassificationsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteClassificationsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteClassificationsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteClassificationsParams>(params)
 	runBlocking {
@@ -213,7 +213,7 @@ public fun deleteClassificationsBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteClassificationsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -233,7 +233,7 @@ private class ModifyClassificationParams(
 	public val entity: EncryptedClassification,
 )
 
-public fun modifyClassificationBlocking(sdk: IcureBaseApis, params: String): String =
+public fun modifyClassificationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyClassificationParams>(params)
 	runBlocking {
@@ -245,7 +245,7 @@ public fun modifyClassificationBlocking(sdk: IcureBaseApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyClassificationAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -265,7 +265,7 @@ private class GetClassificationParams(
 	public val entityId: String,
 )
 
-public fun getClassificationBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getClassificationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetClassificationParams>(params)
 	runBlocking {
@@ -277,7 +277,7 @@ public fun getClassificationBlocking(sdk: IcureBaseApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getClassificationAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -297,7 +297,7 @@ private class GetClassificationsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getClassificationsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getClassificationsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetClassificationsParams>(params)
 	runBlocking {
@@ -309,7 +309,7 @@ public fun getClassificationsBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getClassificationsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

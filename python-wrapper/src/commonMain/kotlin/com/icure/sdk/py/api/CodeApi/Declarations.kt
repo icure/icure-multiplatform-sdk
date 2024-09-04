@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.CodeApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.BooleanResponse
@@ -48,7 +48,7 @@ private class FindCodesByLabelParams(
 	public val limit: Int? = null,
 )
 
-public fun findCodesByLabelBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findCodesByLabelBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCodesByLabelParams>(params)
 	runBlocking {
@@ -67,7 +67,7 @@ public fun findCodesByLabelBlocking(sdk: IcureNonCryptoApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findCodesByLabelAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -100,7 +100,7 @@ private class FindCodesByTypeParams(
 	public val limit: Int? = null,
 )
 
-public fun findCodesByTypeBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findCodesByTypeBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCodesByTypeParams>(params)
 	runBlocking {
@@ -118,7 +118,7 @@ public fun findCodesByTypeBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findCodesByTypeAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -148,7 +148,7 @@ private class FindCodesByLinkParams(
 	public val limit: Int? = null,
 )
 
-public fun findCodesByLinkBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findCodesByLinkBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCodesByLinkParams>(params)
 	runBlocking {
@@ -164,7 +164,7 @@ public fun findCodesByLinkBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findCodesByLinkAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -191,7 +191,7 @@ private class ListCodesByRegionTypeCodeVersionParams(
 	public val version: String? = null,
 )
 
-public fun listCodesByRegionTypeCodeVersionBlocking(sdk: IcureNonCryptoApis, params: String): String
+public fun listCodesByRegionTypeCodeVersionBlocking(sdk: CardinalNonCryptoApis, params: String): String
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListCodesByRegionTypeCodeVersionParams>(params)
 	runBlocking {
@@ -206,7 +206,7 @@ public fun listCodesByRegionTypeCodeVersionBlocking(sdk: IcureNonCryptoApis, par
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listCodesByRegionTypeCodeVersionAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -230,7 +230,7 @@ private class ListCodeTypesByParams(
 	public val type: String? = null,
 )
 
-public fun listCodeTypesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listCodeTypesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListCodeTypesByParams>(params)
 	runBlocking {
@@ -243,7 +243,7 @@ public fun listCodeTypesByBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listCodeTypesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -265,7 +265,7 @@ private class ListTagTypesByParams(
 	public val type: String? = null,
 )
 
-public fun listTagTypesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listTagTypesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListTagTypesByParams>(params)
 	runBlocking {
@@ -278,7 +278,7 @@ public fun listTagTypesByBlocking(sdk: IcureNonCryptoApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listTagTypesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -299,7 +299,7 @@ private class CreateCodeParams(
 	public val c: Code,
 )
 
-public fun createCodeBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createCodeBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateCodeParams>(params)
 	runBlocking {
@@ -311,7 +311,7 @@ public fun createCodeBlocking(sdk: IcureNonCryptoApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createCodeAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -331,7 +331,7 @@ private class CreateCodesParams(
 	public val codeBatch: List<Code>,
 )
 
-public fun createCodesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createCodesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateCodesParams>(params)
 	runBlocking {
@@ -343,7 +343,7 @@ public fun createCodesBlocking(sdk: IcureNonCryptoApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createCodesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -364,7 +364,7 @@ private class CreateCodesInGroupParams(
 	public val codeBatch: List<Code>,
 )
 
-public fun createCodesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createCodesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateCodesInGroupParams>(params)
 	runBlocking {
@@ -377,7 +377,7 @@ public fun createCodesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createCodesInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -400,7 +400,7 @@ private class IsCodeValidParams(
 	public val version: String?,
 )
 
-public fun isCodeValidBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun isCodeValidBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<IsCodeValidParams>(params)
 	runBlocking {
@@ -414,7 +414,7 @@ public fun isCodeValidBlocking(sdk: IcureNonCryptoApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun isCodeValidAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -439,7 +439,7 @@ private class GetCodeByRegionLanguageTypeLabelParams(
 	public val languages: String?,
 )
 
-public fun getCodeByRegionLanguageTypeLabelBlocking(sdk: IcureNonCryptoApis, params: String): String
+public fun getCodeByRegionLanguageTypeLabelBlocking(sdk: CardinalNonCryptoApis, params: String): String
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCodeByRegionLanguageTypeLabelParams>(params)
 	runBlocking {
@@ -454,7 +454,7 @@ public fun getCodeByRegionLanguageTypeLabelBlocking(sdk: IcureNonCryptoApis, par
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCodeByRegionLanguageTypeLabelAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -477,7 +477,7 @@ private class GetCodesParams(
 	public val codeIds: List<String>,
 )
 
-public fun getCodesBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getCodesBlocking(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCodesParams>(params)
 	runBlocking {
 		sdk.code.getCodes(
@@ -488,7 +488,7 @@ public fun getCodesBlocking(sdk: IcureNonCryptoApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCodesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -509,7 +509,7 @@ private class GetCodesInGroupParams(
 	public val codeIds: List<String>,
 )
 
-public fun getCodesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getCodesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCodesInGroupParams>(params)
 	runBlocking {
@@ -522,7 +522,7 @@ public fun getCodesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCodesInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -543,7 +543,7 @@ private class GetCodeParams(
 	public val codeId: String,
 )
 
-public fun getCodeBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getCodeBlocking(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCodeParams>(params)
 	runBlocking {
 		sdk.code.getCode(
@@ -554,7 +554,7 @@ public fun getCodeBlocking(sdk: IcureNonCryptoApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCodeAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -576,7 +576,7 @@ private class GetCodeWithPartsParams(
 	public val version: String,
 )
 
-public fun getCodeWithPartsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getCodeWithPartsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCodeWithPartsParams>(params)
 	runBlocking {
@@ -590,7 +590,7 @@ public fun getCodeWithPartsBlocking(sdk: IcureNonCryptoApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCodeWithPartsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -612,7 +612,7 @@ private class ModifyCodeParams(
 	public val codeDto: Code,
 )
 
-public fun modifyCodeBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyCodeBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyCodeParams>(params)
 	runBlocking {
@@ -624,7 +624,7 @@ public fun modifyCodeBlocking(sdk: IcureNonCryptoApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyCodeAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -644,7 +644,7 @@ private class ModifyCodesParams(
 	public val codeBatch: List<Code>,
 )
 
-public fun modifyCodesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyCodesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyCodesParams>(params)
 	runBlocking {
@@ -656,7 +656,7 @@ public fun modifyCodesBlocking(sdk: IcureNonCryptoApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyCodesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -677,7 +677,7 @@ private class ModifyCodesInGroupParams(
 	public val codeBatch: List<Code>,
 )
 
-public fun modifyCodesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyCodesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyCodesInGroupParams>(params)
 	runBlocking {
@@ -690,7 +690,7 @@ public fun modifyCodesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyCodesInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -711,7 +711,7 @@ private class FilterCodesByParams(
 	public val filter: BaseFilterOptions<Code>,
 )
 
-public fun filterCodesByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterCodesByBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterCodesByParams>(params)
 	runBlocking {
@@ -724,7 +724,7 @@ public fun filterCodesByBlocking(sdk: IcureNonCryptoApis, params: String): PyRes
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterCodesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -744,7 +744,7 @@ private class FilterCodesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Code>,
 )
 
-public fun filterCodesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterCodesBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterCodesBySortedParams>(params)
 	runBlocking {
@@ -757,7 +757,7 @@ public fun filterCodesBySortedBlocking(sdk: IcureNonCryptoApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterCodesBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -777,7 +777,7 @@ private class MatchCodesByParams(
 	public val filter: BaseFilterOptions<Code>,
 )
 
-public fun matchCodesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchCodesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchCodesByParams>(params)
 	runBlocking {
@@ -789,7 +789,7 @@ public fun matchCodesByBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchCodesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -809,7 +809,7 @@ private class MatchCodesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Code>,
 )
 
-public fun matchCodesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchCodesBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchCodesBySortedParams>(params)
 	runBlocking {
@@ -821,7 +821,7 @@ public fun matchCodesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchCodesBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -841,7 +841,7 @@ private class ImportCodesParams(
 	public val codeType: String,
 )
 
-public fun importCodesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun importCodesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ImportCodesParams>(params)
 	runBlocking {
@@ -853,7 +853,7 @@ public fun importCodesBlocking(sdk: IcureNonCryptoApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun importCodesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

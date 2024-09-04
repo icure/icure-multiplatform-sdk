@@ -1,14 +1,14 @@
-package com.icure.sdk.storage
+package com.icure.cardinal.sdk.storage
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaService
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.impl.exportSpkiHex
-import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
-import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
-import com.icure.sdk.storage.impl.VolatileStorageFacade
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.InternalIcureException
+import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
+import com.icure.cardinal.sdk.storage.impl.DefaultStorageEntryKeysFactory
+import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
+import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.InternalCardinalException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.maps.shouldBeEmpty
@@ -20,12 +20,12 @@ import io.kotest.matchers.shouldBe
 class IcureStorageFacadeTest : StringSpec({
 	lateinit var dataOwner: String
 	lateinit var keyStorage: KeyStorageFacade
-	lateinit var storage: IcureStorageFacade
+	lateinit var storage: CardinalStorageFacade
 
 	beforeEach {
 		dataOwner = defaultCryptoService.strongRandom.randomUUID()
 		keyStorage = JsonAndBase64KeyStorage(VolatileStorageFacade())
-		storage = IcureStorageFacade(
+		storage = CardinalStorageFacade(
 			keyStorage,
 			VolatileStorageFacade(),
 			DefaultStorageEntryKeysFactory,
@@ -160,7 +160,7 @@ class IcureStorageFacadeTest : StringSpec({
 			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1
 		).shouldBeNull()
 		// Legacy key must have appropriate algorithm
-		shouldThrow<InternalIcureException> {
+		shouldThrow<InternalCardinalException> {
 			storage.loadEncryptionKeypair(
 				dataOwner,
 				key1Spki.fingerprintV1(),
@@ -184,7 +184,7 @@ class IcureStorageFacadeTest : StringSpec({
 			defaultCryptoService.rsa.exportPrivateKeyPkcs8(key2.private)
 		)
 		// Also requires valid algorithm
-		shouldThrow<InternalIcureException> {
+		shouldThrow<InternalCardinalException> {
 			storage.loadEncryptionKeypair(
 				dataOwner,
 				key2Spki.fingerprintV1(),
@@ -203,7 +203,7 @@ class IcureStorageFacadeTest : StringSpec({
 			defaultCryptoService.rsa.exportSpkiHex(it.pair.public) shouldBe key2Spki
 		}
 		// Legacy key lookup may be disabled
-		storage = IcureStorageFacade(
+		storage = CardinalStorageFacade(
 			keyStorage,
 			VolatileStorageFacade(),
 			DefaultStorageEntryKeysFactory,

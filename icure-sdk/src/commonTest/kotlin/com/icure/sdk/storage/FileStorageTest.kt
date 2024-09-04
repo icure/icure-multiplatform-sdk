@@ -1,23 +1,23 @@
-package com.icure.sdk.storage
+package com.icure.cardinal.sdk.storage
 
-import com.icure.sdk.storage.impl.FileStorageFacade
-import com.icure.sdk.test.nextUuid
-import com.icure.sdk.utils.IcurePlatform
-import com.icure.sdk.utils.currentPlatform
+import com.icure.cardinal.sdk.storage.impl.FileStorageFacade
+import com.icure.cardinal.sdk.test.nextUuid
+import com.icure.cardinal.sdk.utils.CardinalPlatform
+import com.icure.cardinal.sdk.utils.currentPlatform
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import kotlin.random.Random
 
 class FileStorageTest : StringSpec({
 	val platformTestDirectoryBase: String? = when (currentPlatform) {
-		IcurePlatform.Android -> null
-		IcurePlatform.Ios -> null
-		IcurePlatform.Browser -> null
-		IcurePlatform.Node -> "/tmp"
-		IcurePlatform.Jvm -> "/tmp"
-		IcurePlatform.Mac -> "/tmp"
-		IcurePlatform.Linux -> "/tmp"
-		IcurePlatform.Windows -> null
+		CardinalPlatform.Android -> null
+		CardinalPlatform.Ios -> null
+		CardinalPlatform.Browser -> null
+		CardinalPlatform.Node -> "/tmp"
+		CardinalPlatform.Jvm -> "/tmp"
+		CardinalPlatform.Mac -> "/tmp"
+		CardinalPlatform.Linux -> "/tmp"
+		CardinalPlatform.Windows -> null
 	}
 
 	"File storage should be able to create read and delete entries".config(

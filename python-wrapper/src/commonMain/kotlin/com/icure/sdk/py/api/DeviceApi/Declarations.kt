@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.DeviceApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.Device
@@ -39,7 +39,7 @@ private class GetDeviceParams(
 	public val deviceId: String,
 )
 
-public fun getDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDeviceParams>(params)
 	runBlocking {
 		sdk.device.getDevice(
@@ -50,7 +50,7 @@ public fun getDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDeviceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -70,7 +70,7 @@ private class GetDevicesParams(
 	public val deviceIds: List<String>,
 )
 
-public fun getDevicesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDevicesParams>(params)
 	runBlocking {
@@ -82,7 +82,7 @@ public fun getDevicesBlocking(sdk: IcureNonCryptoApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDevicesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -102,7 +102,7 @@ private class CreateDeviceParams(
 	public val p: Device,
 )
 
-public fun createDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDeviceParams>(params)
 	runBlocking {
@@ -114,7 +114,7 @@ public fun createDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createDeviceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -134,7 +134,7 @@ private class UpdateDeviceParams(
 	public val device: Device,
 )
 
-public fun updateDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun updateDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateDeviceParams>(params)
 	runBlocking {
@@ -146,7 +146,7 @@ public fun updateDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun updateDeviceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -166,7 +166,7 @@ private class CreateDevicesParams(
 	public val devices: List<Device>,
 )
 
-public fun createDevicesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDevicesParams>(params)
 	runBlocking {
@@ -178,7 +178,7 @@ public fun createDevicesBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createDevicesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -198,7 +198,7 @@ private class UpdateDevicesParams(
 	public val devices: List<Device>,
 )
 
-public fun updateDevicesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun updateDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateDevicesParams>(params)
 	runBlocking {
@@ -210,7 +210,7 @@ public fun updateDevicesBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun updateDevicesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -230,7 +230,7 @@ private class FilterDevicesByParams(
 	public val filter: BaseFilterOptions<Device>,
 )
 
-public fun filterDevicesByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterDevicesByBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterDevicesByParams>(params)
 	runBlocking {
@@ -243,7 +243,7 @@ public fun filterDevicesByBlocking(sdk: IcureNonCryptoApis, params: String): PyR
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterDevicesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -263,7 +263,7 @@ private class FilterDevicesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Device>,
 )
 
-public fun filterDevicesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterDevicesBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterDevicesBySortedParams>(params)
 	runBlocking {
@@ -276,7 +276,7 @@ public fun filterDevicesBySortedBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterDevicesBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -296,7 +296,7 @@ private class MatchDevicesByParams(
 	public val filter: BaseFilterOptions<Device>,
 )
 
-public fun matchDevicesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchDevicesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchDevicesByParams>(params)
 	runBlocking {
@@ -308,7 +308,7 @@ public fun matchDevicesByBlocking(sdk: IcureNonCryptoApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchDevicesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -328,7 +328,7 @@ private class MatchDevicesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Device>,
 )
 
-public fun matchDevicesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchDevicesBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchDevicesBySortedParams>(params)
 	runBlocking {
@@ -340,7 +340,7 @@ public fun matchDevicesBySortedBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchDevicesBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -360,7 +360,7 @@ private class DeleteDeviceParams(
 	public val deviceId: String,
 )
 
-public fun deleteDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDeviceParams>(params)
 	runBlocking {
@@ -372,7 +372,7 @@ public fun deleteDeviceBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteDeviceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -392,7 +392,7 @@ private class DeleteDevicesParams(
 	public val deviceIds: List<String>,
 )
 
-public fun deleteDevicesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDevicesParams>(params)
 	runBlocking {
@@ -404,7 +404,7 @@ public fun deleteDevicesBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteDevicesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -425,7 +425,7 @@ private class GetDevicesInGroupParams(
 	public val deviceIds: List<String>? = null,
 )
 
-public fun getDevicesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getDevicesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDevicesInGroupParams>(params)
 	runBlocking {
@@ -438,7 +438,7 @@ public fun getDevicesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDevicesInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -460,7 +460,7 @@ private class ModifyDeviceInGroupParams(
 	public val device: Device,
 )
 
-public fun modifyDeviceInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyDeviceInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDeviceInGroupParams>(params)
 	runBlocking {
@@ -473,7 +473,7 @@ public fun modifyDeviceInGroupBlocking(sdk: IcureNonCryptoApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyDeviceInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -495,7 +495,7 @@ private class CreateDeviceInGroupParams(
 	public val device: Device,
 )
 
-public fun createDeviceInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createDeviceInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDeviceInGroupParams>(params)
 	runBlocking {
@@ -508,7 +508,7 @@ public fun createDeviceInGroupBlocking(sdk: IcureNonCryptoApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createDeviceInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -530,7 +530,7 @@ private class DeleteDevicesInGroupParams(
 	public val deviceIds: String,
 )
 
-public fun deleteDevicesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteDevicesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDevicesInGroupParams>(params)
 	runBlocking {
@@ -543,7 +543,7 @@ public fun deleteDevicesInGroupBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteDevicesInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

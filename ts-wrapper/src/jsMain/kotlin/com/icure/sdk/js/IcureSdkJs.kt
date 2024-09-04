@@ -1,7 +1,7 @@
 package com.icure.sdk.js
 
-import com.icure.sdk.IcureBaseSdk
-import com.icure.sdk.IcureSdk
+import com.icure.sdk.CardinalBaseSdk
+import com.icure.sdk.CardinalSdk
 import com.icure.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.sdk.auth.AuthenticationProcessTemplateParameters
@@ -132,7 +132,7 @@ object InternalSdkInitializers {
 		storageFacade: dynamic,
 		options: SdkOptionsJs?
 	): Promise<IcureSdkJs> = GlobalScope.promise {
-		IcureSdkJsImpl(IcureSdk.initialize(
+		IcureSdkJsImpl(CardinalSdk.initialize(
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
@@ -155,7 +155,7 @@ object InternalSdkInitializers {
 		authenticationProcessTemplateParameters: AuthenticationProcessTemplateParametersJs?,
 		options: SdkOptionsJs?
 	): Promise<AuthenticationWithProcessStepJs> = GlobalScope.promise {
-		val ktStep = IcureSdk.initializeWithProcess(
+		val ktStep = CardinalSdk.initializeWithProcess(
 			applicationId,
 			baseUrl,
 			messageGatewayUrl,
@@ -182,7 +182,7 @@ object InternalSdkInitializers {
 		authenticationMethod: AuthenticationMethodJs,
 		options: BasicSdkOptionsJs?
 	): Promise<IcureBaseSdkJs> = GlobalScope.promise {
-		IcureBaseSdkJsImpl(IcureBaseSdk.initialize(
+		IcureBaseSdkJsImpl(CardinalBaseSdk.initialize(
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
@@ -192,7 +192,7 @@ object InternalSdkInitializers {
 }
 
 private class IcureSdkJsImpl(
-	private val sdk: IcureSdk
+	private val sdk: CardinalSdk
 ) : IcureSdkJs {
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }
@@ -238,7 +238,7 @@ private class IcureSdkJsImpl(
 }
 
 private class IcureBaseSdkJsImpl(
-	private val sdk: IcureBaseSdk
+	private val sdk: CardinalBaseSdk
 ) : IcureBaseSdkJs {
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }

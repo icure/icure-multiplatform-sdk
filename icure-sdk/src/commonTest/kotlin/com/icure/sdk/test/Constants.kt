@@ -1,15 +1,15 @@
-package com.icure.sdk.test
+package com.icure.cardinal.sdk.test
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.raw.RawMessageGatewayApi
-import com.icure.sdk.api.raw.impl.RawAnonymousAuthApiImpl
-import com.icure.sdk.auth.UsernamePassword
-import com.icure.sdk.options.SdkOptions
-import com.icure.sdk.options.AuthenticationMethod
-import com.icure.sdk.options.getAuthProvider
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.Serialization
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
+import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
+import com.icure.cardinal.sdk.auth.UsernamePassword
+import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.cardinal.sdk.options.AuthenticationMethod
+import com.icure.cardinal.sdk.options.getAuthProvider
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.Serialization
 
 val baseUrl = "http://localhost:16044"
 val mockMessageGatewayUrl = "http://127.0.0.1:8081/msggtw"
@@ -24,11 +24,11 @@ internal val testGroupAdminAuth =
 	AuthenticationMethod.UsingCredentials(
 		UsernamePassword(testGroupAdmin, testGroupAdminPassword)
 	).getAuthProvider(
-		RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
+		RawAnonymousAuthApiImpl(baseUrl, CardinalSdk.sharedHttpClient, json = Serialization.json),
 		defaultCryptoService,
 		null,
 		SdkOptions(saltPasswordWithApplicationId = false),
-		messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+		messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 	)
 
 @OptIn(InternalIcureApi::class)
@@ -36,9 +36,9 @@ internal val superadminAuth =
 	AuthenticationMethod.UsingCredentials(
 		UsernamePassword("john", "LetMeIn"),
 	).getAuthProvider(
-		RawAnonymousAuthApiImpl(baseUrl, IcureSdk.sharedHttpClient, json = Serialization.json),
+		RawAnonymousAuthApiImpl(baseUrl, CardinalSdk.sharedHttpClient, json = Serialization.json),
 		defaultCryptoService,
 		null,
 		SdkOptions(saltPasswordWithApplicationId = false),
-		messageGatewayApi = RawMessageGatewayApi(IcureSdk.sharedHttpClient)
+		messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
 	)

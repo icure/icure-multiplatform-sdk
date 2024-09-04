@@ -4,7 +4,7 @@ import com.icure.sdk.filters.DispatchedMetaFilterOptions
 import com.icure.sdk.filters.FilterOptions
 import com.icure.sdk.model.base.Identifiable
 import com.icure.sdk.py.utils.toPyString
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization.json
 import kotlinx.serialization.Serializable
 

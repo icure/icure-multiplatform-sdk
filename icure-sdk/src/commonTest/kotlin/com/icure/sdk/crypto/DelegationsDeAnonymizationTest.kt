@@ -1,20 +1,20 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.raw.impl.RawSecureDelegationKeyMapApiImpl
-import com.icure.sdk.crypto.entities.EntityAccessInformation
-import com.icure.sdk.crypto.entities.PatientShareOptions
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.ListOfIds
-import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.requests.RequestedPermission
-import com.icure.sdk.test.baseUrl
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.createPatientUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.Serialization
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.api.raw.impl.RawSecureDelegationKeyMapApiImpl
+import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
+import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.model.requests.RequestedPermission
+import com.icure.cardinal.sdk.test.baseUrl
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.createPatientUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.Serialization
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotBeEmpty
@@ -26,7 +26,7 @@ import io.kotest.matchers.shouldBe
 class DelegationsDeAnonymizationTest : StringSpec({
 	beforeSpec { initializeTestEnvironment() }
 
-	suspend fun IcureSdk.createSamplePatient() =
+	suspend fun CardinalSdk.createSamplePatient() =
 		patient.createPatient(
 			patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -411,7 +411,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val secureDelegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
 			userInfoA.authService(),
-			IcureSdk.sharedHttpClient,
+			CardinalSdk.sharedHttpClient,
 			json = Serialization.json
 		)
 		val secureDelegationKeyMaps = secureDelegationKeyMapApi.findByDelegationKeys(
@@ -481,7 +481,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val delegationMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
 			userInfoA.authService(),
-			IcureSdk.sharedHttpClient,
+			CardinalSdk.sharedHttpClient,
 			json = Serialization.json
 		) // Use raw api from A as it does not require access control keys
 		var entity = apiP1.createSamplePatient()
@@ -626,7 +626,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val delegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
 			userInfoA.authService(),
-			IcureSdk.sharedHttpClient,
+			CardinalSdk.sharedHttpClient,
 			json = Serialization.json
 		)
 		val delegationKeyToP = entity.securityMetadata?.secureDelegations?.filter { it.value.delegate == null }?.keys?.map { it.s }.shouldNotBeNull().single()

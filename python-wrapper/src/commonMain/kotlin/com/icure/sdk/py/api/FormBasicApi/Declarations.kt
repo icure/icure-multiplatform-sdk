@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.FormBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.EncryptedForm
@@ -43,7 +43,7 @@ private class MatchFormsByParams(
 	public val filter: BaseFilterOptions<Form>,
 )
 
-public fun matchFormsByBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun matchFormsByBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchFormsByParams>(params)
 	runBlocking {
 		sdk.form.matchFormsBy(
@@ -54,7 +54,7 @@ public fun matchFormsByBlocking(sdk: IcureBaseApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchFormsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -74,7 +74,7 @@ private class MatchFormsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Form>,
 )
 
-public fun matchFormsBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchFormsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchFormsBySortedParams>(params)
 	runBlocking {
@@ -86,7 +86,7 @@ public fun matchFormsBySortedBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchFormsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -106,7 +106,7 @@ private class FilterFormsByParams(
 	public val filter: BaseFilterOptions<Form>,
 )
 
-public fun filterFormsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterFormsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterFormsByParams>(params)
 	runBlocking {
@@ -119,7 +119,7 @@ public fun filterFormsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterFormsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -139,7 +139,7 @@ private class FilterFormsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Form>,
 )
 
-public fun filterFormsBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterFormsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterFormsBySortedParams>(params)
 	runBlocking {
@@ -152,7 +152,7 @@ public fun filterFormsBySortedBlocking(sdk: IcureBaseApis, params: String): PyRe
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterFormsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -172,7 +172,7 @@ private class DeleteFormParams(
 	public val entityId: String,
 )
 
-public fun deleteFormBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteFormBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteFormParams>(params)
 	runBlocking {
 		sdk.form.deleteForm(
@@ -183,7 +183,7 @@ public fun deleteFormBlocking(sdk: IcureBaseApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteFormAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -203,7 +203,7 @@ private class DeleteFormsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteFormsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteFormsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteFormsParams>(params)
 	runBlocking {
 		sdk.form.deleteForms(
@@ -214,7 +214,7 @@ public fun deleteFormsBlocking(sdk: IcureBaseApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteFormsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -235,7 +235,7 @@ private class GetFormTemplateParams(
 	public val raw: Boolean? = null,
 )
 
-public fun getFormTemplateBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getFormTemplateBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormTemplateParams>(params)
 	runBlocking {
@@ -248,7 +248,7 @@ public fun getFormTemplateBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormTemplateAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -271,7 +271,7 @@ private class GetFormTemplatesByGuidParams(
 	public val raw: Boolean?,
 )
 
-public fun getFormTemplatesByGuidBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getFormTemplatesByGuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormTemplatesByGuidParams>(params)
 	runBlocking {
@@ -285,7 +285,7 @@ public fun getFormTemplatesByGuidBlocking(sdk: IcureBaseApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormTemplatesByGuidAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -308,7 +308,7 @@ private class ListFormTemplatesBySpecialityParams(
 	public val raw: Boolean? = null,
 )
 
-public fun listFormTemplatesBySpecialityBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listFormTemplatesBySpecialityBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListFormTemplatesBySpecialityParams>(params)
 	runBlocking {
@@ -321,7 +321,7 @@ public fun listFormTemplatesBySpecialityBlocking(sdk: IcureBaseApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listFormTemplatesBySpecialityAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -343,7 +343,7 @@ private class GetFormTemplatesParams(
 	public val raw: Boolean? = null,
 )
 
-public fun getFormTemplatesBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getFormTemplatesBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormTemplatesParams>(params)
 	runBlocking {
@@ -356,7 +356,7 @@ public fun getFormTemplatesBlocking(sdk: IcureBaseApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormTemplatesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -377,7 +377,7 @@ private class CreateFormTemplateParams(
 	public val formTemplate: FormTemplate,
 )
 
-public fun createFormTemplateBlocking(sdk: IcureBaseApis, params: String): String =
+public fun createFormTemplateBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateFormTemplateParams>(params)
 	runBlocking {
@@ -389,7 +389,7 @@ public fun createFormTemplateBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createFormTemplateAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -409,7 +409,7 @@ private class DeleteFormTemplateParams(
 	public val formTemplateId: String,
 )
 
-public fun deleteFormTemplateBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteFormTemplateBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteFormTemplateParams>(params)
 	runBlocking {
@@ -421,7 +421,7 @@ public fun deleteFormTemplateBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteFormTemplateAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -441,7 +441,7 @@ private class UpdateFormTemplateParams(
 	public val formTemplate: FormTemplate,
 )
 
-public fun updateFormTemplateBlocking(sdk: IcureBaseApis, params: String): String =
+public fun updateFormTemplateBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateFormTemplateParams>(params)
 	runBlocking {
@@ -453,7 +453,7 @@ public fun updateFormTemplateBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun updateFormTemplateAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -475,7 +475,7 @@ private class SetTemplateAttachmentParams(
 	public val payload: ByteArray,
 )
 
-public fun setTemplateAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun setTemplateAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetTemplateAttachmentParams>(params)
 	runBlocking {
@@ -488,7 +488,7 @@ public fun setTemplateAttachmentBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun setTemplateAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -509,7 +509,7 @@ private class ModifyFormParams(
 	public val entity: EncryptedForm,
 )
 
-public fun modifyFormBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun modifyFormBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormParams>(params)
 	runBlocking {
 		sdk.form.modifyForm(
@@ -520,7 +520,7 @@ public fun modifyFormBlocking(sdk: IcureBaseApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyFormAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -540,7 +540,7 @@ private class ModifyFormsParams(
 	public val entities: List<EncryptedForm>,
 )
 
-public fun modifyFormsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun modifyFormsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormsParams>(params)
 	runBlocking {
 		sdk.form.modifyForms(
@@ -551,7 +551,7 @@ public fun modifyFormsBlocking(sdk: IcureBaseApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyFormsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -571,7 +571,7 @@ private class GetFormParams(
 	public val entityId: String,
 )
 
-public fun getFormBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getFormBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormParams>(params)
 	runBlocking {
 		sdk.form.getForm(
@@ -582,7 +582,7 @@ public fun getFormBlocking(sdk: IcureBaseApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -602,7 +602,7 @@ private class GetFormsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getFormsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getFormsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsParams>(params)
 	runBlocking {
 		sdk.form.getForms(
@@ -613,7 +613,7 @@ public fun getFormsBlocking(sdk: IcureBaseApis, params: String): String = kotlin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -633,7 +633,7 @@ private class GetLatestFormByLogicalUuidParams(
 	public val logicalUuid: String,
 )
 
-public fun getLatestFormByLogicalUuidBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getLatestFormByLogicalUuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
 	runBlocking {
@@ -645,7 +645,7 @@ public fun getLatestFormByLogicalUuidBlocking(sdk: IcureBaseApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getLatestFormByLogicalUuidAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -665,7 +665,7 @@ private class GetLatestFormByUniqueIdParams(
 	public val uniqueId: String,
 )
 
-public fun getLatestFormByUniqueIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getLatestFormByUniqueIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetLatestFormByUniqueIdParams>(params)
 	runBlocking {
@@ -677,7 +677,7 @@ public fun getLatestFormByUniqueIdBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getLatestFormByUniqueIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -697,7 +697,7 @@ private class GetFormsByLogicalUuidParams(
 	public val logicalUuid: String,
 )
 
-public fun getFormsByLogicalUuidBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getFormsByLogicalUuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByLogicalUuidParams>(params)
 	runBlocking {
@@ -709,7 +709,7 @@ public fun getFormsByLogicalUuidBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormsByLogicalUuidAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -729,7 +729,7 @@ private class GetFormsByUniqueIdParams(
 	public val uniqueId: String,
 )
 
-public fun getFormsByUniqueIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getFormsByUniqueIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByUniqueIdParams>(params)
 	runBlocking {
@@ -741,7 +741,7 @@ public fun getFormsByUniqueIdBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormsByUniqueIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -762,7 +762,7 @@ private class GetChildrenFormsParams(
 	public val parentId: String,
 )
 
-public fun getChildrenFormsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getChildrenFormsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetChildrenFormsParams>(params)
 	runBlocking {
@@ -775,7 +775,7 @@ public fun getChildrenFormsBlocking(sdk: IcureBaseApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getChildrenFormsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -800,7 +800,7 @@ private class ListFormsByHCPartyAndPatientForeignKeysParams(
 	public val formTemplateId: String? = null,
 )
 
-public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: IcureBaseApis, params: String):
+public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: CardinalBaseApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
 	runBlocking {
@@ -816,7 +816,7 @@ public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: IcureBaseApis, p
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listFormsByHCPartyAndPatientForeignKeysAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

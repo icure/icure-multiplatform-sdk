@@ -1,15 +1,15 @@
-package com.icure.sdk.storage.impl
+package com.icure.cardinal.sdk.storage.impl
 
-import com.icure.sdk.storage.StorageFacade
-import com.icure.sdk.utils.IcurePlatform
-import com.icure.sdk.utils.currentPlatform
+import com.icure.cardinal.sdk.storage.StorageFacade
+import com.icure.cardinal.sdk.utils.CardinalPlatform
+import com.icure.cardinal.sdk.utils.currentPlatform
 import kotlinx.coroutines.await
 import kotlin.js.Promise
 import kotlin.js.json
 
 @Suppress("FunctionName")
 actual suspend fun FileStorageFacade(directory: String): StorageFacade =
-	if (currentPlatform == IcurePlatform.Node) {
+	if (currentPlatform == CardinalPlatform.Node) {
 		NodeFileStorageFacade.initialise(directory)
 	} else throw UnsupportedOperationException("File storage is not supported on JS browser")
 

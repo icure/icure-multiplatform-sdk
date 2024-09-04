@@ -1,4 +1,4 @@
-package com.icure.sdk.test
+package com.icure.cardinal.sdk.test
 
 import com.icure.kryptom.utils.toHexString
 import io.kotest.matchers.shouldBe

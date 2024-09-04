@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.HealthcarePartyApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.DataOwnerRegistrationSuccess
@@ -43,7 +43,7 @@ private class GetHealthcarePartyParams(
 	public val deviceId: String,
 )
 
-public fun getHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcarePartyParams>(params)
 	runBlocking {
@@ -55,7 +55,7 @@ public fun getHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getHealthcarePartyAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -75,7 +75,7 @@ private class CreateHealthcarePartyParams(
 	public val p: HealthcareParty,
 )
 
-public fun createHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateHealthcarePartyParams>(params)
 	runBlocking {
@@ -87,7 +87,7 @@ public fun createHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createHealthcarePartyAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -107,7 +107,7 @@ private class DeleteHealthcarePartyParams(
 	public val deviceId: String,
 )
 
-public fun deleteHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartyParams>(params)
 	runBlocking {
@@ -119,7 +119,7 @@ public fun deleteHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteHealthcarePartyAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -140,7 +140,7 @@ private class ModifyHealthcarePartyInGroupParams(
 	public val device: HealthcareParty,
 )
 
-public fun modifyHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyHealthcarePartyInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcarePartyInGroupParams>(params)
 	runBlocking {
@@ -153,7 +153,7 @@ public fun modifyHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params:
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyHealthcarePartyInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -175,7 +175,7 @@ private class CreateHealthcarePartyInGroupParams(
 	public val device: HealthcareParty,
 )
 
-public fun createHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createHealthcarePartyInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateHealthcarePartyInGroupParams>(params)
 	runBlocking {
@@ -188,7 +188,7 @@ public fun createHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params:
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createHealthcarePartyInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -204,15 +204,15 @@ public fun createHealthcarePartyInGroupAsync(
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun getCurrentHealthcarePartyBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatching {
+public fun getCurrentHealthcarePartyBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.healthcareParty.getCurrentHealthcareParty()
 	}
 }.toPyString(HealthcareParty.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getCurrentHealthcarePartyAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getCurrentHealthcarePartyAsync(sdk: CardinalNonCryptoApis,
+                                          resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -229,7 +229,7 @@ private class FindHealthcarePartiesByParams(
 	public val desc: Boolean? = null,
 )
 
-public fun findHealthcarePartiesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findHealthcarePartiesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthcarePartiesByParams>(params)
 	runBlocking {
@@ -244,7 +244,7 @@ public fun findHealthcarePartiesByBlocking(sdk: IcureNonCryptoApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findHealthcarePartiesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -271,7 +271,7 @@ private class FindHealthcarePartiesByNameParams(
 	public val desc: Boolean? = null,
 )
 
-public fun findHealthcarePartiesByNameBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findHealthcarePartiesByNameBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthcarePartiesByNameParams>(params)
 	runBlocking {
@@ -287,7 +287,7 @@ public fun findHealthcarePartiesByNameBlocking(sdk: IcureNonCryptoApis, params: 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findHealthcarePartiesByNameAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -315,7 +315,7 @@ private class FindHealthcarePartiesBySsinOrNihiiParams(
 	public val desc: Boolean = false,
 )
 
-public fun findHealthcarePartiesBySsinOrNihiiBlocking(sdk: IcureNonCryptoApis, params: String):
+public fun findHealthcarePartiesBySsinOrNihiiBlocking(sdk: CardinalNonCryptoApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthcarePartiesBySsinOrNihiiParams>(params)
 	runBlocking {
@@ -331,7 +331,7 @@ public fun findHealthcarePartiesBySsinOrNihiiBlocking(sdk: IcureNonCryptoApis, p
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findHealthcarePartiesBySsinOrNihiiAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -355,7 +355,7 @@ private class ListHealthcarePartiesByNameParams(
 	public val name: String,
 )
 
-public fun listHealthcarePartiesByNameBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listHealthcarePartiesByNameBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListHealthcarePartiesByNameParams>(params)
 	runBlocking {
@@ -367,7 +367,7 @@ public fun listHealthcarePartiesByNameBlocking(sdk: IcureNonCryptoApis, params: 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listHealthcarePartiesByNameAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -393,8 +393,8 @@ private class FindHealthcarePartiesBySpecialityAndPostCodeParams(
 	public val limit: Int? = null,
 )
 
-public fun findHealthcarePartiesBySpecialityAndPostCodeBlocking(sdk: IcureNonCryptoApis,
-		params: String): String = kotlin.runCatching {
+public fun findHealthcarePartiesBySpecialityAndPostCodeBlocking(sdk: CardinalNonCryptoApis,
+                                                                params: String): String = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<FindHealthcarePartiesBySpecialityAndPostCodeParams>(params)
 	runBlocking {
@@ -412,7 +412,7 @@ public fun findHealthcarePartiesBySpecialityAndPostCodeBlocking(sdk: IcureNonCry
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findHealthcarePartiesBySpecialityAndPostCodeAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -439,7 +439,7 @@ private class GetHealthcarePartiesParams(
 	public val healthcarePartyIds: List<String>,
 )
 
-public fun getHealthcarePartiesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getHealthcarePartiesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcarePartiesParams>(params)
 	runBlocking {
@@ -451,7 +451,7 @@ public fun getHealthcarePartiesBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getHealthcarePartiesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -471,7 +471,7 @@ private class ListHealthcarePartiesByParentIdParams(
 	public val parentId: String,
 )
 
-public fun listHealthcarePartiesByParentIdBlocking(sdk: IcureNonCryptoApis, params: String): String
+public fun listHealthcarePartiesByParentIdBlocking(sdk: CardinalNonCryptoApis, params: String): String
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListHealthcarePartiesByParentIdParams>(params)
 	runBlocking {
@@ -483,7 +483,7 @@ public fun listHealthcarePartiesByParentIdBlocking(sdk: IcureNonCryptoApis, para
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listHealthcarePartiesByParentIdAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -503,7 +503,7 @@ private class GetPublicKeyParams(
 	public val healthcarePartyId: String,
 )
 
-public fun getPublicKeyBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getPublicKeyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetPublicKeyParams>(params)
 	runBlocking {
@@ -515,7 +515,7 @@ public fun getPublicKeyBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getPublicKeyAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -535,7 +535,7 @@ private class DeleteHealthcarePartiesParams(
 	public val healthcarePartyIds: List<String>,
 )
 
-public fun deleteHealthcarePartiesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteHealthcarePartiesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartiesParams>(params)
 	runBlocking {
@@ -547,7 +547,7 @@ public fun deleteHealthcarePartiesBlocking(sdk: IcureNonCryptoApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteHealthcarePartiesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -567,7 +567,7 @@ private class ModifyHealthcarePartyParams(
 	public val healthcarePartyDto: HealthcareParty,
 )
 
-public fun modifyHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthcarePartyParams>(params)
 	runBlocking {
@@ -579,7 +579,7 @@ public fun modifyHealthcarePartyBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyHealthcarePartyAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -599,7 +599,7 @@ private class MatchHealthcarePartiesByParams(
 	public val filter: BaseFilterOptions<HealthcareParty>,
 )
 
-public fun matchHealthcarePartiesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchHealthcarePartiesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchHealthcarePartiesByParams>(params)
 	runBlocking {
@@ -611,7 +611,7 @@ public fun matchHealthcarePartiesByBlocking(sdk: IcureNonCryptoApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchHealthcarePartiesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -631,7 +631,7 @@ private class FilterHealthPartiesByParams(
 	public val filter: BaseFilterOptions<HealthcareParty>,
 )
 
-public fun filterHealthPartiesByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterHealthPartiesByBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthPartiesByParams>(params)
 	runBlocking {
@@ -644,7 +644,7 @@ public fun filterHealthPartiesByBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterHealthPartiesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -664,7 +664,7 @@ private class MatchHealthcarePartiesBySortedParams(
 	public val filter: BaseSortableFilterOptions<HealthcareParty>,
 )
 
-public fun matchHealthcarePartiesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchHealthcarePartiesBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchHealthcarePartiesBySortedParams>(params)
 	runBlocking {
@@ -676,7 +676,7 @@ public fun matchHealthcarePartiesBySortedBlocking(sdk: IcureNonCryptoApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchHealthcarePartiesBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -696,7 +696,7 @@ private class FilterHealthPartiesBySortedParams(
 	public val filter: BaseSortableFilterOptions<HealthcareParty>,
 )
 
-public fun filterHealthPartiesBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterHealthPartiesBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthPartiesBySortedParams>(params)
 	runBlocking {
@@ -709,7 +709,7 @@ public fun filterHealthPartiesBySortedBlocking(sdk: IcureNonCryptoApis, params: 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterHealthPartiesBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -730,7 +730,7 @@ private class GetHealthcarePartiesInGroupParams(
 	public val healthcarePartyIds: List<String>? = null,
 )
 
-public fun getHealthcarePartiesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getHealthcarePartiesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthcarePartiesInGroupParams>(params)
 	runBlocking {
@@ -743,7 +743,7 @@ public fun getHealthcarePartiesInGroupBlocking(sdk: IcureNonCryptoApis, params: 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getHealthcarePartiesInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -765,7 +765,7 @@ private class DeleteHealthcarePartiesInGroupParams(
 	public val healthcarePartyIds: List<String>,
 )
 
-public fun deleteHealthcarePartiesInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteHealthcarePartiesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartiesInGroupParams>(params)
 	runBlocking {
@@ -778,7 +778,7 @@ public fun deleteHealthcarePartiesInGroupBlocking(sdk: IcureNonCryptoApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteHealthcarePartiesInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -800,7 +800,7 @@ private class DeleteHealthcarePartyInGroupParams(
 	public val groupId: String,
 )
 
-public fun deleteHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteHealthcarePartyInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthcarePartyInGroupParams>(params)
 	runBlocking {
@@ -813,7 +813,7 @@ public fun deleteHealthcarePartyInGroupBlocking(sdk: IcureNonCryptoApis, params:
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteHealthcarePartyInGroupAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -838,7 +838,7 @@ private class RegisterPatientParams(
 	public val hcp: HealthcareParty,
 )
 
-public fun registerPatientBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun registerPatientBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RegisterPatientParams>(params)
 	runBlocking {
@@ -854,7 +854,7 @@ public fun registerPatientBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun registerPatientAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

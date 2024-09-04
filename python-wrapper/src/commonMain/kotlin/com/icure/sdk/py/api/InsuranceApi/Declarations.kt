@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.InsuranceApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.Insurance
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -31,7 +31,7 @@ private class GetInsuranceParams(
 	public val insuranceId: String,
 )
 
-public fun getInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getInsuranceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetInsuranceParams>(params)
 	runBlocking {
@@ -43,7 +43,7 @@ public fun getInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getInsuranceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -63,7 +63,7 @@ private class GetInsurancesParams(
 	public val insuranceIds: List<String>,
 )
 
-public fun getInsurancesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getInsurancesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetInsurancesParams>(params)
 	runBlocking {
@@ -75,7 +75,7 @@ public fun getInsurancesBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getInsurancesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -95,7 +95,7 @@ private class CreateInsuranceParams(
 	public val insurance: Insurance,
 )
 
-public fun createInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createInsuranceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateInsuranceParams>(params)
 	runBlocking {
@@ -107,7 +107,7 @@ public fun createInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createInsuranceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -127,7 +127,7 @@ private class DeleteInsuranceParams(
 	public val insuranceId: String,
 )
 
-public fun deleteInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteInsuranceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteInsuranceParams>(params)
 	runBlocking {
@@ -139,7 +139,7 @@ public fun deleteInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteInsuranceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -160,7 +160,7 @@ private class GetAllInsurancesParams(
 	public val limit: Int? = null,
 )
 
-public fun getAllInsurancesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getAllInsurancesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAllInsurancesParams>(params)
 	runBlocking {
@@ -173,7 +173,7 @@ public fun getAllInsurancesBlocking(sdk: IcureNonCryptoApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAllInsurancesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -194,7 +194,7 @@ private class ListInsurancesByCodeParams(
 	public val insuranceCode: String,
 )
 
-public fun listInsurancesByCodeBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listInsurancesByCodeBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInsurancesByCodeParams>(params)
 	runBlocking {
@@ -206,7 +206,7 @@ public fun listInsurancesByCodeBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInsurancesByCodeAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -226,7 +226,7 @@ private class ListInsurancesByNameParams(
 	public val insuranceName: String,
 )
 
-public fun listInsurancesByNameBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listInsurancesByNameBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListInsurancesByNameParams>(params)
 	runBlocking {
@@ -238,7 +238,7 @@ public fun listInsurancesByNameBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listInsurancesByNameAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -258,7 +258,7 @@ private class ModifyInsuranceParams(
 	public val insurance: Insurance,
 )
 
-public fun modifyInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyInsuranceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyInsuranceParams>(params)
 	runBlocking {
@@ -270,7 +270,7 @@ public fun modifyInsuranceBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyInsuranceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

@@ -1,7 +1,7 @@
 package com.icure.sdk.py
 
-import com.icure.sdk.IcureBaseSdk
-import com.icure.sdk.IcureSdk
+import com.icure.sdk.CardinalBaseSdk
+import com.icure.sdk.CardinalSdk
 import com.icure.sdk.crypto.CryptoStrategies
 import com.icure.sdk.options.AuthenticationMethod
 import com.icure.sdk.options.BasicSdkOptions
@@ -14,7 +14,7 @@ import com.icure.sdk.storage.KeyStorageFacade
 import com.icure.sdk.storage.StorageFacade
 import com.icure.sdk.storage.impl.FileStorageFacade
 import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.utils.InternalIcureApi
 import com.icure.sdk.utils.Serialization
 import com.icure.sdk.utils.ensureNonNull
 import kotlinx.cinterop.COpaquePointer
@@ -83,7 +83,7 @@ private data class RichPyApiParams(
 )
 
 class SdkInitializationResult internal constructor(
-	val success: IcureSdk?,
+	val success: CardinalSdk?,
 	val failure: String?
 )
 
@@ -109,7 +109,7 @@ fun initializeSdk(
 			customKeyStorage = customKeyStorage,
 			customJsonPatcher = customJsonPatcher,
 		)
-		IcureSdk.initialize(
+		CardinalSdk.initialize(
 			decodedParams.applicationId,
 			decodedParams.baseUrl,
 			richParams.authenticationMethod,
@@ -148,7 +148,7 @@ private data class RichPyBaseApiParams(
 )
 
 class BaseSdkInitializationResult internal constructor(
-	val success: IcureBaseSdk?,
+	val success: CardinalBaseSdk?,
 	val failure: String?
 )
 
@@ -158,7 +158,7 @@ fun initializeBaseSdk(
 	kotlin.runCatching {
 		val decodedParams = Serialization.json.decodeFromString<PyBaseSdkParams>(dataParams)
 		val richParams = decodedParams.getRichApiParams()
-		IcureBaseSdk.initialize(
+		CardinalBaseSdk.initialize(
 			decodedParams.applicationId,
 			decodedParams.baseUrl,
 			richParams.authenticationMethod,

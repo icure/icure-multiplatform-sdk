@@ -7,7 +7,7 @@ import com.icure.sdk.filters.FilterOptions
 import com.icure.sdk.filters.SortableFilterOptions
 import com.icure.sdk.js.model.base.IdentifiableJs
 import com.icure.sdk.model.base.Identifiable
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.utils.InternalIcureApi
 
 @JsExport
 @JsName("FilterOptions")

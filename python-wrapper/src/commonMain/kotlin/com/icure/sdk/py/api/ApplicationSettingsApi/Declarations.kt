@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.ApplicationSettingsApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.ApplicationSettings
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.sdk.py.utils.toPyString
@@ -22,15 +22,15 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
-public fun getApplicationSettingsBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatching {
+public fun getApplicationSettingsBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.applicationSettings.getApplicationSettings()
 	}
 }.toPyString(ListSerializer(ApplicationSettings.serializer()))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getApplicationSettingsAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getApplicationSettingsAsync(sdk: CardinalNonCryptoApis,
+                                       resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -44,7 +44,7 @@ private class CreateApplicationSettingsParams(
 	public val applicationSettings: ApplicationSettings,
 )
 
-public fun createApplicationSettingsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createApplicationSettingsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateApplicationSettingsParams>(params)
 	runBlocking {
@@ -56,7 +56,7 @@ public fun createApplicationSettingsBlocking(sdk: IcureNonCryptoApis, params: St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createApplicationSettingsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -76,7 +76,7 @@ private class UpdateApplicationSettingsParams(
 	public val applicationSettings: ApplicationSettings,
 )
 
-public fun updateApplicationSettingsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun updateApplicationSettingsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateApplicationSettingsParams>(params)
 	runBlocking {
@@ -88,7 +88,7 @@ public fun updateApplicationSettingsBlocking(sdk: IcureNonCryptoApis, params: St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun updateApplicationSettingsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

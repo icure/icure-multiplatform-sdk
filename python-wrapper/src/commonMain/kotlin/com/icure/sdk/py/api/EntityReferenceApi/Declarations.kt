@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.EntityReferenceApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.EntityReference
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.sdk.py.utils.toPyString
@@ -26,7 +26,7 @@ private class GetLatestParams(
 	public val prefix: String,
 )
 
-public fun getLatestBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getLatestBlocking(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetLatestParams>(params)
 	runBlocking {
 		sdk.entityReference.getLatest(
@@ -37,7 +37,7 @@ public fun getLatestBlocking(sdk: IcureNonCryptoApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getLatestAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -57,7 +57,7 @@ private class CreateEntityReferenceParams(
 	public val entityReference: EntityReference,
 )
 
-public fun createEntityReferenceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createEntityReferenceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateEntityReferenceParams>(params)
 	runBlocking {
@@ -69,7 +69,7 @@ public fun createEntityReferenceBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createEntityReferenceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

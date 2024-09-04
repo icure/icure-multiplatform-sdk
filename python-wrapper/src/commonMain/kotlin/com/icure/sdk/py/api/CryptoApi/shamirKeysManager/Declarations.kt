@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.CryptoApi.shamirKeysManager
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.base.CryptoActor
@@ -34,7 +34,7 @@ private class GetExistingSplitsInfoParams(
 	public val dataOwner: CryptoActor,
 )
 
-public fun getExistingSplitsInfo(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getExistingSplitsInfo(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetExistingSplitsInfoParams>(params)
 	sdk.crypto.shamirKeysManager.getExistingSplitsInfo(
 		decodedParams.dataOwner,
@@ -48,7 +48,7 @@ private class UpdateSelfSplitsParams(
 	public val keySplitsToDelete: Set<KeypairFingerprintV1String>,
 )
 
-public fun updateSelfSplitsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun updateSelfSplitsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<UpdateSelfSplitsParams>(params)
 	runBlocking {
 		sdk.crypto.shamirKeysManager.updateSelfSplits(
@@ -60,7 +60,7 @@ public fun updateSelfSplitsBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun updateSelfSplitsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

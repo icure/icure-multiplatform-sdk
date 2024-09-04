@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.RecoveryApi
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.RecoveryDataKey
 import com.icure.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.sdk.crypto.entities.RecoveryResult
@@ -36,7 +36,7 @@ private class CreateRecoveryInfoForAvailableKeyPairsParams(
 	public val lifetimeSeconds: Int? = null,
 )
 
-public fun createRecoveryInfoForAvailableKeyPairsBlocking(sdk: IcureApis, params: String): String =
+public fun createRecoveryInfoForAvailableKeyPairsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateRecoveryInfoForAvailableKeyPairsParams>(params)
 	runBlocking {
@@ -49,7 +49,7 @@ public fun createRecoveryInfoForAvailableKeyPairsBlocking(sdk: IcureApis, params
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createRecoveryInfoForAvailableKeyPairsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -71,7 +71,7 @@ private class RecoverKeyPairsParams(
 	public val autoDelete: Boolean,
 )
 
-public fun recoverKeyPairsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun recoverKeyPairsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RecoverKeyPairsParams>(params)
 	runBlocking {
 		sdk.recovery.recoverKeyPairs(
@@ -85,7 +85,7 @@ public fun recoverKeyPairsBlocking(sdk: IcureApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun recoverKeyPairsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -109,7 +109,7 @@ private class CreateExchangeDataRecoveryInfoParams(
 	public val lifetimeSeconds: Int? = null,
 )
 
-public fun createExchangeDataRecoveryInfoBlocking(sdk: IcureApis, params: String): String =
+public fun createExchangeDataRecoveryInfoBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateExchangeDataRecoveryInfoParams>(params)
 	runBlocking {
@@ -122,7 +122,7 @@ public fun createExchangeDataRecoveryInfoBlocking(sdk: IcureApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createExchangeDataRecoveryInfoAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -143,7 +143,7 @@ private class RecoverExchangeDataParams(
 	public val recoveryKey: RecoveryDataKey,
 )
 
-public fun recoverExchangeDataBlocking(sdk: IcureApis, params: String): String =
+public fun recoverExchangeDataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RecoverExchangeDataParams>(params)
 	runBlocking {
@@ -155,7 +155,7 @@ public fun recoverExchangeDataBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun recoverExchangeDataAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -175,7 +175,7 @@ private class DeleteRecoveryInfoParams(
 	public val recoveryKey: RecoveryDataKey,
 )
 
-public fun deleteRecoveryInfoBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun deleteRecoveryInfoBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteRecoveryInfoParams>(params)
 	runBlocking {
 		sdk.recovery.deleteRecoveryInfo(
@@ -186,7 +186,7 @@ public fun deleteRecoveryInfoBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteRecoveryInfoAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -206,7 +206,7 @@ private class DeleteAllRecoveryInfoForParams(
 	public val dataOwnerId: String,
 )
 
-public fun deleteAllRecoveryInfoForBlocking(sdk: IcureApis, params: String): String =
+public fun deleteAllRecoveryInfoForBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAllRecoveryInfoForParams>(params)
 	runBlocking {
@@ -218,7 +218,7 @@ public fun deleteAllRecoveryInfoForBlocking(sdk: IcureApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteAllRecoveryInfoForAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -238,7 +238,7 @@ private class DeleteAllKeyPairRecoveryInfoForParams(
 	public val dataOwnerId: String,
 )
 
-public fun deleteAllKeyPairRecoveryInfoForBlocking(sdk: IcureApis, params: String): String =
+public fun deleteAllKeyPairRecoveryInfoForBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAllKeyPairRecoveryInfoForParams>(params)
 	runBlocking {
@@ -250,7 +250,7 @@ public fun deleteAllKeyPairRecoveryInfoForBlocking(sdk: IcureApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteAllKeyPairRecoveryInfoForAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -270,7 +270,7 @@ private class DeleteAllExchangeDataRecoveryInfoForParams(
 	public val dataOwnerId: String,
 )
 
-public fun deleteAllExchangeDataRecoveryInfoForBlocking(sdk: IcureApis, params: String): String =
+public fun deleteAllExchangeDataRecoveryInfoForBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAllExchangeDataRecoveryInfoForParams>(params)
 	runBlocking {
@@ -282,7 +282,7 @@ public fun deleteAllExchangeDataRecoveryInfoForBlocking(sdk: IcureApis, params: 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteAllExchangeDataRecoveryInfoForAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

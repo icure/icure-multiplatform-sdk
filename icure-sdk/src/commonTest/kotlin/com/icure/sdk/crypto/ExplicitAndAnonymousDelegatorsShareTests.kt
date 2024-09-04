@@ -1,15 +1,15 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.crypto.entities.PatientShareOptions
-import com.icure.sdk.model.DecryptedHealthElement
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.test.DataOwnerDetails
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.createPatientUser
-import com.icure.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
+import com.icure.cardinal.sdk.model.DecryptedHealthElement
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.createPatientUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -24,7 +24,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	}
 
 	suspend fun testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: IcureSdk = delegator.api()
+		val delegatorApi: CardinalSdk = delegator.api()
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -47,7 +47,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val delegateApi: IcureSdk = delegate.api()
+		val delegateApi: CardinalSdk = delegate.api()
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}
@@ -63,7 +63,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	}
 
 	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: IcureSdk =  delegator.api()
+		val delegatorApi: CardinalSdk =  delegator.api()
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -94,7 +94,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			delegate.dataOwnerId,
 			he
 		).shouldNotBeNull()
-		val delegateApi: IcureSdk = delegate.api()
+		val delegateApi: CardinalSdk = delegate.api()
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}

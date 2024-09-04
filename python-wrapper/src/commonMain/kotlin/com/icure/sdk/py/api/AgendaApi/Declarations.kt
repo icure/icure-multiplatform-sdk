@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.AgendaApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.Agenda
@@ -42,7 +42,7 @@ private class GetAllAgendasParams(
 	public val limit: Int?,
 )
 
-public fun getAllAgendasBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getAllAgendasBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAllAgendasParams>(params)
 	runBlocking {
@@ -55,7 +55,7 @@ public fun getAllAgendasBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAllAgendasAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -76,7 +76,7 @@ private class CreateAgendaParams(
 	public val agendaDto: Agenda,
 )
 
-public fun createAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createAgendaBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateAgendaParams>(params)
 	runBlocking {
@@ -88,7 +88,7 @@ public fun createAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createAgendaAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -108,7 +108,7 @@ private class DeleteAgendasParams(
 	public val agendaIds: ListOfIds,
 )
 
-public fun deleteAgendasBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteAgendasBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAgendasParams>(params)
 	runBlocking {
@@ -120,7 +120,7 @@ public fun deleteAgendasBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteAgendasAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -140,7 +140,7 @@ private class DeleteAgendaParams(
 	public val agendaId: String,
 )
 
-public fun deleteAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteAgendaBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAgendaParams>(params)
 	runBlocking {
@@ -152,7 +152,7 @@ public fun deleteAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteAgendaAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -172,7 +172,7 @@ private class GetAgendaParams(
 	public val agendaId: String,
 )
 
-public fun getAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getAgendaBlocking(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAgendaParams>(params)
 	runBlocking {
 		sdk.agenda.getAgenda(
@@ -183,7 +183,7 @@ public fun getAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAgendaAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -203,7 +203,7 @@ private class GetAgendasParams(
 	public val agendaIds: List<String>,
 )
 
-public fun getAgendasBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getAgendasBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAgendasParams>(params)
 	runBlocking {
@@ -215,7 +215,7 @@ public fun getAgendasBlocking(sdk: IcureNonCryptoApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAgendasAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -235,7 +235,7 @@ private class GetAgendasForUserParams(
 	public val userId: String,
 )
 
-public fun getAgendasForUserBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getAgendasForUserBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAgendasForUserParams>(params)
 	runBlocking {
@@ -247,7 +247,7 @@ public fun getAgendasForUserBlocking(sdk: IcureNonCryptoApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAgendasForUserAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -267,7 +267,7 @@ private class GetReadableAgendasForUserParams(
 	public val userId: String,
 )
 
-public fun getReadableAgendasForUserBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getReadableAgendasForUserBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetReadableAgendasForUserParams>(params)
 	runBlocking {
@@ -279,7 +279,7 @@ public fun getReadableAgendasForUserBlocking(sdk: IcureNonCryptoApis, params: St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getReadableAgendasForUserAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -299,7 +299,7 @@ private class ModifyAgendaParams(
 	public val agendaDto: Agenda,
 )
 
-public fun modifyAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyAgendaBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyAgendaParams>(params)
 	runBlocking {
@@ -311,7 +311,7 @@ public fun modifyAgendaBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyAgendaAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -331,7 +331,7 @@ private class MatchAgendasByParams(
 	public val filter: BaseFilterOptions<Agenda>,
 )
 
-public fun matchAgendasByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchAgendasByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchAgendasByParams>(params)
 	runBlocking {
@@ -343,7 +343,7 @@ public fun matchAgendasByBlocking(sdk: IcureNonCryptoApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchAgendasByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -363,7 +363,7 @@ private class MatchAgendasBySortedParams(
 	public val filter: BaseSortableFilterOptions<Agenda>,
 )
 
-public fun matchAgendasBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchAgendasBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchAgendasBySortedParams>(params)
 	runBlocking {
@@ -375,7 +375,7 @@ public fun matchAgendasBySortedBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchAgendasBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -395,7 +395,7 @@ private class FilterAgendasByParams(
 	public val filter: BaseFilterOptions<Agenda>,
 )
 
-public fun filterAgendasByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterAgendasByBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterAgendasByParams>(params)
 	runBlocking {
@@ -408,7 +408,7 @@ public fun filterAgendasByBlocking(sdk: IcureNonCryptoApis, params: String): PyR
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterAgendasByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -428,7 +428,7 @@ private class FilterAgendasBySortedParams(
 	public val filter: BaseSortableFilterOptions<Agenda>,
 )
 
-public fun filterAgendasBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterAgendasBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterAgendasBySortedParams>(params)
 	runBlocking {
@@ -441,7 +441,7 @@ public fun filterAgendasBySortedBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterAgendasBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {

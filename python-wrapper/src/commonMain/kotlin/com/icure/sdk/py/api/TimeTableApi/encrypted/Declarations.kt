@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.TimeTableApi.encrypted
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.sdk.filters.FilterOptions
@@ -43,7 +43,7 @@ private class ShareWithParams(
 	public val options: TimeTableShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.shareWith(
@@ -56,7 +56,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -80,7 +80,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, TimeTableShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.tryShareWithMany(
@@ -92,7 +92,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -115,7 +115,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, TimeTableShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.shareWithMany(
@@ -127,7 +127,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -148,7 +148,7 @@ private class FilterTimeTablesByParams(
 	public val filter: FilterOptions<TimeTable>,
 )
 
-public fun filterTimeTablesByBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterTimeTablesByBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterTimeTablesByParams>(params)
 	runBlocking {
@@ -161,7 +161,7 @@ public fun filterTimeTablesByBlocking(sdk: IcureApis, params: String): PyResult 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterTimeTablesByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -181,7 +181,7 @@ private class FilterTimeTablesBySortedParams(
 	public val filter: SortableFilterOptions<TimeTable>,
 )
 
-public fun filterTimeTablesBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterTimeTablesBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterTimeTablesBySortedParams>(params)
 	runBlocking {
@@ -194,7 +194,7 @@ public fun filterTimeTablesBySortedBlocking(sdk: IcureApis, params: String): PyR
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterTimeTablesBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -214,7 +214,7 @@ private class ModifyTimeTableParams(
 	public val entity: EncryptedTimeTable,
 )
 
-public fun modifyTimeTableBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyTimeTableBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.modifyTimeTable(
@@ -225,7 +225,7 @@ public fun modifyTimeTableBlocking(sdk: IcureApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyTimeTableAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -245,7 +245,7 @@ private class GetTimeTableParams(
 	public val entityId: String,
 )
 
-public fun getTimeTableBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getTimeTableBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.getTimeTable(
@@ -256,7 +256,7 @@ public fun getTimeTableBlocking(sdk: IcureApis, params: String): String = kotlin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTimeTableAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -276,7 +276,7 @@ private class GetTimeTablesParams(
 	public val timeTableIds: List<String>,
 )
 
-public fun getTimeTablesBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getTimeTablesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTablesParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.getTimeTables(
@@ -287,7 +287,7 @@ public fun getTimeTablesBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTimeTablesAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -309,7 +309,7 @@ private class GetTimeTablesByPeriodAndAgendaIdParams(
 	public val agendaId: String,
 )
 
-public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: IcureApis, params: String): String =
+public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
 	runBlocking {
@@ -323,7 +323,7 @@ public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: IcureApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTimeTablesByPeriodAndAgendaIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -345,7 +345,7 @@ private class GetTimeTablesByAgendaIdParams(
 	public val agendaId: String,
 )
 
-public fun getTimeTablesByAgendaIdBlocking(sdk: IcureApis, params: String): String =
+public fun getTimeTablesByAgendaIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
 	runBlocking {
@@ -357,7 +357,7 @@ public fun getTimeTablesByAgendaIdBlocking(sdk: IcureApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTimeTablesByAgendaIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

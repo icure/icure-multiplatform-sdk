@@ -1,20 +1,20 @@
-package com.icure.sdk.api
+package com.icure.cardinal.sdk.api
 
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.model.DecryptedContact
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.EncryptedContact
-import com.icure.sdk.model.base.CodeStub
-import com.icure.sdk.model.embed.Annotation
-import com.icure.sdk.model.embed.DecryptedContent
-import com.icure.sdk.model.embed.DecryptedService
-import com.icure.sdk.model.embed.EncryptedContent
-import com.icure.sdk.model.embed.EncryptedService
-import com.icure.sdk.test.DataOwnerDetails
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.test.uuid
-import com.icure.sdk.utils.EntityEncryptionException
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.model.DecryptedContact
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.EncryptedContact
+import com.icure.cardinal.sdk.model.base.CodeStub
+import com.icure.cardinal.sdk.model.embed.Annotation
+import com.icure.cardinal.sdk.model.embed.DecryptedContent
+import com.icure.cardinal.sdk.model.embed.DecryptedService
+import com.icure.cardinal.sdk.model.embed.EncryptedContent
+import com.icure.cardinal.sdk.model.embed.EncryptedService
+import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.test.uuid
+import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
@@ -25,7 +25,7 @@ import io.kotest.matchers.shouldNotBe
 
 class ServiceEncryptionTest : StringSpec({
 	lateinit var hcp: DataOwnerDetails
-	lateinit var sdk: IcureSdk
+	lateinit var sdk: CardinalSdk
 	lateinit var patient: DecryptedPatient
 	beforeAny {
 		initializeTestEnvironment()

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.CalendarItemBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.CalendarItem
@@ -42,7 +42,7 @@ private class MatchCalendarItemsByParams(
 	public val filter: BaseFilterOptions<CalendarItem>,
 )
 
-public fun matchCalendarItemsByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchCalendarItemsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchCalendarItemsByParams>(params)
 	runBlocking {
@@ -54,7 +54,7 @@ public fun matchCalendarItemsByBlocking(sdk: IcureBaseApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchCalendarItemsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -74,7 +74,7 @@ private class MatchCalendarItemsBySortedParams(
 	public val filter: BaseSortableFilterOptions<CalendarItem>,
 )
 
-public fun matchCalendarItemsBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchCalendarItemsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchCalendarItemsBySortedParams>(params)
 	runBlocking {
@@ -86,7 +86,7 @@ public fun matchCalendarItemsBySortedBlocking(sdk: IcureBaseApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchCalendarItemsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -106,7 +106,7 @@ private class FilterCalendarItemsByParams(
 	public val filter: BaseFilterOptions<CalendarItem>,
 )
 
-public fun filterCalendarItemsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterCalendarItemsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterCalendarItemsByParams>(params)
 	runBlocking {
@@ -119,7 +119,7 @@ public fun filterCalendarItemsByBlocking(sdk: IcureBaseApis, params: String): Py
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterCalendarItemsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -139,7 +139,7 @@ private class FilterCalendarItemsBySortedParams(
 	public val filter: BaseSortableFilterOptions<CalendarItem>,
 )
 
-public fun filterCalendarItemsBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterCalendarItemsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterCalendarItemsBySortedParams>(params)
 	runBlocking {
@@ -152,7 +152,7 @@ public fun filterCalendarItemsBySortedBlocking(sdk: IcureBaseApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterCalendarItemsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -172,7 +172,7 @@ private class DeleteCalendarItemParams(
 	public val entityId: String,
 )
 
-public fun deleteCalendarItemBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteCalendarItemBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteCalendarItemParams>(params)
 	runBlocking {
@@ -184,7 +184,7 @@ public fun deleteCalendarItemBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteCalendarItemAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -204,7 +204,7 @@ private class DeleteCalendarItemsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteCalendarItemsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteCalendarItemsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteCalendarItemsParams>(params)
 	runBlocking {
@@ -216,7 +216,7 @@ public fun deleteCalendarItemsBlocking(sdk: IcureBaseApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteCalendarItemsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -236,7 +236,7 @@ private class ModifyCalendarItemParams(
 	public val entity: EncryptedCalendarItem,
 )
 
-public fun modifyCalendarItemBlocking(sdk: IcureBaseApis, params: String): String =
+public fun modifyCalendarItemBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyCalendarItemParams>(params)
 	runBlocking {
@@ -248,7 +248,7 @@ public fun modifyCalendarItemBlocking(sdk: IcureBaseApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyCalendarItemAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -268,7 +268,7 @@ private class GetCalendarItemParams(
 	public val entityId: String,
 )
 
-public fun getCalendarItemBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getCalendarItemBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemParams>(params)
 	runBlocking {
@@ -280,7 +280,7 @@ public fun getCalendarItemBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarItemAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -300,7 +300,7 @@ private class GetCalendarItemsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getCalendarItemsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getCalendarItemsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemsParams>(params)
 	runBlocking {
@@ -312,7 +312,7 @@ public fun getCalendarItemsBlocking(sdk: IcureBaseApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarItemsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -334,7 +334,7 @@ private class GetCalendarItemsByPeriodAndHcPartyIdParams(
 	public val hcPartyId: String,
 )
 
-public fun getCalendarItemsByPeriodAndHcPartyIdBlocking(sdk: IcureBaseApis, params: String): String
+public fun getCalendarItemsByPeriodAndHcPartyIdBlocking(sdk: CardinalBaseApis, params: String): String
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemsByPeriodAndHcPartyIdParams>(params)
 	runBlocking {
@@ -348,7 +348,7 @@ public fun getCalendarItemsByPeriodAndHcPartyIdBlocking(sdk: IcureBaseApis, para
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarItemsByPeriodAndHcPartyIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -372,7 +372,7 @@ private class GetCalendarsByPeriodAndAgendaIdParams(
 	public val agendaId: String,
 )
 
-public fun getCalendarsByPeriodAndAgendaIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getCalendarsByPeriodAndAgendaIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarsByPeriodAndAgendaIdParams>(params)
 	runBlocking {
@@ -386,7 +386,7 @@ public fun getCalendarsByPeriodAndAgendaIdBlocking(sdk: IcureBaseApis, params: S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarsByPeriodAndAgendaIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -411,7 +411,7 @@ private class FindCalendarItemsByRecurrenceIdParams(
 	public val limit: Int,
 )
 
-public fun findCalendarItemsByRecurrenceIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findCalendarItemsByRecurrenceIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCalendarItemsByRecurrenceIdParams>(params)
 	runBlocking {
@@ -426,7 +426,7 @@ public fun findCalendarItemsByRecurrenceIdBlocking(sdk: IcureBaseApis, params: S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findCalendarItemsByRecurrenceIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

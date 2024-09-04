@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.TopicApi
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.crypto.entities.TopicShareOptions
@@ -57,7 +57,7 @@ private class CreateTopicParams(
 	public val entity: DecryptedTopic,
 )
 
-public fun createTopicBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun createTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateTopicParams>(params)
 	runBlocking {
 		sdk.topic.createTopic(
@@ -68,7 +68,7 @@ public fun createTopicBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createTopicAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -94,7 +94,7 @@ private class WithEncryptionMetadataParams(
 			com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent,
 )
 
-public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): String =
+public fun withEncryptionMetadataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<WithEncryptionMetadataParams>(params)
 	runBlocking {
@@ -110,7 +110,7 @@ public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun withEncryptionMetadataAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -135,7 +135,7 @@ private class GetEncryptionKeysOfParams(
 	public val topic: Topic,
 )
 
-public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
+public fun getEncryptionKeysOfBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetEncryptionKeysOfParams>(params)
 	runBlocking {
@@ -147,7 +147,7 @@ public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getEncryptionKeysOfAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -168,7 +168,7 @@ private class HasWriteAccessParams(
 	public val topic: Topic,
 )
 
-public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun hasWriteAccessBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<HasWriteAccessParams>(params)
 	runBlocking {
 		sdk.topic.hasWriteAccess(
@@ -179,7 +179,7 @@ public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun hasWriteAccessAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -200,7 +200,7 @@ private class DecryptPatientIdOfParams(
 	public val topic: Topic,
 )
 
-public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun decryptPatientIdOfBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptPatientIdOfParams>(params)
 	runBlocking {
 		sdk.topic.decryptPatientIdOf(
@@ -211,7 +211,7 @@ public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun decryptPatientIdOfAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -233,7 +233,7 @@ private class CreateDelegationDeAnonymizationMetadataParams(
 	public val delegates: Set<String>,
 )
 
-public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, params: String): String =
+public fun createDelegationDeAnonymizationMetadataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDelegationDeAnonymizationMetadataParams>(params)
 	runBlocking {
@@ -246,7 +246,7 @@ public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createDelegationDeAnonymizationMetadataAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -267,7 +267,7 @@ private class DecryptParams(
 	public val topic: EncryptedTopic,
 )
 
-public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun decryptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptParams>(params)
 	runBlocking {
 		sdk.topic.decrypt(
@@ -278,7 +278,7 @@ public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun decryptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -298,7 +298,7 @@ private class TryDecryptParams(
 	public val topic: EncryptedTopic,
 )
 
-public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryDecryptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
 	runBlocking {
 		sdk.topic.tryDecrypt(
@@ -309,7 +309,7 @@ public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.r
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryDecryptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -329,7 +329,7 @@ private class MatchTopicsByParams(
 	public val filter: FilterOptions<Topic>,
 )
 
-public fun matchTopicsByBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun matchTopicsByBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchTopicsByParams>(params)
 	runBlocking {
 		sdk.topic.matchTopicsBy(
@@ -340,7 +340,7 @@ public fun matchTopicsByBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchTopicsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -360,7 +360,7 @@ private class MatchTopicsBySortedParams(
 	public val filter: SortableFilterOptions<Topic>,
 )
 
-public fun matchTopicsBySortedBlocking(sdk: IcureApis, params: String): String =
+public fun matchTopicsBySortedBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchTopicsBySortedParams>(params)
 	runBlocking {
@@ -372,7 +372,7 @@ public fun matchTopicsBySortedBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchTopicsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -392,7 +392,7 @@ private class DeleteTopicParams(
 	public val entityId: String,
 )
 
-public fun deleteTopicBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun deleteTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteTopicParams>(params)
 	runBlocking {
 		sdk.topic.deleteTopic(
@@ -403,7 +403,7 @@ public fun deleteTopicBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteTopicAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -423,7 +423,7 @@ private class DeleteTopicsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteTopicsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun deleteTopicsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteTopicsParams>(params)
 	runBlocking {
 		sdk.topic.deleteTopics(
@@ -434,7 +434,7 @@ public fun deleteTopicsBlocking(sdk: IcureApis, params: String): String = kotlin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteTopicsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -456,7 +456,7 @@ private class ShareWithParams(
 	public val options: TopicShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.topic.shareWith(
@@ -469,7 +469,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -493,7 +493,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, TopicShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.topic.tryShareWithMany(
@@ -505,7 +505,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -528,7 +528,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, TopicShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.topic.shareWithMany(
@@ -540,7 +540,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -561,7 +561,7 @@ private class FilterTopicsByParams(
 	public val filter: FilterOptions<Topic>,
 )
 
-public fun filterTopicsByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
+public fun filterTopicsByBlocking(sdk: CardinalApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
 	runBlocking {
 		sdk.topic.filterTopicsBy(
@@ -573,7 +573,7 @@ public fun filterTopicsByBlocking(sdk: IcureApis, params: String): PyResult = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterTopicsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -593,7 +593,7 @@ private class FilterTopicsBySortedParams(
 	public val filter: SortableFilterOptions<Topic>,
 )
 
-public fun filterTopicsBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterTopicsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterTopicsBySortedParams>(params)
 	runBlocking {
@@ -606,7 +606,7 @@ public fun filterTopicsBySortedBlocking(sdk: IcureApis, params: String): PyResul
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterTopicsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -626,7 +626,7 @@ private class ModifyTopicParams(
 	public val entity: DecryptedTopic,
 )
 
-public fun modifyTopicBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyTopicParams>(params)
 	runBlocking {
 		sdk.topic.modifyTopic(
@@ -637,7 +637,7 @@ public fun modifyTopicBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyTopicAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -657,7 +657,7 @@ private class GetTopicParams(
 	public val entityId: String,
 )
 
-public fun getTopicBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTopicParams>(params)
 	runBlocking {
 		sdk.topic.getTopic(
@@ -668,7 +668,7 @@ public fun getTopicBlocking(sdk: IcureApis, params: String): String = kotlin.run
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTopicAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -688,7 +688,7 @@ private class GetTopicsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getTopicsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getTopicsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTopicsParams>(params)
 	runBlocking {
 		sdk.topic.getTopics(
@@ -699,7 +699,7 @@ public fun getTopicsBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTopicsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -721,7 +721,7 @@ private class AddParticipantParams(
 	public val topicRole: TopicRole,
 )
 
-public fun addParticipantBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun addParticipantBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<AddParticipantParams>(params)
 	runBlocking {
 		sdk.topic.addParticipant(
@@ -734,7 +734,7 @@ public fun addParticipantBlocking(sdk: IcureApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun addParticipantAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -757,7 +757,7 @@ private class RemoveParticipantParams(
 	public val dataOwnerId: String,
 )
 
-public fun removeParticipantBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun removeParticipantBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<RemoveParticipantParams>(params)
 	runBlocking {
 		sdk.topic.removeParticipant(
@@ -769,7 +769,7 @@ public fun removeParticipantBlocking(sdk: IcureApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun removeParticipantAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -792,7 +792,7 @@ private class SubscribeToEventsParams(
 	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
 )
 
-public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
+public fun subscribeToEventsBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
 	runBlocking {
@@ -807,7 +807,7 @@ public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun subscribeToEventsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {

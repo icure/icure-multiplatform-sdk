@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.EntityTemplateApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.EntityTemplate
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
@@ -30,7 +30,7 @@ private class GetEntityTemplateParams(
 	public val documentTemplateId: String,
 )
 
-public fun getEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetEntityTemplateParams>(params)
 	runBlocking {
@@ -42,7 +42,7 @@ public fun getEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getEntityTemplateAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -62,7 +62,7 @@ private class CreateEntityTemplateParams(
 	public val applicationSettings: EntityTemplate,
 )
 
-public fun createEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateEntityTemplateParams>(params)
 	runBlocking {
@@ -74,7 +74,7 @@ public fun createEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createEntityTemplateAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -94,7 +94,7 @@ private class ModifyEntityTemplateParams(
 	public val documentTemplate: EntityTemplate,
 )
 
-public fun modifyEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyEntityTemplateParams>(params)
 	runBlocking {
@@ -106,7 +106,7 @@ public fun modifyEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyEntityTemplateAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -129,7 +129,7 @@ private class ListEntityTemplatesByParams(
 	public val includeEntities: Boolean? = null,
 )
 
-public fun listEntityTemplatesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listEntityTemplatesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListEntityTemplatesByParams>(params)
 	runBlocking {
@@ -144,7 +144,7 @@ public fun listEntityTemplatesByBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listEntityTemplatesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -169,7 +169,7 @@ private class ListAllEntityTemplatesByParams(
 	public val includeEntities: Boolean? = null,
 )
 
-public fun listAllEntityTemplatesByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listAllEntityTemplatesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListAllEntityTemplatesByParams>(params)
 	runBlocking {
@@ -183,7 +183,7 @@ public fun listAllEntityTemplatesByBlocking(sdk: IcureNonCryptoApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listAllEntityTemplatesByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -208,7 +208,7 @@ private class ListEntityTemplatesByKeywordParams(
 	public val includeEntities: Boolean? = null,
 )
 
-public fun listEntityTemplatesByKeywordBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun listEntityTemplatesByKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListEntityTemplatesByKeywordParams>(params)
 	runBlocking {
@@ -223,7 +223,7 @@ public fun listEntityTemplatesByKeywordBlocking(sdk: IcureNonCryptoApis, params:
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listEntityTemplatesByKeywordAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -248,7 +248,7 @@ private class FindAllEntityTemplatesByKeywordParams(
 	public val includeEntities: Boolean?,
 )
 
-public fun findAllEntityTemplatesByKeywordBlocking(sdk: IcureNonCryptoApis, params: String): String
+public fun findAllEntityTemplatesByKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): String
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAllEntityTemplatesByKeywordParams>(params)
 	runBlocking {
@@ -262,7 +262,7 @@ public fun findAllEntityTemplatesByKeywordBlocking(sdk: IcureNonCryptoApis, para
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findAllEntityTemplatesByKeywordAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -284,7 +284,7 @@ private class GetEntityTemplatesParams(
 	public val entityTemplateIds: List<String>,
 )
 
-public fun getEntityTemplatesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetEntityTemplatesParams>(params)
 	runBlocking {
@@ -296,7 +296,7 @@ public fun getEntityTemplatesBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getEntityTemplatesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -316,7 +316,7 @@ private class ModifyEntityTemplatesParams(
 	public val entityTemplates: List<EntityTemplate>,
 )
 
-public fun modifyEntityTemplatesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyEntityTemplatesParams>(params)
 	runBlocking {
@@ -328,7 +328,7 @@ public fun modifyEntityTemplatesBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyEntityTemplatesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -348,7 +348,7 @@ private class CreateEntityTemplatesParams(
 	public val entityTemplates: List<EntityTemplate>,
 )
 
-public fun createEntityTemplatesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateEntityTemplatesParams>(params)
 	runBlocking {
@@ -360,7 +360,7 @@ public fun createEntityTemplatesBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createEntityTemplatesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -380,7 +380,7 @@ private class DeleteEntityTemplateParams(
 	public val entityTemplateIds: List<String>,
 )
 
-public fun deleteEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteEntityTemplateParams>(params)
 	runBlocking {
@@ -392,7 +392,7 @@ public fun deleteEntityTemplateBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteEntityTemplateAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.TarificationApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Tarification
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
@@ -30,7 +30,7 @@ private class GetTarificationParams(
 	public val tarificationId: String,
 )
 
-public fun getTarificationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getTarificationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTarificationParams>(params)
 	runBlocking {
@@ -42,7 +42,7 @@ public fun getTarificationBlocking(sdk: IcureNonCryptoApis, params: String): Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTarificationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -62,7 +62,7 @@ private class CreateTarificationParams(
 	public val tarification: Tarification,
 )
 
-public fun createTarificationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createTarificationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateTarificationParams>(params)
 	runBlocking {
@@ -74,7 +74,7 @@ public fun createTarificationBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createTarificationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -94,7 +94,7 @@ private class GetTarificationsParams(
 	public val tarificationIds: List<String>,
 )
 
-public fun getTarificationsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getTarificationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTarificationsParams>(params)
 	runBlocking {
@@ -106,7 +106,7 @@ public fun getTarificationsBlocking(sdk: IcureNonCryptoApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTarificationsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -126,7 +126,7 @@ private class ModifyTarificationParams(
 	public val tarification: Tarification,
 )
 
-public fun modifyTarificationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyTarificationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyTarificationParams>(params)
 	runBlocking {
@@ -138,7 +138,7 @@ public fun modifyTarificationBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyTarificationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -164,7 +164,7 @@ private class FindTarificationsByLabelParams(
 	public val limit: Int? = null,
 )
 
-public fun findTarificationsByLabelBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findTarificationsByLabelBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindTarificationsByLabelParams>(params)
 	runBlocking {
@@ -182,7 +182,7 @@ public fun findTarificationsByLabelBlocking(sdk: IcureNonCryptoApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findTarificationsByLabelAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -214,7 +214,7 @@ private class FindTarificationsByParams(
 	public val limit: Int? = null,
 )
 
-public fun findTarificationsByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findTarificationsByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindTarificationsByParams>(params)
 	runBlocking {
@@ -232,7 +232,7 @@ public fun findTarificationsByBlocking(sdk: IcureNonCryptoApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findTarificationsByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -260,7 +260,7 @@ private class GetTarificationWithPartsParams(
 	public val version: String,
 )
 
-public fun getTarificationWithPartsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getTarificationWithPartsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetTarificationWithPartsParams>(params)
 	runBlocking {
@@ -274,7 +274,7 @@ public fun getTarificationWithPartsBlocking(sdk: IcureNonCryptoApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getTarificationWithPartsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

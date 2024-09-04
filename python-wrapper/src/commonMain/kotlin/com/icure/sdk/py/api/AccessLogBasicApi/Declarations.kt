@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.AccessLogBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.AccessLog
@@ -43,7 +43,7 @@ private class MatchAccessLogsByParams(
 	public val filter: BaseFilterOptions<AccessLog>,
 )
 
-public fun matchAccessLogsByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchAccessLogsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchAccessLogsByParams>(params)
 	runBlocking {
@@ -55,7 +55,7 @@ public fun matchAccessLogsByBlocking(sdk: IcureBaseApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchAccessLogsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -75,7 +75,7 @@ private class MatchAccessLogsBySortedParams(
 	public val filter: BaseSortableFilterOptions<AccessLog>,
 )
 
-public fun matchAccessLogsBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchAccessLogsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchAccessLogsBySortedParams>(params)
 	runBlocking {
@@ -87,7 +87,7 @@ public fun matchAccessLogsBySortedBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchAccessLogsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -107,7 +107,7 @@ private class FilterAccessLogsByParams(
 	public val filter: BaseFilterOptions<AccessLog>,
 )
 
-public fun filterAccessLogsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterAccessLogsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterAccessLogsByParams>(params)
 	runBlocking {
@@ -120,7 +120,7 @@ public fun filterAccessLogsByBlocking(sdk: IcureBaseApis, params: String): PyRes
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterAccessLogsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -140,7 +140,7 @@ private class FilterAccessLogsBySortedParams(
 	public val filter: BaseSortableFilterOptions<AccessLog>,
 )
 
-public fun filterAccessLogsBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterAccessLogsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterAccessLogsBySortedParams>(params)
 	runBlocking {
@@ -153,7 +153,7 @@ public fun filterAccessLogsBySortedBlocking(sdk: IcureBaseApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterAccessLogsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -173,7 +173,7 @@ private class DeleteAccessLogParams(
 	public val entityId: String,
 )
 
-public fun deleteAccessLogBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteAccessLogBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAccessLogParams>(params)
 	runBlocking {
@@ -185,7 +185,7 @@ public fun deleteAccessLogBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteAccessLogAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -205,7 +205,7 @@ private class DeleteAccessLogsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteAccessLogsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun deleteAccessLogsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteAccessLogsParams>(params)
 	runBlocking {
@@ -217,7 +217,7 @@ public fun deleteAccessLogsBlocking(sdk: IcureBaseApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteAccessLogsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -237,7 +237,7 @@ private class ModifyAccessLogParams(
 	public val entity: EncryptedAccessLog,
 )
 
-public fun modifyAccessLogBlocking(sdk: IcureBaseApis, params: String): String =
+public fun modifyAccessLogBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyAccessLogParams>(params)
 	runBlocking {
@@ -249,7 +249,7 @@ public fun modifyAccessLogBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyAccessLogAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -269,7 +269,7 @@ private class GetAccessLogParams(
 	public val entityId: String,
 )
 
-public fun getAccessLogBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getAccessLogBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAccessLogParams>(params)
 	runBlocking {
 		sdk.accessLog.getAccessLog(
@@ -280,7 +280,7 @@ public fun getAccessLogBlocking(sdk: IcureBaseApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAccessLogAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -300,7 +300,7 @@ private class GetAccessLogsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getAccessLogsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getAccessLogsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAccessLogsParams>(params)
 	runBlocking {
 		sdk.accessLog.getAccessLogs(
@@ -311,7 +311,7 @@ public fun getAccessLogsBlocking(sdk: IcureBaseApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAccessLogsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -335,7 +335,7 @@ private class FindAccessLogsByParams(
 	public val limit: Int?,
 )
 
-public fun findAccessLogsByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findAccessLogsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAccessLogsByParams>(params)
 	runBlocking {
@@ -351,7 +351,7 @@ public fun findAccessLogsByBlocking(sdk: IcureBaseApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findAccessLogsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -382,7 +382,7 @@ private class FindAccessLogsByUserAfterDateParams(
 	public val descending: Boolean? = null,
 )
 
-public fun findAccessLogsByUserAfterDateBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findAccessLogsByUserAfterDateBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAccessLogsByUserAfterDateParams>(params)
 	runBlocking {
@@ -400,7 +400,7 @@ public fun findAccessLogsByUserAfterDateBlocking(sdk: IcureBaseApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findAccessLogsByUserAfterDateAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -432,7 +432,7 @@ private class FindAccessLogsInGroupParams(
 	public val limit: Int? = null,
 )
 
-public fun findAccessLogsInGroupBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findAccessLogsInGroupBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAccessLogsInGroupParams>(params)
 	runBlocking {
@@ -449,7 +449,7 @@ public fun findAccessLogsInGroupBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findAccessLogsInGroupAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

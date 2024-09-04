@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.CalendarItemApi
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
@@ -56,7 +56,7 @@ private class CreateCalendarItemParams(
 	public val entity: DecryptedCalendarItem,
 )
 
-public fun createCalendarItemBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun createCalendarItemBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateCalendarItemParams>(params)
 	runBlocking {
 		sdk.calendarItem.createCalendarItem(
@@ -67,7 +67,7 @@ public fun createCalendarItemBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createCalendarItemAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -93,7 +93,7 @@ private class WithEncryptionMetadataParams(
 			com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent,
 )
 
-public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): String =
+public fun withEncryptionMetadataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<WithEncryptionMetadataParams>(params)
 	runBlocking {
@@ -109,7 +109,7 @@ public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun withEncryptionMetadataAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -134,7 +134,7 @@ private class GetEncryptionKeysOfParams(
 	public val calendarItem: CalendarItem,
 )
 
-public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
+public fun getEncryptionKeysOfBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetEncryptionKeysOfParams>(params)
 	runBlocking {
@@ -146,7 +146,7 @@ public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getEncryptionKeysOfAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -167,7 +167,7 @@ private class HasWriteAccessParams(
 	public val calendarItem: CalendarItem,
 )
 
-public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun hasWriteAccessBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<HasWriteAccessParams>(params)
 	runBlocking {
 		sdk.calendarItem.hasWriteAccess(
@@ -178,7 +178,7 @@ public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun hasWriteAccessAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -199,7 +199,7 @@ private class DecryptPatientIdOfParams(
 	public val calendarItem: CalendarItem,
 )
 
-public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun decryptPatientIdOfBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptPatientIdOfParams>(params)
 	runBlocking {
 		sdk.calendarItem.decryptPatientIdOf(
@@ -210,7 +210,7 @@ public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun decryptPatientIdOfAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -232,7 +232,7 @@ private class CreateDelegationDeAnonymizationMetadataParams(
 	public val delegates: Set<String>,
 )
 
-public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, params: String): String =
+public fun createDelegationDeAnonymizationMetadataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDelegationDeAnonymizationMetadataParams>(params)
 	runBlocking {
@@ -245,7 +245,7 @@ public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createDelegationDeAnonymizationMetadataAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -266,7 +266,7 @@ private class DecryptParams(
 	public val calendarItem: EncryptedCalendarItem,
 )
 
-public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun decryptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptParams>(params)
 	runBlocking {
 		sdk.calendarItem.decrypt(
@@ -277,7 +277,7 @@ public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun decryptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -297,7 +297,7 @@ private class TryDecryptParams(
 	public val calendarItem: EncryptedCalendarItem,
 )
 
-public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryDecryptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
 	runBlocking {
 		sdk.calendarItem.tryDecrypt(
@@ -308,7 +308,7 @@ public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.r
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryDecryptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -328,7 +328,7 @@ private class MatchCalendarItemsByParams(
 	public val filter: FilterOptions<CalendarItem>,
 )
 
-public fun matchCalendarItemsByBlocking(sdk: IcureApis, params: String): String =
+public fun matchCalendarItemsByBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchCalendarItemsByParams>(params)
 	runBlocking {
@@ -340,7 +340,7 @@ public fun matchCalendarItemsByBlocking(sdk: IcureApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchCalendarItemsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -360,7 +360,7 @@ private class MatchCalendarItemsBySortedParams(
 	public val filter: SortableFilterOptions<CalendarItem>,
 )
 
-public fun matchCalendarItemsBySortedBlocking(sdk: IcureApis, params: String): String =
+public fun matchCalendarItemsBySortedBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchCalendarItemsBySortedParams>(params)
 	runBlocking {
@@ -372,7 +372,7 @@ public fun matchCalendarItemsBySortedBlocking(sdk: IcureApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchCalendarItemsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -392,7 +392,7 @@ private class DeleteCalendarItemParams(
 	public val entityId: String,
 )
 
-public fun deleteCalendarItemBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun deleteCalendarItemBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteCalendarItemParams>(params)
 	runBlocking {
 		sdk.calendarItem.deleteCalendarItem(
@@ -403,7 +403,7 @@ public fun deleteCalendarItemBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteCalendarItemAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -423,7 +423,7 @@ private class DeleteCalendarItemsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteCalendarItemsBlocking(sdk: IcureApis, params: String): String =
+public fun deleteCalendarItemsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteCalendarItemsParams>(params)
 	runBlocking {
@@ -435,7 +435,7 @@ public fun deleteCalendarItemsBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteCalendarItemsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -457,7 +457,7 @@ private class ShareWithParams(
 	public val options: CalendarItemShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.calendarItem.shareWith(
@@ -470,7 +470,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -494,7 +494,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, CalendarItemShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.calendarItem.tryShareWithMany(
@@ -506,7 +506,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -529,7 +529,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, CalendarItemShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.calendarItem.shareWithMany(
@@ -541,7 +541,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -567,7 +567,7 @@ private class FindCalendarItemsByHcPartyPatientParams(
 	public val descending: Boolean? = null,
 )
 
-public fun findCalendarItemsByHcPartyPatientBlocking(sdk: IcureApis, params: String): PyResult =
+public fun findCalendarItemsByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCalendarItemsByHcPartyPatientParams>(params)
 	runBlocking {
@@ -584,7 +584,7 @@ public fun findCalendarItemsByHcPartyPatientBlocking(sdk: IcureApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findCalendarItemsByHcPartyPatientAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -612,7 +612,7 @@ private class LinkToPatientParams(
 	public val shareLinkWithDelegates: Set<String>,
 )
 
-public fun linkToPatientBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun linkToPatientBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<LinkToPatientParams>(params)
 	runBlocking {
 		sdk.calendarItem.linkToPatient(
@@ -625,7 +625,7 @@ public fun linkToPatientBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun linkToPatientAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -647,7 +647,7 @@ private class FilterCalendarItemsByParams(
 	public val filter: FilterOptions<CalendarItem>,
 )
 
-public fun filterCalendarItemsByBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterCalendarItemsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterCalendarItemsByParams>(params)
 	runBlocking {
@@ -660,7 +660,7 @@ public fun filterCalendarItemsByBlocking(sdk: IcureApis, params: String): PyResu
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterCalendarItemsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -680,7 +680,7 @@ private class FilterCalendarItemsBySortedParams(
 	public val filter: SortableFilterOptions<CalendarItem>,
 )
 
-public fun filterCalendarItemsBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterCalendarItemsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterCalendarItemsBySortedParams>(params)
 	runBlocking {
@@ -693,7 +693,7 @@ public fun filterCalendarItemsBySortedBlocking(sdk: IcureApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterCalendarItemsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -713,7 +713,7 @@ private class ModifyCalendarItemParams(
 	public val entity: DecryptedCalendarItem,
 )
 
-public fun modifyCalendarItemBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyCalendarItemBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyCalendarItemParams>(params)
 	runBlocking {
 		sdk.calendarItem.modifyCalendarItem(
@@ -724,7 +724,7 @@ public fun modifyCalendarItemBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyCalendarItemAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -744,7 +744,7 @@ private class GetCalendarItemParams(
 	public val entityId: String,
 )
 
-public fun getCalendarItemBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getCalendarItemBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemParams>(params)
 	runBlocking {
 		sdk.calendarItem.getCalendarItem(
@@ -755,7 +755,7 @@ public fun getCalendarItemBlocking(sdk: IcureApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarItemAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -775,7 +775,7 @@ private class GetCalendarItemsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getCalendarItemsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getCalendarItemsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemsParams>(params)
 	runBlocking {
 		sdk.calendarItem.getCalendarItems(
@@ -786,7 +786,7 @@ public fun getCalendarItemsBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarItemsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -808,7 +808,7 @@ private class GetCalendarItemsByPeriodAndHcPartyIdParams(
 	public val hcPartyId: String,
 )
 
-public fun getCalendarItemsByPeriodAndHcPartyIdBlocking(sdk: IcureApis, params: String): String =
+public fun getCalendarItemsByPeriodAndHcPartyIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarItemsByPeriodAndHcPartyIdParams>(params)
 	runBlocking {
@@ -822,7 +822,7 @@ public fun getCalendarItemsByPeriodAndHcPartyIdBlocking(sdk: IcureApis, params: 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarItemsByPeriodAndHcPartyIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -846,7 +846,7 @@ private class GetCalendarsByPeriodAndAgendaIdParams(
 	public val agendaId: String,
 )
 
-public fun getCalendarsByPeriodAndAgendaIdBlocking(sdk: IcureApis, params: String): String =
+public fun getCalendarsByPeriodAndAgendaIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCalendarsByPeriodAndAgendaIdParams>(params)
 	runBlocking {
@@ -860,7 +860,7 @@ public fun getCalendarsByPeriodAndAgendaIdBlocking(sdk: IcureApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCalendarsByPeriodAndAgendaIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -885,7 +885,7 @@ private class FindCalendarItemsByRecurrenceIdParams(
 	public val limit: Int,
 )
 
-public fun findCalendarItemsByRecurrenceIdBlocking(sdk: IcureApis, params: String): String =
+public fun findCalendarItemsByRecurrenceIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindCalendarItemsByRecurrenceIdParams>(params)
 	runBlocking {
@@ -900,7 +900,7 @@ public fun findCalendarItemsByRecurrenceIdBlocking(sdk: IcureApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findCalendarItemsByRecurrenceIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

@@ -1,22 +1,22 @@
 @file:OptIn(InternalIcureApi::class)
 
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.hexToByteArray
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.raw.impl.RawHealthcarePartyApiImpl
-import com.icure.sdk.api.raw.impl.RawPatientApiImpl
-import com.icure.sdk.api.raw.impl.RawUserApiImpl
-import com.icure.sdk.model.EncryptedPatient
-import com.icure.sdk.model.HealthcareParty
-import com.icure.sdk.model.User
-import com.icure.sdk.test.DataOwnerDetails
-import com.icure.sdk.test.baseUrl
-import com.icure.sdk.test.testGroupAdminAuth
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.Serialization
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.api.raw.impl.RawHealthcarePartyApiImpl
+import com.icure.cardinal.sdk.api.raw.impl.RawPatientApiImpl
+import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
+import com.icure.cardinal.sdk.model.EncryptedPatient
+import com.icure.cardinal.sdk.model.HealthcareParty
+import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.baseUrl
+import com.icure.cardinal.sdk.test.testGroupAdminAuth
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.Serialization
 
 private data class TestData(
 	val p: DataOwnerDetails,
@@ -174,9 +174,9 @@ private suspend fun createTestDataAndApis(): TestData {
 		"encryptedSelf": "jgAFAlmd2QStXpOt3LnIhs4upJv2e10fp0u6/PburW7mq1r3vo/Q5/a4Yk7EWXG7oydMWb2i1UCCiNN80czGdA==" 
 	}
 	""")
-	val userApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
-	val patientApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, IcureSdk.sharedHttpClient, json = Serialization.json)
-	val healthcarePartyApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, IcureSdk.sharedHttpClient, json = Serialization.json)
+	val userApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val patientApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val healthcarePartyApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
 	healthcarePartyApi.createHealthcareParty(pHcpBase)
 	healthcarePartyApi.createHealthcareParty(aHcpBase)
 	healthcarePartyApi.createHealthcareParty(bHcpBase)

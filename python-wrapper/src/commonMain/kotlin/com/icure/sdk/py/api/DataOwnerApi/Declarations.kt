@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.DataOwnerApi
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.model.CryptoActorStubWithType
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.DataOwnerWithType
@@ -25,15 +25,15 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
-public fun getCurrentDataOwnerBlocking(sdk: IcureApis): String = kotlin.runCatching {
+public fun getCurrentDataOwnerBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.dataOwner.getCurrentDataOwner()
 	}
 }.toPyString(DataOwnerWithType.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getCurrentDataOwnerAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getCurrentDataOwnerAsync(sdk: CardinalApis,
+                                    resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -42,15 +42,15 @@ public fun getCurrentDataOwnerAsync(sdk: IcureApis,
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun getCurrentDataOwnerStubBlocking(sdk: IcureApis): String = kotlin.runCatching {
+public fun getCurrentDataOwnerStubBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.dataOwner.getCurrentDataOwnerStub()
 	}
 }.toPyString(CryptoActorStubWithType.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getCurrentDataOwnerStubAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getCurrentDataOwnerStubAsync(sdk: CardinalApis,
+                                        resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -59,15 +59,15 @@ public fun getCurrentDataOwnerStubAsync(sdk: IcureApis,
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun getCurrentDataOwnerIdBlocking(sdk: IcureApis): String = kotlin.runCatching {
+public fun getCurrentDataOwnerIdBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.dataOwner.getCurrentDataOwnerId()
 	}
 }.toPyString(String.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getCurrentDataOwnerIdAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getCurrentDataOwnerIdAsync(sdk: CardinalApis,
+                                      resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -76,15 +76,15 @@ public fun getCurrentDataOwnerIdAsync(sdk: IcureApis,
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun getCurrentDataOwnerHierarchyIdsBlocking(sdk: IcureApis): String = kotlin.runCatching {
+public fun getCurrentDataOwnerHierarchyIdsBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.dataOwner.getCurrentDataOwnerHierarchyIds()
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getCurrentDataOwnerHierarchyIdsAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getCurrentDataOwnerHierarchyIdsAsync(sdk: CardinalApis,
+                                                resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -98,7 +98,7 @@ private class GetDataOwnerParams(
 	public val ownerId: String,
 )
 
-public fun getDataOwnerBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getDataOwnerBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDataOwnerParams>(params)
 	runBlocking {
 		sdk.dataOwner.getDataOwner(
@@ -109,7 +109,7 @@ public fun getDataOwnerBlocking(sdk: IcureApis, params: String): String = kotlin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDataOwnerAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -129,7 +129,7 @@ private class GetCryptoActorStubParams(
 	public val ownerId: String,
 )
 
-public fun getCryptoActorStubBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getCryptoActorStubBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCryptoActorStubParams>(params)
 	runBlocking {
 		sdk.dataOwner.getCryptoActorStub(
@@ -140,7 +140,7 @@ public fun getCryptoActorStubBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCryptoActorStubAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -160,7 +160,7 @@ private class GetCurrentDataOwnerHierarchyIdsFromParams(
 	public val parentId: String,
 )
 
-public fun getCurrentDataOwnerHierarchyIdsFromBlocking(sdk: IcureApis, params: String): String =
+public fun getCurrentDataOwnerHierarchyIdsFromBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetCurrentDataOwnerHierarchyIdsFromParams>(params)
 	runBlocking {
@@ -172,7 +172,7 @@ public fun getCurrentDataOwnerHierarchyIdsFromBlocking(sdk: IcureApis, params: S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerHierarchyIdsFromAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -187,15 +187,15 @@ public fun getCurrentDataOwnerHierarchyIdsFromAsync(
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun getCurrentDataOwnerHierarchyBlocking(sdk: IcureApis): String = kotlin.runCatching {
+public fun getCurrentDataOwnerHierarchyBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.dataOwner.getCurrentDataOwnerHierarchy()
 	}
 }.toPyString(ListSerializer(DataOwnerWithType.serializer()))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getCurrentDataOwnerHierarchyAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getCurrentDataOwnerHierarchyAsync(sdk: CardinalApis,
+                                             resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -209,7 +209,7 @@ private class ModifyDataOwnerStubParams(
 	public val cryptoActorStubWithTypeDto: CryptoActorStubWithType,
 )
 
-public fun modifyDataOwnerStubBlocking(sdk: IcureApis, params: String): String =
+public fun modifyDataOwnerStubBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDataOwnerStubParams>(params)
 	runBlocking {
@@ -221,7 +221,7 @@ public fun modifyDataOwnerStubBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyDataOwnerStubAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -236,15 +236,15 @@ public fun modifyDataOwnerStubAsync(
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun getCurrentDataOwnerTypeBlocking(sdk: IcureApis): String = kotlin.runCatching {
+public fun getCurrentDataOwnerTypeBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.dataOwner.getCurrentDataOwnerType()
 	}
 }.toPyString(DataOwnerType.serializer())
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getCurrentDataOwnerTypeAsync(sdk: IcureApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getCurrentDataOwnerTypeAsync(sdk: CardinalApis,
+                                        resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -253,6 +253,6 @@ public fun getCurrentDataOwnerTypeAsync(sdk: IcureApis,
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun clearCurrentDataOwnerIdsCache(sdk: IcureApis): String = kotlin.runCatching {
+public fun clearCurrentDataOwnerIdsCache(sdk: CardinalApis): String = kotlin.runCatching {
 	sdk.dataOwner.clearCurrentDataOwnerIdsCache()
 }.toPyString(Unit.serializer())

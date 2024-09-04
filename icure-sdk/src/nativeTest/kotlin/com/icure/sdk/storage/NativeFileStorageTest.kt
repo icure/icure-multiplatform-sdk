@@ -1,6 +1,6 @@
-package com.icure.sdk.storage
+package com.icure.cardinal.sdk.storage
 
-import com.icure.sdk.storage.impl.NativeFileStorageFacade
+import com.icure.cardinal.sdk.storage.impl.NativeFileStorageFacade
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import okio.FileSystem

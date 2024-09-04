@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.DocumentTemplateApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.DocumentTemplate
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -34,7 +34,7 @@ private class GetDocumentTemplateParams(
 	public val documentTemplateId: String,
 )
 
-public fun getDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getDocumentTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentTemplateParams>(params)
 	runBlocking {
@@ -46,7 +46,7 @@ public fun getDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentTemplateAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -66,7 +66,7 @@ private class CreateDocumentTemplateParams(
 	public val documentTemplate: DocumentTemplate,
 )
 
-public fun createDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createDocumentTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDocumentTemplateParams>(params)
 	runBlocking {
@@ -78,7 +78,7 @@ public fun createDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createDocumentTemplateAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -98,7 +98,7 @@ private class ModifyDocumentTemplateParams(
 	public val documentTemplate: DocumentTemplate,
 )
 
-public fun modifyDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyDocumentTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentTemplateParams>(params)
 	runBlocking {
@@ -110,7 +110,7 @@ public fun modifyDocumentTemplateBlocking(sdk: IcureNonCryptoApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyDocumentTemplateAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -130,7 +130,7 @@ private class DeleteDocumentTemplatesParams(
 	public val documentTemplateIds: List<String>,
 )
 
-public fun deleteDocumentTemplatesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteDocumentTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteDocumentTemplatesParams>(params)
 	runBlocking {
@@ -142,7 +142,7 @@ public fun deleteDocumentTemplatesBlocking(sdk: IcureNonCryptoApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteDocumentTemplatesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -162,7 +162,7 @@ private class ListDocumentTemplatesBySpecialityParams(
 	public val specialityCode: String,
 )
 
-public fun listDocumentTemplatesBySpecialityBlocking(sdk: IcureNonCryptoApis, params: String):
+public fun listDocumentTemplatesBySpecialityBlocking(sdk: CardinalNonCryptoApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListDocumentTemplatesBySpecialityParams>(params)
 	runBlocking {
@@ -174,7 +174,7 @@ public fun listDocumentTemplatesBySpecialityBlocking(sdk: IcureNonCryptoApis, pa
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listDocumentTemplatesBySpecialityAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -194,7 +194,7 @@ private class ListDocumentTemplatesByDocumentTypeParams(
 	public val documentTypeCode: String,
 )
 
-public fun listDocumentTemplatesByDocumentTypeBlocking(sdk: IcureNonCryptoApis, params: String):
+public fun listDocumentTemplatesByDocumentTypeBlocking(sdk: CardinalNonCryptoApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListDocumentTemplatesByDocumentTypeParams>(params)
 	runBlocking {
@@ -206,7 +206,7 @@ public fun listDocumentTemplatesByDocumentTypeBlocking(sdk: IcureNonCryptoApis, 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listDocumentTemplatesByDocumentTypeAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -226,8 +226,8 @@ private class ListDocumentTemplatesByDocumentTypeForCurrentUserParams(
 	public val documentTypeCode: String,
 )
 
-public fun listDocumentTemplatesByDocumentTypeForCurrentUserBlocking(sdk: IcureNonCryptoApis,
-		params: String): String = kotlin.runCatching {
+public fun listDocumentTemplatesByDocumentTypeForCurrentUserBlocking(sdk: CardinalNonCryptoApis,
+                                                                     params: String): String = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<ListDocumentTemplatesByDocumentTypeForCurrentUserParams>(params)
 	runBlocking {
@@ -239,7 +239,7 @@ public fun listDocumentTemplatesByDocumentTypeForCurrentUserBlocking(sdk: IcureN
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listDocumentTemplatesByDocumentTypeForCurrentUserAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -255,15 +255,15 @@ public fun listDocumentTemplatesByDocumentTypeForCurrentUserAsync(
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun listDocumentTemplatesBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatching {
+public fun listDocumentTemplatesBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.documentTemplate.listDocumentTemplates()
 	}
 }.toPyString(ListSerializer(DocumentTemplate.serializer()))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun listDocumentTemplatesAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun listDocumentTemplatesAsync(sdk: CardinalNonCryptoApis,
+                                      resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -279,7 +279,7 @@ private class FindAllDocumentTemplatesParams(
 	public val limit: Int? = null,
 )
 
-public fun findAllDocumentTemplatesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun findAllDocumentTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindAllDocumentTemplatesParams>(params)
 	runBlocking {
@@ -293,7 +293,7 @@ public fun findAllDocumentTemplatesBlocking(sdk: IcureNonCryptoApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findAllDocumentTemplatesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -316,7 +316,7 @@ private class GetDocumentTemplateAttachmentParams(
 	public val attachmentId: String,
 )
 
-public fun getDocumentTemplateAttachmentBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getDocumentTemplateAttachmentBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentTemplateAttachmentParams>(params)
 	runBlocking {
@@ -329,7 +329,7 @@ public fun getDocumentTemplateAttachmentBlocking(sdk: IcureNonCryptoApis, params
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentTemplateAttachmentAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -351,7 +351,7 @@ private class GetAttachmentTextParams(
 	public val attachmentId: String,
 )
 
-public fun getAttachmentTextBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getAttachmentTextBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAttachmentTextParams>(params)
 	runBlocking {
@@ -364,7 +364,7 @@ public fun getAttachmentTextBlocking(sdk: IcureNonCryptoApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAttachmentTextAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -387,7 +387,7 @@ private class SetDocumentTemplateAttachmentParams(
 	public val payload: ByteArray,
 )
 
-public fun setDocumentTemplateAttachmentBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun setDocumentTemplateAttachmentBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetDocumentTemplateAttachmentParams>(params)
 	runBlocking {
@@ -400,7 +400,7 @@ public fun setDocumentTemplateAttachmentBlocking(sdk: IcureNonCryptoApis, params
 
 @OptIn(ExperimentalForeignApi::class)
 public fun setDocumentTemplateAttachmentAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -422,7 +422,7 @@ private class GetAttachmentUrlParams(
 	public val attachmentId: String,
 )
 
-public fun getAttachmentUrl(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getAttachmentUrl(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAttachmentUrlParams>(params)
 	sdk.documentTemplate.getAttachmentUrl(
 		decodedParams.documentId,

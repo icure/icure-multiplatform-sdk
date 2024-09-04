@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.DocumentApi.tryAndRecover
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.DocumentShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.filters.FilterOptions
@@ -47,7 +47,7 @@ private class ShareWithParams(
 	public val options: DocumentShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.document.tryAndRecover.shareWith(
@@ -60,7 +60,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -83,7 +83,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, DocumentShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.document.tryAndRecover.tryShareWithMany(
@@ -95,7 +95,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -117,7 +117,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, DocumentShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.document.tryAndRecover.shareWithMany(
@@ -129,7 +129,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -155,7 +155,7 @@ private class FindDocumentsByHcPartyPatientParams(
 	public val descending: Boolean? = null,
 )
 
-public fun findDocumentsByHcPartyPatientBlocking(sdk: IcureApis, params: String): PyResult =
+public fun findDocumentsByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindDocumentsByHcPartyPatientParams>(params)
 	runBlocking {
@@ -172,7 +172,7 @@ public fun findDocumentsByHcPartyPatientBlocking(sdk: IcureApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findDocumentsByHcPartyPatientAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -196,7 +196,7 @@ private class FilterDocumentsByParams(
 	public val filter: FilterOptions<Document>,
 )
 
-public fun filterDocumentsByBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterDocumentsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterDocumentsByParams>(params)
 	runBlocking {
@@ -209,7 +209,7 @@ public fun filterDocumentsByBlocking(sdk: IcureApis, params: String): PyResult =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterDocumentsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -229,7 +229,7 @@ private class FilterDocumentsBySortedParams(
 	public val filter: SortableFilterOptions<Document>,
 )
 
-public fun filterDocumentsBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterDocumentsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterDocumentsBySortedParams>(params)
 	runBlocking {
@@ -242,7 +242,7 @@ public fun filterDocumentsBySortedBlocking(sdk: IcureApis, params: String): PyRe
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterDocumentsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -262,7 +262,7 @@ private class ModifyDocumentParams(
 	public val entity: Document,
 )
 
-public fun modifyDocumentBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyDocumentBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentParams>(params)
 	runBlocking {
 		sdk.document.tryAndRecover.modifyDocument(
@@ -273,7 +273,7 @@ public fun modifyDocumentBlocking(sdk: IcureApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyDocumentAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -293,7 +293,7 @@ private class GetDocumentParams(
 	public val entityId: String,
 )
 
-public fun getDocumentBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getDocumentBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentParams>(params)
 	runBlocking {
 		sdk.document.tryAndRecover.getDocument(
@@ -304,7 +304,7 @@ public fun getDocumentBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -324,7 +324,7 @@ private class GetDocumentByExternalUuidParams(
 	public val externalUuid: String,
 )
 
-public fun getDocumentByExternalUuidBlocking(sdk: IcureApis, params: String): String =
+public fun getDocumentByExternalUuidBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentByExternalUuidParams>(params)
 	runBlocking {
@@ -336,7 +336,7 @@ public fun getDocumentByExternalUuidBlocking(sdk: IcureApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentByExternalUuidAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -356,7 +356,7 @@ private class GetDocumentsByExternalUuidParams(
 	public val externalUuid: String,
 )
 
-public fun getDocumentsByExternalUuidBlocking(sdk: IcureApis, params: String): String =
+public fun getDocumentsByExternalUuidBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentsByExternalUuidParams>(params)
 	runBlocking {
@@ -368,7 +368,7 @@ public fun getDocumentsByExternalUuidBlocking(sdk: IcureApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentsByExternalUuidAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -388,7 +388,7 @@ private class GetDocumentsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getDocumentsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getDocumentsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetDocumentsParams>(params)
 	runBlocking {
 		sdk.document.tryAndRecover.getDocuments(
@@ -399,7 +399,7 @@ public fun getDocumentsBlocking(sdk: IcureApis, params: String): String = kotlin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getDocumentsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -419,7 +419,7 @@ private class ModifyDocumentsParams(
 	public val entities: List<Document>,
 )
 
-public fun modifyDocumentsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyDocumentsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyDocumentsParams>(params)
 	runBlocking {
 		sdk.document.tryAndRecover.modifyDocuments(
@@ -430,7 +430,7 @@ public fun modifyDocumentsBlocking(sdk: IcureApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyDocumentsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -452,7 +452,7 @@ private class ListDocumentsByHcPartyMessageForeignKeysParams(
 	public val secretMessageKeys: List<String>,
 )
 
-public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: IcureApis, params: String): String
+public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: CardinalApis, params: String): String
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
 	runBlocking {
@@ -466,7 +466,7 @@ public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: IcureApis, para
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listDocumentsByHcPartyMessageForeignKeysAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -488,7 +488,7 @@ private class FindWithoutDelegationParams(
 	public val limit: Int?,
 )
 
-public fun findWithoutDelegationBlocking(sdk: IcureApis, params: String): String =
+public fun findWithoutDelegationBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindWithoutDelegationParams>(params)
 	runBlocking {
@@ -500,7 +500,7 @@ public fun findWithoutDelegationBlocking(sdk: IcureApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findWithoutDelegationAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

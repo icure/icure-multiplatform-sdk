@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.ReceiptBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.model.EncryptedReceipt
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
@@ -31,7 +31,7 @@ private class DeleteReceiptParams(
 	public val entityId: String,
 )
 
-public fun deleteReceiptBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteReceiptBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.deleteReceipt(
@@ -42,7 +42,7 @@ public fun deleteReceiptBlocking(sdk: IcureBaseApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteReceiptAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -62,7 +62,7 @@ private class DeleteReceiptsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteReceiptsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteReceiptsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteReceiptsParams>(params)
 	runBlocking {
 		sdk.receipt.deleteReceipts(
@@ -73,7 +73,7 @@ public fun deleteReceiptsBlocking(sdk: IcureBaseApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteReceiptsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -94,7 +94,7 @@ private class GetRawReceiptAttachmentParams(
 	public val attachmentId: String,
 )
 
-public fun getRawReceiptAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getRawReceiptAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetRawReceiptAttachmentParams>(params)
 	runBlocking {
@@ -107,7 +107,7 @@ public fun getRawReceiptAttachmentBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getRawReceiptAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -132,7 +132,7 @@ private class SetRawReceiptAttachmentParams(
 	public val attachment: ByteArray,
 )
 
-public fun setRawReceiptAttachmentBlocking(sdk: IcureBaseApis, params: String): String =
+public fun setRawReceiptAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetRawReceiptAttachmentParams>(params)
 	runBlocking {
@@ -147,7 +147,7 @@ public fun setRawReceiptAttachmentBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun setRawReceiptAttachmentAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -170,7 +170,7 @@ private class ModifyReceiptParams(
 	public val entity: EncryptedReceipt,
 )
 
-public fun modifyReceiptBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun modifyReceiptBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.modifyReceipt(
@@ -181,7 +181,7 @@ public fun modifyReceiptBlocking(sdk: IcureBaseApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyReceiptAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -201,7 +201,7 @@ private class GetReceiptParams(
 	public val entityId: String,
 )
 
-public fun getReceiptBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getReceiptBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.getReceipt(
@@ -212,7 +212,7 @@ public fun getReceiptBlocking(sdk: IcureBaseApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getReceiptAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -232,7 +232,7 @@ private class ListByReferenceParams(
 	public val reference: String,
 )
 
-public fun listByReferenceBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listByReferenceBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListByReferenceParams>(params)
 	runBlocking {
@@ -244,7 +244,7 @@ public fun listByReferenceBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listByReferenceAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

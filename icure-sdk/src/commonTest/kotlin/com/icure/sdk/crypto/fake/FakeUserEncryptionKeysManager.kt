@@ -1,24 +1,24 @@
-package com.icure.sdk.crypto.fake
+package com.icure.cardinal.sdk.crypto.fake
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.sdk.crypto.UserEncryptionKeysManager
-import com.icure.sdk.crypto.entities.CachedKeypairDetails
-import com.icure.sdk.crypto.entities.IcureKeyInfo
-import com.icure.sdk.crypto.entities.RsaDecryptionKeysSet
-import com.icure.sdk.crypto.entities.UserKeyPairInformation
-import com.icure.sdk.crypto.entities.toPrivateKeyInfo
-import com.icure.sdk.model.CryptoActorStub
-import com.icure.sdk.model.specializations.KeypairFingerprintV2String
-import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
+import com.icure.cardinal.sdk.crypto.entities.CachedKeypairDetails
+import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
+import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
+import com.icure.cardinal.sdk.crypto.entities.UserKeyPairInformation
+import com.icure.cardinal.sdk.crypto.entities.toPrivateKeyInfo
+import com.icure.cardinal.sdk.model.CryptoActorStub
+import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.utils.InternalIcureApi
 
 @OptIn(InternalIcureApi::class)
 class FakeUserEncryptionKeysManager : UserEncryptionKeysManager {
 	private val selfKeys = mutableMapOf<KeypairFingerprintV2String, CachedKeypairDetails>()
 
 	fun addSelfKey(
-		key: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		key: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
 		verified: Boolean
 	) {
 		selfKeys[key.pubSpkiHexString.fingerprintV2()] = CachedKeypairDetails(key, verified, verified)
@@ -37,7 +37,7 @@ class FakeUserEncryptionKeysManager : UserEncryptionKeysManager {
 	override fun getKeyPairForFingerprint(fingerprint: KeypairFingerprintV2String): CachedKeypairDetails? =
 		selfKeys[fingerprint]
 
-	override fun getSelfVerifiedKeys(): Set<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>> =
+	override fun getSelfVerifiedKeys(): Set<CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>> =
 		selfKeys.values.filter { it.isVerified }.map { it.keyPair }.toSet()
 
 	override fun getVerifiedPublicKeysFor(dataOwner: CryptoActorStub): Set<SpkiHexString> {

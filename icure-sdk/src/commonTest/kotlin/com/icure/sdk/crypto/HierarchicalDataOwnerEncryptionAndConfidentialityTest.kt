@@ -1,15 +1,15 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.crypto.entities.SecretIdOption
-import com.icure.sdk.model.DecryptedHealthElement
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.utils.RequestStatusException
-import com.icure.sdk.utils.pagination.forEach
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.model.DecryptedHealthElement
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.utils.RequestStatusException
+import com.icure.cardinal.sdk.utils.pagination.forEach
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
@@ -97,7 +97,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 
 		suspend fun findHealthElementsFor(
 			hcpIds: List<String>,
-			api: IcureSdk
+			api: CardinalSdk
 		): List<DecryptedHealthElement> {
 			val hes = mutableListOf<DecryptedHealthElement>()
 

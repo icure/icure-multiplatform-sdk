@@ -1,4 +1,4 @@
-package com.icure.sdk.utils.pagination
+package com.icure.cardinal.sdk.utils.pagination
 
 import com.icure.kryptom.crypto.defaultCryptoService
 import io.kotest.assertions.throwables.shouldThrow

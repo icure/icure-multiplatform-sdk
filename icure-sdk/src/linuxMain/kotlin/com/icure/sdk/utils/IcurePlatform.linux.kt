@@ -1,4 +1,4 @@
-package com.icure.sdk.utils
+package com.icure.cardinal.sdk.utils
 
-actual val currentPlatform: IcurePlatform
-	get() = IcurePlatform.Linux
+actual val currentPlatform: CardinalPlatform
+	get() = CardinalPlatform.Linux

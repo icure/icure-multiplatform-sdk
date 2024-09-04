@@ -1,12 +1,12 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.DecryptedHealthElement
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.createUserFromExistingPatient
-import com.icure.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.model.DecryptedHealthElement
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.createUserFromExistingPatient
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe

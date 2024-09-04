@@ -1,9 +1,9 @@
-package com.icure.sdk.crypto.fake
+package com.icure.cardinal.sdk.crypto.fake
 
-import com.icure.sdk.api.DataOwnerApi
-import com.icure.sdk.model.CryptoActorStubWithType
-import com.icure.sdk.model.DataOwnerType
-import com.icure.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.api.DataOwnerApi
+import com.icure.cardinal.sdk.model.CryptoActorStubWithType
+import com.icure.cardinal.sdk.model.DataOwnerType
+import com.icure.cardinal.sdk.model.DataOwnerWithType
 
 object NoDataOwnerApi : DataOwnerApi {
 	override suspend fun getCurrentDataOwner(): DataOwnerWithType {

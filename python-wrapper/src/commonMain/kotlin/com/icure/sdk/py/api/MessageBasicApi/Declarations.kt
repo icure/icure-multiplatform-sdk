@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.MessageBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.EncryptedMessage
@@ -48,7 +48,7 @@ private class MatchMessagesByParams(
 	public val filter: BaseFilterOptions<Message>,
 )
 
-public fun matchMessagesByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchMessagesByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchMessagesByParams>(params)
 	runBlocking {
@@ -60,7 +60,7 @@ public fun matchMessagesByBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchMessagesByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -80,7 +80,7 @@ private class MatchMessagesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Message>,
 )
 
-public fun matchMessagesBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchMessagesBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchMessagesBySortedParams>(params)
 	runBlocking {
@@ -92,7 +92,7 @@ public fun matchMessagesBySortedBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchMessagesBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -112,7 +112,7 @@ private class FilterMessagesByParams(
 	public val filter: BaseFilterOptions<Message>,
 )
 
-public fun filterMessagesByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterMessagesByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMessagesByParams>(params)
 	runBlocking {
@@ -125,7 +125,7 @@ public fun filterMessagesByBlocking(sdk: IcureBaseApis, params: String): PyResul
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterMessagesByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -145,7 +145,7 @@ private class FilterMessagesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Message>,
 )
 
-public fun filterMessagesBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterMessagesBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMessagesBySortedParams>(params)
 	runBlocking {
@@ -158,7 +158,7 @@ public fun filterMessagesBySortedBlocking(sdk: IcureBaseApis, params: String): P
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterMessagesBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -178,7 +178,7 @@ private class DeleteMessageParams(
 	public val entityId: String,
 )
 
-public fun deleteMessageBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteMessageBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteMessageParams>(params)
 	runBlocking {
 		sdk.message.deleteMessage(
@@ -189,7 +189,7 @@ public fun deleteMessageBlocking(sdk: IcureBaseApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteMessageAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -209,7 +209,7 @@ private class DeleteMessagesParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteMessagesBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteMessagesBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteMessagesParams>(params)
 	runBlocking {
 		sdk.message.deleteMessages(
@@ -220,7 +220,7 @@ public fun deleteMessagesBlocking(sdk: IcureBaseApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteMessagesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -240,7 +240,7 @@ private class ModifyMessageParams(
 	public val entity: EncryptedMessage,
 )
 
-public fun modifyMessageBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun modifyMessageBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyMessageParams>(params)
 	runBlocking {
 		sdk.message.modifyMessage(
@@ -251,7 +251,7 @@ public fun modifyMessageBlocking(sdk: IcureBaseApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyMessageAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -271,7 +271,7 @@ private class GetMessageParams(
 	public val entityId: String,
 )
 
-public fun getMessageBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getMessageBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMessageParams>(params)
 	runBlocking {
 		sdk.message.getMessage(
@@ -282,7 +282,7 @@ public fun getMessageBlocking(sdk: IcureBaseApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getMessageAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -302,7 +302,7 @@ private class GetMessagesParams(
 	public val entityIds: List<String>,
 )
 
-public fun getMessagesBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getMessagesBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMessagesParams>(params)
 	runBlocking {
 		sdk.message.getMessages(
@@ -313,7 +313,7 @@ public fun getMessagesBlocking(sdk: IcureBaseApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getMessagesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -334,7 +334,7 @@ private class ListMessagesByTransportGuidsParams(
 	public val transportGuids: List<String>,
 )
 
-public fun listMessagesByTransportGuidsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listMessagesByTransportGuidsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListMessagesByTransportGuidsParams>(params)
 	runBlocking {
@@ -347,7 +347,7 @@ public fun listMessagesByTransportGuidsBlocking(sdk: IcureBaseApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listMessagesByTransportGuidsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -368,7 +368,7 @@ private class FindMessagesByHCPartyPatientForeignKeysParams(
 	public val secretPatientKeys: List<String>,
 )
 
-public fun findMessagesByHCPartyPatientForeignKeysBlocking(sdk: IcureBaseApis, params: String):
+public fun findMessagesByHCPartyPatientForeignKeysBlocking(sdk: CardinalBaseApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindMessagesByHCPartyPatientForeignKeysParams>(params)
 	runBlocking {
@@ -380,7 +380,7 @@ public fun findMessagesByHCPartyPatientForeignKeysBlocking(sdk: IcureBaseApis, p
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findMessagesByHCPartyPatientForeignKeysAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -402,7 +402,7 @@ private class FindMessagesParams(
 	public val limit: Int?,
 )
 
-public fun findMessagesBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun findMessagesBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindMessagesParams>(params)
 	runBlocking {
 		sdk.message.findMessages(
@@ -415,7 +415,7 @@ public fun findMessagesBlocking(sdk: IcureBaseApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findMessagesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -437,7 +437,7 @@ private class GetChildrenMessagesParams(
 	public val messageId: String,
 )
 
-public fun getChildrenMessagesBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getChildrenMessagesBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetChildrenMessagesParams>(params)
 	runBlocking {
@@ -449,7 +449,7 @@ public fun getChildrenMessagesBlocking(sdk: IcureBaseApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getChildrenMessagesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -469,7 +469,7 @@ private class GetMessagesChildrenParams(
 	public val messageIds: List<String>,
 )
 
-public fun getMessagesChildrenBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getMessagesChildrenBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMessagesChildrenParams>(params)
 	runBlocking {
@@ -481,7 +481,7 @@ public fun getMessagesChildrenBlocking(sdk: IcureBaseApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getMessagesChildrenAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -501,7 +501,7 @@ private class ListMessagesByInvoicesParams(
 	public val invoiceIds: List<String>,
 )
 
-public fun listMessagesByInvoicesBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listMessagesByInvoicesBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListMessagesByInvoicesParams>(params)
 	runBlocking {
@@ -513,7 +513,7 @@ public fun listMessagesByInvoicesBlocking(sdk: IcureBaseApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listMessagesByInvoicesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -533,7 +533,7 @@ private class FindMessagesByTransportGuidParams(
 	public val transportGuid: String,
 )
 
-public fun findMessagesByTransportGuidBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findMessagesByTransportGuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindMessagesByTransportGuidParams>(params)
 	runBlocking {
@@ -545,7 +545,7 @@ public fun findMessagesByTransportGuidBlocking(sdk: IcureBaseApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findMessagesByTransportGuidAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -571,7 +571,7 @@ private class FindMessagesByTransportGuidSentDateParams(
 	public val hcpId: String? = null,
 )
 
-public fun findMessagesByTransportGuidSentDateBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findMessagesByTransportGuidSentDateBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindMessagesByTransportGuidSentDateParams>(params)
 	runBlocking {
@@ -589,7 +589,7 @@ public fun findMessagesByTransportGuidSentDateBlocking(sdk: IcureBaseApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findMessagesByTransportGuidSentDateAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -618,7 +618,7 @@ private class FindMessagesByToAddressParams(
 	public val limit: Int?,
 )
 
-public fun findMessagesByToAddressBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findMessagesByToAddressBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindMessagesByToAddressParams>(params)
 	runBlocking {
@@ -633,7 +633,7 @@ public fun findMessagesByToAddressBlocking(sdk: IcureBaseApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findMessagesByToAddressAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -659,7 +659,7 @@ private class FindMessagesByFromAddressParams(
 	public val limit: Int?,
 )
 
-public fun findMessagesByFromAddressBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findMessagesByFromAddressBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindMessagesByFromAddressParams>(params)
 	runBlocking {
@@ -674,7 +674,7 @@ public fun findMessagesByFromAddressBlocking(sdk: IcureBaseApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findMessagesByFromAddressAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -698,7 +698,7 @@ private class SetMessagesStatusBitsParams(
 	public val statusBits: Int,
 )
 
-public fun setMessagesStatusBitsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun setMessagesStatusBitsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetMessagesStatusBitsParams>(params)
 	runBlocking {
@@ -711,7 +711,7 @@ public fun setMessagesStatusBitsBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun setMessagesStatusBitsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -735,7 +735,7 @@ private class SetMessagesReadStatusParams(
 	public val userId: String?,
 )
 
-public fun setMessagesReadStatusBlocking(sdk: IcureBaseApis, params: String): String =
+public fun setMessagesReadStatusBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SetMessagesReadStatusParams>(params)
 	runBlocking {
@@ -750,7 +750,7 @@ public fun setMessagesReadStatusBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun setMessagesReadStatusAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -775,7 +775,7 @@ private class SubscribeToEventsParams(
 	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
 )
 
-public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun subscribeToEventsBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
 	runBlocking {
@@ -790,7 +790,7 @@ public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResu
 
 @OptIn(ExperimentalForeignApi::class)
 public fun subscribeToEventsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {

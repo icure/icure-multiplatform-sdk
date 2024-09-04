@@ -1,37 +1,37 @@
-package com.icure.sdk.subscription
+package com.icure.cardinal.sdk.subscription
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.filters.ContactFilters
-import com.icure.sdk.filters.FilterOptions
-import com.icure.sdk.filters.HealthElementFilters
-import com.icure.sdk.filters.MaintenanceTaskFilters
-import com.icure.sdk.filters.MessageFilters
-import com.icure.sdk.filters.PatientFilters
-import com.icure.sdk.filters.TopicFilters
-import com.icure.sdk.model.Contact
-import com.icure.sdk.model.DecryptedContact
-import com.icure.sdk.model.DecryptedHealthElement
-import com.icure.sdk.model.DecryptedMaintenanceTask
-import com.icure.sdk.model.DecryptedMessage
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.DecryptedTopic
-import com.icure.sdk.model.EncryptedContact
-import com.icure.sdk.model.EncryptedHealthElement
-import com.icure.sdk.model.EncryptedMaintenanceTask
-import com.icure.sdk.model.EncryptedMessage
-import com.icure.sdk.model.EncryptedPatient
-import com.icure.sdk.model.EncryptedTopic
-import com.icure.sdk.model.HealthElement
-import com.icure.sdk.model.MaintenanceTask
-import com.icure.sdk.model.Message
-import com.icure.sdk.model.Patient
-import com.icure.sdk.model.Topic
-import com.icure.sdk.model.base.Identifiable
-import com.icure.sdk.model.base.Identifier
-import com.icure.sdk.test.DataOwnerDetails
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.filters.ContactFilters
+import com.icure.cardinal.sdk.filters.FilterOptions
+import com.icure.cardinal.sdk.filters.HealthElementFilters
+import com.icure.cardinal.sdk.filters.MaintenanceTaskFilters
+import com.icure.cardinal.sdk.filters.MessageFilters
+import com.icure.cardinal.sdk.filters.PatientFilters
+import com.icure.cardinal.sdk.filters.TopicFilters
+import com.icure.cardinal.sdk.model.Contact
+import com.icure.cardinal.sdk.model.DecryptedContact
+import com.icure.cardinal.sdk.model.DecryptedHealthElement
+import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.DecryptedMessage
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.DecryptedTopic
+import com.icure.cardinal.sdk.model.EncryptedContact
+import com.icure.cardinal.sdk.model.EncryptedHealthElement
+import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.EncryptedMessage
+import com.icure.cardinal.sdk.model.EncryptedPatient
+import com.icure.cardinal.sdk.model.EncryptedTopic
+import com.icure.cardinal.sdk.model.HealthElement
+import com.icure.cardinal.sdk.model.MaintenanceTask
+import com.icure.cardinal.sdk.model.Message
+import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.Topic
+import com.icure.cardinal.sdk.model.base.Identifiable
+import com.icure.cardinal.sdk.model.base.Identifier
+import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.core.spec.style.stringSpec
@@ -78,7 +78,7 @@ fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribabl
 
 class SubscriptionsTests : StringSpec({
 	lateinit var hcpUser: DataOwnerDetails
-	lateinit var hcpUserApi: IcureSdk
+	lateinit var hcpUserApi: CardinalSdk
 
 	beforeAny {
 		initializeTestEnvironment()

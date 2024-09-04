@@ -1,16 +1,16 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.impl.exportSpkiHex
-import com.icure.sdk.model.CryptoActorStubWithType
-import com.icure.sdk.model.DataOwnerType
-import com.icure.sdk.model.DataOwnerWithType
-import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.test.internal
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
+import com.icure.cardinal.sdk.model.CryptoActorStubWithType
+import com.icure.cardinal.sdk.model.DataOwnerType
+import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.test.internal
+import com.icure.utils.InternalIcureApi
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize

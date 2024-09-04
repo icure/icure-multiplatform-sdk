@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.HealthElementApi
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.sdk.crypto.entities.SecretIdOption
 import com.icure.sdk.crypto.entities.SimpleShareResult
@@ -58,7 +58,7 @@ private class CreateHealthElementParams(
 	public val entity: DecryptedHealthElement,
 )
 
-public fun createHealthElementBlocking(sdk: IcureApis, params: String): String =
+public fun createHealthElementBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateHealthElementParams>(params)
 	runBlocking {
@@ -70,7 +70,7 @@ public fun createHealthElementBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createHealthElementAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -90,7 +90,7 @@ private class CreateHealthElementsParams(
 	public val entities: List<DecryptedHealthElement>,
 )
 
-public fun createHealthElementsBlocking(sdk: IcureApis, params: String): String =
+public fun createHealthElementsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateHealthElementsParams>(params)
 	runBlocking {
@@ -102,7 +102,7 @@ public fun createHealthElementsBlocking(sdk: IcureApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createHealthElementsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -128,7 +128,7 @@ private class WithEncryptionMetadataParams(
 			com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent,
 )
 
-public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): String =
+public fun withEncryptionMetadataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<WithEncryptionMetadataParams>(params)
 	runBlocking {
@@ -144,7 +144,7 @@ public fun withEncryptionMetadataBlocking(sdk: IcureApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun withEncryptionMetadataAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -169,7 +169,7 @@ private class GetEncryptionKeysOfParams(
 	public val healthElement: HealthElement,
 )
 
-public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
+public fun getEncryptionKeysOfBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetEncryptionKeysOfParams>(params)
 	runBlocking {
@@ -181,7 +181,7 @@ public fun getEncryptionKeysOfBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getEncryptionKeysOfAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -202,7 +202,7 @@ private class HasWriteAccessParams(
 	public val healthElement: HealthElement,
 )
 
-public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun hasWriteAccessBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<HasWriteAccessParams>(params)
 	runBlocking {
 		sdk.healthElement.hasWriteAccess(
@@ -213,7 +213,7 @@ public fun hasWriteAccessBlocking(sdk: IcureApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun hasWriteAccessAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -234,7 +234,7 @@ private class DecryptPatientIdOfParams(
 	public val healthElement: HealthElement,
 )
 
-public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun decryptPatientIdOfBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptPatientIdOfParams>(params)
 	runBlocking {
 		sdk.healthElement.decryptPatientIdOf(
@@ -245,7 +245,7 @@ public fun decryptPatientIdOfBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun decryptPatientIdOfAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -267,7 +267,7 @@ private class CreateDelegationDeAnonymizationMetadataParams(
 	public val delegates: Set<String>,
 )
 
-public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, params: String): String =
+public fun createDelegationDeAnonymizationMetadataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateDelegationDeAnonymizationMetadataParams>(params)
 	runBlocking {
@@ -280,7 +280,7 @@ public fun createDelegationDeAnonymizationMetadataBlocking(sdk: IcureApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createDelegationDeAnonymizationMetadataAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -301,7 +301,7 @@ private class DecryptParams(
 	public val healthElement: EncryptedHealthElement,
 )
 
-public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun decryptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DecryptParams>(params)
 	runBlocking {
 		sdk.healthElement.decrypt(
@@ -312,7 +312,7 @@ public fun decryptBlocking(sdk: IcureApis, params: String): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun decryptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -332,7 +332,7 @@ private class TryDecryptParams(
 	public val healthElement: EncryptedHealthElement,
 )
 
-public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryDecryptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryDecryptParams>(params)
 	runBlocking {
 		sdk.healthElement.tryDecrypt(
@@ -343,7 +343,7 @@ public fun tryDecryptBlocking(sdk: IcureApis, params: String): String = kotlin.r
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryDecryptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -363,7 +363,7 @@ private class MatchHealthElementsByParams(
 	public val filter: FilterOptions<HealthElement>,
 )
 
-public fun matchHealthElementsByBlocking(sdk: IcureApis, params: String): String =
+public fun matchHealthElementsByBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchHealthElementsByParams>(params)
 	runBlocking {
@@ -375,7 +375,7 @@ public fun matchHealthElementsByBlocking(sdk: IcureApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchHealthElementsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -395,7 +395,7 @@ private class MatchHealthElementsBySortedParams(
 	public val filter: SortableFilterOptions<HealthElement>,
 )
 
-public fun matchHealthElementsBySortedBlocking(sdk: IcureApis, params: String): String =
+public fun matchHealthElementsBySortedBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchHealthElementsBySortedParams>(params)
 	runBlocking {
@@ -407,7 +407,7 @@ public fun matchHealthElementsBySortedBlocking(sdk: IcureApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchHealthElementsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -427,7 +427,7 @@ private class DeleteHealthElementParams(
 	public val entityId: String,
 )
 
-public fun deleteHealthElementBlocking(sdk: IcureApis, params: String): String =
+public fun deleteHealthElementBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthElementParams>(params)
 	runBlocking {
@@ -439,7 +439,7 @@ public fun deleteHealthElementBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteHealthElementAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -459,7 +459,7 @@ private class DeleteHealthElementsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteHealthElementsBlocking(sdk: IcureApis, params: String): String =
+public fun deleteHealthElementsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteHealthElementsParams>(params)
 	runBlocking {
@@ -471,7 +471,7 @@ public fun deleteHealthElementsBlocking(sdk: IcureApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteHealthElementsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -492,8 +492,8 @@ private class FindHealthElementsDelegationsStubsByHcPartyPatientForeignKeysParam
 	public val secretPatientKeys: List<String>,
 )
 
-public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: IcureApis,
-		params: String): String = kotlin.runCatching {
+public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: CardinalApis,
+                                                                                 params: String): String = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<FindHealthElementsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
 	runBlocking {
@@ -506,7 +506,7 @@ public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -530,7 +530,7 @@ private class ShareWithParams(
 	public val options: HealthElementShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.healthElement.shareWith(
@@ -543,7 +543,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -567,7 +567,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, HealthElementShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.healthElement.tryShareWithMany(
@@ -579,7 +579,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -602,7 +602,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, HealthElementShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.healthElement.shareWithMany(
@@ -614,7 +614,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -640,7 +640,7 @@ private class FindHealthElementsByHcPartyPatientParams(
 	public val descending: Boolean? = null,
 )
 
-public fun findHealthElementsByHcPartyPatientBlocking(sdk: IcureApis, params: String): PyResult =
+public fun findHealthElementsByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindHealthElementsByHcPartyPatientParams>(params)
 	runBlocking {
@@ -657,7 +657,7 @@ public fun findHealthElementsByHcPartyPatientBlocking(sdk: IcureApis, params: St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findHealthElementsByHcPartyPatientAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -681,7 +681,7 @@ private class FilterHealthElementsByParams(
 	public val filter: FilterOptions<HealthElement>,
 )
 
-public fun filterHealthElementsByBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterHealthElementsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthElementsByParams>(params)
 	runBlocking {
@@ -694,7 +694,7 @@ public fun filterHealthElementsByBlocking(sdk: IcureApis, params: String): PyRes
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterHealthElementsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -714,7 +714,7 @@ private class FilterHealthElementsBySortedParams(
 	public val filter: SortableFilterOptions<HealthElement>,
 )
 
-public fun filterHealthElementsBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterHealthElementsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterHealthElementsBySortedParams>(params)
 	runBlocking {
@@ -727,7 +727,7 @@ public fun filterHealthElementsBySortedBlocking(sdk: IcureApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterHealthElementsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -747,7 +747,7 @@ private class ModifyHealthElementParams(
 	public val entity: DecryptedHealthElement,
 )
 
-public fun modifyHealthElementBlocking(sdk: IcureApis, params: String): String =
+public fun modifyHealthElementBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthElementParams>(params)
 	runBlocking {
@@ -759,7 +759,7 @@ public fun modifyHealthElementBlocking(sdk: IcureApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyHealthElementAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -779,7 +779,7 @@ private class ModifyHealthElementsParams(
 	public val entities: List<DecryptedHealthElement>,
 )
 
-public fun modifyHealthElementsBlocking(sdk: IcureApis, params: String): String =
+public fun modifyHealthElementsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyHealthElementsParams>(params)
 	runBlocking {
@@ -791,7 +791,7 @@ public fun modifyHealthElementsBlocking(sdk: IcureApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyHealthElementsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -811,7 +811,7 @@ private class GetHealthElementParams(
 	public val entityId: String,
 )
 
-public fun getHealthElementBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getHealthElementBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthElementParams>(params)
 	runBlocking {
 		sdk.healthElement.getHealthElement(
@@ -822,7 +822,7 @@ public fun getHealthElementBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getHealthElementAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -842,7 +842,7 @@ private class GetHealthElementsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getHealthElementsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getHealthElementsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetHealthElementsParams>(params)
 	runBlocking {
 		sdk.healthElement.getHealthElements(
@@ -853,7 +853,7 @@ public fun getHealthElementsBlocking(sdk: IcureApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getHealthElementsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -874,7 +874,7 @@ private class FindHealthElementsByHcPartyPatientForeignKeysParams(
 	public val secretPatientKeys: List<String>,
 )
 
-public fun findHealthElementsByHcPartyPatientForeignKeysBlocking(sdk: IcureApis, params: String):
+public fun findHealthElementsByHcPartyPatientForeignKeysBlocking(sdk: CardinalApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<FindHealthElementsByHcPartyPatientForeignKeysParams>(params)
@@ -888,7 +888,7 @@ public fun findHealthElementsByHcPartyPatientForeignKeysBlocking(sdk: IcureApis,
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findHealthElementsByHcPartyPatientForeignKeysAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -912,7 +912,7 @@ private class SubscribeToEventsParams(
 	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
 )
 
-public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
+public fun subscribeToEventsBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
 	runBlocking {
@@ -927,7 +927,7 @@ public fun subscribeToEventsBlocking(sdk: IcureApis, params: String): PyResult =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun subscribeToEventsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {

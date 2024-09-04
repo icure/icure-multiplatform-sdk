@@ -1,10 +1,10 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.entities.EncryptedFieldsManifest
-import com.icure.sdk.crypto.impl.JsonEncryptionServiceImpl
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
+import com.icure.cardinal.sdk.crypto.impl.JsonEncryptionServiceImpl
+import com.icure.utils.InternalIcureApi
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull

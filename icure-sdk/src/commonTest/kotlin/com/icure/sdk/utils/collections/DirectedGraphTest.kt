@@ -1,4 +1,4 @@
-package com.icure.sdk.utils.collections
+package com.icure.cardinal.sdk.utils.collections
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeIn

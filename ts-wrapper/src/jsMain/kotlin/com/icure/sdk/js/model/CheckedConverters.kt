@@ -8,7 +8,7 @@ import com.icure.sdk.js.model.embed.DelegationJs
 import com.icure.sdk.js.model.embed.delegation_fromJs
 import com.icure.sdk.js.model.embed.securityMetadata_fromJs
 import com.icure.sdk.js.utils.Record
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.utils.InternalIcureApi
 import com.icure.sdk.utils.ensure
 import com.icure.sdk.utils.isJsSafe
 import com.icure.sdk.utils.time.ZonedDateTime

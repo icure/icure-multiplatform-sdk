@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.js.api.`impl`
 
-import com.icure.sdk.api.ICureApi
+import com.icure.sdk.api.SystemApi
 import com.icure.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.sdk.js.api.ICureApiJs
 import com.icure.sdk.js.model.CheckedConverters.listToArray
@@ -29,34 +29,34 @@ import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class ICureApiImplJs(
-	private val iCureApi: ICureApi,
+	private val systemApi: SystemApi,
 ) : ICureApiJs {
 	override fun getVersion(): Promise<String> = GlobalScope.promise {
-		val result = iCureApi.getVersion(
+		val result = systemApi.getVersion(
 		)
 		result
 	}
 
 	override fun isReady(): Promise<String> = GlobalScope.promise {
-		val result = iCureApi.isReady(
+		val result = systemApi.isReady(
 		)
 		result
 	}
 
 	override fun getProcessInfo(): Promise<String> = GlobalScope.promise {
-		val result = iCureApi.getProcessInfo(
+		val result = systemApi.getProcessInfo(
 		)
 		result
 	}
 
 	override fun getIndexingInfo(): Promise<IndexingInfoJs> = GlobalScope.promise {
-		val result = iCureApi.getIndexingInfo(
+		val result = systemApi.getIndexingInfo(
 		)
 		indexingInfo_toJs(result)
 	}
 
 	override fun getReplicationInfo(): Promise<ReplicationInfoJs> = GlobalScope.promise {
-		val result = iCureApi.getReplicationInfo(
+		val result = systemApi.getReplicationInfo(
 		)
 		replicationInfo_toJs(result)
 	}
@@ -72,7 +72,7 @@ internal class ICureApiImplJs(
 			) { warmup: Boolean? ->
 				undefinedToNull(warmup)
 			}
-			val result = iCureApi.updateDesignDoc(
+			val result = systemApi.updateDesignDoc(
 				entityNameConverted,
 				warmupConverted,
 			)
@@ -90,7 +90,7 @@ internal class ICureApiImplJs(
 			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val result = iCureApi.resolvePatientsConflicts(
+			val result = systemApi.resolvePatientsConflicts(
 				limitConverted,
 			)
 			listToArray(
@@ -112,7 +112,7 @@ internal class ICureApiImplJs(
 			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val result = iCureApi.resolveContactsConflicts(
+			val result = systemApi.resolveContactsConflicts(
 				limitConverted,
 			)
 			listToArray(
@@ -134,7 +134,7 @@ internal class ICureApiImplJs(
 			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val result = iCureApi.resolveFormsConflicts(
+			val result = systemApi.resolveFormsConflicts(
 				limitConverted,
 			)
 			listToArray(
@@ -156,7 +156,7 @@ internal class ICureApiImplJs(
 			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val result = iCureApi.resolveHealthElementsConflicts(
+			val result = systemApi.resolveHealthElementsConflicts(
 				limitConverted,
 			)
 			listToArray(
@@ -178,7 +178,7 @@ internal class ICureApiImplJs(
 			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val result = iCureApi.resolveInvoicesConflicts(
+			val result = systemApi.resolveInvoicesConflicts(
 				limitConverted,
 			)
 			listToArray(
@@ -200,7 +200,7 @@ internal class ICureApiImplJs(
 			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val result = iCureApi.resolveMessagesConflicts(
+			val result = systemApi.resolveMessagesConflicts(
 				limitConverted,
 			)
 			listToArray(
@@ -229,7 +229,7 @@ internal class ICureApiImplJs(
 			) { limit: Double? ->
 				numberToInt(limit, "limit")
 			}
-			val result = iCureApi.resolveDocumentsConflicts(
+			val result = systemApi.resolveDocumentsConflicts(
 				idsConverted,
 				limitConverted,
 			)
@@ -245,7 +245,7 @@ internal class ICureApiImplJs(
 	override fun getIndexingInfoByGroup(groupId: String): Promise<IndexingInfoJs> =
 			GlobalScope.promise {
 		val groupIdConverted: String = groupId
-		val result = iCureApi.getIndexingInfoByGroup(
+		val result = systemApi.getIndexingInfoByGroup(
 			groupIdConverted,
 		)
 		indexingInfo_toJs(result)
@@ -253,7 +253,7 @@ internal class ICureApiImplJs(
 
 	override fun getReplicatorInfo(id: String): Promise<ReplicatorDocumentJs> = GlobalScope.promise {
 		val idConverted: String = id
-		val result = iCureApi.getReplicatorInfo(
+		val result = systemApi.getReplicatorInfo(
 			idConverted,
 		)
 		replicatorDocument_toJs(result)
@@ -261,7 +261,7 @@ internal class ICureApiImplJs(
 
 	override fun evictAllFromMap(mapName: String): Promise<String> = GlobalScope.promise {
 		val mapNameConverted: String = mapName
-		val result = iCureApi.evictAllFromMap(
+		val result = systemApi.evictAllFromMap(
 			mapNameConverted,
 		)
 		result

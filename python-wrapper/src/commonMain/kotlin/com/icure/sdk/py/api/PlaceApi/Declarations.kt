@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.PlaceApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.Place
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -31,7 +31,7 @@ private class GetPlaceParams(
 	public val placeId: String,
 )
 
-public fun getPlaceBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetPlaceParams>(params)
 	runBlocking {
 		sdk.place.getPlace(
@@ -42,7 +42,7 @@ public fun getPlaceBlocking(sdk: IcureNonCryptoApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getPlaceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -62,7 +62,7 @@ private class CreatePlaceParams(
 	public val place: Place,
 )
 
-public fun createPlaceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreatePlaceParams>(params)
 	runBlocking {
@@ -74,7 +74,7 @@ public fun createPlaceBlocking(sdk: IcureNonCryptoApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createPlaceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -94,7 +94,7 @@ private class ModifyPlaceParams(
 	public val place: Place,
 )
 
-public fun modifyPlaceBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyPlaceParams>(params)
 	runBlocking {
@@ -106,7 +106,7 @@ public fun modifyPlaceBlocking(sdk: IcureNonCryptoApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyPlaceAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -126,7 +126,7 @@ private class DeletePlacesParams(
 	public val placeIds: List<String>,
 )
 
-public fun deletePlacesBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deletePlacesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeletePlacesParams>(params)
 	runBlocking {
@@ -138,7 +138,7 @@ public fun deletePlacesBlocking(sdk: IcureNonCryptoApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deletePlacesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -159,7 +159,7 @@ private class GetPlacesParams(
 	public val limit: Int? = null,
 )
 
-public fun getPlacesBlocking(sdk: IcureNonCryptoApis, params: String): String = kotlin.runCatching {
+public fun getPlacesBlocking(sdk: CardinalNonCryptoApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetPlacesParams>(params)
 	runBlocking {
 		sdk.place.getPlaces(
@@ -171,7 +171,7 @@ public fun getPlacesBlocking(sdk: IcureNonCryptoApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getPlacesAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

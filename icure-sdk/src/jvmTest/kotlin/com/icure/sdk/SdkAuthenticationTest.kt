@@ -1,15 +1,15 @@
-package com.icure.sdk
+package com.icure.cardinal.sdk
 
-import com.icure.sdk.auth.AuthenticationProcessCaptchaType
-import com.icure.sdk.auth.AuthenticationProcessTelecomType
-import com.icure.sdk.storage.impl.VolatileStorageFacade
-import com.icure.sdk.test.MockMessageGatewayUtils
-import com.icure.sdk.test.baseUrl
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.test.mockMessageGatewayUrl
-import com.icure.sdk.test.mockSpecId
-import com.icure.sdk.test.testGroupId
+import com.icure.cardinal.sdk.auth.AuthenticationProcessCaptchaType
+import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
+import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
+import com.icure.cardinal.sdk.test.MockMessageGatewayUtils
+import com.icure.cardinal.sdk.test.baseUrl
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.test.mockMessageGatewayUrl
+import com.icure.cardinal.sdk.test.mockSpecId
+import com.icure.cardinal.sdk.test.testGroupId
 import io.kotest.core.spec.style.StringSpec
 
 class SdkAuthenticationTest : StringSpec({
@@ -22,7 +22,7 @@ class SdkAuthenticationTest : StringSpec({
 			hcpId = hcpDetails.dataOwnerId,
 			userType = MockMessageGatewayUtils.UserType.Hcp
 		)
-		val authStep = IcureSdk.initializeWithProcess(
+		val authStep = CardinalSdk.initializeWithProcess(
 			null,
 			baseUrl,
 			mockMessageGatewayUrl,

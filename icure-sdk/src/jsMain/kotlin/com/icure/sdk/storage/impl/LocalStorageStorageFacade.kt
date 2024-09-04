@@ -1,6 +1,6 @@
-package com.icure.sdk.storage.impl
+package com.icure.cardinal.sdk.storage.impl
 
-import com.icure.sdk.storage.StorageFacade
+import com.icure.cardinal.sdk.storage.StorageFacade
 import kotlinx.browser.localStorage
 
 class LocalStorageStorageFacade : StorageFacade {

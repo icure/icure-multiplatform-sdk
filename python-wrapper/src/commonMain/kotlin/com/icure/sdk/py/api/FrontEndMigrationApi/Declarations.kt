@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.FrontEndMigrationApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.FrontEndMigration
 import com.icure.sdk.model.couchdb.DocIdentifier
 import com.icure.sdk.py.utils.failureToPyStringAsyncCallback
@@ -28,7 +28,7 @@ private class GetFrontEndMigrationParams(
 	public val frontEndMigrationId: String,
 )
 
-public fun getFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFrontEndMigrationParams>(params)
 	runBlocking {
@@ -40,7 +40,7 @@ public fun getFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFrontEndMigrationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -60,7 +60,7 @@ private class CreateFrontEndMigrationParams(
 	public val frontEndMigration: FrontEndMigration,
 )
 
-public fun createFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateFrontEndMigrationParams>(params)
 	runBlocking {
@@ -72,7 +72,7 @@ public fun createFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createFrontEndMigrationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -87,15 +87,15 @@ public fun createFrontEndMigrationAsync(
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
-public fun getFrontEndMigrationsBlocking(sdk: IcureNonCryptoApis): String = kotlin.runCatching {
+public fun getFrontEndMigrationsBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.frontEndMigration.getFrontEndMigrations()
 	}
 }.toPyString(ListSerializer(FrontEndMigration.serializer()))
 
 @OptIn(ExperimentalForeignApi::class)
-public fun getFrontEndMigrationsAsync(sdk: IcureNonCryptoApis,
-		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+public fun getFrontEndMigrationsAsync(sdk: CardinalNonCryptoApis,
+                                      resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -109,7 +109,7 @@ private class DeleteFrontEndMigrationParams(
 	public val frontEndMigrationId: String,
 )
 
-public fun deleteFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteFrontEndMigrationParams>(params)
 	runBlocking {
@@ -121,7 +121,7 @@ public fun deleteFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteFrontEndMigrationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -141,7 +141,7 @@ private class GetFrontEndMigrationByNameParams(
 	public val frontEndMigrationName: String,
 )
 
-public fun getFrontEndMigrationByNameBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getFrontEndMigrationByNameBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFrontEndMigrationByNameParams>(params)
 	runBlocking {
@@ -153,7 +153,7 @@ public fun getFrontEndMigrationByNameBlocking(sdk: IcureNonCryptoApis, params: S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFrontEndMigrationByNameAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -173,7 +173,7 @@ private class ModifyFrontEndMigrationParams(
 	public val frontEndMigration: FrontEndMigration,
 )
 
-public fun modifyFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFrontEndMigrationParams>(params)
 	runBlocking {
@@ -185,7 +185,7 @@ public fun modifyFrontEndMigrationBlocking(sdk: IcureNonCryptoApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyFrontEndMigrationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

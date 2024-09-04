@@ -1,20 +1,20 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.crypto.impl.exportSpkiHex
-import com.icure.sdk.filters.MaintenanceTaskFilters
-import com.icure.sdk.model.DecryptedMaintenanceTask
-import com.icure.sdk.model.DecryptedPatient
-import com.icure.sdk.model.embed.AccessLevel
-import com.icure.sdk.model.sdk.KeyPairUpdateNotification
-import com.icure.sdk.test.DataOwnerDetails
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.createPatientUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.currentEpochMs
-import com.icure.sdk.utils.pagination.forEach
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
+import com.icure.cardinal.sdk.filters.MaintenanceTaskFilters
+import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.model.sdk.KeyPairUpdateNotification
+import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.createPatientUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.currentEpochMs
+import com.icure.cardinal.sdk.utils.pagination.forEach
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
@@ -30,7 +30,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	val note = "Some secret note"
 	val testStart = currentEpochMs()
 
-	suspend fun IcureSdk.createDataAndShareWith(
+	suspend fun CardinalSdk.createDataAndShareWith(
 		owner: DataOwnerDetails
 	): String =
 		patient.createPatient(
@@ -45,12 +45,12 @@ class KeyPairUpdateNotificationTest : StringSpec({
 			)
 		).shouldNotBeNull().id
 
-	suspend fun IcureSdk.verifyDataAccessible(
+	suspend fun CardinalSdk.verifyDataAccessible(
 		dataId: String
 	) =
 		patient.getPatient(dataId).note shouldBe note
 
-	suspend fun IcureSdk.getMaintenanceTasks(): List<DecryptedMaintenanceTask> {
+	suspend fun CardinalSdk.getMaintenanceTasks(): List<DecryptedMaintenanceTask> {
 		val iterator = maintenanceTask.filterMaintenanceTasksBy(MaintenanceTaskFilters.afterDateForSelf(date = testStart - 1000L))
 		val tasks = mutableListOf<DecryptedMaintenanceTask>()
 		iterator.forEach {

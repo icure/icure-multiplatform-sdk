@@ -1,13 +1,13 @@
-package com.icure.sdk.model
+package com.icure.cardinal.sdk.model
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
-import com.icure.sdk.model.specializations.KeypairFingerprintV1String
-import com.icure.sdk.model.specializations.KeypairFingerprintV2String
-import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.utils.Serialization
+import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.utils.Serialization
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf

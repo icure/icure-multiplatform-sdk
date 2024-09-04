@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.KeywordApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.model.Keyword
 import com.icure.sdk.model.PaginatedList
 import com.icure.sdk.model.couchdb.DocIdentifier
@@ -31,7 +31,7 @@ private class GetKeywordParams(
 	public val frontEndMigrationId: String,
 )
 
-public fun getKeywordBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetKeywordParams>(params)
 	runBlocking {
@@ -43,7 +43,7 @@ public fun getKeywordBlocking(sdk: IcureNonCryptoApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getKeywordAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -63,7 +63,7 @@ private class CreateKeywordParams(
 	public val frontEndMigration: Keyword,
 )
 
-public fun createKeywordBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateKeywordParams>(params)
 	runBlocking {
@@ -75,7 +75,7 @@ public fun createKeywordBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createKeywordAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -96,7 +96,7 @@ private class GetKeywordsParams(
 	public val limit: Int? = null,
 )
 
-public fun getKeywordsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getKeywordsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetKeywordsParams>(params)
 	runBlocking {
@@ -109,7 +109,7 @@ public fun getKeywordsBlocking(sdk: IcureNonCryptoApis, params: String): String 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getKeywordsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -130,7 +130,7 @@ private class ModifyKeywordParams(
 	public val keyword: Keyword,
 )
 
-public fun modifyKeywordBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyKeywordParams>(params)
 	runBlocking {
@@ -142,7 +142,7 @@ public fun modifyKeywordBlocking(sdk: IcureNonCryptoApis, params: String): Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyKeywordAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -162,7 +162,7 @@ private class GetKeywordsByUserParams(
 	public val userId: String,
 )
 
-public fun getKeywordsByUserBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getKeywordsByUserBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetKeywordsByUserParams>(params)
 	runBlocking {
@@ -174,7 +174,7 @@ public fun getKeywordsByUserBlocking(sdk: IcureNonCryptoApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getKeywordsByUserAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -194,7 +194,7 @@ private class DeleteKeywordsParams(
 	public val keywordIds: List<String>,
 )
 
-public fun deleteKeywordsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteKeywordsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteKeywordsParams>(params)
 	runBlocking {
@@ -206,7 +206,7 @@ public fun deleteKeywordsBlocking(sdk: IcureNonCryptoApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteKeywordsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

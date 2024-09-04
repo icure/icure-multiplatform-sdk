@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.IcureMaintenanceTaskApi
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.model.DataOwnerType
 import com.icure.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.sdk.model.specializations.SpkiHexString
@@ -30,7 +30,7 @@ private class ApplyKeyPairUpdateParams(
 	public val updateRequest: KeyPairUpdateNotification,
 )
 
-public fun applyKeyPairUpdateBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun applyKeyPairUpdateBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ApplyKeyPairUpdateParams>(params)
 	runBlocking {
 		sdk.icureMaintenanceTask.applyKeyPairUpdate(
@@ -41,7 +41,7 @@ public fun applyKeyPairUpdateBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun applyKeyPairUpdateAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -62,8 +62,8 @@ private class CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams(
 	public val requestToOwnerTypes: Set<DataOwnerType>? = null,
 )
 
-public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(sdk: IcureApis,
-		params: String): String = kotlin.runCatching {
+public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(sdk: CardinalApis,
+                                                                               params: String): String = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams>(params)
 	runBlocking {
@@ -76,7 +76,7 @@ public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(s
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -99,7 +99,7 @@ private class CreateKeyPairUpdateNotificationToParams(
 	public val key: SpkiHexString,
 )
 
-public fun createKeyPairUpdateNotificationToBlocking(sdk: IcureApis, params: String): String =
+public fun createKeyPairUpdateNotificationToBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateKeyPairUpdateNotificationToParams>(params)
 	runBlocking {
@@ -112,7 +112,7 @@ public fun createKeyPairUpdateNotificationToBlocking(sdk: IcureApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createKeyPairUpdateNotificationToAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

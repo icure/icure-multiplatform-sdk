@@ -1,27 +1,27 @@
-package com.icure.sdk.crypto
+package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.crypto.entities.CandidateTransferKey
-import com.icure.sdk.crypto.entities.IcureKeyInfo
-import com.icure.sdk.crypto.fake.FakeUserEncryptionKeysManager
-import com.icure.sdk.crypto.fake.NoDataOwnerApi
-import com.icure.sdk.crypto.fake.NoExchangeDataManager
-import com.icure.sdk.crypto.impl.TransferKeysManagerImpl
-import com.icure.sdk.crypto.impl.exportSpkiHex
-import com.icure.sdk.model.HealthcareParty
-import com.icure.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
-import com.icure.sdk.model.specializations.HexString
-import com.icure.sdk.model.specializations.KeypairFingerprintV1String
-import com.icure.sdk.model.specializations.SpkiHexString
-import com.icure.sdk.storage.IcureStorageFacade
-import com.icure.sdk.storage.impl.DefaultStorageEntryKeysFactory
-import com.icure.sdk.storage.impl.JsonAndBase64KeyStorage
-import com.icure.sdk.storage.impl.VolatileStorageFacade
-import com.icure.sdk.utils.InternalIcureApi
-import com.icure.sdk.utils.collections.DirectedGraph
-import com.icure.sdk.utils.collections.StronglyConnectedGraph
+import com.icure.cardinal.sdk.crypto.entities.CandidateTransferKey
+import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
+import com.icure.cardinal.sdk.crypto.fake.FakeUserEncryptionKeysManager
+import com.icure.cardinal.sdk.crypto.fake.NoDataOwnerApi
+import com.icure.cardinal.sdk.crypto.fake.NoExchangeDataManager
+import com.icure.cardinal.sdk.crypto.impl.TransferKeysManagerImpl
+import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
+import com.icure.cardinal.sdk.model.HealthcareParty
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.storage.CardinalStorageFacade
+import com.icure.cardinal.sdk.storage.impl.DefaultStorageEntryKeysFactory
+import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
+import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
+import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.collections.DirectedGraph
+import com.icure.cardinal.sdk.utils.collections.StronglyConnectedGraph
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -40,29 +40,29 @@ private data class Keys(
 	val pairs: Pairs
 ) {
 	data class Pairs(
-		val a: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
-		val b: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
-		val c: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
-		val d: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
-		val e: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
-		val f: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val a: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val b: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val c: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val d: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val e: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
+		val f: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>,
 	)
 }
 
 @OptIn(InternalIcureApi::class)
 class TransferKeysManagerUnitTests : StringSpec({
-	suspend fun createKeyInfo(): Pair<IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, SpkiHexString> =
+	suspend fun createKeyInfo(): Pair<CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, SpkiHexString> =
 		defaultCryptoService.rsa.generateKeyPair(
 			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
 		).let { keyPair ->
-			val keyInfo = IcureKeyInfo(
+			val keyInfo = CardinalKeyInfo(
 				defaultCryptoService.rsa.exportSpkiHex(keyPair.public),
 				keyPair
 			)
 			Pair(keyInfo, keyInfo.pubSpkiHexString)
 		}
 
-	lateinit var storage: IcureStorageFacade
+	lateinit var storage: CardinalStorageFacade
 	lateinit var encryptionKeysManage: FakeUserEncryptionKeysManager
 	lateinit var transferKeysManager: TransferKeysManagerImpl
 	lateinit var self: HealthcareParty
@@ -70,7 +70,7 @@ class TransferKeysManagerUnitTests : StringSpec({
 
 	beforeEach {
 		val memStorage = VolatileStorageFacade()
-		storage = IcureStorageFacade(
+		storage = CardinalStorageFacade(
 			JsonAndBase64KeyStorage(memStorage),
 			memStorage,
 			DefaultStorageEntryKeysFactory,
@@ -110,7 +110,7 @@ class TransferKeysManagerUnitTests : StringSpec({
 		)
 	}
 
-	suspend fun addKey(key: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, available: Boolean, verified: Boolean) {
+	suspend fun addKey(key: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>, available: Boolean, verified: Boolean) {
 		if (available) {
 			encryptionKeysManage.addSelfKey(key, verified)
 		}
@@ -123,7 +123,7 @@ class TransferKeysManagerUnitTests : StringSpec({
 	fun copyWithTransferKey(
 		dataOwner: HealthcareParty,
 		from: SpkiHexString,
-		to: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>
+		to: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>
 	): HealthcareParty {
 		val genericFrom = AesExchangeKeyEncryptionKeypairIdentifier(from.fingerprintV1().s)
 		val genericTo = AesExchangeKeyEncryptionKeypairIdentifier(to.pubSpkiHexString.fingerprintV1().s)
@@ -134,7 +134,7 @@ class TransferKeysManagerUnitTests : StringSpec({
 		return dataOwner.copy(transferKeys = newTransferKeys)
 	}
 
-	fun addTransferKey(from: SpkiHexString, to: IcureKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>) {
+	fun addTransferKey(from: SpkiHexString, to: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>) {
 		self = copyWithTransferKey(self, from, to)
 	}
 

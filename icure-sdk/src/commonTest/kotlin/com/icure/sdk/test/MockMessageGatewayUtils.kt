@@ -1,10 +1,10 @@
-package com.icure.sdk.test
+package com.icure.cardinal.sdk.test
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.IcureSdk
-import com.icure.sdk.api.raw.requireSuccess
-import com.icure.sdk.api.raw.wrap
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.api.raw.requireSuccess
+import com.icure.cardinal.sdk.api.raw.wrap
+import com.icure.utils.InternalIcureApi
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -30,13 +30,13 @@ object MockMessageGatewayUtils {
 
 	@OptIn(InternalIcureApi::class)
 	suspend fun getLatestEmailTo(email: String) =
-		IcureSdk.sharedHttpClient.get(
+		CardinalSdk.sharedHttpClient.get(
 			"$mockMessageGatewayUrl/$mockSpecId/lastEmail/${email.encodeURLPathPart()}"
 		).wrap<EmailBody>().successBody()
 
 	@OptIn(InternalIcureApi::class)
 	suspend fun getLatestSmsTo(mobilePhone: String) =
-		IcureSdk.sharedHttpClient.get(
+		CardinalSdk.sharedHttpClient.get(
 			"$mockMessageGatewayUrl/$mockSpecId/lastSMS/${mobilePhone.encodeURLPathPart()}"
 		).wrap<SMSBody>().successBody()
 
@@ -46,7 +46,7 @@ object MockMessageGatewayUtils {
 		userType: UserType
 	): String {
 		val processId = defaultCryptoService.strongRandom.randomUUID()
-		IcureSdk.sharedHttpClient.post("$mockMessageGatewayUrl/$mockSpecId/customProcess/${processId}") {
+		CardinalSdk.sharedHttpClient.post("$mockMessageGatewayUrl/$mockSpecId/customProcess/${processId}") {
 			contentType(ContentType.Application.Json)
 			setBody(JsonObject(mapOf(
 				"hcpId" to JsonPrimitive(hcpId),

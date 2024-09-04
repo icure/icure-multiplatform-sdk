@@ -1,10 +1,10 @@
-package com.icure.sdk.api
+package com.icure.cardinal.sdk.api
 
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.sdk.model.DecryptedDocument
-import com.icure.sdk.test.createHcpUser
-import com.icure.sdk.test.initializeTestEnvironment
-import com.icure.sdk.test.uuid
+import com.icure.cardinal.sdk.model.DecryptedDocument
+import com.icure.cardinal.sdk.test.createHcpUser
+import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.cardinal.sdk.test.uuid
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe

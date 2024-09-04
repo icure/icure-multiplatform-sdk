@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.MedicalLocationApi
 
-import com.icure.sdk.IcureNonCryptoApis
+import com.icure.sdk.CardinalNonCryptoApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.ListOfIds
@@ -41,7 +41,7 @@ private class CreateMedicalLocationParams(
 	public val medicalLocationDto: MedicalLocation,
 )
 
-public fun createMedicalLocationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun createMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<CreateMedicalLocationParams>(params)
 	runBlocking {
@@ -53,7 +53,7 @@ public fun createMedicalLocationBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun createMedicalLocationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -73,7 +73,7 @@ private class DeleteMedicalLocationsParams(
 	public val locationIds: ListOfIds,
 )
 
-public fun deleteMedicalLocationsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun deleteMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteMedicalLocationsParams>(params)
 	runBlocking {
@@ -85,7 +85,7 @@ public fun deleteMedicalLocationsBlocking(sdk: IcureNonCryptoApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteMedicalLocationsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -105,7 +105,7 @@ private class GetMedicalLocationParams(
 	public val locationId: String,
 )
 
-public fun getMedicalLocationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMedicalLocationParams>(params)
 	runBlocking {
@@ -117,7 +117,7 @@ public fun getMedicalLocationBlocking(sdk: IcureNonCryptoApis, params: String): 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getMedicalLocationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -138,7 +138,7 @@ private class GetAllMedicalLocationsParams(
 	public val limit: Int?,
 )
 
-public fun getAllMedicalLocationsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getAllMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetAllMedicalLocationsParams>(params)
 	runBlocking {
@@ -151,7 +151,7 @@ public fun getAllMedicalLocationsBlocking(sdk: IcureNonCryptoApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getAllMedicalLocationsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -172,7 +172,7 @@ private class ModifyMedicalLocationParams(
 	public val medicalLocationDto: MedicalLocation,
 )
 
-public fun modifyMedicalLocationBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun modifyMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyMedicalLocationParams>(params)
 	runBlocking {
@@ -184,7 +184,7 @@ public fun modifyMedicalLocationBlocking(sdk: IcureNonCryptoApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyMedicalLocationAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -204,7 +204,7 @@ private class GetMedicalLocationsParams(
 	public val medicalLocationIds: List<String>,
 )
 
-public fun getMedicalLocationsBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun getMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetMedicalLocationsParams>(params)
 	runBlocking {
@@ -216,7 +216,7 @@ public fun getMedicalLocationsBlocking(sdk: IcureNonCryptoApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getMedicalLocationsAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -236,7 +236,7 @@ private class MatchMedicalLocationsByParams(
 	public val filter: BaseFilterOptions<MedicalLocation>,
 )
 
-public fun matchMedicalLocationsByBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchMedicalLocationsByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchMedicalLocationsByParams>(params)
 	runBlocking {
@@ -248,7 +248,7 @@ public fun matchMedicalLocationsByBlocking(sdk: IcureNonCryptoApis, params: Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchMedicalLocationsByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -268,7 +268,7 @@ private class MatchMedicalLocationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<MedicalLocation>,
 )
 
-public fun matchMedicalLocationsBySortedBlocking(sdk: IcureNonCryptoApis, params: String): String =
+public fun matchMedicalLocationsBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchMedicalLocationsBySortedParams>(params)
 	runBlocking {
@@ -280,7 +280,7 @@ public fun matchMedicalLocationsBySortedBlocking(sdk: IcureNonCryptoApis, params
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchMedicalLocationsBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -300,7 +300,7 @@ private class FilterMedicalLocationsByParams(
 	public val filter: BaseFilterOptions<MedicalLocation>,
 )
 
-public fun filterMedicalLocationsByBlocking(sdk: IcureNonCryptoApis, params: String): PyResult =
+public fun filterMedicalLocationsByBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMedicalLocationsByParams>(params)
 	runBlocking {
@@ -313,7 +313,7 @@ public fun filterMedicalLocationsByBlocking(sdk: IcureNonCryptoApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterMedicalLocationsByAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -333,7 +333,7 @@ private class FilterMedicalLocationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<MedicalLocation>,
 )
 
-public fun filterMedicalLocationsBySortedBlocking(sdk: IcureNonCryptoApis, params: String): PyResult
+public fun filterMedicalLocationsBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult
 		= kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterMedicalLocationsBySortedParams>(params)
 	runBlocking {
@@ -346,7 +346,7 @@ public fun filterMedicalLocationsBySortedBlocking(sdk: IcureNonCryptoApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterMedicalLocationsBySortedAsync(
-	sdk: IcureNonCryptoApis,
+	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {

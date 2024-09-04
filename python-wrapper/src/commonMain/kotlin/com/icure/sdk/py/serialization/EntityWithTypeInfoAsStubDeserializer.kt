@@ -5,7 +5,7 @@ import com.icure.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.sdk.model.embed.Delegation
 import com.icure.sdk.model.embed.SecurityMetadata
-import com.icure.sdk.utils.InternalIcureApi
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor

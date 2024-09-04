@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.FormApi.encrypted
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.FormShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.filters.FilterOptions
@@ -46,7 +46,7 @@ private class ShareWithParams(
 	public val options: FormShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.form.encrypted.shareWith(
@@ -59,7 +59,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -83,7 +83,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, FormShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.form.encrypted.tryShareWithMany(
@@ -95,7 +95,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -118,7 +118,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, FormShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.form.encrypted.shareWithMany(
@@ -130,7 +130,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -156,7 +156,7 @@ private class FindFormsByHcPartyPatientParams(
 	public val descending: Boolean? = null,
 )
 
-public fun findFormsByHcPartyPatientBlocking(sdk: IcureApis, params: String): PyResult =
+public fun findFormsByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindFormsByHcPartyPatientParams>(params)
 	runBlocking {
@@ -173,7 +173,7 @@ public fun findFormsByHcPartyPatientBlocking(sdk: IcureApis, params: String): Py
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findFormsByHcPartyPatientAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -197,7 +197,7 @@ private class FilterFormsByParams(
 	public val filter: FilterOptions<Form>,
 )
 
-public fun filterFormsByBlocking(sdk: IcureApis, params: String): PyResult = kotlin.runCatching {
+public fun filterFormsByBlocking(sdk: CardinalApis, params: String): PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterFormsByParams>(params)
 	runBlocking {
 		sdk.form.encrypted.filterFormsBy(
@@ -209,7 +209,7 @@ public fun filterFormsByBlocking(sdk: IcureApis, params: String): PyResult = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterFormsByAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -229,7 +229,7 @@ private class FilterFormsBySortedParams(
 	public val filter: SortableFilterOptions<Form>,
 )
 
-public fun filterFormsBySortedBlocking(sdk: IcureApis, params: String): PyResult =
+public fun filterFormsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterFormsBySortedParams>(params)
 	runBlocking {
@@ -242,7 +242,7 @@ public fun filterFormsBySortedBlocking(sdk: IcureApis, params: String): PyResult
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterFormsBySortedAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -262,7 +262,7 @@ private class ModifyFormParams(
 	public val entity: EncryptedForm,
 )
 
-public fun modifyFormBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormParams>(params)
 	runBlocking {
 		sdk.form.encrypted.modifyForm(
@@ -273,7 +273,7 @@ public fun modifyFormBlocking(sdk: IcureApis, params: String): String = kotlin.r
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyFormAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -293,7 +293,7 @@ private class ModifyFormsParams(
 	public val entities: List<EncryptedForm>,
 )
 
-public fun modifyFormsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyFormsParams>(params)
 	runBlocking {
 		sdk.form.encrypted.modifyForms(
@@ -304,7 +304,7 @@ public fun modifyFormsBlocking(sdk: IcureApis, params: String): String = kotlin.
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyFormsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -324,7 +324,7 @@ private class GetFormParams(
 	public val entityId: String,
 )
 
-public fun getFormBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getForm(
@@ -335,7 +335,7 @@ public fun getFormBlocking(sdk: IcureApis, params: String): String = kotlin.runC
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -355,7 +355,7 @@ private class GetFormsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getFormsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getForms(
@@ -366,7 +366,7 @@ public fun getFormsBlocking(sdk: IcureApis, params: String): String = kotlin.run
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -386,7 +386,7 @@ private class GetLatestFormByLogicalUuidParams(
 	public val logicalUuid: String,
 )
 
-public fun getLatestFormByLogicalUuidBlocking(sdk: IcureApis, params: String): String =
+public fun getLatestFormByLogicalUuidBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
 	runBlocking {
@@ -398,7 +398,7 @@ public fun getLatestFormByLogicalUuidBlocking(sdk: IcureApis, params: String): S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getLatestFormByLogicalUuidAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -418,7 +418,7 @@ private class GetLatestFormByUniqueIdParams(
 	public val uniqueId: String,
 )
 
-public fun getLatestFormByUniqueIdBlocking(sdk: IcureApis, params: String): String =
+public fun getLatestFormByUniqueIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetLatestFormByUniqueIdParams>(params)
 	runBlocking {
@@ -430,7 +430,7 @@ public fun getLatestFormByUniqueIdBlocking(sdk: IcureApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getLatestFormByUniqueIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -450,7 +450,7 @@ private class GetFormsByLogicalUuidParams(
 	public val logicalUuid: String,
 )
 
-public fun getFormsByLogicalUuidBlocking(sdk: IcureApis, params: String): String =
+public fun getFormsByLogicalUuidBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByLogicalUuidParams>(params)
 	runBlocking {
@@ -462,7 +462,7 @@ public fun getFormsByLogicalUuidBlocking(sdk: IcureApis, params: String): String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormsByLogicalUuidAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -482,7 +482,7 @@ private class GetFormsByUniqueIdParams(
 	public val uniqueId: String,
 )
 
-public fun getFormsByUniqueIdBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getFormsByUniqueIdBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetFormsByUniqueIdParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getFormsByUniqueId(
@@ -493,7 +493,7 @@ public fun getFormsByUniqueIdBlocking(sdk: IcureApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getFormsByUniqueIdAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -514,7 +514,7 @@ private class GetChildrenFormsParams(
 	public val parentId: String,
 )
 
-public fun getChildrenFormsBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getChildrenFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetChildrenFormsParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getChildrenForms(
@@ -526,7 +526,7 @@ public fun getChildrenFormsBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getChildrenFormsAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -551,7 +551,7 @@ private class ListFormsByHCPartyAndPatientForeignKeysParams(
 	public val formTemplateId: String? = null,
 )
 
-public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: IcureApis, params: String): String =
+public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
 	runBlocking {
@@ -567,7 +567,7 @@ public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: IcureApis, param
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listFormsByHCPartyAndPatientForeignKeysAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,

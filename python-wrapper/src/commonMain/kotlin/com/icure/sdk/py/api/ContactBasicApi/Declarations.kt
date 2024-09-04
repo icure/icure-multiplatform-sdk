@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.ContactBasicApi
 
-import com.icure.sdk.IcureBaseApis
+import com.icure.sdk.CardinalBaseApis
 import com.icure.sdk.filters.BaseFilterOptions
 import com.icure.sdk.filters.BaseSortableFilterOptions
 import com.icure.sdk.model.Contact
@@ -52,7 +52,7 @@ private class MatchContactsByParams(
 	public val filter: BaseFilterOptions<Contact>,
 )
 
-public fun matchContactsByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchContactsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchContactsByParams>(params)
 	runBlocking {
@@ -64,7 +64,7 @@ public fun matchContactsByBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchContactsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -84,7 +84,7 @@ private class MatchServicesByParams(
 	public val filter: BaseFilterOptions<Service>,
 )
 
-public fun matchServicesByBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchServicesByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchServicesByParams>(params)
 	runBlocking {
@@ -96,7 +96,7 @@ public fun matchServicesByBlocking(sdk: IcureBaseApis, params: String): String =
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchServicesByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -116,7 +116,7 @@ private class MatchContactsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Contact>,
 )
 
-public fun matchContactsBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchContactsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchContactsBySortedParams>(params)
 	runBlocking {
@@ -128,7 +128,7 @@ public fun matchContactsBySortedBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchContactsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -148,7 +148,7 @@ private class MatchServicesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Service>,
 )
 
-public fun matchServicesBySortedBlocking(sdk: IcureBaseApis, params: String): String =
+public fun matchServicesBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<MatchServicesBySortedParams>(params)
 	runBlocking {
@@ -160,7 +160,7 @@ public fun matchServicesBySortedBlocking(sdk: IcureBaseApis, params: String): St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun matchServicesBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -180,7 +180,7 @@ private class FilterContactsByParams(
 	public val filter: BaseFilterOptions<Contact>,
 )
 
-public fun filterContactsByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterContactsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterContactsByParams>(params)
 	runBlocking {
@@ -193,7 +193,7 @@ public fun filterContactsByBlocking(sdk: IcureBaseApis, params: String): PyResul
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterContactsByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -213,7 +213,7 @@ private class FilterServicesByParams(
 	public val filter: BaseFilterOptions<Service>,
 )
 
-public fun filterServicesByBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterServicesByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterServicesByParams>(params)
 	runBlocking {
@@ -226,7 +226,7 @@ public fun filterServicesByBlocking(sdk: IcureBaseApis, params: String): PyResul
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterServicesByAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -246,7 +246,7 @@ private class FilterContactsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Contact>,
 )
 
-public fun filterContactsBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterContactsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterContactsBySortedParams>(params)
 	runBlocking {
@@ -259,7 +259,7 @@ public fun filterContactsBySortedBlocking(sdk: IcureBaseApis, params: String): P
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterContactsBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -279,7 +279,7 @@ private class FilterServicesBySortedParams(
 	public val filter: BaseSortableFilterOptions<Service>,
 )
 
-public fun filterServicesBySortedBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun filterServicesBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FilterServicesBySortedParams>(params)
 	runBlocking {
@@ -292,7 +292,7 @@ public fun filterServicesBySortedBlocking(sdk: IcureBaseApis, params: String): P
 
 @OptIn(ExperimentalForeignApi::class)
 public fun filterServicesBySortedAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -313,7 +313,7 @@ private class SubscribeToServiceCreateOrUpdateEventsParams(
 	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
 )
 
-public fun subscribeToServiceCreateOrUpdateEventsBlocking(sdk: IcureBaseApis, params: String):
+public fun subscribeToServiceCreateOrUpdateEventsBlocking(sdk: CardinalBaseApis, params: String):
 		PyResult = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SubscribeToServiceCreateOrUpdateEventsParams>(params)
 	runBlocking {
@@ -327,7 +327,7 @@ public fun subscribeToServiceCreateOrUpdateEventsBlocking(sdk: IcureBaseApis, pa
 
 @OptIn(ExperimentalForeignApi::class)
 public fun subscribeToServiceCreateOrUpdateEventsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
@@ -348,7 +348,7 @@ private class DeleteContactParams(
 	public val entityId: String,
 )
 
-public fun deleteContactBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteContactBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteContactParams>(params)
 	runBlocking {
 		sdk.contact.deleteContact(
@@ -359,7 +359,7 @@ public fun deleteContactBlocking(sdk: IcureBaseApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteContactAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -379,7 +379,7 @@ private class DeleteContactsParams(
 	public val entityIds: List<String>,
 )
 
-public fun deleteContactsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun deleteContactsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<DeleteContactsParams>(params)
 	runBlocking {
 		sdk.contact.deleteContacts(
@@ -390,7 +390,7 @@ public fun deleteContactsBlocking(sdk: IcureBaseApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun deleteContactsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -411,8 +411,8 @@ private class FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams(
 	public val secretPatientKeys: List<String>,
 )
 
-public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: IcureBaseApis,
-		params: String): String = kotlin.runCatching {
+public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: CardinalBaseApis,
+                                                                           params: String): String = kotlin.runCatching {
 	val decodedParams =
 			json.decodeFromString<FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
 	runBlocking {
@@ -425,7 +425,7 @@ public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -448,7 +448,7 @@ private class GetServiceCodesOccurrencesParams(
 	public val minOccurrences: Long,
 )
 
-public fun getServiceCodesOccurrencesBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getServiceCodesOccurrencesBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServiceCodesOccurrencesParams>(params)
 	runBlocking {
@@ -461,7 +461,7 @@ public fun getServiceCodesOccurrencesBlocking(sdk: IcureBaseApis, params: String
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getServiceCodesOccurrencesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -482,7 +482,7 @@ private class ModifyContactParams(
 	public val entity: EncryptedContact,
 )
 
-public fun modifyContactBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun modifyContactBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyContactParams>(params)
 	runBlocking {
 		sdk.contact.modifyContact(
@@ -493,7 +493,7 @@ public fun modifyContactBlocking(sdk: IcureBaseApis, params: String): String = k
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyContactAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -513,7 +513,7 @@ private class ModifyContactsParams(
 	public val entities: List<EncryptedContact>,
 )
 
-public fun modifyContactsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun modifyContactsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyContactsParams>(params)
 	runBlocking {
 		sdk.contact.modifyContacts(
@@ -524,7 +524,7 @@ public fun modifyContactsBlocking(sdk: IcureBaseApis, params: String): String = 
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyContactsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -544,7 +544,7 @@ private class GetContactParams(
 	public val entityId: String,
 )
 
-public fun getContactBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getContactBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetContactParams>(params)
 	runBlocking {
 		sdk.contact.getContact(
@@ -555,7 +555,7 @@ public fun getContactBlocking(sdk: IcureBaseApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getContactAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -575,7 +575,7 @@ private class GetContactsParams(
 	public val entityIds: List<String>,
 )
 
-public fun getContactsBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getContactsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetContactsParams>(params)
 	runBlocking {
 		sdk.contact.getContacts(
@@ -586,7 +586,7 @@ public fun getContactsBlocking(sdk: IcureBaseApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getContactsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -607,7 +607,7 @@ private class ListContactByHCPartyServiceIdParams(
 	public val serviceId: String,
 )
 
-public fun listContactByHCPartyServiceIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listContactByHCPartyServiceIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactByHCPartyServiceIdParams>(params)
 	runBlocking {
@@ -620,7 +620,7 @@ public fun listContactByHCPartyServiceIdBlocking(sdk: IcureBaseApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listContactByHCPartyServiceIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -641,7 +641,7 @@ private class ListContactsByExternalIdParams(
 	public val externalId: String,
 )
 
-public fun listContactsByExternalIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listContactsByExternalIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByExternalIdParams>(params)
 	runBlocking {
@@ -653,7 +653,7 @@ public fun listContactsByExternalIdBlocking(sdk: IcureBaseApis, params: String):
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listContactsByExternalIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -674,7 +674,7 @@ private class ListContactsByHCPartyAndFormIdParams(
 	public val formId: String,
 )
 
-public fun listContactsByHCPartyAndFormIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listContactsByHCPartyAndFormIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByHCPartyAndFormIdParams>(params)
 	runBlocking {
@@ -687,7 +687,7 @@ public fun listContactsByHCPartyAndFormIdBlocking(sdk: IcureBaseApis, params: St
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listContactsByHCPartyAndFormIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -709,7 +709,7 @@ private class ListContactsByHCPartyAndFormIdsParams(
 	public val formIds: List<String>,
 )
 
-public fun listContactsByHCPartyAndFormIdsBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listContactsByHCPartyAndFormIdsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByHCPartyAndFormIdsParams>(params)
 	runBlocking {
@@ -722,7 +722,7 @@ public fun listContactsByHCPartyAndFormIdsBlocking(sdk: IcureBaseApis, params: S
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listContactsByHCPartyAndFormIdsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -746,7 +746,7 @@ private class ListContactsByHCPartyAndPatientSecretFKeysParams(
 	public val skipClosedContacts: Boolean? = null,
 )
 
-public fun listContactsByHCPartyAndPatientSecretFKeysBlocking(sdk: IcureBaseApis, params: String):
+public fun listContactsByHCPartyAndPatientSecretFKeysBlocking(sdk: CardinalBaseApis, params: String):
 		String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListContactsByHCPartyAndPatientSecretFKeysParams>(params)
 	runBlocking {
@@ -761,7 +761,7 @@ public fun listContactsByHCPartyAndPatientSecretFKeysBlocking(sdk: IcureBaseApis
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listContactsByHCPartyAndPatientSecretFKeysAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -784,7 +784,7 @@ private class GetServiceParams(
 	public val serviceId: String,
 )
 
-public fun getServiceBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getServiceBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServiceParams>(params)
 	runBlocking {
 		sdk.contact.getService(
@@ -795,7 +795,7 @@ public fun getServiceBlocking(sdk: IcureBaseApis, params: String): String = kotl
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getServiceAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -815,7 +815,7 @@ private class GetServicesParams(
 	public val entityIds: List<String>,
 )
 
-public fun getServicesBlocking(sdk: IcureBaseApis, params: String): String = kotlin.runCatching {
+public fun getServicesBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServicesParams>(params)
 	runBlocking {
 		sdk.contact.getServices(
@@ -826,7 +826,7 @@ public fun getServicesBlocking(sdk: IcureBaseApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getServicesAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -847,7 +847,7 @@ private class GetServicesLinkedToParams(
 	public val ids: List<String>,
 )
 
-public fun getServicesLinkedToBlocking(sdk: IcureBaseApis, params: String): String =
+public fun getServicesLinkedToBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetServicesLinkedToParams>(params)
 	runBlocking {
@@ -860,7 +860,7 @@ public fun getServicesLinkedToBlocking(sdk: IcureBaseApis, params: String): Stri
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getServicesLinkedToAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -881,7 +881,7 @@ private class ListServicesByAssociationIdParams(
 	public val associationId: String,
 )
 
-public fun listServicesByAssociationIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listServicesByAssociationIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListServicesByAssociationIdParams>(params)
 	runBlocking {
@@ -893,7 +893,7 @@ public fun listServicesByAssociationIdBlocking(sdk: IcureBaseApis, params: Strin
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listServicesByAssociationIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -914,7 +914,7 @@ private class ListServicesByHealthElementIdParams(
 	public val healthElementId: String,
 )
 
-public fun listServicesByHealthElementIdBlocking(sdk: IcureBaseApis, params: String): String =
+public fun listServicesByHealthElementIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListServicesByHealthElementIdParams>(params)
 	runBlocking {
@@ -927,7 +927,7 @@ public fun listServicesByHealthElementIdBlocking(sdk: IcureBaseApis, params: Str
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listServicesByHealthElementIdAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -953,7 +953,7 @@ private class FindContactsByOpeningDateParams(
 	public val limit: Int? = null,
 )
 
-public fun findContactsByOpeningDateBlocking(sdk: IcureBaseApis, params: String): String =
+public fun findContactsByOpeningDateBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<FindContactsByOpeningDateParams>(params)
 	runBlocking {
@@ -970,7 +970,7 @@ public fun findContactsByOpeningDateBlocking(sdk: IcureBaseApis, params: String)
 
 @OptIn(ExperimentalForeignApi::class)
 public fun findContactsByOpeningDateAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -997,7 +997,7 @@ private class SubscribeToEventsParams(
 	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
 )
 
-public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResult =
+public fun subscribeToEventsBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
 	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
 	runBlocking {
@@ -1012,7 +1012,7 @@ public fun subscribeToEventsBlocking(sdk: IcureBaseApis, params: String): PyResu
 
 @OptIn(ExperimentalForeignApi::class)
 public fun subscribeToEventsAsync(
-	sdk: IcureBaseApis,
+	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {

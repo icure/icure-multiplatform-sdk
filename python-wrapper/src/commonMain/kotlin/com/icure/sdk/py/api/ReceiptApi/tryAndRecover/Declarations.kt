@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.sdk.py.api.ReceiptApi.tryAndRecover
 
-import com.icure.sdk.IcureApis
+import com.icure.sdk.CardinalApis
 import com.icure.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.sdk.crypto.entities.SimpleShareResult
 import com.icure.sdk.model.Receipt
@@ -33,7 +33,7 @@ private class ShareWithParams(
 	public val options: ReceiptShareOptions? = null,
 )
 
-public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.receipt.tryAndRecover.shareWith(
@@ -46,7 +46,7 @@ public fun shareWithBlocking(sdk: IcureApis, params: String): String = kotlin.ru
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -69,7 +69,7 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, ReceiptShareOptions>,
 )
 
-public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.receipt.tryAndRecover.tryShareWithMany(
@@ -81,7 +81,7 @@ public fun tryShareWithManyBlocking(sdk: IcureApis, params: String): String = ko
 
 @OptIn(ExperimentalForeignApi::class)
 public fun tryShareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -103,7 +103,7 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, ReceiptShareOptions>,
 )
 
-public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.receipt.tryAndRecover.shareWithMany(
@@ -115,7 +115,7 @@ public fun shareWithManyBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun shareWithManyAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -136,7 +136,7 @@ private class ModifyReceiptParams(
 	public val entity: Receipt,
 )
 
-public fun modifyReceiptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun modifyReceiptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ModifyReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.tryAndRecover.modifyReceipt(
@@ -147,7 +147,7 @@ public fun modifyReceiptBlocking(sdk: IcureApis, params: String): String = kotli
 
 @OptIn(ExperimentalForeignApi::class)
 public fun modifyReceiptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -167,7 +167,7 @@ private class GetReceiptParams(
 	public val entityId: String,
 )
 
-public fun getReceiptBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun getReceiptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<GetReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.tryAndRecover.getReceipt(
@@ -178,7 +178,7 @@ public fun getReceiptBlocking(sdk: IcureApis, params: String): String = kotlin.r
 
 @OptIn(ExperimentalForeignApi::class)
 public fun getReceiptAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
@@ -198,7 +198,7 @@ private class ListByReferenceParams(
 	public val reference: String,
 )
 
-public fun listByReferenceBlocking(sdk: IcureApis, params: String): String = kotlin.runCatching {
+public fun listByReferenceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
 	val decodedParams = json.decodeFromString<ListByReferenceParams>(params)
 	runBlocking {
 		sdk.receipt.tryAndRecover.listByReference(
@@ -209,7 +209,7 @@ public fun listByReferenceBlocking(sdk: IcureApis, params: String): String = kot
 
 @OptIn(ExperimentalForeignApi::class)
 public fun listByReferenceAsync(
-	sdk: IcureApis,
+	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
