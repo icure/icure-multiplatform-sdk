@@ -36,7 +36,7 @@ export class CheckBox {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.CheckBox' = 'com.icure.sdk.model.embed.form.template.CheckBox';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.CheckBox' = 'com.icure.cardinal.sdk.model.embed.form.template.CheckBox';
 
 	constructor(partial: Partial<CheckBox> & Pick<CheckBox, "field">) {
 		this.field = partial.field;

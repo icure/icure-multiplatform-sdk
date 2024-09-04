@@ -1,10 +1,10 @@
 // auto-generated file
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {EntityAccessInformation} from '../crypto/entities/EntityAccessInformation.mjs';
 import {EntityWithTypeInfo} from '../crypto/entities/EntityWithTypeInfo.mjs';
 import {PatientShareOptions} from '../crypto/entities/PatientShareOptions.mjs';
 import {ShareAllPatientDataOptions} from '../crypto/entities/ShareAllPatientDataOptions.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
-import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../icure-sdk-ts.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DecryptedPatient, EncryptedPatient, Patient} from '../model/Patient.mjs';

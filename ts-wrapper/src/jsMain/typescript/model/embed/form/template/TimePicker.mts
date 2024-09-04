@@ -36,7 +36,7 @@ export class TimePicker {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.TimePicker' = 'com.icure.sdk.model.embed.form.template.TimePicker';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.TimePicker' = 'com.icure.cardinal.sdk.model.embed.form.template.TimePicker';
 
 	constructor(partial: Partial<TimePicker> & Pick<TimePicker, "field">) {
 		this.field = partial.field;

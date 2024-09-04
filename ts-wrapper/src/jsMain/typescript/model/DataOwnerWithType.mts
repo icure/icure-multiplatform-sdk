@@ -12,7 +12,7 @@ export namespace DataOwnerWithType {
 
 		dataOwner: HealthcareParty;
 
-		readonly $ktClass: 'com.icure.sdk.model.DataOwnerWithType.HcpDataOwner' = 'com.icure.sdk.model.DataOwnerWithType.HcpDataOwner';
+		readonly $ktClass: 'com.icure.cardinal.sdk.model.DataOwnerWithType.HcpDataOwner' = 'com.icure.cardinal.sdk.model.DataOwnerWithType.HcpDataOwner';
 
 		constructor(partial: Partial<HcpDataOwner> & Pick<HcpDataOwner, "dataOwner">) {
 			this.dataOwner = partial.dataOwner;
@@ -24,7 +24,7 @@ export namespace DataOwnerWithType {
 
 		dataOwner: EncryptedPatient;
 
-		readonly $ktClass: 'com.icure.sdk.model.DataOwnerWithType.PatientDataOwner' = 'com.icure.sdk.model.DataOwnerWithType.PatientDataOwner';
+		readonly $ktClass: 'com.icure.cardinal.sdk.model.DataOwnerWithType.PatientDataOwner' = 'com.icure.cardinal.sdk.model.DataOwnerWithType.PatientDataOwner';
 
 		constructor(partial: Partial<PatientDataOwner> & Pick<PatientDataOwner, "dataOwner">) {
 			this.dataOwner = partial.dataOwner;
@@ -36,7 +36,7 @@ export namespace DataOwnerWithType {
 
 		dataOwner: Device;
 
-		readonly $ktClass: 'com.icure.sdk.model.DataOwnerWithType.DeviceDataOwner' = 'com.icure.sdk.model.DataOwnerWithType.DeviceDataOwner';
+		readonly $ktClass: 'com.icure.cardinal.sdk.model.DataOwnerWithType.DeviceDataOwner' = 'com.icure.cardinal.sdk.model.DataOwnerWithType.DeviceDataOwner';
 
 		constructor(partial: Partial<DeviceDataOwner> & Pick<DeviceDataOwner, "dataOwner">) {
 			this.dataOwner = partial.dataOwner;

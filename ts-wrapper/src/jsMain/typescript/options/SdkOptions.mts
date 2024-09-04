@@ -2,7 +2,7 @@ import {XCryptoService} from "../crypto/CryptoService.mjs";
 import {UserGroup} from "../model/UserGroup.mjs";
 import {KeyStorageFacade} from "../storage/StorageFacade.mjs";
 import {CryptoStrategies} from "../crypto/CryptoStrategies.mjs";
-import {IcureKeyStorageOptions} from "../icure-sdk-ts.mjs";
+import {CardinalKeyStorageOptions} from "../cardinal-sdk-ts.mjs";
 
 export interface SdkOptions {
   /**
@@ -60,7 +60,7 @@ export interface SdkOptions {
    * Implementation of key storage to use.
    * If not provided the sdk will store the keys in the StorageFacade provided to the api initialization method.
    */
-  readonly keyStorage?: KeyStorageFacade | IcureKeyStorageOptions
+  readonly keyStorage?: KeyStorageFacade | CardinalKeyStorageOptions
   /**
    * Custom crypto strategies. If not provided the sdk will use crypto strategies that:
    * - Allow for the creation of a new key of the data owner

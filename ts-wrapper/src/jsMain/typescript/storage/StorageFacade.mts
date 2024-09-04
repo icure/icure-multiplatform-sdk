@@ -1,9 +1,9 @@
 import {
-	IcureKeyStorageOptions,
-	IcureStorageOptions,
-	InternalIcureKeyStorageOptionsFactory,
-	InternalIcureStorageOptionsFactory
-} from "../icure-sdk-ts.mjs";
+	CardinalKeyStorageOptions,
+	CardinalStorageOptions,
+	InternalCardinalKeyStorageOptionsFactory,
+	InternalCardinalStorageOptionsFactory
+} from "../cardinal-sdk-ts.mjs";
 
 /**
  * Provides permanent storage capabilities to the SDK
@@ -37,15 +37,15 @@ export namespace StorageFacade {
 	 * directory. These options are usable only on node.
 	 * @param directory
 	 */
-	export function usingFileSystem(directory: string): IcureStorageOptions {
-		return InternalIcureStorageOptionsFactory.getInstance().fileSystem(directory)
+	export function usingFileSystem(directory: string): CardinalStorageOptions {
+		return InternalCardinalStorageOptionsFactory.getInstance().fileSystem(directory)
 	}
 	/**
 	 * Factory method returning storage options that will cause the sdk to store the data as entries on the browser
 	 * local storage. These options require the `localStorage` global to be available
 	 */
-	export function usingBrowserLocalStorage(): IcureStorageOptions {
-		return InternalIcureStorageOptionsFactory.getInstance().browserLocalStorage()
+	export function usingBrowserLocalStorage(): CardinalStorageOptions {
+		return InternalCardinalStorageOptionsFactory.getInstance().browserLocalStorage()
 	}
 }
 
@@ -95,15 +95,15 @@ export namespace KeyStorageFacade {
 	 * Factory method returning storage options that will cause the sdk to store the keys as string entries on the
 	 * provided storage facade. The raw keys data (spki or pkcs8) will be encoded as base 64
 	 */
-	export function encodingAsBase64(baseStorage: StorageFacade | IcureStorageOptions): IcureKeyStorageOptions {
-		return InternalIcureKeyStorageOptionsFactory.getInstance().encodingAsBase64(baseStorage)
+	export function encodingAsBase64(baseStorage: StorageFacade | CardinalStorageOptions): CardinalKeyStorageOptions {
+		return InternalCardinalKeyStorageOptionsFactory.getInstance().encodingAsBase64(baseStorage)
 	}
 
 	/**
 	 * Factory method returning storage options that will cause the sdk to store the keys as string entries on the
 	 * provided storage facade. The keys will be stored as json in jwk format.
 	 */
-	export function encodingAsJwk(baseStorage: StorageFacade | IcureStorageOptions): IcureKeyStorageOptions {
-		return InternalIcureKeyStorageOptionsFactory.getInstance().encodingAsJwk(baseStorage)
+	export function encodingAsJwk(baseStorage: StorageFacade | CardinalStorageOptions): CardinalKeyStorageOptions {
+		return InternalCardinalKeyStorageOptionsFactory.getInstance().encodingAsJwk(baseStorage)
 	}
 }

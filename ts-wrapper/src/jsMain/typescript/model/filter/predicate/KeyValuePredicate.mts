@@ -10,7 +10,7 @@ export class KeyValuePredicate {
 
 	value: any | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.filter.predicate.KeyValuePredicate' = 'com.icure.sdk.model.filter.predicate.KeyValuePredicate';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.filter.predicate.KeyValuePredicate' = 'com.icure.cardinal.sdk.model.filter.predicate.KeyValuePredicate';
 
 	constructor(partial: Partial<KeyValuePredicate>) {
 		if ('key' in partial) this.key = partial.key;

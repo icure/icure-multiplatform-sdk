@@ -36,7 +36,7 @@ export class DateTimePicker {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.DateTimePicker' = 'com.icure.sdk.model.embed.form.template.DateTimePicker';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.DateTimePicker' = 'com.icure.cardinal.sdk.model.embed.form.template.DateTimePicker';
 
 	constructor(partial: Partial<DateTimePicker> & Pick<DateTimePicker, "field">) {
 		this.field = partial.field;

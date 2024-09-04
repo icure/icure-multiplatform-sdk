@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalCalendarItemFiltersObj, SortableFilterOptions} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalCalendarItemFiltersObj, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {CalendarItem} from '../model/CalendarItem.mjs';
 import {Patient} from '../model/Patient.mjs';
 

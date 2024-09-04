@@ -263,7 +263,7 @@ applied only to a whole file, and not only to a single declaration. The resultin
 
 src/com/icure/sdk/model/js/Something.kt
 ```kotlin
-package com.icure.sdk.model.js
+package com.icure.cardinal.sdk.model.js
 
 @JsName("Something")
 external interface SomethingJs {
@@ -273,7 +273,7 @@ external interface SomethingJs {
 src/com/icure/sdk/model/js/Something_Nested.kt
 ```kotlin
 @file:JsModule("Something")
-package com.icure.sdk.model.js
+package com.icure.cardinal.sdk.model.js
 
 @JsName("Nested1")
 external interface Something_Nested1Js {
@@ -288,7 +288,7 @@ external interface Something_Nested2Js {
 src/com/icure/sdk/model/js/Something_Nested1_Nested.kt
 ```kotlin
 @file:JsModule("Something.Nested1")
-package com.icure.sdk.model.js
+package com.icure.cardinal.sdk.model.js
 
 @JsName("DeeplyNested")
 external interface Something_Nested1_DeeplyNestedJs {

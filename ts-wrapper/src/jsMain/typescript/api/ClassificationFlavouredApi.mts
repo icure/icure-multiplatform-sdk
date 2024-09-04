@@ -1,7 +1,7 @@
 // auto-generated file
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {ClassificationShareOptions} from '../crypto/entities/ClassificationShareOptions.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
-import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../icure-sdk-ts.mjs';
 import {Classification} from '../model/Classification.mjs';
 import {Patient} from '../model/Patient.mjs';
 

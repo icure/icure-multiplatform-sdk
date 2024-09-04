@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {DataOwnerRegistrationSuccess} from '../model/DataOwnerRegistrationSuccess.mjs';
 import {HealthcareParty} from '../model/HealthcareParty.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';

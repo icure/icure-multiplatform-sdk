@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, InternalGroupFiltersObj} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, InternalGroupFiltersObj} from '../cardinal-sdk-ts.mjs';
 import {Group} from '../model/Group.mjs';
 
 

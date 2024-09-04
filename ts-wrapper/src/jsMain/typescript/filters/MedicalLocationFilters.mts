@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, InternalMedicalLocationFiltersObj} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, InternalMedicalLocationFiltersObj} from '../cardinal-sdk-ts.mjs';
 import {MedicalLocation} from '../model/MedicalLocation.mjs';
 
 

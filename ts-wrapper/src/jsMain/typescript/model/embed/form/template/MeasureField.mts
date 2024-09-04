@@ -36,7 +36,7 @@ export class MeasureField {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.MeasureField' = 'com.icure.sdk.model.embed.form.template.MeasureField';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.MeasureField' = 'com.icure.cardinal.sdk.model.embed.form.template.MeasureField';
 
 	constructor(partial: Partial<MeasureField> & Pick<MeasureField, "field">) {
 		this.field = partial.field;

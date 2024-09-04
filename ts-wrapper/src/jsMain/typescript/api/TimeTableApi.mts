@@ -1,8 +1,8 @@
 // auto-generated file
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TimeTableShareOptions} from '../crypto/entities/TimeTableShareOptions.mjs';
-import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../icure-sdk-ts.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {DecryptedTimeTable, EncryptedTimeTable, TimeTable} from '../model/TimeTable.mjs';
 import {User} from '../model/User.mjs';

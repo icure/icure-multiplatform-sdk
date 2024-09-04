@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 import java.io.FileWriter
 
 plugins {
@@ -7,7 +8,7 @@ plugins {
 val version: String? by project
 project.version = version ?: "0.0.0-snapshot"
 
-val moduleName = "icure-sdk-ts"
+val moduleName = "cardinal-sdk-ts"
 
 kotlin {
 	configureKotlinJs(this, moduleName)
@@ -206,7 +207,7 @@ tasks.register("prepareDistributionPackage") {
 			into = tsPackage.resolve("package.json"),
 			replacing = listOf(
 				Replacement("$moduleName.d.ts", with = "$moduleName.d.mts"),
-				Replacement("\"name\": \"$moduleName\"", with = "\"name\": \"@icure/api\""),
+				Replacement("\"name\": \"$moduleName\"", with = "\"name\": \"@icure/cardinal-sdk\""),
 				Replacement("\"ws\": \"8.5.0\"", with = "\"ws\": \"8.17.0\"") // Version 8.5.0 has some issues with bun
 			)
 		)

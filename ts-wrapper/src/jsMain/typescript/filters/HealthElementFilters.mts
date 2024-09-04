@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalHealthElementFiltersObj, SortableFilterOptions} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalHealthElementFiltersObj, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {HealthElement} from '../model/HealthElement.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {Identifier} from '../model/base/Identifier.mjs';

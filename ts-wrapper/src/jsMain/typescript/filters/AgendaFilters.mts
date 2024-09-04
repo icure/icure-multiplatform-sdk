@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, InternalAgendaFiltersObj} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, InternalAgendaFiltersObj} from '../cardinal-sdk-ts.mjs';
 import {Agenda} from '../model/Agenda.mjs';
 
 

@@ -17,7 +17,7 @@ import {TopicApi} from "../api/TopicApi.mjs";
 import {CryptoApi} from "../api/CryptoApi.mjs";
 import {DataOwnerApi} from "../api/DataOwnerApi.mjs";
 import {UserApi} from "../api/UserApi.mjs";
-import {IcureMaintenanceTaskApi} from "../api/IcureMaintenanceTaskApi.mjs";
+import {CardinalMaintenanceTaskApi} from "../api/CardinalMaintenanceTaskApi.mjs";
 import {RecoveryApi} from "../api/RecoveryApi.mjs";
 import {
   AuthenticationMethod,
@@ -25,7 +25,7 @@ import {
   AuthenticationProcessTelecomType, AuthenticationProcessTemplateParameters
 } from "../options/AuthenticationMethod.mjs";
 import {StorageFacade} from "../storage/StorageFacade.mjs";
-import {IcureStorageOptions, InternalSdkInitializers} from "../icure-sdk-ts.mjs";
+import {CardinalStorageOptions, InternalSdkInitializers} from "../cardinal-sdk-ts.mjs";
 import {SdkOptions, BasicSdkOptions} from "../options/SdkOptions.mjs";
 import {ApplicationSettingsApi} from "../api/ApplicationSettingsApi.mjs";
 import {CodeApi} from "../api/CodeApi.mjs";
@@ -35,7 +35,7 @@ import {EntityTemplateApi} from "../api/EntityTemplateApi.mjs";
 import {FrontEndMigrationApi} from "../api/FrontEndMigrationApi.mjs";
 import {GroupApi} from "../api/GroupApi.mjs";
 import {HealthcarePartyApi} from "../api/HealthcarePartyApi.mjs";
-import {ICureApi} from "../api/ICureApi.mjs";
+import {SystemApi} from "../api/SystemApi.mjs";
 import {InsuranceApi} from "../api/InsuranceApi.mjs";
 import {KeywordApi} from "../api/KeywordApi.mjs";
 import {PlaceApi} from "../api/PlaceApi.mjs";
@@ -72,7 +72,7 @@ export interface IcureSdk{
   readonly frontEndMigration: FrontEndMigrationApi
   readonly group: GroupApi
   readonly healthcareParty: HealthcarePartyApi
-  readonly iCure: ICureApi
+  readonly system: SystemApi
   readonly insurance: InsuranceApi
   readonly keyword: KeywordApi
   readonly permission: PermissionApi
@@ -98,7 +98,7 @@ export interface IcureSdk{
   readonly topic: TopicApi
   readonly crypto: CryptoApi
   readonly recovery: RecoveryApi
-  readonly icureMaintenanceTask: IcureMaintenanceTaskApi
+  readonly cardinalMaintenanceTask: CardinalMaintenanceTaskApi
   readonly dataOwner: DataOwnerApi
 
   /**
@@ -127,7 +127,7 @@ export interface IcureBaseSdk {
   readonly frontEndMigration: FrontEndMigrationApi
   readonly group: GroupApi
   readonly healthcareParty: HealthcarePartyApi
-  readonly iCure: ICureApi
+  readonly system: SystemApi
   readonly insurance: InsuranceApi
   readonly keyword: KeywordApi
   readonly permission: PermissionApi
@@ -179,7 +179,7 @@ export namespace IcureSdk {
     applicationId: string | undefined,
     baseUrl: string,
     authenticationMethod: AuthenticationMethod,
-    baseStorage: StorageFacade | IcureStorageOptions,
+    baseStorage: StorageFacade | CardinalStorageOptions,
     options?: SdkOptions
   ): Promise<IcureSdk> {
     return await InternalSdkInitializers.getInstance().initializeSdk(
@@ -222,7 +222,7 @@ export namespace IcureSdk {
     userTelecom: string,
     captchaType: AuthenticationProcessCaptchaType,
     captchaKey: string,
-    baseStorage: StorageFacade | IcureStorageOptions,
+    baseStorage: StorageFacade | CardinalStorageOptions,
     authenticationProcessTemplateParameters?: AuthenticationProcessTemplateParameters,
     options?: SdkOptions
   ): Promise<AuthenticationWithProcessStep> {
