@@ -21,7 +21,6 @@ import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeyp
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.utils.DefaultValue
-import com.icure.sdk.serialization.ByteArraySerializer
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Deprecated

@@ -14,7 +14,6 @@ import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
-import com.icure.sdk.serialization.ByteArraySerializer
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Long

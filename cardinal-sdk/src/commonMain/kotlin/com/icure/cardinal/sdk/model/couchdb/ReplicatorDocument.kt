@@ -24,6 +24,7 @@ data class ReplicatorDocument(
 	public val continuous: Boolean? = null,
 	public val doc_ids: List<String>? = null,
 	public val replicationState: String? = null,
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	public val replicationStateTime: ZonedDateTime? = null,
 	public val replicationStats: ReplicationStats? = null,
 	public val errorCount: Int? = null,

@@ -12,6 +12,7 @@ import com.icure.cardinal.sdk.serialization.AnyPrimitiveSerializer
 data class KeyValuePredicate(
 	public val key: String? = null,
 	public val `operator`: Operator? = null,
+	@Serializable(with = AnyPrimitiveSerializer::class)
 	public val `value`: AnyPrimitive? = null,
 ) : Predicate {
 	// region KeyValuePredicate-KeyValuePredicate

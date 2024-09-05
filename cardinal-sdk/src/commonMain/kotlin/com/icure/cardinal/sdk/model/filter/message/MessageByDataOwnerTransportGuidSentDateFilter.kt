@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.model.filter.message
 
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
-import com.icure.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

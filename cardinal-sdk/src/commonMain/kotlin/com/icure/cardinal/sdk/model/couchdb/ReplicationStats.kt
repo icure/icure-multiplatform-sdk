@@ -18,6 +18,7 @@ data class ReplicationStats(
 	public val changesPending: Int? = null,
 	public val docWriteFailures: Int? = null,
 	public val checkpointedSourceSeq: String? = null,
+	@Serializable(with = ZonedDateTimeSerializer::class)
 	public val startTime: ZonedDateTime? = null,
 	public val error: String? = null,
 ) {

@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.model.embed.DocumentGroup
 import com.icure.cardinal.sdk.model.embed.DocumentType
 import com.icure.cardinal.sdk.utils.DefaultValue
-import com.icure.sdk.serialization.ByteArraySerializer
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.Long

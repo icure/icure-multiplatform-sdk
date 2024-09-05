@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.model.base
 
-import com.icure.sdk.serialization.ByteArraySerializer
 import kotlinx.serialization.Serializable
 import kotlin.ByteArray
 import kotlin.String
