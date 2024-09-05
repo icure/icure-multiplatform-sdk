@@ -20,6 +20,7 @@ import com.icure.cardinal.sdk.serialization.AnyAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.CodeAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.ContactAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.DeviceAbstractFilterSerializer
+import com.icure.cardinal.sdk.serialization.EncryptableSerializationModule
 import com.icure.cardinal.sdk.serialization.FilterChainSerializer
 import com.icure.cardinal.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.HealthcarePartyAbstractFilterSerializer
@@ -31,11 +32,13 @@ import com.icure.cardinal.sdk.serialization.ServiceAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
 import com.icure.cardinal.sdk.serialization.TopicAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.UserAbstractFilterSerializer
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.plus
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 
@@ -117,5 +120,14 @@ object Serialization {
 		explicitNulls = true
 		ignoreUnknownKeys = true
 		serializersModule = ICureSerializerModule
+	}
+
+	@InternalIcureApi
+	val fullLanguageInteropJson = Json {
+		encodeDefaults = true
+		explicitNulls = true
+		ignoreUnknownKeys = false
+		serializersModule = ICureSerializerModule.plus(EncryptableSerializationModule.module)
+		classDiscriminator = "kotlinType"
 	}
 }

@@ -2,7 +2,10 @@ package com.icure.cardinal.sdk.filters
 
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.base.Identifier
@@ -149,12 +152,13 @@ object ServiceFilters {
      * @param patients a list of patients.
      * @param dataOwnerId a data owner id
      */
+    @OptIn(InternalIcureApi::class)
     fun byPatientsForDataOwner(
         dataOwnerId: String,
         patients: List<Patient>,
     ): SortableFilterOptions<Service> = ByPatientsForDataOwner(
-        patients = patients,
-        dataOwnerId = dataOwnerId
+	    patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+	    dataOwnerId = dataOwnerId
     )
 
     /**
@@ -202,7 +206,6 @@ object ServiceFilters {
      * identifiers. In case an entity has multiple identifiers only the first matching identifier is considered for the
      * sorting.
      * @param identifiers a list of identifiers
-     * @param dataOwnerId a data owner id
      * @return options for service filtering
      */
     fun byIdentifiersForSelf(
@@ -294,10 +297,11 @@ object ServiceFilters {
      *
      * @param patients a list of patients.
      */
+    @OptIn(InternalIcureApi::class)
     fun byPatientsForSelf(
         patients: List<Patient>,
     ): SortableFilterOptions<Service> = ByPatientsForSelf(
-        patients = patients,
+	    patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
     )
 
     /**
@@ -307,7 +311,6 @@ object ServiceFilters {
      * secret id, using the same order as the input.
      *
      * @param secretIds a list of patients secret ids
-     * @param dataOwnerId a data owner id
      */
     fun byPatientsSecretIdsForSelf(
         secretIds: List<String>,
@@ -411,9 +414,10 @@ object ServiceFilters {
     }
 
     @Serializable
+    @InternalIcureApi
     internal class ByPatientsForDataOwner(
-        val patients: List<Patient>,
-        val dataOwnerId: String
+	    val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+	    val dataOwnerId: String
     ): SortableFilterOptions<Service>
 
     @Serializable
@@ -465,8 +469,9 @@ object ServiceFilters {
     }
 
     @Serializable
+    @InternalIcureApi
     internal class ByPatientsForSelf(
-        val patients: List<Patient>
+        val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>
     ): SortableFilterOptions<Service>
 
     @Serializable
@@ -548,7 +553,7 @@ internal suspend fun mapServiceFilterOptions(
             patientSecretForeignKeys = filterOptions.patients.flatMap {
                 requireNotNull(entityEncryptionService) {
                     "Service filter options `byPatients` can't be used in iCure base apis"
-                }.secretIdsOf(it.withTypeInfo(), null)
+                }.secretIdsOf(it, null)
             }.toSet(),
             healthcarePartyId = filterOptions.dataOwnerId
         )
@@ -602,7 +607,7 @@ internal suspend fun mapServiceFilterOptions(
         filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
         ServiceBySecretForeignKeys(
             patientSecretForeignKeys = filterOptions.patients.flatMap {
-                entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+                entityEncryptionService.secretIdsOf(it, null)
             }.toSet(),
             healthcarePartyId = selfDataOwnerId
         )

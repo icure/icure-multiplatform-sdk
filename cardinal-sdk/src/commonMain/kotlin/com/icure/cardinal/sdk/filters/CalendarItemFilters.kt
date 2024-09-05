@@ -2,7 +2,10 @@ package com.icure.cardinal.sdk.filters
 
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -39,6 +42,7 @@ object CalendarItemFilters {
 	 * @param to the maximum fuzzy date for [CalendarItem.startTime], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [CalendarItem.startTime] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsStartTimeForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -48,7 +52,13 @@ object CalendarItemFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<CalendarItem> = ByPatientsStartTimeForDataOwner(dataOwnerId, patients, from, to, descending)
+	): SortableFilterOptions<CalendarItem> = ByPatientsStartTimeForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -72,6 +82,7 @@ object CalendarItemFilters {
 	 * @param to the maximum fuzzy date for [CalendarItem.startTime], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [CalendarItem.startTime] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsStartTimeForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -80,7 +91,12 @@ object CalendarItemFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<CalendarItem> = ByPatientsStartTimeForSelf(patients, from, to, descending)
+	): SortableFilterOptions<CalendarItem> = ByPatientsStartTimeForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -199,17 +215,19 @@ object CalendarItemFilters {
 	): FilterOptions<CalendarItem> = ByRecurrenceId(recurrenceId)
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsStartTimeForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
 	): SortableFilterOptions<CalendarItem>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsStartTimeForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -272,7 +290,7 @@ internal suspend fun mapCalendarItemFilterOptions(
 		CalendarItemByDataOwnerPatientStartTimeFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			secretPatientIds = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
@@ -284,7 +302,7 @@ internal suspend fun mapCalendarItemFilterOptions(
 		CalendarItemByDataOwnerPatientStartTimeFilter(
 			dataOwnerId = selfDataOwnerId,
 			secretPatientIds = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,

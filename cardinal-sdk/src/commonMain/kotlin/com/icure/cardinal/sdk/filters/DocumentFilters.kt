@@ -2,7 +2,10 @@ package com.icure.cardinal.sdk.filters
 
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.embed.DocumentType
@@ -39,6 +42,7 @@ object DocumentFilters {
 	 * @param to the maximum value for [Document.created] (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Document.created] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsCreatedForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -48,7 +52,13 @@ object DocumentFilters {
 		to: Instant? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<Document> = ByPatientsCreatedForDataOwner(dataOwnerId, patients, from, to, descending)
+	): SortableFilterOptions<Document> = ByPatientsCreatedForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for document filtering which match all documents shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -72,6 +82,7 @@ object DocumentFilters {
 	 * @param to the maximum value for [Document.created] (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Document.created] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsCreatedForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -80,7 +91,12 @@ object DocumentFilters {
 		to: Instant? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<Document> = ByPatientsCreatedForSelf(patients, from, to, descending)
+	): SortableFilterOptions<Document> = ByPatientsCreatedForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for document filtering which match all documents shared directly (i.e. ignoring hierarchies) with a specific owner
@@ -156,11 +172,16 @@ object DocumentFilters {
 	 * @param documentType the document type to search.
 	 * @param patients a list of patients.
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsAndTypeForDataOwner(
 		dataOwnerId: String,
 		documentType: DocumentType,
 		patients: List<Patient>
-	): FilterOptions<Document> = ByPatientsTypeForDataOwner(dataOwnerId, patients, documentType)
+	): FilterOptions<Document> = ByPatientsTypeForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		type = documentType
+	)
 
 	/**
 	 * Options for document filter which match all the documents shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -176,10 +197,14 @@ object DocumentFilters {
 	 * @param documentType the document type to search.
 	 * @param patients a list of patients.
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsAndTypeForSelf(
 		documentType: DocumentType,
 		patients: List<Patient>
-	): FilterOptions<Document> = ByPatientsTypeForSelf(patients, documentType)
+	): FilterOptions<Document> = ByPatientsTypeForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		documentType
+	)
 
 	/**
 	 * Options for document filter which match all the documents shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -218,17 +243,19 @@ object DocumentFilters {
 
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsCreatedForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
 	): SortableFilterOptions<Document>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsCreatedForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -252,15 +279,17 @@ object DocumentFilters {
 	): SortableFilterOptions<Document>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsTypeForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val type: DocumentType
 	): FilterOptions<Document>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsTypeForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val type: DocumentType
 	): FilterOptions<Document>
 
@@ -291,7 +320,7 @@ internal suspend fun mapDocumentFilterOptions(
 		DocumentByDataOwnerPatientDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
@@ -303,7 +332,7 @@ internal suspend fun mapDocumentFilterOptions(
 		DocumentByDataOwnerPatientDateFilter(
 			dataOwnerId = selfDataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
@@ -332,7 +361,7 @@ internal suspend fun mapDocumentFilterOptions(
 		DocumentByTypeDataOwnerPatientFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			documentType = filterOptions.type
 		)
@@ -342,7 +371,7 @@ internal suspend fun mapDocumentFilterOptions(
 		DocumentByTypeDataOwnerPatientFilter(
 			dataOwnerId = selfDataOwnerId,
 			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			documentType = filterOptions.type
 		)
