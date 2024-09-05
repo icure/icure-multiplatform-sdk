@@ -40,7 +40,7 @@ kotlin {
 	sourceSets {
 		commonMain {
 			dependencies {
-				implementation(project(":icure-sdk"))
+				implementation(project(":cardinal-sdk"))
 				implementation(libs.coroutinesCore)
 			}
 		}

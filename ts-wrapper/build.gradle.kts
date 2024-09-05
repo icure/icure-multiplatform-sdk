@@ -16,7 +16,7 @@ kotlin {
 	sourceSets {
 		val jsMain by getting {
 			dependencies {
-				implementation(project(":icure-sdk"))
+				implementation(project(":cardinal-sdk"))
 				implementation(libs.coroutinesCore)
 				implementation(libs.ktorClientCore)
 			}
