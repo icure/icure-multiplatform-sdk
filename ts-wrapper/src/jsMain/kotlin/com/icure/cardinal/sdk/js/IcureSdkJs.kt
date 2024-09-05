@@ -108,8 +108,8 @@ import com.icure.cardinal.sdk.js.api.impl.TopicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TopicBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.UserApiImplJs
 import com.icure.cardinal.sdk.js.externalsdk.AuthenticationWithProcessStepJs
-import com.icure.cardinal.sdk.js.externalsdk.IcureBaseSdkJs
-import com.icure.cardinal.sdk.js.externalsdk.IcureSdkJs
+import com.icure.cardinal.sdk.js.externalsdk.CardinalBaseSdkJs
+import com.icure.cardinal.sdk.js.externalsdk.CardinalSdkJs
 import com.icure.cardinal.sdk.js.options.external.AuthenticationMethodJs
 import com.icure.cardinal.sdk.js.options.external.AuthenticationProcessTemplateParametersJs
 import com.icure.cardinal.sdk.js.options.external.BasicSdkOptionsJs
@@ -131,7 +131,7 @@ object InternalSdkInitializers {
 		authenticationMethod: AuthenticationMethodJs,
 		storageFacade: dynamic,
 		options: SdkOptionsJs?
-	): Promise<IcureSdkJs> = GlobalScope.promise {
+	): Promise<CardinalSdkJs> = GlobalScope.promise {
 		IcureSdkJsImpl(CardinalSdk.initialize(
 			applicationId,
 			baseUrl,
@@ -170,7 +170,7 @@ object InternalSdkInitializers {
 			options?.toKt() ?: SdkOptions()
 		)
 		object : AuthenticationWithProcessStepJs {
-			override fun completeAuthentication(validationCode: String): Promise<IcureSdkJs> = GlobalScope.promise {
+			override fun completeAuthentication(validationCode: String): Promise<CardinalSdkJs> = GlobalScope.promise {
 				IcureSdkJsImpl(ktStep.completeAuthentication(validationCode))
 			}
 		}
@@ -181,7 +181,7 @@ object InternalSdkInitializers {
 		baseUrl: String,
 		authenticationMethod: AuthenticationMethodJs,
 		options: BasicSdkOptionsJs?
-	): Promise<IcureBaseSdkJs> = GlobalScope.promise {
+	): Promise<CardinalBaseSdkJs> = GlobalScope.promise {
 		IcureBaseSdkJsImpl(CardinalBaseSdk.initialize(
 			applicationId,
 			baseUrl,
@@ -193,7 +193,7 @@ object InternalSdkInitializers {
 
 private class IcureSdkJsImpl(
 	private val sdk: CardinalSdk
-) : IcureSdkJs {
+) : CardinalSdkJs {
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }
 	override val device: DeviceApiJs by lazy { DeviceApiImplJs(sdk.device) }
@@ -232,14 +232,14 @@ private class IcureSdkJsImpl(
 	override val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs by lazy { CardinalMaintenanceTaskApiImplJs(sdk.cardinalMaintenanceTask) }
 	override val dataOwner: DataOwnerApiJs by lazy { DataOwnerApiImplJs(sdk.dataOwner) }
 
-	override fun switchGroup(groupId: String): Promise<IcureSdkJs> = GlobalScope.promise {
+	override fun switchGroup(groupId: String): Promise<CardinalSdkJs> = GlobalScope.promise {
 		IcureSdkJsImpl(sdk.switchGroup(groupId))
 	}
 }
 
 private class IcureBaseSdkJsImpl(
 	private val sdk: CardinalBaseSdk
-) : IcureBaseSdkJs {
+) : CardinalBaseSdkJs {
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }
 	override val device: DeviceApiJs by lazy { DeviceApiImplJs(sdk.device) }
@@ -274,7 +274,7 @@ private class IcureBaseSdkJsImpl(
 	override val timeTable: TimeTableBasicApiJs by lazy { TimeTableBasicApiImplJs(sdk.timeTable) }
 	override val topic: TopicBasicApiJs by lazy { TopicBasicApiImplJs(sdk.topic) }
 
-	override fun switchGroup(groupId: String): Promise<IcureBaseSdkJs> = GlobalScope.promise {
+	override fun switchGroup(groupId: String): Promise<CardinalBaseSdkJs> = GlobalScope.promise {
 		IcureBaseSdkJsImpl(sdk.switchGroup(groupId))
 	}
 }

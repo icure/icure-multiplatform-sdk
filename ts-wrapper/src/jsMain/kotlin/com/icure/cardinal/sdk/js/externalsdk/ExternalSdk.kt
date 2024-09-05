@@ -54,8 +54,8 @@ import com.icure.cardinal.sdk.js.api.TopicBasicApiJs
 import com.icure.cardinal.sdk.js.api.UserApiJs
 import kotlin.js.Promise
 
-@JsName("IcureSdk")
-external interface IcureSdkJs {
+@JsName("CardinalSdk")
+external interface CardinalSdkJs {
 	val applicationSettings: ApplicationSettingsApiJs
 	val code: CodeApiJs
 	val device: DeviceApiJs
@@ -94,11 +94,11 @@ external interface IcureSdkJs {
 	val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs
 	val dataOwner: DataOwnerApiJs
 
-	fun switchGroup(groupId: String): Promise<IcureSdkJs>
+	fun switchGroup(groupId: String): Promise<CardinalSdkJs>
 }
 
-@JsName("IcureBaseSdk")
-external interface IcureBaseSdkJs {
+@JsName("CardinalBaseSdk")
+external interface CardinalBaseSdkJs {
 	val applicationSettings: ApplicationSettingsApiJs
 	val code: CodeApiJs
 	val device: DeviceApiJs
@@ -133,5 +133,5 @@ external interface IcureBaseSdkJs {
 	val timeTable: TimeTableBasicApiJs
 	val topic: TopicBasicApiJs
 
-	fun switchGroup(groupId: String): Promise<IcureBaseSdkJs>
+	fun switchGroup(groupId: String): Promise<CardinalBaseSdkJs>
 }

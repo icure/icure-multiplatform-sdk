@@ -14,7 +14,7 @@ from cardinal_sdk.api import DataOwnerApi, CardinalMaintenanceTaskApi, AccessLog
     KeywordApi, PermissionApi, PlaceApi, RecoveryApi, RoleApi, TarificationApi, UserApi
 from cardinal_sdk.CryptoStrategies import _CryptoStrategiesBridge
 
-class IcureSdk:
+class CardinalSdk:
     __health_element: Optional[HealthElementApi] = None
     __dataOwner: Optional[DataOwnerApi] = None
     __cardinalMaintenanceTask: Optional[CardinalMaintenanceTaskApi] = None
