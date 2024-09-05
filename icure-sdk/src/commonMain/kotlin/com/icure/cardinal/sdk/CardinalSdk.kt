@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClient
 import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AgendaApi
@@ -176,6 +175,7 @@ import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.cardinal.sdk.utils.newPlatformHttpClient
 import com.icure.cardinal.sdk.utils.retryWithDelays
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
@@ -663,7 +663,7 @@ private class CardinalApiImpl(
 		)
 	}
 
-	override val icureMaintenanceTask: CardinalMaintenanceTaskApi by lazy {
+	override val cardinalMaintenanceTask: CardinalMaintenanceTaskApi by lazy {
 		CardinalMaintenanceTaskApiImpl(
 			config.crypto.exchangeDataManager,
 			config.crypto.exchangeKeysManager.base,

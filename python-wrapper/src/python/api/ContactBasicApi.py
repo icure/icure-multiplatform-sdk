@@ -1,19 +1,19 @@
 # auto-generated file
 import asyncio
 import json
-from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from icure.model import Contact, Service, EncryptedContact, EncryptedService, EntitySubscriptionConfiguration, DocIdentifier, LabelledOccurence, SubscriptionEventType
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Contact, Service, EncryptedContact, EncryptedService, EntitySubscriptionConfiguration, DocIdentifier, LabelledOccurence, SubscriptionEventType
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
-from icure.subscription.EntitySubscription import EntitySubscription
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 class ContactBasicApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def match_contacts_by_async(self, filter: BaseFilterOptions[Contact]) -> List[str]:
 		loop = asyncio.get_running_loop()
@@ -30,9 +30,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchContactsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchContactsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -42,8 +42,8 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchContactsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchContactsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -69,9 +69,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchServicesByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchServicesByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -81,8 +81,8 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchServicesByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchServicesByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -108,9 +108,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchContactsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchContactsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -120,8 +120,8 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchContactsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchContactsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -147,9 +147,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchServicesBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchServicesBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -159,8 +159,8 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.matchServicesBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.matchServicesBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -182,7 +182,7 @@ class ContactBasicApi:
 				result = PaginatedListIterator[EncryptedContact](
 					producer = success,
 					deserializer = lambda x: EncryptedContact._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -190,9 +190,9 @@ class ContactBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterContactsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterContactsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -202,23 +202,23 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterContactsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterContactsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedContact](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedContact._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_services_by_async(self, filter: BaseFilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
@@ -232,7 +232,7 @@ class ContactBasicApi:
 				result = PaginatedListIterator[EncryptedService](
 					producer = success,
 					deserializer = lambda x: EncryptedService._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -240,9 +240,9 @@ class ContactBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterServicesByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterServicesByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -252,23 +252,23 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterServicesByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterServicesByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedService](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedService._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_contacts_by_sorted_async(self, filter: BaseSortableFilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
@@ -282,7 +282,7 @@ class ContactBasicApi:
 				result = PaginatedListIterator[EncryptedContact](
 					producer = success,
 					deserializer = lambda x: EncryptedContact._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -290,9 +290,9 @@ class ContactBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterContactsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterContactsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -302,23 +302,23 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterContactsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterContactsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedContact](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedContact._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_services_by_sorted_async(self, filter: BaseSortableFilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
@@ -332,7 +332,7 @@ class ContactBasicApi:
 				result = PaginatedListIterator[EncryptedService](
 					producer = success,
 					deserializer = lambda x: EncryptedService._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -340,9 +340,9 @@ class ContactBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterServicesBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterServicesBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -352,23 +352,23 @@ class ContactBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.filterServicesBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.filterServicesBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedService](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedService._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def subscribe_to_service_create_or_update_events_async(self, filter: BaseFilterOptions[Service], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedService]:
@@ -382,7 +382,7 @@ class ContactBasicApi:
 				result = EntitySubscription[EncryptedService](
 					producer = success,
 					deserializer = lambda x: EncryptedService._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -391,9 +391,9 @@ class ContactBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.subscribeToServiceCreateOrUpdateEventsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.subscribeToServiceCreateOrUpdateEventsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -404,23 +404,23 @@ class ContactBasicApi:
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.subscribeToServiceCreateOrUpdateEventsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.subscribeToServiceCreateOrUpdateEventsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return EntitySubscription[EncryptedService](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedService._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def delete_contact_async(self, entity_id: str) -> DocIdentifier:
@@ -438,9 +438,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.deleteContactAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.deleteContactAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -450,8 +450,8 @@ class ContactBasicApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.deleteContactBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.deleteContactBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -477,9 +477,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.deleteContactsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.deleteContactsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -489,8 +489,8 @@ class ContactBasicApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.deleteContactsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.deleteContactsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -517,9 +517,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getServiceCodesOccurrencesAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getServiceCodesOccurrencesAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -530,8 +530,8 @@ class ContactBasicApi:
 			"codeType": code_type,
 			"minOccurrences": min_occurrences,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getServiceCodesOccurrencesBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getServiceCodesOccurrencesBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -557,9 +557,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.modifyContactAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.modifyContactAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -569,8 +569,8 @@ class ContactBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.modifyContactBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.modifyContactBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -596,9 +596,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.modifyContactsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.modifyContactsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -608,8 +608,8 @@ class ContactBasicApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.modifyContactsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.modifyContactsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -635,9 +635,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getContactAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getContactAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -647,8 +647,8 @@ class ContactBasicApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getContactBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getContactBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -674,9 +674,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getContactsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getContactsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -686,8 +686,8 @@ class ContactBasicApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getContactsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getContactsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -713,9 +713,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getServiceAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getServiceAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -725,8 +725,8 @@ class ContactBasicApi:
 		payload = {
 			"serviceId": service_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getServiceBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getServiceBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -752,9 +752,9 @@ class ContactBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getServicesAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getServicesAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -764,8 +764,8 @@ class ContactBasicApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.getServicesBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.getServicesBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -787,7 +787,7 @@ class ContactBasicApi:
 				result = EntitySubscription[EncryptedContact](
 					producer = success,
 					deserializer = lambda x: EncryptedContact._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -797,9 +797,9 @@ class ContactBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.subscribeToEventsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.subscribeToEventsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -811,21 +811,21 @@ class ContactBasicApi:
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ContactBasicApi.subscribeToEventsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.subscribeToEventsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return EntitySubscription[EncryptedContact](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedContact._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)

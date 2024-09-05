@@ -1,16 +1,16 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from icure.model import Group
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Group
 
 class GroupFilters:
 
 	@classmethod
 	def all(cls) -> BaseFilterOptions[Group]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.GroupFilters.all(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.GroupFilters.all(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -25,7 +25,7 @@ class GroupFilters:
 		payload = {
 			"superGroupId": super_group_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.GroupFilters.bySuperGroup(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.GroupFilters.bySuperGroup(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -42,7 +42,7 @@ class GroupFilters:
 			"superGroupId": super_group_id,
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.GroupFilters.withContent(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.GroupFilters.withContent(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

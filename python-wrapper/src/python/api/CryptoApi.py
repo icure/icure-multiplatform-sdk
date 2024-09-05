@@ -1,13 +1,13 @@
 # auto-generated file
 import asyncio
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 
 class CryptoApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def force_reload_async(self) -> None:
 		loop = asyncio.get_running_loop()
@@ -21,16 +21,16 @@ class CryptoApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CryptoApi.forceReloadAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CryptoApi.forceReloadAsync,
+			self.cardinal_sdk._native,
 			callback
 		)
 		return await future
 
 	def force_reload_blocking(self) -> None:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CryptoApi.forceReloadBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CryptoApi.forceReloadBlocking(
+			self.cardinal_sdk._native,
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)

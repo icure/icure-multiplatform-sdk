@@ -6,10 +6,8 @@ plugins {
 val version: String? by project
 project.version = version ?: "0.0.0-snapshot"
 
-val moduleName = "icure-sdk-ts"
-
 kotlin {
-	val sharedLibBaseName = "icure-sdk-native-pylib"
+	val sharedLibBaseName = "cardinal-sdk-native-pylib"
 	configureKotlinLinux(this).forEach {
 		it.binaries {
 			sharedLib {

@@ -1,10 +1,10 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
-from icure.model import Contact, Patient, serialize_patient, Identifier
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Contact, Patient, serialize_patient, Identifier
 from typing import List, Optional
 
 class ContactFilters:
@@ -14,7 +14,7 @@ class ContactFilters:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.allContactsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.allContactsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -27,7 +27,7 @@ class ContactFilters:
 
 	@classmethod
 	def all_contacts_for_self(cls) -> FilterOptions[Contact]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.allContactsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.allContactsForSelf(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -43,7 +43,7 @@ class ContactFilters:
 			"dataOwnerId": data_owner_id,
 			"formIds": [x0 for x0 in form_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byFormIdsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byFormIdsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -59,7 +59,7 @@ class ContactFilters:
 		payload = {
 			"formIds": [x0 for x0 in form_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byFormIdsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byFormIdsForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -79,7 +79,7 @@ class ContactFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientsOpeningDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientsOpeningDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -98,7 +98,7 @@ class ContactFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientsOpeningDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientsOpeningDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -118,7 +118,7 @@ class ContactFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientSecretIdsOpeningDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientSecretIdsOpeningDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -137,7 +137,7 @@ class ContactFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientSecretIdsOpeningDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientSecretIdsOpeningDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -153,7 +153,7 @@ class ContactFilters:
 		payload = {
 			"externalId": external_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byExternalId(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byExternalId(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -169,7 +169,7 @@ class ContactFilters:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byIdentifiersForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byIdentifiersForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -186,7 +186,7 @@ class ContactFilters:
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byIdentifiersForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byIdentifiersForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -206,7 +206,7 @@ class ContactFilters:
 			"startOfContactOpeningDate": start_of_contact_opening_date,
 			"endOfContactOpeningDate": end_of_contact_opening_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byCodeAndOpeningDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byCodeAndOpeningDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -225,7 +225,7 @@ class ContactFilters:
 			"startOfContactOpeningDate": start_of_contact_opening_date,
 			"endOfContactOpeningDate": end_of_contact_opening_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byCodeAndOpeningDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byCodeAndOpeningDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -245,7 +245,7 @@ class ContactFilters:
 			"startOfContactOpeningDate": start_of_contact_opening_date,
 			"endOfContactOpeningDate": end_of_contact_opening_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byTagAndOpeningDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byTagAndOpeningDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -264,7 +264,7 @@ class ContactFilters:
 			"startOfContactOpeningDate": start_of_contact_opening_date,
 			"endOfContactOpeningDate": end_of_contact_opening_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byTagAndOpeningDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byTagAndOpeningDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -281,7 +281,7 @@ class ContactFilters:
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -297,7 +297,7 @@ class ContactFilters:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientsForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -314,7 +314,7 @@ class ContactFilters:
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientsSecretIdsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientsSecretIdsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -330,7 +330,7 @@ class ContactFilters:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byPatientsSecretIdsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byPatientsSecretIdsForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -346,7 +346,7 @@ class ContactFilters:
 		payload = {
 			"serviceIds": [x0 for x0 in service_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ContactFilters.byServiceIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byServiceIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

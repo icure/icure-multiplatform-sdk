@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from typing import Optional, Union, Tuple
 from ctypes import c_void_p, c_char_p, CFUNCTYPE, cast
-from icure.kotlin_types import symbols
+from cardinal_sdk.kotlin_types import symbols
 import traceback
 
 @dataclass
@@ -58,35 +58,35 @@ class _CustomStorageFacadeBridge:
 
     def __del__(self):
         if self.__kt_py_storage is not None:
-            symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__kt_py_storage)
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.disposeStablePtr(self.__kt_py_storage)
 
     def get_item(self, result_holder, key):
         try:
             result = self.__py_storage.get_item(cast(key, c_char_p).value.decode('utf-8'))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def set_item(self, result_holder, key, value):
         try:
             self.__py_storage.set_item(cast(key, c_char_p).value.decode('utf-8'), cast(value, c_char_p).value.decode('utf-8'))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, '{}'.encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, '{}'.encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def remove_item(self, result_holder, key):
         try:
             self.__py_storage.remove_item(cast(key, c_char_p).value.decode('utf-8'))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, '{}'.encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, '{}'.encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def get_kt(self) -> c_void_p:
         if self.__kt_py_storage is None:
             self.__CALLBACK_GetItem = _C_GetItem(self.get_item)
             self.__CALLBACK_SetItem = _C_SetItem(self.set_item)
             self.__CALLBACK_RemoveItem = _C_RemoveItem(self.remove_item)
-            self.__kt_py_storage = symbols.kotlin.root.com.icure.sdk.py.PyStorage.createCustomStorageFacade(
+            self.__kt_py_storage = symbols.kotlin.root.com.icure.cardinal.sdk.py.PyStorage.createCustomStorageFacade(
                 self.__CALLBACK_GetItem,
                 self.__CALLBACK_SetItem,
                 self.__CALLBACK_RemoveItem,
@@ -98,7 +98,7 @@ def _serialize_storage_options(storage_options: StorageOptions) -> Tuple[dict[st
     if isinstance(storage_options, FileSystemStorage):
         return (
             {
-                "type": "com.icure.sdk.py.PyStorage.StorageFacadeOptions.File",
+                "type": "com.icure.cardinal.sdk.py.PyStorage.StorageFacadeOptions.File",
                 "directory": storage_options.directory
             },
             None
@@ -106,7 +106,7 @@ def _serialize_storage_options(storage_options: StorageOptions) -> Tuple[dict[st
     elif isinstance(storage_options, CustomStorageFacade):
         return (
             {
-                "type": "com.icure.sdk.py.PyStorage.StorageFacadeOptions.Custom"
+                "type": "com.icure.cardinal.sdk.py.PyStorage.StorageFacadeOptions.Custom"
             },
             storage_options
         )

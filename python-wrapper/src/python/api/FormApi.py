@@ -2,21 +2,21 @@
 import asyncio
 import json
 import base64
-from icure.model import DecryptedForm, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, FormTemplate, FormShareOptions, deserialize_simple_share_result_decrypted_form, SimpleShareResultDecryptedForm, deserialize_simple_share_result_encrypted_form, SimpleShareResultEncryptedForm, deserialize_simple_share_result_form, SimpleShareResultForm
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import DecryptedForm, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, FormTemplate, FormShareOptions, deserialize_simple_share_result_decrypted_form, SimpleShareResultDecryptedForm, deserialize_simple_share_result_encrypted_form, SimpleShareResultEncryptedForm, deserialize_simple_share_result_form, SimpleShareResultForm
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
-from icure.model.specializations import HexString
-from icure.filters.FilterOptions import FilterOptions, SortableFilterOptions
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.model.specializations import HexString
+from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
 class FormApi:
 
 	class FormFlavouredEncryptedApi:
 
-		def __init__(self, icure_sdk):
-			self.icure_sdk = icure_sdk
+		def __init__(self, cardinal_sdk):
+			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, form: EncryptedForm, options: Optional[FormShareOptions] = None) -> SimpleShareResultEncryptedForm:
 			loop = asyncio.get_running_loop()
@@ -35,9 +35,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.shareWithAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.shareWithAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -49,8 +49,8 @@ class FormApi:
 				"form": form.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.shareWithBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.shareWithBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -77,9 +77,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.tryShareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.tryShareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -90,8 +90,8 @@ class FormApi:
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.tryShareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.tryShareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -118,9 +118,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.shareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.shareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -131,8 +131,8 @@ class FormApi:
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.shareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.shareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -154,7 +154,7 @@ class FormApi:
 					result = PaginatedListIterator[EncryptedForm](
 						producer = success,
 						deserializer = lambda x: EncryptedForm._deserialize(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -162,9 +162,9 @@ class FormApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.filterFormsByAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.filterFormsByAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -174,23 +174,23 @@ class FormApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.filterFormsByBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.filterFormsByBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedForm](
 					producer = class_pointer,
 					deserializer = lambda x: EncryptedForm._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def filter_forms_by_sorted_async(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[EncryptedForm]:
@@ -204,7 +204,7 @@ class FormApi:
 					result = PaginatedListIterator[EncryptedForm](
 						producer = success,
 						deserializer = lambda x: EncryptedForm._deserialize(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -212,9 +212,9 @@ class FormApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.filterFormsBySortedAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.filterFormsBySortedAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -224,23 +224,23 @@ class FormApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.filterFormsBySortedBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.filterFormsBySortedBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedForm](
 					producer = class_pointer,
 					deserializer = lambda x: EncryptedForm._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def modify_form_async(self, entity: EncryptedForm) -> EncryptedForm:
@@ -258,9 +258,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.modifyFormAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.modifyFormAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -270,8 +270,8 @@ class FormApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.modifyFormBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.modifyFormBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -297,9 +297,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.modifyFormsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.modifyFormsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -309,8 +309,8 @@ class FormApi:
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.modifyFormsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.modifyFormsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -336,9 +336,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getFormAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getFormAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -348,8 +348,8 @@ class FormApi:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getFormBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getFormBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -375,9 +375,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getFormsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getFormsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -387,8 +387,8 @@ class FormApi:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getFormsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getFormsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -414,9 +414,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getLatestFormByLogicalUuidAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getLatestFormByLogicalUuidAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -426,8 +426,8 @@ class FormApi:
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getLatestFormByLogicalUuidBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getLatestFormByLogicalUuidBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -453,9 +453,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getLatestFormByUniqueIdAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getLatestFormByUniqueIdAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -465,8 +465,8 @@ class FormApi:
 			payload = {
 				"uniqueId": unique_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.encrypted.getLatestFormByUniqueIdBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getLatestFormByUniqueIdBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -479,8 +479,8 @@ class FormApi:
 
 	class FormFlavouredApi:
 
-		def __init__(self, icure_sdk):
-			self.icure_sdk = icure_sdk
+		def __init__(self, cardinal_sdk):
+			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> SimpleShareResultForm:
 			loop = asyncio.get_running_loop()
@@ -499,9 +499,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.shareWithAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.shareWithAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -513,8 +513,8 @@ class FormApi:
 				"form": serialize_form(form),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.shareWithBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.shareWithBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -541,9 +541,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.tryShareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.tryShareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -554,8 +554,8 @@ class FormApi:
 				"form": serialize_form(form),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.tryShareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.tryShareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -582,9 +582,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.shareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.shareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -595,8 +595,8 @@ class FormApi:
 				"form": serialize_form(form),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.shareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.shareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -618,7 +618,7 @@ class FormApi:
 					result = PaginatedListIterator[Form](
 						producer = success,
 						deserializer = lambda x: deserialize_form(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -626,9 +626,9 @@ class FormApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.filterFormsByAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.filterFormsByAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -638,23 +638,23 @@ class FormApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.filterFormsByBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.filterFormsByBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Form](
 					producer = class_pointer,
 					deserializer = lambda x: deserialize_form(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def filter_forms_by_sorted_async(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[Form]:
@@ -668,7 +668,7 @@ class FormApi:
 					result = PaginatedListIterator[Form](
 						producer = success,
 						deserializer = lambda x: deserialize_form(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -676,9 +676,9 @@ class FormApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.filterFormsBySortedAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.filterFormsBySortedAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -688,23 +688,23 @@ class FormApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.filterFormsBySortedBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.filterFormsBySortedBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Form](
 					producer = class_pointer,
 					deserializer = lambda x: deserialize_form(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def modify_form_async(self, entity: Form) -> Form:
@@ -722,9 +722,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.modifyFormAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.modifyFormAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -734,8 +734,8 @@ class FormApi:
 			payload = {
 				"entity": serialize_form(entity),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.modifyFormBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.modifyFormBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -761,9 +761,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.modifyFormsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.modifyFormsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -773,8 +773,8 @@ class FormApi:
 			payload = {
 				"entities": [serialize_form(x0) for x0 in entities],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.modifyFormsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.modifyFormsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -800,9 +800,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getFormAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getFormAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -812,8 +812,8 @@ class FormApi:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getFormBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getFormBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -839,9 +839,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getFormsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getFormsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -851,8 +851,8 @@ class FormApi:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getFormsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getFormsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -878,9 +878,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getLatestFormByLogicalUuidAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getLatestFormByLogicalUuidAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -890,8 +890,8 @@ class FormApi:
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getLatestFormByLogicalUuidBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getLatestFormByLogicalUuidBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -917,9 +917,9 @@ class FormApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getLatestFormByUniqueIdAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getLatestFormByUniqueIdAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -929,8 +929,8 @@ class FormApi:
 			payload = {
 				"uniqueId": unique_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryAndRecover.getLatestFormByUniqueIdBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getLatestFormByUniqueIdBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -941,10 +941,10 @@ class FormApi:
 				return_value = deserialize_form(result_info.success)
 				return return_value
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
-		self.encrypted = FormApi.FormFlavouredEncryptedApi(self.icure_sdk)
-		self.try_and_recover = FormApi.FormFlavouredApi(self.icure_sdk)
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
+		self.encrypted = FormApi.FormFlavouredEncryptedApi(self.cardinal_sdk)
+		self.try_and_recover = FormApi.FormFlavouredApi(self.cardinal_sdk)
 
 	async def create_form_async(self, entity: DecryptedForm) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
@@ -961,9 +961,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createFormAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -973,8 +973,8 @@ class FormApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createFormBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1000,9 +1000,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createFormsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1012,8 +1012,8 @@ class FormApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createFormsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1043,9 +1043,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.withEncryptionMetadataAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.withEncryptionMetadataAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1059,8 +1059,8 @@ class FormApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secretId": serialize_secret_id_option(secret_id),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.withEncryptionMetadataBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.withEncryptionMetadataBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1086,9 +1086,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getEncryptionKeysOfAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getEncryptionKeysOfAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1098,8 +1098,8 @@ class FormApi:
 		payload = {
 			"form": serialize_form(form),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getEncryptionKeysOfBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getEncryptionKeysOfBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1125,9 +1125,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.hasWriteAccessAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.hasWriteAccessAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1137,8 +1137,8 @@ class FormApi:
 		payload = {
 			"form": serialize_form(form),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.hasWriteAccessBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.hasWriteAccessBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1164,9 +1164,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.decryptPatientIdOfAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.decryptPatientIdOfAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1176,8 +1176,8 @@ class FormApi:
 		payload = {
 			"form": serialize_form(form),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.decryptPatientIdOfBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.decryptPatientIdOfBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1204,9 +1204,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createDelegationDeAnonymizationMetadataAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createDelegationDeAnonymizationMetadataAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1217,8 +1217,8 @@ class FormApi:
 			"entity": serialize_form(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createDelegationDeAnonymizationMetadataBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createDelegationDeAnonymizationMetadataBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1241,9 +1241,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.decryptAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.decryptAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1253,8 +1253,8 @@ class FormApi:
 		payload = {
 			"form": form.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.decryptBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.decryptBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1280,9 +1280,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryDecryptAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryDecryptAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1292,8 +1292,8 @@ class FormApi:
 		payload = {
 			"form": form.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryDecryptBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryDecryptBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1319,9 +1319,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.matchFormsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.matchFormsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1331,8 +1331,8 @@ class FormApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.matchFormsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.matchFormsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1358,9 +1358,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.matchFormsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.matchFormsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1370,8 +1370,8 @@ class FormApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.matchFormsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.matchFormsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1397,9 +1397,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.deleteFormAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1409,8 +1409,8 @@ class FormApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.deleteFormBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1436,9 +1436,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.deleteFormsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1448,8 +1448,8 @@ class FormApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.deleteFormsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1476,9 +1476,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getFormTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormTemplateAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1489,8 +1489,8 @@ class FormApi:
 			"formTemplateId": form_template_id,
 			"raw": raw,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getFormTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormTemplateBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1516,9 +1516,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createFormTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormTemplateAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1528,8 +1528,8 @@ class FormApi:
 		payload = {
 			"formTemplate": form_template.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.createFormTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormTemplateBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1555,9 +1555,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.deleteFormTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormTemplateAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1567,8 +1567,8 @@ class FormApi:
 		payload = {
 			"formTemplateId": form_template_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.deleteFormTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormTemplateBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1594,9 +1594,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.updateFormTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.updateFormTemplateAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1606,8 +1606,8 @@ class FormApi:
 		payload = {
 			"formTemplate": form_template.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.updateFormTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.updateFormTemplateBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1634,9 +1634,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.setTemplateAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.setTemplateAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1647,8 +1647,8 @@ class FormApi:
 			"formTemplateId": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.setTemplateAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.setTemplateAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1676,9 +1676,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.shareWithAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.shareWithAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1690,8 +1690,8 @@ class FormApi:
 			"form": form.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.shareWithBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.shareWithBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1718,9 +1718,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryShareWithManyAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryShareWithManyAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1731,8 +1731,8 @@ class FormApi:
 			"form": form.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.tryShareWithManyBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryShareWithManyBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1759,9 +1759,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.shareWithManyAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.shareWithManyAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1772,8 +1772,8 @@ class FormApi:
 			"form": form.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.shareWithManyBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.shareWithManyBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1795,7 +1795,7 @@ class FormApi:
 				result = PaginatedListIterator[DecryptedForm](
 					producer = success,
 					deserializer = lambda x: DecryptedForm._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -1803,9 +1803,9 @@ class FormApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.filterFormsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.filterFormsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1815,23 +1815,23 @@ class FormApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.filterFormsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.filterFormsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedForm](
 				producer = class_pointer,
 				deserializer = lambda x: DecryptedForm._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_forms_by_sorted_async(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[DecryptedForm]:
@@ -1845,7 +1845,7 @@ class FormApi:
 				result = PaginatedListIterator[DecryptedForm](
 					producer = success,
 					deserializer = lambda x: DecryptedForm._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -1853,9 +1853,9 @@ class FormApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.filterFormsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.filterFormsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1865,23 +1865,23 @@ class FormApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.filterFormsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.filterFormsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedForm](
 				producer = class_pointer,
 				deserializer = lambda x: DecryptedForm._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def modify_form_async(self, entity: DecryptedForm) -> DecryptedForm:
@@ -1899,9 +1899,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.modifyFormAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.modifyFormAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1911,8 +1911,8 @@ class FormApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.modifyFormBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.modifyFormBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1938,9 +1938,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.modifyFormsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.modifyFormsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1950,8 +1950,8 @@ class FormApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.modifyFormsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.modifyFormsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1977,9 +1977,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getFormAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1989,8 +1989,8 @@ class FormApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getFormBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -2016,9 +2016,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getFormsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2028,8 +2028,8 @@ class FormApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getFormsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -2055,9 +2055,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getLatestFormByLogicalUuidAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getLatestFormByLogicalUuidAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2067,8 +2067,8 @@ class FormApi:
 		payload = {
 			"logicalUuid": logical_uuid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getLatestFormByLogicalUuidBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getLatestFormByLogicalUuidBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -2094,9 +2094,9 @@ class FormApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getLatestFormByUniqueIdAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getLatestFormByUniqueIdAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2106,8 +2106,8 @@ class FormApi:
 		payload = {
 			"uniqueId": unique_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FormApi.getLatestFormByUniqueIdBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getLatestFormByUniqueIdBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

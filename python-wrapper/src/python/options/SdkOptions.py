@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
-from icure.CryptoStrategies import CryptoStrategies
-from icure.storage.StorageFacadeOptions import StorageOptions
-from icure.options.JsonPatcher import JsonPatcher
+from cardinal_sdk.CryptoStrategies import CryptoStrategies
+from cardinal_sdk.storage.StorageFacadeOptions import StorageOptions
+from cardinal_sdk.options.JsonPatcher import JsonPatcher
 
 @dataclass
 class EncryptedFieldsConfiguration:

@@ -229,7 +229,7 @@ private class IcureSdkJsImpl(
 	override val topic: TopicApiJs by lazy { TopicApiImplJs(sdk.topic) }
 	override val crypto: CryptoApiJs by lazy { CryptoApiImplJs(sdk.crypto) }
 	override val recovery: RecoveryApiJs by lazy { RecoveryApiImplJs(sdk.recovery) }
-	override val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs by lazy { CardinalMaintenanceTaskApiImplJs(sdk.icureMaintenanceTask) }
+	override val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs by lazy { CardinalMaintenanceTaskApiImplJs(sdk.cardinalMaintenanceTask) }
 	override val dataOwner: DataOwnerApiJs by lazy { DataOwnerApiImplJs(sdk.dataOwner) }
 
 	override fun switchGroup(groupId: String): Promise<IcureSdkJs> = GlobalScope.promise {

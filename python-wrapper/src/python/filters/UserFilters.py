@@ -1,17 +1,17 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from icure.model import User
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import User
 from typing import List
 
 class UserFilters:
 
 	@classmethod
 	def all(cls) -> BaseFilterOptions[User]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.UserFilters.all(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.UserFilters.all(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -26,7 +26,7 @@ class UserFilters:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.UserFilters.byIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.UserFilters.byIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -42,7 +42,7 @@ class UserFilters:
 		payload = {
 			"patientId": patient_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.UserFilters.byPatientId(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.UserFilters.byPatientId(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -58,7 +58,7 @@ class UserFilters:
 		payload = {
 			"healthcarePartyId": healthcare_party_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.UserFilters.byHealthcarePartyId(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.UserFilters.byHealthcarePartyId(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -74,7 +74,7 @@ class UserFilters:
 		payload = {
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.UserFilters.byNameEmailOrPhone(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.UserFilters.byNameEmailOrPhone(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

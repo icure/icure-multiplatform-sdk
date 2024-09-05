@@ -1,11 +1,11 @@
 from typing import Generic, TypeVar, List, Optional, Callable
 from ctypes import c_void_p, cast, c_char_p
 from concurrent.futures import Executor
-from icure.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
-from icure.model import EntitySubscriptionCloseReason
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model import EntitySubscriptionCloseReason
+from cardinal_sdk.model.CallResult import create_result_from_json
 from datetime import timedelta
-from icure.subscription.EntitySubscriptionEvent import EntitySubscriptionEvent
+from cardinal_sdk.subscription.EntitySubscriptionEvent import EntitySubscriptionEvent
 import math
 import asyncio
 import json
@@ -21,7 +21,7 @@ class EntitySubscription(Generic[T]):
         self.__executor = executor
 
     def __del__(self):
-        symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__producer)
+        symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.disposeStablePtr(self.__producer)
 
     """
     Closes the subscription, no new event will be created.
@@ -29,7 +29,7 @@ class EntitySubscription(Generic[T]):
     resources.
     """
     def close(self):
-        call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.close(self.__producer)
+        call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.subscription.EntitySubscription.close(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
         symbols.DisposeString(call_result)
         if result_info.failure is not None:
@@ -39,7 +39,7 @@ class EntitySubscription(Generic[T]):
     Returns the reason why the subscription is closed, or None if the subscription is not yet closed.
     """
     def get_close_reason(self) -> Optional[EntitySubscriptionCloseReason]:
-        call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.getCloseReason(self.__producer)
+        call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.subscription.EntitySubscription.getCloseReason(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
         symbols.DisposeString(call_result)
         if result_info.failure is not None:
@@ -54,7 +54,7 @@ class EntitySubscription(Generic[T]):
     closed you can still retrieved any unconsumed event, but no new event will be added to the queue.
     """
     def get_event(self) -> Optional[EntitySubscriptionEvent[T]]:
-        call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.getEvent(self.__producer)
+        call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.subscription.EntitySubscription.getEvent(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
         symbols.DisposeString(call_result)
         if result_info.failure is not None:
@@ -67,7 +67,7 @@ class EntitySubscription(Generic[T]):
     within the provided timeout.
     """
     def wait_for_event_blocking(self, timeout: timedelta) -> Optional[EntitySubscriptionEvent[T]]:
-        call_result = symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.waitForEventBlocking(
+        call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.subscription.EntitySubscription.waitForEventBlocking(
             self.__producer,
             EntitySubscription.__time_delta_ms(timeout)
         )
@@ -95,7 +95,7 @@ class EntitySubscription(Generic[T]):
         callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
         loop.run_in_executor(
             self.__executor,
-            symbols.kotlin.root.com.icure.sdk.py.subscription.EntitySubscription.waitForEventAsync,
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.subscription.EntitySubscription.waitForEventAsync,
             self.__producer,
             EntitySubscription.__time_delta_ms(timeout),
             callback

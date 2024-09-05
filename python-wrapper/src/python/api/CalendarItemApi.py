@@ -1,21 +1,21 @@
 # auto-generated file
 import asyncio
 import json
-from icure.model import DecryptedCalendarItem, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, CalendarItem, serialize_calendar_item, EncryptedCalendarItem, deserialize_calendar_item, DocIdentifier, CalendarItemShareOptions, deserialize_simple_share_result_decrypted_calendar_item, SimpleShareResultDecryptedCalendarItem, deserialize_simple_share_result_encrypted_calendar_item, SimpleShareResultEncryptedCalendarItem, deserialize_simple_share_result_calendar_item, SimpleShareResultCalendarItem
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import DecryptedCalendarItem, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, CalendarItem, serialize_calendar_item, EncryptedCalendarItem, deserialize_calendar_item, DocIdentifier, CalendarItemShareOptions, deserialize_simple_share_result_decrypted_calendar_item, SimpleShareResultDecryptedCalendarItem, deserialize_simple_share_result_encrypted_calendar_item, SimpleShareResultEncryptedCalendarItem, deserialize_simple_share_result_calendar_item, SimpleShareResultCalendarItem
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
-from icure.model.specializations import HexString
-from icure.filters.FilterOptions import FilterOptions, SortableFilterOptions
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.model.specializations import HexString
+from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
 class CalendarItemApi:
 
 	class CalendarItemFlavouredEncryptedApi:
 
-		def __init__(self, icure_sdk):
-			self.icure_sdk = icure_sdk
+		def __init__(self, cardinal_sdk):
+			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, calendar_item: EncryptedCalendarItem, options: Optional[CalendarItemShareOptions] = None) -> SimpleShareResultEncryptedCalendarItem:
 			loop = asyncio.get_running_loop()
@@ -34,9 +34,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.shareWithAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.shareWithAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -48,8 +48,8 @@ class CalendarItemApi:
 				"calendarItem": calendar_item.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.shareWithBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.shareWithBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -76,9 +76,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.tryShareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.tryShareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -89,8 +89,8 @@ class CalendarItemApi:
 				"calendarItem": calendar_item.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.tryShareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.tryShareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -117,9 +117,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.shareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.shareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -130,8 +130,8 @@ class CalendarItemApi:
 				"calendarItem": calendar_item.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.shareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.shareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -159,9 +159,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.linkToPatientAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.linkToPatientAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -173,8 +173,8 @@ class CalendarItemApi:
 				"patient": serialize_patient(patient),
 				"shareLinkWithDelegates": [x0 for x0 in share_link_with_delegates],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.linkToPatientBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.linkToPatientBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -196,7 +196,7 @@ class CalendarItemApi:
 					result = PaginatedListIterator[EncryptedCalendarItem](
 						producer = success,
 						deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -204,9 +204,9 @@ class CalendarItemApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsByAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsByAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -216,23 +216,23 @@ class CalendarItemApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsByBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsByBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedCalendarItem](
 					producer = class_pointer,
 					deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def filter_calendar_items_by_sorted_async(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[EncryptedCalendarItem]:
@@ -246,7 +246,7 @@ class CalendarItemApi:
 					result = PaginatedListIterator[EncryptedCalendarItem](
 						producer = success,
 						deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -254,9 +254,9 @@ class CalendarItemApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsBySortedAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsBySortedAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -266,23 +266,23 @@ class CalendarItemApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsBySortedBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsBySortedBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedCalendarItem](
 					producer = class_pointer,
 					deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def modify_calendar_item_async(self, entity: EncryptedCalendarItem) -> EncryptedCalendarItem:
@@ -300,9 +300,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.modifyCalendarItemAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.modifyCalendarItemAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -312,8 +312,8 @@ class CalendarItemApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.modifyCalendarItemBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.modifyCalendarItemBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -339,9 +339,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -351,8 +351,8 @@ class CalendarItemApi:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -378,9 +378,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -390,8 +390,8 @@ class CalendarItemApi:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -404,8 +404,8 @@ class CalendarItemApi:
 
 	class CalendarItemFlavouredApi:
 
-		def __init__(self, icure_sdk):
-			self.icure_sdk = icure_sdk
+		def __init__(self, cardinal_sdk):
+			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, calendar_item: CalendarItem, options: Optional[CalendarItemShareOptions] = None) -> SimpleShareResultCalendarItem:
 			loop = asyncio.get_running_loop()
@@ -424,9 +424,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -438,8 +438,8 @@ class CalendarItemApi:
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -466,9 +466,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.tryShareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.tryShareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -479,8 +479,8 @@ class CalendarItemApi:
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.tryShareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.tryShareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -507,9 +507,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -520,8 +520,8 @@ class CalendarItemApi:
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -549,9 +549,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.linkToPatientAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.linkToPatientAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -563,8 +563,8 @@ class CalendarItemApi:
 				"patient": serialize_patient(patient),
 				"shareLinkWithDelegates": [x0 for x0 in share_link_with_delegates],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.linkToPatientBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.linkToPatientBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -586,7 +586,7 @@ class CalendarItemApi:
 					result = PaginatedListIterator[CalendarItem](
 						producer = success,
 						deserializer = lambda x: deserialize_calendar_item(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -594,9 +594,9 @@ class CalendarItemApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsByAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsByAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -606,23 +606,23 @@ class CalendarItemApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsByBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsByBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[CalendarItem](
 					producer = class_pointer,
 					deserializer = lambda x: deserialize_calendar_item(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def filter_calendar_items_by_sorted_async(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[CalendarItem]:
@@ -636,7 +636,7 @@ class CalendarItemApi:
 					result = PaginatedListIterator[CalendarItem](
 						producer = success,
 						deserializer = lambda x: deserialize_calendar_item(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -644,9 +644,9 @@ class CalendarItemApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsBySortedAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsBySortedAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -656,23 +656,23 @@ class CalendarItemApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsBySortedBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsBySortedBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[CalendarItem](
 					producer = class_pointer,
 					deserializer = lambda x: deserialize_calendar_item(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def modify_calendar_item_async(self, entity: CalendarItem) -> CalendarItem:
@@ -690,9 +690,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.modifyCalendarItemAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.modifyCalendarItemAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -702,8 +702,8 @@ class CalendarItemApi:
 			payload = {
 				"entity": serialize_calendar_item(entity),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.modifyCalendarItemBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.modifyCalendarItemBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -729,9 +729,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -741,8 +741,8 @@ class CalendarItemApi:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -768,9 +768,9 @@ class CalendarItemApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -780,8 +780,8 @@ class CalendarItemApi:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -792,10 +792,10 @@ class CalendarItemApi:
 				return_value = [deserialize_calendar_item(x1) for x1 in result_info.success]
 				return return_value
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
-		self.encrypted = CalendarItemApi.CalendarItemFlavouredEncryptedApi(self.icure_sdk)
-		self.try_and_recover = CalendarItemApi.CalendarItemFlavouredApi(self.icure_sdk)
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
+		self.encrypted = CalendarItemApi.CalendarItemFlavouredEncryptedApi(self.cardinal_sdk)
+		self.try_and_recover = CalendarItemApi.CalendarItemFlavouredApi(self.cardinal_sdk)
 
 	async def create_calendar_item_async(self, entity: DecryptedCalendarItem) -> DecryptedCalendarItem:
 		loop = asyncio.get_running_loop()
@@ -812,9 +812,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.createCalendarItemAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.createCalendarItemAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -824,8 +824,8 @@ class CalendarItemApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.createCalendarItemBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.createCalendarItemBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -855,9 +855,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.withEncryptionMetadataAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.withEncryptionMetadataAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -871,8 +871,8 @@ class CalendarItemApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secretId": serialize_secret_id_option(secret_id),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.withEncryptionMetadataBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.withEncryptionMetadataBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -898,9 +898,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.getEncryptionKeysOfAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getEncryptionKeysOfAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -910,8 +910,8 @@ class CalendarItemApi:
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.getEncryptionKeysOfBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getEncryptionKeysOfBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -937,9 +937,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.hasWriteAccessAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.hasWriteAccessAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -949,8 +949,8 @@ class CalendarItemApi:
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.hasWriteAccessBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.hasWriteAccessBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -976,9 +976,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.decryptPatientIdOfAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.decryptPatientIdOfAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -988,8 +988,8 @@ class CalendarItemApi:
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.decryptPatientIdOfBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.decryptPatientIdOfBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1016,9 +1016,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.createDelegationDeAnonymizationMetadataAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.createDelegationDeAnonymizationMetadataAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1029,8 +1029,8 @@ class CalendarItemApi:
 			"entity": serialize_calendar_item(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.createDelegationDeAnonymizationMetadataBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.createDelegationDeAnonymizationMetadataBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1053,9 +1053,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.decryptAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.decryptAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1065,8 +1065,8 @@ class CalendarItemApi:
 		payload = {
 			"calendarItem": calendar_item.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.decryptBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.decryptBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1092,9 +1092,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryDecryptAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryDecryptAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1104,8 +1104,8 @@ class CalendarItemApi:
 		payload = {
 			"calendarItem": calendar_item.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryDecryptBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryDecryptBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1131,9 +1131,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.matchCalendarItemsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.matchCalendarItemsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1143,8 +1143,8 @@ class CalendarItemApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.matchCalendarItemsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.matchCalendarItemsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1170,9 +1170,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.matchCalendarItemsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.matchCalendarItemsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1182,8 +1182,8 @@ class CalendarItemApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.matchCalendarItemsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.matchCalendarItemsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1209,9 +1209,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.deleteCalendarItemAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1221,8 +1221,8 @@ class CalendarItemApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.deleteCalendarItemBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1248,9 +1248,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.deleteCalendarItemsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1260,8 +1260,8 @@ class CalendarItemApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.deleteCalendarItemsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1289,9 +1289,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.shareWithAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.shareWithAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1303,8 +1303,8 @@ class CalendarItemApi:
 			"calendarItem": calendar_item.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.shareWithBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.shareWithBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1331,9 +1331,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryShareWithManyAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryShareWithManyAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1344,8 +1344,8 @@ class CalendarItemApi:
 			"calendarItem": calendar_item.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.tryShareWithManyBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryShareWithManyBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1372,9 +1372,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.shareWithManyAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.shareWithManyAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1385,8 +1385,8 @@ class CalendarItemApi:
 			"calendarItem": calendar_item.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.shareWithManyBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.shareWithManyBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1414,9 +1414,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.linkToPatientAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.linkToPatientAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1428,8 +1428,8 @@ class CalendarItemApi:
 			"patient": serialize_patient(patient),
 			"shareLinkWithDelegates": [x0 for x0 in share_link_with_delegates],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.linkToPatientBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.linkToPatientBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1451,7 +1451,7 @@ class CalendarItemApi:
 				result = PaginatedListIterator[DecryptedCalendarItem](
 					producer = success,
 					deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -1459,9 +1459,9 @@ class CalendarItemApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.filterCalendarItemsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.filterCalendarItemsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1471,23 +1471,23 @@ class CalendarItemApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.filterCalendarItemsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.filterCalendarItemsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedCalendarItem](
 				producer = class_pointer,
 				deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_calendar_items_by_sorted_async(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[DecryptedCalendarItem]:
@@ -1501,7 +1501,7 @@ class CalendarItemApi:
 				result = PaginatedListIterator[DecryptedCalendarItem](
 					producer = success,
 					deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -1509,9 +1509,9 @@ class CalendarItemApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.filterCalendarItemsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.filterCalendarItemsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1521,23 +1521,23 @@ class CalendarItemApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.filterCalendarItemsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.filterCalendarItemsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedCalendarItem](
 				producer = class_pointer,
 				deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def modify_calendar_item_async(self, entity: DecryptedCalendarItem) -> DecryptedCalendarItem:
@@ -1555,9 +1555,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.modifyCalendarItemAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.modifyCalendarItemAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1567,8 +1567,8 @@ class CalendarItemApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.modifyCalendarItemBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.modifyCalendarItemBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1594,9 +1594,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.getCalendarItemAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getCalendarItemAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1606,8 +1606,8 @@ class CalendarItemApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.getCalendarItemBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getCalendarItemBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1633,9 +1633,9 @@ class CalendarItemApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.getCalendarItemsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getCalendarItemsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1645,8 +1645,8 @@ class CalendarItemApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.CalendarItemApi.getCalendarItemsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getCalendarItemsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

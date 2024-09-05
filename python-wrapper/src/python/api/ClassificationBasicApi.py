@@ -1,18 +1,18 @@
 # auto-generated file
 import asyncio
 import json
-from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from icure.model import Classification, EncryptedClassification, DocIdentifier
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Classification, EncryptedClassification, DocIdentifier
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
 class ClassificationBasicApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def match_classifications_by_async(self, filter: BaseFilterOptions[Classification]) -> List[str]:
 		loop = asyncio.get_running_loop()
@@ -29,9 +29,9 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.matchClassificationsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.matchClassificationsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -41,8 +41,8 @@ class ClassificationBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.matchClassificationsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.matchClassificationsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -68,9 +68,9 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.matchClassificationsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.matchClassificationsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -80,8 +80,8 @@ class ClassificationBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.matchClassificationsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.matchClassificationsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -103,7 +103,7 @@ class ClassificationBasicApi:
 				result = PaginatedListIterator[EncryptedClassification](
 					producer = success,
 					deserializer = lambda x: EncryptedClassification._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -111,9 +111,9 @@ class ClassificationBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.filterClassificationsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.filterClassificationsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -123,23 +123,23 @@ class ClassificationBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.filterClassificationsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.filterClassificationsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedClassification](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedClassification._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_classifications_by_sorted_async(self, filter: BaseSortableFilterOptions[Classification]) -> PaginatedListIterator[EncryptedClassification]:
@@ -153,7 +153,7 @@ class ClassificationBasicApi:
 				result = PaginatedListIterator[EncryptedClassification](
 					producer = success,
 					deserializer = lambda x: EncryptedClassification._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -161,9 +161,9 @@ class ClassificationBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.filterClassificationsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.filterClassificationsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -173,23 +173,23 @@ class ClassificationBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.filterClassificationsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.filterClassificationsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedClassification](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedClassification._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def delete_classification_async(self, entity_id: str) -> DocIdentifier:
@@ -207,9 +207,9 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.deleteClassificationAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.deleteClassificationAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -219,8 +219,8 @@ class ClassificationBasicApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.deleteClassificationBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.deleteClassificationBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -246,9 +246,9 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.deleteClassificationsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.deleteClassificationsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -258,8 +258,8 @@ class ClassificationBasicApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.deleteClassificationsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.deleteClassificationsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -285,9 +285,9 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.modifyClassificationAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.modifyClassificationAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -297,8 +297,8 @@ class ClassificationBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.modifyClassificationBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.modifyClassificationBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -324,9 +324,9 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.getClassificationAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.getClassificationAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -336,8 +336,8 @@ class ClassificationBasicApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.getClassificationBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.getClassificationBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -363,9 +363,9 @@ class ClassificationBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.getClassificationsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.getClassificationsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -375,8 +375,8 @@ class ClassificationBasicApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ClassificationBasicApi.getClassificationsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ClassificationBasicApi.getClassificationsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

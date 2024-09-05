@@ -1,10 +1,10 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
-from icure.model import Message, Patient, serialize_patient
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
+from cardinal_sdk.model import Message, Patient, serialize_patient
 from typing import List, Optional
 
 class MessageFilters:
@@ -14,7 +14,7 @@ class MessageFilters:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.allMessagesForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.allMessagesForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -27,7 +27,7 @@ class MessageFilters:
 
 	@classmethod
 	def all_messages_for_self(cls) -> FilterOptions[Message]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.allMessagesForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.allMessagesForSelf(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -43,7 +43,7 @@ class MessageFilters:
 			"dataOwnerId": data_owner_id,
 			"transportGuid": transport_guid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byTransportGuidForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byTransportGuidForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -59,7 +59,7 @@ class MessageFilters:
 		payload = {
 			"transportGuid": transport_guid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byTransportGuidForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byTransportGuidForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -76,7 +76,7 @@ class MessageFilters:
 			"dataOwnerId": data_owner_id,
 			"address": address,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.fromAddressForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.fromAddressForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -92,7 +92,7 @@ class MessageFilters:
 		payload = {
 			"address": address,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.fromAddressForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.fromAddressForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -112,7 +112,7 @@ class MessageFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byPatientsSentDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byPatientsSentDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -131,7 +131,7 @@ class MessageFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byPatientsSentDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byPatientsSentDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -151,7 +151,7 @@ class MessageFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byPatientSecretIdsSentDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byPatientSecretIdsSentDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -170,7 +170,7 @@ class MessageFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byPatientSecretIdsSentDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byPatientSecretIdsSentDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -187,7 +187,7 @@ class MessageFilters:
 			"dataOwnerId": data_owner_id,
 			"address": address,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.toAddressForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.toAddressForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -203,7 +203,7 @@ class MessageFilters:
 		payload = {
 			"address": address,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.toAddressForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.toAddressForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -223,7 +223,7 @@ class MessageFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byTransportGuidSentDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byTransportGuidSentDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -242,7 +242,7 @@ class MessageFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byTransportGuidSentDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byTransportGuidSentDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -259,7 +259,7 @@ class MessageFilters:
 			"dataOwnerId": data_owner_id,
 			"transportGuid": transport_guid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.latestByTransportGuidForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.latestByTransportGuidForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -275,7 +275,7 @@ class MessageFilters:
 		payload = {
 			"transportGuid": transport_guid,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.latestByTransportGuidForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.latestByTransportGuidForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -291,7 +291,7 @@ class MessageFilters:
 		payload = {
 			"invoiceIds": [x0 for x0 in invoice_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byInvoiceIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byInvoiceIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -307,7 +307,7 @@ class MessageFilters:
 		payload = {
 			"parentIds": [x0 for x0 in parent_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MessageFilters.byParentIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MessageFilters.byParentIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

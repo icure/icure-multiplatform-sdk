@@ -1,19 +1,19 @@
 # auto-generated file
 import asyncio
 import json
-from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from icure.model import MaintenanceTask, EncryptedMaintenanceTask, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import MaintenanceTask, EncryptedMaintenanceTask, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
-from icure.subscription.EntitySubscription import EntitySubscription
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 class MaintenanceTaskBasicApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def match_maintenance_tasks_by_async(self, filter: BaseFilterOptions[MaintenanceTask]) -> List[str]:
 		loop = asyncio.get_running_loop()
@@ -30,9 +30,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -42,8 +42,8 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -69,9 +69,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -81,8 +81,8 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.matchMaintenanceTasksBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -104,7 +104,7 @@ class MaintenanceTaskBasicApi:
 				result = PaginatedListIterator[EncryptedMaintenanceTask](
 					producer = success,
 					deserializer = lambda x: EncryptedMaintenanceTask._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -112,9 +112,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -124,23 +124,23 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedMaintenanceTask](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedMaintenanceTask._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_maintenance_tasks_by_sorted_async(self, filter: BaseSortableFilterOptions[MaintenanceTask]) -> PaginatedListIterator[EncryptedMaintenanceTask]:
@@ -154,7 +154,7 @@ class MaintenanceTaskBasicApi:
 				result = PaginatedListIterator[EncryptedMaintenanceTask](
 					producer = success,
 					deserializer = lambda x: EncryptedMaintenanceTask._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -162,9 +162,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -174,23 +174,23 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.filterMaintenanceTasksBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[EncryptedMaintenanceTask](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedMaintenanceTask._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def delete_maintenance_task_async(self, entity_id: str) -> DocIdentifier:
@@ -208,9 +208,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTaskAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTaskAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -220,8 +220,8 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTaskBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTaskBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -247,9 +247,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTasksAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTasksAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -259,8 +259,8 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTasksBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.deleteMaintenanceTasksBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -286,9 +286,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.modifyMaintenanceTaskAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.modifyMaintenanceTaskAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -298,8 +298,8 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.modifyMaintenanceTaskBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.modifyMaintenanceTaskBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -325,9 +325,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTaskAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTaskAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -337,8 +337,8 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTaskBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTaskBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -364,9 +364,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTasksAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTasksAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -376,8 +376,8 @@ class MaintenanceTaskBasicApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTasksBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.getMaintenanceTasksBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -399,7 +399,7 @@ class MaintenanceTaskBasicApi:
 				result = EntitySubscription[EncryptedMaintenanceTask](
 					producer = success,
 					deserializer = lambda x: EncryptedMaintenanceTask._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -409,9 +409,9 @@ class MaintenanceTaskBasicApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.subscribeToEventsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.subscribeToEventsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -423,21 +423,21 @@ class MaintenanceTaskBasicApi:
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.MaintenanceTaskBasicApi.subscribeToEventsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.subscribeToEventsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return EntitySubscription[EncryptedMaintenanceTask](
 				producer = class_pointer,
 				deserializer = lambda x: EncryptedMaintenanceTask._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)

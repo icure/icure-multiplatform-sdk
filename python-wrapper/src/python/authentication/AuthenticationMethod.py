@@ -25,19 +25,19 @@ AuthenticationMethod = Union[UsernameLongToken, UsernamePassword, ThirdPartyAuth
 def _serialize_authentication_method(auth_method: AuthenticationMethod) -> dict[str, any]:
     if isinstance(auth_method, UsernamePassword):
         return {
-            "type": "com.icure.sdk.py.options.PyAuthMethod.UsernamePassword",
+            "type": "com.icure.cardinal.sdk.py.options.PyAuthMethod.UsernamePassword",
             "username": auth_method.username,
             "password": auth_method.password
         }
     elif isinstance(auth_method, UsernameLongToken):
         return {
-            "type": "com.icure.sdk.py.options.PyAuthMethod.UsernameLongToken",
+            "type": "com.icure.cardinal.sdk.py.options.PyAuthMethod.UsernameLongToken",
             "username": auth_method.username,
             "token": auth_method.token
         }
     elif isinstance(auth_method, ThirdPartyAuthentication):
         return {
-            "type": "com.icure.sdk.py.options.PyAuthMethod.ThirdPartyAuthentication",
+            "type": "com.icure.cardinal.sdk.py.options.PyAuthMethod.ThirdPartyAuthentication",
             "token": auth_method.token,
             "provider": auth_method.provider.value
         }

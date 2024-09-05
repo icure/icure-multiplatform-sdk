@@ -1,10 +1,10 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
-from icure.model import Service, Identifier, Patient, serialize_patient, LinkQualification
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
+from cardinal_sdk.model import Service, Identifier, Patient, serialize_patient, LinkQualification
 from typing import List, Optional
 
 class ServiceFilters:
@@ -14,7 +14,7 @@ class ServiceFilters:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.allServicesForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.allServicesForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -27,7 +27,7 @@ class ServiceFilters:
 
 	@classmethod
 	def all_services_for_self(cls) -> FilterOptions[Service]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.allServicesForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.allServicesForSelf(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -43,7 +43,7 @@ class ServiceFilters:
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byIdentifiersForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byIdentifiersForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -63,7 +63,7 @@ class ServiceFilters:
 			"startOfServiceValueDate": start_of_service_value_date,
 			"endOfServiceValueDate": end_of_service_value_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byCodeAndValueDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byCodeAndValueDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -83,7 +83,7 @@ class ServiceFilters:
 			"startOfServiceValueDate": start_of_service_value_date,
 			"endOfServiceValueDate": end_of_service_value_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byTagAndValueDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byTagAndValueDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -100,7 +100,7 @@ class ServiceFilters:
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byPatientsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -117,7 +117,7 @@ class ServiceFilters:
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byPatientsSecretIdsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientsSecretIdsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -134,7 +134,7 @@ class ServiceFilters:
 			"dataOwnerId": data_owner_id,
 			"healthElementIds": [x0 for x0 in health_element_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byHealthElementIdFromSubContactForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byHealthElementIdFromSubContactForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -150,7 +150,7 @@ class ServiceFilters:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byIdentifiersForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byIdentifiersForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -169,7 +169,7 @@ class ServiceFilters:
 			"startOfServiceValueDate": start_of_service_value_date,
 			"endOfServiceValueDate": end_of_service_value_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byCodeAndValueDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byCodeAndValueDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -188,7 +188,7 @@ class ServiceFilters:
 			"startOfServiceValueDate": start_of_service_value_date,
 			"endOfServiceValueDate": end_of_service_value_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byTagAndValueDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byTagAndValueDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -204,7 +204,7 @@ class ServiceFilters:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byPatientsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientsForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -220,7 +220,7 @@ class ServiceFilters:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byPatientsSecretIdsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientsSecretIdsForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -236,7 +236,7 @@ class ServiceFilters:
 		payload = {
 			"healthElementIds": [x0 for x0 in health_element_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byHealthElementIdFromSubContactForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byHealthElementIdFromSubContactForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -252,7 +252,7 @@ class ServiceFilters:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -268,7 +268,7 @@ class ServiceFilters:
 		payload = {
 			"associationId": association_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byAssociationId(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byAssociationId(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -285,7 +285,7 @@ class ServiceFilters:
 			"linkValues": [x0 for x0 in link_values],
 			"linkQualification": link_qualification.__serialize__() if link_qualification is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ServiceFilters.byQualifiedLink(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byQualifiedLink(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

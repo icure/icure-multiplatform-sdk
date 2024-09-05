@@ -1,10 +1,10 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
-from icure.model import Form, Patient, serialize_patient
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Form, Patient, serialize_patient
 from typing import List, Optional
 
 class FormFilters:
@@ -15,7 +15,7 @@ class FormFilters:
 			"dataOwnerId": data_owner_id,
 			"parentId": parent_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byParentIdForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byParentIdForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -32,7 +32,7 @@ class FormFilters:
 			"dataOwnerId": data_owner_id,
 			"parentId": parent_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byParentIdForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byParentIdForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -52,7 +52,7 @@ class FormFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byPatientsOpeningDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byPatientsOpeningDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -71,7 +71,7 @@ class FormFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byPatientsOpeningDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byPatientsOpeningDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -91,7 +91,7 @@ class FormFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byPatientSecretIdsOpeningDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byPatientSecretIdsOpeningDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -110,7 +110,7 @@ class FormFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byPatientSecretIdsOpeningDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byPatientSecretIdsOpeningDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -127,7 +127,7 @@ class FormFilters:
 			"logicalUuid": logical_uuid,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byLogicalUuid(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byLogicalUuid(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -144,7 +144,7 @@ class FormFilters:
 			"uniqueId": unique_id,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.FormFilters.byUniqueId(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byUniqueId(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

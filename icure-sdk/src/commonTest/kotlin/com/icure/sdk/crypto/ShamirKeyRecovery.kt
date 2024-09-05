@@ -47,7 +47,7 @@ class ShamirKeyRecovery : StringSpec({
 		val (lostKeyApi, newKey) = userDetails.apiWithLostKeys()
 		shouldThrow<EntityEncryptionException> { lostKeyApi.patient.getPatient(createdPatient.id) }
 		askAccessBackTo.forEach { giveAccessBackDataOwner ->
-			giveAccessBackDataOwner.api().icureMaintenanceTask.applyKeyPairUpdate(
+			giveAccessBackDataOwner.api().cardinalMaintenanceTask.applyKeyPairUpdate(
 				KeyPairUpdateNotification(
 					concernedDataOwnerId = userDetails.dataOwnerId,
 					newPublicKey = defaultCryptoService.rsa.exportSpkiHex(newKey.public)

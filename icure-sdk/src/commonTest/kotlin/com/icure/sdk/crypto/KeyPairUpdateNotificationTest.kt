@@ -67,7 +67,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 		tasks shouldHaveSize 1
 		val request = KeyPairUpdateNotification.parseFromMaintenanceTask(tasks.first())
 		request shouldBe expectedNotification
-		api.icureMaintenanceTask.applyKeyPairUpdate(expectedNotification)
+		api.cardinalMaintenanceTask.applyKeyPairUpdate(expectedNotification)
 	}
 
 	suspend fun DataOwnerDetails.checkNoReceivedMaintenanceTask() {
@@ -94,8 +94,8 @@ class KeyPairUpdateNotificationTest : StringSpec({
 			newPublicKey = newKeySpki,
 			concernedDataOwnerId = user.dataOwnerId
 		)
-		noNotifyBecauseAlreadyGaveAccessBack.api().icureMaintenanceTask.applyKeyPairUpdate(expectedNotification)
-		apiWithLostKey.icureMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(newKeySpki)
+		noNotifyBecauseAlreadyGaveAccessBack.api().cardinalMaintenanceTask.applyKeyPairUpdate(expectedNotification)
+		apiWithLostKey.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(newKeySpki)
 		toNotifyAsDelegate.checkReceivedMaintenanceTaskAndGiveAccessBack(expectedNotification)
 		toNotifyAsDelegator.checkReceivedMaintenanceTaskAndGiveAccessBack(expectedNotification)
 		noNotifyBecauseNoExchangeData.checkNoReceivedMaintenanceTask()

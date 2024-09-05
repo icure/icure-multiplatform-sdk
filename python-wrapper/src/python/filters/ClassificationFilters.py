@@ -1,11 +1,11 @@
 # auto-generated file
 import json
 from typing import List, Optional
-from icure.model import Patient, serialize_patient, Classification
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import Patient, serialize_patient, Classification
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import SortableFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.filters.FilterOptions import SortableFilterOptions, BaseSortableFilterOptions
 
 class ClassificationFilters:
 
@@ -18,7 +18,7 @@ class ClassificationFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ClassificationFilters.byPatientsCreatedForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ClassificationFilters.byPatientsCreatedForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -37,7 +37,7 @@ class ClassificationFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ClassificationFilters.byPatientsCreatedForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ClassificationFilters.byPatientsCreatedForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -57,7 +57,7 @@ class ClassificationFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ClassificationFilters.byPatientSecretIdsCreatedForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ClassificationFilters.byPatientSecretIdsCreatedForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -76,7 +76,7 @@ class ClassificationFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.ClassificationFilters.byPatientSecretIdsCreatedForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ClassificationFilters.byPatientSecretIdsCreatedForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

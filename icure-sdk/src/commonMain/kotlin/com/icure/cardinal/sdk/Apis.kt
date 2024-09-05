@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
 import com.icure.cardinal.sdk.api.CalendarItemApi
 import com.icure.cardinal.sdk.api.CalendarItemBasicApi
+import com.icure.cardinal.sdk.api.CardinalMaintenanceTaskApi
 import com.icure.cardinal.sdk.api.ClassificationApi
 import com.icure.cardinal.sdk.api.ClassificationBasicApi
 import com.icure.cardinal.sdk.api.CodeApi
@@ -26,7 +27,6 @@ import com.icure.cardinal.sdk.api.GroupApi
 import com.icure.cardinal.sdk.api.HealthElementApi
 import com.icure.cardinal.sdk.api.HealthElementBasicApi
 import com.icure.cardinal.sdk.api.HealthcarePartyApi
-import com.icure.cardinal.sdk.api.CardinalMaintenanceTaskApi
 import com.icure.cardinal.sdk.api.InsuranceApi
 import com.icure.cardinal.sdk.api.InvoiceApi
 import com.icure.cardinal.sdk.api.InvoiceBasicApi
@@ -104,7 +104,7 @@ interface CardinalApis : CardinalNonCryptoApis {
 	val crypto: CryptoApi
 	val recovery: RecoveryApi
 	// extended
-	val icureMaintenanceTask: CardinalMaintenanceTaskApi
+	val cardinalMaintenanceTask: CardinalMaintenanceTaskApi
 	val dataOwner: DataOwnerApi
 }
 

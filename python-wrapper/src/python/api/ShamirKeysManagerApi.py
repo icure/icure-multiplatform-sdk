@@ -1,24 +1,24 @@
 # auto-generated file
 import json
 import asyncio
-from icure.model import CryptoActor, serialize_crypto_actor, ShamirUpdateRequest, CryptoActorStubWithType
-from icure.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import CryptoActor, serialize_crypto_actor, ShamirUpdateRequest, CryptoActorStubWithType
+from cardinal_sdk.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Dict, List
-from icure.model.specializations import KeypairFingerprintV1String
+from cardinal_sdk.model.specializations import KeypairFingerprintV1String
 
 class ShamirKeysManagerApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	def get_existing_splits_info(self, data_owner: CryptoActor) -> Dict[KeypairFingerprintV1String, List[str]]:
 		payload = {
 			"dataOwner": serialize_crypto_actor(data_owner),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ShamirKeysManagerApi.getExistingSplitsInfo(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ShamirKeysManagerApi.getExistingSplitsInfo(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -45,9 +45,9 @@ class ShamirKeysManagerApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.ShamirKeysManagerApi.updateSelfSplitsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ShamirKeysManagerApi.updateSelfSplitsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -58,8 +58,8 @@ class ShamirKeysManagerApi:
 			"keySplitsToUpdate": {k0: v0.__serialize__() for k0, v0 in key_splits_to_update.items()},
 			"keySplitsToDelete": [x0 for x0 in key_splits_to_delete],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.ShamirKeysManagerApi.updateSelfSplitsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ShamirKeysManagerApi.updateSelfSplitsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
