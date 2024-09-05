@@ -19,13 +19,16 @@ import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.Delegation
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.utils.InternalIcureApi
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class EntityWithTypeInfo<T : HasEncryptionMetadata>(
 	val entity: T,
 	val type: EntityWithEncryptionMetadataTypeName
 ) : HasEncryptionMetadata by entity
 
 @InternalIcureApi
+@Serializable
 data class EntityWithEncryptionMetadataStub(
 	override val id: String,
 	override val rev: String?,
@@ -42,6 +45,17 @@ data class EntityWithEncryptionMetadataStub(
 		"EntityWithEncryptionMetadataStub security metadata should not be updated, as the changes won't be saved"
 	)
 }
+
+@InternalIcureApi
+fun <T:HasEncryptionMetadata> T.toEncryptionMetadataStub() = EntityWithEncryptionMetadataStub(
+	id = id,
+	rev = rev,
+	secretForeignKeys = secretForeignKeys,
+	cryptedForeignKeys = cryptedForeignKeys,
+	delegations = delegations,
+	encryptionKeys = encryptionKeys,
+	securityMetadata = securityMetadata
+)
 
 fun <T:Article> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Article)
 fun <T:AccessLog> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.AccessLog)

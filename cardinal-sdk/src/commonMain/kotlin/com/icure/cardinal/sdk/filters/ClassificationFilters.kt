@@ -2,7 +2,10 @@ package com.icure.cardinal.sdk.filters
 
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -36,6 +39,7 @@ object ClassificationFilters {
 	 * @param to the maximum timestamp for [Classification.created] (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Classification.created] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsCreatedForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -45,7 +49,13 @@ object ClassificationFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<Classification> = ByPatientsCreatedForDataOwner(dataOwnerId, patients, from, to, descending)
+	): SortableFilterOptions<Classification> = ByPatientsCreatedForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for classification filtering which match all classifications shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -69,6 +79,7 @@ object ClassificationFilters {
 	 * @param to the maximum timestamp for [Classification.created] (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [Classification.created] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsCreatedForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -77,7 +88,12 @@ object ClassificationFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): SortableFilterOptions<Classification> = ByPatientsCreatedForSelf(patients, from, to, descending)
+	): SortableFilterOptions<Classification> = ByPatientsCreatedForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for classification filtering which match all classifications shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -139,17 +155,19 @@ object ClassificationFilters {
 	): SortableFilterOptions<Classification> = ByPatientSecretIdsCreatedForSelf(secretIds, from, to, descending)
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsCreatedForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
 	): SortableFilterOptions<Classification>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsCreatedForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -187,7 +205,7 @@ internal suspend fun mapClassificationFilterOptions(
 		ClassificationByDataOwnerPatientCreatedDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
@@ -199,7 +217,7 @@ internal suspend fun mapClassificationFilterOptions(
 		ClassificationByDataOwnerPatientCreatedDateFilter(
 			dataOwnerId = selfDataOwnerId,
 			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,

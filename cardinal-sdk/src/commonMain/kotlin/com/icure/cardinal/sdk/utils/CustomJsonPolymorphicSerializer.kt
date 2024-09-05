@@ -27,7 +27,7 @@ internal abstract class CustomJsonPolymorphicSerializer<T : Any>(
 	abstract fun getSerializerByClass(kclass: KClass<out T>): KSerializer<out T>?
 
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor(tSerialName) {
-		element("\$type", String.serializer().descriptor)
+		element(discriminatorField, String.serializer().descriptor)
 	}
 
 	override fun deserialize(decoder: Decoder): T {

@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer
@@ -49,7 +50,7 @@ fun hasNextBlocking(
 	}
 }.toPyString(Boolean.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, DelicateCoroutinesApi::class)
 fun nextAsync(
 	iteratorAndSerializerPtr: COpaquePointer,
 	limit: Int,
@@ -84,8 +85,9 @@ internal class PaginatedListIteratorAndSerializer<T : Any>(
 ) {
 	suspend fun hasNext(): Boolean =
 		iterator.hasNext()
+	@OptIn(InternalIcureApi::class)
 	suspend fun nextAsJson(limit: Int): JsonElement =
-		Serialization.fullJson.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
+		Serialization.fullLanguageInteropJson.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
 }
 
 @OptIn(ExperimentalForeignApi::class)

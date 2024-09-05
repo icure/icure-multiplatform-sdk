@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.subscription.EntitySubscription
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionCloseReason
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.utils.InternalIcureApi
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer
@@ -14,6 +15,7 @@ import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.asStableRef
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -48,7 +50,7 @@ fun waitForEventBlocking(subscriptionPtr: COpaquePointer, timeoutMs: Int): Strin
 	}
 }.toPyJson()
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, DelicateCoroutinesApi::class)
 fun waitForEventAsync(
 	subscriptionPtr: COpaquePointer,
 	timeoutMs: Int,
@@ -101,8 +103,9 @@ internal data class EntitySubscriptionWithSerializer<E : Identifiable<String>>(
 		runBlocking { subscription.close() }
 	}
 
+	@OptIn(InternalIcureApi::class)
 	val closeReason get(): JsonElement = subscription.closeReason?.let {
-		Serialization.fullJson.encodeToJsonElement(closeReasonSerializer, it)
+		Serialization.fullLanguageInteropJson.encodeToJsonElement(closeReasonSerializer, it)
 	} ?: JsonNull
 
 	suspend fun waitForEvent(timeoutMs: Int): JsonElement =
@@ -113,8 +116,9 @@ internal data class EntitySubscriptionWithSerializer<E : Identifiable<String>>(
 	fun getEvent(): JsonElement =
 		subscription.eventChannel.tryReceive().getOrNull().json()
 
+	@OptIn(InternalIcureApi::class)
 	private fun EntitySubscriptionEvent<E>?.json() = if (this != null) {
-		Serialization.fullJson.encodeToJsonElement(eventSerializer, this)
+		Serialization.fullLanguageInteropJson.encodeToJsonElement(eventSerializer, this)
 	} else JsonNull
 }
 

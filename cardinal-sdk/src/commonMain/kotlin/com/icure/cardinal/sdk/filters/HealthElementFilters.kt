@@ -2,7 +2,10 @@ package com.icure.cardinal.sdk.filters
 
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.base.Identifier
@@ -174,11 +177,12 @@ object HealthElementFilters {
      * @param dataOwnerId a data owner id
      * @param patients a list of patients.
      */
+    @OptIn(InternalIcureApi::class)
     fun byPatientsForDataOwner(
         dataOwnerId: String,
         patients: List<Patient>
     ): SortableFilterOptions<HealthElement> = ByPatientsForDataOwner(
-        patients = patients,
+        patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
         dataOwnerId = dataOwnerId
     )
 
@@ -198,9 +202,12 @@ object HealthElementFilters {
      *
      * @param patients a list of patients.
      */
+    @OptIn(InternalIcureApi::class)
     fun byPatientsForSelf(
         patients: List<Patient>
-    ): SortableFilterOptions<HealthElement> = ByPatientsForSelf(patients = patients)
+    ): SortableFilterOptions<HealthElement> = ByPatientsForSelf(
+	    patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) }
+	)
 
     /**
      * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with a specific data owner that are linked with a
@@ -264,6 +271,7 @@ object HealthElementFilters {
 	 * @param to the maximum fuzzy date for [HealthElement.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [HealthElement.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForDataOwner(
 		dataOwnerId: String,
 		patients: List<Patient>,
@@ -273,7 +281,13 @@ object HealthElementFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForDataOwner(dataOwnerId, patients, from, to, descending)
+	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -297,6 +311,7 @@ object HealthElementFilters {
 	 * @param to the maximum fuzzy date for [HealthElement.openingDate], in the YYYYMMDDHHMMSS format (default: no limit).
 	 * @param descending whether to sort the result in descending or ascending order by [HealthElement.openingDate] (default: ascending).
 	 */
+	@OptIn(InternalIcureApi::class)
 	fun byPatientsOpeningDateForSelf(
 		patients: List<Patient>,
 		@DefaultValue("null")
@@ -305,7 +320,12 @@ object HealthElementFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForSelf(patients, from, to, descending)
+	) : SortableFilterOptions<HealthElement> = ByPatientsOpeningDateForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
 
 	/**
 	 * Options for health element filtering which match all health elements shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -436,14 +456,16 @@ object HealthElementFilters {
     ): SortableFilterOptions<HealthElement>
 
     @Serializable
+    @InternalIcureApi
     internal class ByPatientsForDataOwner(
-        val patients: List<Patient>,
-        val dataOwnerId: String
+	    val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+	    val dataOwnerId: String
     ) : SortableFilterOptions<HealthElement>
 
     @Serializable
+    @InternalIcureApi
     internal class ByPatientsForSelf(
-        val patients: List<Patient>
+        val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>
     ) : SortableFilterOptions<HealthElement>
 
     @Serializable
@@ -467,17 +489,19 @@ object HealthElementFilters {
     }
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
 	) : SortableFilterOptions<HealthElement>
 
 	@Serializable
+	@InternalIcureApi
 	internal class ByPatientsOpeningDateForSelf(
-		val patients: List<Patient>,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -550,7 +574,7 @@ internal suspend fun mapHealthElementFilterOptions(
             patientSecretForeignKeys = filterOptions.patients.flatMap {
                 requireNotNull(entityEncryptionService) {
                     "Health element filter options `byPatients` can't be used in iCure base apis"
-                }.secretIdsOf(it.withTypeInfo(), null)
+                }.secretIdsOf(it, null)
             }.toSet(),
             healthcarePartyId = filterOptions.dataOwnerId
         )
@@ -592,7 +616,7 @@ internal suspend fun mapHealthElementFilterOptions(
         filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
         HealthElementByHcPartySecretForeignKeysFilter(
             patientSecretForeignKeys = filterOptions.patients.flatMap {
-                entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+                entityEncryptionService.secretIdsOf(it, null)
             }.toSet(),
             healthcarePartyId = selfDataOwnerId
         )
@@ -619,7 +643,7 @@ internal suspend fun mapHealthElementFilterOptions(
 		HealthElementByDataOwnerPatientOpeningDate(
 			healthcarePartyId = filterOptions.dataOwnerId,
 			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
@@ -631,7 +655,7 @@ internal suspend fun mapHealthElementFilterOptions(
 		HealthElementByDataOwnerPatientOpeningDate(
 			healthcarePartyId = selfDataOwnerId,
 			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it.withTypeInfo(), null)
+				entityEncryptionService.secretIdsOf(it, null)
 			}.toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
