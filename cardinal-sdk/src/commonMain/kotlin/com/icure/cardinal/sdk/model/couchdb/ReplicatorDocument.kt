@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk.model.couchdb
 
 import com.icure.cardinal.sdk.model.base.Versionable
-import com.icure.cardinal.sdk.serialization.ZonedDateTimeSerializer
 import com.icure.cardinal.sdk.utils.time.ZonedDateTime
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -9,6 +8,7 @@ import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
+import com.icure.cardinal.sdk.serialization.ZonedDateTimeSerializer
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -24,7 +24,6 @@ data class ReplicatorDocument(
 	public val continuous: Boolean? = null,
 	public val doc_ids: List<String>? = null,
 	public val replicationState: String? = null,
-	@Serializable(with = ZonedDateTimeSerializer::class)
 	public val replicationStateTime: ZonedDateTime? = null,
 	public val replicationStats: ReplicationStats? = null,
 	public val errorCount: Int? = null,

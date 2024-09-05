@@ -1,4 +1,4 @@
-package com.icure.cardinal.sdk.api.raw.impl
+package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse

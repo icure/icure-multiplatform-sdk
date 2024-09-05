@@ -7,8 +7,8 @@ import com.icure.cardinal.sdk.model.enums.UsersStatus
 import com.icure.cardinal.sdk.model.enums.UsersType
 import com.icure.cardinal.sdk.model.security.AuthenticationToken
 import com.icure.cardinal.sdk.model.security.Permission
-import com.icure.cardinal.sdk.serialization.InstantSerializer
 import com.icure.cardinal.sdk.utils.DefaultValue
+import com.icure.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -17,6 +17,7 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.cardinal.sdk.serialization.InstantSerializer
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
