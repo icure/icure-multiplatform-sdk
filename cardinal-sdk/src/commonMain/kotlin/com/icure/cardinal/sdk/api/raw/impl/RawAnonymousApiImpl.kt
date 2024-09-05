@@ -1,4 +1,4 @@
-package com.icure.cardinal.sdk.api.raw.impl
+package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
@@ -35,6 +35,20 @@ class RawAnonymousApiImpl(
 	timeout: Duration? = null,
 	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAnonymousApi {
+	// region anonymous healthcareparty endpoints
+
+	override suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	// endregion
+
 	// region anonymous calendaritem endpoints
 
 	override suspend fun listAppointmentTypesForUser(
@@ -97,20 +111,6 @@ class RawAnonymousApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	// endregion
-
-	// region anonymous healthcareparty endpoints
-
-	override suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>> =
-		get {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
