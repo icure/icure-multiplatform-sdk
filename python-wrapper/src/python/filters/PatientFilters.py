@@ -1,10 +1,10 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
-from icure.model import Patient, Identifier, Gender
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Patient, Identifier, Gender
 from typing import List, Optional
 
 class PatientFilters:
@@ -14,7 +14,7 @@ class PatientFilters:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.allPatientsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.allPatientsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -27,7 +27,7 @@ class PatientFilters:
 
 	@classmethod
 	def all_patients_for_self(cls) -> FilterOptions[Patient]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.allPatientsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.allPatientsForSelf(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -42,7 +42,7 @@ class PatientFilters:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -59,7 +59,7 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byIdentifiersForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIdentifiersForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -76,7 +76,7 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"ssins": [x0 for x0 in ssins],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.bySsinsForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.bySsinsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -94,7 +94,7 @@ class PatientFilters:
 			"fromDate": from_date,
 			"toDate": to_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -111,7 +111,7 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byFuzzyNameForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byFuzzyNameForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -130,7 +130,7 @@ class PatientFilters:
 			"education": education,
 			"profession": profession,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byGenderEducationProfessionForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byGenderEducationProfessionForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -147,7 +147,7 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"active": active,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byActiveForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byActiveForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -164,7 +164,7 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byTelecomForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byTelecomForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -183,7 +183,7 @@ class PatientFilters:
 			"postalCode": postal_code,
 			"houseNumber": house_number,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -200,7 +200,7 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byAddressForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -217,7 +217,7 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"externalIdPrefix": external_id_prefix,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byExternalIdForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byExternalIdForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -233,7 +233,7 @@ class PatientFilters:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byIdentifiersForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIdentifiersForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -249,7 +249,7 @@ class PatientFilters:
 		payload = {
 			"ssins": [x0 for x0 in ssins],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.bySsinsForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.bySsinsForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -266,7 +266,7 @@ class PatientFilters:
 			"fromDate": from_date,
 			"toDate": to_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -282,7 +282,7 @@ class PatientFilters:
 		payload = {
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byNameForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byNameForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -300,7 +300,7 @@ class PatientFilters:
 			"education": education,
 			"profession": profession,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byGenderEducationProfessionForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byGenderEducationProfessionForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -316,7 +316,7 @@ class PatientFilters:
 		payload = {
 			"active": active,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byActiveForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byActiveForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -332,7 +332,7 @@ class PatientFilters:
 		payload = {
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byTelecomForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byTelecomForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -350,7 +350,7 @@ class PatientFilters:
 			"postalCode": postal_code,
 			"houseNumber": house_number,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -366,7 +366,7 @@ class PatientFilters:
 		payload = {
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byAddressForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -382,7 +382,7 @@ class PatientFilters:
 		payload = {
 			"externalIdPrefix": external_id_prefix,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byExternalIdForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byExternalIdForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -401,7 +401,7 @@ class PatientFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byModificationDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byModificationDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -419,7 +419,7 @@ class PatientFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.PatientFilters.byModificationDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byModificationDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

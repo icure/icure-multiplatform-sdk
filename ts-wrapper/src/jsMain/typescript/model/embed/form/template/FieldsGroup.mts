@@ -8,7 +8,7 @@ export class FieldsGroup {
 
 	fields: Array<StructureElement> | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.FieldsGroup' = 'com.icure.sdk.model.embed.form.template.FieldsGroup';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.FieldsGroup' = 'com.icure.cardinal.sdk.model.embed.form.template.FieldsGroup';
 
 	constructor(partial: Partial<FieldsGroup> & Pick<FieldsGroup, "group">) {
 		this.group = partial.group;

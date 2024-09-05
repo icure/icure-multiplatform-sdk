@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseSortableFilterOptions, InternalAccessLogFiltersObj, SortableFilterOptions} from '../icure-sdk-ts.mjs';
+import {BaseSortableFilterOptions, InternalAccessLogFiltersObj, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {AccessLog} from '../model/AccessLog.mjs';
 import {Patient} from '../model/Patient.mjs';
 

@@ -1,7 +1,7 @@
 # auto-generated file
 import platform
 from ctypes import c_void_p, Structure, CFUNCTYPE, c_char_p, c_bool, c_int32, POINTER
-from icure.kotlin_dll_loader import kdll
+from cardinal_sdk.kotlin_dll_loader import kdll
 
 class AnyKtRef(Structure):
 	_fields_ = [
@@ -358,6 +358,16 @@ class CalendarItemBasicApi(Structure):
 		("matchCalendarItemsBySortedBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyCalendarItemAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyCalendarItemBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+	]
+
+class CardinalMaintenanceTaskApi(Structure):
+	_fields_ = [
+		("applyKeyPairUpdateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("applyKeyPairUpdateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("createKeyPairUpdateNotificationToAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("createKeyPairUpdateNotificationToBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class encrypted(Structure):
@@ -1586,52 +1596,6 @@ class HealthcarePartyApi(Structure):
 		("registerPatientBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
-class ICureApi(Structure):
-	_fields_ = [
-		("evictAllFromMapAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("evictAllFromMapBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getIndexingInfoAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
-		("getIndexingInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
-		("getIndexingInfoByGroupAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getIndexingInfoByGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getProcessInfoAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
-		("getProcessInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
-		("getReplicationInfoAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
-		("getReplicationInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
-		("getReplicatorInfoAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getReplicatorInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getVersionAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
-		("getVersionBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
-		("isReadyAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
-		("isReadyBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
-		("resolveContactsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("resolveContactsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("resolveDocumentsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("resolveDocumentsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("resolveFormsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("resolveFormsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("resolveHealthElementsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("resolveHealthElementsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("resolveInvoicesConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("resolveInvoicesConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("resolveMessagesConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("resolveMessagesConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("resolvePatientsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("resolvePatientsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("updateDesignDocAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("updateDesignDocBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-	]
-
-class IcureMaintenanceTaskApi(Structure):
-	_fields_ = [
-		("applyKeyPairUpdateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("applyKeyPairUpdateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createKeyPairUpdateNotificationToAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createKeyPairUpdateNotificationToBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-	]
-
 class InsuranceApi(Structure):
 	_fields_ = [
 		("createInsuranceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2704,6 +2668,42 @@ class RoleApi(Structure):
 		("getAllRolesBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
 	]
 
+class SystemApi(Structure):
+	_fields_ = [
+		("evictAllFromMapAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("evictAllFromMapBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("getIndexingInfoAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
+		("getIndexingInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
+		("getIndexingInfoByGroupAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("getIndexingInfoByGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("getProcessInfoAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
+		("getProcessInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
+		("getReplicationInfoAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
+		("getReplicationInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
+		("getReplicatorInfoAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("getReplicatorInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("getVersionAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
+		("getVersionBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
+		("isReadyAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
+		("isReadyBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
+		("resolveContactsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("resolveContactsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("resolveDocumentsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("resolveDocumentsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("resolveFormsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("resolveFormsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("resolveHealthElementsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("resolveHealthElementsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("resolveInvoicesConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("resolveInvoicesConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("resolveMessagesConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("resolveMessagesConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("resolvePatientsConflictsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("resolvePatientsConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("updateDesignDocAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("updateDesignDocBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+	]
+
 class TarificationApi(Structure):
 	_fields_ = [
 		("createTarificationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3066,6 +3066,7 @@ class api(Structure):
 		("ApplicationSettingsApi", ApplicationSettingsApi),
 		("CalendarItemApi", CalendarItemApi),
 		("CalendarItemBasicApi", CalendarItemBasicApi),
+		("CardinalMaintenanceTaskApi", CardinalMaintenanceTaskApi),
 		("ClassificationApi", ClassificationApi),
 		("ClassificationBasicApi", ClassificationBasicApi),
 		("CodeApi", CodeApi),
@@ -3086,8 +3087,6 @@ class api(Structure):
 		("HealthElementApi", HealthElementApi),
 		("HealthElementBasicApi", HealthElementBasicApi),
 		("HealthcarePartyApi", HealthcarePartyApi),
-		("ICureApi", ICureApi),
-		("IcureMaintenanceTaskApi", IcureMaintenanceTaskApi),
 		("InsuranceApi", InsuranceApi),
 		("InvoiceApi", InvoiceApi),
 		("InvoiceBasicApi", InvoiceBasicApi),
@@ -3105,6 +3104,7 @@ class api(Structure):
 		("ReceiptBasicApi", ReceiptBasicApi),
 		("RecoveryApi", RecoveryApi),
 		("RoleApi", RoleApi),
+		("SystemApi", SystemApi),
 		("TarificationApi", TarificationApi),
 		("TimeTableApi", TimeTableApi),
 		("TimeTableBasicApi", TimeTableBasicApi),
@@ -3484,9 +3484,14 @@ class sdk(Structure):
 		("py", py),
 	]
 
-class icure(Structure):
+class cardinal(Structure):
 	_fields_ = [
 		("sdk", sdk),
+	]
+
+class icure(Structure):
+	_fields_ = [
+		("cardinal", cardinal),
 	]
 
 class com(Structure):
@@ -3539,10 +3544,10 @@ class Symbols(Structure):
 
 def __loadSymbols():
 	if platform.system().lower() == 'windows':
-		kdll.icure_sdk_native_pylib_symbols.restype = POINTER(Symbols)
-		return kdll.icure_sdk_native_pylib_symbols().contents
+		kdll.cardinal_sdk_native_pylib_symbols.restype = POINTER(Symbols)
+		return kdll.cardinal_sdk_native_pylib_symbols().contents
 	else:
-		kdll.libicure_sdk_native_pylib_symbols.restype = POINTER(Symbols)
-		return kdll.libicure_sdk_native_pylib_symbols().contents
+		kdll.libcardinal_sdk_native_pylib_symbols.restype = POINTER(Symbols)
+		return kdll.libcardinal_sdk_native_pylib_symbols().contents
 
 symbols: Symbols = __loadSymbols()

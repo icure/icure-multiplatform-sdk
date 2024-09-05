@@ -1,11 +1,11 @@
 # auto-generated file
 import json
 from typing import List, Optional
-from icure.model import Patient, serialize_patient, AccessLog
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import Patient, serialize_patient, AccessLog
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import SortableFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.filters.FilterOptions import SortableFilterOptions, BaseSortableFilterOptions
 
 class AccessLogFilters:
 
@@ -18,7 +18,7 @@ class AccessLogFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.AccessLogFilters.byPatientsDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.AccessLogFilters.byPatientsDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -37,7 +37,7 @@ class AccessLogFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.AccessLogFilters.byPatientsDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.AccessLogFilters.byPatientsDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -57,7 +57,7 @@ class AccessLogFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.AccessLogFilters.byPatientSecretIdsDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.AccessLogFilters.byPatientSecretIdsDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -76,7 +76,7 @@ class AccessLogFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.AccessLogFilters.byPatientSecretIdsDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.AccessLogFilters.byPatientSecretIdsDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -94,7 +94,7 @@ class AccessLogFilters:
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.AccessLogFilters.byDate(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.AccessLogFilters.byDate(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -113,7 +113,7 @@ class AccessLogFilters:
 			"from": from_,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.AccessLogFilters.byUserTypeDate(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.AccessLogFilters.byUserTypeDate(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

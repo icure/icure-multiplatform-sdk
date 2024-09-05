@@ -1,7 +1,7 @@
 from typing import Generic, TypeVar, List, Optional, Callable
 from ctypes import c_void_p, cast, c_char_p
-from icure.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model.CallResult import create_result_from_json
 import asyncio
 import json
 from concurrent.futures import Executor
@@ -16,10 +16,10 @@ class PaginatedListIterator(Generic[T]):
         self.__executor = executor
 
     def __del__(self):
-        symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__producer)
+        symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.disposeStablePtr(self.__producer)
 
     def has_next_blocking(self) -> bool:
-        call_result = symbols.kotlin.root.com.icure.sdk.py.utils.PaginatedListIterator.hasNextBlocking(self.__producer)
+        call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PaginatedListIterator.hasNextBlocking(self.__producer)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
         symbols.DisposeString(call_result)
         if result_info.failure is not None:
@@ -40,14 +40,14 @@ class PaginatedListIterator(Generic[T]):
         callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
         loop.run_in_executor(
             self.__executor,
-            symbols.kotlin.root.com.icure.sdk.py.utils.PaginatedListIterator.hasNextAsync,
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PaginatedListIterator.hasNextAsync,
             self.__producer,
             callback
         )
         return await future
 
     def next_blocking(self, limit: int) -> List[T]:
-        call_result = symbols.kotlin.root.com.icure.sdk.py.utils.PaginatedListIterator.nextBlocking(self.__producer, limit)
+        call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PaginatedListIterator.nextBlocking(self.__producer, limit)
         result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
         symbols.DisposeString(call_result)
         if result_info.failure is not None:
@@ -68,7 +68,7 @@ class PaginatedListIterator(Generic[T]):
         callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
         loop.run_in_executor(
             self.__executor,
-            symbols.kotlin.root.com.icure.sdk.py.utils.PaginatedListIterator.nextAsync,
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PaginatedListIterator.nextAsync,
             self.__producer,
             limit,
             callback

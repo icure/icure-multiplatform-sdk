@@ -36,7 +36,7 @@ export class RadioButton {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.RadioButton' = 'com.icure.sdk.model.embed.form.template.RadioButton';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.RadioButton' = 'com.icure.cardinal.sdk.model.embed.form.template.RadioButton';
 
 	constructor(partial: Partial<RadioButton> & Pick<RadioButton, "field">) {
 		this.field = partial.field;

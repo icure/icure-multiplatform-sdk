@@ -1,8 +1,8 @@
 // auto-generated file
+import {XRsaKeypair} from '../cardinal-sdk-ts.mjs';
 import {RecoveryDataKey} from '../crypto/entities/RecoveryDataKey.mjs';
 import {RecoveryDataUseFailureReason} from '../crypto/entities/RecoveryDataUseFailureReason.mjs';
 import {RecoveryResult} from '../crypto/entities/RecoveryResult.mjs';
-import {XRsaKeypair} from '../icure-sdk-ts.mjs';
 
 
 export interface RecoveryApi {

@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, InternalTimeTableFiltersObj} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, InternalTimeTableFiltersObj} from '../cardinal-sdk-ts.mjs';
 import {TimeTable} from '../model/TimeTable.mjs';
 
 

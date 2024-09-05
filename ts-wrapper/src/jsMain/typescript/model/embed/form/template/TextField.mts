@@ -36,7 +36,7 @@ export class TextField {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.TextField' = 'com.icure.sdk.model.embed.form.template.TextField';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.TextField' = 'com.icure.cardinal.sdk.model.embed.form.template.TextField';
 
 	constructor(partial: Partial<TextField> & Pick<TextField, "field">) {
 		this.field = partial.field;

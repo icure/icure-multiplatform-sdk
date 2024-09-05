@@ -132,7 +132,7 @@ export class HealthcareParty implements StoredDocument, Named, Person, CryptoAct
 
 	publicKeysForOaepWithSha256: Array<SpkiHexString> = [];
 
-	readonly $ktClass: 'com.icure.sdk.model.HealthcareParty' = 'com.icure.sdk.model.HealthcareParty';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.HealthcareParty' = 'com.icure.cardinal.sdk.model.HealthcareParty';
 
 	constructor(partial: Partial<HealthcareParty>) {
 		this.id = partial.id ?? randomUuid();

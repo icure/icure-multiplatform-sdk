@@ -6,17 +6,17 @@ from dataclasses import field
 from typing import Union
 from typing import Dict
 from dataclasses import dataclass
-from icure.model.specializations import HexString
-from icure.model.specializations import SpkiHexString
-from icure.model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
-from icure.model.specializations import Base64String
+from cardinal_sdk.model.specializations import HexString
+from cardinal_sdk.model.specializations import SpkiHexString
+from cardinal_sdk.model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
+from cardinal_sdk.model.specializations import Base64String
 from enum import Enum
-from icure.model.SingletonMeta import SingletonMeta
+from cardinal_sdk.model.SingletonMeta import SingletonMeta
 from datetime import timedelta
-from icure.model.serialization import serialize_timedelta
-from icure.model.serialization import deserialize_timedelta
-from icure.model.specializations import SecureDelegationKeyString
-from icure.model.specializations import Sha256HexString
+from cardinal_sdk.model.serialization import serialize_timedelta
+from cardinal_sdk.model.serialization import deserialize_timedelta
+from cardinal_sdk.model.specializations import SecureDelegationKeyString
+from cardinal_sdk.model.specializations import Sha256HexString
 
 @dataclass
 class Keyword:
@@ -421,12 +421,12 @@ AccessLog = Union['DecryptedAccessLog', 'EncryptedAccessLog']
 def serialize_access_log(access_log: AccessLog) -> object:
 	if isinstance(access_log, DecryptedAccessLog):
 		return {
-			"type": "com.icure.sdk.model.DecryptedAccessLog",
+			"type": "com.icure.cardinal.sdk.model.DecryptedAccessLog",
 			"entity": access_log.__serialize__()
 		}
 	elif isinstance(access_log, EncryptedAccessLog):
 		return {
-			"type": "com.icure.sdk.model.EncryptedAccessLog",
+			"type": "com.icure.cardinal.sdk.model.EncryptedAccessLog",
 			"entity": access_log.__serialize__()
 		}
 	else:
@@ -441,9 +441,9 @@ def deserialize_access_log(data: Union[str, Dict[str, object]]) -> 'AccessLog':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedAccessLog":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedAccessLog":
 		DecryptedAccessLog._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedAccessLog":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedAccessLog":
 		EncryptedAccessLog._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of AccessLog")
@@ -736,12 +736,12 @@ TimeTable = Union['EncryptedTimeTable', 'DecryptedTimeTable']
 def serialize_time_table(time_table: TimeTable) -> object:
 	if isinstance(time_table, EncryptedTimeTable):
 		return {
-			"type": "com.icure.sdk.model.EncryptedTimeTable",
+			"type": "com.icure.cardinal.sdk.model.EncryptedTimeTable",
 			"entity": time_table.__serialize__()
 		}
 	elif isinstance(time_table, DecryptedTimeTable):
 		return {
-			"type": "com.icure.sdk.model.DecryptedTimeTable",
+			"type": "com.icure.cardinal.sdk.model.DecryptedTimeTable",
 			"entity": time_table.__serialize__()
 		}
 	else:
@@ -756,9 +756,9 @@ def deserialize_time_table(data: Union[str, Dict[str, object]]) -> 'TimeTable':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.EncryptedTimeTable":
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedTimeTable":
 		EncryptedTimeTable._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.DecryptedTimeTable":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedTimeTable":
 		DecryptedTimeTable._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of TimeTable")
@@ -1282,12 +1282,12 @@ Patient = Union['EncryptedPatient', 'DecryptedPatient']
 def serialize_patient(patient: Patient) -> object:
 	if isinstance(patient, EncryptedPatient):
 		return {
-			"type": "com.icure.sdk.model.EncryptedPatient",
+			"type": "com.icure.cardinal.sdk.model.EncryptedPatient",
 			"entity": patient.__serialize__()
 		}
 	elif isinstance(patient, DecryptedPatient):
 		return {
-			"type": "com.icure.sdk.model.DecryptedPatient",
+			"type": "com.icure.cardinal.sdk.model.DecryptedPatient",
 			"entity": patient.__serialize__()
 		}
 	else:
@@ -1302,9 +1302,9 @@ def deserialize_patient(data: Union[str, Dict[str, object]]) -> 'Patient':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.EncryptedPatient":
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedPatient":
 		EncryptedPatient._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.DecryptedPatient":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedPatient":
 		DecryptedPatient._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Patient")
@@ -1486,15 +1486,15 @@ SecretIdOption = Union['SecretIdOptionUseAnyConfidential', 'SecretIdOptionUseAny
 def serialize_secret_id_option(secret_id_option: SecretIdOption) -> object:
 	if isinstance(secret_id_option, SecretIdOptionUseAnyConfidential):
 		serialized_entity = secret_id_option.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SecretIdOption.UseAnyConfidential"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnyConfidential"})
 		return serialized_entity
 	elif isinstance(secret_id_option, SecretIdOptionUseAnySharedWithParent):
 		serialized_entity = secret_id_option.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent"})
 		return serialized_entity
 	elif isinstance(secret_id_option, SecretIdOptionUse):
 		serialized_entity = secret_id_option.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SecretIdOption.Use"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.Use"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(secret_id_option)} is not a known subclass of SecretIdOption")
@@ -1508,11 +1508,11 @@ def deserialize_secret_id_option(data: Union[str, Dict[str, object]]) -> 'Secret
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SecretIdOption.UseAnyConfidential":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnyConfidential":
 		return SecretIdOptionUseAnyConfidential._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent":
 		return SecretIdOptionUseAnySharedWithParent._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SecretIdOption.Use":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.Use":
 		return SecretIdOptionUse._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SecretIdOption")
@@ -2382,11 +2382,11 @@ SimpleShareResultDecryptedTimeTable = Union['SimpleShareResultDecryptedTimeTable
 def serialize_simple_share_result_decrypted_time_table(simple_share_result_decrypted_time_table: SimpleShareResultDecryptedTimeTable) -> object:
 	if isinstance(simple_share_result_decrypted_time_table, SimpleShareResultDecryptedTimeTableSuccess):
 		serialized_entity = simple_share_result_decrypted_time_table.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_time_table, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_time_table.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_time_table)} is not a known subclass of SimpleShareResult")
@@ -2400,9 +2400,9 @@ def deserialize_simple_share_result_decrypted_time_table(data: Union[str, Dict[s
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedTimeTableSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2412,11 +2412,11 @@ SimpleShareResultEncryptedTimeTable = Union['SimpleShareResultEncryptedTimeTable
 def serialize_simple_share_result_encrypted_time_table(simple_share_result_encrypted_time_table: SimpleShareResultEncryptedTimeTable) -> object:
 	if isinstance(simple_share_result_encrypted_time_table, SimpleShareResultEncryptedTimeTableSuccess):
 		serialized_entity = simple_share_result_encrypted_time_table.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_time_table, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_time_table.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_time_table)} is not a known subclass of SimpleShareResult")
@@ -2430,9 +2430,9 @@ def deserialize_simple_share_result_encrypted_time_table(data: Union[str, Dict[s
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedTimeTableSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2442,11 +2442,11 @@ SimpleShareResultTimeTable = Union['SimpleShareResultTimeTableSuccess', 'SimpleS
 def serialize_simple_share_result_time_table(simple_share_result_time_table: SimpleShareResultTimeTable) -> object:
 	if isinstance(simple_share_result_time_table, SimpleShareResultTimeTableSuccess):
 		serialized_entity = simple_share_result_time_table.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_time_table, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_time_table.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_time_table)} is not a known subclass of SimpleShareResult")
@@ -2460,9 +2460,9 @@ def deserialize_simple_share_result_time_table(data: Union[str, Dict[str, object
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultTimeTableSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2472,11 +2472,11 @@ SimpleShareResultDecryptedClassification = Union['SimpleShareResultDecryptedClas
 def serialize_simple_share_result_decrypted_classification(simple_share_result_decrypted_classification: SimpleShareResultDecryptedClassification) -> object:
 	if isinstance(simple_share_result_decrypted_classification, SimpleShareResultDecryptedClassificationSuccess):
 		serialized_entity = simple_share_result_decrypted_classification.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_classification, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_classification.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_classification)} is not a known subclass of SimpleShareResult")
@@ -2490,9 +2490,9 @@ def deserialize_simple_share_result_decrypted_classification(data: Union[str, Di
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedClassificationSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2502,11 +2502,11 @@ SimpleShareResultEncryptedClassification = Union['SimpleShareResultEncryptedClas
 def serialize_simple_share_result_encrypted_classification(simple_share_result_encrypted_classification: SimpleShareResultEncryptedClassification) -> object:
 	if isinstance(simple_share_result_encrypted_classification, SimpleShareResultEncryptedClassificationSuccess):
 		serialized_entity = simple_share_result_encrypted_classification.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_classification, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_classification.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_classification)} is not a known subclass of SimpleShareResult")
@@ -2520,9 +2520,9 @@ def deserialize_simple_share_result_encrypted_classification(data: Union[str, Di
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedClassificationSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2532,11 +2532,11 @@ SimpleShareResultClassification = Union['SimpleShareResultClassificationSuccess'
 def serialize_simple_share_result_classification(simple_share_result_classification: SimpleShareResultClassification) -> object:
 	if isinstance(simple_share_result_classification, SimpleShareResultClassificationSuccess):
 		serialized_entity = simple_share_result_classification.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_classification, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_classification.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_classification)} is not a known subclass of SimpleShareResult")
@@ -2550,9 +2550,9 @@ def deserialize_simple_share_result_classification(data: Union[str, Dict[str, ob
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultClassificationSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2562,11 +2562,11 @@ SimpleShareResultDecryptedMaintenanceTask = Union['SimpleShareResultDecryptedMai
 def serialize_simple_share_result_decrypted_maintenance_task(simple_share_result_decrypted_maintenance_task: SimpleShareResultDecryptedMaintenanceTask) -> object:
 	if isinstance(simple_share_result_decrypted_maintenance_task, SimpleShareResultDecryptedMaintenanceTaskSuccess):
 		serialized_entity = simple_share_result_decrypted_maintenance_task.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_maintenance_task, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_maintenance_task.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_maintenance_task)} is not a known subclass of SimpleShareResult")
@@ -2580,9 +2580,9 @@ def deserialize_simple_share_result_decrypted_maintenance_task(data: Union[str, 
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedMaintenanceTaskSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2592,11 +2592,11 @@ SimpleShareResultEncryptedMaintenanceTask = Union['SimpleShareResultEncryptedMai
 def serialize_simple_share_result_encrypted_maintenance_task(simple_share_result_encrypted_maintenance_task: SimpleShareResultEncryptedMaintenanceTask) -> object:
 	if isinstance(simple_share_result_encrypted_maintenance_task, SimpleShareResultEncryptedMaintenanceTaskSuccess):
 		serialized_entity = simple_share_result_encrypted_maintenance_task.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_maintenance_task, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_maintenance_task.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_maintenance_task)} is not a known subclass of SimpleShareResult")
@@ -2610,9 +2610,9 @@ def deserialize_simple_share_result_encrypted_maintenance_task(data: Union[str, 
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedMaintenanceTaskSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2622,11 +2622,11 @@ SimpleShareResultMaintenanceTask = Union['SimpleShareResultMaintenanceTaskSucces
 def serialize_simple_share_result_maintenance_task(simple_share_result_maintenance_task: SimpleShareResultMaintenanceTask) -> object:
 	if isinstance(simple_share_result_maintenance_task, SimpleShareResultMaintenanceTaskSuccess):
 		serialized_entity = simple_share_result_maintenance_task.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_maintenance_task, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_maintenance_task.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_maintenance_task)} is not a known subclass of SimpleShareResult")
@@ -2640,9 +2640,9 @@ def deserialize_simple_share_result_maintenance_task(data: Union[str, Dict[str, 
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultMaintenanceTaskSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2652,11 +2652,11 @@ SimpleShareResultDecryptedPatient = Union['SimpleShareResultDecryptedPatientSucc
 def serialize_simple_share_result_decrypted_patient(simple_share_result_decrypted_patient: SimpleShareResultDecryptedPatient) -> object:
 	if isinstance(simple_share_result_decrypted_patient, SimpleShareResultDecryptedPatientSuccess):
 		serialized_entity = simple_share_result_decrypted_patient.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_patient, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_patient.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_patient)} is not a known subclass of SimpleShareResult")
@@ -2670,9 +2670,9 @@ def deserialize_simple_share_result_decrypted_patient(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedPatientSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2682,11 +2682,11 @@ SimpleShareResultEncryptedPatient = Union['SimpleShareResultEncryptedPatientSucc
 def serialize_simple_share_result_encrypted_patient(simple_share_result_encrypted_patient: SimpleShareResultEncryptedPatient) -> object:
 	if isinstance(simple_share_result_encrypted_patient, SimpleShareResultEncryptedPatientSuccess):
 		serialized_entity = simple_share_result_encrypted_patient.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_patient, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_patient.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_patient)} is not a known subclass of SimpleShareResult")
@@ -2700,9 +2700,9 @@ def deserialize_simple_share_result_encrypted_patient(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedPatientSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2712,11 +2712,11 @@ SimpleShareResultPatient = Union['SimpleShareResultPatientSuccess', 'SimpleShare
 def serialize_simple_share_result_patient(simple_share_result_patient: SimpleShareResultPatient) -> object:
 	if isinstance(simple_share_result_patient, SimpleShareResultPatientSuccess):
 		serialized_entity = simple_share_result_patient.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_patient, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_patient.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_patient)} is not a known subclass of SimpleShareResult")
@@ -2730,9 +2730,9 @@ def deserialize_simple_share_result_patient(data: Union[str, Dict[str, object]])
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultPatientSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2742,11 +2742,11 @@ SimpleShareResultDecryptedContact = Union['SimpleShareResultDecryptedContactSucc
 def serialize_simple_share_result_decrypted_contact(simple_share_result_decrypted_contact: SimpleShareResultDecryptedContact) -> object:
 	if isinstance(simple_share_result_decrypted_contact, SimpleShareResultDecryptedContactSuccess):
 		serialized_entity = simple_share_result_decrypted_contact.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_contact, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_contact.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_contact)} is not a known subclass of SimpleShareResult")
@@ -2760,9 +2760,9 @@ def deserialize_simple_share_result_decrypted_contact(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedContactSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2772,11 +2772,11 @@ SimpleShareResultEncryptedContact = Union['SimpleShareResultEncryptedContactSucc
 def serialize_simple_share_result_encrypted_contact(simple_share_result_encrypted_contact: SimpleShareResultEncryptedContact) -> object:
 	if isinstance(simple_share_result_encrypted_contact, SimpleShareResultEncryptedContactSuccess):
 		serialized_entity = simple_share_result_encrypted_contact.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_contact, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_contact.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_contact)} is not a known subclass of SimpleShareResult")
@@ -2790,9 +2790,9 @@ def deserialize_simple_share_result_encrypted_contact(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedContactSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2802,11 +2802,11 @@ SimpleShareResultContact = Union['SimpleShareResultContactSuccess', 'SimpleShare
 def serialize_simple_share_result_contact(simple_share_result_contact: SimpleShareResultContact) -> object:
 	if isinstance(simple_share_result_contact, SimpleShareResultContactSuccess):
 		serialized_entity = simple_share_result_contact.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_contact, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_contact.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_contact)} is not a known subclass of SimpleShareResult")
@@ -2820,9 +2820,9 @@ def deserialize_simple_share_result_contact(data: Union[str, Dict[str, object]])
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultContactSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2832,11 +2832,11 @@ SimpleShareResultDecryptedReceipt = Union['SimpleShareResultDecryptedReceiptSucc
 def serialize_simple_share_result_decrypted_receipt(simple_share_result_decrypted_receipt: SimpleShareResultDecryptedReceipt) -> object:
 	if isinstance(simple_share_result_decrypted_receipt, SimpleShareResultDecryptedReceiptSuccess):
 		serialized_entity = simple_share_result_decrypted_receipt.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_receipt, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_receipt.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_receipt)} is not a known subclass of SimpleShareResult")
@@ -2850,9 +2850,9 @@ def deserialize_simple_share_result_decrypted_receipt(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedReceiptSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2862,11 +2862,11 @@ SimpleShareResultEncryptedReceipt = Union['SimpleShareResultEncryptedReceiptSucc
 def serialize_simple_share_result_encrypted_receipt(simple_share_result_encrypted_receipt: SimpleShareResultEncryptedReceipt) -> object:
 	if isinstance(simple_share_result_encrypted_receipt, SimpleShareResultEncryptedReceiptSuccess):
 		serialized_entity = simple_share_result_encrypted_receipt.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_receipt, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_receipt.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_receipt)} is not a known subclass of SimpleShareResult")
@@ -2880,9 +2880,9 @@ def deserialize_simple_share_result_encrypted_receipt(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedReceiptSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2892,11 +2892,11 @@ SimpleShareResultReceipt = Union['SimpleShareResultReceiptSuccess', 'SimpleShare
 def serialize_simple_share_result_receipt(simple_share_result_receipt: SimpleShareResultReceipt) -> object:
 	if isinstance(simple_share_result_receipt, SimpleShareResultReceiptSuccess):
 		serialized_entity = simple_share_result_receipt.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_receipt, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_receipt.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_receipt)} is not a known subclass of SimpleShareResult")
@@ -2910,9 +2910,9 @@ def deserialize_simple_share_result_receipt(data: Union[str, Dict[str, object]])
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultReceiptSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2922,11 +2922,11 @@ SimpleShareResultDecryptedAccessLog = Union['SimpleShareResultDecryptedAccessLog
 def serialize_simple_share_result_decrypted_access_log(simple_share_result_decrypted_access_log: SimpleShareResultDecryptedAccessLog) -> object:
 	if isinstance(simple_share_result_decrypted_access_log, SimpleShareResultDecryptedAccessLogSuccess):
 		serialized_entity = simple_share_result_decrypted_access_log.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_access_log, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_access_log.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_access_log)} is not a known subclass of SimpleShareResult")
@@ -2940,9 +2940,9 @@ def deserialize_simple_share_result_decrypted_access_log(data: Union[str, Dict[s
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedAccessLogSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2952,11 +2952,11 @@ SimpleShareResultEncryptedAccessLog = Union['SimpleShareResultEncryptedAccessLog
 def serialize_simple_share_result_encrypted_access_log(simple_share_result_encrypted_access_log: SimpleShareResultEncryptedAccessLog) -> object:
 	if isinstance(simple_share_result_encrypted_access_log, SimpleShareResultEncryptedAccessLogSuccess):
 		serialized_entity = simple_share_result_encrypted_access_log.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_access_log, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_access_log.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_access_log)} is not a known subclass of SimpleShareResult")
@@ -2970,9 +2970,9 @@ def deserialize_simple_share_result_encrypted_access_log(data: Union[str, Dict[s
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedAccessLogSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -2982,11 +2982,11 @@ SimpleShareResultAccessLog = Union['SimpleShareResultAccessLogSuccess', 'SimpleS
 def serialize_simple_share_result_access_log(simple_share_result_access_log: SimpleShareResultAccessLog) -> object:
 	if isinstance(simple_share_result_access_log, SimpleShareResultAccessLogSuccess):
 		serialized_entity = simple_share_result_access_log.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_access_log, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_access_log.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_access_log)} is not a known subclass of SimpleShareResult")
@@ -3000,9 +3000,9 @@ def deserialize_simple_share_result_access_log(data: Union[str, Dict[str, object
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultAccessLogSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3012,11 +3012,11 @@ SimpleShareResultDecryptedTopic = Union['SimpleShareResultDecryptedTopicSuccess'
 def serialize_simple_share_result_decrypted_topic(simple_share_result_decrypted_topic: SimpleShareResultDecryptedTopic) -> object:
 	if isinstance(simple_share_result_decrypted_topic, SimpleShareResultDecryptedTopicSuccess):
 		serialized_entity = simple_share_result_decrypted_topic.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_topic, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_topic.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_topic)} is not a known subclass of SimpleShareResult")
@@ -3030,9 +3030,9 @@ def deserialize_simple_share_result_decrypted_topic(data: Union[str, Dict[str, o
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedTopicSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3042,11 +3042,11 @@ SimpleShareResultEncryptedTopic = Union['SimpleShareResultEncryptedTopicSuccess'
 def serialize_simple_share_result_encrypted_topic(simple_share_result_encrypted_topic: SimpleShareResultEncryptedTopic) -> object:
 	if isinstance(simple_share_result_encrypted_topic, SimpleShareResultEncryptedTopicSuccess):
 		serialized_entity = simple_share_result_encrypted_topic.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_topic, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_topic.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_topic)} is not a known subclass of SimpleShareResult")
@@ -3060,9 +3060,9 @@ def deserialize_simple_share_result_encrypted_topic(data: Union[str, Dict[str, o
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedTopicSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3072,11 +3072,11 @@ SimpleShareResultTopic = Union['SimpleShareResultTopicSuccess', 'SimpleShareResu
 def serialize_simple_share_result_topic(simple_share_result_topic: SimpleShareResultTopic) -> object:
 	if isinstance(simple_share_result_topic, SimpleShareResultTopicSuccess):
 		serialized_entity = simple_share_result_topic.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_topic, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_topic.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_topic)} is not a known subclass of SimpleShareResult")
@@ -3090,9 +3090,9 @@ def deserialize_simple_share_result_topic(data: Union[str, Dict[str, object]]) -
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultTopicSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3102,11 +3102,11 @@ SimpleShareResultDecryptedCalendarItem = Union['SimpleShareResultDecryptedCalend
 def serialize_simple_share_result_decrypted_calendar_item(simple_share_result_decrypted_calendar_item: SimpleShareResultDecryptedCalendarItem) -> object:
 	if isinstance(simple_share_result_decrypted_calendar_item, SimpleShareResultDecryptedCalendarItemSuccess):
 		serialized_entity = simple_share_result_decrypted_calendar_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_calendar_item, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_calendar_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_calendar_item)} is not a known subclass of SimpleShareResult")
@@ -3120,9 +3120,9 @@ def deserialize_simple_share_result_decrypted_calendar_item(data: Union[str, Dic
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedCalendarItemSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3132,11 +3132,11 @@ SimpleShareResultEncryptedCalendarItem = Union['SimpleShareResultEncryptedCalend
 def serialize_simple_share_result_encrypted_calendar_item(simple_share_result_encrypted_calendar_item: SimpleShareResultEncryptedCalendarItem) -> object:
 	if isinstance(simple_share_result_encrypted_calendar_item, SimpleShareResultEncryptedCalendarItemSuccess):
 		serialized_entity = simple_share_result_encrypted_calendar_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_calendar_item, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_calendar_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_calendar_item)} is not a known subclass of SimpleShareResult")
@@ -3150,9 +3150,9 @@ def deserialize_simple_share_result_encrypted_calendar_item(data: Union[str, Dic
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedCalendarItemSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3162,11 +3162,11 @@ SimpleShareResultCalendarItem = Union['SimpleShareResultCalendarItemSuccess', 'S
 def serialize_simple_share_result_calendar_item(simple_share_result_calendar_item: SimpleShareResultCalendarItem) -> object:
 	if isinstance(simple_share_result_calendar_item, SimpleShareResultCalendarItemSuccess):
 		serialized_entity = simple_share_result_calendar_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_calendar_item, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_calendar_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_calendar_item)} is not a known subclass of SimpleShareResult")
@@ -3180,9 +3180,9 @@ def deserialize_simple_share_result_calendar_item(data: Union[str, Dict[str, obj
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultCalendarItemSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3192,11 +3192,11 @@ SimpleShareResultDecryptedDocument = Union['SimpleShareResultDecryptedDocumentSu
 def serialize_simple_share_result_decrypted_document(simple_share_result_decrypted_document: SimpleShareResultDecryptedDocument) -> object:
 	if isinstance(simple_share_result_decrypted_document, SimpleShareResultDecryptedDocumentSuccess):
 		serialized_entity = simple_share_result_decrypted_document.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_document, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_document.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_document)} is not a known subclass of SimpleShareResult")
@@ -3210,9 +3210,9 @@ def deserialize_simple_share_result_decrypted_document(data: Union[str, Dict[str
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedDocumentSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3222,11 +3222,11 @@ SimpleShareResultEncryptedDocument = Union['SimpleShareResultEncryptedDocumentSu
 def serialize_simple_share_result_encrypted_document(simple_share_result_encrypted_document: SimpleShareResultEncryptedDocument) -> object:
 	if isinstance(simple_share_result_encrypted_document, SimpleShareResultEncryptedDocumentSuccess):
 		serialized_entity = simple_share_result_encrypted_document.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_document, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_document.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_document)} is not a known subclass of SimpleShareResult")
@@ -3240,9 +3240,9 @@ def deserialize_simple_share_result_encrypted_document(data: Union[str, Dict[str
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedDocumentSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3252,11 +3252,11 @@ SimpleShareResultDocument = Union['SimpleShareResultDocumentSuccess', 'SimpleSha
 def serialize_simple_share_result_document(simple_share_result_document: SimpleShareResultDocument) -> object:
 	if isinstance(simple_share_result_document, SimpleShareResultDocumentSuccess):
 		serialized_entity = simple_share_result_document.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_document, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_document.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_document)} is not a known subclass of SimpleShareResult")
@@ -3270,9 +3270,9 @@ def deserialize_simple_share_result_document(data: Union[str, Dict[str, object]]
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDocumentSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3282,11 +3282,11 @@ SimpleShareResultDecryptedForm = Union['SimpleShareResultDecryptedFormSuccess', 
 def serialize_simple_share_result_decrypted_form(simple_share_result_decrypted_form: SimpleShareResultDecryptedForm) -> object:
 	if isinstance(simple_share_result_decrypted_form, SimpleShareResultDecryptedFormSuccess):
 		serialized_entity = simple_share_result_decrypted_form.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_form, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_form.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_form)} is not a known subclass of SimpleShareResult")
@@ -3300,9 +3300,9 @@ def deserialize_simple_share_result_decrypted_form(data: Union[str, Dict[str, ob
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedFormSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3312,11 +3312,11 @@ SimpleShareResultEncryptedForm = Union['SimpleShareResultEncryptedFormSuccess', 
 def serialize_simple_share_result_encrypted_form(simple_share_result_encrypted_form: SimpleShareResultEncryptedForm) -> object:
 	if isinstance(simple_share_result_encrypted_form, SimpleShareResultEncryptedFormSuccess):
 		serialized_entity = simple_share_result_encrypted_form.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_form, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_form.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_form)} is not a known subclass of SimpleShareResult")
@@ -3330,9 +3330,9 @@ def deserialize_simple_share_result_encrypted_form(data: Union[str, Dict[str, ob
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedFormSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3342,11 +3342,11 @@ SimpleShareResultForm = Union['SimpleShareResultFormSuccess', 'SimpleShareResult
 def serialize_simple_share_result_form(simple_share_result_form: SimpleShareResultForm) -> object:
 	if isinstance(simple_share_result_form, SimpleShareResultFormSuccess):
 		serialized_entity = simple_share_result_form.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_form, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_form.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_form)} is not a known subclass of SimpleShareResult")
@@ -3360,9 +3360,9 @@ def deserialize_simple_share_result_form(data: Union[str, Dict[str, object]]) ->
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultFormSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3372,11 +3372,11 @@ SimpleShareResultDecryptedInvoice = Union['SimpleShareResultDecryptedInvoiceSucc
 def serialize_simple_share_result_decrypted_invoice(simple_share_result_decrypted_invoice: SimpleShareResultDecryptedInvoice) -> object:
 	if isinstance(simple_share_result_decrypted_invoice, SimpleShareResultDecryptedInvoiceSuccess):
 		serialized_entity = simple_share_result_decrypted_invoice.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_invoice, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_invoice.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_invoice)} is not a known subclass of SimpleShareResult")
@@ -3390,9 +3390,9 @@ def deserialize_simple_share_result_decrypted_invoice(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedInvoiceSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3402,11 +3402,11 @@ SimpleShareResultEncryptedInvoice = Union['SimpleShareResultEncryptedInvoiceSucc
 def serialize_simple_share_result_encrypted_invoice(simple_share_result_encrypted_invoice: SimpleShareResultEncryptedInvoice) -> object:
 	if isinstance(simple_share_result_encrypted_invoice, SimpleShareResultEncryptedInvoiceSuccess):
 		serialized_entity = simple_share_result_encrypted_invoice.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_invoice, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_invoice.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_invoice)} is not a known subclass of SimpleShareResult")
@@ -3420,9 +3420,9 @@ def deserialize_simple_share_result_encrypted_invoice(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedInvoiceSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3432,11 +3432,11 @@ SimpleShareResultInvoice = Union['SimpleShareResultInvoiceSuccess', 'SimpleShare
 def serialize_simple_share_result_invoice(simple_share_result_invoice: SimpleShareResultInvoice) -> object:
 	if isinstance(simple_share_result_invoice, SimpleShareResultInvoiceSuccess):
 		serialized_entity = simple_share_result_invoice.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_invoice, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_invoice.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_invoice)} is not a known subclass of SimpleShareResult")
@@ -3450,9 +3450,9 @@ def deserialize_simple_share_result_invoice(data: Union[str, Dict[str, object]])
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultInvoiceSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3462,11 +3462,11 @@ SimpleShareResultDecryptedMessage = Union['SimpleShareResultDecryptedMessageSucc
 def serialize_simple_share_result_decrypted_message(simple_share_result_decrypted_message: SimpleShareResultDecryptedMessage) -> object:
 	if isinstance(simple_share_result_decrypted_message, SimpleShareResultDecryptedMessageSuccess):
 		serialized_entity = simple_share_result_decrypted_message.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_message, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_message.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_message)} is not a known subclass of SimpleShareResult")
@@ -3480,9 +3480,9 @@ def deserialize_simple_share_result_decrypted_message(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedMessageSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3492,11 +3492,11 @@ SimpleShareResultEncryptedMessage = Union['SimpleShareResultEncryptedMessageSucc
 def serialize_simple_share_result_encrypted_message(simple_share_result_encrypted_message: SimpleShareResultEncryptedMessage) -> object:
 	if isinstance(simple_share_result_encrypted_message, SimpleShareResultEncryptedMessageSuccess):
 		serialized_entity = simple_share_result_encrypted_message.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_message, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_message.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_message)} is not a known subclass of SimpleShareResult")
@@ -3510,9 +3510,9 @@ def deserialize_simple_share_result_encrypted_message(data: Union[str, Dict[str,
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedMessageSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3522,11 +3522,11 @@ SimpleShareResultMessage = Union['SimpleShareResultMessageSuccess', 'SimpleShare
 def serialize_simple_share_result_message(simple_share_result_message: SimpleShareResultMessage) -> object:
 	if isinstance(simple_share_result_message, SimpleShareResultMessageSuccess):
 		serialized_entity = simple_share_result_message.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_message, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_message.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_message)} is not a known subclass of SimpleShareResult")
@@ -3540,9 +3540,9 @@ def deserialize_simple_share_result_message(data: Union[str, Dict[str, object]])
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultMessageSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3552,11 +3552,11 @@ SimpleShareResultDecryptedHealthElement = Union['SimpleShareResultDecryptedHealt
 def serialize_simple_share_result_decrypted_health_element(simple_share_result_decrypted_health_element: SimpleShareResultDecryptedHealthElement) -> object:
 	if isinstance(simple_share_result_decrypted_health_element, SimpleShareResultDecryptedHealthElementSuccess):
 		serialized_entity = simple_share_result_decrypted_health_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_decrypted_health_element, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_decrypted_health_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_decrypted_health_element)} is not a known subclass of SimpleShareResult")
@@ -3570,9 +3570,9 @@ def deserialize_simple_share_result_decrypted_health_element(data: Union[str, Di
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultDecryptedHealthElementSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3582,11 +3582,11 @@ SimpleShareResultEncryptedHealthElement = Union['SimpleShareResultEncryptedHealt
 def serialize_simple_share_result_encrypted_health_element(simple_share_result_encrypted_health_element: SimpleShareResultEncryptedHealthElement) -> object:
 	if isinstance(simple_share_result_encrypted_health_element, SimpleShareResultEncryptedHealthElementSuccess):
 		serialized_entity = simple_share_result_encrypted_health_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_encrypted_health_element, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_encrypted_health_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_encrypted_health_element)} is not a known subclass of SimpleShareResult")
@@ -3600,9 +3600,9 @@ def deserialize_simple_share_result_encrypted_health_element(data: Union[str, Di
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultEncryptedHealthElementSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3612,11 +3612,11 @@ SimpleShareResultHealthElement = Union['SimpleShareResultHealthElementSuccess', 
 def serialize_simple_share_result_health_element(simple_share_result_health_element: SimpleShareResultHealthElement) -> object:
 	if isinstance(simple_share_result_health_element, SimpleShareResultHealthElementSuccess):
 		serialized_entity = simple_share_result_health_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success"})
 		return serialized_entity
 	elif isinstance(simple_share_result_health_element, SimpleShareResultFailure):
 		serialized_entity = simple_share_result_health_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.SimpleShareResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(simple_share_result_health_element)} is not a known subclass of SimpleShareResult")
@@ -3630,9 +3630,9 @@ def deserialize_simple_share_result_health_element(data: Union[str, Dict[str, ob
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success":
 		return SimpleShareResultHealthElementSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.SimpleShareResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure":
 		return SimpleShareResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SimpleShareResult")
@@ -3915,12 +3915,12 @@ Document = Union['EncryptedDocument', 'DecryptedDocument']
 def serialize_document(document: Document) -> object:
 	if isinstance(document, EncryptedDocument):
 		return {
-			"type": "com.icure.sdk.model.EncryptedDocument",
+			"type": "com.icure.cardinal.sdk.model.EncryptedDocument",
 			"entity": document.__serialize__()
 		}
 	elif isinstance(document, DecryptedDocument):
 		return {
-			"type": "com.icure.sdk.model.DecryptedDocument",
+			"type": "com.icure.cardinal.sdk.model.DecryptedDocument",
 			"entity": document.__serialize__()
 		}
 	else:
@@ -3935,9 +3935,9 @@ def deserialize_document(data: Union[str, Dict[str, object]]) -> 'Document':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.EncryptedDocument":
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedDocument":
 		EncryptedDocument._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.DecryptedDocument":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedDocument":
 		DecryptedDocument._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Document")
@@ -4207,12 +4207,12 @@ Classification = Union['EncryptedClassification', 'DecryptedClassification']
 def serialize_classification(classification: Classification) -> object:
 	if isinstance(classification, EncryptedClassification):
 		return {
-			"type": "com.icure.sdk.model.EncryptedClassification",
+			"type": "com.icure.cardinal.sdk.model.EncryptedClassification",
 			"entity": classification.__serialize__()
 		}
 	elif isinstance(classification, DecryptedClassification):
 		return {
-			"type": "com.icure.sdk.model.DecryptedClassification",
+			"type": "com.icure.cardinal.sdk.model.DecryptedClassification",
 			"entity": classification.__serialize__()
 		}
 	else:
@@ -4227,9 +4227,9 @@ def deserialize_classification(data: Union[str, Dict[str, object]]) -> 'Classifi
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.EncryptedClassification":
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedClassification":
 		EncryptedClassification._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.DecryptedClassification":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedClassification":
 		DecryptedClassification._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Classification")
@@ -4545,12 +4545,12 @@ CalendarItem = Union['DecryptedCalendarItem', 'EncryptedCalendarItem']
 def serialize_calendar_item(calendar_item: CalendarItem) -> object:
 	if isinstance(calendar_item, DecryptedCalendarItem):
 		return {
-			"type": "com.icure.sdk.model.DecryptedCalendarItem",
+			"type": "com.icure.cardinal.sdk.model.DecryptedCalendarItem",
 			"entity": calendar_item.__serialize__()
 		}
 	elif isinstance(calendar_item, EncryptedCalendarItem):
 		return {
-			"type": "com.icure.sdk.model.EncryptedCalendarItem",
+			"type": "com.icure.cardinal.sdk.model.EncryptedCalendarItem",
 			"entity": calendar_item.__serialize__()
 		}
 	else:
@@ -4565,9 +4565,9 @@ def deserialize_calendar_item(data: Union[str, Dict[str, object]]) -> 'CalendarI
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedCalendarItem":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedCalendarItem":
 		DecryptedCalendarItem._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedCalendarItem":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedCalendarItem":
 		EncryptedCalendarItem._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CalendarItem")
@@ -4737,12 +4737,12 @@ MaintenanceTask = Union['DecryptedMaintenanceTask', 'EncryptedMaintenanceTask']
 def serialize_maintenance_task(maintenance_task: MaintenanceTask) -> object:
 	if isinstance(maintenance_task, DecryptedMaintenanceTask):
 		return {
-			"type": "com.icure.sdk.model.DecryptedMaintenanceTask",
+			"type": "com.icure.cardinal.sdk.model.DecryptedMaintenanceTask",
 			"entity": maintenance_task.__serialize__()
 		}
 	elif isinstance(maintenance_task, EncryptedMaintenanceTask):
 		return {
-			"type": "com.icure.sdk.model.EncryptedMaintenanceTask",
+			"type": "com.icure.cardinal.sdk.model.EncryptedMaintenanceTask",
 			"entity": maintenance_task.__serialize__()
 		}
 	else:
@@ -4757,9 +4757,9 @@ def deserialize_maintenance_task(data: Union[str, Dict[str, object]]) -> 'Mainte
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedMaintenanceTask":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedMaintenanceTask":
 		DecryptedMaintenanceTask._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedMaintenanceTask":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedMaintenanceTask":
 		EncryptedMaintenanceTask._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of MaintenanceTask")
@@ -4994,12 +4994,12 @@ Form = Union['EncryptedForm', 'DecryptedForm']
 def serialize_form(form: Form) -> object:
 	if isinstance(form, EncryptedForm):
 		return {
-			"type": "com.icure.sdk.model.EncryptedForm",
+			"type": "com.icure.cardinal.sdk.model.EncryptedForm",
 			"entity": form.__serialize__()
 		}
 	elif isinstance(form, DecryptedForm):
 		return {
-			"type": "com.icure.sdk.model.DecryptedForm",
+			"type": "com.icure.cardinal.sdk.model.DecryptedForm",
 			"entity": form.__serialize__()
 		}
 	else:
@@ -5014,9 +5014,9 @@ def deserialize_form(data: Union[str, Dict[str, object]]) -> 'Form':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.EncryptedForm":
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedForm":
 		EncryptedForm._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.DecryptedForm":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedForm":
 		DecryptedForm._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Form")
@@ -5148,11 +5148,11 @@ RecoveryResult = Union['RecoveryResultSuccess', 'RecoveryResultFailure']
 def serialize_recovery_result(recovery_result: RecoveryResult) -> object:
 	if isinstance(recovery_result, RecoveryResultSuccess):
 		serialized_entity = recovery_result.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.RecoveryResult.Success"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success"})
 		return serialized_entity
 	elif isinstance(recovery_result, RecoveryResultFailure):
 		serialized_entity = recovery_result.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.crypto.entities.RecoveryResult.Failure"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(recovery_result)} is not a known subclass of RecoveryResult")
@@ -5166,9 +5166,9 @@ def deserialize_recovery_result(data: Union[str, Dict[str, object]]) -> 'Recover
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.crypto.entities.RecoveryResult.Success":
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success":
 		return RecoveryResultSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.crypto.entities.RecoveryResult.Failure":
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure":
 		return RecoveryResultFailure._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of RecoveryResult")
@@ -5348,11 +5348,11 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 	def serialize_share_patient_data_error(cls, share_patient_data_error: SharePatientDataError) -> object:
 		if isinstance(share_patient_data_error, ShareAllPatientDataOptions.BulkShareFailure):
 			serialized_entity = share_patient_data_error.__serialize__()
-			serialized_entity.update({"type": "com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure"})
+			serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure"})
 			return serialized_entity
 		elif isinstance(share_patient_data_error, ShareAllPatientDataOptions.FailedRequest):
 			serialized_entity = share_patient_data_error.__serialize__()
-			serialized_entity.update({"type": "com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest"})
+			serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest"})
 			return serialized_entity
 		else:
 			raise Exception(f"{type(share_patient_data_error)} is not a known subclass of SharePatientDataError")
@@ -5366,9 +5366,9 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 		qualifier = deserialized_dict.get("type")
 		if qualifier is None:
 			raise Exception("Missing qualifier: type")
-		if qualifier == "com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure":
+		if qualifier == "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure":
 			return ShareAllPatientDataOptions.BulkShareFailure._deserialize(deserialized_dict)
-		elif qualifier == "com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest":
+		elif qualifier == "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest":
 			return ShareAllPatientDataOptions.FailedRequest._deserialize(deserialized_dict)
 		else:
 			raise Exception(f"{qualifier} is not a known subclass of SharePatientDataError")
@@ -5751,12 +5751,12 @@ Contact = Union['DecryptedContact', 'EncryptedContact']
 def serialize_contact(contact: Contact) -> object:
 	if isinstance(contact, DecryptedContact):
 		return {
-			"type": "com.icure.sdk.model.DecryptedContact",
+			"type": "com.icure.cardinal.sdk.model.DecryptedContact",
 			"entity": contact.__serialize__()
 		}
 	elif isinstance(contact, EncryptedContact):
 		return {
-			"type": "com.icure.sdk.model.EncryptedContact",
+			"type": "com.icure.cardinal.sdk.model.EncryptedContact",
 			"entity": contact.__serialize__()
 		}
 	else:
@@ -5771,9 +5771,9 @@ def deserialize_contact(data: Union[str, Dict[str, object]]) -> 'Contact':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedContact":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedContact":
 		DecryptedContact._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedContact":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedContact":
 		EncryptedContact._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Contact")
@@ -6033,12 +6033,12 @@ Service = Union['DecryptedService', 'EncryptedService']
 def serialize_service(service: Service) -> object:
 	if isinstance(service, DecryptedService):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedService",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedService",
 			"entity": service.__serialize__()
 		}
 	elif isinstance(service, EncryptedService):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedService",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedService",
 			"entity": service.__serialize__()
 		}
 	else:
@@ -6053,9 +6053,9 @@ def deserialize_service(data: Union[str, Dict[str, object]]) -> 'Service':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.DecryptedService":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedService":
 		DecryptedService._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.EncryptedService":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedService":
 		EncryptedService._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Service")
@@ -6342,12 +6342,12 @@ Receipt = Union['DecryptedReceipt', 'EncryptedReceipt']
 def serialize_receipt(receipt: Receipt) -> object:
 	if isinstance(receipt, DecryptedReceipt):
 		return {
-			"type": "com.icure.sdk.model.DecryptedReceipt",
+			"type": "com.icure.cardinal.sdk.model.DecryptedReceipt",
 			"entity": receipt.__serialize__()
 		}
 	elif isinstance(receipt, EncryptedReceipt):
 		return {
-			"type": "com.icure.sdk.model.EncryptedReceipt",
+			"type": "com.icure.cardinal.sdk.model.EncryptedReceipt",
 			"entity": receipt.__serialize__()
 		}
 	else:
@@ -6362,9 +6362,9 @@ def deserialize_receipt(data: Union[str, Dict[str, object]]) -> 'Receipt':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedReceipt":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedReceipt":
 		DecryptedReceipt._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedReceipt":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedReceipt":
 		EncryptedReceipt._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Receipt")
@@ -6996,12 +6996,12 @@ Topic = Union['DecryptedTopic', 'EncryptedTopic']
 def serialize_topic(topic: Topic) -> object:
 	if isinstance(topic, DecryptedTopic):
 		return {
-			"type": "com.icure.sdk.model.DecryptedTopic",
+			"type": "com.icure.cardinal.sdk.model.DecryptedTopic",
 			"entity": topic.__serialize__()
 		}
 	elif isinstance(topic, EncryptedTopic):
 		return {
-			"type": "com.icure.sdk.model.EncryptedTopic",
+			"type": "com.icure.cardinal.sdk.model.EncryptedTopic",
 			"entity": topic.__serialize__()
 		}
 	else:
@@ -7016,9 +7016,9 @@ def deserialize_topic(data: Union[str, Dict[str, object]]) -> 'Topic':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedTopic":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedTopic":
 		DecryptedTopic._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedTopic":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedTopic":
 		EncryptedTopic._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Topic")
@@ -7400,12 +7400,12 @@ HealthElement = Union['EncryptedHealthElement', 'DecryptedHealthElement']
 def serialize_health_element(health_element: HealthElement) -> object:
 	if isinstance(health_element, EncryptedHealthElement):
 		return {
-			"type": "com.icure.sdk.model.EncryptedHealthElement",
+			"type": "com.icure.cardinal.sdk.model.EncryptedHealthElement",
 			"entity": health_element.__serialize__()
 		}
 	elif isinstance(health_element, DecryptedHealthElement):
 		return {
-			"type": "com.icure.sdk.model.DecryptedHealthElement",
+			"type": "com.icure.cardinal.sdk.model.DecryptedHealthElement",
 			"entity": health_element.__serialize__()
 		}
 	else:
@@ -7420,12 +7420,120 @@ def deserialize_health_element(data: Union[str, Dict[str, object]]) -> 'HealthEl
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.EncryptedHealthElement":
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedHealthElement":
 		EncryptedHealthElement._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.DecryptedHealthElement":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedHealthElement":
 		DecryptedHealthElement._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of HealthElement")
+
+@dataclass
+class IndexingInfo:
+	statuses: Optional[Dict[str, int]] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"statuses": {k0: v0 for k0, v0 in self.statuses.items()} if self.statuses is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IndexingInfo':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			statuses=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("statuses").items())) if deserialized_dict.get("statuses") is not None else None,
+		)
+
+@dataclass
+class ReplicationInfo:
+	active: bool = False
+	running: bool = False
+	pending_from: Optional[int] = None
+	pending_to: Optional[int] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"active": self.active,
+			"running": self.running,
+			"pendingFrom": self.pending_from,
+			"pendingTo": self.pending_to,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicationInfo':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			active=deserialized_dict["active"],
+			running=deserialized_dict["running"],
+			pending_from=deserialized_dict.get("pendingFrom"),
+			pending_to=deserialized_dict.get("pendingTo"),
+		)
+
+@dataclass
+class ReplicatorDocument:
+	id: str
+	rev: Optional[str] = None
+	source: Optional['Remote'] = None
+	target: Optional['Remote'] = None
+	owner: Optional[str] = None
+	create_target: Optional[bool] = None
+	continuous: Optional[bool] = None
+	doc_ids: Optional[List[str]] = None
+	replication_state: Optional[str] = None
+	replication_state_time: Optional[str] = None
+	replication_stats: Optional['ReplicationStats'] = None
+	error_count: Optional[int] = None
+	revs_info: Optional[List[Dict[str, str]]] = None
+	rev_history: Optional[Dict[str, str]] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"id": self.id,
+			"rev": self.rev,
+			"source": self.source.__serialize__() if self.source is not None else None,
+			"target": self.target.__serialize__() if self.target is not None else None,
+			"owner": self.owner,
+			"create_target": self.create_target,
+			"continuous": self.continuous,
+			"doc_ids": [x0 for x0 in self.doc_ids] if self.doc_ids is not None else None,
+			"replicationState": self.replication_state,
+			"replicationStateTime": self.replication_state_time,
+			"replicationStats": self.replication_stats.__serialize__() if self.replication_stats is not None else None,
+			"errorCount": self.error_count,
+			"revsInfo": [{k1: v1 for k1, v1 in x0.items()} for x0 in self.revs_info] if self.revs_info is not None else None,
+			"revHistory": {k0: v0 for k0, v0 in self.rev_history.items()} if self.rev_history is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicatorDocument':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			source=Remote._deserialize(deserialized_dict.get("source")) if deserialized_dict.get("source") is not None else None,
+			target=Remote._deserialize(deserialized_dict.get("target")) if deserialized_dict.get("target") is not None else None,
+			owner=deserialized_dict.get("owner"),
+			create_target=deserialized_dict.get("create_target"),
+			continuous=deserialized_dict.get("continuous"),
+			doc_ids=[x0 for x0 in deserialized_dict.get("doc_ids")] if deserialized_dict.get("doc_ids") is not None else None,
+			replication_state=deserialized_dict.get("replicationState"),
+			replication_state_time=deserialized_dict.get("replicationStateTime"),
+			replication_stats=ReplicationStats._deserialize(deserialized_dict.get("replicationStats")) if deserialized_dict.get("replicationStats") is not None else None,
+			error_count=deserialized_dict.get("errorCount"),
+			revs_info=[dict(map(lambda kv1: (kv1[0], kv1[1]), x0.items())) for x0 in deserialized_dict.get("revsInfo")] if deserialized_dict.get("revsInfo") is not None else None,
+			rev_history=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("revHistory").items())) if deserialized_dict.get("revHistory") is not None else None,
+		)
 
 @dataclass
 class CalendarItemShareOptions:
@@ -7584,23 +7692,23 @@ CryptoActor = Union['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', '
 def serialize_crypto_actor(crypto_actor: CryptoActor) -> object:
 	if isinstance(crypto_actor, CryptoActorStub):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.CryptoActorStub"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.CryptoActorStub"})
 		return serialized_entity
 	elif isinstance(crypto_actor, EncryptedPatient):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.EncryptedPatient"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.EncryptedPatient"})
 		return serialized_entity
 	elif isinstance(crypto_actor, DecryptedPatient):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.DecryptedPatient"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.DecryptedPatient"})
 		return serialized_entity
 	elif isinstance(crypto_actor, Device):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.Device"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.Device"})
 		return serialized_entity
 	elif isinstance(crypto_actor, HealthcareParty):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.HealthcareParty"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.HealthcareParty"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(crypto_actor)} is not a known subclass of CryptoActor")
@@ -7614,15 +7722,15 @@ def deserialize_crypto_actor(data: Union[str, Dict[str, object]]) -> 'CryptoActo
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.CryptoActorStub":
+	if qualifier == "com.icure.cardinal.sdk.model.CryptoActorStub":
 		return CryptoActorStub._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.EncryptedPatient":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedPatient":
 		return EncryptedPatient._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.DecryptedPatient":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedPatient":
 		return DecryptedPatient._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.Device":
+	elif qualifier == "com.icure.cardinal.sdk.model.Device":
 		return Device._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.HealthcareParty":
+	elif qualifier == "com.icure.cardinal.sdk.model.HealthcareParty":
 		return HealthcareParty._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CryptoActor")
@@ -7672,48 +7780,6 @@ class ShamirUpdateRequest:
 			notaries_ids=[x0 for x0 in deserialized_dict["notariesIds"]],
 			min_shares=deserialized_dict["minShares"],
 		)
-
-@dataclass
-class KeyPairUpdateNotification:
-	new_public_key: 'SpkiHexString'
-	concerned_data_owner_id: str
-
-	def __serialize__(self) -> object:
-		return {
-			"newPublicKey": self.new_public_key,
-			"concernedDataOwnerId": self.concerned_data_owner_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'KeyPairUpdateNotification':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			new_public_key=deserialized_dict["newPublicKey"],
-			concerned_data_owner_id=deserialized_dict["concernedDataOwnerId"],
-		)
-
-class DataOwnerType(Enum):
-	Hcp = "hcp"
-	Device = "device"
-	Patient = "patient"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataOwnerType':
-		if data == "hcp":
-			return DataOwnerType.Hcp
-		elif data == "device":
-			return DataOwnerType.Device
-		elif data == "patient":
-			return DataOwnerType.Patient
-		else:
-			raise Exception(f"{data} is not a valid value for DataOwnerType enum.")
 
 @dataclass
 class DecryptedMessage:
@@ -7988,12 +8054,12 @@ Message = Union['DecryptedMessage', 'EncryptedMessage']
 def serialize_message(message: Message) -> object:
 	if isinstance(message, DecryptedMessage):
 		return {
-			"type": "com.icure.sdk.model.DecryptedMessage",
+			"type": "com.icure.cardinal.sdk.model.DecryptedMessage",
 			"entity": message.__serialize__()
 		}
 	elif isinstance(message, EncryptedMessage):
 		return {
-			"type": "com.icure.sdk.model.EncryptedMessage",
+			"type": "com.icure.cardinal.sdk.model.EncryptedMessage",
 			"entity": message.__serialize__()
 		}
 	else:
@@ -8008,9 +8074,9 @@ def deserialize_message(data: Union[str, Dict[str, object]]) -> 'Message':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedMessage":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedMessage":
 		DecryptedMessage._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedMessage":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedMessage":
 		EncryptedMessage._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Message")
@@ -8184,6 +8250,25 @@ def deserialize_data_owner_with_type(data: Union[str, Dict[str, object]]) -> 'Da
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of DataOwnerWithType")
 
+class DataOwnerType(Enum):
+	Hcp = "hcp"
+	Device = "device"
+	Patient = "patient"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataOwnerType':
+		if data == "hcp":
+			return DataOwnerType.Hcp
+		elif data == "device":
+			return DataOwnerType.Device
+		elif data == "patient":
+			return DataOwnerType.Patient
+		else:
+			raise Exception(f"{data} is not a valid value for DataOwnerType enum.")
+
 @dataclass
 class EncryptedPropertyStub:
 	id: Optional[str] = None
@@ -8253,12 +8338,12 @@ PropertyStub = Union['EncryptedPropertyStub', 'DecryptedPropertyStub']
 def serialize_property_stub(property_stub: PropertyStub) -> object:
 	if isinstance(property_stub, EncryptedPropertyStub):
 		return {
-			"type": "com.icure.sdk.model.EncryptedPropertyStub",
+			"type": "com.icure.cardinal.sdk.model.EncryptedPropertyStub",
 			"entity": property_stub.__serialize__()
 		}
 	elif isinstance(property_stub, DecryptedPropertyStub):
 		return {
-			"type": "com.icure.sdk.model.DecryptedPropertyStub",
+			"type": "com.icure.cardinal.sdk.model.DecryptedPropertyStub",
 			"entity": property_stub.__serialize__()
 		}
 	else:
@@ -8273,9 +8358,9 @@ def deserialize_property_stub(data: Union[str, Dict[str, object]]) -> 'PropertyS
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.EncryptedPropertyStub":
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedPropertyStub":
 		EncryptedPropertyStub._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.DecryptedPropertyStub":
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedPropertyStub":
 		DecryptedPropertyStub._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PropertyStub")
@@ -8415,114 +8500,6 @@ class Role:
 		)
 
 @dataclass
-class IndexingInfo:
-	statuses: Optional[Dict[str, int]] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"statuses": {k0: v0 for k0, v0 in self.statuses.items()} if self.statuses is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IndexingInfo':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			statuses=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("statuses").items())) if deserialized_dict.get("statuses") is not None else None,
-		)
-
-@dataclass
-class ReplicationInfo:
-	active: bool = False
-	running: bool = False
-	pending_from: Optional[int] = None
-	pending_to: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"active": self.active,
-			"running": self.running,
-			"pendingFrom": self.pending_from,
-			"pendingTo": self.pending_to,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicationInfo':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			active=deserialized_dict["active"],
-			running=deserialized_dict["running"],
-			pending_from=deserialized_dict.get("pendingFrom"),
-			pending_to=deserialized_dict.get("pendingTo"),
-		)
-
-@dataclass
-class ReplicatorDocument:
-	id: str
-	rev: Optional[str] = None
-	source: Optional['Remote'] = None
-	target: Optional['Remote'] = None
-	owner: Optional[str] = None
-	create_target: Optional[bool] = None
-	continuous: Optional[bool] = None
-	doc_ids: Optional[List[str]] = None
-	replication_state: Optional[str] = None
-	replication_state_time: Optional[str] = None
-	replication_stats: Optional['ReplicationStats'] = None
-	error_count: Optional[int] = None
-	revs_info: Optional[List[Dict[str, str]]] = None
-	rev_history: Optional[Dict[str, str]] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"id": self.id,
-			"rev": self.rev,
-			"source": self.source.__serialize__() if self.source is not None else None,
-			"target": self.target.__serialize__() if self.target is not None else None,
-			"owner": self.owner,
-			"create_target": self.create_target,
-			"continuous": self.continuous,
-			"doc_ids": [x0 for x0 in self.doc_ids] if self.doc_ids is not None else None,
-			"replicationState": self.replication_state,
-			"replicationStateTime": self.replication_state_time,
-			"replicationStats": self.replication_stats.__serialize__() if self.replication_stats is not None else None,
-			"errorCount": self.error_count,
-			"revsInfo": [{k1: v1 for k1, v1 in x0.items()} for x0 in self.revs_info] if self.revs_info is not None else None,
-			"revHistory": {k0: v0 for k0, v0 in self.rev_history.items()} if self.rev_history is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicatorDocument':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			id=deserialized_dict["id"],
-			rev=deserialized_dict.get("rev"),
-			source=Remote._deserialize(deserialized_dict.get("source")) if deserialized_dict.get("source") is not None else None,
-			target=Remote._deserialize(deserialized_dict.get("target")) if deserialized_dict.get("target") is not None else None,
-			owner=deserialized_dict.get("owner"),
-			create_target=deserialized_dict.get("create_target"),
-			continuous=deserialized_dict.get("continuous"),
-			doc_ids=[x0 for x0 in deserialized_dict.get("doc_ids")] if deserialized_dict.get("doc_ids") is not None else None,
-			replication_state=deserialized_dict.get("replicationState"),
-			replication_state_time=deserialized_dict.get("replicationStateTime"),
-			replication_stats=ReplicationStats._deserialize(deserialized_dict.get("replicationStats")) if deserialized_dict.get("replicationStats") is not None else None,
-			error_count=deserialized_dict.get("errorCount"),
-			revs_info=[dict(map(lambda kv1: (kv1[0], kv1[1]), x0.items())) for x0 in deserialized_dict.get("revsInfo")] if deserialized_dict.get("revsInfo") is not None else None,
-			rev_history=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict.get("revHistory").items())) if deserialized_dict.get("revHistory") is not None else None,
-		)
-
-@dataclass
 class FormShareOptions:
 	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
 	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
@@ -8546,6 +8523,29 @@ class FormShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
+		)
+
+@dataclass
+class KeyPairUpdateNotification:
+	new_public_key: 'SpkiHexString'
+	concerned_data_owner_id: str
+
+	def __serialize__(self) -> object:
+		return {
+			"newPublicKey": self.new_public_key,
+			"concernedDataOwnerId": self.concerned_data_owner_id,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'KeyPairUpdateNotification':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			new_public_key=deserialized_dict["newPublicKey"],
+			concerned_data_owner_id=deserialized_dict["concernedDataOwnerId"],
 		)
 
 @dataclass
@@ -9013,12 +9013,12 @@ Invoice = Union['DecryptedInvoice', 'EncryptedInvoice']
 def serialize_invoice(invoice: Invoice) -> object:
 	if isinstance(invoice, DecryptedInvoice):
 		return {
-			"type": "com.icure.sdk.model.DecryptedInvoice",
+			"type": "com.icure.cardinal.sdk.model.DecryptedInvoice",
 			"entity": invoice.__serialize__()
 		}
 	elif isinstance(invoice, EncryptedInvoice):
 		return {
-			"type": "com.icure.sdk.model.EncryptedInvoice",
+			"type": "com.icure.cardinal.sdk.model.EncryptedInvoice",
 			"entity": invoice.__serialize__()
 		}
 	else:
@@ -9033,9 +9033,9 @@ def deserialize_invoice(data: Union[str, Dict[str, object]]) -> 'Invoice':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.DecryptedInvoice":
+	if qualifier == "com.icure.cardinal.sdk.model.DecryptedInvoice":
 		DecryptedInvoice._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.EncryptedInvoice":
+	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedInvoice":
 		EncryptedInvoice._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Invoice")
@@ -9417,12 +9417,12 @@ InvoicingCode = Union['DecryptedInvoicingCode', 'EncryptedInvoicingCode']
 def serialize_invoicing_code(invoicing_code: InvoicingCode) -> object:
 	if isinstance(invoicing_code, DecryptedInvoicingCode):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedInvoicingCode",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode",
 			"entity": invoicing_code.__serialize__()
 		}
 	elif isinstance(invoicing_code, EncryptedInvoicingCode):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedInvoicingCode",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode",
 			"entity": invoicing_code.__serialize__()
 		}
 	else:
@@ -9437,9 +9437,9 @@ def deserialize_invoicing_code(data: Union[str, Dict[str, object]]) -> 'Invoicin
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.DecryptedInvoicingCode":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode":
 		DecryptedInvoicingCode._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.EncryptedInvoicingCode":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode":
 		EncryptedInvoicingCode._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of InvoicingCode")
@@ -10399,12 +10399,12 @@ Address = Union['EncryptedAddress', 'DecryptedAddress']
 def serialize_address(address: Address) -> object:
 	if isinstance(address, EncryptedAddress):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedAddress",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedAddress",
 			"entity": address.__serialize__()
 		}
 	elif isinstance(address, DecryptedAddress):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedAddress",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedAddress",
 			"entity": address.__serialize__()
 		}
 	else:
@@ -10419,9 +10419,9 @@ def deserialize_address(data: Union[str, Dict[str, object]]) -> 'Address':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedAddress":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedAddress":
 		EncryptedAddress._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedAddress":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedAddress":
 		DecryptedAddress._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Address")
@@ -10786,12 +10786,12 @@ Insurability = Union['DecryptedInsurability', 'EncryptedInsurability']
 def serialize_insurability(insurability: Insurability) -> object:
 	if isinstance(insurability, DecryptedInsurability):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedInsurability",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedInsurability",
 			"entity": insurability.__serialize__()
 		}
 	elif isinstance(insurability, EncryptedInsurability):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedInsurability",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedInsurability",
 			"entity": insurability.__serialize__()
 		}
 	else:
@@ -10806,9 +10806,9 @@ def deserialize_insurability(data: Union[str, Dict[str, object]]) -> 'Insurabili
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.DecryptedInsurability":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedInsurability":
 		DecryptedInsurability._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.EncryptedInsurability":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedInsurability":
 		EncryptedInsurability._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Insurability")
@@ -10920,12 +10920,12 @@ PatientHealthCareParty = Union['EncryptedPatientHealthCareParty', 'DecryptedPati
 def serialize_patient_health_care_party(patient_health_care_party: PatientHealthCareParty) -> object:
 	if isinstance(patient_health_care_party, EncryptedPatientHealthCareParty):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedPatientHealthCareParty",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty",
 			"entity": patient_health_care_party.__serialize__()
 		}
 	elif isinstance(patient_health_care_party, DecryptedPatientHealthCareParty):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedPatientHealthCareParty",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty",
 			"entity": patient_health_care_party.__serialize__()
 		}
 	else:
@@ -10940,9 +10940,9 @@ def deserialize_patient_health_care_party(data: Union[str, Dict[str, object]]) -
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedPatientHealthCareParty":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty":
 		EncryptedPatientHealthCareParty._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedPatientHealthCareParty":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty":
 		DecryptedPatientHealthCareParty._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PatientHealthCareParty")
@@ -11034,12 +11034,12 @@ FinancialInstitutionInformation = Union['EncryptedFinancialInstitutionInformatio
 def serialize_financial_institution_information(financial_institution_information: FinancialInstitutionInformation) -> object:
 	if isinstance(financial_institution_information, EncryptedFinancialInstitutionInformation):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation",
 			"entity": financial_institution_information.__serialize__()
 		}
 	elif isinstance(financial_institution_information, DecryptedFinancialInstitutionInformation):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation",
 			"entity": financial_institution_information.__serialize__()
 		}
 	else:
@@ -11054,9 +11054,9 @@ def deserialize_financial_institution_information(data: Union[str, Dict[str, obj
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedFinancialInstitutionInformation":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation":
 		EncryptedFinancialInstitutionInformation._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedFinancialInstitutionInformation":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation":
 		DecryptedFinancialInstitutionInformation._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of FinancialInstitutionInformation")
@@ -11298,12 +11298,12 @@ MedicalHouseContract = Union['DecryptedMedicalHouseContract', 'EncryptedMedicalH
 def serialize_medical_house_contract(medical_house_contract: MedicalHouseContract) -> object:
 	if isinstance(medical_house_contract, DecryptedMedicalHouseContract):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedMedicalHouseContract",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract",
 			"entity": medical_house_contract.__serialize__()
 		}
 	elif isinstance(medical_house_contract, EncryptedMedicalHouseContract):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedMedicalHouseContract",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract",
 			"entity": medical_house_contract.__serialize__()
 		}
 	else:
@@ -11318,9 +11318,9 @@ def deserialize_medical_house_contract(data: Union[str, Dict[str, object]]) -> '
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.DecryptedMedicalHouseContract":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract":
 		DecryptedMedicalHouseContract._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.EncryptedMedicalHouseContract":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract":
 		EncryptedMedicalHouseContract._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of MedicalHouseContract")
@@ -12590,12 +12590,12 @@ Valorisation = Union['EncryptedValorisation', 'DecryptedValorisation']
 def serialize_valorisation(valorisation: Valorisation) -> object:
 	if isinstance(valorisation, EncryptedValorisation):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedValorisation",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedValorisation",
 			"entity": valorisation.__serialize__()
 		}
 	elif isinstance(valorisation, DecryptedValorisation):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedValorisation",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedValorisation",
 			"entity": valorisation.__serialize__()
 		}
 	else:
@@ -12610,9 +12610,9 @@ def deserialize_valorisation(data: Union[str, Dict[str, object]]) -> 'Valorisati
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedValorisation":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedValorisation":
 		EncryptedValorisation._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedValorisation":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedValorisation":
 		DecryptedValorisation._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Valorisation")
@@ -12793,12 +12793,12 @@ SubContact = Union['EncryptedSubContact', 'DecryptedSubContact']
 def serialize_sub_contact(sub_contact: SubContact) -> object:
 	if isinstance(sub_contact, EncryptedSubContact):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedSubContact",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedSubContact",
 			"entity": sub_contact.__serialize__()
 		}
 	elif isinstance(sub_contact, DecryptedSubContact):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedSubContact",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedSubContact",
 			"entity": sub_contact.__serialize__()
 		}
 	else:
@@ -12813,9 +12813,9 @@ def deserialize_sub_contact(data: Union[str, Dict[str, object]]) -> 'SubContact'
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedSubContact":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedSubContact":
 		EncryptedSubContact._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedSubContact":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedSubContact":
 		DecryptedSubContact._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SubContact")
@@ -12986,12 +12986,12 @@ Content = Union['EncryptedContent', 'DecryptedContent']
 def serialize_content(content: Content) -> object:
 	if isinstance(content, EncryptedContent):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedContent",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedContent",
 			"entity": content.__serialize__()
 		}
 	elif isinstance(content, DecryptedContent):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedContent",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedContent",
 			"entity": content.__serialize__()
 		}
 	else:
@@ -13006,9 +13006,9 @@ def deserialize_content(data: Union[str, Dict[str, object]]) -> 'Content':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedContent":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedContent":
 		EncryptedContent._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedContent":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedContent":
 		DecryptedContent._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Content")
@@ -13213,12 +13213,12 @@ FlatRateTarification = Union['EncryptedFlatRateTarification', 'DecryptedFlatRate
 def serialize_flat_rate_tarification(flat_rate_tarification: FlatRateTarification) -> object:
 	if isinstance(flat_rate_tarification, EncryptedFlatRateTarification):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedFlatRateTarification",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedFlatRateTarification",
 			"entity": flat_rate_tarification.__serialize__()
 		}
 	elif isinstance(flat_rate_tarification, DecryptedFlatRateTarification):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedFlatRateTarification",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedFlatRateTarification",
 			"entity": flat_rate_tarification.__serialize__()
 		}
 	else:
@@ -13233,9 +13233,9 @@ def deserialize_flat_rate_tarification(data: Union[str, Dict[str, object]]) -> '
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedFlatRateTarification":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedFlatRateTarification":
 		EncryptedFlatRateTarification._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedFlatRateTarification":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedFlatRateTarification":
 		DecryptedFlatRateTarification._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of FlatRateTarification")
@@ -13265,7 +13265,7 @@ PermissionItem = Union['AlwaysPermissionItem']
 def serialize_permission_item(permission_item: PermissionItem) -> object:
 	if isinstance(permission_item, AlwaysPermissionItem):
 		serialized_entity = permission_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.security.AlwaysPermissionItem"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.security.AlwaysPermissionItem"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(permission_item)} is not a known subclass of PermissionItem")
@@ -13279,7 +13279,7 @@ def deserialize_permission_item(data: Union[str, Dict[str, object]]) -> 'Permiss
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.security.AlwaysPermissionItem":
+	if qualifier == "com.icure.cardinal.sdk.model.security.AlwaysPermissionItem":
 		return AlwaysPermissionItem._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PermissionItem")
@@ -13524,12 +13524,12 @@ PlanOfAction = Union['EncryptedPlanOfAction', 'DecryptedPlanOfAction']
 def serialize_plan_of_action(plan_of_action: PlanOfAction) -> object:
 	if isinstance(plan_of_action, EncryptedPlanOfAction):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedPlanOfAction",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction",
 			"entity": plan_of_action.__serialize__()
 		}
 	elif isinstance(plan_of_action, DecryptedPlanOfAction):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedPlanOfAction",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction",
 			"entity": plan_of_action.__serialize__()
 		}
 	else:
@@ -13544,9 +13544,9 @@ def deserialize_plan_of_action(data: Union[str, Dict[str, object]]) -> 'PlanOfAc
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedPlanOfAction":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction":
 		EncryptedPlanOfAction._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedPlanOfAction":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction":
 		DecryptedPlanOfAction._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PlanOfAction")
@@ -13626,12 +13626,12 @@ Episode = Union['DecryptedEpisode', 'EncryptedEpisode']
 def serialize_episode(episode: Episode) -> object:
 	if isinstance(episode, DecryptedEpisode):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedEpisode",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedEpisode",
 			"entity": episode.__serialize__()
 		}
 	elif isinstance(episode, EncryptedEpisode):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedEpisode",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedEpisode",
 			"entity": episode.__serialize__()
 		}
 	else:
@@ -13646,9 +13646,9 @@ def deserialize_episode(data: Union[str, Dict[str, object]]) -> 'Episode':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.DecryptedEpisode":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedEpisode":
 		DecryptedEpisode._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.EncryptedEpisode":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedEpisode":
 		EncryptedEpisode._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Episode")
@@ -13722,12 +13722,12 @@ CareTeamMember = Union['EncryptedCareTeamMember', 'DecryptedCareTeamMember']
 def serialize_care_team_member(care_team_member: CareTeamMember) -> object:
 	if isinstance(care_team_member, EncryptedCareTeamMember):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedCareTeamMember",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember",
 			"entity": care_team_member.__serialize__()
 		}
 	elif isinstance(care_team_member, DecryptedCareTeamMember):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedCareTeamMember",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember",
 			"entity": care_team_member.__serialize__()
 		}
 	else:
@@ -13742,12 +13742,79 @@ def deserialize_care_team_member(data: Union[str, Dict[str, object]]) -> 'CareTe
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedCareTeamMember":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember":
 		EncryptedCareTeamMember._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedCareTeamMember":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember":
 		DecryptedCareTeamMember._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CareTeamMember")
+
+@dataclass
+class Remote:
+	url: str
+	auth: Optional['RemoteAuthentication'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"url": self.url,
+			"auth": self.auth.__serialize__() if self.auth is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Remote':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			url=deserialized_dict["url"],
+			auth=RemoteAuthentication._deserialize(deserialized_dict.get("auth")) if deserialized_dict.get("auth") is not None else None,
+		)
+
+@dataclass
+class ReplicationStats:
+	revisions_checked: Optional[int] = None
+	missing_revisions_found: Optional[int] = None
+	docs_read: Optional[int] = None
+	docs_written: Optional[int] = None
+	changes_pending: Optional[int] = None
+	doc_write_failures: Optional[int] = None
+	checkpointed_source_seq: Optional[str] = None
+	start_time: Optional[str] = None
+	error: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"revisionsChecked": self.revisions_checked,
+			"missingRevisionsFound": self.missing_revisions_found,
+			"docsRead": self.docs_read,
+			"docsWritten": self.docs_written,
+			"changesPending": self.changes_pending,
+			"docWriteFailures": self.doc_write_failures,
+			"checkpointedSourceSeq": self.checkpointed_source_seq,
+			"startTime": self.start_time,
+			"error": self.error,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicationStats':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			revisions_checked=deserialized_dict.get("revisionsChecked"),
+			missing_revisions_found=deserialized_dict.get("missingRevisionsFound"),
+			docs_read=deserialized_dict.get("docsRead"),
+			docs_written=deserialized_dict.get("docsWritten"),
+			changes_pending=deserialized_dict.get("changesPending"),
+			doc_write_failures=deserialized_dict.get("docWriteFailures"),
+			checkpointed_source_seq=deserialized_dict.get("checkpointedSourceSeq"),
+			start_time=deserialized_dict.get("startTime"),
+			error=deserialized_dict.get("error"),
+		)
 
 @dataclass
 class MessageReadStatus:
@@ -13899,12 +13966,12 @@ TypedValue = Union['DecryptedTypedValue', 'EncryptedTypedValue']
 def serialize_typed_value(typed_value: TypedValue) -> object:
 	if isinstance(typed_value, DecryptedTypedValue):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedTypedValue",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedTypedValue",
 			"entity": typed_value.__serialize__()
 		}
 	elif isinstance(typed_value, EncryptedTypedValue):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedTypedValue",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedTypedValue",
 			"entity": typed_value.__serialize__()
 		}
 	else:
@@ -13919,79 +13986,12 @@ def deserialize_typed_value(data: Union[str, Dict[str, object]]) -> 'TypedValue'
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.DecryptedTypedValue":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedTypedValue":
 		DecryptedTypedValue._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.EncryptedTypedValue":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedTypedValue":
 		EncryptedTypedValue._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of TypedValue")
-
-@dataclass
-class Remote:
-	url: str
-	auth: Optional['RemoteAuthentication'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"url": self.url,
-			"auth": self.auth.__serialize__() if self.auth is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Remote':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			url=deserialized_dict["url"],
-			auth=RemoteAuthentication._deserialize(deserialized_dict.get("auth")) if deserialized_dict.get("auth") is not None else None,
-		)
-
-@dataclass
-class ReplicationStats:
-	revisions_checked: Optional[int] = None
-	missing_revisions_found: Optional[int] = None
-	docs_read: Optional[int] = None
-	docs_written: Optional[int] = None
-	changes_pending: Optional[int] = None
-	doc_write_failures: Optional[int] = None
-	checkpointed_source_seq: Optional[str] = None
-	start_time: Optional[str] = None
-	error: Optional[str] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"revisionsChecked": self.revisions_checked,
-			"missingRevisionsFound": self.missing_revisions_found,
-			"docsRead": self.docs_read,
-			"docsWritten": self.docs_written,
-			"changesPending": self.changes_pending,
-			"docWriteFailures": self.doc_write_failures,
-			"checkpointedSourceSeq": self.checkpointed_source_seq,
-			"startTime": self.start_time,
-			"error": self.error,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicationStats':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			revisions_checked=deserialized_dict.get("revisionsChecked"),
-			missing_revisions_found=deserialized_dict.get("missingRevisionsFound"),
-			docs_read=deserialized_dict.get("docsRead"),
-			docs_written=deserialized_dict.get("docsWritten"),
-			changes_pending=deserialized_dict.get("changesPending"),
-			doc_write_failures=deserialized_dict.get("docWriteFailures"),
-			checkpointed_source_seq=deserialized_dict.get("checkpointedSourceSeq"),
-			start_time=deserialized_dict.get("startTime"),
-			error=deserialized_dict.get("error"),
-		)
 
 class InvoiceInterventionType(Enum):
 	Total = "total"
@@ -14448,12 +14448,12 @@ Telecom = Union['EncryptedTelecom', 'DecryptedTelecom']
 def serialize_telecom(telecom: Telecom) -> object:
 	if isinstance(telecom, EncryptedTelecom):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedTelecom",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedTelecom",
 			"entity": telecom.__serialize__()
 		}
 	elif isinstance(telecom, DecryptedTelecom):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedTelecom",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedTelecom",
 			"entity": telecom.__serialize__()
 		}
 	else:
@@ -14468,9 +14468,9 @@ def deserialize_telecom(data: Union[str, Dict[str, object]]) -> 'Telecom':
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.EncryptedTelecom":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedTelecom":
 		EncryptedTelecom._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.DecryptedTelecom":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedTelecom":
 		DecryptedTelecom._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Telecom")
@@ -15270,12 +15270,12 @@ CareTeamMembership = Union['DecryptedCareTeamMembership', 'EncryptedCareTeamMemb
 def serialize_care_team_membership(care_team_membership: CareTeamMembership) -> object:
 	if isinstance(care_team_membership, DecryptedCareTeamMembership):
 		return {
-			"type": "com.icure.sdk.model.embed.DecryptedCareTeamMembership",
+			"type": "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMembership",
 			"entity": care_team_membership.__serialize__()
 		}
 	elif isinstance(care_team_membership, EncryptedCareTeamMembership):
 		return {
-			"type": "com.icure.sdk.model.embed.EncryptedCareTeamMembership",
+			"type": "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMembership",
 			"entity": care_team_membership.__serialize__()
 		}
 	else:
@@ -15290,9 +15290,9 @@ def deserialize_care_team_membership(data: Union[str, Dict[str, object]]) -> 'Ca
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.DecryptedCareTeamMembership":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMembership":
 		DecryptedCareTeamMembership._deserialize(deserialized_dict["entity"])
-	elif qualifier == "com.icure.sdk.model.embed.EncryptedCareTeamMembership":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMembership":
 		EncryptedCareTeamMembership._deserialize(deserialized_dict["entity"])
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CareTeamMembership")
@@ -15315,6 +15315,26 @@ class CareTeamMemberType(Enum):
 			return CareTeamMemberType.Other
 		else:
 			raise Exception(f"{data} is not a valid value for CareTeamMemberType enum.")
+
+@dataclass
+class RemoteAuthentication:
+	basic: Optional['Basic'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"basic": self.basic.__serialize__() if self.basic is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RemoteAuthentication':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			basic=Basic._deserialize(deserialized_dict.get("basic")) if deserialized_dict.get("basic") is not None else None,
+		)
 
 class TypedValuesType(Enum):
 	Boolean = "BOOLEAN"
@@ -15346,26 +15366,6 @@ class TypedValuesType(Enum):
 			return TypedValuesType.Json
 		else:
 			raise Exception(f"{data} is not a valid value for TypedValuesType enum.")
-
-@dataclass
-class RemoteAuthentication:
-	basic: Optional['Basic'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"basic": self.basic.__serialize__() if self.basic is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RemoteAuthentication':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			basic=Basic._deserialize(deserialized_dict.get("basic")) if deserialized_dict.get("basic") is not None else None,
-		)
 
 @dataclass
 class DatabaseSynchronization:
@@ -16175,47 +16175,47 @@ StructureElement = Union['DropdownField', 'RadioButton', 'DatePicker', 'TimePick
 def serialize_structure_element(structure_element: StructureElement) -> object:
 	if isinstance(structure_element, DropdownField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.DropdownField"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.DropdownField"})
 		return serialized_entity
 	elif isinstance(structure_element, RadioButton):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.RadioButton"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.RadioButton"})
 		return serialized_entity
 	elif isinstance(structure_element, DatePicker):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.DatePicker"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.DatePicker"})
 		return serialized_entity
 	elif isinstance(structure_element, TimePicker):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.TimePicker"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.TimePicker"})
 		return serialized_entity
 	elif isinstance(structure_element, DateTimePicker):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.DateTimePicker"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.DateTimePicker"})
 		return serialized_entity
 	elif isinstance(structure_element, NumberField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.NumberField"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.NumberField"})
 		return serialized_entity
 	elif isinstance(structure_element, TextField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.TextField"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.TextField"})
 		return serialized_entity
 	elif isinstance(structure_element, CheckBox):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.CheckBox"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.CheckBox"})
 		return serialized_entity
 	elif isinstance(structure_element, MultipleChoice):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.MultipleChoice"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.MultipleChoice"})
 		return serialized_entity
 	elif isinstance(structure_element, MeasureField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.MeasureField"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.MeasureField"})
 		return serialized_entity
 	elif isinstance(structure_element, FieldsGroup):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.sdk.model.embed.form.template.FieldsGroup"})
+		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.FieldsGroup"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(structure_element)} is not a known subclass of StructureElement")
@@ -16229,27 +16229,27 @@ def deserialize_structure_element(data: Union[str, Dict[str, object]]) -> 'Struc
 	qualifier = deserialized_dict.get("type")
 	if qualifier is None:
 		raise Exception("Missing qualifier: type")
-	if qualifier == "com.icure.sdk.model.embed.form.template.DropdownField":
+	if qualifier == "com.icure.cardinal.sdk.model.embed.form.template.DropdownField":
 		return DropdownField._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.RadioButton":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.RadioButton":
 		return RadioButton._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.DatePicker":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.DatePicker":
 		return DatePicker._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.TimePicker":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.TimePicker":
 		return TimePicker._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.DateTimePicker":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.DateTimePicker":
 		return DateTimePicker._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.NumberField":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.NumberField":
 		return NumberField._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.TextField":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.TextField":
 		return TextField._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.CheckBox":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.CheckBox":
 		return CheckBox._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.MultipleChoice":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.MultipleChoice":
 		return MultipleChoice._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.MeasureField":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.MeasureField":
 		return MeasureField._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.sdk.model.embed.form.template.FieldsGroup":
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.FieldsGroup":
 		return FieldsGroup._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of StructureElement")

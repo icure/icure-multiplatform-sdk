@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, FilterOptions, InternalTopicFiltersObj} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, FilterOptions, InternalTopicFiltersObj} from '../cardinal-sdk-ts.mjs';
 import {Topic} from '../model/Topic.mjs';
 
 

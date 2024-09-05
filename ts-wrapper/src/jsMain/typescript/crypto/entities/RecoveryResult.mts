@@ -10,7 +10,7 @@ export namespace RecoveryResult {
 
 		data: T;
 
-		readonly $ktClass: 'com.icure.sdk.crypto.entities.RecoveryResult.Success' = 'com.icure.sdk.crypto.entities.RecoveryResult.Success';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success' = 'com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success';
 
 		constructor(partial: Partial<Success<T>> & Pick<Success<T>, "data">) {
 			this.data = partial.data;
@@ -22,7 +22,7 @@ export namespace RecoveryResult {
 
 		reason: RecoveryDataUseFailureReason;
 
-		readonly $ktClass: 'com.icure.sdk.crypto.entities.RecoveryResult.Failure' = 'com.icure.sdk.crypto.entities.RecoveryResult.Failure';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure' = 'com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure';
 
 		constructor(partial: Partial<Failure> & Pick<Failure, "reason">) {
 			this.reason = partial.reason;

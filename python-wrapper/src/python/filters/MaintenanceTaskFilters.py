@@ -1,11 +1,11 @@
 # auto-generated file
 import json
 from typing import List
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseSortableFilterOptions, SortableFilterOptions, BaseFilterOptions, FilterOptions
-from icure.model import MaintenanceTask, Identifier
+from cardinal_sdk.filters.FilterOptions import BaseSortableFilterOptions, SortableFilterOptions, BaseFilterOptions, FilterOptions
+from cardinal_sdk.model import MaintenanceTask, Identifier
 
 class MaintenanceTaskFilters:
 
@@ -14,7 +14,7 @@ class MaintenanceTaskFilters:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MaintenanceTaskFilters.byIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MaintenanceTaskFilters.byIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -31,7 +31,7 @@ class MaintenanceTaskFilters:
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MaintenanceTaskFilters.byIdentifiersForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MaintenanceTaskFilters.byIdentifiersForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -47,7 +47,7 @@ class MaintenanceTaskFilters:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MaintenanceTaskFilters.byIdentifiersForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MaintenanceTaskFilters.byIdentifiersForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -64,7 +64,7 @@ class MaintenanceTaskFilters:
 			"dataOwnerId": data_owner_id,
 			"type": type,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MaintenanceTaskFilters.byTypeForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MaintenanceTaskFilters.byTypeForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -80,7 +80,7 @@ class MaintenanceTaskFilters:
 		payload = {
 			"type": type,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MaintenanceTaskFilters.byTypeForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MaintenanceTaskFilters.byTypeForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -97,7 +97,7 @@ class MaintenanceTaskFilters:
 			"dataOwnerId": data_owner_id,
 			"date": date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MaintenanceTaskFilters.afterDateForDataOwner(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MaintenanceTaskFilters.afterDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -113,7 +113,7 @@ class MaintenanceTaskFilters:
 		payload = {
 			"date": date,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MaintenanceTaskFilters.afterDateForSelf(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MaintenanceTaskFilters.afterDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

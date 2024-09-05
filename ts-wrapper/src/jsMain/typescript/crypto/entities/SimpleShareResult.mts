@@ -11,7 +11,7 @@ export namespace SimpleShareResult {
 
 		updatedEntity: T;
 
-		readonly $ktClass: 'com.icure.sdk.crypto.entities.SimpleShareResult.Success' = 'com.icure.sdk.crypto.entities.SimpleShareResult.Success';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success' = 'com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Success';
 
 		constructor(partial: Partial<Success<T>> & Pick<Success<T>, "updatedEntity">) {
 			this.updatedEntity = partial.updatedEntity;
@@ -23,7 +23,7 @@ export namespace SimpleShareResult {
 
 		errorsDetails: Array<FailedRequestDetails>;
 
-		readonly $ktClass: 'com.icure.sdk.crypto.entities.SimpleShareResult.Failure' = 'com.icure.sdk.crypto.entities.SimpleShareResult.Failure';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure' = 'com.icure.cardinal.sdk.crypto.entities.SimpleShareResult.Failure';
 
 		constructor(partial: Partial<Failure> & Pick<Failure, "errorsDetails">) {
 			this.errorsDetails = partial.errorsDetails;

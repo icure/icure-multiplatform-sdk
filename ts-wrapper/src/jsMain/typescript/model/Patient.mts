@@ -297,7 +297,7 @@ export class DecryptedPatient {
 
 	readonly isEncrypted: false = false;
 
-	readonly $ktClass: 'com.icure.sdk.model.DecryptedPatient' = 'com.icure.sdk.model.DecryptedPatient';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.DecryptedPatient' = 'com.icure.cardinal.sdk.model.DecryptedPatient';
 
 	constructor(partial: Partial<DecryptedPatient>) {
 		if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
@@ -549,7 +549,7 @@ export class EncryptedPatient {
 
 	readonly isEncrypted: true = true;
 
-	readonly $ktClass: 'com.icure.sdk.model.EncryptedPatient' = 'com.icure.sdk.model.EncryptedPatient';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.EncryptedPatient' = 'com.icure.cardinal.sdk.model.EncryptedPatient';
 
 	constructor(partial: Partial<EncryptedPatient>) {
 		if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');

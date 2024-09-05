@@ -4,7 +4,7 @@ import {
   BaseSortableFilterOptions,
   BaseFilterOptions,
   InternalFilterOptions
-} from "../icure-sdk-ts.mjs"
+} from "../cardinal-sdk-ts.mjs"
 import {Identifiable} from "../model/base/Identifiable.mjs";
 
 /**

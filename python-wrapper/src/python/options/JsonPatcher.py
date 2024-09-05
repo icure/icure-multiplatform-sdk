@@ -1,7 +1,7 @@
 from abc import ABC
 from ctypes import CFUNCTYPE, c_char_p, c_void_p, cast
 from typing import Optional
-from icure.kotlin_types import symbols
+from cardinal_sdk.kotlin_types import symbols
 import json
 import traceback
 
@@ -161,112 +161,112 @@ class _JsonPatcherBridge:
 
     def __del__(self):
         if self.__kt_py_patcher is not None:
-            symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__kt_py_patcher)
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.disposeStablePtr(self.__kt_py_patcher)
 
     def patch_access_log(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_access_log(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_calendar_item(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_calendar_item(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_contact(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_contact(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_individual_service(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_individual_service(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_health_element(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_health_element(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_maintenance_task(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_maintenance_task(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_patient(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_patient(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_message(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_message(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_topic(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_topic(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_document(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_document(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_form(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_form(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_receipt(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_receipt(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_classification(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_classification(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_time_table(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_time_table(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def patch_invoice(self, result_holder, json_string):
         try:
             result = self.__py_patcher.patch_invoice(json.loads(cast(json_string, c_char_p).value.decode('utf-8')))
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def get_kt(self) -> c_void_p:
         if self.__kt_py_patcher is None:
@@ -286,7 +286,7 @@ class _JsonPatcherBridge:
             self._CALLBACK_patch_classification = _C_PatchFunction(self.patch_classification) if getattr(JsonPatcher, 'patch_classification', None) != getattr(py_patcher_class, 'patch_classification', None) else None
             self._CALLBACK_patch_time_table = _C_PatchFunction(self.patch_time_table) if getattr(JsonPatcher, 'patch_time_table', None) != getattr(py_patcher_class, 'patch_time_table', None) else None
             self._CALLBACK_patch_invoice = _C_PatchFunction(self.patch_invoice) if getattr(JsonPatcher, 'patch_invoice', None) != getattr(py_patcher_class, 'patch_invoice', None) else None
-            self.__kt_py_patcher = symbols.kotlin.root.com.icure.sdk.py.options.PyJsonPatcher.createJsonPatcher(
+            self.__kt_py_patcher = symbols.kotlin.root.com.icure.cardinal.sdk.py.options.PyJsonPatcher.createJsonPatcher(
                 self._CALLBACK_patch_access_log,
                 self._CALLBACK_patch_calendar_item,
                 self._CALLBACK_patch_contact,

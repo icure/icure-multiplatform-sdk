@@ -1,17 +1,17 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from icure.model import Code
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Code
 from typing import List, Optional
 
 class CodeFilters:
 
 	@classmethod
 	def all(cls) -> BaseFilterOptions[Code]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.CodeFilters.all(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.all(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -26,7 +26,7 @@ class CodeFilters:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.CodeFilters.byIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -43,7 +43,7 @@ class CodeFilters:
 			"linkType": link_type,
 			"linkedId": linked_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.CodeFilters.byQualifiedLink(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byQualifiedLink(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -62,7 +62,7 @@ class CodeFilters:
 			"code": code,
 			"version": version,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.CodeFilters.byRegionTypeCodeVersion(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byRegionTypeCodeVersion(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -81,7 +81,7 @@ class CodeFilters:
 			"label": label,
 			"region": region,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.CodeFilters.byLanguageTypeLabelRegion(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byLanguageTypeLabelRegion(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -101,7 +101,7 @@ class CodeFilters:
 			"region": region,
 			"version": version,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.CodeFilters.byLanguageTypesLabelRegionVersion(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byLanguageTypesLabelRegionVersion(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

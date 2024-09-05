@@ -2,15 +2,15 @@ import base64
 import json
 from dataclasses import dataclass
 from enum import Enum
-from icure.model import serialize_data_owner_with_type, deserialize_data_owner_with_type, CryptoActorStubWithType, DataOwnerWithType, RecoveryDataUseFailureReason, deserialize_recovery_result, RecoveryResultFailure
-from icure.model.specializations import SpkiHexString, KeypairFingerprintV1String
-from icure.model.SingletonMeta import SingletonMeta
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import serialize_data_owner_with_type, deserialize_data_owner_with_type, CryptoActorStubWithType, DataOwnerWithType, RecoveryDataUseFailureReason, deserialize_recovery_result, RecoveryResultFailure
+from cardinal_sdk.model.specializations import SpkiHexString, KeypairFingerprintV1String
+from cardinal_sdk.model.SingletonMeta import SingletonMeta
+from cardinal_sdk.model.CallResult import create_result_from_json
 from typing import Dict, List, Union, Callable, Optional
 from abc import ABC, abstractmethod
 from ctypes import c_void_p, CFUNCTYPE, c_char_p, cast
 import traceback
-from icure.kotlin_types import symbols
+from cardinal_sdk.kotlin_types import symbols
 
 
 @dataclass
@@ -115,15 +115,15 @@ class KeyGenerationRequestResultUse:
 def serialize_key_generation_request_result(key_generation_request_result: KeyGenerationRequestResult) -> object:
     if isinstance(key_generation_request_result, KeyGenerationRequestResultAllow):
         serialized_entity = key_generation_request_result.__serialize__()
-        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Allow"})
+        serialized_entity.update({"type": "com.icure.cardinal.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Allow"})
         return serialized_entity
     elif isinstance(key_generation_request_result, KeyGenerationRequestResultDeny):
         serialized_entity = key_generation_request_result.__serialize__()
-        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Deny"})
+        serialized_entity.update({"type": "com.icure.cardinal.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Deny"})
         return serialized_entity
     elif isinstance(key_generation_request_result, KeyGenerationRequestResultUse):
         serialized_entity = key_generation_request_result.__serialize__()
-        serialized_entity.update({"type": "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Use"})
+        serialized_entity.update({"type": "com.icure.cardinal.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Use"})
         return serialized_entity
     else:
         raise Exception(f"{type(key_generation_request_result)} is not a known subclass of KeyGenerationRequestResult")
@@ -138,11 +138,11 @@ def deserialize_key_generation_request_result(data: Union[str, Dict[str, object]
     qualifier = deserialized_dict.get("type")
     if qualifier is None:
         raise Exception("Missing qualifier: type")
-    if qualifier == "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Allow":
+    if qualifier == "com.icure.cardinal.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Allow":
         return KeyGenerationRequestResultAllow._deserialize(deserialized_dict)
-    elif qualifier == "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Deny":
+    elif qualifier == "com.icure.cardinal.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Deny":
         return KeyGenerationRequestResultDeny._deserialize(deserialized_dict)
-    elif qualifier == "com.icure.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Use":
+    elif qualifier == "com.icure.cardinal.sdk.py.PyCryptoStrategies.PyKeyGenerationRequestResult.Use":
         return KeyGenerationRequestResultUse._deserialize(deserialized_dict)
     else:
         raise Exception(f"{qualifier} is not a known subclass of DataOwnerWithType")
@@ -325,13 +325,13 @@ class _CryptoStrategiesBridge:
 
     def __del__(self):
         if self.__kt_crypto_strategies is not None:
-            symbols.kotlin.root.com.icure.sdk.py.utils.disposeStablePtr(self.__kt_crypto_strategies)
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.disposeStablePtr(self.__kt_crypto_strategies)
 
     def recover_and_verify_self_hierarchy_keys(self, result_holder, keys_data, key_pair_recoverer):
         try:
             keys_data_json = json.loads(cast(keys_data, c_char_p).value.decode('utf-8'))
             def use_key_pair_recover(recovery_key, auto_delete):
-                result_bytes = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.recoverWithRecoveryKey(
+                result_bytes = symbols.kotlin.root.com.icure.cardinal.sdk.py.PyCryptoStrategies.recoverWithRecoveryKey(
                     key_pair_recoverer,
                     recovery_key.encode('utf-8'),
                     auto_delete
@@ -355,9 +355,9 @@ class _CryptoStrategiesBridge:
             result_json = {
                 k: v.__serialize__() for k, v in result.items()
             }
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def generate_new_key_for_data_owner(self, result_holder, self_data_owner):
         try:
@@ -365,9 +365,9 @@ class _CryptoStrategiesBridge:
                 deserialize_data_owner_with_type(cast(self_data_owner, c_char_p).value.decode('utf-8'))
             )
             result_json = serialize_key_generation_request_result(result)
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def verify_delegate_public_keys(self, result_holder, delegate, public_keys):
         try:
@@ -375,18 +375,18 @@ class _CryptoStrategiesBridge:
                 CryptoActorStubWithType._deserialize(cast(delegate, c_char_p).value.decode('utf-8')),
                 json.loads(cast(public_keys, c_char_p).value.decode('utf-8'))
             )
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
 
     def data_owner_requires_anonymous_delegation(self, result_holder, data_owner):
         try:
             result = self.__py_strategies.data_owner_requires_anonymous_delegation(
                 CryptoActorStubWithType._deserialize(cast(data_owner, c_char_p).value.decode('utf-8'))
             )
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
-            symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
     def get_kt(self) -> c_void_p:
         if self.__kt_crypto_strategies is None:
@@ -394,7 +394,7 @@ class _CryptoStrategiesBridge:
             self.__CALLBACK_GenerateNewKeyForDataOwner = _C_GenerateNewKeyForDataOwner(self.generate_new_key_for_data_owner)
             self.__CALLBACK_VerifyDelegatePublicKeys = _C_VerifyDelegatePublicKeys(self.verify_delegate_public_keys)
             self.__CALLBACK_DataOwnerRequiresAnonymousDelegation = _C_DataOwnerRequiresAnonymousDelegation(self.data_owner_requires_anonymous_delegation)
-            self.__kt_crypto_strategies = symbols.kotlin.root.com.icure.sdk.py.PyCryptoStrategies.create(
+            self.__kt_crypto_strategies = symbols.kotlin.root.com.icure.cardinal.sdk.py.PyCryptoStrategies.create(
                 self.__CALLBACK_RecoverAndVerifySelfHierarchyKeys,
                 self.__CALLBACK_GenerateNewKeyForDataOwner,
                 self.__CALLBACK_VerifyDelegatePublicKeys,

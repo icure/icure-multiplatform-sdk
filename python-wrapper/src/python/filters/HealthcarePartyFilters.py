@@ -1,17 +1,17 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions, SortableFilterOptions
-from icure.model import HealthcareParty, Identifier
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions, SortableFilterOptions
+from cardinal_sdk.model import HealthcareParty, Identifier
 from typing import List, Optional
 
 class HealthcarePartyFilters:
 
 	@classmethod
 	def all(cls) -> BaseFilterOptions[HealthcareParty]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.all(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.all(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -26,7 +26,7 @@ class HealthcarePartyFilters:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byIdentifiers(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byIdentifiers(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -43,7 +43,7 @@ class HealthcarePartyFilters:
 			"codeType": code_type,
 			"codeCode": code_code,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byCode(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byCode(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -60,7 +60,7 @@ class HealthcarePartyFilters:
 			"tagType": tag_type,
 			"tagCode": tag_code,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byTag(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byTag(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -76,7 +76,7 @@ class HealthcarePartyFilters:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byIds(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byIds(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -93,7 +93,7 @@ class HealthcarePartyFilters:
 			"searchString": search_string,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byName(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byName(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -110,7 +110,7 @@ class HealthcarePartyFilters:
 			"searchString": search_string,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byNationalIdentifier(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byNationalIdentifier(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -126,7 +126,7 @@ class HealthcarePartyFilters:
 		payload = {
 			"parentId": parent_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byParentId(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byParentId(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -145,7 +145,7 @@ class HealthcarePartyFilters:
 			"startPostCode": start_post_code,
 			"endPostCode": end_post_code,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.HealthcarePartyFilters.byTypeSpecialtyPostCode(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.HealthcarePartyFilters.byTypeSpecialtyPostCode(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

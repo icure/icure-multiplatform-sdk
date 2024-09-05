@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {EncryptedTopic, Topic} from '../model/Topic.mjs';
 import {TopicRole} from '../model/TopicRole.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';

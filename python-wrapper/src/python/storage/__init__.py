@@ -1,1 +1,1 @@
-from icure.storage.StorageFacadeOptions import FileSystemStorage, CustomStorageFacade, StorageOptions
+from cardinal_sdk.storage.StorageFacadeOptions import FileSystemStorage, CustomStorageFacade, StorageOptions

@@ -36,7 +36,7 @@ export class NumberField {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.NumberField' = 'com.icure.sdk.model.embed.form.template.NumberField';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.NumberField' = 'com.icure.cardinal.sdk.model.embed.form.template.NumberField';
 
 	constructor(partial: Partial<NumberField> & Pick<NumberField, "field">) {
 		this.field = partial.field;

@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalMaintenanceTaskFiltersObj, SortableFilterOptions} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalMaintenanceTaskFiltersObj, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MaintenanceTask} from '../model/MaintenanceTask.mjs';
 import {Identifier} from '../model/base/Identifier.mjs';
 

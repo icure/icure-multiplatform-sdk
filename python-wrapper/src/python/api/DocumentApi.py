@@ -3,22 +3,22 @@ import asyncio
 import json
 import base64
 import traceback
-from icure.model import DecryptedDocument, Message, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, DocumentShareOptions, deserialize_simple_share_result_decrypted_document, SimpleShareResultDecryptedDocument, deserialize_simple_share_result_encrypted_document, SimpleShareResultEncryptedDocument, deserialize_simple_share_result_document, SimpleShareResultDocument
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, DocumentShareOptions, deserialize_simple_share_result_decrypted_document, SimpleShareResultDecryptedDocument, deserialize_simple_share_result_encrypted_document, SimpleShareResultEncryptedDocument, deserialize_simple_share_result_document, SimpleShareResultDocument
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from collections.abc import Callable
-from icure.model.specializations import HexString
-from icure.filters.FilterOptions import FilterOptions, SortableFilterOptions
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.model.specializations import HexString
+from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
 class DocumentApi:
 
 	class DocumentFlavouredEncryptedApi:
 
-		def __init__(self, icure_sdk):
-			self.icure_sdk = icure_sdk
+		def __init__(self, cardinal_sdk):
+			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultEncryptedDocument:
 			loop = asyncio.get_running_loop()
@@ -37,9 +37,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.shareWithAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -51,8 +51,8 @@ class DocumentApi:
 				"document": document.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.shareWithBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -79,9 +79,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.tryShareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.tryShareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -92,8 +92,8 @@ class DocumentApi:
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.tryShareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.tryShareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -120,9 +120,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.shareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -133,8 +133,8 @@ class DocumentApi:
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.shareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -156,7 +156,7 @@ class DocumentApi:
 					result = PaginatedListIterator[EncryptedDocument](
 						producer = success,
 						deserializer = lambda x: EncryptedDocument._deserialize(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -164,9 +164,9 @@ class DocumentApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.filterDocumentsByAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -176,23 +176,23 @@ class DocumentApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.filterDocumentsByBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedDocument](
 					producer = class_pointer,
 					deserializer = lambda x: EncryptedDocument._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
@@ -206,7 +206,7 @@ class DocumentApi:
 					result = PaginatedListIterator[EncryptedDocument](
 						producer = success,
 						deserializer = lambda x: EncryptedDocument._deserialize(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -214,9 +214,9 @@ class DocumentApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -226,23 +226,23 @@ class DocumentApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[EncryptedDocument](
 					producer = class_pointer,
 					deserializer = lambda x: EncryptedDocument._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def modify_document_async(self, entity: EncryptedDocument) -> EncryptedDocument:
@@ -260,9 +260,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.modifyDocumentAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -272,8 +272,8 @@ class DocumentApi:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.modifyDocumentBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -299,9 +299,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.getDocumentAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -311,8 +311,8 @@ class DocumentApi:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.getDocumentBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -338,9 +338,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.getDocumentsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -350,8 +350,8 @@ class DocumentApi:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.getDocumentsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -377,9 +377,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.modifyDocumentsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -389,8 +389,8 @@ class DocumentApi:
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encrypted.modifyDocumentsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -403,8 +403,8 @@ class DocumentApi:
 
 	class DocumentFlavouredApi:
 
-		def __init__(self, icure_sdk):
-			self.icure_sdk = icure_sdk
+		def __init__(self, cardinal_sdk):
+			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultDocument:
 			loop = asyncio.get_running_loop()
@@ -423,9 +423,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.shareWithAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -437,8 +437,8 @@ class DocumentApi:
 				"document": serialize_document(document),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.shareWithBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -465,9 +465,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.tryShareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.tryShareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -478,8 +478,8 @@ class DocumentApi:
 				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.tryShareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.tryShareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -506,9 +506,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -519,8 +519,8 @@ class DocumentApi:
 				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -542,7 +542,7 @@ class DocumentApi:
 					result = PaginatedListIterator[Document](
 						producer = success,
 						deserializer = lambda x: deserialize_document(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -550,9 +550,9 @@ class DocumentApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -562,23 +562,23 @@ class DocumentApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Document](
 					producer = class_pointer,
 					deserializer = lambda x: deserialize_document(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[Document]:
@@ -592,7 +592,7 @@ class DocumentApi:
 					result = PaginatedListIterator[Document](
 						producer = success,
 						deserializer = lambda x: deserialize_document(x),
-						executor = self.icure_sdk._executor
+						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
@@ -600,9 +600,9 @@ class DocumentApi:
 			}
 			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -612,23 +612,23 @@ class DocumentApi:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
 				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
 				raise Exception(error_msg)
 			else:
-				class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
 				return PaginatedListIterator[Document](
 					producer = class_pointer,
 					deserializer = lambda x: deserialize_document(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 
 		async def modify_document_async(self, entity: Document) -> Document:
@@ -646,9 +646,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -658,8 +658,8 @@ class DocumentApi:
 			payload = {
 				"entity": serialize_document(entity),
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -685,9 +685,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.getDocumentAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -697,8 +697,8 @@ class DocumentApi:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.getDocumentBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -724,9 +724,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -736,8 +736,8 @@ class DocumentApi:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -763,9 +763,9 @@ class DocumentApi:
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
-				self.icure_sdk._executor,
-				symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsAsync,
-				self.icure_sdk._native,
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsAsync,
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
@@ -775,8 +775,8 @@ class DocumentApi:
 			payload = {
 				"entities": [serialize_document(x0) for x0 in entities],
 			}
-			call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsBlocking(
-				self.icure_sdk._native,
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsBlocking(
+				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -787,10 +787,10 @@ class DocumentApi:
 				return_value = [deserialize_document(x1) for x1 in result_info.success]
 				return return_value
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
-		self.encrypted = DocumentApi.DocumentFlavouredEncryptedApi(self.icure_sdk)
-		self.try_and_recover = DocumentApi.DocumentFlavouredApi(self.icure_sdk)
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
+		self.encrypted = DocumentApi.DocumentFlavouredEncryptedApi(self.cardinal_sdk)
+		self.try_and_recover = DocumentApi.DocumentFlavouredApi(self.cardinal_sdk)
 
 	async def create_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
@@ -807,9 +807,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.createDocumentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -819,8 +819,8 @@ class DocumentApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.createDocumentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -850,9 +850,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.withEncryptionMetadataAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.withEncryptionMetadataAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -866,8 +866,8 @@ class DocumentApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secretId": serialize_secret_id_option(secret_id),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.withEncryptionMetadataBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.withEncryptionMetadataBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -898,14 +898,14 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 			callback
@@ -922,12 +922,12 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
@@ -959,14 +959,14 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 			callback
@@ -983,12 +983,12 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
@@ -1017,9 +1017,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1031,8 +1031,8 @@ class DocumentApi:
 			"utis": [x0 for x0 in utis] if utis is not None else None,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1064,14 +1064,14 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 			callback
@@ -1089,12 +1089,12 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
@@ -1124,9 +1124,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1139,8 +1139,8 @@ class DocumentApi:
 			"utis": [x0 for x0 in utis] if utis is not None else None,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1166,9 +1166,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getEncryptionKeysOfAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getEncryptionKeysOfAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1178,8 +1178,8 @@ class DocumentApi:
 		payload = {
 			"document": serialize_document(document),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getEncryptionKeysOfBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getEncryptionKeysOfBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1205,9 +1205,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.hasWriteAccessAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.hasWriteAccessAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1217,8 +1217,8 @@ class DocumentApi:
 		payload = {
 			"document": serialize_document(document),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.hasWriteAccessBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.hasWriteAccessBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1244,9 +1244,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.decryptPatientIdOfAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptPatientIdOfAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1256,8 +1256,8 @@ class DocumentApi:
 		payload = {
 			"document": serialize_document(document),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.decryptPatientIdOfBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptPatientIdOfBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1284,9 +1284,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1297,8 +1297,8 @@ class DocumentApi:
 			"entity": serialize_document(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1321,9 +1321,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.decryptAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1333,8 +1333,8 @@ class DocumentApi:
 		payload = {
 			"document": document.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.decryptBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1360,9 +1360,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryDecryptAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1372,8 +1372,8 @@ class DocumentApi:
 		payload = {
 			"document": document.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryDecryptBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1405,14 +1405,14 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryDecryptAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 			callback
@@ -1430,12 +1430,12 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				symbols.kotlin.root.com.icure.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
 		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryDecryptAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
@@ -1462,9 +1462,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.matchDocumentsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1474,8 +1474,8 @@ class DocumentApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.matchDocumentsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1501,9 +1501,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.matchDocumentsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1513,8 +1513,8 @@ class DocumentApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.matchDocumentsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1540,9 +1540,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteDocumentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1552,8 +1552,8 @@ class DocumentApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteDocumentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1579,9 +1579,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteDocumentsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1591,8 +1591,8 @@ class DocumentApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteDocumentsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1618,9 +1618,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getRawMainAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawMainAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1630,8 +1630,8 @@ class DocumentApi:
 		payload = {
 			"documentId": document_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getRawMainAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawMainAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1658,9 +1658,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getRawSecondaryAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawSecondaryAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1671,8 +1671,8 @@ class DocumentApi:
 			"documentId": document_id,
 			"key": key,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getRawSecondaryAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawSecondaryAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1702,9 +1702,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.setRawMainAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawMainAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1718,8 +1718,8 @@ class DocumentApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.setRawMainAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawMainAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1750,9 +1750,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.setRawSecondaryAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawSecondaryAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1767,8 +1767,8 @@ class DocumentApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.setRawSecondaryAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawSecondaryAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1795,9 +1795,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteMainAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteMainAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1808,8 +1808,8 @@ class DocumentApi:
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteMainAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteMainAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1837,9 +1837,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteSecondaryAttachmentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteSecondaryAttachmentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1851,8 +1851,8 @@ class DocumentApi:
 			"key": key,
 			"rev": rev,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.deleteSecondaryAttachmentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteSecondaryAttachmentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1880,9 +1880,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.shareWithAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1894,8 +1894,8 @@ class DocumentApi:
 			"document": document.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.shareWithBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1922,9 +1922,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryShareWithManyAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryShareWithManyAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1935,8 +1935,8 @@ class DocumentApi:
 			"document": document.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.tryShareWithManyBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryShareWithManyBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1963,9 +1963,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.shareWithManyAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithManyAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -1976,8 +1976,8 @@ class DocumentApi:
 			"document": document.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.shareWithManyBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithManyBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -1999,7 +1999,7 @@ class DocumentApi:
 				result = PaginatedListIterator[DecryptedDocument](
 					producer = success,
 					deserializer = lambda x: DecryptedDocument._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -2007,9 +2007,9 @@ class DocumentApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.filterDocumentsByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2019,23 +2019,23 @@ class DocumentApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.filterDocumentsByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedDocument](
 				producer = class_pointer,
 				deserializer = lambda x: DecryptedDocument._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[DecryptedDocument]:
@@ -2049,7 +2049,7 @@ class DocumentApi:
 				result = PaginatedListIterator[DecryptedDocument](
 					producer = success,
 					deserializer = lambda x: DecryptedDocument._deserialize(x),
-					executor = self.icure_sdk._executor
+					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
@@ -2057,9 +2057,9 @@ class DocumentApi:
 		}
 		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.filterDocumentsBySortedAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsBySortedAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2069,23 +2069,23 @@ class DocumentApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.filterDocumentsBySortedBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsBySortedBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
 			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
 			raise Exception(error_msg)
 		else:
-			class_pointer = symbols.kotlin.root.com.icure.sdk.py.utils.PyResult.get_success(call_result)
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
 			return PaginatedListIterator[DecryptedDocument](
 				producer = class_pointer,
 				deserializer = lambda x: DecryptedDocument._deserialize(x),
-				executor = self.icure_sdk._executor
+				executor = self.cardinal_sdk._executor
 			)
 
 	async def modify_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
@@ -2103,9 +2103,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.modifyDocumentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2115,8 +2115,8 @@ class DocumentApi:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.modifyDocumentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -2142,9 +2142,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getDocumentAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2154,8 +2154,8 @@ class DocumentApi:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getDocumentBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -2181,9 +2181,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getDocumentsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2193,8 +2193,8 @@ class DocumentApi:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.getDocumentsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
@@ -2220,9 +2220,9 @@ class DocumentApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.modifyDocumentsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -2232,8 +2232,8 @@ class DocumentApi:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.DocumentApi.modifyDocumentsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

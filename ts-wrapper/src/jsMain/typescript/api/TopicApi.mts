@@ -1,8 +1,8 @@
 // auto-generated file
+import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TopicShareOptions} from '../crypto/entities/TopicShareOptions.mjs';
-import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../icure-sdk-ts.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {DecryptedTopic, EncryptedTopic, Topic} from '../model/Topic.mjs';
 import {TopicRole} from '../model/TopicRole.mjs';

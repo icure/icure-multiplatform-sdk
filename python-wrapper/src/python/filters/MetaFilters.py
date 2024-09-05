@@ -1,10 +1,10 @@
 import json
 from typing import overload, TypeVar, List, Union, Any, Tuple
 from ctypes import cast, c_char_p
-from icure.filters import FilterOptions
-from icure.filters.FilterOptions import FilterOptions, SortableFilterOptions, BaseFilterOptions, BaseSortableFilterOptions
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.filters import FilterOptions
+from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions, BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 
 E = TypeVar('E')
 
@@ -64,20 +64,20 @@ def intersection(
     json_data = json.dumps({
         "filters": [x.__serialize__() for x in ([a, b] + list(others))]
     })
-    call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MetaFilters.intersection(json_data.encode('utf-8'))
+    call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MetaFilters.intersection(json_data.encode('utf-8'))
     result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
     symbols.DisposeString(call_result)
     if result_info.failure is not None:
         raise Exception(result_info.failure)
     else:
         filter_type = result_info.success["type"]
-        if filter_type == "com.icure.sdk.filters.SortableIntersectionFilterOptions":
+        if filter_type == "com.icure.cardinal.sdk.filters.SortableIntersectionFilterOptions":
             return SortableFilterOptions(result_info.success)
-        elif filter_type == "com.icure.sdk.filters.IntersectionFilterOptions":
+        elif filter_type == "com.icure.cardinal.sdk.filters.IntersectionFilterOptions":
             return FilterOptions(result_info.success)
-        elif filter_type == "com.icure.sdk.filters.BaseSortableIntersectionFilterOptions":
+        elif filter_type == "com.icure.cardinal.sdk.filters.BaseSortableIntersectionFilterOptions":
             return BaseSortableFilterOptions(result_info.success)
-        elif filter_type == "com.icure.sdk.filters.BaseIntersectionFilterOptions":
+        elif filter_type == "com.icure.cardinal.sdk.filters.BaseIntersectionFilterOptions":
             return BaseFilterOptions(result_info.success)
         else:
             raise Exception(f"Internal error: unexpected type of filter options returned by intersection method: {filter_type}")
@@ -121,16 +121,16 @@ def union(
         "filters": [x.__serialize__() for x in ([a, b] + list(others))]
     })
     # `union` is reserved in c, kotlin changes it to union_
-    call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MetaFilters.union_(json_data.encode('utf-8'))
+    call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MetaFilters.union_(json_data.encode('utf-8'))
     result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
     symbols.DisposeString(call_result)
     if result_info.failure is not None:
         raise Exception(result_info.failure)
     else:
         filter_type = result_info.success["type"]
-        if filter_type == "com.icure.sdk.filters.UnionFilterOptions":
+        if filter_type == "com.icure.cardinal.sdk.filters.UnionFilterOptions":
             return FilterOptions(result_info.success)
-        elif filter_type == "com.icure.sdk.filters.BaseUnionFilterOptions":
+        elif filter_type == "com.icure.cardinal.sdk.filters.BaseUnionFilterOptions":
             return BaseFilterOptions(result_info.success)
         else:
             raise Exception(f"Internal error: unexpected type of filter options returned by union method: {filter_type}")
@@ -185,20 +185,20 @@ def difference(
         "of": of.__serialize__(),
         "subtracting": subtracting.__serialize__()
     })
-    call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MetaFilters.difference(json_data.encode('utf-8'))
+    call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MetaFilters.difference(json_data.encode('utf-8'))
     result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
     symbols.DisposeString(call_result)
     if result_info.failure is not None:
         raise Exception(result_info.failure)
     else:
         filter_type = result_info.success["type"]
-        if filter_type == "com.icure.sdk.filters.SortableDifferenceFilterOptions":
+        if filter_type == "com.icure.cardinal.sdk.filters.SortableDifferenceFilterOptions":
             return SortableFilterOptions(result_info.success)
-        elif filter_type == "com.icure.sdk.filters.DifferenceFilterOptions":
+        elif filter_type == "com.icure.cardinal.sdk.filters.DifferenceFilterOptions":
             return FilterOptions(result_info.success)
-        elif filter_type == "com.icure.sdk.filters.BaseSortableDifferenceFilterOptions":
+        elif filter_type == "com.icure.cardinal.sdk.filters.BaseSortableDifferenceFilterOptions":
             return BaseSortableFilterOptions(result_info.success)
-        elif filter_type == "com.icure.sdk.filters.BaseDifferenceFilterOptions":
+        elif filter_type == "com.icure.cardinal.sdk.filters.BaseDifferenceFilterOptions":
             return BaseFilterOptions(result_info.success)
         else:
             raise Exception(f"Internal error: unexpected type of filter options returned by difference method: {filter_type}")

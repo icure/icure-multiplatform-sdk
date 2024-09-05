@@ -1,16 +1,16 @@
 # auto-generated file
 import json
-from icure.kotlin_types import symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json
 from ctypes import cast, c_char_p
-from icure.filters.FilterOptions import BaseFilterOptions
-from icure.model import MedicalLocation
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions
+from cardinal_sdk.model import MedicalLocation
 
 class MedicalLocationFilters:
 
 	@classmethod
 	def all(cls) -> BaseFilterOptions[MedicalLocation]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MedicalLocationFilters.all(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MedicalLocationFilters.all(
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
@@ -25,7 +25,7 @@ class MedicalLocationFilters:
 		payload = {
 			"postCode": post_code,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.filters.MedicalLocationFilters.byPostCode(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.MedicalLocationFilters.byPostCode(
 			json.dumps(payload).encode('utf-8')
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))

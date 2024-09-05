@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../icure-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {BooleanResponse} from '../model/BooleanResponse.mjs';
 import {Code} from '../model/Code.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';

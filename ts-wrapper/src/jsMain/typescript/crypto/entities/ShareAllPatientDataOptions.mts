@@ -60,7 +60,7 @@ export namespace ShareAllPatientDataOptions {
 
 		message: string;
 
-		readonly $ktClass: 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure' = 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure' = 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure';
 
 		constructor(partial: Partial<BulkShareFailure> & Pick<BulkShareFailure, "errors" | "message">) {
 			this.errors = partial.errors;
@@ -73,7 +73,7 @@ export namespace ShareAllPatientDataOptions {
 
 		description: string;
 
-		readonly $ktClass: 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest' = 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest' = 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest';
 
 		constructor(partial: Partial<FailedRequest> & Pick<FailedRequest, "description">) {
 			this.description = partial.description;

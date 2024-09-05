@@ -36,7 +36,7 @@ export class DropdownField {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.DropdownField' = 'com.icure.sdk.model.embed.form.template.DropdownField';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.DropdownField' = 'com.icure.cardinal.sdk.model.embed.form.template.DropdownField';
 
 	constructor(partial: Partial<DropdownField> & Pick<DropdownField, "field">) {
 		this.field = partial.field;

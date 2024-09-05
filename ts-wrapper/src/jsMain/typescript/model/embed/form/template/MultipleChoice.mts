@@ -36,7 +36,7 @@ export class MultipleChoice {
 
 	translate: boolean | undefined = undefined;
 
-	readonly $ktClass: 'com.icure.sdk.model.embed.form.template.MultipleChoice' = 'com.icure.sdk.model.embed.form.template.MultipleChoice';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.embed.form.template.MultipleChoice' = 'com.icure.cardinal.sdk.model.embed.form.template.MultipleChoice';
 
 	constructor(partial: Partial<MultipleChoice> & Pick<MultipleChoice, "field">) {
 		this.field = partial.field;
