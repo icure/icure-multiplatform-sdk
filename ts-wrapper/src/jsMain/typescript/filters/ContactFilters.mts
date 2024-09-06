@@ -43,6 +43,23 @@ interface ContactFiltersFactory {
 	byTagAndOpeningDateForDataOwner(dataOwnerId: string, tagType: string,
 			options?: { tagCode?: string | undefined, startOfContactOpeningDate?: number | undefined, endOfContactOpeningDate?: number | undefined }): BaseSortableFilterOptions<Contact>;
 
+	byOpeningDateForDataOwner(dataOwnerId: string,
+			options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean }): BaseSortableFilterOptions<Contact>;
+
+	byOpeningDateForSelf(options?: { startDate?: number | undefined, endDate?: number | undefined, descending?: boolean }): SortableFilterOptions<Contact>;
+
+	byServiceTagForSelf(tagType: string,
+			options?: { tagCode?: string | undefined }): FilterOptions<Contact>;
+
+	byServiceTagForDataOwner(dataOwnerId: string, tagType: string,
+			options?: { tagCode?: string | undefined }): BaseFilterOptions<Contact>;
+
+	byServiceCodeForSelf(codeType: string,
+			options?: { codeCode?: string | undefined }): FilterOptions<Contact>;
+
+	byServiceCodeForDataOwner(dataOwnerId: string, codeType: string,
+			options?: { codeCode?: string | undefined }): BaseFilterOptions<Contact>;
+
 	byTagAndOpeningDateForSelf(tagType: string,
 			options?: { tagCode?: string | undefined, startOfContactOpeningDate?: number | undefined, endOfContactOpeningDate?: number | undefined }): SortableFilterOptions<Contact>;
 
@@ -75,6 +92,12 @@ export const ContactFilters: ContactFiltersFactory = {
 			byCodeAndOpeningDateForDataOwner: (dataOwnerId, codeType, options) => InternalContactFiltersObj.getInstance().byCodeAndOpeningDateForDataOwner(dataOwnerId, codeType, options),
 			byCodeAndOpeningDateForSelf: (codeType, options) => InternalContactFiltersObj.getInstance().byCodeAndOpeningDateForSelf(codeType, options),
 			byTagAndOpeningDateForDataOwner: (dataOwnerId, tagType, options) => InternalContactFiltersObj.getInstance().byTagAndOpeningDateForDataOwner(dataOwnerId, tagType, options),
+			byOpeningDateForDataOwner: (dataOwnerId, options) => InternalContactFiltersObj.getInstance().byOpeningDateForDataOwner(dataOwnerId, options),
+			byOpeningDateForSelf: (options) => InternalContactFiltersObj.getInstance().byOpeningDateForSelf(options),
+			byServiceTagForSelf: (tagType, options) => InternalContactFiltersObj.getInstance().byServiceTagForSelf(tagType, options),
+			byServiceTagForDataOwner: (dataOwnerId, tagType, options) => InternalContactFiltersObj.getInstance().byServiceTagForDataOwner(dataOwnerId, tagType, options),
+			byServiceCodeForSelf: (codeType, options) => InternalContactFiltersObj.getInstance().byServiceCodeForSelf(codeType, options),
+			byServiceCodeForDataOwner: (dataOwnerId, codeType, options) => InternalContactFiltersObj.getInstance().byServiceCodeForDataOwner(dataOwnerId, codeType, options),
 			byTagAndOpeningDateForSelf: (tagType, options) => InternalContactFiltersObj.getInstance().byTagAndOpeningDateForSelf(tagType, options),
 			byPatientsForDataOwner: (dataOwnerId, patients) => InternalContactFiltersObj.getInstance().byPatientsForDataOwner(dataOwnerId, patients),
 			byPatientsForSelf: (patients) => InternalContactFiltersObj.getInstance().byPatientsForSelf(patients),

@@ -8,7 +8,7 @@ interface FormFiltersFactory {
 
 	byParentIdForDataOwner(dataOwnerId: string, parentId: string): BaseFilterOptions<Form>;
 
-	byParentIdForSelf(dataOwnerId: string, parentId: string): FilterOptions<Form>;
+	byParentIdForSelf(parentId: string): FilterOptions<Form>;
 
 	byPatientsOpeningDateForDataOwner(dataOwnerId: string, patients: Array<Patient>,
 			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<Form>;
@@ -31,7 +31,7 @@ interface FormFiltersFactory {
 
 export const FormFilters: FormFiltersFactory = {
 			byParentIdForDataOwner: (dataOwnerId, parentId) => InternalFormFiltersObj.getInstance().byParentIdForDataOwner(dataOwnerId, parentId),
-			byParentIdForSelf: (dataOwnerId, parentId) => InternalFormFiltersObj.getInstance().byParentIdForSelf(dataOwnerId, parentId),
+			byParentIdForSelf: (parentId) => InternalFormFiltersObj.getInstance().byParentIdForSelf(parentId),
 			byPatientsOpeningDateForDataOwner: (dataOwnerId, patients, options) => InternalFormFiltersObj.getInstance().byPatientsOpeningDateForDataOwner(dataOwnerId, patients, options),
 			byPatientsOpeningDateForSelf: (patients, options) => InternalFormFiltersObj.getInstance().byPatientsOpeningDateForSelf(patients, options),
 			byPatientSecretIdsOpeningDateForDataOwner: (dataOwnerId, secretIds, options) => InternalFormFiltersObj.getInstance().byPatientSecretIdsOpeningDateForDataOwner(dataOwnerId, secretIds, options),

@@ -393,6 +393,151 @@ public object InternalContactFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byOpeningDateForDataOwner(dataOwnerId: String, options: dynamic):
+			BaseSortableFilterOptionsJs<ContactJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerIdConverted: String = dataOwnerId
+		val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"startDate",
+			null
+		) { startDate: Double? ->
+			numberToLong(startDate, "startDate")
+		}
+		val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"endDate",
+			null
+		) { endDate: Double? ->
+			numberToLong(endDate, "endDate")
+		}
+		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
+			_options,
+			"descending",
+			false
+		) { descending: Boolean ->
+			descending
+		}
+		val result = ContactFilters.byOpeningDateForDataOwner(
+			dataOwnerIdConverted,
+			startDateConverted,
+			endDateConverted,
+			descendingConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byOpeningDateForSelf(options: dynamic): SortableFilterOptionsJs<ContactJs> {
+		val _options = options ?: js("{}")
+		val startDateConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"startDate",
+			null
+		) { startDate: Double? ->
+			numberToLong(startDate, "startDate")
+		}
+		val endDateConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"endDate",
+			null
+		) { endDate: Double? ->
+			numberToLong(endDate, "endDate")
+		}
+		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
+			_options,
+			"descending",
+			false
+		) { descending: Boolean ->
+			descending
+		}
+		val result = ContactFilters.byOpeningDateForSelf(
+			startDateConverted,
+			endDateConverted,
+			descendingConverted,
+		)
+		return SortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byServiceTagForSelf(tagType: String, options: dynamic): FilterOptionsJs<ContactJs> {
+		val _options = options ?: js("{}")
+		val tagTypeConverted: String = tagType
+		val tagCodeConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"tagCode",
+			null
+		) { tagCode: String? ->
+			undefinedToNull(tagCode)
+		}
+		val result = ContactFilters.byServiceTagForSelf(
+			tagTypeConverted,
+			tagCodeConverted,
+		)
+		return FilterOptionsJsImpl(result)
+	}
+
+	public fun byServiceTagForDataOwner(
+		dataOwnerId: String,
+		tagType: String,
+		options: dynamic,
+	): BaseFilterOptionsJs<ContactJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerIdConverted: String = dataOwnerId
+		val tagTypeConverted: String = tagType
+		val tagCodeConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"tagCode",
+			null
+		) { tagCode: String? ->
+			undefinedToNull(tagCode)
+		}
+		val result = ContactFilters.byServiceTagForDataOwner(
+			dataOwnerIdConverted,
+			tagTypeConverted,
+			tagCodeConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun byServiceCodeForSelf(codeType: String, options: dynamic): FilterOptionsJs<ContactJs> {
+		val _options = options ?: js("{}")
+		val codeTypeConverted: String = codeType
+		val codeCodeConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"codeCode",
+			null
+		) { codeCode: String? ->
+			undefinedToNull(codeCode)
+		}
+		val result = ContactFilters.byServiceCodeForSelf(
+			codeTypeConverted,
+			codeCodeConverted,
+		)
+		return FilterOptionsJsImpl(result)
+	}
+
+	public fun byServiceCodeForDataOwner(
+		dataOwnerId: String,
+		codeType: String,
+		options: dynamic,
+	): BaseFilterOptionsJs<ContactJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerIdConverted: String = dataOwnerId
+		val codeTypeConverted: String = codeType
+		val codeCodeConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"codeCode",
+			null
+		) { codeCode: String? ->
+			undefinedToNull(codeCode)
+		}
+		val result = ContactFilters.byServiceCodeForDataOwner(
+			dataOwnerIdConverted,
+			codeTypeConverted,
+			codeCodeConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
 	public fun byTagAndOpeningDateForSelf(tagType: String, options: dynamic):
 			SortableFilterOptionsJs<ContactJs> {
 		val _options = options ?: js("{}")

@@ -51,6 +51,18 @@ interface ServiceFiltersFactory {
 	byQualifiedLink(linkValues: Array<string>,
 			options?: { linkQualification?: LinkQualification | undefined }): BaseFilterOptions<Service>;
 
+	byPatientsDateForDataOwner(dataOwnerId: string, patients: Array<Patient>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<Service>;
+
+	byPatientsDateForSelf(patients: Array<Patient>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<Service>;
+
+	byPatientSecretIdsDateForDataOwner(dataOwnerId: string, secretIds: Array<string>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): BaseSortableFilterOptions<Service>;
+
+	byPatientSecretIdsDateForSelf(secretIds: Array<string>,
+			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<Service>;
+
 }
 
 export const ServiceFilters: ServiceFiltersFactory = {
@@ -70,5 +82,9 @@ export const ServiceFilters: ServiceFiltersFactory = {
 			byHealthElementIdFromSubContactForSelf: (healthElementIds) => InternalServiceFiltersObj.getInstance().byHealthElementIdFromSubContactForSelf(healthElementIds),
 			byIds: (ids) => InternalServiceFiltersObj.getInstance().byIds(ids),
 			byAssociationId: (associationId) => InternalServiceFiltersObj.getInstance().byAssociationId(associationId),
-			byQualifiedLink: (linkValues, options) => InternalServiceFiltersObj.getInstance().byQualifiedLink(linkValues, options)
+			byQualifiedLink: (linkValues, options) => InternalServiceFiltersObj.getInstance().byQualifiedLink(linkValues, options),
+			byPatientsDateForDataOwner: (dataOwnerId, patients, options) => InternalServiceFiltersObj.getInstance().byPatientsDateForDataOwner(dataOwnerId, patients, options),
+			byPatientsDateForSelf: (patients, options) => InternalServiceFiltersObj.getInstance().byPatientsDateForSelf(patients, options),
+			byPatientSecretIdsDateForDataOwner: (dataOwnerId, secretIds, options) => InternalServiceFiltersObj.getInstance().byPatientSecretIdsDateForDataOwner(dataOwnerId, secretIds, options),
+			byPatientSecretIdsDateForSelf: (secretIds, options) => InternalServiceFiltersObj.getInstance().byPatientSecretIdsDateForSelf(secretIds, options)
 		};

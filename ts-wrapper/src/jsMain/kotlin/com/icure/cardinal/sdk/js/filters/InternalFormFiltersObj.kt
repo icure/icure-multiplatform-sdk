@@ -31,11 +31,9 @@ public object InternalFormFiltersObj {
 		return BaseFilterOptionsJsImpl(result)
 	}
 
-	public fun byParentIdForSelf(dataOwnerId: String, parentId: String): FilterOptionsJs<FormJs> {
-		val dataOwnerIdConverted: String = dataOwnerId
+	public fun byParentIdForSelf(parentId: String): FilterOptionsJs<FormJs> {
 		val parentIdConverted: String = parentId
 		val result = FormFilters.byParentIdForSelf(
-			dataOwnerIdConverted,
 			parentIdConverted,
 		)
 		return FilterOptionsJsImpl(result)
