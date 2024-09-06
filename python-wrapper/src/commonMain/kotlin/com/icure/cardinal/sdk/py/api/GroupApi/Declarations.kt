@@ -22,7 +22,8 @@ import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Int
@@ -67,9 +68,10 @@ private class GetGroupParams(
 	public val id: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetGroupParams>(params)
 	runBlocking {
 		sdk.group.getGroup(
 			decodedParams.id,
@@ -77,14 +79,17 @@ public fun getGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String 
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getGroupAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.getGroup(
@@ -108,9 +113,10 @@ private class CreateGroupParams(
 	public val initialisationData: DatabaseInitialisation,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateGroupParams>(params)
 	runBlocking {
 		sdk.group.createGroup(
 			decodedParams.id,
@@ -127,14 +133,17 @@ public fun createGroupBlocking(sdk: CardinalNonCryptoApis, params: String): Stri
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createGroupAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.createGroup(
@@ -160,9 +169,11 @@ private class RegisterNewGroupAdministratorParams(
 	public val registrationInformation: RegistrationInformation,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun registerNewGroupAdministratorBlocking(sdk: CardinalNonCryptoApis, params: String): String
 		= kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RegisterNewGroupAdministratorParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<RegisterNewGroupAdministratorParams>(params)
 	runBlocking {
 		sdk.group.registerNewGroupAdministrator(
 			decodedParams.type,
@@ -172,14 +183,18 @@ public fun registerNewGroupAdministratorBlocking(sdk: CardinalNonCryptoApis, par
 	}
 }.toPyString(RegistrationSuccess.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun registerNewGroupAdministratorAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RegisterNewGroupAdministratorParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<RegisterNewGroupAdministratorParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.registerNewGroupAdministrator(
@@ -215,9 +230,10 @@ private class FindGroupsParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findGroupsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindGroupsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindGroupsParams>(params)
 	runBlocking {
 		sdk.group.findGroups(
 			decodedParams.id,
@@ -227,14 +243,17 @@ public fun findGroupsBlocking(sdk: CardinalNonCryptoApis, params: String): Strin
 	}
 }.toPyString(PaginatedList.serializer(Group.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findGroupsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindGroupsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindGroupsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.findGroups(
@@ -255,9 +274,10 @@ private class FindGroupsWithContentParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findGroupsWithContentBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindGroupsWithContentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindGroupsWithContentParams>(params)
 	runBlocking {
 		sdk.group.findGroupsWithContent(
 			decodedParams.id,
@@ -269,14 +289,17 @@ public fun findGroupsWithContentBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(PaginatedList.serializer(Group.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findGroupsWithContentAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindGroupsWithContentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindGroupsWithContentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.findGroupsWithContent(
@@ -295,9 +318,10 @@ private class GetNameOfGroupParentParams(
 	public val id: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getNameOfGroupParentBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetNameOfGroupParentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetNameOfGroupParentParams>(params)
 	runBlocking {
 		sdk.group.getNameOfGroupParent(
 			decodedParams.id,
@@ -305,14 +329,17 @@ public fun getNameOfGroupParentBlocking(sdk: CardinalNonCryptoApis, params: Stri
 	}
 }.toPyString(String.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getNameOfGroupParentAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetNameOfGroupParentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetNameOfGroupParentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.getNameOfGroupParent(
@@ -328,9 +355,10 @@ private class ModifyGroupNameParams(
 	public val name: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyGroupNameBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyGroupNameParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyGroupNameParams>(params)
 	runBlocking {
 		sdk.group.modifyGroupName(
 			decodedParams.id,
@@ -339,14 +367,17 @@ public fun modifyGroupNameBlocking(sdk: CardinalNonCryptoApis, params: String): 
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyGroupNameAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyGroupNameParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyGroupNameParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.modifyGroupName(
@@ -364,9 +395,10 @@ private class GetOperationTokenParams(
 	public val description: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getOperationTokenBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetOperationTokenParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetOperationTokenParams>(params)
 	runBlocking {
 		sdk.group.getOperationToken(
 			decodedParams.operation,
@@ -376,14 +408,17 @@ public fun getOperationTokenBlocking(sdk: CardinalNonCryptoApis, params: String)
 	}
 }.toPyString(String.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getOperationTokenAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetOperationTokenParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetOperationTokenParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.getOperationToken(
@@ -400,9 +435,10 @@ private class DeleteOperationTokenParams(
 	public val tokenId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteOperationTokenBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteOperationTokenParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteOperationTokenParams>(params)
 	runBlocking {
 		sdk.group.deleteOperationToken(
 			decodedParams.tokenId,
@@ -410,14 +446,17 @@ public fun deleteOperationTokenBlocking(sdk: CardinalNonCryptoApis, params: Stri
 	}
 }.toPyString(Unit.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteOperationTokenAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteOperationTokenParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteOperationTokenParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.deleteOperationToken(
@@ -434,9 +473,10 @@ private class SetDefaultRolesParams(
 	public val roleIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun setDefaultRolesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetDefaultRolesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetDefaultRolesParams>(params)
 	runBlocking {
 		sdk.group.setDefaultRoles(
 			decodedParams.groupId,
@@ -446,14 +486,17 @@ public fun setDefaultRolesBlocking(sdk: CardinalNonCryptoApis, params: String): 
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun setDefaultRolesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetDefaultRolesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetDefaultRolesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.setDefaultRoles(
@@ -470,9 +513,10 @@ private class GetDefaultRolesParams(
 	public val groupId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getDefaultRolesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDefaultRolesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDefaultRolesParams>(params)
 	runBlocking {
 		sdk.group.getDefaultRoles(
 			decodedParams.groupId,
@@ -480,14 +524,17 @@ public fun getDefaultRolesBlocking(sdk: CardinalNonCryptoApis, params: String): 
 	}
 }.toPyString(MapSerializer(UserType.serializer(), ListSerializer(RoleConfiguration.serializer())))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getDefaultRolesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDefaultRolesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDefaultRolesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.getDefaultRoles(
@@ -503,9 +550,10 @@ private class DeleteGroupParams(
 	public val id: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteGroupParams>(params)
 	runBlocking {
 		sdk.group.deleteGroup(
 			decodedParams.id,
@@ -513,14 +561,17 @@ public fun deleteGroupBlocking(sdk: CardinalNonCryptoApis, params: String): Stri
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteGroupAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.deleteGroup(
@@ -536,9 +587,10 @@ private class ChangeSuperGroupParams(
 	public val operationToken: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun changeSuperGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ChangeSuperGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ChangeSuperGroupParams>(params)
 	runBlocking {
 		sdk.group.changeSuperGroup(
 			decodedParams.childGroupId,
@@ -547,14 +599,17 @@ public fun changeSuperGroupBlocking(sdk: CardinalNonCryptoApis, params: String):
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun changeSuperGroupAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ChangeSuperGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ChangeSuperGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.changeSuperGroup(
@@ -570,9 +625,10 @@ private class HardDeleteGroupParams(
 	public val id: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun hardDeleteGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<HardDeleteGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<HardDeleteGroupParams>(params)
 	runBlocking {
 		sdk.group.hardDeleteGroup(
 			decodedParams.id,
@@ -580,14 +636,17 @@ public fun hardDeleteGroupBlocking(sdk: CardinalNonCryptoApis, params: String): 
 	}
 }.toPyString(ListSerializer(GroupDeletionReport.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun hardDeleteGroupAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<HardDeleteGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<HardDeleteGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.hardDeleteGroup(
@@ -603,9 +662,10 @@ private class ModifyGroupPropertiesParams(
 	public val properties: ListOfProperties,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyGroupPropertiesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyGroupPropertiesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyGroupPropertiesParams>(params)
 	runBlocking {
 		sdk.group.modifyGroupProperties(
 			decodedParams.id,
@@ -614,14 +674,17 @@ public fun modifyGroupPropertiesBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyGroupPropertiesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyGroupPropertiesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyGroupPropertiesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.modifyGroupProperties(
@@ -638,9 +701,10 @@ private class SetGroupPasswordParams(
 	public val password: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun setGroupPasswordBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetGroupPasswordParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetGroupPasswordParams>(params)
 	runBlocking {
 		sdk.group.setGroupPassword(
 			decodedParams.id,
@@ -649,14 +713,17 @@ public fun setGroupPasswordBlocking(sdk: CardinalNonCryptoApis, params: String):
 	}
 }.toPyString(Group.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun setGroupPasswordAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetGroupPasswordParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetGroupPasswordParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.setGroupPassword(
@@ -675,9 +742,10 @@ private class InitDesignDocsParams(
 	public val dryRun: Boolean?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun initDesignDocsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<InitDesignDocsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<InitDesignDocsParams>(params)
 	runBlocking {
 		sdk.group.initDesignDocs(
 			decodedParams.id,
@@ -688,14 +756,17 @@ public fun initDesignDocsBlocking(sdk: CardinalNonCryptoApis, params: String): S
 	}
 }.toPyString(ListSerializer(DesignDocument.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun initDesignDocsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<InitDesignDocsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<InitDesignDocsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.initDesignDocs(
@@ -715,9 +786,10 @@ private class SolveConflictsParams(
 	public val warmup: Boolean?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun solveConflictsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SolveConflictsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SolveConflictsParams>(params)
 	runBlocking {
 		sdk.group.solveConflicts(
 			decodedParams.id,
@@ -727,14 +799,17 @@ public fun solveConflictsBlocking(sdk: CardinalNonCryptoApis, params: String): S
 	}
 }.toPyString(ListSerializer(IdWithRev.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun solveConflictsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SolveConflictsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SolveConflictsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.solveConflicts(
@@ -754,9 +829,10 @@ private class ResetStorageParams(
 	public val databases: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun resetStorageBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ResetStorageParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ResetStorageParams>(params)
 	runBlocking {
 		sdk.group.resetStorage(
 			decodedParams.id,
@@ -767,14 +843,17 @@ public fun resetStorageBlocking(sdk: CardinalNonCryptoApis, params: String): Str
 	}
 }.toPyString(Unit.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun resetStorageAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ResetStorageParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ResetStorageParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.resetStorage(
@@ -792,9 +871,10 @@ private class GetGroupsStorageInfosParams(
 	public val groups: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getGroupsStorageInfosBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetGroupsStorageInfosParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetGroupsStorageInfosParams>(params)
 	runBlocking {
 		sdk.group.getGroupsStorageInfos(
 			decodedParams.groups,
@@ -802,14 +882,17 @@ public fun getGroupsStorageInfosBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(ListSerializer(GroupDatabasesInfo.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getGroupsStorageInfosAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetGroupsStorageInfosParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetGroupsStorageInfosParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.getGroupsStorageInfos(
@@ -824,9 +907,10 @@ private class GetReplicationInfoParams(
 	public val id: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getReplicationInfoBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetReplicationInfoParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReplicationInfoParams>(params)
 	runBlocking {
 		sdk.group.getReplicationInfo(
 			decodedParams.id,
@@ -834,14 +918,17 @@ public fun getReplicationInfoBlocking(sdk: CardinalNonCryptoApis, params: String
 	}
 }.toPyString(ReplicationInfo.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getReplicationInfoAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetReplicationInfoParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReplicationInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.getReplicationInfo(
@@ -856,9 +943,10 @@ private class GetHierarchyParams(
 	public val id: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getHierarchyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetHierarchyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetHierarchyParams>(params)
 	runBlocking {
 		sdk.group.getHierarchy(
 			decodedParams.id,
@@ -866,14 +954,17 @@ public fun getHierarchyBlocking(sdk: CardinalNonCryptoApis, params: String): Str
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getHierarchyAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetHierarchyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetHierarchyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.getHierarchy(

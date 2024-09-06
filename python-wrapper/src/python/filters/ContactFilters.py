@@ -257,6 +257,113 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
+	def by_opening_date_for_data_owner(cls, data_owner_id: str, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Contact]:
+		payload = {
+			"dataOwnerId": data_owner_id,
+			"startDate": start_date,
+			"endDate": end_date,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byOpeningDateForDataOwner(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = BaseSortableFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_opening_date_for_self(cls, start_date: Optional[int] = None, end_date: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Contact]:
+		payload = {
+			"startDate": start_date,
+			"endDate": end_date,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byOpeningDateForSelf(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = SortableFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_service_tag_for_self(cls, tag_type: str, tag_code: Optional[str] = None) -> FilterOptions[Contact]:
+		payload = {
+			"tagType": tag_type,
+			"tagCode": tag_code,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byServiceTagForSelf(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = FilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_service_tag_for_data_owner(cls, data_owner_id: str, tag_type: str, tag_code: Optional[str] = None) -> BaseFilterOptions[Contact]:
+		payload = {
+			"dataOwnerId": data_owner_id,
+			"tagType": tag_type,
+			"tagCode": tag_code,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byServiceTagForDataOwner(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_service_code_for_self(cls, code_type: str, code_code: Optional[str] = None) -> FilterOptions[Contact]:
+		payload = {
+			"codeType": code_type,
+			"codeCode": code_code,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byServiceCodeForSelf(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = FilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_service_code_for_data_owner(cls, data_owner_id: str, code_type: str, code_code: Optional[str] = None) -> BaseFilterOptions[Contact]:
+		payload = {
+			"dataOwnerId": data_owner_id,
+			"codeType": code_type,
+			"codeCode": code_code,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ContactFilters.byServiceCodeForDataOwner(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
 	def by_tag_and_opening_date_for_self(cls, tag_type: str, tag_code: Optional[str] = None, start_of_contact_opening_date: Optional[int] = None, end_of_contact_opening_date: Optional[int] = None) -> SortableFilterOptions[Contact]:
 		payload = {
 			"tagType": tag_type,

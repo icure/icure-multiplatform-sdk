@@ -8,7 +8,8 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.Int
 import kotlin.OptIn
@@ -31,9 +32,10 @@ private class GetPlaceParams(
 	public val placeId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPlaceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPlaceParams>(params)
 	runBlocking {
 		sdk.place.getPlace(
 			decodedParams.placeId,
@@ -41,14 +43,17 @@ public fun getPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): String 
 	}
 }.toPyString(Place.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getPlaceAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPlaceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPlaceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.place.getPlace(
@@ -63,9 +68,10 @@ private class CreatePlaceParams(
 	public val place: Place,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreatePlaceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreatePlaceParams>(params)
 	runBlocking {
 		sdk.place.createPlace(
 			decodedParams.place,
@@ -73,14 +79,17 @@ public fun createPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): Stri
 	}
 }.toPyString(Place.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createPlaceAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreatePlaceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreatePlaceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.place.createPlace(
@@ -95,9 +104,10 @@ private class ModifyPlaceParams(
 	public val place: Place,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPlaceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyPlaceParams>(params)
 	runBlocking {
 		sdk.place.modifyPlace(
 			decodedParams.place,
@@ -105,14 +115,17 @@ public fun modifyPlaceBlocking(sdk: CardinalNonCryptoApis, params: String): Stri
 	}
 }.toPyString(Place.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyPlaceAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPlaceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyPlaceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.place.modifyPlace(
@@ -127,9 +140,10 @@ private class DeletePlacesParams(
 	public val placeIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deletePlacesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeletePlacesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePlacesParams>(params)
 	runBlocking {
 		sdk.place.deletePlaces(
 			decodedParams.placeIds,
@@ -137,14 +151,17 @@ public fun deletePlacesBlocking(sdk: CardinalNonCryptoApis, params: String): Str
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deletePlacesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeletePlacesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePlacesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.place.deletePlaces(
@@ -160,9 +177,10 @@ private class GetPlacesParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getPlacesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPlacesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPlacesParams>(params)
 	runBlocking {
 		sdk.place.getPlaces(
 			decodedParams.startDocumentId,
@@ -171,14 +189,17 @@ public fun getPlacesBlocking(sdk: CardinalNonCryptoApis, params: String): String
 	}
 }.toPyString(PaginatedList.serializer(Place.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getPlacesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPlacesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPlacesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.place.getPlaces(

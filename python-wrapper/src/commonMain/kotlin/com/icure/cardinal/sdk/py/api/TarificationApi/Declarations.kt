@@ -7,7 +7,8 @@ import com.icure.cardinal.sdk.model.Tarification
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.Int
 import kotlin.OptIn
@@ -30,9 +31,10 @@ private class GetTarificationParams(
 	public val tarificationId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTarificationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTarificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTarificationParams>(params)
 	runBlocking {
 		sdk.tarification.getTarification(
 			decodedParams.tarificationId,
@@ -40,14 +42,17 @@ public fun getTarificationBlocking(sdk: CardinalNonCryptoApis, params: String): 
 	}
 }.toPyString(Tarification.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTarificationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTarificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTarificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.tarification.getTarification(
@@ -62,9 +67,10 @@ private class CreateTarificationParams(
 	public val tarification: Tarification,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createTarificationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateTarificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateTarificationParams>(params)
 	runBlocking {
 		sdk.tarification.createTarification(
 			decodedParams.tarification,
@@ -72,14 +78,17 @@ public fun createTarificationBlocking(sdk: CardinalNonCryptoApis, params: String
 	}
 }.toPyString(Tarification.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createTarificationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateTarificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateTarificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.tarification.createTarification(
@@ -94,9 +103,10 @@ private class GetTarificationsParams(
 	public val tarificationIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTarificationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTarificationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTarificationsParams>(params)
 	runBlocking {
 		sdk.tarification.getTarifications(
 			decodedParams.tarificationIds,
@@ -104,14 +114,17 @@ public fun getTarificationsBlocking(sdk: CardinalNonCryptoApis, params: String):
 	}
 }.toPyString(ListSerializer(Tarification.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTarificationsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTarificationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTarificationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.tarification.getTarifications(
@@ -126,9 +139,10 @@ private class ModifyTarificationParams(
 	public val tarification: Tarification,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyTarificationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTarificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTarificationParams>(params)
 	runBlocking {
 		sdk.tarification.modifyTarification(
 			decodedParams.tarification,
@@ -136,14 +150,17 @@ public fun modifyTarificationBlocking(sdk: CardinalNonCryptoApis, params: String
 	}
 }.toPyString(Tarification.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyTarificationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTarificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTarificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.tarification.modifyTarification(
@@ -164,9 +181,11 @@ private class FindTarificationsByLabelParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findTarificationsByLabelBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindTarificationsByLabelParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindTarificationsByLabelParams>(params)
 	runBlocking {
 		sdk.tarification.findTarificationsByLabel(
 			decodedParams.region,
@@ -180,14 +199,18 @@ public fun findTarificationsByLabelBlocking(sdk: CardinalNonCryptoApis, params: 
 	}
 }.toPyString(PaginatedList.serializer(Tarification.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findTarificationsByLabelAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindTarificationsByLabelParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindTarificationsByLabelParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.tarification.findTarificationsByLabel(
@@ -214,9 +237,10 @@ private class FindTarificationsByParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findTarificationsByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindTarificationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindTarificationsByParams>(params)
 	runBlocking {
 		sdk.tarification.findTarificationsBy(
 			decodedParams.region,
@@ -230,14 +254,17 @@ public fun findTarificationsByBlocking(sdk: CardinalNonCryptoApis, params: Strin
 	}
 }.toPyString(PaginatedList.serializer(Tarification.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findTarificationsByAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindTarificationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindTarificationsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.tarification.findTarificationsBy(
@@ -260,9 +287,11 @@ private class GetTarificationWithPartsParams(
 	public val version: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTarificationWithPartsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTarificationWithPartsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetTarificationWithPartsParams>(params)
 	runBlocking {
 		sdk.tarification.getTarificationWithParts(
 			decodedParams.type,
@@ -272,14 +301,18 @@ public fun getTarificationWithPartsBlocking(sdk: CardinalNonCryptoApis, params: 
 	}
 }.toPyString(Tarification.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTarificationWithPartsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTarificationWithPartsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetTarificationWithPartsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.tarification.getTarificationWithParts(

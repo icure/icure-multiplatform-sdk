@@ -11,7 +11,8 @@ import com.icure.cardinal.sdk.py.serialization.RsaKeypairSerializer
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Int
@@ -36,9 +37,11 @@ private class CreateRecoveryInfoForAvailableKeyPairsParams(
 	public val lifetimeSeconds: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createRecoveryInfoForAvailableKeyPairsBlocking(sdk: CardinalApis, params: String): String
 		= kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateRecoveryInfoForAvailableKeyPairsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateRecoveryInfoForAvailableKeyPairsParams>(params)
 	runBlocking {
 		sdk.recovery.createRecoveryInfoForAvailableKeyPairs(
 			decodedParams.includeParentsKeys,
@@ -47,14 +50,18 @@ public fun createRecoveryInfoForAvailableKeyPairsBlocking(sdk: CardinalApis, par
 	}
 }.toPyString(RecoveryDataKey.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createRecoveryInfoForAvailableKeyPairsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateRecoveryInfoForAvailableKeyPairsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateRecoveryInfoForAvailableKeyPairsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.createRecoveryInfoForAvailableKeyPairs(
@@ -71,8 +78,9 @@ private class RecoverKeyPairsParams(
 	public val autoDelete: Boolean,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun recoverKeyPairsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RecoverKeyPairsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RecoverKeyPairsParams>(params)
 	runBlocking {
 		sdk.recovery.recoverKeyPairs(
 			decodedParams.recoveryKey,
@@ -83,14 +91,17 @@ public fun recoverKeyPairsBlocking(sdk: CardinalApis, params: String): String = 
 		MapSerializer(SpkiHexString.serializer(),
 		RsaKeypairSerializer(RsaEncryptionAlgorithmSerializer)))))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun recoverKeyPairsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RecoverKeyPairsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RecoverKeyPairsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.recoverKeyPairs(
@@ -109,9 +120,11 @@ private class CreateExchangeDataRecoveryInfoParams(
 	public val lifetimeSeconds: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createExchangeDataRecoveryInfoBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateExchangeDataRecoveryInfoParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateExchangeDataRecoveryInfoParams>(params)
 	runBlocking {
 		sdk.recovery.createExchangeDataRecoveryInfo(
 			decodedParams.delegateId,
@@ -120,14 +133,18 @@ public fun createExchangeDataRecoveryInfoBlocking(sdk: CardinalApis, params: Str
 	}
 }.toPyString(RecoveryDataKey.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createExchangeDataRecoveryInfoAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateExchangeDataRecoveryInfoParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateExchangeDataRecoveryInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.createExchangeDataRecoveryInfo(
@@ -143,9 +160,10 @@ private class RecoverExchangeDataParams(
 	public val recoveryKey: RecoveryDataKey,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun recoverExchangeDataBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RecoverExchangeDataParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RecoverExchangeDataParams>(params)
 	runBlocking {
 		sdk.recovery.recoverExchangeData(
 			decodedParams.recoveryKey,
@@ -153,14 +171,17 @@ public fun recoverExchangeDataBlocking(sdk: CardinalApis, params: String): Strin
 	}
 }.toPyString(RecoveryDataUseFailureReason.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun recoverExchangeDataAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RecoverExchangeDataParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RecoverExchangeDataParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.recoverExchangeData(
@@ -175,9 +196,10 @@ private class DeleteRecoveryInfoParams(
 	public val recoveryKey: RecoveryDataKey,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteRecoveryInfoBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteRecoveryInfoParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteRecoveryInfoParams>(params)
 	runBlocking {
 		sdk.recovery.deleteRecoveryInfo(
 			decodedParams.recoveryKey,
@@ -185,14 +207,17 @@ public fun deleteRecoveryInfoBlocking(sdk: CardinalApis, params: String): String
 	}
 }.toPyString(Unit.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteRecoveryInfoAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteRecoveryInfoParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteRecoveryInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.deleteRecoveryInfo(
@@ -207,9 +232,11 @@ private class DeleteAllRecoveryInfoForParams(
 	public val dataOwnerId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteAllRecoveryInfoForBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteAllRecoveryInfoForParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteAllRecoveryInfoForParams>(params)
 	runBlocking {
 		sdk.recovery.deleteAllRecoveryInfoFor(
 			decodedParams.dataOwnerId,
@@ -217,14 +244,18 @@ public fun deleteAllRecoveryInfoForBlocking(sdk: CardinalApis, params: String): 
 	}
 }.toPyString(Int.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteAllRecoveryInfoForAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteAllRecoveryInfoForParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteAllRecoveryInfoForParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.deleteAllRecoveryInfoFor(
@@ -239,9 +270,11 @@ private class DeleteAllKeyPairRecoveryInfoForParams(
 	public val dataOwnerId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteAllKeyPairRecoveryInfoForBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteAllKeyPairRecoveryInfoForParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteAllKeyPairRecoveryInfoForParams>(params)
 	runBlocking {
 		sdk.recovery.deleteAllKeyPairRecoveryInfoFor(
 			decodedParams.dataOwnerId,
@@ -249,14 +282,18 @@ public fun deleteAllKeyPairRecoveryInfoForBlocking(sdk: CardinalApis, params: St
 	}
 }.toPyString(Int.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteAllKeyPairRecoveryInfoForAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteAllKeyPairRecoveryInfoForParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteAllKeyPairRecoveryInfoForParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.deleteAllKeyPairRecoveryInfoFor(
@@ -271,9 +308,11 @@ private class DeleteAllExchangeDataRecoveryInfoForParams(
 	public val dataOwnerId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteAllExchangeDataRecoveryInfoForBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteAllExchangeDataRecoveryInfoForParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteAllExchangeDataRecoveryInfoForParams>(params)
 	runBlocking {
 		sdk.recovery.deleteAllExchangeDataRecoveryInfoFor(
 			decodedParams.dataOwnerId,
@@ -281,14 +320,18 @@ public fun deleteAllExchangeDataRecoveryInfoForBlocking(sdk: CardinalApis, param
 	}
 }.toPyString(Int.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteAllExchangeDataRecoveryInfoForAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteAllExchangeDataRecoveryInfoForParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteAllExchangeDataRecoveryInfoForParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.recovery.deleteAllExchangeDataRecoveryInfoFor(

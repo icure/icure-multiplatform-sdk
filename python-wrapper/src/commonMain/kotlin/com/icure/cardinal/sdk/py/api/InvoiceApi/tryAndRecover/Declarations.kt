@@ -10,8 +10,6 @@ import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.cardinal.sdk.model.embed.InvoiceType
 import com.icure.cardinal.sdk.model.embed.MediumType
-import com.icure.cardinal.sdk.py.serialization.InvoiceSerializer
-import com.icure.cardinal.sdk.py.serialization.PatientSerializer
 import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -20,7 +18,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Int
@@ -39,6 +38,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -50,8 +50,9 @@ private class ShareWithParams(
 	public val options: InvoiceShareOptions? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.shareWith(
 			decodedParams.delegateId,
@@ -59,16 +60,19 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(InvoiceSerializer))
+}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.shareWith(
@@ -76,7 +80,8 @@ public fun shareWithAsync(
 				decodedParams.invoice,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Invoice::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -86,32 +91,37 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, InvoiceShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.tryShareWithMany(
 			decodedParams.invoice,
 			decodedParams.delegates,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(InvoiceSerializer))
+}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun tryShareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.tryShareWithMany(
 				decodedParams.invoice,
 				decodedParams.delegates,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Invoice::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -121,47 +131,52 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, InvoiceShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.shareWithMany(
 			decodedParams.invoice,
 			decodedParams.delegates,
 		)
 	}
-}.toPyString(InvoiceSerializer)
+}.toPyString(PolymorphicSerializer(Invoice::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.shareWithMany(
 				decodedParams.invoice,
 				decodedParams.delegates,
 			)
-		}.toPyStringAsyncCallback(InvoiceSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Invoice::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class FindInvoicesByHcPartyPatientParams(
 	public val hcPartyId: String,
-	@Serializable(PatientSerializer::class)
 	public val patient: Patient,
 	public val startDate: Long? = null,
 	public val endDate: Long? = null,
 	public val descending: Boolean? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findInvoicesByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindInvoicesByHcPartyPatientParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindInvoicesByHcPartyPatientParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.findInvoicesByHcPartyPatient(
 			decodedParams.hcPartyId,
@@ -172,15 +187,19 @@ public fun findInvoicesByHcPartyPatientBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, InvoiceSerializer)}
+	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Invoice::class))}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findInvoicesByHcPartyPatientAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindInvoicesByHcPartyPatientParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindInvoicesByHcPartyPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.findInvoicesByHcPartyPatient(
@@ -191,7 +210,7 @@ public fun findInvoicesByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, InvoiceSerializer)}
+			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Invoice::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -200,29 +219,33 @@ private class ModifyInvoiceParams(
 	public val entity: Invoice,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyInvoiceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyInvoiceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyInvoiceParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.modifyInvoice(
 			decodedParams.entity,
 		)
 	}
-}.toPyString(InvoiceSerializer)
+}.toPyString(PolymorphicSerializer(Invoice::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyInvoiceAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyInvoiceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyInvoiceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.modifyInvoice(
 				decodedParams.entity,
 			)
-		}.toPyStringAsyncCallback(InvoiceSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Invoice::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -231,29 +254,33 @@ private class ModifyInvoicesParams(
 	public val entities: List<Invoice>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyInvoicesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyInvoicesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyInvoicesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.modifyInvoices(
 			decodedParams.entities,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyInvoicesAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyInvoicesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyInvoicesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.modifyInvoices(
 				decodedParams.entities,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -262,29 +289,33 @@ private class GetInvoiceParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getInvoiceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetInvoiceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetInvoiceParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.getInvoice(
 			decodedParams.entityId,
 		)
 	}
-}.toPyString(InvoiceSerializer)
+}.toPyString(PolymorphicSerializer(Invoice::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getInvoiceAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetInvoiceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetInvoiceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.getInvoice(
 				decodedParams.entityId,
 			)
-		}.toPyStringAsyncCallback(InvoiceSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Invoice::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -293,29 +324,33 @@ private class GetInvoicesParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getInvoicesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetInvoicesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetInvoicesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.getInvoices(
 			decodedParams.entityIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getInvoicesAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetInvoicesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetInvoicesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.getInvoices(
 				decodedParams.entityIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -325,32 +360,38 @@ private class FindInvoicesByHcPartyPatientForeignKeysParams(
 	public val secretPatientKeys: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findInvoicesByHcPartyPatientForeignKeysBlocking(sdk: CardinalApis, params: String):
 		String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindInvoicesByHcPartyPatientForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindInvoicesByHcPartyPatientForeignKeysParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.findInvoicesByHcPartyPatientForeignKeys(
 			decodedParams.hcPartyId,
 			decodedParams.secretPatientKeys,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findInvoicesByHcPartyPatientForeignKeysAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindInvoicesByHcPartyPatientForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindInvoicesByHcPartyPatientForeignKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.findInvoicesByHcPartyPatientForeignKeys(
 				decodedParams.hcPartyId,
 				decodedParams.secretPatientKeys,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -359,29 +400,33 @@ private class ReassignInvoiceParams(
 	public val invoice: Invoice,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun reassignInvoiceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ReassignInvoiceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ReassignInvoiceParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.reassignInvoice(
 			decodedParams.invoice,
 		)
 	}
-}.toPyString(InvoiceSerializer)
+}.toPyString(PolymorphicSerializer(Invoice::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun reassignInvoiceAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ReassignInvoiceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ReassignInvoiceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.reassignInvoice(
 				decodedParams.invoice,
 			)
-		}.toPyStringAsyncCallback(InvoiceSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Invoice::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -391,31 +436,35 @@ private class MergeToParams(
 	public val ids: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun mergeToBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MergeToParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MergeToParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.mergeTo(
 			decodedParams.invoiceId,
 			decodedParams.ids,
 		)
 	}
-}.toPyString(InvoiceSerializer)
+}.toPyString(PolymorphicSerializer(Invoice::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun mergeToAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MergeToParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MergeToParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.mergeTo(
 				decodedParams.invoiceId,
 				decodedParams.ids,
 			)
-		}.toPyStringAsyncCallback(InvoiceSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Invoice::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -426,8 +475,9 @@ private class ValidateParams(
 	public val forcedValue: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun validateBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ValidateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ValidateParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.validate(
 			decodedParams.invoiceId,
@@ -435,16 +485,19 @@ public fun validateBlocking(sdk: CardinalApis, params: String): String = kotlin.
 			decodedParams.forcedValue,
 		)
 	}
-}.toPyString(InvoiceSerializer)
+}.toPyString(PolymorphicSerializer(Invoice::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun validateAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ValidateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ValidateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.validate(
@@ -452,7 +505,7 @@ public fun validateAsync(
 				decodedParams.scheme,
 				decodedParams.forcedValue,
 			)
-		}.toPyStringAsyncCallback(InvoiceSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Invoice::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -468,8 +521,9 @@ private class AppendCodesParams(
 	public val invoicingCodes: List<EncryptedInvoicingCode>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun appendCodesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<AppendCodesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<AppendCodesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.appendCodes(
 			decodedParams.userId,
@@ -482,16 +536,19 @@ public fun appendCodesBlocking(sdk: CardinalApis, params: String): String = kotl
 			decodedParams.invoicingCodes,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun appendCodesAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<AppendCodesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<AppendCodesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.appendCodes(
@@ -504,7 +561,7 @@ public fun appendCodesAsync(
 				decodedParams.gracePeriod,
 				decodedParams.invoicingCodes,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -516,8 +573,9 @@ private class RemoveCodesParams(
 	public val tarificationIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun removeCodesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RemoveCodesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RemoveCodesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.removeCodes(
 			decodedParams.userId,
@@ -526,16 +584,19 @@ public fun removeCodesBlocking(sdk: CardinalApis, params: String): String = kotl
 			decodedParams.tarificationIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun removeCodesAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RemoveCodesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RemoveCodesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.removeCodes(
@@ -544,7 +605,7 @@ public fun removeCodesAsync(
 				decodedParams.secretFKeys,
 				decodedParams.tarificationIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -558,9 +619,10 @@ private class FindInvoicesByAuthorParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findInvoicesByAuthorBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindInvoicesByAuthorParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindInvoicesByAuthorParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.findInvoicesByAuthor(
 			decodedParams.hcPartyId,
@@ -571,16 +633,19 @@ public fun findInvoicesByAuthorBlocking(sdk: CardinalApis, params: String): Stri
 			decodedParams.limit,
 		)
 	}
-}.toPyString(PaginatedList.serializer(InvoiceSerializer))
+}.toPyString(PaginatedList.serializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findInvoicesByAuthorAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindInvoicesByAuthorParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindInvoicesByAuthorParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.findInvoicesByAuthor(
@@ -591,7 +656,8 @@ public fun findInvoicesByAuthorAsync(
 				decodedParams.startDocumentId,
 				decodedParams.limit,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(PaginatedList.serializer(PolymorphicSerializer(Invoice::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -601,32 +667,38 @@ private class ListInvoicesByHCPartyAndPatientForeignKeysParams(
 	public val secretPatientKeys: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByHCPartyAndPatientForeignKeysBlocking(sdk: CardinalApis, params: String):
 		String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByHCPartyAndPatientForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHCPartyAndPatientForeignKeysParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys(
 			decodedParams.hcPartyId,
 			decodedParams.secretPatientKeys,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByHCPartyAndPatientForeignKeysAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByHCPartyAndPatientForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHCPartyAndPatientForeignKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys(
 				decodedParams.hcPartyId,
 				decodedParams.secretPatientKeys,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -636,32 +708,38 @@ private class ListInvoicesByHcPartyAndGroupIdParams(
 	public val groupId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByHcPartyAndGroupIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByHcPartyAndGroupIdParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHcPartyAndGroupIdParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByHcPartyAndGroupId(
 			decodedParams.hcPartyId,
 			decodedParams.groupId,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByHcPartyAndGroupIdAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByHcPartyAndGroupIdParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHcPartyAndGroupIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByHcPartyAndGroupId(
 				decodedParams.hcPartyId,
 				decodedParams.groupId,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -675,10 +753,11 @@ private class ListInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateParams(
 	public val to: Long? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(sdk: CardinalApis,
 		params: String): String = kotlin.runCatching {
 	val decodedParams =
-			json.decodeFromString<ListInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateParams>(params)
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
 			decodedParams.hcPartyId,
@@ -689,9 +768,12 @@ public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(sdk: C
 			decodedParams.to,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync(
 	sdk: CardinalApis,
 	params: String,
@@ -699,7 +781,7 @@ public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync(
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams =
-			json.decodeFromString<ListInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateParams>(params)
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
@@ -710,7 +792,7 @@ public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync(
 				decodedParams.from,
 				decodedParams.to,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -719,30 +801,36 @@ private class ListInvoicesByContactIdsParams(
 	public val contactIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByContactIdsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByContactIdsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByContactIdsParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByContactIds(
 			decodedParams.contactIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByContactIdsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByContactIdsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByContactIdsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByContactIds(
 				decodedParams.contactIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -751,30 +839,36 @@ private class ListInvoicesByRecipientsIdsParams(
 	public val recipientsIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByRecipientsIdsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByRecipientsIdsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByRecipientsIdsParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByRecipientsIds(
 			decodedParams.recipientsIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByRecipientsIdsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByRecipientsIdsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByRecipientsIdsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByRecipientsIds(
 				decodedParams.recipientsIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -783,30 +877,34 @@ private class ListToInsurancesParams(
 	public val userIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listToInsurancesBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToInsurancesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToInsurancesParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listToInsurances(
 			decodedParams.userIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listToInsurancesAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToInsurancesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToInsurancesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listToInsurances(
 				decodedParams.userIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -815,30 +913,34 @@ private class ListToInsurancesUnsentParams(
 	public val userIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listToInsurancesUnsentBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToInsurancesUnsentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToInsurancesUnsentParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listToInsurancesUnsent(
 			decodedParams.userIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listToInsurancesUnsentAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToInsurancesUnsentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToInsurancesUnsentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listToInsurancesUnsent(
 				decodedParams.userIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -847,29 +949,33 @@ private class ListToPatientsParams(
 	public val hcPartyId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listToPatientsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToPatientsParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listToPatients(
 			decodedParams.hcPartyId,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listToPatientsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToPatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listToPatients(
 				decodedParams.hcPartyId,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -878,30 +984,34 @@ private class ListToPatientsUnsentParams(
 	public val hcPartyId: String?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listToPatientsUnsentBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToPatientsUnsentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToPatientsUnsentParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listToPatientsUnsent(
 			decodedParams.hcPartyId,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listToPatientsUnsentAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListToPatientsUnsentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListToPatientsUnsentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listToPatientsUnsent(
 				decodedParams.hcPartyId,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -910,30 +1020,34 @@ private class ListInvoicesByIdsParams(
 	public val ids: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByIdsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByIdsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListInvoicesByIdsParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByIds(
 			decodedParams.ids,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByIdsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByIdsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListInvoicesByIdsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByIds(
 				decodedParams.ids,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -946,9 +1060,11 @@ private class ListInvoicesByHcpartySendingModeStatusDateParams(
 	public val to: Long,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByHcpartySendingModeStatusDateBlocking(sdk: CardinalApis, params: String):
 		String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByHcpartySendingModeStatusDateParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHcpartySendingModeStatusDateParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByHcpartySendingModeStatusDate(
 			decodedParams.hcPartyId,
@@ -958,16 +1074,20 @@ public fun listInvoicesByHcpartySendingModeStatusDateBlocking(sdk: CardinalApis,
 			decodedParams.to,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByHcpartySendingModeStatusDateAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByHcpartySendingModeStatusDateParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByHcpartySendingModeStatusDateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByHcpartySendingModeStatusDate(
@@ -977,7 +1097,7 @@ public fun listInvoicesByHcpartySendingModeStatusDateAsync(
 				decodedParams.from,
 				decodedParams.to,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -986,30 +1106,36 @@ private class ListInvoicesByServiceIdsParams(
 	public val serviceIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listInvoicesByServiceIdsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByServiceIdsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByServiceIdsParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listInvoicesByServiceIds(
 			decodedParams.serviceIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listInvoicesByServiceIdsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListInvoicesByServiceIdsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListInvoicesByServiceIdsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listInvoicesByServiceIds(
 				decodedParams.serviceIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -1021,9 +1147,10 @@ private class ListAllHcpsByStatusParams(
 	public val hcpIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listAllHcpsByStatusBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListAllHcpsByStatusParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListAllHcpsByStatusParams>(params)
 	runBlocking {
 		sdk.invoice.tryAndRecover.listAllHcpsByStatus(
 			decodedParams.status,
@@ -1032,16 +1159,19 @@ public fun listAllHcpsByStatusBlocking(sdk: CardinalApis, params: String): Strin
 			decodedParams.hcpIds,
 		)
 	}
-}.toPyString(ListSerializer(InvoiceSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(Invoice::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listAllHcpsByStatusAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListAllHcpsByStatusParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListAllHcpsByStatusParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.invoice.tryAndRecover.listAllHcpsByStatus(
@@ -1050,6 +1180,6 @@ public fun listAllHcpsByStatusAsync(
 				decodedParams.to,
 				decodedParams.hcpIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(InvoiceSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Invoice::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)

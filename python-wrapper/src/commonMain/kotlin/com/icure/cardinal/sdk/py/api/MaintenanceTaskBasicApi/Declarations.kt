@@ -18,7 +18,8 @@ import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -43,9 +44,10 @@ private class MatchMaintenanceTasksByParams(
 	public val filter: BaseFilterOptions<MaintenanceTask>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchMaintenanceTasksByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMaintenanceTasksByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchMaintenanceTasksByParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.matchMaintenanceTasksBy(
 			decodedParams.filter,
@@ -53,14 +55,17 @@ public fun matchMaintenanceTasksByBlocking(sdk: CardinalBaseApis, params: String
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchMaintenanceTasksByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMaintenanceTasksByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchMaintenanceTasksByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.matchMaintenanceTasksBy(
@@ -75,9 +80,11 @@ private class MatchMaintenanceTasksBySortedParams(
 	public val filter: BaseSortableFilterOptions<MaintenanceTask>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchMaintenanceTasksBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMaintenanceTasksBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<MatchMaintenanceTasksBySortedParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.matchMaintenanceTasksBySorted(
 			decodedParams.filter,
@@ -85,14 +92,18 @@ public fun matchMaintenanceTasksBySortedBlocking(sdk: CardinalBaseApis, params: 
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchMaintenanceTasksBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMaintenanceTasksBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<MatchMaintenanceTasksBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.matchMaintenanceTasksBySorted(
@@ -107,9 +118,11 @@ private class FilterMaintenanceTasksByParams(
 	public val filter: BaseFilterOptions<MaintenanceTask>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterMaintenanceTasksByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMaintenanceTasksByParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMaintenanceTasksByParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.filterMaintenanceTasksBy(
 			decodedParams.filter,
@@ -118,13 +131,17 @@ public fun filterMaintenanceTasksByBlocking(sdk: CardinalBaseApis, params: Strin
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterMaintenanceTasksByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMaintenanceTasksByParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMaintenanceTasksByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.filterMaintenanceTasksBy(
@@ -140,9 +157,11 @@ private class FilterMaintenanceTasksBySortedParams(
 	public val filter: BaseSortableFilterOptions<MaintenanceTask>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterMaintenanceTasksBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMaintenanceTasksBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMaintenanceTasksBySortedParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.filterMaintenanceTasksBySorted(
 			decodedParams.filter,
@@ -151,13 +170,17 @@ public fun filterMaintenanceTasksBySortedBlocking(sdk: CardinalBaseApis, params:
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterMaintenanceTasksBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMaintenanceTasksBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMaintenanceTasksBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.filterMaintenanceTasksBySorted(
@@ -173,9 +196,10 @@ private class DeleteMaintenanceTaskParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteMaintenanceTaskBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMaintenanceTaskParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTaskParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.deleteMaintenanceTask(
 			decodedParams.entityId,
@@ -183,14 +207,17 @@ public fun deleteMaintenanceTaskBlocking(sdk: CardinalBaseApis, params: String):
 	}
 }.toPyString(DocIdentifier.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteMaintenanceTaskAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMaintenanceTaskParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTaskParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.deleteMaintenanceTask(
@@ -205,9 +232,10 @@ private class DeleteMaintenanceTasksParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteMaintenanceTasksBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMaintenanceTasksParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTasksParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.deleteMaintenanceTasks(
 			decodedParams.entityIds,
@@ -215,14 +243,17 @@ public fun deleteMaintenanceTasksBlocking(sdk: CardinalBaseApis, params: String)
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteMaintenanceTasksAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMaintenanceTasksParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTasksParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.deleteMaintenanceTasks(
@@ -237,9 +268,10 @@ private class ModifyMaintenanceTaskParams(
 	public val entity: EncryptedMaintenanceTask,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyMaintenanceTaskBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyMaintenanceTaskParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyMaintenanceTaskParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.modifyMaintenanceTask(
 			decodedParams.entity,
@@ -247,14 +279,17 @@ public fun modifyMaintenanceTaskBlocking(sdk: CardinalBaseApis, params: String):
 	}
 }.toPyString(EncryptedMaintenanceTask.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyMaintenanceTaskAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyMaintenanceTaskParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyMaintenanceTaskParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.modifyMaintenanceTask(
@@ -269,9 +304,10 @@ private class GetMaintenanceTaskParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getMaintenanceTaskBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMaintenanceTaskParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMaintenanceTaskParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.getMaintenanceTask(
 			decodedParams.entityId,
@@ -279,14 +315,17 @@ public fun getMaintenanceTaskBlocking(sdk: CardinalBaseApis, params: String): St
 	}
 }.toPyString(EncryptedMaintenanceTask.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getMaintenanceTaskAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMaintenanceTaskParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMaintenanceTaskParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.getMaintenanceTask(
@@ -301,9 +340,10 @@ private class GetMaintenanceTasksParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getMaintenanceTasksBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMaintenanceTasksParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMaintenanceTasksParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.getMaintenanceTasks(
 			decodedParams.entityIds,
@@ -311,14 +351,17 @@ public fun getMaintenanceTasksBlocking(sdk: CardinalBaseApis, params: String): S
 	}
 }.toPyString(ListSerializer(EncryptedMaintenanceTask.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getMaintenanceTasksAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMaintenanceTasksParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMaintenanceTasksParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.getMaintenanceTasks(
@@ -335,9 +378,10 @@ private class SubscribeToEventsParams(
 	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun subscribeToEventsBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SubscribeToEventsParams>(params)
 	runBlocking {
 		sdk.maintenanceTask.subscribeToEvents(
 			decodedParams.events,
@@ -348,13 +392,16 @@ public fun subscribeToEventsBlocking(sdk: CardinalBaseApis, params: String): PyR
 }.toPyResult {
 	EntitySubscriptionWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun subscribeToEventsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SubscribeToEventsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.maintenanceTask.subscribeToEvents(

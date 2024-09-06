@@ -6,7 +6,8 @@ import com.icure.cardinal.sdk.model.security.Permission
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -28,9 +29,10 @@ private class ModifyUserPermissionsParams(
 	public val permissions: Permission,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyUserPermissionsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyUserPermissionsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyUserPermissionsParams>(params)
 	runBlocking {
 		sdk.permission.modifyUserPermissions(
 			decodedParams.userId,
@@ -39,14 +41,17 @@ public fun modifyUserPermissionsBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(ListSerializer(Permission.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyUserPermissionsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyUserPermissionsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyUserPermissionsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.permission.modifyUserPermissions(

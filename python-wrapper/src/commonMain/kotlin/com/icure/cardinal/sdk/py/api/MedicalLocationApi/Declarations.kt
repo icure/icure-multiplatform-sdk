@@ -16,7 +16,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.Int
 import kotlin.OptIn
@@ -41,9 +42,10 @@ private class CreateMedicalLocationParams(
 	public val medicalLocationDto: MedicalLocation,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateMedicalLocationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMedicalLocationParams>(params)
 	runBlocking {
 		sdk.medicalLocation.createMedicalLocation(
 			decodedParams.medicalLocationDto,
@@ -51,14 +53,17 @@ public fun createMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(MedicalLocation.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createMedicalLocationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateMedicalLocationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMedicalLocationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.createMedicalLocation(
@@ -73,9 +78,10 @@ private class DeleteMedicalLocationsParams(
 	public val locationIds: ListOfIds,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMedicalLocationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMedicalLocationsParams>(params)
 	runBlocking {
 		sdk.medicalLocation.deleteMedicalLocations(
 			decodedParams.locationIds,
@@ -83,14 +89,17 @@ public fun deleteMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: St
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteMedicalLocationsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMedicalLocationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMedicalLocationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.deleteMedicalLocations(
@@ -105,9 +114,10 @@ private class GetMedicalLocationParams(
 	public val locationId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMedicalLocationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMedicalLocationParams>(params)
 	runBlocking {
 		sdk.medicalLocation.getMedicalLocation(
 			decodedParams.locationId,
@@ -115,14 +125,17 @@ public fun getMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: String
 	}
 }.toPyString(MedicalLocation.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getMedicalLocationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMedicalLocationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMedicalLocationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.getMedicalLocation(
@@ -138,9 +151,10 @@ private class GetAllMedicalLocationsParams(
 	public val limit: Int?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getAllMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetAllMedicalLocationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetAllMedicalLocationsParams>(params)
 	runBlocking {
 		sdk.medicalLocation.getAllMedicalLocations(
 			decodedParams.startDocumentId,
@@ -149,14 +163,17 @@ public fun getAllMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: St
 	}
 }.toPyString(PaginatedList.serializer(MedicalLocation.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getAllMedicalLocationsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetAllMedicalLocationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetAllMedicalLocationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.getAllMedicalLocations(
@@ -172,9 +189,10 @@ private class ModifyMedicalLocationParams(
 	public val medicalLocationDto: MedicalLocation,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyMedicalLocationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyMedicalLocationParams>(params)
 	runBlocking {
 		sdk.medicalLocation.modifyMedicalLocation(
 			decodedParams.medicalLocationDto,
@@ -182,14 +200,17 @@ public fun modifyMedicalLocationBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(MedicalLocation.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyMedicalLocationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyMedicalLocationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyMedicalLocationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.modifyMedicalLocation(
@@ -204,9 +225,10 @@ private class GetMedicalLocationsParams(
 	public val medicalLocationIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMedicalLocationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMedicalLocationsParams>(params)
 	runBlocking {
 		sdk.medicalLocation.getMedicalLocations(
 			decodedParams.medicalLocationIds,
@@ -214,14 +236,17 @@ public fun getMedicalLocationsBlocking(sdk: CardinalNonCryptoApis, params: Strin
 	}
 }.toPyString(ListSerializer(MedicalLocation.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getMedicalLocationsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMedicalLocationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMedicalLocationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.getMedicalLocations(
@@ -236,9 +261,10 @@ private class MatchMedicalLocationsByParams(
 	public val filter: BaseFilterOptions<MedicalLocation>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchMedicalLocationsByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMedicalLocationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchMedicalLocationsByParams>(params)
 	runBlocking {
 		sdk.medicalLocation.matchMedicalLocationsBy(
 			decodedParams.filter,
@@ -246,14 +272,17 @@ public fun matchMedicalLocationsByBlocking(sdk: CardinalNonCryptoApis, params: S
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchMedicalLocationsByAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMedicalLocationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchMedicalLocationsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.matchMedicalLocationsBy(
@@ -268,9 +297,11 @@ private class MatchMedicalLocationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<MedicalLocation>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchMedicalLocationsBySortedBlocking(sdk: CardinalNonCryptoApis, params: String): String
 		= kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMedicalLocationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<MatchMedicalLocationsBySortedParams>(params)
 	runBlocking {
 		sdk.medicalLocation.matchMedicalLocationsBySorted(
 			decodedParams.filter,
@@ -278,14 +309,18 @@ public fun matchMedicalLocationsBySortedBlocking(sdk: CardinalNonCryptoApis, par
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchMedicalLocationsBySortedAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchMedicalLocationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<MatchMedicalLocationsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.matchMedicalLocationsBySorted(
@@ -300,9 +335,11 @@ private class FilterMedicalLocationsByParams(
 	public val filter: BaseFilterOptions<MedicalLocation>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterMedicalLocationsByBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMedicalLocationsByParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMedicalLocationsByParams>(params)
 	runBlocking {
 		sdk.medicalLocation.filterMedicalLocationsBy(
 			decodedParams.filter,
@@ -311,13 +348,17 @@ public fun filterMedicalLocationsByBlocking(sdk: CardinalNonCryptoApis, params: 
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, MedicalLocation.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterMedicalLocationsByAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMedicalLocationsByParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMedicalLocationsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.filterMedicalLocationsBy(
@@ -333,9 +374,11 @@ private class FilterMedicalLocationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<MedicalLocation>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterMedicalLocationsBySortedBlocking(sdk: CardinalNonCryptoApis, params: String):
 		PyResult = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMedicalLocationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMedicalLocationsBySortedParams>(params)
 	runBlocking {
 		sdk.medicalLocation.filterMedicalLocationsBySorted(
 			decodedParams.filter,
@@ -344,13 +387,17 @@ public fun filterMedicalLocationsBySortedBlocking(sdk: CardinalNonCryptoApis, pa
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, MedicalLocation.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterMedicalLocationsBySortedAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterMedicalLocationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterMedicalLocationsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.medicalLocation.filterMedicalLocationsBySorted(

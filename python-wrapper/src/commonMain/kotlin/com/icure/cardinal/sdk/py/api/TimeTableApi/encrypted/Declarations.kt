@@ -16,7 +16,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.Long
 import kotlin.OptIn
@@ -43,8 +44,9 @@ private class ShareWithParams(
 	public val options: TimeTableShareOptions? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.shareWith(
 			decodedParams.delegateId,
@@ -54,14 +56,17 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.shareWith(
@@ -80,9 +85,10 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, TimeTableShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.tryShareWithMany(
 			decodedParams.timeTable,
@@ -91,14 +97,17 @@ public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun tryShareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.tryShareWithMany(
@@ -116,8 +125,9 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, TimeTableShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.shareWithMany(
 			decodedParams.timeTable,
@@ -126,14 +136,17 @@ public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = ko
 	}
 }.toPyString(EncryptedTimeTable.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.shareWithMany(
@@ -149,9 +162,10 @@ private class FilterTimeTablesByParams(
 	public val filter: FilterOptions<TimeTable>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterTimeTablesByBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTimeTablesByParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.filterTimeTablesBy(
 			decodedParams.filter,
@@ -160,13 +174,16 @@ public fun filterTimeTablesByBlocking(sdk: CardinalApis, params: String): PyResu
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedTimeTable.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterTimeTablesByAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTimeTablesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.filterTimeTablesBy(
@@ -182,9 +199,11 @@ private class FilterTimeTablesBySortedParams(
 	public val filter: SortableFilterOptions<TimeTable>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterTimeTablesBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterTimeTablesBySortedParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.filterTimeTablesBySorted(
 			decodedParams.filter,
@@ -193,13 +212,17 @@ public fun filterTimeTablesBySortedBlocking(sdk: CardinalApis, params: String): 
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedTimeTable.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterTimeTablesBySortedAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterTimeTablesBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.filterTimeTablesBySorted(
@@ -215,8 +238,9 @@ private class ModifyTimeTableParams(
 	public val entity: EncryptedTimeTable,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyTimeTableBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.modifyTimeTable(
 			decodedParams.entity,
@@ -224,14 +248,17 @@ public fun modifyTimeTableBlocking(sdk: CardinalApis, params: String): String = 
 	}
 }.toPyString(EncryptedTimeTable.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyTimeTableAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTimeTableParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.modifyTimeTable(
@@ -246,8 +273,9 @@ private class GetTimeTableParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTableBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.getTimeTable(
 			decodedParams.entityId,
@@ -255,14 +283,17 @@ public fun getTimeTableBlocking(sdk: CardinalApis, params: String): String = kot
 	}
 }.toPyString(EncryptedTimeTable.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTableAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTableParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.getTimeTable(
@@ -277,8 +308,9 @@ private class GetTimeTablesParams(
 	public val timeTableIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTablesBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.getTimeTables(
 			decodedParams.timeTableIds,
@@ -286,14 +318,17 @@ public fun getTimeTablesBlocking(sdk: CardinalApis, params: String): String = ko
 	}
 }.toPyString(ListSerializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTablesAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.getTimeTables(
@@ -310,9 +345,11 @@ private class GetTimeTablesByPeriodAndAgendaIdParams(
 	public val agendaId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.getTimeTablesByPeriodAndAgendaId(
 			decodedParams.startDate,
@@ -322,14 +359,18 @@ public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: CardinalApis, params: S
 	}
 }.toPyString(ListSerializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTablesByPeriodAndAgendaIdAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.getTimeTablesByPeriodAndAgendaId(
@@ -346,9 +387,10 @@ private class GetTimeTablesByAgendaIdParams(
 	public val agendaId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTablesByAgendaIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
 	runBlocking {
 		sdk.timeTable.encrypted.getTimeTablesByAgendaId(
 			decodedParams.agendaId,
@@ -356,14 +398,17 @@ public fun getTimeTablesByAgendaIdBlocking(sdk: CardinalApis, params: String): S
 	}
 }.toPyString(ListSerializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTablesByAgendaIdAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.encrypted.getTimeTablesByAgendaId(

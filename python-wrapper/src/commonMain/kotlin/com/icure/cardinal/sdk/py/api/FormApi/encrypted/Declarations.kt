@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.serialization.PatientSerializer
 import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -18,7 +17,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Long
@@ -46,8 +46,9 @@ private class ShareWithParams(
 	public val options: FormShareOptions? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.form.encrypted.shareWith(
 			decodedParams.delegateId,
@@ -57,14 +58,17 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.shareWith(
@@ -83,9 +87,10 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, FormShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.form.encrypted.tryShareWithMany(
 			decodedParams.form,
@@ -94,14 +99,17 @@ public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun tryShareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.tryShareWithMany(
@@ -119,8 +127,9 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, FormShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.form.encrypted.shareWithMany(
 			decodedParams.form,
@@ -129,14 +138,17 @@ public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = ko
 	}
 }.toPyString(EncryptedForm.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.shareWithMany(
@@ -150,16 +162,17 @@ public fun shareWithManyAsync(
 @Serializable
 private class FindFormsByHcPartyPatientParams(
 	public val hcPartyId: String,
-	@Serializable(PatientSerializer::class)
 	public val patient: Patient,
 	public val startDate: Long? = null,
 	public val endDate: Long? = null,
 	public val descending: Boolean? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findFormsByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindFormsByHcPartyPatientParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindFormsByHcPartyPatientParams>(params)
 	runBlocking {
 		sdk.form.encrypted.findFormsByHcPartyPatient(
 			decodedParams.hcPartyId,
@@ -172,13 +185,17 @@ public fun findFormsByHcPartyPatientBlocking(sdk: CardinalApis, params: String):
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedForm.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findFormsByHcPartyPatientAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindFormsByHcPartyPatientParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindFormsByHcPartyPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.findFormsByHcPartyPatient(
@@ -198,8 +215,9 @@ private class FilterFormsByParams(
 	public val filter: FilterOptions<Form>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterFormsByBlocking(sdk: CardinalApis, params: String): PyResult = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterFormsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterFormsByParams>(params)
 	runBlocking {
 		sdk.form.encrypted.filterFormsBy(
 			decodedParams.filter,
@@ -208,13 +226,16 @@ public fun filterFormsByBlocking(sdk: CardinalApis, params: String): PyResult = 
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedForm.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterFormsByAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterFormsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterFormsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.filterFormsBy(
@@ -230,9 +251,10 @@ private class FilterFormsBySortedParams(
 	public val filter: SortableFilterOptions<Form>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterFormsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterFormsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterFormsBySortedParams>(params)
 	runBlocking {
 		sdk.form.encrypted.filterFormsBySorted(
 			decodedParams.filter,
@@ -241,13 +263,16 @@ public fun filterFormsBySortedBlocking(sdk: CardinalApis, params: String): PyRes
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedForm.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterFormsBySortedAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterFormsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterFormsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.filterFormsBySorted(
@@ -263,8 +288,9 @@ private class ModifyFormParams(
 	public val entity: EncryptedForm,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyFormParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFormParams>(params)
 	runBlocking {
 		sdk.form.encrypted.modifyForm(
 			decodedParams.entity,
@@ -272,14 +298,17 @@ public fun modifyFormBlocking(sdk: CardinalApis, params: String): String = kotli
 	}
 }.toPyString(EncryptedForm.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyFormAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyFormParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.modifyForm(
@@ -294,8 +323,9 @@ private class ModifyFormsParams(
 	public val entities: List<EncryptedForm>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyFormsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFormsParams>(params)
 	runBlocking {
 		sdk.form.encrypted.modifyForms(
 			decodedParams.entities,
@@ -303,14 +333,17 @@ public fun modifyFormsBlocking(sdk: CardinalApis, params: String): String = kotl
 	}
 }.toPyString(ListSerializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyFormsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyFormsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.modifyForms(
@@ -325,8 +358,9 @@ private class GetFormParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getForm(
 			decodedParams.entityId,
@@ -334,14 +368,17 @@ public fun getFormBlocking(sdk: CardinalApis, params: String): String = kotlin.r
 	}
 }.toPyString(EncryptedForm.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getFormAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.getForm(
@@ -356,8 +393,9 @@ private class GetFormsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getForms(
 			decodedParams.entityIds,
@@ -365,14 +403,17 @@ public fun getFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.
 	}
 }.toPyString(ListSerializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getFormsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.getForms(
@@ -387,9 +428,11 @@ private class GetLatestFormByLogicalUuidParams(
 	public val logicalUuid: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getLatestFormByLogicalUuidBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getLatestFormByLogicalUuid(
 			decodedParams.logicalUuid,
@@ -397,14 +440,18 @@ public fun getLatestFormByLogicalUuidBlocking(sdk: CardinalApis, params: String)
 	}
 }.toPyString(EncryptedForm.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getLatestFormByLogicalUuidAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.getLatestFormByLogicalUuid(
@@ -419,9 +466,10 @@ private class GetLatestFormByUniqueIdParams(
 	public val uniqueId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getLatestFormByUniqueIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetLatestFormByUniqueIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetLatestFormByUniqueIdParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getLatestFormByUniqueId(
 			decodedParams.uniqueId,
@@ -429,14 +477,17 @@ public fun getLatestFormByUniqueIdBlocking(sdk: CardinalApis, params: String): S
 	}
 }.toPyString(EncryptedForm.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getLatestFormByUniqueIdAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetLatestFormByUniqueIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetLatestFormByUniqueIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.getLatestFormByUniqueId(
@@ -451,9 +502,10 @@ private class GetFormsByLogicalUuidParams(
 	public val logicalUuid: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getFormsByLogicalUuidBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormsByLogicalUuidParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsByLogicalUuidParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getFormsByLogicalUuid(
 			decodedParams.logicalUuid,
@@ -461,14 +513,17 @@ public fun getFormsByLogicalUuidBlocking(sdk: CardinalApis, params: String): Str
 	}
 }.toPyString(ListSerializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getFormsByLogicalUuidAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormsByLogicalUuidParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsByLogicalUuidParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.getFormsByLogicalUuid(
@@ -483,9 +538,10 @@ private class GetFormsByUniqueIdParams(
 	public val uniqueId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getFormsByUniqueIdBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormsByUniqueIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsByUniqueIdParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getFormsByUniqueId(
 			decodedParams.uniqueId,
@@ -493,14 +549,17 @@ public fun getFormsByUniqueIdBlocking(sdk: CardinalApis, params: String): String
 	}
 }.toPyString(ListSerializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getFormsByUniqueIdAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFormsByUniqueIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsByUniqueIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.getFormsByUniqueId(
@@ -516,9 +575,10 @@ private class GetChildrenFormsParams(
 	public val parentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getChildrenFormsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetChildrenFormsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetChildrenFormsParams>(params)
 	runBlocking {
 		sdk.form.encrypted.getChildrenForms(
 			decodedParams.hcPartyId,
@@ -527,14 +587,17 @@ public fun getChildrenFormsBlocking(sdk: CardinalApis, params: String): String =
 	}
 }.toPyString(ListSerializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getChildrenFormsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetChildrenFormsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetChildrenFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.getChildrenForms(
@@ -554,9 +617,11 @@ private class ListFormsByHCPartyAndPatientForeignKeysParams(
 	public val formTemplateId: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: CardinalApis, params: String):
 		String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
 	runBlocking {
 		sdk.form.encrypted.listFormsByHCPartyAndPatientForeignKeys(
 			decodedParams.hcPartyId,
@@ -568,14 +633,18 @@ public fun listFormsByHCPartyAndPatientForeignKeysBlocking(sdk: CardinalApis, pa
 	}
 }.toPyString(ListSerializer(EncryptedForm.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listFormsByHCPartyAndPatientForeignKeysAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListFormsByHCPartyAndPatientForeignKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.encrypted.listFormsByHCPartyAndPatientForeignKeys(

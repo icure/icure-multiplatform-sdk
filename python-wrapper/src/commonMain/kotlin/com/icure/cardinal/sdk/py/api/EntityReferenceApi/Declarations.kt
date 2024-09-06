@@ -6,7 +6,8 @@ import com.icure.cardinal.sdk.model.EntityReference
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -26,9 +27,10 @@ private class GetLatestParams(
 	public val prefix: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getLatestBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetLatestParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetLatestParams>(params)
 	runBlocking {
 		sdk.entityReference.getLatest(
 			decodedParams.prefix,
@@ -36,14 +38,17 @@ public fun getLatestBlocking(sdk: CardinalNonCryptoApis, params: String): String
 	}
 }.toPyString(EntityReference.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getLatestAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetLatestParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetLatestParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityReference.getLatest(
@@ -58,9 +63,10 @@ private class CreateEntityReferenceParams(
 	public val entityReference: EntityReference,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createEntityReferenceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateEntityReferenceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateEntityReferenceParams>(params)
 	runBlocking {
 		sdk.entityReference.createEntityReference(
 			decodedParams.entityReference,
@@ -68,14 +74,17 @@ public fun createEntityReferenceBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(EntityReference.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createEntityReferenceAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateEntityReferenceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateEntityReferenceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityReference.createEntityReference(

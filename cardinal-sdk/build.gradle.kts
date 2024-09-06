@@ -13,7 +13,7 @@ val repoUsername: String by project
 val repoPassword: String by project
 val mavenReleasesRepository: String by project
 
-val version: String? by project
+val version = "2.0.50.alpha1"
 project.version = version ?: "0.0.0-snapshot"
 
 kotlin {

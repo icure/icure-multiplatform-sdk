@@ -5,7 +5,9 @@ import com.icure.cardinal.sdk.filters.AgendaFilters
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
+import kotlin.OptIn
 import kotlin.String
 import kotlinx.serialization.Serializable
 
@@ -18,8 +20,9 @@ private class ByUserParams(
 	public val userId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byUser(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByUserParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByUserParams>(params)
 	AgendaFilters.byUser(
 		decodedParams.userId,
 	)
@@ -30,8 +33,9 @@ private class ReadableByUserParams(
 	public val userId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun readableByUser(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ReadableByUserParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ReadableByUserParams>(params)
 	AgendaFilters.readableByUser(
 		decodedParams.userId,
 	)

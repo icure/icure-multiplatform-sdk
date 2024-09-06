@@ -7,7 +7,8 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -28,9 +29,10 @@ private class GetFrontEndMigrationParams(
 	public val frontEndMigrationId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFrontEndMigrationParams>(params)
 	runBlocking {
 		sdk.frontEndMigration.getFrontEndMigration(
 			decodedParams.frontEndMigrationId,
@@ -38,14 +40,17 @@ public fun getFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: Stri
 	}
 }.toPyString(FrontEndMigration.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getFrontEndMigrationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.frontEndMigration.getFrontEndMigration(
@@ -60,9 +65,10 @@ private class CreateFrontEndMigrationParams(
 	public val frontEndMigration: FrontEndMigration,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFrontEndMigrationParams>(params)
 	runBlocking {
 		sdk.frontEndMigration.createFrontEndMigration(
 			decodedParams.frontEndMigration,
@@ -70,14 +76,17 @@ public fun createFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: S
 	}
 }.toPyString(FrontEndMigration.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createFrontEndMigrationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.frontEndMigration.createFrontEndMigration(
@@ -109,9 +118,10 @@ private class DeleteFrontEndMigrationParams(
 	public val frontEndMigrationId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFrontEndMigrationParams>(params)
 	runBlocking {
 		sdk.frontEndMigration.deleteFrontEndMigration(
 			decodedParams.frontEndMigrationId,
@@ -119,14 +129,17 @@ public fun deleteFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: S
 	}
 }.toPyString(DocIdentifier.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteFrontEndMigrationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.frontEndMigration.deleteFrontEndMigration(
@@ -141,9 +154,11 @@ private class GetFrontEndMigrationByNameParams(
 	public val frontEndMigrationName: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getFrontEndMigrationByNameBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFrontEndMigrationByNameParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetFrontEndMigrationByNameParams>(params)
 	runBlocking {
 		sdk.frontEndMigration.getFrontEndMigrationByName(
 			decodedParams.frontEndMigrationName,
@@ -151,14 +166,18 @@ public fun getFrontEndMigrationByNameBlocking(sdk: CardinalNonCryptoApis, params
 	}
 }.toPyString(ListSerializer(FrontEndMigration.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getFrontEndMigrationByNameAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetFrontEndMigrationByNameParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetFrontEndMigrationByNameParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.frontEndMigration.getFrontEndMigrationByName(
@@ -173,9 +192,10 @@ private class ModifyFrontEndMigrationParams(
 	public val frontEndMigration: FrontEndMigration,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFrontEndMigrationParams>(params)
 	runBlocking {
 		sdk.frontEndMigration.modifyFrontEndMigration(
 			decodedParams.frontEndMigration,
@@ -183,14 +203,17 @@ public fun modifyFrontEndMigrationBlocking(sdk: CardinalNonCryptoApis, params: S
 	}
 }.toPyString(FrontEndMigration.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyFrontEndMigrationAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyFrontEndMigrationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.frontEndMigration.modifyFrontEndMigration(

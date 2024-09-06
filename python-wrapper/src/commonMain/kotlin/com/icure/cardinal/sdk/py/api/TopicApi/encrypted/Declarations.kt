@@ -17,7 +17,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -43,8 +44,9 @@ private class ShareWithParams(
 	public val options: TopicShareOptions? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.shareWith(
 			decodedParams.delegateId,
@@ -54,14 +56,17 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedTopic.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.shareWith(
@@ -80,9 +85,10 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, TopicShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.tryShareWithMany(
 			decodedParams.topic,
@@ -91,14 +97,17 @@ public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedTopic.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun tryShareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.tryShareWithMany(
@@ -116,8 +125,9 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, TopicShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.shareWithMany(
 			decodedParams.topic,
@@ -126,14 +136,17 @@ public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = ko
 	}
 }.toPyString(EncryptedTopic.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.shareWithMany(
@@ -149,9 +162,10 @@ private class FilterTopicsByParams(
 	public val filter: FilterOptions<Topic>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterTopicsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTopicsByParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.filterTopicsBy(
 			decodedParams.filter,
@@ -160,13 +174,16 @@ public fun filterTopicsByBlocking(sdk: CardinalApis, params: String): PyResult =
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterTopicsByAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTopicsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTopicsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.filterTopicsBy(
@@ -182,9 +199,10 @@ private class FilterTopicsBySortedParams(
 	public val filter: SortableFilterOptions<Topic>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterTopicsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTopicsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTopicsBySortedParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.filterTopicsBySorted(
 			decodedParams.filter,
@@ -193,13 +211,16 @@ public fun filterTopicsBySortedBlocking(sdk: CardinalApis, params: String): PyRe
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterTopicsBySortedAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTopicsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTopicsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.filterTopicsBySorted(
@@ -215,8 +236,9 @@ private class ModifyTopicParams(
 	public val entity: EncryptedTopic,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTopicParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTopicParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.modifyTopic(
 			decodedParams.entity,
@@ -224,14 +246,17 @@ public fun modifyTopicBlocking(sdk: CardinalApis, params: String): String = kotl
 	}
 }.toPyString(EncryptedTopic.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyTopicAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTopicParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTopicParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.modifyTopic(
@@ -246,8 +271,9 @@ private class GetTopicParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTopicParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTopicParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.getTopic(
 			decodedParams.entityId,
@@ -255,14 +281,17 @@ public fun getTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.
 	}
 }.toPyString(EncryptedTopic.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTopicAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTopicParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTopicParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.getTopic(
@@ -277,8 +306,9 @@ private class GetTopicsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTopicsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTopicsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTopicsParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.getTopics(
 			decodedParams.entityIds,
@@ -286,14 +316,17 @@ public fun getTopicsBlocking(sdk: CardinalApis, params: String): String = kotlin
 	}
 }.toPyString(ListSerializer(EncryptedTopic.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTopicsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTopicsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTopicsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.getTopics(
@@ -310,8 +343,9 @@ private class AddParticipantParams(
 	public val topicRole: TopicRole,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun addParticipantBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<AddParticipantParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<AddParticipantParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.addParticipant(
 			decodedParams.entityId,
@@ -321,14 +355,17 @@ public fun addParticipantBlocking(sdk: CardinalApis, params: String): String = k
 	}
 }.toPyString(EncryptedTopic.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun addParticipantAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<AddParticipantParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<AddParticipantParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.addParticipant(
@@ -346,9 +383,10 @@ private class RemoveParticipantParams(
 	public val dataOwnerId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun removeParticipantBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RemoveParticipantParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RemoveParticipantParams>(params)
 	runBlocking {
 		sdk.topic.encrypted.removeParticipant(
 			decodedParams.entityId,
@@ -357,14 +395,17 @@ public fun removeParticipantBlocking(sdk: CardinalApis, params: String): String 
 	}
 }.toPyString(EncryptedTopic.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun removeParticipantAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<RemoveParticipantParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RemoveParticipantParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.topic.encrypted.removeParticipant(

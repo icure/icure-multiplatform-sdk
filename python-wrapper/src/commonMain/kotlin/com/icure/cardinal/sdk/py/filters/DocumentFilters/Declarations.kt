@@ -5,15 +5,18 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.DocumentFilters
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
+import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.embed.DocumentType
-import com.icure.cardinal.sdk.py.serialization.DocumentSerializer
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
+import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.datetime.Instant
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -25,8 +28,10 @@ private class ByPatientsCreatedForDataOwnerParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsCreatedForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsCreatedForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsCreatedForDataOwnerParams>(params)
 	DocumentFilters.byPatientsCreatedForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.patients,
@@ -34,7 +39,7 @@ public fun byPatientsCreatedForDataOwner(params: String): String = kotlin.runCat
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(DocumentSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Document::class)))
 
 @Serializable
 private class ByPatientsCreatedForSelfParams(
@@ -44,15 +49,17 @@ private class ByPatientsCreatedForSelfParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsCreatedForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsCreatedForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsCreatedForSelfParams>(params)
 	DocumentFilters.byPatientsCreatedForSelf(
 		decodedParams.patients,
 		decodedParams.from,
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(DocumentSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Document::class)))
 
 @Serializable
 private class ByPatientSecretIdsCreatedForDataOwnerParams(
@@ -63,8 +70,10 @@ private class ByPatientSecretIdsCreatedForDataOwnerParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsCreatedForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsCreatedForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsCreatedForDataOwnerParams>(params)
 	DocumentFilters.byPatientSecretIdsCreatedForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.secretIds,
@@ -72,7 +81,7 @@ public fun byPatientSecretIdsCreatedForDataOwner(params: String): String = kotli
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(BaseSortableFilterOptions.serializer(DocumentSerializer))
+}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(Document::class)))
 
 @Serializable
 private class ByPatientSecretIdsCreatedForSelfParams(
@@ -82,15 +91,17 @@ private class ByPatientSecretIdsCreatedForSelfParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsCreatedForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsCreatedForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsCreatedForSelfParams>(params)
 	DocumentFilters.byPatientSecretIdsCreatedForSelf(
 		decodedParams.secretIds,
 		decodedParams.from,
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(DocumentSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Document::class)))
 
 @Serializable
 private class ByPatientsAndTypeForDataOwnerParams(
@@ -99,14 +110,16 @@ private class ByPatientsAndTypeForDataOwnerParams(
 	public val patients: List<Patient>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsAndTypeForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsAndTypeForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsAndTypeForDataOwnerParams>(params)
 	DocumentFilters.byPatientsAndTypeForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.documentType,
 		decodedParams.patients,
 	)
-}.toPyString(FilterOptions.serializer(DocumentSerializer))
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(Document::class)))
 
 @Serializable
 private class ByPatientsAndTypeForSelfParams(
@@ -114,13 +127,15 @@ private class ByPatientsAndTypeForSelfParams(
 	public val patients: List<Patient>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsAndTypeForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsAndTypeForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsAndTypeForSelfParams>(params)
 	DocumentFilters.byPatientsAndTypeForSelf(
 		decodedParams.documentType,
 		decodedParams.patients,
 	)
-}.toPyString(FilterOptions.serializer(DocumentSerializer))
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(Document::class)))
 
 @Serializable
 private class ByPatientSecretIdsAndTypeForDataOwnerParams(
@@ -129,14 +144,16 @@ private class ByPatientSecretIdsAndTypeForDataOwnerParams(
 	public val secretIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsAndTypeForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsAndTypeForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsAndTypeForDataOwnerParams>(params)
 	DocumentFilters.byPatientSecretIdsAndTypeForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.documentType,
 		decodedParams.secretIds,
 	)
-}.toPyString(FilterOptions.serializer(DocumentSerializer))
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(Document::class)))
 
 @Serializable
 private class ByPatientSecretIdsAndTypeForSelfParams(
@@ -144,10 +161,12 @@ private class ByPatientSecretIdsAndTypeForSelfParams(
 	public val secretIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsAndTypeForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsAndTypeForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsAndTypeForSelfParams>(params)
 	DocumentFilters.byPatientSecretIdsAndTypeForSelf(
 		decodedParams.documentType,
 		decodedParams.secretIds,
 	)
-}.toPyString(FilterOptions.serializer(DocumentSerializer))
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(Document::class)))

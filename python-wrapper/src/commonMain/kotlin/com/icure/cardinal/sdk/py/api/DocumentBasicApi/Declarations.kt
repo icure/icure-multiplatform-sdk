@@ -16,7 +16,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.ByteArray
@@ -44,9 +45,10 @@ private class MatchDocumentsByParams(
 	public val filter: BaseFilterOptions<Document>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchDocumentsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchDocumentsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchDocumentsByParams>(params)
 	runBlocking {
 		sdk.document.matchDocumentsBy(
 			decodedParams.filter,
@@ -54,14 +56,17 @@ public fun matchDocumentsByBlocking(sdk: CardinalBaseApis, params: String): Stri
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchDocumentsByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchDocumentsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchDocumentsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.matchDocumentsBy(
@@ -76,9 +81,10 @@ private class MatchDocumentsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Document>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchDocumentsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchDocumentsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchDocumentsBySortedParams>(params)
 	runBlocking {
 		sdk.document.matchDocumentsBySorted(
 			decodedParams.filter,
@@ -86,14 +92,17 @@ public fun matchDocumentsBySortedBlocking(sdk: CardinalBaseApis, params: String)
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchDocumentsBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchDocumentsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchDocumentsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.matchDocumentsBySorted(
@@ -108,9 +117,10 @@ private class FilterDocumentsByParams(
 	public val filter: BaseFilterOptions<Document>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterDocumentsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterDocumentsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterDocumentsByParams>(params)
 	runBlocking {
 		sdk.document.filterDocumentsBy(
 			decodedParams.filter,
@@ -119,13 +129,16 @@ public fun filterDocumentsByBlocking(sdk: CardinalBaseApis, params: String): PyR
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedDocument.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterDocumentsByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterDocumentsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterDocumentsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.filterDocumentsBy(
@@ -141,9 +154,10 @@ private class FilterDocumentsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Document>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterDocumentsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterDocumentsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterDocumentsBySortedParams>(params)
 	runBlocking {
 		sdk.document.filterDocumentsBySorted(
 			decodedParams.filter,
@@ -152,13 +166,16 @@ public fun filterDocumentsBySortedBlocking(sdk: CardinalBaseApis, params: String
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedDocument.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterDocumentsBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterDocumentsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterDocumentsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.filterDocumentsBySorted(
@@ -174,9 +191,10 @@ private class DeleteDocumentParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteDocumentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteDocumentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentParams>(params)
 	runBlocking {
 		sdk.document.deleteDocument(
 			decodedParams.entityId,
@@ -184,14 +202,17 @@ public fun deleteDocumentBlocking(sdk: CardinalBaseApis, params: String): String
 	}
 }.toPyString(DocIdentifier.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteDocumentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteDocumentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.deleteDocument(
@@ -206,9 +227,10 @@ private class DeleteDocumentsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteDocumentsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteDocumentsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentsParams>(params)
 	runBlocking {
 		sdk.document.deleteDocuments(
 			decodedParams.entityIds,
@@ -216,14 +238,17 @@ public fun deleteDocumentsBlocking(sdk: CardinalBaseApis, params: String): Strin
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteDocumentsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteDocumentsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.deleteDocuments(
@@ -238,9 +263,10 @@ private class GetRawMainAttachmentParams(
 	public val documentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getRawMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetRawMainAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetRawMainAttachmentParams>(params)
 	runBlocking {
 		sdk.document.getRawMainAttachment(
 			decodedParams.documentId,
@@ -248,14 +274,17 @@ public fun getRawMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): 
 	}
 }.toPyString(ByteArraySerializer)
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getRawMainAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetRawMainAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetRawMainAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getRawMainAttachment(
@@ -270,9 +299,11 @@ private class GetMainAttachmentAsPlainTextParams(
 	public val documentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getMainAttachmentAsPlainTextBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMainAttachmentAsPlainTextParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetMainAttachmentAsPlainTextParams>(params)
 	runBlocking {
 		sdk.document.getMainAttachmentAsPlainText(
 			decodedParams.documentId,
@@ -280,14 +311,18 @@ public fun getMainAttachmentAsPlainTextBlocking(sdk: CardinalBaseApis, params: S
 	}
 }.toPyString(String.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getMainAttachmentAsPlainTextAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMainAttachmentAsPlainTextParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetMainAttachmentAsPlainTextParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getMainAttachmentAsPlainText(
@@ -302,9 +337,10 @@ private class GetMainAttachmentAsJsonParams(
 	public val documentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getMainAttachmentAsJsonBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMainAttachmentAsJsonParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMainAttachmentAsJsonParams>(params)
 	runBlocking {
 		sdk.document.getMainAttachmentAsJson(
 			decodedParams.documentId,
@@ -312,14 +348,17 @@ public fun getMainAttachmentAsJsonBlocking(sdk: CardinalBaseApis, params: String
 	}
 }.toPyString(JsonElement.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getMainAttachmentAsJsonAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetMainAttachmentAsJsonParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMainAttachmentAsJsonParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getMainAttachmentAsJson(
@@ -335,9 +374,11 @@ private class GetRawSecondaryAttachmentParams(
 	public val key: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getRawSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetRawSecondaryAttachmentParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetRawSecondaryAttachmentParams>(params)
 	runBlocking {
 		sdk.document.getRawSecondaryAttachment(
 			decodedParams.documentId,
@@ -346,14 +387,18 @@ public fun getRawSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(ByteArraySerializer)
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getRawSecondaryAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetRawSecondaryAttachmentParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetRawSecondaryAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getRawSecondaryAttachment(
@@ -374,9 +419,10 @@ private class SetRawMainAttachmentParams(
 	public val encrypted: Boolean,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun setRawMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawMainAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetRawMainAttachmentParams>(params)
 	runBlocking {
 		sdk.document.setRawMainAttachment(
 			decodedParams.documentId,
@@ -388,14 +434,17 @@ public fun setRawMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): 
 	}
 }.toPyString(EncryptedDocument.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun setRawMainAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawMainAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetRawMainAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.setRawMainAttachment(
@@ -420,9 +469,11 @@ private class SetRawSecondaryAttachmentParams(
 	public val encrypted: Boolean,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun setRawSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawSecondaryAttachmentParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<SetRawSecondaryAttachmentParams>(params)
 	runBlocking {
 		sdk.document.setRawSecondaryAttachment(
 			decodedParams.documentId,
@@ -435,14 +486,18 @@ public fun setRawSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(EncryptedDocument.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun setRawSecondaryAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawSecondaryAttachmentParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<SetRawSecondaryAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.setRawSecondaryAttachment(
@@ -463,9 +518,10 @@ private class DeleteMainAttachmentParams(
 	public val rev: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMainAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMainAttachmentParams>(params)
 	runBlocking {
 		sdk.document.deleteMainAttachment(
 			decodedParams.entityId,
@@ -474,14 +530,17 @@ public fun deleteMainAttachmentBlocking(sdk: CardinalBaseApis, params: String): 
 	}
 }.toPyString(EncryptedDocument.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteMainAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteMainAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteMainAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.deleteMainAttachment(
@@ -499,9 +558,11 @@ private class DeleteSecondaryAttachmentParams(
 	public val rev: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteSecondaryAttachmentParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteSecondaryAttachmentParams>(params)
 	runBlocking {
 		sdk.document.deleteSecondaryAttachment(
 			decodedParams.documentId,
@@ -511,14 +572,18 @@ public fun deleteSecondaryAttachmentBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(EncryptedDocument.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteSecondaryAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteSecondaryAttachmentParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteSecondaryAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.deleteSecondaryAttachment(
@@ -535,9 +600,10 @@ private class ModifyDocumentParams(
 	public val entity: EncryptedDocument,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyDocumentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyDocumentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDocumentParams>(params)
 	runBlocking {
 		sdk.document.modifyDocument(
 			decodedParams.entity,
@@ -545,14 +611,17 @@ public fun modifyDocumentBlocking(sdk: CardinalBaseApis, params: String): String
 	}
 }.toPyString(EncryptedDocument.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyDocumentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyDocumentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDocumentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.modifyDocument(
@@ -567,8 +636,9 @@ private class GetDocumentParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getDocumentBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDocumentParams>(params)
 	runBlocking {
 		sdk.document.getDocument(
 			decodedParams.entityId,
@@ -576,14 +646,17 @@ public fun getDocumentBlocking(sdk: CardinalBaseApis, params: String): String = 
 	}
 }.toPyString(EncryptedDocument.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getDocumentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDocumentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getDocument(
@@ -598,9 +671,11 @@ private class GetDocumentByExternalUuidParams(
 	public val externalUuid: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getDocumentByExternalUuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentByExternalUuidParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetDocumentByExternalUuidParams>(params)
 	runBlocking {
 		sdk.document.getDocumentByExternalUuid(
 			decodedParams.externalUuid,
@@ -608,14 +683,18 @@ public fun getDocumentByExternalUuidBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(EncryptedDocument.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getDocumentByExternalUuidAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentByExternalUuidParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetDocumentByExternalUuidParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getDocumentByExternalUuid(
@@ -630,9 +709,11 @@ private class GetDocumentsByExternalUuidParams(
 	public val externalUuid: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getDocumentsByExternalUuidBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentsByExternalUuidParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetDocumentsByExternalUuidParams>(params)
 	runBlocking {
 		sdk.document.getDocumentsByExternalUuid(
 			decodedParams.externalUuid,
@@ -640,14 +721,18 @@ public fun getDocumentsByExternalUuidBlocking(sdk: CardinalBaseApis, params: Str
 	}
 }.toPyString(ListSerializer(EncryptedDocument.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getDocumentsByExternalUuidAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentsByExternalUuidParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetDocumentsByExternalUuidParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getDocumentsByExternalUuid(
@@ -662,9 +747,10 @@ private class GetDocumentsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getDocumentsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDocumentsParams>(params)
 	runBlocking {
 		sdk.document.getDocuments(
 			decodedParams.entityIds,
@@ -672,14 +758,17 @@ public fun getDocumentsBlocking(sdk: CardinalBaseApis, params: String): String =
 	}
 }.toPyString(ListSerializer(EncryptedDocument.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getDocumentsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDocumentsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDocumentsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.getDocuments(
@@ -694,9 +783,10 @@ private class ModifyDocumentsParams(
 	public val entities: List<EncryptedDocument>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyDocumentsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyDocumentsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDocumentsParams>(params)
 	runBlocking {
 		sdk.document.modifyDocuments(
 			decodedParams.entities,
@@ -704,14 +794,17 @@ public fun modifyDocumentsBlocking(sdk: CardinalBaseApis, params: String): Strin
 	}
 }.toPyString(ListSerializer(EncryptedDocument.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyDocumentsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyDocumentsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDocumentsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.modifyDocuments(
@@ -728,9 +821,11 @@ private class ListDocumentsByHcPartyMessageForeignKeysParams(
 	public val secretMessageKeys: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: CardinalBaseApis, params: String):
 		String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
 	runBlocking {
 		sdk.document.listDocumentsByHcPartyMessageForeignKeys(
 			decodedParams.hcPartyId,
@@ -740,14 +835,18 @@ public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: CardinalBaseApi
 	}
 }.toPyString(ListSerializer(EncryptedDocument.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listDocumentsByHcPartyMessageForeignKeysAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.listDocumentsByHcPartyMessageForeignKeys(
@@ -764,9 +863,10 @@ private class FindWithoutDelegationParams(
 	public val limit: Int?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findWithoutDelegationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindWithoutDelegationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindWithoutDelegationParams>(params)
 	runBlocking {
 		sdk.document.findWithoutDelegation(
 			decodedParams.limit,
@@ -774,14 +874,17 @@ public fun findWithoutDelegationBlocking(sdk: CardinalBaseApis, params: String):
 	}
 }.toPyString(ListSerializer(EncryptedDocument.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findWithoutDelegationAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindWithoutDelegationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindWithoutDelegationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.document.findWithoutDelegation(

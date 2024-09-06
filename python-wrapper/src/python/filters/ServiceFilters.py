@@ -295,3 +295,81 @@ class ServiceFilters:
 		else:
 			return_value = BaseFilterOptions(result_info.success)
 			return return_value
+
+	@classmethod
+	def by_patients_date_for_data_owner(cls, data_owner_id: str, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
+		payload = {
+			"dataOwnerId": data_owner_id,
+			"patients": [serialize_patient(x0) for x0 in patients],
+			"from": from_,
+			"to": to,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientsDateForDataOwner(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = SortableFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_patients_date_for_self(cls, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
+		payload = {
+			"patients": [serialize_patient(x0) for x0 in patients],
+			"from": from_,
+			"to": to,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientsDateForSelf(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = SortableFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_patient_secret_ids_date_for_data_owner(cls, data_owner_id: str, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Service]:
+		payload = {
+			"dataOwnerId": data_owner_id,
+			"secretIds": [x0 for x0 in secret_ids],
+			"from": from_,
+			"to": to,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientSecretIdsDateForDataOwner(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = BaseSortableFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def by_patient_secret_ids_date_for_self(cls, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
+		payload = {
+			"secretIds": [x0 for x0 in secret_ids],
+			"from": from_,
+			"to": to,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.ServiceFilters.byPatientSecretIdsDateForSelf(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise Exception(result_info.failure)
+		else:
+			return_value = SortableFilterOptions(result_info.success)
+			return return_value

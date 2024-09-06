@@ -7,7 +7,8 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.OptIn
@@ -30,9 +31,10 @@ private class GetEntityTemplateParams(
 	public val documentTemplateId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetEntityTemplateParams>(params)
 	runBlocking {
 		sdk.entityTemplate.getEntityTemplate(
 			decodedParams.documentTemplateId,
@@ -40,14 +42,17 @@ public fun getEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String)
 	}
 }.toPyString(EntityTemplate.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getEntityTemplateAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetEntityTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.getEntityTemplate(
@@ -62,9 +67,10 @@ private class CreateEntityTemplateParams(
 	public val applicationSettings: EntityTemplate,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateEntityTemplateParams>(params)
 	runBlocking {
 		sdk.entityTemplate.createEntityTemplate(
 			decodedParams.applicationSettings,
@@ -72,14 +78,17 @@ public fun createEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: Stri
 	}
 }.toPyString(EntityTemplate.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createEntityTemplateAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateEntityTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.createEntityTemplate(
@@ -94,9 +103,10 @@ private class ModifyEntityTemplateParams(
 	public val documentTemplate: EntityTemplate,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyEntityTemplateParams>(params)
 	runBlocking {
 		sdk.entityTemplate.modifyEntityTemplate(
 			decodedParams.documentTemplate,
@@ -104,14 +114,17 @@ public fun modifyEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: Stri
 	}
 }.toPyString(EntityTemplate.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyEntityTemplateAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyEntityTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.modifyEntityTemplate(
@@ -129,9 +142,10 @@ private class ListEntityTemplatesByParams(
 	public val includeEntities: Boolean? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listEntityTemplatesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListEntityTemplatesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListEntityTemplatesByParams>(params)
 	runBlocking {
 		sdk.entityTemplate.listEntityTemplatesBy(
 			decodedParams.userId,
@@ -142,14 +156,17 @@ public fun listEntityTemplatesByBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(ListSerializer(EntityTemplate.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listEntityTemplatesByAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListEntityTemplatesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListEntityTemplatesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.listEntityTemplatesBy(
@@ -169,9 +186,11 @@ private class ListAllEntityTemplatesByParams(
 	public val includeEntities: Boolean? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listAllEntityTemplatesByBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListAllEntityTemplatesByParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListAllEntityTemplatesByParams>(params)
 	runBlocking {
 		sdk.entityTemplate.listAllEntityTemplatesBy(
 			decodedParams.type,
@@ -181,14 +200,18 @@ public fun listAllEntityTemplatesByBlocking(sdk: CardinalNonCryptoApis, params: 
 	}
 }.toPyString(ListSerializer(EntityTemplate.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listAllEntityTemplatesByAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListAllEntityTemplatesByParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListAllEntityTemplatesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.listAllEntityTemplatesBy(
@@ -208,9 +231,11 @@ private class ListEntityTemplatesByKeywordParams(
 	public val includeEntities: Boolean? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listEntityTemplatesByKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): String
 		= kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListEntityTemplatesByKeywordParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListEntityTemplatesByKeywordParams>(params)
 	runBlocking {
 		sdk.entityTemplate.listEntityTemplatesByKeyword(
 			decodedParams.userId,
@@ -221,14 +246,18 @@ public fun listEntityTemplatesByKeywordBlocking(sdk: CardinalNonCryptoApis, para
 	}
 }.toPyString(ListSerializer(EntityTemplate.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listEntityTemplatesByKeywordAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListEntityTemplatesByKeywordParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListEntityTemplatesByKeywordParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.listEntityTemplatesByKeyword(
@@ -248,9 +277,11 @@ private class FindAllEntityTemplatesByKeywordParams(
 	public val includeEntities: Boolean?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findAllEntityTemplatesByKeywordBlocking(sdk: CardinalNonCryptoApis, params: String):
 		String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAllEntityTemplatesByKeywordParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindAllEntityTemplatesByKeywordParams>(params)
 	runBlocking {
 		sdk.entityTemplate.findAllEntityTemplatesByKeyword(
 			decodedParams.type,
@@ -260,14 +291,18 @@ public fun findAllEntityTemplatesByKeywordBlocking(sdk: CardinalNonCryptoApis, p
 	}
 }.toPyString(ListSerializer(EntityTemplate.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findAllEntityTemplatesByKeywordAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAllEntityTemplatesByKeywordParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindAllEntityTemplatesByKeywordParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.findAllEntityTemplatesByKeyword(
@@ -284,9 +319,10 @@ private class GetEntityTemplatesParams(
 	public val entityTemplateIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetEntityTemplatesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetEntityTemplatesParams>(params)
 	runBlocking {
 		sdk.entityTemplate.getEntityTemplates(
 			decodedParams.entityTemplateIds,
@@ -294,14 +330,17 @@ public fun getEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String
 	}
 }.toPyString(ListSerializer(EntityTemplate.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getEntityTemplatesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetEntityTemplatesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetEntityTemplatesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.getEntityTemplates(
@@ -316,9 +355,10 @@ private class ModifyEntityTemplatesParams(
 	public val entityTemplates: List<EntityTemplate>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyEntityTemplatesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyEntityTemplatesParams>(params)
 	runBlocking {
 		sdk.entityTemplate.modifyEntityTemplates(
 			decodedParams.entityTemplates,
@@ -326,14 +366,17 @@ public fun modifyEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(ListSerializer(EntityTemplate.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyEntityTemplatesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyEntityTemplatesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyEntityTemplatesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.modifyEntityTemplates(
@@ -348,9 +391,10 @@ private class CreateEntityTemplatesParams(
 	public val entityTemplates: List<EntityTemplate>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateEntityTemplatesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateEntityTemplatesParams>(params)
 	runBlocking {
 		sdk.entityTemplate.createEntityTemplates(
 			decodedParams.entityTemplates,
@@ -358,14 +402,17 @@ public fun createEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: Str
 	}
 }.toPyString(ListSerializer(EntityTemplate.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createEntityTemplatesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateEntityTemplatesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateEntityTemplatesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.createEntityTemplates(
@@ -380,9 +427,10 @@ private class DeleteEntityTemplateParams(
 	public val entityTemplateIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplateParams>(params)
 	runBlocking {
 		sdk.entityTemplate.deleteEntityTemplate(
 			decodedParams.entityTemplateIds,
@@ -390,14 +438,17 @@ public fun deleteEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: Stri
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteEntityTemplateAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.deleteEntityTemplate(

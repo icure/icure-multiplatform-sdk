@@ -6,7 +6,9 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.GroupFilters
 import com.icure.cardinal.sdk.model.Group
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
+import kotlin.OptIn
 import kotlin.String
 import kotlinx.serialization.Serializable
 
@@ -19,8 +21,9 @@ private class BySuperGroupParams(
 	public val superGroupId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun bySuperGroup(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<BySuperGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<BySuperGroupParams>(params)
 	GroupFilters.bySuperGroup(
 		decodedParams.superGroupId,
 	)
@@ -32,8 +35,9 @@ private class WithContentParams(
 	public val searchString: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun withContent(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<WithContentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<WithContentParams>(params)
 	GroupFilters.withContent(
 		decodedParams.superGroupId,
 		decodedParams.searchString,

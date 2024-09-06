@@ -11,7 +11,6 @@ import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.SortDirection
-import com.icure.cardinal.sdk.py.serialization.PatientSerializer
 import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
@@ -23,7 +22,8 @@ import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Int
@@ -51,9 +51,10 @@ private class MatchPatientsByParams(
 	public val filter: BaseFilterOptions<Patient>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchPatientsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchPatientsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchPatientsByParams>(params)
 	runBlocking {
 		sdk.patient.matchPatientsBy(
 			decodedParams.filter,
@@ -61,14 +62,17 @@ public fun matchPatientsByBlocking(sdk: CardinalBaseApis, params: String): Strin
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchPatientsByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchPatientsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchPatientsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.matchPatientsBy(
@@ -83,9 +87,10 @@ private class MatchPatientsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Patient>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchPatientsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchPatientsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchPatientsBySortedParams>(params)
 	runBlocking {
 		sdk.patient.matchPatientsBySorted(
 			decodedParams.filter,
@@ -93,14 +98,17 @@ public fun matchPatientsBySortedBlocking(sdk: CardinalBaseApis, params: String):
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchPatientsBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchPatientsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchPatientsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.matchPatientsBySorted(
@@ -115,9 +123,10 @@ private class FilterPatientsByParams(
 	public val filter: BaseFilterOptions<Patient>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterPatientsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterPatientsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterPatientsByParams>(params)
 	runBlocking {
 		sdk.patient.filterPatientsBy(
 			decodedParams.filter,
@@ -126,13 +135,16 @@ public fun filterPatientsByBlocking(sdk: CardinalBaseApis, params: String): PyRe
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterPatientsByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterPatientsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterPatientsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.filterPatientsBy(
@@ -148,9 +160,10 @@ private class FilterPatientsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Patient>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterPatientsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterPatientsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterPatientsBySortedParams>(params)
 	runBlocking {
 		sdk.patient.filterPatientsBySorted(
 			decodedParams.filter,
@@ -159,13 +172,16 @@ public fun filterPatientsBySortedBlocking(sdk: CardinalBaseApis, params: String)
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedPatient.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterPatientsBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterPatientsBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterPatientsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.filterPatientsBySorted(
@@ -181,9 +197,10 @@ private class DeletePatientParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deletePatientBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeletePatientParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientParams>(params)
 	runBlocking {
 		sdk.patient.deletePatient(
 			decodedParams.entityId,
@@ -191,14 +208,17 @@ public fun deletePatientBlocking(sdk: CardinalBaseApis, params: String): String 
 	}
 }.toPyString(DocIdentifier.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deletePatientAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeletePatientParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.deletePatient(
@@ -213,9 +233,10 @@ private class DeletePatientsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deletePatientsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeletePatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientsParams>(params)
 	runBlocking {
 		sdk.patient.deletePatients(
 			decodedParams.entityIds,
@@ -223,14 +244,17 @@ public fun deletePatientsBlocking(sdk: CardinalBaseApis, params: String): String
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deletePatientsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeletePatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.deletePatients(
@@ -245,9 +269,10 @@ private class UndeletePatientsParams(
 	public val patientIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun undeletePatientsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UndeletePatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeletePatientsParams>(params)
 	runBlocking {
 		sdk.patient.undeletePatients(
 			decodedParams.patientIds,
@@ -255,14 +280,17 @@ public fun undeletePatientsBlocking(sdk: CardinalBaseApis, params: String): Stri
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun undeletePatientsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UndeletePatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeletePatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.undeletePatients(
@@ -274,13 +302,14 @@ public fun undeletePatientsAsync(
 
 @Serializable
 private class GetDataOwnersWithAccessToParams(
-	@Serializable(PatientSerializer::class)
 	public val patient: Patient,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getDataOwnersWithAccessToBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDataOwnersWithAccessToParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetDataOwnersWithAccessToParams>(params)
 	runBlocking {
 		sdk.patient.getDataOwnersWithAccessTo(
 			decodedParams.patient,
@@ -288,14 +317,18 @@ public fun getDataOwnersWithAccessToBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(EntityAccessInformation.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getDataOwnersWithAccessToAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetDataOwnersWithAccessToParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetDataOwnersWithAccessToParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.getDataOwnersWithAccessTo(
@@ -310,9 +343,10 @@ private class CountOfPatientsParams(
 	public val hcPartyId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun countOfPatientsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CountOfPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CountOfPatientsParams>(params)
 	runBlocking {
 		sdk.patient.countOfPatients(
 			decodedParams.hcPartyId,
@@ -320,14 +354,17 @@ public fun countOfPatientsBlocking(sdk: CardinalBaseApis, params: String): Strin
 	}
 }.toPyString(Int.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun countOfPatientsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CountOfPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CountOfPatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.countOfPatients(
@@ -342,9 +379,10 @@ private class ModifyPatientParams(
 	public val entity: EncryptedPatient,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyPatientBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPatientParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyPatientParams>(params)
 	runBlocking {
 		sdk.patient.modifyPatient(
 			decodedParams.entity,
@@ -352,14 +390,17 @@ public fun modifyPatientBlocking(sdk: CardinalBaseApis, params: String): String 
 	}
 }.toPyString(EncryptedPatient.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyPatientAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPatientParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.modifyPatient(
@@ -374,8 +415,9 @@ private class GetPatientParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getPatientBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPatientParams>(params)
 	runBlocking {
 		sdk.patient.getPatient(
 			decodedParams.entityId,
@@ -383,14 +425,17 @@ public fun getPatientBlocking(sdk: CardinalBaseApis, params: String): String = k
 	}
 }.toPyString(EncryptedPatient.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getPatientAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.getPatient(
@@ -406,9 +451,11 @@ private class GetPatientResolvingMergesParams(
 	public val maxMergeDepth: Int?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getPatientResolvingMergesBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientResolvingMergesParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetPatientResolvingMergesParams>(params)
 	runBlocking {
 		sdk.patient.getPatientResolvingMerges(
 			decodedParams.patientId,
@@ -417,14 +464,18 @@ public fun getPatientResolvingMergesBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(EncryptedPatient.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getPatientResolvingMergesAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientResolvingMergesParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetPatientResolvingMergesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.getPatientResolvingMerges(
@@ -445,9 +496,11 @@ private class FindPatientsByNameBirthSsinAutoParams(
 	public val sortDirection: SortDirection = com.icure.cardinal.sdk.model.couchdb.SortDirection.Asc,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findPatientsByNameBirthSsinAutoBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsByNameBirthSsinAutoParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsByNameBirthSsinAutoParams>(params)
 	runBlocking {
 		sdk.patient.findPatientsByNameBirthSsinAuto(
 			decodedParams.healthcarePartyId,
@@ -460,14 +513,18 @@ public fun findPatientsByNameBirthSsinAutoBlocking(sdk: CardinalBaseApis, params
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findPatientsByNameBirthSsinAutoAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsByNameBirthSsinAutoParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsByNameBirthSsinAutoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.findPatientsByNameBirthSsinAuto(
@@ -492,9 +549,10 @@ private class ListPatientsOfHcPartyParams(
 	public val sortDirection: SortDirection = com.icure.cardinal.sdk.model.couchdb.SortDirection.Asc,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listPatientsOfHcPartyBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListPatientsOfHcPartyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListPatientsOfHcPartyParams>(params)
 	runBlocking {
 		sdk.patient.listPatientsOfHcParty(
 			decodedParams.hcPartyId,
@@ -507,14 +565,17 @@ public fun listPatientsOfHcPartyBlocking(sdk: CardinalBaseApis, params: String):
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listPatientsOfHcPartyAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListPatientsOfHcPartyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListPatientsOfHcPartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.listPatientsOfHcParty(
@@ -534,9 +595,10 @@ private class ListOfMergesAfterParams(
 	public val date: Long,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listOfMergesAfterBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListOfMergesAfterParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListOfMergesAfterParams>(params)
 	runBlocking {
 		sdk.patient.listOfMergesAfter(
 			decodedParams.date,
@@ -544,14 +606,17 @@ public fun listOfMergesAfterBlocking(sdk: CardinalBaseApis, params: String): Str
 	}
 }.toPyString(ListSerializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listOfMergesAfterAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListOfMergesAfterParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListOfMergesAfterParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.listOfMergesAfter(
@@ -569,9 +634,11 @@ private class FindPatientsModifiedAfterParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findPatientsModifiedAfterBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsModifiedAfterParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsModifiedAfterParams>(params)
 	runBlocking {
 		sdk.patient.findPatientsModifiedAfter(
 			decodedParams.date,
@@ -582,14 +649,18 @@ public fun findPatientsModifiedAfterBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findPatientsModifiedAfterAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsModifiedAfterParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsModifiedAfterParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.findPatientsModifiedAfter(
@@ -612,9 +683,10 @@ private class ListPatientsByHcPartyParams(
 	public val sortDirection: SortDirection = com.icure.cardinal.sdk.model.couchdb.SortDirection.Asc,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listPatientsByHcPartyBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListPatientsByHcPartyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListPatientsByHcPartyParams>(params)
 	runBlocking {
 		sdk.patient.listPatientsByHcParty(
 			decodedParams.hcPartyId,
@@ -627,14 +699,17 @@ public fun listPatientsByHcPartyBlocking(sdk: CardinalBaseApis, params: String):
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listPatientsByHcPartyAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListPatientsByHcPartyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListPatientsByHcPartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.listPatientsByHcParty(
@@ -659,9 +734,11 @@ private class FindPatientsByHealthcarePartyParams(
 	public val sortDirection: SortDirection = com.icure.cardinal.sdk.model.couchdb.SortDirection.Asc,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findPatientsByHealthcarePartyBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsByHealthcarePartyParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsByHealthcarePartyParams>(params)
 	runBlocking {
 		sdk.patient.findPatientsByHealthcareParty(
 			decodedParams.hcPartyId,
@@ -674,14 +751,18 @@ public fun findPatientsByHealthcarePartyBlocking(sdk: CardinalBaseApis, params: 
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findPatientsByHealthcarePartyAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsByHealthcarePartyParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsByHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.findPatientsByHealthcareParty(
@@ -704,9 +785,11 @@ private class FindPatientsIdsByHealthcarePartyParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findPatientsIdsByHealthcarePartyBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsIdsByHealthcarePartyParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsIdsByHealthcarePartyParams>(params)
 	runBlocking {
 		sdk.patient.findPatientsIdsByHealthcareParty(
 			decodedParams.hcPartyId,
@@ -717,14 +800,18 @@ public fun findPatientsIdsByHealthcarePartyBlocking(sdk: CardinalBaseApis, param
 	}
 }.toPyString(PaginatedList.serializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findPatientsIdsByHealthcarePartyAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindPatientsIdsByHealthcarePartyParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindPatientsIdsByHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.findPatientsIdsByHealthcareParty(
@@ -742,9 +829,10 @@ private class GetPatientByExternalIdParams(
 	public val externalId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getPatientByExternalIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientByExternalIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPatientByExternalIdParams>(params)
 	runBlocking {
 		sdk.patient.getPatientByExternalId(
 			decodedParams.externalId,
@@ -752,14 +840,17 @@ public fun getPatientByExternalIdBlocking(sdk: CardinalBaseApis, params: String)
 	}
 }.toPyString(EncryptedPatient.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getPatientByExternalIdAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientByExternalIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPatientByExternalIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.getPatientByExternalId(
@@ -776,8 +867,9 @@ private class FuzzySearchParams(
 	public val dateOfBirth: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun fuzzySearchBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FuzzySearchParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FuzzySearchParams>(params)
 	runBlocking {
 		sdk.patient.fuzzySearch(
 			decodedParams.firstName,
@@ -787,14 +879,17 @@ public fun fuzzySearchBlocking(sdk: CardinalBaseApis, params: String): String = 
 	}
 }.toPyString(ListSerializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun fuzzySearchAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FuzzySearchParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FuzzySearchParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.fuzzySearch(
@@ -816,9 +911,10 @@ private class FindDeletedPatientsParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findDeletedPatientsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindDeletedPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindDeletedPatientsParams>(params)
 	runBlocking {
 		sdk.patient.findDeletedPatients(
 			decodedParams.startDate,
@@ -831,14 +927,17 @@ public fun findDeletedPatientsBlocking(sdk: CardinalBaseApis, params: String): S
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findDeletedPatientsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindDeletedPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindDeletedPatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.findDeletedPatients(
@@ -859,9 +958,11 @@ private class ListDeletedPatientsByNameParams(
 	public val lastName: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listDeletedPatientsByNameBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListDeletedPatientsByNameParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListDeletedPatientsByNameParams>(params)
 	runBlocking {
 		sdk.patient.listDeletedPatientsByName(
 			decodedParams.firstName,
@@ -870,14 +971,18 @@ public fun listDeletedPatientsByNameBlocking(sdk: CardinalBaseApis, params: Stri
 	}
 }.toPyString(ListSerializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listDeletedPatientsByNameAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListDeletedPatientsByNameParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListDeletedPatientsByNameParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.listDeletedPatientsByName(
@@ -893,8 +998,9 @@ private class GetPatientsParams(
 	public val patientIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getPatientsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPatientsParams>(params)
 	runBlocking {
 		sdk.patient.getPatients(
 			decodedParams.patientIds,
@@ -902,14 +1008,17 @@ public fun getPatientsBlocking(sdk: CardinalBaseApis, params: String): String = 
 	}
 }.toPyString(ListSerializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getPatientsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.getPatients(
@@ -926,9 +1035,11 @@ private class GetPatientByHealthcarePartyAndIdentifierParams(
 	public val system: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getPatientByHealthcarePartyAndIdentifierBlocking(sdk: CardinalBaseApis, params: String):
 		String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientByHealthcarePartyAndIdentifierParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetPatientByHealthcarePartyAndIdentifierParams>(params)
 	runBlocking {
 		sdk.patient.getPatientByHealthcarePartyAndIdentifier(
 			decodedParams.hcPartyId,
@@ -938,14 +1049,18 @@ public fun getPatientByHealthcarePartyAndIdentifierBlocking(sdk: CardinalBaseApi
 	}
 }.toPyString(EncryptedPatient.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getPatientByHealthcarePartyAndIdentifierAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetPatientByHealthcarePartyAndIdentifierParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetPatientByHealthcarePartyAndIdentifierParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.getPatientByHealthcarePartyAndIdentifier(
@@ -962,9 +1077,10 @@ private class ModifyPatientsParams(
 	public val patientDtos: List<EncryptedPatient>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyPatientsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyPatientsParams>(params)
 	runBlocking {
 		sdk.patient.modifyPatients(
 			decodedParams.patientDtos,
@@ -972,14 +1088,17 @@ public fun modifyPatientsBlocking(sdk: CardinalBaseApis, params: String): String
 	}
 }.toPyString(ListSerializer(IdWithRev.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyPatientsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyPatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyPatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.modifyPatients(
@@ -997,9 +1116,10 @@ private class FindDuplicatesBySsinParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findDuplicatesBySsinBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindDuplicatesBySsinParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindDuplicatesBySsinParams>(params)
 	runBlocking {
 		sdk.patient.findDuplicatesBySsin(
 			decodedParams.hcPartyId,
@@ -1010,14 +1130,17 @@ public fun findDuplicatesBySsinBlocking(sdk: CardinalBaseApis, params: String): 
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findDuplicatesBySsinAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindDuplicatesBySsinParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindDuplicatesBySsinParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.findDuplicatesBySsin(
@@ -1038,9 +1161,10 @@ private class FindDuplicatesByNameParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findDuplicatesByNameBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindDuplicatesByNameParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindDuplicatesByNameParams>(params)
 	runBlocking {
 		sdk.patient.findDuplicatesByName(
 			decodedParams.hcPartyId,
@@ -1051,14 +1175,17 @@ public fun findDuplicatesByNameBlocking(sdk: CardinalBaseApis, params: String): 
 	}
 }.toPyString(PaginatedList.serializer(EncryptedPatient.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findDuplicatesByNameAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindDuplicatesByNameParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindDuplicatesByNameParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.findDuplicatesByName(
@@ -1073,14 +1200,14 @@ public fun findDuplicatesByNameAsync(
 
 @Serializable
 private class MergePatientsParams(
-	@Serializable(PatientSerializer::class)
 	public val from: Patient,
 	public val mergedInto: EncryptedPatient,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun mergePatientsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MergePatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MergePatientsParams>(params)
 	runBlocking {
 		sdk.patient.mergePatients(
 			decodedParams.from,
@@ -1089,14 +1216,17 @@ public fun mergePatientsBlocking(sdk: CardinalBaseApis, params: String): String 
 	}
 }.toPyString(EncryptedPatient.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun mergePatientsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MergePatientsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MergePatientsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.mergePatients(
@@ -1114,9 +1244,10 @@ private class SubscribeToEventsParams(
 	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun subscribeToEventsBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SubscribeToEventsParams>(params)
 	runBlocking {
 		sdk.patient.subscribeToEvents(
 			decodedParams.events,
@@ -1127,13 +1258,16 @@ public fun subscribeToEventsBlocking(sdk: CardinalBaseApis, params: String): PyR
 }.toPyResult {
 	EntitySubscriptionWithSerializer(it, EncryptedPatient.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun subscribeToEventsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SubscribeToEventsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SubscribeToEventsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.patient.subscribeToEvents(
