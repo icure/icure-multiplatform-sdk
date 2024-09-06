@@ -14,6 +14,7 @@ import com.icure.cardinal.sdk.model.embed.Service
 import com.icure.cardinal.sdk.model.embed.SubContact
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.service.ServiceByAssociationIdFilter
+import com.icure.cardinal.sdk.model.filter.service.ServiceByDataOwnerPatientDateFilter
 import com.icure.cardinal.sdk.model.filter.service.ServiceByHcPartyFilter
 import com.icure.cardinal.sdk.model.filter.service.ServiceByHcPartyHealthElementIdsFilter
 import com.icure.cardinal.sdk.model.filter.service.ServiceByHcPartyIdentifiersFilter
@@ -372,6 +373,148 @@ object ServiceFilters {
 		linkQualification: LinkQualification? = null
 	): BaseFilterOptions<Service> = ByQualifiedLink(linkValues, linkQualification)
 
+	/**
+	 * Options for service filtering which match all services shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * that are linked with one of the provided patients.
+	 * This Options also allows to restrict the services based on [Service.valueDate]:
+	 * - if the [from] fuzzy date is not null, only the services where [Service.valueDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the services where [Service.valueDate] is less than or equal to [to] will be returned.
+	 * If the [Service.valueDate] is null for a specific service, [Service.openingDate] will be used instead.
+	 *
+	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
+	 * those for filtering.
+	 * If you already have the secret ids of the patient you may instead use [byPatientSecretIdsDateForDataOwner].
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 * Note that these may not be used in methods of apis from [CardinalBaseApis].
+	 *
+	 * These options are sortable. When sorting using these options the services will be sorted by [Service.valueDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param dataOwnerId a data owner id
+	 * @param patients a list of patients.
+	 * @param from the minimum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Service.valueDate] (default: ascending).
+	 */
+	@OptIn(InternalIcureApi::class)
+	fun byPatientsDateForDataOwner(
+		dataOwnerId: String,
+		patients: List<Patient>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : SortableFilterOptions<Service> = ByPatientsDateForDataOwner(
+		dataOwnerId = dataOwnerId,
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
+
+	/**
+	 * Options for service filtering which match all services shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * that are linked with one of the provided patients.
+	 * This Options also allows to restrict the services based on [Service.valueDate]:
+	 * - if the [from] fuzzy date is not null, only the services where [Service.valueDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the services where [Service.valueDate] is less than or equal to [to] will be returned.
+	 * If the [Service.valueDate] is null for a specific service, [Service.openingDate] will be used instead.
+	 *
+	 * When using these options the sdk will automatically extract the secret ids from the provided patients and use
+	 * those for filtering.
+	 * If you already have the secret ids of the patient you may instead use [byPatientSecretIdsDateForSelf].
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 * Note that these may not be used in methods of apis from [CardinalBaseApis].
+	 *
+	 * These options are sortable. When sorting using these options the services will be sorted by [Service.valueDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param patients a list of patients.
+	 * @param from the minimum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Service.valueDate] (default: ascending).
+	 */
+	@OptIn(InternalIcureApi::class)
+	fun byPatientsDateForSelf(
+		patients: List<Patient>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : SortableFilterOptions<Service> = ByPatientsDateForSelf(
+		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		from = from,
+		to = to,
+		descending = descending
+	)
+
+	/**
+	 * Options for service filtering which match all services shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * that are linked with one of the provided patients through one of the provided secret ids.
+	 * This Options also allows to restrict the services based on [Service.valueDate]:
+	 * - if the [from] fuzzy date is not null, only the services where [Service.valueDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the services where [Service.valueDate] is less than or equal to [to] will be returned.
+	 * If the [Service.valueDate] is null for a specific service, [Service.openingDate] will be used instead.
+	 *
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 *
+	 * These options are sortable. When sorting using these options the services will be sorted by [Service.valueDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param dataOwnerId the id of a data owner.
+	 * @param secretIds a list of patient secret ids.
+	 * @param from the minimum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Service.valueDate] (default: ascending).
+	 */
+	fun byPatientSecretIdsDateForDataOwner(
+		dataOwnerId: String,
+		secretIds: List<String>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : BaseSortableFilterOptions<Service> = ByPatientSecretIdsDateForDataOwner(dataOwnerId, secretIds, from, to, descending)
+
+	/**
+	 * Options for service filtering which match all services shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * that are linked with one of the provided patients through one of the provided secret ids.
+	 * This Options also allows to restrict the services based on [Service.valueDate]:
+	 * - if the [from] fuzzy date is not null, only the services where [Service.valueDate] is greater than or equal to [from] will be returned.
+	 * - if the [to] fuzzy date is not null, only the services where [Service.valueDate] is less than or equal to [to] will be returned.
+	 * If the [Service.valueDate] is null for a specific service, [Service.openingDate] will be used instead.
+	 *
+	 * If the current data owner does not have access to any secret id of one of the provide patients the patient will
+	 * simply be ignored.
+	 * Note that these may not be used in methods of apis from [CardinalBaseApis].
+	 *
+	 * These options are sortable. When sorting using these options the services will be sorted by [Service.valueDate] in ascending or
+	 * descending order according to the value of the [descending] parameter.
+	 *
+	 * @param secretIds a list of patient secret ids.
+	 * @param from the minimum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param to the maximum fuzzy date for [Service.valueDate], in the YYYYMMDDHHMMSS format (default: no limit).
+	 * @param descending whether to sort the result in descending or ascending order by [Service.valueDate] (default: ascending).
+	 */
+	fun byPatientSecretIdsDateForSelf(
+		secretIds: List<String>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	) : SortableFilterOptions<Service> = ByPatientSecretIdsDateForSelf(secretIds, from, to, descending)
+
     @Serializable
     internal class AllForDataOwner(
         val dataOwnerId: String
@@ -503,6 +646,42 @@ object ServiceFilters {
 		val linkValues: List<String>,
 		val linkQualification: LinkQualification?
 	): BaseFilterOptions<Service>
+
+	@Serializable
+	@InternalIcureApi
+	internal class ByPatientsDateForDataOwner(
+		val dataOwnerId: String,
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : SortableFilterOptions<Service>
+
+	@Serializable
+	@InternalIcureApi
+	internal class ByPatientsDateForSelf(
+		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : SortableFilterOptions<Service>
+
+	@Serializable
+	internal class ByPatientSecretIdsDateForDataOwner(
+		val dataOwnerId: String,
+		val secretIds: List<String>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : BaseSortableFilterOptions<Service>
+
+	@Serializable
+	internal class ByPatientSecretIdsDateForSelf(
+		val secretIds: List<String>,
+		val from: Long?,
+		val to: Long?,
+		val descending: Boolean
+	) : SortableFilterOptions<Service>
 }
 
 @InternalIcureApi
@@ -635,5 +814,46 @@ internal suspend fun mapServiceFilterOptions(
     is ServiceFilters.ByIds -> ServiceByIdsFilter(ids = filterOptions.ids.toSet())
 	is ServiceFilters.ByAssociationId -> ServiceByAssociationIdFilter(associationId = filterOptions.associationId)
 	is ServiceFilters.ByQualifiedLink -> ServiceByQualifiedLinkFilter(linkValues = filterOptions.linkValues, linkQualification = filterOptions.linkQualification)
+	is ServiceFilters.ByPatientsDateForDataOwner -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ServiceByDataOwnerPatientDateFilter(
+			dataOwnerId = filterOptions.dataOwnerId,
+			secretForeignKeys = filterOptions.patients.flatMap {
+				entityEncryptionService.secretIdsOf(it, null)
+			}.toSet(),
+			startDate = filterOptions.to,
+			endDate = filterOptions.from,
+			descending = filterOptions.descending
+		)
+	}
+	is ServiceFilters.ByPatientsDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ServiceByDataOwnerPatientDateFilter(
+			dataOwnerId = selfDataOwnerId,
+			secretForeignKeys = filterOptions.patients.flatMap {
+				entityEncryptionService.secretIdsOf(it, null)
+			}.toSet(),
+			startDate = filterOptions.to,
+			endDate = filterOptions.from,
+			descending = filterOptions.descending
+		)
+	}
+	is ServiceFilters.ByPatientSecretIdsDateForDataOwner -> ServiceByDataOwnerPatientDateFilter(
+		dataOwnerId = filterOptions.dataOwnerId,
+		secretForeignKeys = filterOptions.secretIds.toSet(),
+		startDate = filterOptions.to,
+		endDate = filterOptions.from,
+		descending = filterOptions.descending
+	)
+	is ServiceFilters.ByPatientSecretIdsDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ServiceByDataOwnerPatientDateFilter(
+			dataOwnerId = selfDataOwnerId,
+			secretForeignKeys = filterOptions.secretIds.toSet(),
+			startDate = filterOptions.to,
+			endDate = filterOptions.from,
+			descending = filterOptions.descending
+		)
+	}
     else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Services")
 }

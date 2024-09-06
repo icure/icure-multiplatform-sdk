@@ -420,15 +420,13 @@ AccessLog = Union['DecryptedAccessLog', 'EncryptedAccessLog']
 
 def serialize_access_log(access_log: AccessLog) -> object:
 	if isinstance(access_log, DecryptedAccessLog):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedAccessLog",
-			"entity": access_log.__serialize__()
-		}
+		serialized_entity = access_log.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedAccessLog"})
+		return serialized_entity
 	elif isinstance(access_log, EncryptedAccessLog):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedAccessLog",
-			"entity": access_log.__serialize__()
-		}
+		serialized_entity = access_log.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedAccessLog"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(access_log)} is not a known subclass of AccessLog")
 
@@ -438,13 +436,13 @@ def deserialize_access_log(data: Union[str, Dict[str, object]]) -> 'AccessLog':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedAccessLog":
-		DecryptedAccessLog._deserialize(deserialized_dict["entity"])
+		return DecryptedAccessLog._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedAccessLog":
-		EncryptedAccessLog._deserialize(deserialized_dict["entity"])
+		return EncryptedAccessLog._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of AccessLog")
 
@@ -735,15 +733,13 @@ TimeTable = Union['EncryptedTimeTable', 'DecryptedTimeTable']
 
 def serialize_time_table(time_table: TimeTable) -> object:
 	if isinstance(time_table, EncryptedTimeTable):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedTimeTable",
-			"entity": time_table.__serialize__()
-		}
+		serialized_entity = time_table.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedTimeTable"})
+		return serialized_entity
 	elif isinstance(time_table, DecryptedTimeTable):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedTimeTable",
-			"entity": time_table.__serialize__()
-		}
+		serialized_entity = time_table.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedTimeTable"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(time_table)} is not a known subclass of TimeTable")
 
@@ -753,13 +749,13 @@ def deserialize_time_table(data: Union[str, Dict[str, object]]) -> 'TimeTable':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.EncryptedTimeTable":
-		EncryptedTimeTable._deserialize(deserialized_dict["entity"])
+		return EncryptedTimeTable._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedTimeTable":
-		DecryptedTimeTable._deserialize(deserialized_dict["entity"])
+		return DecryptedTimeTable._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of TimeTable")
 
@@ -1281,15 +1277,13 @@ Patient = Union['EncryptedPatient', 'DecryptedPatient']
 
 def serialize_patient(patient: Patient) -> object:
 	if isinstance(patient, EncryptedPatient):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedPatient",
-			"entity": patient.__serialize__()
-		}
+		serialized_entity = patient.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedPatient"})
+		return serialized_entity
 	elif isinstance(patient, DecryptedPatient):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedPatient",
-			"entity": patient.__serialize__()
-		}
+		serialized_entity = patient.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedPatient"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(patient)} is not a known subclass of Patient")
 
@@ -1299,13 +1293,13 @@ def deserialize_patient(data: Union[str, Dict[str, object]]) -> 'Patient':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.EncryptedPatient":
-		EncryptedPatient._deserialize(deserialized_dict["entity"])
+		return EncryptedPatient._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedPatient":
-		DecryptedPatient._deserialize(deserialized_dict["entity"])
+		return DecryptedPatient._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Patient")
 
@@ -1486,15 +1480,15 @@ SecretIdOption = Union['SecretIdOptionUseAnyConfidential', 'SecretIdOptionUseAny
 def serialize_secret_id_option(secret_id_option: SecretIdOption) -> object:
 	if isinstance(secret_id_option, SecretIdOptionUseAnyConfidential):
 		serialized_entity = secret_id_option.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnyConfidential"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnyConfidential"})
 		return serialized_entity
 	elif isinstance(secret_id_option, SecretIdOptionUseAnySharedWithParent):
 		serialized_entity = secret_id_option.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent"})
 		return serialized_entity
 	elif isinstance(secret_id_option, SecretIdOptionUse):
 		serialized_entity = secret_id_option.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.Use"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.Use"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(secret_id_option)} is not a known subclass of SecretIdOption")
@@ -1505,9 +1499,9 @@ def deserialize_secret_id_option(data: Union[str, Dict[str, object]]) -> 'Secret
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnyConfidential":
 		return SecretIdOptionUseAnyConfidential._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent":
@@ -3914,15 +3908,13 @@ Document = Union['EncryptedDocument', 'DecryptedDocument']
 
 def serialize_document(document: Document) -> object:
 	if isinstance(document, EncryptedDocument):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedDocument",
-			"entity": document.__serialize__()
-		}
+		serialized_entity = document.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedDocument"})
+		return serialized_entity
 	elif isinstance(document, DecryptedDocument):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedDocument",
-			"entity": document.__serialize__()
-		}
+		serialized_entity = document.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedDocument"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(document)} is not a known subclass of Document")
 
@@ -3932,13 +3924,13 @@ def deserialize_document(data: Union[str, Dict[str, object]]) -> 'Document':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.EncryptedDocument":
-		EncryptedDocument._deserialize(deserialized_dict["entity"])
+		return EncryptedDocument._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedDocument":
-		DecryptedDocument._deserialize(deserialized_dict["entity"])
+		return DecryptedDocument._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Document")
 
@@ -4206,15 +4198,13 @@ Classification = Union['EncryptedClassification', 'DecryptedClassification']
 
 def serialize_classification(classification: Classification) -> object:
 	if isinstance(classification, EncryptedClassification):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedClassification",
-			"entity": classification.__serialize__()
-		}
+		serialized_entity = classification.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedClassification"})
+		return serialized_entity
 	elif isinstance(classification, DecryptedClassification):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedClassification",
-			"entity": classification.__serialize__()
-		}
+		serialized_entity = classification.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedClassification"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(classification)} is not a known subclass of Classification")
 
@@ -4224,13 +4214,13 @@ def deserialize_classification(data: Union[str, Dict[str, object]]) -> 'Classifi
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.EncryptedClassification":
-		EncryptedClassification._deserialize(deserialized_dict["entity"])
+		return EncryptedClassification._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedClassification":
-		DecryptedClassification._deserialize(deserialized_dict["entity"])
+		return DecryptedClassification._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Classification")
 
@@ -4544,15 +4534,13 @@ CalendarItem = Union['DecryptedCalendarItem', 'EncryptedCalendarItem']
 
 def serialize_calendar_item(calendar_item: CalendarItem) -> object:
 	if isinstance(calendar_item, DecryptedCalendarItem):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedCalendarItem",
-			"entity": calendar_item.__serialize__()
-		}
+		serialized_entity = calendar_item.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedCalendarItem"})
+		return serialized_entity
 	elif isinstance(calendar_item, EncryptedCalendarItem):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedCalendarItem",
-			"entity": calendar_item.__serialize__()
-		}
+		serialized_entity = calendar_item.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedCalendarItem"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(calendar_item)} is not a known subclass of CalendarItem")
 
@@ -4562,13 +4550,13 @@ def deserialize_calendar_item(data: Union[str, Dict[str, object]]) -> 'CalendarI
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedCalendarItem":
-		DecryptedCalendarItem._deserialize(deserialized_dict["entity"])
+		return DecryptedCalendarItem._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedCalendarItem":
-		EncryptedCalendarItem._deserialize(deserialized_dict["entity"])
+		return EncryptedCalendarItem._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CalendarItem")
 
@@ -4736,15 +4724,13 @@ MaintenanceTask = Union['DecryptedMaintenanceTask', 'EncryptedMaintenanceTask']
 
 def serialize_maintenance_task(maintenance_task: MaintenanceTask) -> object:
 	if isinstance(maintenance_task, DecryptedMaintenanceTask):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedMaintenanceTask",
-			"entity": maintenance_task.__serialize__()
-		}
+		serialized_entity = maintenance_task.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedMaintenanceTask"})
+		return serialized_entity
 	elif isinstance(maintenance_task, EncryptedMaintenanceTask):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedMaintenanceTask",
-			"entity": maintenance_task.__serialize__()
-		}
+		serialized_entity = maintenance_task.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedMaintenanceTask"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(maintenance_task)} is not a known subclass of MaintenanceTask")
 
@@ -4754,13 +4740,13 @@ def deserialize_maintenance_task(data: Union[str, Dict[str, object]]) -> 'Mainte
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedMaintenanceTask":
-		DecryptedMaintenanceTask._deserialize(deserialized_dict["entity"])
+		return DecryptedMaintenanceTask._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedMaintenanceTask":
-		EncryptedMaintenanceTask._deserialize(deserialized_dict["entity"])
+		return EncryptedMaintenanceTask._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of MaintenanceTask")
 
@@ -4993,15 +4979,13 @@ Form = Union['EncryptedForm', 'DecryptedForm']
 
 def serialize_form(form: Form) -> object:
 	if isinstance(form, EncryptedForm):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedForm",
-			"entity": form.__serialize__()
-		}
+		serialized_entity = form.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedForm"})
+		return serialized_entity
 	elif isinstance(form, DecryptedForm):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedForm",
-			"entity": form.__serialize__()
-		}
+		serialized_entity = form.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedForm"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(form)} is not a known subclass of Form")
 
@@ -5011,13 +4995,13 @@ def deserialize_form(data: Union[str, Dict[str, object]]) -> 'Form':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.EncryptedForm":
-		EncryptedForm._deserialize(deserialized_dict["entity"])
+		return EncryptedForm._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedForm":
-		DecryptedForm._deserialize(deserialized_dict["entity"])
+		return DecryptedForm._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Form")
 
@@ -5148,11 +5132,11 @@ RecoveryResult = Union['RecoveryResultSuccess', 'RecoveryResultFailure']
 def serialize_recovery_result(recovery_result: RecoveryResult) -> object:
 	if isinstance(recovery_result, RecoveryResultSuccess):
 		serialized_entity = recovery_result.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success"})
 		return serialized_entity
 	elif isinstance(recovery_result, RecoveryResultFailure):
 		serialized_entity = recovery_result.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(recovery_result)} is not a known subclass of RecoveryResult")
@@ -5163,9 +5147,9 @@ def deserialize_recovery_result(data: Union[str, Dict[str, object]]) -> 'Recover
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success":
 		return RecoveryResultSuccess._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure":
@@ -5348,11 +5332,11 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 	def serialize_share_patient_data_error(cls, share_patient_data_error: SharePatientDataError) -> object:
 		if isinstance(share_patient_data_error, ShareAllPatientDataOptions.BulkShareFailure):
 			serialized_entity = share_patient_data_error.__serialize__()
-			serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure"})
+			serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure"})
 			return serialized_entity
 		elif isinstance(share_patient_data_error, ShareAllPatientDataOptions.FailedRequest):
 			serialized_entity = share_patient_data_error.__serialize__()
-			serialized_entity.update({"type": "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest"})
+			serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest"})
 			return serialized_entity
 		else:
 			raise Exception(f"{type(share_patient_data_error)} is not a known subclass of SharePatientDataError")
@@ -5363,9 +5347,9 @@ class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 			deserialized_dict = json.loads(data)
 		else:
 			deserialized_dict = data
-		qualifier = deserialized_dict.get("type")
+		qualifier = deserialized_dict.get("kotlinType")
 		if qualifier is None:
-			raise Exception("Missing qualifier: type")
+			raise Exception("Missing qualifier: kotlinType")
 		if qualifier == "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure":
 			return ShareAllPatientDataOptions.BulkShareFailure._deserialize(deserialized_dict)
 		elif qualifier == "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest":
@@ -5750,15 +5734,13 @@ Contact = Union['DecryptedContact', 'EncryptedContact']
 
 def serialize_contact(contact: Contact) -> object:
 	if isinstance(contact, DecryptedContact):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedContact",
-			"entity": contact.__serialize__()
-		}
+		serialized_entity = contact.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedContact"})
+		return serialized_entity
 	elif isinstance(contact, EncryptedContact):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedContact",
-			"entity": contact.__serialize__()
-		}
+		serialized_entity = contact.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedContact"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(contact)} is not a known subclass of Contact")
 
@@ -5768,13 +5750,13 @@ def deserialize_contact(data: Union[str, Dict[str, object]]) -> 'Contact':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedContact":
-		DecryptedContact._deserialize(deserialized_dict["entity"])
+		return DecryptedContact._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedContact":
-		EncryptedContact._deserialize(deserialized_dict["entity"])
+		return EncryptedContact._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Contact")
 
@@ -6032,15 +6014,13 @@ Service = Union['DecryptedService', 'EncryptedService']
 
 def serialize_service(service: Service) -> object:
 	if isinstance(service, DecryptedService):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedService",
-			"entity": service.__serialize__()
-		}
+		serialized_entity = service.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedService"})
+		return serialized_entity
 	elif isinstance(service, EncryptedService):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedService",
-			"entity": service.__serialize__()
-		}
+		serialized_entity = service.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedService"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(service)} is not a known subclass of Service")
 
@@ -6050,13 +6030,13 @@ def deserialize_service(data: Union[str, Dict[str, object]]) -> 'Service':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedService":
-		DecryptedService._deserialize(deserialized_dict["entity"])
+		return DecryptedService._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedService":
-		EncryptedService._deserialize(deserialized_dict["entity"])
+		return EncryptedService._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Service")
 
@@ -6341,15 +6321,13 @@ Receipt = Union['DecryptedReceipt', 'EncryptedReceipt']
 
 def serialize_receipt(receipt: Receipt) -> object:
 	if isinstance(receipt, DecryptedReceipt):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedReceipt",
-			"entity": receipt.__serialize__()
-		}
+		serialized_entity = receipt.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedReceipt"})
+		return serialized_entity
 	elif isinstance(receipt, EncryptedReceipt):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedReceipt",
-			"entity": receipt.__serialize__()
-		}
+		serialized_entity = receipt.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedReceipt"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(receipt)} is not a known subclass of Receipt")
 
@@ -6359,13 +6337,13 @@ def deserialize_receipt(data: Union[str, Dict[str, object]]) -> 'Receipt':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedReceipt":
-		DecryptedReceipt._deserialize(deserialized_dict["entity"])
+		return DecryptedReceipt._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedReceipt":
-		EncryptedReceipt._deserialize(deserialized_dict["entity"])
+		return EncryptedReceipt._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Receipt")
 
@@ -6995,15 +6973,13 @@ Topic = Union['DecryptedTopic', 'EncryptedTopic']
 
 def serialize_topic(topic: Topic) -> object:
 	if isinstance(topic, DecryptedTopic):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedTopic",
-			"entity": topic.__serialize__()
-		}
+		serialized_entity = topic.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedTopic"})
+		return serialized_entity
 	elif isinstance(topic, EncryptedTopic):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedTopic",
-			"entity": topic.__serialize__()
-		}
+		serialized_entity = topic.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedTopic"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(topic)} is not a known subclass of Topic")
 
@@ -7013,13 +6989,13 @@ def deserialize_topic(data: Union[str, Dict[str, object]]) -> 'Topic':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedTopic":
-		DecryptedTopic._deserialize(deserialized_dict["entity"])
+		return DecryptedTopic._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedTopic":
-		EncryptedTopic._deserialize(deserialized_dict["entity"])
+		return EncryptedTopic._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Topic")
 
@@ -7399,15 +7375,13 @@ HealthElement = Union['EncryptedHealthElement', 'DecryptedHealthElement']
 
 def serialize_health_element(health_element: HealthElement) -> object:
 	if isinstance(health_element, EncryptedHealthElement):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedHealthElement",
-			"entity": health_element.__serialize__()
-		}
+		serialized_entity = health_element.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedHealthElement"})
+		return serialized_entity
 	elif isinstance(health_element, DecryptedHealthElement):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedHealthElement",
-			"entity": health_element.__serialize__()
-		}
+		serialized_entity = health_element.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedHealthElement"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(health_element)} is not a known subclass of HealthElement")
 
@@ -7417,13 +7391,13 @@ def deserialize_health_element(data: Union[str, Dict[str, object]]) -> 'HealthEl
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.EncryptedHealthElement":
-		EncryptedHealthElement._deserialize(deserialized_dict["entity"])
+		return EncryptedHealthElement._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedHealthElement":
-		DecryptedHealthElement._deserialize(deserialized_dict["entity"])
+		return DecryptedHealthElement._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of HealthElement")
 
@@ -7692,23 +7666,23 @@ CryptoActor = Union['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', '
 def serialize_crypto_actor(crypto_actor: CryptoActor) -> object:
 	if isinstance(crypto_actor, CryptoActorStub):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.CryptoActorStub"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.CryptoActorStub"})
 		return serialized_entity
 	elif isinstance(crypto_actor, EncryptedPatient):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.EncryptedPatient"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedPatient"})
 		return serialized_entity
 	elif isinstance(crypto_actor, DecryptedPatient):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.DecryptedPatient"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedPatient"})
 		return serialized_entity
 	elif isinstance(crypto_actor, Device):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.Device"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.Device"})
 		return serialized_entity
 	elif isinstance(crypto_actor, HealthcareParty):
 		serialized_entity = crypto_actor.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.HealthcareParty"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.HealthcareParty"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(crypto_actor)} is not a known subclass of CryptoActor")
@@ -7719,9 +7693,9 @@ def deserialize_crypto_actor(data: Union[str, Dict[str, object]]) -> 'CryptoActo
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.CryptoActorStub":
 		return CryptoActorStub._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedPatient":
@@ -8053,15 +8027,13 @@ Message = Union['DecryptedMessage', 'EncryptedMessage']
 
 def serialize_message(message: Message) -> object:
 	if isinstance(message, DecryptedMessage):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedMessage",
-			"entity": message.__serialize__()
-		}
+		serialized_entity = message.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedMessage"})
+		return serialized_entity
 	elif isinstance(message, EncryptedMessage):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedMessage",
-			"entity": message.__serialize__()
-		}
+		serialized_entity = message.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedMessage"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(message)} is not a known subclass of Message")
 
@@ -8071,13 +8043,13 @@ def deserialize_message(data: Union[str, Dict[str, object]]) -> 'Message':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedMessage":
-		DecryptedMessage._deserialize(deserialized_dict["entity"])
+		return DecryptedMessage._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedMessage":
-		EncryptedMessage._deserialize(deserialized_dict["entity"])
+		return EncryptedMessage._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Message")
 
@@ -8219,15 +8191,15 @@ DataOwnerWithType = Union['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePat
 def serialize_data_owner_with_type(data_owner_with_type: DataOwnerWithType) -> object:
 	if isinstance(data_owner_with_type, DataOwnerWithTypeHcpDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
-		serialized_entity.update({"type": "hcp"})
+		serialized_entity.update({"kotlinType": "hcp"})
 		return serialized_entity
 	elif isinstance(data_owner_with_type, DataOwnerWithTypePatientDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
-		serialized_entity.update({"type": "patient"})
+		serialized_entity.update({"kotlinType": "patient"})
 		return serialized_entity
 	elif isinstance(data_owner_with_type, DataOwnerWithTypeDeviceDataOwner):
 		serialized_entity = data_owner_with_type.__serialize__()
-		serialized_entity.update({"type": "device"})
+		serialized_entity.update({"kotlinType": "device"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(data_owner_with_type)} is not a known subclass of DataOwnerWithType")
@@ -8238,9 +8210,9 @@ def deserialize_data_owner_with_type(data: Union[str, Dict[str, object]]) -> 'Da
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "hcp":
 		return DataOwnerWithTypeHcpDataOwner._deserialize(deserialized_dict)
 	elif qualifier == "patient":
@@ -8337,15 +8309,13 @@ PropertyStub = Union['EncryptedPropertyStub', 'DecryptedPropertyStub']
 
 def serialize_property_stub(property_stub: PropertyStub) -> object:
 	if isinstance(property_stub, EncryptedPropertyStub):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedPropertyStub",
-			"entity": property_stub.__serialize__()
-		}
+		serialized_entity = property_stub.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedPropertyStub"})
+		return serialized_entity
 	elif isinstance(property_stub, DecryptedPropertyStub):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedPropertyStub",
-			"entity": property_stub.__serialize__()
-		}
+		serialized_entity = property_stub.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedPropertyStub"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(property_stub)} is not a known subclass of PropertyStub")
 
@@ -8355,13 +8325,13 @@ def deserialize_property_stub(data: Union[str, Dict[str, object]]) -> 'PropertyS
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.EncryptedPropertyStub":
-		EncryptedPropertyStub._deserialize(deserialized_dict["entity"])
+		return EncryptedPropertyStub._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedPropertyStub":
-		DecryptedPropertyStub._deserialize(deserialized_dict["entity"])
+		return DecryptedPropertyStub._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PropertyStub")
 
@@ -9012,15 +8982,13 @@ Invoice = Union['DecryptedInvoice', 'EncryptedInvoice']
 
 def serialize_invoice(invoice: Invoice) -> object:
 	if isinstance(invoice, DecryptedInvoice):
-		return {
-			"type": "com.icure.cardinal.sdk.model.DecryptedInvoice",
-			"entity": invoice.__serialize__()
-		}
+		serialized_entity = invoice.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedInvoice"})
+		return serialized_entity
 	elif isinstance(invoice, EncryptedInvoice):
-		return {
-			"type": "com.icure.cardinal.sdk.model.EncryptedInvoice",
-			"entity": invoice.__serialize__()
-		}
+		serialized_entity = invoice.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedInvoice"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(invoice)} is not a known subclass of Invoice")
 
@@ -9030,13 +8998,13 @@ def deserialize_invoice(data: Union[str, Dict[str, object]]) -> 'Invoice':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.DecryptedInvoice":
-		DecryptedInvoice._deserialize(deserialized_dict["entity"])
+		return DecryptedInvoice._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.EncryptedInvoice":
-		EncryptedInvoice._deserialize(deserialized_dict["entity"])
+		return EncryptedInvoice._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Invoice")
 
@@ -9416,15 +9384,13 @@ InvoicingCode = Union['DecryptedInvoicingCode', 'EncryptedInvoicingCode']
 
 def serialize_invoicing_code(invoicing_code: InvoicingCode) -> object:
 	if isinstance(invoicing_code, DecryptedInvoicingCode):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode",
-			"entity": invoicing_code.__serialize__()
-		}
+		serialized_entity = invoicing_code.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode"})
+		return serialized_entity
 	elif isinstance(invoicing_code, EncryptedInvoicingCode):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode",
-			"entity": invoicing_code.__serialize__()
-		}
+		serialized_entity = invoicing_code.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(invoicing_code)} is not a known subclass of InvoicingCode")
 
@@ -9434,13 +9400,13 @@ def deserialize_invoicing_code(data: Union[str, Dict[str, object]]) -> 'Invoicin
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode":
-		DecryptedInvoicingCode._deserialize(deserialized_dict["entity"])
+		return DecryptedInvoicingCode._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode":
-		EncryptedInvoicingCode._deserialize(deserialized_dict["entity"])
+		return EncryptedInvoicingCode._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of InvoicingCode")
 
@@ -10398,15 +10364,13 @@ Address = Union['EncryptedAddress', 'DecryptedAddress']
 
 def serialize_address(address: Address) -> object:
 	if isinstance(address, EncryptedAddress):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedAddress",
-			"entity": address.__serialize__()
-		}
+		serialized_entity = address.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedAddress"})
+		return serialized_entity
 	elif isinstance(address, DecryptedAddress):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedAddress",
-			"entity": address.__serialize__()
-		}
+		serialized_entity = address.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedAddress"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(address)} is not a known subclass of Address")
 
@@ -10416,13 +10380,13 @@ def deserialize_address(data: Union[str, Dict[str, object]]) -> 'Address':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedAddress":
-		EncryptedAddress._deserialize(deserialized_dict["entity"])
+		return EncryptedAddress._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedAddress":
-		DecryptedAddress._deserialize(deserialized_dict["entity"])
+		return DecryptedAddress._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Address")
 
@@ -10785,15 +10749,13 @@ Insurability = Union['DecryptedInsurability', 'EncryptedInsurability']
 
 def serialize_insurability(insurability: Insurability) -> object:
 	if isinstance(insurability, DecryptedInsurability):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedInsurability",
-			"entity": insurability.__serialize__()
-		}
+		serialized_entity = insurability.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedInsurability"})
+		return serialized_entity
 	elif isinstance(insurability, EncryptedInsurability):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedInsurability",
-			"entity": insurability.__serialize__()
-		}
+		serialized_entity = insurability.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedInsurability"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(insurability)} is not a known subclass of Insurability")
 
@@ -10803,13 +10765,13 @@ def deserialize_insurability(data: Union[str, Dict[str, object]]) -> 'Insurabili
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedInsurability":
-		DecryptedInsurability._deserialize(deserialized_dict["entity"])
+		return DecryptedInsurability._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedInsurability":
-		EncryptedInsurability._deserialize(deserialized_dict["entity"])
+		return EncryptedInsurability._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Insurability")
 
@@ -10919,15 +10881,13 @@ PatientHealthCareParty = Union['EncryptedPatientHealthCareParty', 'DecryptedPati
 
 def serialize_patient_health_care_party(patient_health_care_party: PatientHealthCareParty) -> object:
 	if isinstance(patient_health_care_party, EncryptedPatientHealthCareParty):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty",
-			"entity": patient_health_care_party.__serialize__()
-		}
+		serialized_entity = patient_health_care_party.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty"})
+		return serialized_entity
 	elif isinstance(patient_health_care_party, DecryptedPatientHealthCareParty):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty",
-			"entity": patient_health_care_party.__serialize__()
-		}
+		serialized_entity = patient_health_care_party.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(patient_health_care_party)} is not a known subclass of PatientHealthCareParty")
 
@@ -10937,13 +10897,13 @@ def deserialize_patient_health_care_party(data: Union[str, Dict[str, object]]) -
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty":
-		EncryptedPatientHealthCareParty._deserialize(deserialized_dict["entity"])
+		return EncryptedPatientHealthCareParty._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty":
-		DecryptedPatientHealthCareParty._deserialize(deserialized_dict["entity"])
+		return DecryptedPatientHealthCareParty._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PatientHealthCareParty")
 
@@ -11033,15 +10993,13 @@ FinancialInstitutionInformation = Union['EncryptedFinancialInstitutionInformatio
 
 def serialize_financial_institution_information(financial_institution_information: FinancialInstitutionInformation) -> object:
 	if isinstance(financial_institution_information, EncryptedFinancialInstitutionInformation):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation",
-			"entity": financial_institution_information.__serialize__()
-		}
+		serialized_entity = financial_institution_information.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation"})
+		return serialized_entity
 	elif isinstance(financial_institution_information, DecryptedFinancialInstitutionInformation):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation",
-			"entity": financial_institution_information.__serialize__()
-		}
+		serialized_entity = financial_institution_information.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(financial_institution_information)} is not a known subclass of FinancialInstitutionInformation")
 
@@ -11051,13 +11009,13 @@ def deserialize_financial_institution_information(data: Union[str, Dict[str, obj
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation":
-		EncryptedFinancialInstitutionInformation._deserialize(deserialized_dict["entity"])
+		return EncryptedFinancialInstitutionInformation._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation":
-		DecryptedFinancialInstitutionInformation._deserialize(deserialized_dict["entity"])
+		return DecryptedFinancialInstitutionInformation._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of FinancialInstitutionInformation")
 
@@ -11297,15 +11255,13 @@ MedicalHouseContract = Union['DecryptedMedicalHouseContract', 'EncryptedMedicalH
 
 def serialize_medical_house_contract(medical_house_contract: MedicalHouseContract) -> object:
 	if isinstance(medical_house_contract, DecryptedMedicalHouseContract):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract",
-			"entity": medical_house_contract.__serialize__()
-		}
+		serialized_entity = medical_house_contract.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract"})
+		return serialized_entity
 	elif isinstance(medical_house_contract, EncryptedMedicalHouseContract):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract",
-			"entity": medical_house_contract.__serialize__()
-		}
+		serialized_entity = medical_house_contract.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(medical_house_contract)} is not a known subclass of MedicalHouseContract")
 
@@ -11315,13 +11271,13 @@ def deserialize_medical_house_contract(data: Union[str, Dict[str, object]]) -> '
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract":
-		DecryptedMedicalHouseContract._deserialize(deserialized_dict["entity"])
+		return DecryptedMedicalHouseContract._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract":
-		EncryptedMedicalHouseContract._deserialize(deserialized_dict["entity"])
+		return EncryptedMedicalHouseContract._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of MedicalHouseContract")
 
@@ -12589,15 +12545,13 @@ Valorisation = Union['EncryptedValorisation', 'DecryptedValorisation']
 
 def serialize_valorisation(valorisation: Valorisation) -> object:
 	if isinstance(valorisation, EncryptedValorisation):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedValorisation",
-			"entity": valorisation.__serialize__()
-		}
+		serialized_entity = valorisation.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedValorisation"})
+		return serialized_entity
 	elif isinstance(valorisation, DecryptedValorisation):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedValorisation",
-			"entity": valorisation.__serialize__()
-		}
+		serialized_entity = valorisation.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedValorisation"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(valorisation)} is not a known subclass of Valorisation")
 
@@ -12607,13 +12561,13 @@ def deserialize_valorisation(data: Union[str, Dict[str, object]]) -> 'Valorisati
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedValorisation":
-		EncryptedValorisation._deserialize(deserialized_dict["entity"])
+		return EncryptedValorisation._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedValorisation":
-		DecryptedValorisation._deserialize(deserialized_dict["entity"])
+		return DecryptedValorisation._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Valorisation")
 
@@ -12792,15 +12746,13 @@ SubContact = Union['EncryptedSubContact', 'DecryptedSubContact']
 
 def serialize_sub_contact(sub_contact: SubContact) -> object:
 	if isinstance(sub_contact, EncryptedSubContact):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedSubContact",
-			"entity": sub_contact.__serialize__()
-		}
+		serialized_entity = sub_contact.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedSubContact"})
+		return serialized_entity
 	elif isinstance(sub_contact, DecryptedSubContact):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedSubContact",
-			"entity": sub_contact.__serialize__()
-		}
+		serialized_entity = sub_contact.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedSubContact"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(sub_contact)} is not a known subclass of SubContact")
 
@@ -12810,13 +12762,13 @@ def deserialize_sub_contact(data: Union[str, Dict[str, object]]) -> 'SubContact'
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedSubContact":
-		EncryptedSubContact._deserialize(deserialized_dict["entity"])
+		return EncryptedSubContact._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedSubContact":
-		DecryptedSubContact._deserialize(deserialized_dict["entity"])
+		return DecryptedSubContact._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SubContact")
 
@@ -12985,15 +12937,13 @@ Content = Union['EncryptedContent', 'DecryptedContent']
 
 def serialize_content(content: Content) -> object:
 	if isinstance(content, EncryptedContent):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedContent",
-			"entity": content.__serialize__()
-		}
+		serialized_entity = content.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedContent"})
+		return serialized_entity
 	elif isinstance(content, DecryptedContent):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedContent",
-			"entity": content.__serialize__()
-		}
+		serialized_entity = content.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedContent"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(content)} is not a known subclass of Content")
 
@@ -13003,13 +12953,13 @@ def deserialize_content(data: Union[str, Dict[str, object]]) -> 'Content':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedContent":
-		EncryptedContent._deserialize(deserialized_dict["entity"])
+		return EncryptedContent._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedContent":
-		DecryptedContent._deserialize(deserialized_dict["entity"])
+		return DecryptedContent._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Content")
 
@@ -13212,15 +13162,13 @@ FlatRateTarification = Union['EncryptedFlatRateTarification', 'DecryptedFlatRate
 
 def serialize_flat_rate_tarification(flat_rate_tarification: FlatRateTarification) -> object:
 	if isinstance(flat_rate_tarification, EncryptedFlatRateTarification):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedFlatRateTarification",
-			"entity": flat_rate_tarification.__serialize__()
-		}
+		serialized_entity = flat_rate_tarification.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedFlatRateTarification"})
+		return serialized_entity
 	elif isinstance(flat_rate_tarification, DecryptedFlatRateTarification):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedFlatRateTarification",
-			"entity": flat_rate_tarification.__serialize__()
-		}
+		serialized_entity = flat_rate_tarification.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedFlatRateTarification"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(flat_rate_tarification)} is not a known subclass of FlatRateTarification")
 
@@ -13230,13 +13178,13 @@ def deserialize_flat_rate_tarification(data: Union[str, Dict[str, object]]) -> '
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedFlatRateTarification":
-		EncryptedFlatRateTarification._deserialize(deserialized_dict["entity"])
+		return EncryptedFlatRateTarification._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedFlatRateTarification":
-		DecryptedFlatRateTarification._deserialize(deserialized_dict["entity"])
+		return DecryptedFlatRateTarification._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of FlatRateTarification")
 
@@ -13265,7 +13213,7 @@ PermissionItem = Union['AlwaysPermissionItem']
 def serialize_permission_item(permission_item: PermissionItem) -> object:
 	if isinstance(permission_item, AlwaysPermissionItem):
 		serialized_entity = permission_item.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.security.AlwaysPermissionItem"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.security.AlwaysPermissionItem"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(permission_item)} is not a known subclass of PermissionItem")
@@ -13276,9 +13224,9 @@ def deserialize_permission_item(data: Union[str, Dict[str, object]]) -> 'Permiss
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.security.AlwaysPermissionItem":
 		return AlwaysPermissionItem._deserialize(deserialized_dict)
 	else:
@@ -13523,15 +13471,13 @@ PlanOfAction = Union['EncryptedPlanOfAction', 'DecryptedPlanOfAction']
 
 def serialize_plan_of_action(plan_of_action: PlanOfAction) -> object:
 	if isinstance(plan_of_action, EncryptedPlanOfAction):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction",
-			"entity": plan_of_action.__serialize__()
-		}
+		serialized_entity = plan_of_action.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction"})
+		return serialized_entity
 	elif isinstance(plan_of_action, DecryptedPlanOfAction):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction",
-			"entity": plan_of_action.__serialize__()
-		}
+		serialized_entity = plan_of_action.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(plan_of_action)} is not a known subclass of PlanOfAction")
 
@@ -13541,13 +13487,13 @@ def deserialize_plan_of_action(data: Union[str, Dict[str, object]]) -> 'PlanOfAc
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction":
-		EncryptedPlanOfAction._deserialize(deserialized_dict["entity"])
+		return EncryptedPlanOfAction._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction":
-		DecryptedPlanOfAction._deserialize(deserialized_dict["entity"])
+		return DecryptedPlanOfAction._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PlanOfAction")
 
@@ -13625,15 +13571,13 @@ Episode = Union['DecryptedEpisode', 'EncryptedEpisode']
 
 def serialize_episode(episode: Episode) -> object:
 	if isinstance(episode, DecryptedEpisode):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedEpisode",
-			"entity": episode.__serialize__()
-		}
+		serialized_entity = episode.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedEpisode"})
+		return serialized_entity
 	elif isinstance(episode, EncryptedEpisode):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedEpisode",
-			"entity": episode.__serialize__()
-		}
+		serialized_entity = episode.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedEpisode"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(episode)} is not a known subclass of Episode")
 
@@ -13643,13 +13587,13 @@ def deserialize_episode(data: Union[str, Dict[str, object]]) -> 'Episode':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedEpisode":
-		DecryptedEpisode._deserialize(deserialized_dict["entity"])
+		return DecryptedEpisode._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedEpisode":
-		EncryptedEpisode._deserialize(deserialized_dict["entity"])
+		return EncryptedEpisode._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Episode")
 
@@ -13721,15 +13665,13 @@ CareTeamMember = Union['EncryptedCareTeamMember', 'DecryptedCareTeamMember']
 
 def serialize_care_team_member(care_team_member: CareTeamMember) -> object:
 	if isinstance(care_team_member, EncryptedCareTeamMember):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember",
-			"entity": care_team_member.__serialize__()
-		}
+		serialized_entity = care_team_member.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember"})
+		return serialized_entity
 	elif isinstance(care_team_member, DecryptedCareTeamMember):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember",
-			"entity": care_team_member.__serialize__()
-		}
+		serialized_entity = care_team_member.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(care_team_member)} is not a known subclass of CareTeamMember")
 
@@ -13739,13 +13681,13 @@ def deserialize_care_team_member(data: Union[str, Dict[str, object]]) -> 'CareTe
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember":
-		EncryptedCareTeamMember._deserialize(deserialized_dict["entity"])
+		return EncryptedCareTeamMember._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember":
-		DecryptedCareTeamMember._deserialize(deserialized_dict["entity"])
+		return DecryptedCareTeamMember._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CareTeamMember")
 
@@ -13965,15 +13907,13 @@ TypedValue = Union['DecryptedTypedValue', 'EncryptedTypedValue']
 
 def serialize_typed_value(typed_value: TypedValue) -> object:
 	if isinstance(typed_value, DecryptedTypedValue):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedTypedValue",
-			"entity": typed_value.__serialize__()
-		}
+		serialized_entity = typed_value.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedTypedValue"})
+		return serialized_entity
 	elif isinstance(typed_value, EncryptedTypedValue):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedTypedValue",
-			"entity": typed_value.__serialize__()
-		}
+		serialized_entity = typed_value.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedTypedValue"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(typed_value)} is not a known subclass of TypedValue")
 
@@ -13983,13 +13923,13 @@ def deserialize_typed_value(data: Union[str, Dict[str, object]]) -> 'TypedValue'
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedTypedValue":
-		DecryptedTypedValue._deserialize(deserialized_dict["entity"])
+		return DecryptedTypedValue._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedTypedValue":
-		EncryptedTypedValue._deserialize(deserialized_dict["entity"])
+		return EncryptedTypedValue._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of TypedValue")
 
@@ -14447,15 +14387,13 @@ Telecom = Union['EncryptedTelecom', 'DecryptedTelecom']
 
 def serialize_telecom(telecom: Telecom) -> object:
 	if isinstance(telecom, EncryptedTelecom):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedTelecom",
-			"entity": telecom.__serialize__()
-		}
+		serialized_entity = telecom.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedTelecom"})
+		return serialized_entity
 	elif isinstance(telecom, DecryptedTelecom):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedTelecom",
-			"entity": telecom.__serialize__()
-		}
+		serialized_entity = telecom.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedTelecom"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(telecom)} is not a known subclass of Telecom")
 
@@ -14465,13 +14403,13 @@ def deserialize_telecom(data: Union[str, Dict[str, object]]) -> 'Telecom':
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedTelecom":
-		EncryptedTelecom._deserialize(deserialized_dict["entity"])
+		return EncryptedTelecom._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedTelecom":
-		DecryptedTelecom._deserialize(deserialized_dict["entity"])
+		return DecryptedTelecom._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Telecom")
 
@@ -15269,15 +15207,13 @@ CareTeamMembership = Union['DecryptedCareTeamMembership', 'EncryptedCareTeamMemb
 
 def serialize_care_team_membership(care_team_membership: CareTeamMembership) -> object:
 	if isinstance(care_team_membership, DecryptedCareTeamMembership):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMembership",
-			"entity": care_team_membership.__serialize__()
-		}
+		serialized_entity = care_team_membership.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMembership"})
+		return serialized_entity
 	elif isinstance(care_team_membership, EncryptedCareTeamMembership):
-		return {
-			"type": "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMembership",
-			"entity": care_team_membership.__serialize__()
-		}
+		serialized_entity = care_team_membership.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMembership"})
+		return serialized_entity
 	else:
 		raise Exception(f"{type(care_team_membership)} is not a known subclass of CareTeamMembership")
 
@@ -15287,13 +15223,13 @@ def deserialize_care_team_membership(data: Union[str, Dict[str, object]]) -> 'Ca
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMembership":
-		DecryptedCareTeamMembership._deserialize(deserialized_dict["entity"])
+		return DecryptedCareTeamMembership._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMembership":
-		EncryptedCareTeamMembership._deserialize(deserialized_dict["entity"])
+		return EncryptedCareTeamMembership._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CareTeamMembership")
 
@@ -16175,47 +16111,47 @@ StructureElement = Union['DropdownField', 'RadioButton', 'DatePicker', 'TimePick
 def serialize_structure_element(structure_element: StructureElement) -> object:
 	if isinstance(structure_element, DropdownField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.DropdownField"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.DropdownField"})
 		return serialized_entity
 	elif isinstance(structure_element, RadioButton):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.RadioButton"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.RadioButton"})
 		return serialized_entity
 	elif isinstance(structure_element, DatePicker):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.DatePicker"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.DatePicker"})
 		return serialized_entity
 	elif isinstance(structure_element, TimePicker):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.TimePicker"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.TimePicker"})
 		return serialized_entity
 	elif isinstance(structure_element, DateTimePicker):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.DateTimePicker"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.DateTimePicker"})
 		return serialized_entity
 	elif isinstance(structure_element, NumberField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.NumberField"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.NumberField"})
 		return serialized_entity
 	elif isinstance(structure_element, TextField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.TextField"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.TextField"})
 		return serialized_entity
 	elif isinstance(structure_element, CheckBox):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.CheckBox"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.CheckBox"})
 		return serialized_entity
 	elif isinstance(structure_element, MultipleChoice):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.MultipleChoice"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.MultipleChoice"})
 		return serialized_entity
 	elif isinstance(structure_element, MeasureField):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.MeasureField"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.MeasureField"})
 		return serialized_entity
 	elif isinstance(structure_element, FieldsGroup):
 		serialized_entity = structure_element.__serialize__()
-		serialized_entity.update({"type": "com.icure.cardinal.sdk.model.embed.form.template.FieldsGroup"})
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.form.template.FieldsGroup"})
 		return serialized_entity
 	else:
 		raise Exception(f"{type(structure_element)} is not a known subclass of StructureElement")
@@ -16226,9 +16162,9 @@ def deserialize_structure_element(data: Union[str, Dict[str, object]]) -> 'Struc
 		deserialized_dict = json.loads(data)
 	else:
 		deserialized_dict = data
-	qualifier = deserialized_dict.get("type")
+	qualifier = deserialized_dict.get("kotlinType")
 	if qualifier is None:
-		raise Exception("Missing qualifier: type")
+		raise Exception("Missing qualifier: kotlinType")
 	if qualifier == "com.icure.cardinal.sdk.model.embed.form.template.DropdownField":
 		return DropdownField._deserialize(deserialized_dict)
 	elif qualifier == "com.icure.cardinal.sdk.model.embed.form.template.RadioButton":

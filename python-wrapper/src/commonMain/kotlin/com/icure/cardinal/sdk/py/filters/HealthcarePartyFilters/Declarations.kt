@@ -8,8 +8,10 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
+import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
@@ -23,8 +25,9 @@ private class ByIdentifiersParams(
 	public val identifiers: List<Identifier>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byIdentifiers(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByIdentifiersParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByIdentifiersParams>(params)
 	HealthcarePartyFilters.byIdentifiers(
 		decodedParams.identifiers,
 	)
@@ -36,8 +39,9 @@ private class ByCodeParams(
 	public val codeCode: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byCode(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByCodeParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByCodeParams>(params)
 	HealthcarePartyFilters.byCode(
 		decodedParams.codeType,
 		decodedParams.codeCode,
@@ -50,8 +54,9 @@ private class ByTagParams(
 	public val tagCode: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byTag(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByTagParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByTagParams>(params)
 	HealthcarePartyFilters.byTag(
 		decodedParams.tagType,
 		decodedParams.tagCode,
@@ -63,8 +68,9 @@ private class ByIdsParams(
 	public val ids: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byIds(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByIdsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByIdsParams>(params)
 	HealthcarePartyFilters.byIds(
 		decodedParams.ids,
 	)
@@ -76,8 +82,9 @@ private class ByNameParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byName(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByNameParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByNameParams>(params)
 	HealthcarePartyFilters.byName(
 		decodedParams.searchString,
 		decodedParams.descending,
@@ -90,8 +97,9 @@ private class ByNationalIdentifierParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byNationalIdentifier(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByNationalIdentifierParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByNationalIdentifierParams>(params)
 	HealthcarePartyFilters.byNationalIdentifier(
 		decodedParams.searchString,
 		decodedParams.descending,
@@ -103,8 +111,9 @@ private class ByParentIdParams(
 	public val parentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byParentId(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByParentIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByParentIdParams>(params)
 	HealthcarePartyFilters.byParentId(
 		decodedParams.parentId,
 	)
@@ -118,8 +127,9 @@ private class ByTypeSpecialtyPostCodeParams(
 	public val endPostCode: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byTypeSpecialtyPostCode(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByTypeSpecialtyPostCodeParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByTypeSpecialtyPostCodeParams>(params)
 	HealthcarePartyFilters.byTypeSpecialtyPostCode(
 		decodedParams.specialty,
 		decodedParams.specCode,

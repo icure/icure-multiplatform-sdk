@@ -8,7 +8,8 @@ import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.ByteArray
 import kotlin.OptIn
@@ -31,9 +32,10 @@ private class DeleteReceiptParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteReceiptBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.deleteReceipt(
 			decodedParams.entityId,
@@ -41,14 +43,17 @@ public fun deleteReceiptBlocking(sdk: CardinalBaseApis, params: String): String 
 	}
 }.toPyString(DocIdentifier.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteReceiptAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.deleteReceipt(
@@ -63,9 +68,10 @@ private class DeleteReceiptsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteReceiptsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteReceiptsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptsParams>(params)
 	runBlocking {
 		sdk.receipt.deleteReceipts(
 			decodedParams.entityIds,
@@ -73,14 +79,17 @@ public fun deleteReceiptsBlocking(sdk: CardinalBaseApis, params: String): String
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteReceiptsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteReceiptsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.deleteReceipts(
@@ -96,9 +105,10 @@ private class GetRawReceiptAttachmentParams(
 	public val attachmentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getRawReceiptAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetRawReceiptAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetRawReceiptAttachmentParams>(params)
 	runBlocking {
 		sdk.receipt.getRawReceiptAttachment(
 			decodedParams.receiptId,
@@ -107,14 +117,17 @@ public fun getRawReceiptAttachmentBlocking(sdk: CardinalBaseApis, params: String
 	}
 }.toPyString(ByteArraySerializer)
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getRawReceiptAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetRawReceiptAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.getRawReceiptAttachment(
@@ -134,9 +147,10 @@ private class SetRawReceiptAttachmentParams(
 	public val attachment: ByteArray,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun setRawReceiptAttachmentBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawReceiptAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetRawReceiptAttachmentParams>(params)
 	runBlocking {
 		sdk.receipt.setRawReceiptAttachment(
 			decodedParams.receiptId,
@@ -147,14 +161,17 @@ public fun setRawReceiptAttachmentBlocking(sdk: CardinalBaseApis, params: String
 	}
 }.toPyString(EncryptedReceipt.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun setRawReceiptAttachmentAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<SetRawReceiptAttachmentParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.setRawReceiptAttachment(
@@ -172,9 +189,10 @@ private class ModifyReceiptParams(
 	public val entity: EncryptedReceipt,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyReceiptBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.modifyReceipt(
 			decodedParams.entity,
@@ -182,14 +200,17 @@ public fun modifyReceiptBlocking(sdk: CardinalBaseApis, params: String): String 
 	}
 }.toPyString(EncryptedReceipt.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyReceiptAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.modifyReceipt(
@@ -204,8 +225,9 @@ private class GetReceiptParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getReceiptBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.getReceipt(
 			decodedParams.entityId,
@@ -213,14 +235,17 @@ public fun getReceiptBlocking(sdk: CardinalBaseApis, params: String): String = k
 	}
 }.toPyString(EncryptedReceipt.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getReceiptAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.getReceipt(
@@ -235,9 +260,10 @@ private class ListByReferenceParams(
 	public val reference: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listByReferenceBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListByReferenceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListByReferenceParams>(params)
 	runBlocking {
 		sdk.receipt.listByReference(
 			decodedParams.reference,
@@ -245,14 +271,17 @@ public fun listByReferenceBlocking(sdk: CardinalBaseApis, params: String): Strin
 	}
 }.toPyString(ListSerializer(EncryptedReceipt.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listByReferenceAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListByReferenceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListByReferenceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.listByReference(

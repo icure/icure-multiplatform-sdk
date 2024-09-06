@@ -15,7 +15,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.Long
 import kotlin.OptIn
@@ -40,9 +41,10 @@ private class MatchTimeTablesByParams(
 	public val filter: BaseFilterOptions<TimeTable>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchTimeTablesByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchTimeTablesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchTimeTablesByParams>(params)
 	runBlocking {
 		sdk.timeTable.matchTimeTablesBy(
 			decodedParams.filter,
@@ -50,14 +52,17 @@ public fun matchTimeTablesByBlocking(sdk: CardinalBaseApis, params: String): Str
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchTimeTablesByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchTimeTablesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchTimeTablesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.matchTimeTablesBy(
@@ -72,9 +77,10 @@ private class MatchTimeTablesBySortedParams(
 	public val filter: BaseSortableFilterOptions<TimeTable>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchTimeTablesBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchTimeTablesBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchTimeTablesBySortedParams>(params)
 	runBlocking {
 		sdk.timeTable.matchTimeTablesBySorted(
 			decodedParams.filter,
@@ -82,14 +88,17 @@ public fun matchTimeTablesBySortedBlocking(sdk: CardinalBaseApis, params: String
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchTimeTablesBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchTimeTablesBySortedParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchTimeTablesBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.matchTimeTablesBySorted(
@@ -104,9 +113,10 @@ private class FilterTimeTablesByParams(
 	public val filter: BaseFilterOptions<TimeTable>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterTimeTablesByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTimeTablesByParams>(params)
 	runBlocking {
 		sdk.timeTable.filterTimeTablesBy(
 			decodedParams.filter,
@@ -115,13 +125,16 @@ public fun filterTimeTablesByBlocking(sdk: CardinalBaseApis, params: String): Py
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedTimeTable.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterTimeTablesByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterTimeTablesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.filterTimeTablesBy(
@@ -137,9 +150,11 @@ private class FilterTimeTablesBySortedParams(
 	public val filter: BaseSortableFilterOptions<TimeTable>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterTimeTablesBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterTimeTablesBySortedParams>(params)
 	runBlocking {
 		sdk.timeTable.filterTimeTablesBySorted(
 			decodedParams.filter,
@@ -148,13 +163,17 @@ public fun filterTimeTablesBySortedBlocking(sdk: CardinalBaseApis, params: Strin
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedTimeTable.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterTimeTablesBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterTimeTablesBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterTimeTablesBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.filterTimeTablesBySorted(
@@ -170,9 +189,10 @@ private class DeleteTimeTableParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteTimeTableBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.deleteTimeTable(
 			decodedParams.entityId,
@@ -180,14 +200,17 @@ public fun deleteTimeTableBlocking(sdk: CardinalBaseApis, params: String): Strin
 	}
 }.toPyString(DocIdentifier.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteTimeTableAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.deleteTimeTable(
@@ -202,9 +225,10 @@ private class DeleteTimeTablesParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteTimeTablesBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteTimeTablesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesParams>(params)
 	runBlocking {
 		sdk.timeTable.deleteTimeTables(
 			decodedParams.entityIds,
@@ -212,14 +236,17 @@ public fun deleteTimeTablesBlocking(sdk: CardinalBaseApis, params: String): Stri
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteTimeTablesAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteTimeTablesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.deleteTimeTables(
@@ -234,9 +261,10 @@ private class ModifyTimeTableParams(
 	public val entity: EncryptedTimeTable,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyTimeTableBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.modifyTimeTable(
 			decodedParams.entity,
@@ -244,14 +272,17 @@ public fun modifyTimeTableBlocking(sdk: CardinalBaseApis, params: String): Strin
 	}
 }.toPyString(EncryptedTimeTable.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyTimeTableAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyTimeTableParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.modifyTimeTable(
@@ -266,9 +297,10 @@ private class GetTimeTableParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTableBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.getTimeTable(
 			decodedParams.entityId,
@@ -276,14 +308,17 @@ public fun getTimeTableBlocking(sdk: CardinalBaseApis, params: String): String =
 	}
 }.toPyString(EncryptedTimeTable.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTableAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTableParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTableParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.getTimeTable(
@@ -298,9 +333,10 @@ private class GetTimeTablesParams(
 	public val timeTableIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTablesBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesParams>(params)
 	runBlocking {
 		sdk.timeTable.getTimeTables(
 			decodedParams.timeTableIds,
@@ -308,14 +344,17 @@ public fun getTimeTablesBlocking(sdk: CardinalBaseApis, params: String): String 
 	}
 }.toPyString(ListSerializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTablesAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.getTimeTables(
@@ -332,9 +371,11 @@ private class GetTimeTablesByPeriodAndAgendaIdParams(
 	public val agendaId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
 	runBlocking {
 		sdk.timeTable.getTimeTablesByPeriodAndAgendaId(
 			decodedParams.startDate,
@@ -344,14 +385,18 @@ public fun getTimeTablesByPeriodAndAgendaIdBlocking(sdk: CardinalBaseApis, param
 	}
 }.toPyString(ListSerializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTablesByPeriodAndAgendaIdAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetTimeTablesByPeriodAndAgendaIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.getTimeTablesByPeriodAndAgendaId(
@@ -368,9 +413,10 @@ private class GetTimeTablesByAgendaIdParams(
 	public val agendaId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getTimeTablesByAgendaIdBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
 	runBlocking {
 		sdk.timeTable.getTimeTablesByAgendaId(
 			decodedParams.agendaId,
@@ -378,14 +424,17 @@ public fun getTimeTablesByAgendaIdBlocking(sdk: CardinalBaseApis, params: String
 	}
 }.toPyString(ListSerializer(EncryptedTimeTable.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getTimeTablesByAgendaIdAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetTimeTablesByAgendaIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.getTimeTablesByAgendaId(

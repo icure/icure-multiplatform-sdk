@@ -9,8 +9,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.serialization.AccessLogSerializer
-import com.icure.cardinal.sdk.py.serialization.PatientSerializer
 import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -19,7 +17,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Int
@@ -38,6 +37,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -48,8 +48,9 @@ private class ShareWithParams(
 	public val options: AccessLogShareOptions? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.shareWith(
 			decodedParams.delegateId,
@@ -57,16 +58,19 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(AccessLogSerializer))
+}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(AccessLog::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.shareWith(
@@ -74,7 +78,8 @@ public fun shareWithAsync(
 				decodedParams.accessLog,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(AccessLogSerializer), resultCallback)
+		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(AccessLog::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -84,32 +89,37 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, AccessLogShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.tryShareWithMany(
 			decodedParams.accessLog,
 			decodedParams.delegates,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(AccessLogSerializer))
+}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(AccessLog::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun tryShareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.tryShareWithMany(
 				decodedParams.accessLog,
 				decodedParams.delegates,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(AccessLogSerializer), resultCallback)
+		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(AccessLog::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -119,47 +129,52 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, AccessLogShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.shareWithMany(
 			decodedParams.accessLog,
 			decodedParams.delegates,
 		)
 	}
-}.toPyString(AccessLogSerializer)
+}.toPyString(PolymorphicSerializer(AccessLog::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.shareWithMany(
 				decodedParams.accessLog,
 				decodedParams.delegates,
 			)
-		}.toPyStringAsyncCallback(AccessLogSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(AccessLog::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class FindAccessLogsByHcPartyPatientParams(
 	public val hcPartyId: String,
-	@Serializable(PatientSerializer::class)
 	public val patient: Patient,
 	public val startDate: Long? = null,
 	public val endDate: Long? = null,
 	public val descending: Boolean? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findAccessLogsByHcPartyPatientBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsByHcPartyPatientParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindAccessLogsByHcPartyPatientParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.findAccessLogsByHcPartyPatient(
 			decodedParams.hcPartyId,
@@ -170,15 +185,19 @@ public fun findAccessLogsByHcPartyPatientBlocking(sdk: CardinalApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, AccessLogSerializer)}
+	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findAccessLogsByHcPartyPatientAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsByHcPartyPatientParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindAccessLogsByHcPartyPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.findAccessLogsByHcPartyPatient(
@@ -189,7 +208,7 @@ public fun findAccessLogsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, AccessLogSerializer)}
+			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -198,31 +217,35 @@ private class FilterAccessLogsByParams(
 	public val filter: FilterOptions<AccessLog>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterAccessLogsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterAccessLogsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterAccessLogsByParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.filterAccessLogsBy(
 			decodedParams.filter,
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, AccessLogSerializer)}
+	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterAccessLogsByAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterAccessLogsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterAccessLogsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.filterAccessLogsBy(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, AccessLogSerializer)}
+			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -231,31 +254,37 @@ private class FilterAccessLogsBySortedParams(
 	public val filter: SortableFilterOptions<AccessLog>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterAccessLogsBySortedBlocking(sdk: CardinalApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterAccessLogsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterAccessLogsBySortedParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.filterAccessLogsBySorted(
 			decodedParams.filter,
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, AccessLogSerializer)}
+	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterAccessLogsBySortedAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterAccessLogsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterAccessLogsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.filterAccessLogsBySorted(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, AccessLogSerializer)}
+			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -264,29 +293,33 @@ private class ModifyAccessLogParams(
 	public val entity: AccessLog,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyAccessLogBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyAccessLogParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyAccessLogParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.modifyAccessLog(
 			decodedParams.entity,
 		)
 	}
-}.toPyString(AccessLogSerializer)
+}.toPyString(PolymorphicSerializer(AccessLog::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyAccessLogAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyAccessLogParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyAccessLogParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.modifyAccessLog(
 				decodedParams.entity,
 			)
-		}.toPyStringAsyncCallback(AccessLogSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(AccessLog::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -295,29 +328,33 @@ private class GetAccessLogParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getAccessLogBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetAccessLogParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetAccessLogParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.getAccessLog(
 			decodedParams.entityId,
 		)
 	}
-}.toPyString(AccessLogSerializer)
+}.toPyString(PolymorphicSerializer(AccessLog::class))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getAccessLogAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetAccessLogParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetAccessLogParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.getAccessLog(
 				decodedParams.entityId,
 			)
-		}.toPyStringAsyncCallback(AccessLogSerializer, resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(AccessLog::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -326,29 +363,33 @@ private class GetAccessLogsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getAccessLogsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetAccessLogsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetAccessLogsParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.getAccessLogs(
 			decodedParams.entityIds,
 		)
 	}
-}.toPyString(ListSerializer(AccessLogSerializer))
+}.toPyString(ListSerializer(PolymorphicSerializer(AccessLog::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getAccessLogsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetAccessLogsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetAccessLogsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.getAccessLogs(
 				decodedParams.entityIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(AccessLogSerializer), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(AccessLog::class)), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -361,9 +402,10 @@ private class FindAccessLogsByParams(
 	public val limit: Int?,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findAccessLogsByBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindAccessLogsByParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.findAccessLogsBy(
 			decodedParams.fromEpoch,
@@ -373,16 +415,19 @@ public fun findAccessLogsByBlocking(sdk: CardinalApis, params: String): String =
 			decodedParams.limit,
 		)
 	}
-}.toPyString(PaginatedList.serializer(AccessLogSerializer))
+}.toPyString(PaginatedList.serializer(PolymorphicSerializer(AccessLog::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findAccessLogsByAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindAccessLogsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.findAccessLogsBy(
@@ -392,7 +437,8 @@ public fun findAccessLogsByAsync(
 				decodedParams.startDocumentId,
 				decodedParams.limit,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(AccessLogSerializer), resultCallback)
+		}.toPyStringAsyncCallback(PaginatedList.serializer(PolymorphicSerializer(AccessLog::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -407,9 +453,11 @@ private class FindAccessLogsByUserAfterDateParams(
 	public val descending: Boolean? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findAccessLogsByUserAfterDateBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsByUserAfterDateParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindAccessLogsByUserAfterDateParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.findAccessLogsByUserAfterDate(
 			decodedParams.userId,
@@ -421,16 +469,20 @@ public fun findAccessLogsByUserAfterDateBlocking(sdk: CardinalApis, params: Stri
 			decodedParams.descending,
 		)
 	}
-}.toPyString(PaginatedList.serializer(AccessLogSerializer))
+}.toPyString(PaginatedList.serializer(PolymorphicSerializer(AccessLog::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findAccessLogsByUserAfterDateAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsByUserAfterDateParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FindAccessLogsByUserAfterDateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.findAccessLogsByUserAfterDate(
@@ -442,7 +494,8 @@ public fun findAccessLogsByUserAfterDateAsync(
 				decodedParams.limit,
 				decodedParams.descending,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(AccessLogSerializer), resultCallback)
+		}.toPyStringAsyncCallback(PaginatedList.serializer(PolymorphicSerializer(AccessLog::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -456,9 +509,10 @@ private class FindAccessLogsInGroupParams(
 	public val limit: Int? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun findAccessLogsInGroupBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsInGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindAccessLogsInGroupParams>(params)
 	runBlocking {
 		sdk.accessLog.tryAndRecover.findAccessLogsInGroup(
 			decodedParams.groupId,
@@ -469,16 +523,19 @@ public fun findAccessLogsInGroupBlocking(sdk: CardinalApis, params: String): Str
 			decodedParams.limit,
 		)
 	}
-}.toPyString(PaginatedList.serializer(AccessLogSerializer))
+}.toPyString(PaginatedList.serializer(PolymorphicSerializer(AccessLog::class)))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun findAccessLogsInGroupAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FindAccessLogsInGroupParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FindAccessLogsInGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.accessLog.tryAndRecover.findAccessLogsInGroup(
@@ -489,6 +546,7 @@ public fun findAccessLogsInGroupAsync(
 				decodedParams.startDocumentId,
 				decodedParams.limit,
 			)
-		}.toPyStringAsyncCallback(PaginatedList.serializer(AccessLogSerializer), resultCallback)
+		}.toPyStringAsyncCallback(PaginatedList.serializer(PolymorphicSerializer(AccessLog::class)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)

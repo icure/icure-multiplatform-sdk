@@ -6,14 +6,17 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.FormFilters
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
+import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.serialization.FormSerializer
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Long
+import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,27 +25,27 @@ private class ByParentIdForDataOwnerParams(
 	public val parentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byParentIdForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByParentIdForDataOwnerParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByParentIdForDataOwnerParams>(params)
 	FormFilters.byParentIdForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.parentId,
 	)
-}.toPyString(BaseFilterOptions.serializer(FormSerializer))
+}.toPyString(BaseFilterOptions.serializer(PolymorphicSerializer(Form::class)))
 
 @Serializable
 private class ByParentIdForSelfParams(
-	public val dataOwnerId: String,
 	public val parentId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byParentIdForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByParentIdForSelfParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByParentIdForSelfParams>(params)
 	FormFilters.byParentIdForSelf(
-		decodedParams.dataOwnerId,
 		decodedParams.parentId,
 	)
-}.toPyString(FilterOptions.serializer(FormSerializer))
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(Form::class)))
 
 @Serializable
 private class ByPatientsOpeningDateForDataOwnerParams(
@@ -53,8 +56,10 @@ private class ByPatientsOpeningDateForDataOwnerParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsOpeningDateForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsOpeningDateForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsOpeningDateForDataOwnerParams>(params)
 	FormFilters.byPatientsOpeningDateForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.patients,
@@ -62,7 +67,7 @@ public fun byPatientsOpeningDateForDataOwner(params: String): String = kotlin.ru
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(FormSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Form::class)))
 
 @Serializable
 private class ByPatientsOpeningDateForSelfParams(
@@ -72,15 +77,17 @@ private class ByPatientsOpeningDateForSelfParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsOpeningDateForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsOpeningDateForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsOpeningDateForSelfParams>(params)
 	FormFilters.byPatientsOpeningDateForSelf(
 		decodedParams.patients,
 		decodedParams.from,
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(FormSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Form::class)))
 
 @Serializable
 private class ByPatientSecretIdsOpeningDateForDataOwnerParams(
@@ -91,8 +98,10 @@ private class ByPatientSecretIdsOpeningDateForDataOwnerParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsOpeningDateForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsOpeningDateForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsOpeningDateForDataOwnerParams>(params)
 	FormFilters.byPatientSecretIdsOpeningDateForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.secretIds,
@@ -100,7 +109,7 @@ public fun byPatientSecretIdsOpeningDateForDataOwner(params: String): String = k
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(BaseSortableFilterOptions.serializer(FormSerializer))
+}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(Form::class)))
 
 @Serializable
 private class ByPatientSecretIdsOpeningDateForSelfParams(
@@ -110,15 +119,17 @@ private class ByPatientSecretIdsOpeningDateForSelfParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsOpeningDateForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsOpeningDateForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsOpeningDateForSelfParams>(params)
 	FormFilters.byPatientSecretIdsOpeningDateForSelf(
 		decodedParams.secretIds,
 		decodedParams.from,
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(FormSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Form::class)))
 
 @Serializable
 private class ByLogicalUuidParams(
@@ -126,13 +137,14 @@ private class ByLogicalUuidParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byLogicalUuid(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByLogicalUuidParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByLogicalUuidParams>(params)
 	FormFilters.byLogicalUuid(
 		decodedParams.logicalUuid,
 		decodedParams.descending,
 	)
-}.toPyString(BaseSortableFilterOptions.serializer(FormSerializer))
+}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(Form::class)))
 
 @Serializable
 private class ByUniqueIdParams(
@@ -140,10 +152,11 @@ private class ByUniqueIdParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byUniqueId(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByUniqueIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByUniqueIdParams>(params)
 	FormFilters.byUniqueId(
 		decodedParams.uniqueId,
 		decodedParams.descending,
 	)
-}.toPyString(BaseSortableFilterOptions.serializer(FormSerializer))
+}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(Form::class)))

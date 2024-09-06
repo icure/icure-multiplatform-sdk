@@ -73,6 +73,7 @@ import com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction
 import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.DecryptedSubContact
 import com.icure.cardinal.sdk.model.embed.DecryptedTelecom
+import com.icure.cardinal.sdk.model.embed.DecryptedTypedValue
 import com.icure.cardinal.sdk.model.embed.DecryptedValorisation
 import com.icure.cardinal.sdk.model.embed.EncryptedAddress
 import com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember
@@ -89,6 +90,7 @@ import com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.model.embed.EncryptedSubContact
 import com.icure.cardinal.sdk.model.embed.EncryptedTelecom
+import com.icure.cardinal.sdk.model.embed.EncryptedTypedValue
 import com.icure.cardinal.sdk.model.embed.EncryptedValorisation
 import com.icure.cardinal.sdk.model.embed.Episode
 import com.icure.cardinal.sdk.model.embed.FinancialInstitutionInformation
@@ -101,148 +103,154 @@ import com.icure.cardinal.sdk.model.embed.PlanOfAction
 import com.icure.cardinal.sdk.model.embed.Service
 import com.icure.cardinal.sdk.model.embed.SubContact
 import com.icure.cardinal.sdk.model.embed.Telecom
+import com.icure.cardinal.sdk.model.embed.TypedValue
 import com.icure.cardinal.sdk.model.embed.Valorisation
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 
 internal object EncryptableSerializationModule {
-	public val module: SerializersModule = SerializersModule {
-		polymorphic(AccessLog::class) {
-			subclass(DecryptedAccessLog::class)
-			subclass(EncryptedAccessLog::class)
+	public val module: SerializersModule =
+		SerializersModule {
+			polymorphic(AccessLog::class) {
+				subclass(DecryptedAccessLog::class)
+				subclass(EncryptedAccessLog::class)
+			}
+			polymorphic(Address::class) {
+				subclass(DecryptedAddress::class)
+				subclass(EncryptedAddress::class)
+			}
+			polymorphic(Article::class) {
+				subclass(DecryptedArticle::class)
+				subclass(EncryptedArticle::class)
+			}
+			polymorphic(CalendarItem::class) {
+				subclass(DecryptedCalendarItem::class)
+				subclass(EncryptedCalendarItem::class)
+			}
+			polymorphic(CareTeamMember::class) {
+				subclass(DecryptedCareTeamMember::class)
+				subclass(EncryptedCareTeamMember::class)
+			}
+			polymorphic(CareTeamMembership::class) {
+				subclass(DecryptedCareTeamMembership::class)
+				subclass(EncryptedCareTeamMembership::class)
+			}
+			polymorphic(Classification::class) {
+				subclass(DecryptedClassification::class)
+				subclass(EncryptedClassification::class)
+			}
+			polymorphic(Contact::class) {
+				subclass(DecryptedContact::class)
+				subclass(EncryptedContact::class)
+			}
+			polymorphic(Content::class) {
+				subclass(DecryptedContent::class)
+				subclass(EncryptedContent::class)
+			}
+			polymorphic(Document::class) {
+				subclass(DecryptedDocument::class)
+				subclass(EncryptedDocument::class)
+			}
+			polymorphic(Episode::class) {
+				subclass(DecryptedEpisode::class)
+				subclass(EncryptedEpisode::class)
+			}
+			polymorphic(FinancialInstitutionInformation::class) {
+				subclass(DecryptedFinancialInstitutionInformation::class)
+				subclass(EncryptedFinancialInstitutionInformation::class)
+			}
+			polymorphic(FlatRateTarification::class) {
+				subclass(DecryptedFlatRateTarification::class)
+				subclass(EncryptedFlatRateTarification::class)
+			}
+			polymorphic(Form::class) {
+				subclass(DecryptedForm::class)
+				subclass(EncryptedForm::class)
+			}
+			polymorphic(HealthElement::class) {
+				subclass(DecryptedHealthElement::class)
+				subclass(EncryptedHealthElement::class)
+			}
+			polymorphic(Insurability::class) {
+				subclass(DecryptedInsurability::class)
+				subclass(EncryptedInsurability::class)
+			}
+			polymorphic(Invoice::class) {
+				subclass(DecryptedInvoice::class)
+				subclass(EncryptedInvoice::class)
+			}
+			polymorphic(InvoicingCode::class) {
+				subclass(DecryptedInvoicingCode::class)
+				subclass(EncryptedInvoicingCode::class)
+			}
+			polymorphic(MaintenanceTask::class) {
+				subclass(DecryptedMaintenanceTask::class)
+				subclass(EncryptedMaintenanceTask::class)
+			}
+			polymorphic(MedicalHouseContract::class) {
+				subclass(DecryptedMedicalHouseContract::class)
+				subclass(EncryptedMedicalHouseContract::class)
+			}
+			polymorphic(Message::class) {
+				subclass(DecryptedMessage::class)
+				subclass(EncryptedMessage::class)
+			}
+			polymorphic(Patient::class) {
+				subclass(DecryptedPatient::class)
+				subclass(EncryptedPatient::class)
+			}
+			polymorphic(PatientHealthCareParty::class) {
+				subclass(DecryptedPatientHealthCareParty::class)
+				subclass(EncryptedPatientHealthCareParty::class)
+			}
+			polymorphic(PlanOfAction::class) {
+				subclass(DecryptedPlanOfAction::class)
+				subclass(EncryptedPlanOfAction::class)
+			}
+			polymorphic(Property::class) {
+				subclass(DecryptedProperty::class)
+				subclass(EncryptedProperty::class)
+			}
+			polymorphic(PropertyStub::class) {
+				subclass(DecryptedPropertyStub::class)
+				subclass(EncryptedPropertyStub::class)
+			}
+			polymorphic(Receipt::class) {
+				subclass(DecryptedReceipt::class)
+				subclass(EncryptedReceipt::class)
+			}
+			polymorphic(SecureDelegationKeyMap::class) {
+				subclass(DecryptedSecureDelegationKeyMap::class)
+				subclass(EncryptedSecureDelegationKeyMap::class)
+			}
+			polymorphic(Service::class) {
+				subclass(DecryptedService::class)
+				subclass(EncryptedService::class)
+			}
+			polymorphic(SubContact::class) {
+				subclass(DecryptedSubContact::class)
+				subclass(EncryptedSubContact::class)
+			}
+			polymorphic(Telecom::class) {
+				subclass(DecryptedTelecom::class)
+				subclass(EncryptedTelecom::class)
+			}
+			polymorphic(TimeTable::class) {
+				subclass(DecryptedTimeTable::class)
+				subclass(EncryptedTimeTable::class)
+			}
+			polymorphic(Topic::class) {
+				subclass(DecryptedTopic::class)
+				subclass(EncryptedTopic::class)
+			}
+			polymorphic(TypedValue::class) {
+				subclass(DecryptedTypedValue::class)
+				subclass(EncryptedTypedValue::class)
+			}
+			polymorphic(Valorisation::class) {
+				subclass(DecryptedValorisation::class)
+				subclass(EncryptedValorisation::class)
+			}
 		}
-		polymorphic(Address::class) {
-			subclass(DecryptedAddress::class)
-			subclass(EncryptedAddress::class)
-		}
-		polymorphic(Article::class) {
-			subclass(DecryptedArticle::class)
-			subclass(EncryptedArticle::class)
-		}
-		polymorphic(CalendarItem::class) {
-			subclass(DecryptedCalendarItem::class)
-			subclass(EncryptedCalendarItem::class)
-		}
-		polymorphic(CareTeamMember::class) {
-			subclass(DecryptedCareTeamMember::class)
-			subclass(EncryptedCareTeamMember::class)
-		}
-		polymorphic(CareTeamMembership::class) {
-			subclass(DecryptedCareTeamMembership::class)
-			subclass(EncryptedCareTeamMembership::class)
-		}
-		polymorphic(Classification::class) {
-			subclass(DecryptedClassification::class)
-			subclass(EncryptedClassification::class)
-		}
-		polymorphic(Contact::class) {
-			subclass(DecryptedContact::class)
-			subclass(EncryptedContact::class)
-		}
-		polymorphic(Content::class) {
-			subclass(DecryptedContent::class)
-			subclass(EncryptedContent::class)
-		}
-		polymorphic(Document::class) {
-			subclass(DecryptedDocument::class)
-			subclass(EncryptedDocument::class)
-		}
-		polymorphic(Episode::class) {
-			subclass(DecryptedEpisode::class)
-			subclass(EncryptedEpisode::class)
-		}
-		polymorphic(FinancialInstitutionInformation::class) {
-			subclass(DecryptedFinancialInstitutionInformation::class)
-			subclass(EncryptedFinancialInstitutionInformation::class)
-		}
-		polymorphic(FlatRateTarification::class) {
-			subclass(DecryptedFlatRateTarification::class)
-			subclass(EncryptedFlatRateTarification::class)
-		}
-		polymorphic(Form::class) {
-			subclass(DecryptedForm::class)
-			subclass(EncryptedForm::class)
-		}
-		polymorphic(HealthElement::class) {
-			subclass(DecryptedHealthElement::class)
-			subclass(EncryptedHealthElement::class)
-		}
-		polymorphic(Insurability::class) {
-			subclass(DecryptedInsurability::class)
-			subclass(EncryptedInsurability::class)
-		}
-		polymorphic(Invoice::class) {
-			subclass(DecryptedInvoice::class)
-			subclass(EncryptedInvoice::class)
-		}
-		polymorphic(InvoicingCode::class) {
-			subclass(DecryptedInvoicingCode::class)
-			subclass(EncryptedInvoicingCode::class)
-		}
-		polymorphic(MaintenanceTask::class) {
-			subclass(DecryptedMaintenanceTask::class)
-			subclass(EncryptedMaintenanceTask::class)
-		}
-		polymorphic(MedicalHouseContract::class) {
-			subclass(DecryptedMedicalHouseContract::class)
-			subclass(EncryptedMedicalHouseContract::class)
-		}
-		polymorphic(Message::class) {
-			subclass(DecryptedMessage::class)
-			subclass(EncryptedMessage::class)
-		}
-		polymorphic(Patient::class) {
-			subclass(DecryptedPatient::class)
-			subclass(EncryptedPatient::class)
-		}
-		polymorphic(PatientHealthCareParty::class) {
-			subclass(DecryptedPatientHealthCareParty::class)
-			subclass(EncryptedPatientHealthCareParty::class)
-		}
-		polymorphic(PlanOfAction::class) {
-			subclass(DecryptedPlanOfAction::class)
-			subclass(EncryptedPlanOfAction::class)
-		}
-		polymorphic(Property::class) {
-			subclass(DecryptedProperty::class)
-			subclass(EncryptedProperty::class)
-		}
-		polymorphic(PropertyStub::class) {
-			subclass(DecryptedPropertyStub::class)
-			subclass(EncryptedPropertyStub::class)
-		}
-		polymorphic(Receipt::class) {
-			subclass(DecryptedReceipt::class)
-			subclass(EncryptedReceipt::class)
-		}
-		polymorphic(SecureDelegationKeyMap::class) {
-			subclass(DecryptedSecureDelegationKeyMap::class)
-			subclass(EncryptedSecureDelegationKeyMap::class)
-		}
-		polymorphic(Service::class) {
-			subclass(DecryptedService::class)
-			subclass(EncryptedService::class)
-		}
-		polymorphic(SubContact::class) {
-			subclass(DecryptedSubContact::class)
-			subclass(EncryptedSubContact::class)
-		}
-		polymorphic(Telecom::class) {
-			subclass(DecryptedTelecom::class)
-			subclass(EncryptedTelecom::class)
-		}
-		polymorphic(TimeTable::class) {
-			subclass(DecryptedTimeTable::class)
-			subclass(EncryptedTimeTable::class)
-		}
-		polymorphic(Topic::class) {
-			subclass(DecryptedTopic::class)
-			subclass(EncryptedTopic::class)
-		}
-		polymorphic(Valorisation::class) {
-			subclass(DecryptedValorisation::class)
-			subclass(EncryptedValorisation::class)
-		}
-	}
 }

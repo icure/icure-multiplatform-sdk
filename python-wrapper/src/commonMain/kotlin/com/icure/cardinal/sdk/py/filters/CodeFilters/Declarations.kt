@@ -6,7 +6,9 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.CodeFilters
 import com.icure.cardinal.sdk.model.Code
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
+import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
@@ -20,8 +22,9 @@ private class ByIdsParams(
 	public val ids: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byIds(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByIdsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByIdsParams>(params)
 	CodeFilters.byIds(
 		decodedParams.ids,
 	)
@@ -33,8 +36,9 @@ private class ByQualifiedLinkParams(
 	public val linkedId: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byQualifiedLink(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByQualifiedLinkParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByQualifiedLinkParams>(params)
 	CodeFilters.byQualifiedLink(
 		decodedParams.linkType,
 		decodedParams.linkedId,
@@ -49,8 +53,9 @@ private class ByRegionTypeCodeVersionParams(
 	public val version: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byRegionTypeCodeVersion(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByRegionTypeCodeVersionParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByRegionTypeCodeVersionParams>(params)
 	CodeFilters.byRegionTypeCodeVersion(
 		decodedParams.region,
 		decodedParams.type,
@@ -67,8 +72,10 @@ private class ByLanguageTypeLabelRegionParams(
 	public val region: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byLanguageTypeLabelRegion(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByLanguageTypeLabelRegionParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByLanguageTypeLabelRegionParams>(params)
 	CodeFilters.byLanguageTypeLabelRegion(
 		decodedParams.language,
 		decodedParams.type,
@@ -86,8 +93,10 @@ private class ByLanguageTypesLabelRegionVersionParams(
 	public val version: String? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byLanguageTypesLabelRegionVersion(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByLanguageTypesLabelRegionVersionParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByLanguageTypesLabelRegionVersionParams>(params)
 	CodeFilters.byLanguageTypesLabelRegionVersion(
 		decodedParams.language,
 		decodedParams.types,

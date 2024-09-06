@@ -6,7 +6,9 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.UserFilters
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
+import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.Serializable
@@ -20,8 +22,9 @@ private class ByIdsParams(
 	public val ids: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byIds(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByIdsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByIdsParams>(params)
 	UserFilters.byIds(
 		decodedParams.ids,
 	)
@@ -32,8 +35,9 @@ private class ByPatientIdParams(
 	public val patientId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientId(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByPatientIdParams>(params)
 	UserFilters.byPatientId(
 		decodedParams.patientId,
 	)
@@ -44,8 +48,9 @@ private class ByHealthcarePartyIdParams(
 	public val healthcarePartyId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byHealthcarePartyId(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByHealthcarePartyIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByHealthcarePartyIdParams>(params)
 	UserFilters.byHealthcarePartyId(
 		decodedParams.healthcarePartyId,
 	)
@@ -56,8 +61,9 @@ private class ByNameEmailOrPhoneParams(
 	public val searchString: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byNameEmailOrPhone(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByNameEmailOrPhoneParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByNameEmailOrPhoneParams>(params)
 	UserFilters.byNameEmailOrPhone(
 		decodedParams.searchString,
 	)

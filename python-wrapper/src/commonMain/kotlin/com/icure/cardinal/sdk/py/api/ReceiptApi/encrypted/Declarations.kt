@@ -8,7 +8,8 @@ import com.icure.cardinal.sdk.model.EncryptedReceipt
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -32,8 +33,9 @@ private class ShareWithParams(
 	public val options: ReceiptShareOptions? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	runBlocking {
 		sdk.receipt.encrypted.shareWith(
 			decodedParams.delegateId,
@@ -43,14 +45,17 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedReceipt.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.encrypted.shareWith(
@@ -69,9 +74,10 @@ private class TryShareWithManyParams(
 	public val delegates: Map<String, ReceiptShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	runBlocking {
 		sdk.receipt.encrypted.tryShareWithMany(
 			decodedParams.receipt,
@@ -80,14 +86,17 @@ public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
 	}
 }.toPyString(SimpleShareResult.serializer(EncryptedReceipt.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun tryShareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<TryShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.encrypted.tryShareWithMany(
@@ -105,8 +114,9 @@ private class ShareWithManyParams(
 	public val delegates: Map<String, ReceiptShareOptions>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	runBlocking {
 		sdk.receipt.encrypted.shareWithMany(
 			decodedParams.receipt,
@@ -115,14 +125,17 @@ public fun shareWithManyBlocking(sdk: CardinalApis, params: String): String = ko
 	}
 }.toPyString(EncryptedReceipt.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun shareWithManyAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ShareWithManyParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.encrypted.shareWithMany(
@@ -138,8 +151,9 @@ private class ModifyReceiptParams(
 	public val entity: EncryptedReceipt,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyReceiptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.encrypted.modifyReceipt(
 			decodedParams.entity,
@@ -147,14 +161,17 @@ public fun modifyReceiptBlocking(sdk: CardinalApis, params: String): String = ko
 	}
 }.toPyString(EncryptedReceipt.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyReceiptAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.encrypted.modifyReceipt(
@@ -169,8 +186,9 @@ private class GetReceiptParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getReceiptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReceiptParams>(params)
 	runBlocking {
 		sdk.receipt.encrypted.getReceipt(
 			decodedParams.entityId,
@@ -178,14 +196,17 @@ public fun getReceiptBlocking(sdk: CardinalApis, params: String): String = kotli
 	}
 }.toPyString(EncryptedReceipt.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getReceiptAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetReceiptParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.encrypted.getReceipt(
@@ -200,8 +221,9 @@ private class ListByReferenceParams(
 	public val reference: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun listByReferenceBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListByReferenceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListByReferenceParams>(params)
 	runBlocking {
 		sdk.receipt.encrypted.listByReference(
 			decodedParams.reference,
@@ -209,14 +231,17 @@ public fun listByReferenceBlocking(sdk: CardinalApis, params: String): String = 
 	}
 }.toPyString(ListSerializer(EncryptedReceipt.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun listByReferenceAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ListByReferenceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ListByReferenceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.receipt.encrypted.listByReference(

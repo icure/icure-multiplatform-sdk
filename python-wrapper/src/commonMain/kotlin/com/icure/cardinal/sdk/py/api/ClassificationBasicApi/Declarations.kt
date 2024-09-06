@@ -15,7 +15,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -39,9 +40,10 @@ private class MatchClassificationsByParams(
 	public val filter: BaseFilterOptions<Classification>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchClassificationsByBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchClassificationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchClassificationsByParams>(params)
 	runBlocking {
 		sdk.classification.matchClassificationsBy(
 			decodedParams.filter,
@@ -49,14 +51,17 @@ public fun matchClassificationsByBlocking(sdk: CardinalBaseApis, params: String)
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchClassificationsByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchClassificationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchClassificationsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.matchClassificationsBy(
@@ -71,9 +76,11 @@ private class MatchClassificationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Classification>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun matchClassificationsBySortedBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchClassificationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<MatchClassificationsBySortedParams>(params)
 	runBlocking {
 		sdk.classification.matchClassificationsBySorted(
 			decodedParams.filter,
@@ -81,14 +88,18 @@ public fun matchClassificationsBySortedBlocking(sdk: CardinalBaseApis, params: S
 	}
 }.toPyString(ListSerializer(String.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun matchClassificationsBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<MatchClassificationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<MatchClassificationsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.matchClassificationsBySorted(
@@ -103,9 +114,10 @@ private class FilterClassificationsByParams(
 	public val filter: BaseFilterOptions<Classification>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterClassificationsByBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterClassificationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterClassificationsByParams>(params)
 	runBlocking {
 		sdk.classification.filterClassificationsBy(
 			decodedParams.filter,
@@ -114,13 +126,16 @@ public fun filterClassificationsByBlocking(sdk: CardinalBaseApis, params: String
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterClassificationsByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterClassificationsByParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterClassificationsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.filterClassificationsBy(
@@ -136,9 +151,11 @@ private class FilterClassificationsBySortedParams(
 	public val filter: BaseSortableFilterOptions<Classification>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun filterClassificationsBySortedBlocking(sdk: CardinalBaseApis, params: String): PyResult =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterClassificationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterClassificationsBySortedParams>(params)
 	runBlocking {
 		sdk.classification.filterClassificationsBySorted(
 			decodedParams.filter,
@@ -147,13 +164,17 @@ public fun filterClassificationsBySortedBlocking(sdk: CardinalBaseApis, params: 
 }.toPyResult {
 	PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun filterClassificationsBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<FilterClassificationsBySortedParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<FilterClassificationsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.filterClassificationsBySorted(
@@ -169,9 +190,10 @@ private class DeleteClassificationParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteClassificationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteClassificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteClassificationParams>(params)
 	runBlocking {
 		sdk.classification.deleteClassification(
 			decodedParams.entityId,
@@ -179,14 +201,17 @@ public fun deleteClassificationBlocking(sdk: CardinalBaseApis, params: String): 
 	}
 }.toPyString(DocIdentifier.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteClassificationAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteClassificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteClassificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.deleteClassification(
@@ -201,9 +226,10 @@ private class DeleteClassificationsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun deleteClassificationsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteClassificationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteClassificationsParams>(params)
 	runBlocking {
 		sdk.classification.deleteClassifications(
 			decodedParams.entityIds,
@@ -211,14 +237,17 @@ public fun deleteClassificationsBlocking(sdk: CardinalBaseApis, params: String):
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun deleteClassificationsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<DeleteClassificationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteClassificationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.deleteClassifications(
@@ -233,9 +262,10 @@ private class ModifyClassificationParams(
 	public val entity: EncryptedClassification,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun modifyClassificationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyClassificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyClassificationParams>(params)
 	runBlocking {
 		sdk.classification.modifyClassification(
 			decodedParams.entity,
@@ -243,14 +273,17 @@ public fun modifyClassificationBlocking(sdk: CardinalBaseApis, params: String): 
 	}
 }.toPyString(EncryptedClassification.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun modifyClassificationAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ModifyClassificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyClassificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.modifyClassification(
@@ -265,9 +298,10 @@ private class GetClassificationParams(
 	public val entityId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getClassificationBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetClassificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetClassificationParams>(params)
 	runBlocking {
 		sdk.classification.getClassification(
 			decodedParams.entityId,
@@ -275,14 +309,17 @@ public fun getClassificationBlocking(sdk: CardinalBaseApis, params: String): Str
 	}
 }.toPyString(EncryptedClassification.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getClassificationAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetClassificationParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetClassificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.getClassification(
@@ -297,9 +334,10 @@ private class GetClassificationsParams(
 	public val entityIds: List<String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getClassificationsBlocking(sdk: CardinalBaseApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetClassificationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetClassificationsParams>(params)
 	runBlocking {
 		sdk.classification.getClassifications(
 			decodedParams.entityIds,
@@ -307,14 +345,17 @@ public fun getClassificationsBlocking(sdk: CardinalBaseApis, params: String): St
 	}
 }.toPyString(ListSerializer(EncryptedClassification.serializer()))
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun getClassificationsAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetClassificationsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetClassificationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.classification.getClassifications(

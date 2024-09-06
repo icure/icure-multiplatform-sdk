@@ -9,7 +9,8 @@ import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -34,8 +35,9 @@ private class GetExistingSplitsInfoParams(
 	public val dataOwner: CryptoActor,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun getExistingSplitsInfo(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<GetExistingSplitsInfoParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<GetExistingSplitsInfoParams>(params)
 	sdk.crypto.shamirKeysManager.getExistingSplitsInfo(
 		decodedParams.dataOwner,
 	)
@@ -48,9 +50,10 @@ private class UpdateSelfSplitsParams(
 	public val keySplitsToDelete: Set<KeypairFingerprintV1String>,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun updateSelfSplitsBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UpdateSelfSplitsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateSelfSplitsParams>(params)
 	runBlocking {
 		sdk.crypto.shamirKeysManager.updateSelfSplits(
 			decodedParams.keySplitsToUpdate,
@@ -59,14 +62,17 @@ public fun updateSelfSplitsBlocking(sdk: CardinalApis, params: String): String =
 	}
 }.toPyString(CryptoActorStubWithType.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun updateSelfSplitsAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UpdateSelfSplitsParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateSelfSplitsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.crypto.shamirKeysManager.updateSelfSplits(

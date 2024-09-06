@@ -6,14 +6,17 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.CalendarItemFilters
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
+import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.serialization.CalendarItemSerializer
 import com.icure.cardinal.sdk.py.utils.toPyString
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Long
+import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -25,8 +28,10 @@ private class ByPatientsStartTimeForDataOwnerParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsStartTimeForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsStartTimeForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsStartTimeForDataOwnerParams>(params)
 	CalendarItemFilters.byPatientsStartTimeForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.patients,
@@ -34,7 +39,7 @@ public fun byPatientsStartTimeForDataOwner(params: String): String = kotlin.runC
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
 private class ByPatientsStartTimeForSelfParams(
@@ -44,15 +49,17 @@ private class ByPatientsStartTimeForSelfParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientsStartTimeForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientsStartTimeForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsStartTimeForSelfParams>(params)
 	CalendarItemFilters.byPatientsStartTimeForSelf(
 		decodedParams.patients,
 		decodedParams.from,
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
 private class ByPatientSecretIdsStartTimeForDataOwnerParams(
@@ -63,8 +70,10 @@ private class ByPatientSecretIdsStartTimeForDataOwnerParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsStartTimeForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsStartTimeForDataOwnerParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsStartTimeForDataOwnerParams>(params)
 	CalendarItemFilters.byPatientSecretIdsStartTimeForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.secretIds,
@@ -72,7 +81,7 @@ public fun byPatientSecretIdsStartTimeForDataOwner(params: String): String = kot
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(BaseSortableFilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
 private class ByPatientSecretIdsStartTimeForSelfParams(
@@ -82,15 +91,17 @@ private class ByPatientSecretIdsStartTimeForSelfParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPatientSecretIdsStartTimeForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPatientSecretIdsStartTimeForSelfParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsStartTimeForSelfParams>(params)
 	CalendarItemFilters.byPatientSecretIdsStartTimeForSelf(
 		decodedParams.secretIds,
 		decodedParams.from,
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(SortableFilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
 private class ByPeriodAndAgendaParams(
@@ -100,15 +111,16 @@ private class ByPeriodAndAgendaParams(
 	public val descending: Boolean = false,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPeriodAndAgenda(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPeriodAndAgendaParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByPeriodAndAgendaParams>(params)
 	CalendarItemFilters.byPeriodAndAgenda(
 		decodedParams.agendaId,
 		decodedParams.from,
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(BaseSortableFilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
 private class ByPeriodForDataOwnerParams(
@@ -117,14 +129,15 @@ private class ByPeriodForDataOwnerParams(
 	public val to: Long,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPeriodForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPeriodForDataOwnerParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByPeriodForDataOwnerParams>(params)
 	CalendarItemFilters.byPeriodForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.from,
 		decodedParams.to,
 	)
-}.toPyString(BaseFilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(BaseFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
 private class ByPeriodForSelfParams(
@@ -132,22 +145,24 @@ private class ByPeriodForSelfParams(
 	public val to: Long,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byPeriodForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByPeriodForSelfParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByPeriodForSelfParams>(params)
 	CalendarItemFilters.byPeriodForSelf(
 		decodedParams.from,
 		decodedParams.to,
 	)
-}.toPyString(FilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
 private class ByRecurrenceIdParams(
 	public val recurrenceId: String,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun byRecurrenceId(params: String): String = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ByRecurrenceIdParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ByRecurrenceIdParams>(params)
 	CalendarItemFilters.byRecurrenceId(
 		decodedParams.recurrenceId,
 	)
-}.toPyString(FilterOptions.serializer(CalendarItemSerializer))
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))

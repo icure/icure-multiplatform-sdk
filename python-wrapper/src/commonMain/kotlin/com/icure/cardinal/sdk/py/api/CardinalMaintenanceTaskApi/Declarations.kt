@@ -8,7 +8,8 @@ import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -30,9 +31,10 @@ private class ApplyKeyPairUpdateParams(
 	public val updateRequest: KeyPairUpdateNotification,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun applyKeyPairUpdateBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ApplyKeyPairUpdateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ApplyKeyPairUpdateParams>(params)
 	runBlocking {
 		sdk.cardinalMaintenanceTask.applyKeyPairUpdate(
 			decodedParams.updateRequest,
@@ -40,14 +42,17 @@ public fun applyKeyPairUpdateBlocking(sdk: CardinalApis, params: String): String
 	}
 }.toPyString(Unit.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun applyKeyPairUpdateAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<ApplyKeyPairUpdateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ApplyKeyPairUpdateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.cardinalMaintenanceTask.applyKeyPairUpdate(
@@ -63,10 +68,11 @@ private class CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams(
 	public val requestToOwnerTypes: Set<DataOwnerType>? = null,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(sdk: CardinalApis,
 		params: String): String = kotlin.runCatching {
 	val decodedParams =
-			json.decodeFromString<CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams>(params)
+			fullLanguageInteropJson.decodeFromString<CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams>(params)
 	runBlocking {
 		sdk.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
 			decodedParams.key,
@@ -75,7 +81,10 @@ public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking(s
 	}
 }.toPyString(Unit.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync(
 	sdk: CardinalApis,
 	params: String,
@@ -83,7 +92,7 @@ public fun createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync(
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
 	val decodedParams =
-			json.decodeFromString<CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams>(params)
+			fullLanguageInteropJson.decodeFromString<CreateKeyPairUpdateNotificationsToAllDelegationCounterpartsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
@@ -100,9 +109,11 @@ private class CreateKeyPairUpdateNotificationToParams(
 	public val key: SpkiHexString,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createKeyPairUpdateNotificationToBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateKeyPairUpdateNotificationToParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateKeyPairUpdateNotificationToParams>(params)
 	runBlocking {
 		sdk.cardinalMaintenanceTask.createKeyPairUpdateNotificationTo(
 			decodedParams.dataOwnerId,
@@ -111,14 +122,18 @@ public fun createKeyPairUpdateNotificationToBlocking(sdk: CardinalApis, params: 
 	}
 }.toPyString(Unit.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createKeyPairUpdateNotificationToAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateKeyPairUpdateNotificationToParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateKeyPairUpdateNotificationToParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.cardinalMaintenanceTask.createKeyPairUpdateNotificationTo(

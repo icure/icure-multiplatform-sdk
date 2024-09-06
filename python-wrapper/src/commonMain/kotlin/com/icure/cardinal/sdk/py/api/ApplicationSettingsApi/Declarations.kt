@@ -6,7 +6,8 @@ import com.icure.cardinal.sdk.model.ApplicationSettings
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.utils.Serialization.json
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlin.Byte
 import kotlin.OptIn
 import kotlin.String
@@ -44,9 +45,11 @@ private class CreateApplicationSettingsParams(
 	public val applicationSettings: ApplicationSettings,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun createApplicationSettingsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateApplicationSettingsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateApplicationSettingsParams>(params)
 	runBlocking {
 		sdk.applicationSettings.createApplicationSettings(
 			decodedParams.applicationSettings,
@@ -54,14 +57,18 @@ public fun createApplicationSettingsBlocking(sdk: CardinalNonCryptoApis, params:
 	}
 }.toPyString(ApplicationSettings.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun createApplicationSettingsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<CreateApplicationSettingsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateApplicationSettingsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.applicationSettings.createApplicationSettings(
@@ -76,9 +83,11 @@ private class UpdateApplicationSettingsParams(
 	public val applicationSettings: ApplicationSettings,
 )
 
+@OptIn(InternalIcureApi::class)
 public fun updateApplicationSettingsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UpdateApplicationSettingsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UpdateApplicationSettingsParams>(params)
 	runBlocking {
 		sdk.applicationSettings.updateApplicationSettings(
 			decodedParams.applicationSettings,
@@ -86,14 +95,18 @@ public fun updateApplicationSettingsBlocking(sdk: CardinalNonCryptoApis, params:
 	}
 }.toPyString(ApplicationSettings.serializer())
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
 public fun updateApplicationSettingsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = json.decodeFromString<UpdateApplicationSettingsParams>(params)
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UpdateApplicationSettingsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.applicationSettings.updateApplicationSettings(

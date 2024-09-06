@@ -27,9 +27,8 @@ class FormFilters:
 			return return_value
 
 	@classmethod
-	def by_parent_id_for_self(cls, data_owner_id: str, parent_id: str) -> FilterOptions[Form]:
+	def by_parent_id_for_self(cls, parent_id: str) -> FilterOptions[Form]:
 		payload = {
-			"dataOwnerId": data_owner_id,
 			"parentId": parent_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.FormFilters.byParentIdForSelf(

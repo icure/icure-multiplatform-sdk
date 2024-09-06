@@ -13,7 +13,10 @@ import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.contact.ContactByDataOwnerFormIdsFilter
+import com.icure.cardinal.sdk.model.filter.contact.ContactByDataOwnerOpeningDateFilter
 import com.icure.cardinal.sdk.model.filter.contact.ContactByDataOwnerPatientOpeningDateFilter
+import com.icure.cardinal.sdk.model.filter.contact.ContactByDataOwnerServiceCodeFilter
+import com.icure.cardinal.sdk.model.filter.contact.ContactByDataOwnerServiceTagFilter
 import com.icure.cardinal.sdk.model.filter.contact.ContactByExternalIdFilter
 import com.icure.cardinal.sdk.model.filter.contact.ContactByHcPartyFilter
 import com.icure.cardinal.sdk.model.filter.contact.ContactByHcPartyIdentifiersFilter
@@ -350,6 +353,141 @@ object ContactFilters {
 	)
 
 	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with a specific data owner.
+	 * You can also limit the timeframe of the contacts:
+	 * - If the [startDate] fuzzy date is specified, only the contacts where [Contact.openingDate] is greater than or equal to [startDate] will be returned.
+	 * - If the [endDate] fuzzy date is specified, only the contacts where [Contact.openingDate] is less than or equal to [startDate] will be returned.
+	 *
+	 * These options are sortable. When sorting using these options the contacts will be sorted first by [Contact.openingDate].
+	 *
+	 * @param dataOwnerId a data owner id.
+	 * with a tag of the provided type.
+	 * @param startDate a fuzzy date. If provided the options will match only contacts with an opening date
+	 * that is after this value (inclusive).
+	 * @param endDate a fuzzy date. If provided the options will match only contacts with an opening date
+	 * that is before this value (inclusive).
+	 * @param descending whether to return in descending or ascending order by [Contact.openingDate]. (default: ascending).
+	 */
+	fun byOpeningDateForDataOwner(
+		dataOwnerId: String,
+		@DefaultValue("null")
+		startDate: Long? = null,
+		@DefaultValue("null")
+		endDate: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	): BaseSortableFilterOptions<Contact> = ByOpeningDateForDataOwner(
+		dataOwnerId = dataOwnerId,
+		startDate = startDate,
+		endDate = endDate,
+		descending = descending
+	)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner.
+	 * You can also limit the timeframe of the contacts:
+	 * - If the [startDate] fuzzy date is specified, only the contacts where [Contact.openingDate] is greater than or equal to [startDate] will be returned.
+	 * - If the [endDate] fuzzy date is specified, only the contacts where [Contact.openingDate] is less than or equal to [startDate] will be returned.
+	 *
+	 * These options are sortable. When sorting using these options the contacts will be sorted first by [Contact.openingDate].
+	 *
+	 * with a tag of the provided type.
+	 * @param startDate a fuzzy date. If provided the options will match only contacts with an opening date
+	 * that is after this value (inclusive).
+	 * @param endDate a fuzzy date. If provided the options will match only contacts with an opening date
+	 * that is before this value (inclusive).
+	 * @param descending whether to return in descending or ascending order by [Contact.openingDate]. (default: ascending).
+	 */
+	fun byOpeningDateForSelf(
+		@DefaultValue("null")
+		startDate: Long? = null,
+		@DefaultValue("null")
+		endDate: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	): SortableFilterOptions<Contact> = ByOpeningDateForSelf(
+		startDate = startDate,
+		endDate = endDate,
+		descending = descending
+	)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * where in [Contact.services] there is at least one service that in his tags has a code stub with the specified type and the specified
+	 * code (if provided).
+	 *
+	 * @param tagType a tag type
+	 * @param tagCode a code for the provided tag type, or null if you want the filter to accept any entity
+	 * with a tag of the provided type.
+	 */
+	fun byServiceTagForSelf(
+		tagType: String,
+		@DefaultValue("null")
+		tagCode: String? = null,
+	): FilterOptions<Contact> = ByServiceTagForSelf(
+		tagType = tagType,
+		tagCode = tagCode,
+	)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * where in [Contact.services] there is at least one service that in his tags has a code stub with the specified type and the specified
+	 * code (if provided).
+	 *
+	 * @param tagType a tag type
+	 * @param tagCode a code for the provided tag type, or null if you want the filter to accept any entity
+	 * with a tag of the provided type.
+	 */
+	fun byServiceTagForDataOwner(
+		dataOwnerId: String,
+		tagType: String,
+		@DefaultValue("null")
+		tagCode: String? = null,
+	): BaseFilterOptions<Contact> = ByServiceTagForDataOwner(
+		dataOwnerId = dataOwnerId,
+		tagType = tagType,
+		tagCode = tagCode,
+	)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * where in [Contact.services] there is at least one service that in his codes has a code stub with the specified type and the specified
+	 * code (if provided).
+	 *
+	 * @param codeType a code type
+	 * @param codeCode a code for the provided code type, or null if you want the filter to accept any entity
+	 * with a code of the provided type.
+	 */
+	fun byServiceCodeForSelf(
+		codeType: String,
+		@DefaultValue("null")
+		codeCode: String? = null,
+	): FilterOptions<Contact> = ByServiceCodeForSelf(
+		codeType = codeType,
+		codeCode = codeCode,
+	)
+
+	/**
+	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * where in [Contact.services] there is at least one service that in his codes has a code stub with the specified type and the specified
+	 * code (if provided).
+	 *
+	 * @param codeType a code type
+	 * @param codeCode a code for the provided code type, or null if you want the filter to accept any entity
+	 * with a code of the provided type.
+	 */
+	fun byServiceCodeForDataOwner(
+		dataOwnerId: String,
+		codeType: String,
+		@DefaultValue("null")
+		codeCode: String? = null,
+	): BaseFilterOptions<Contact> = ByServiceCodeForDataOwner(
+		dataOwnerId = dataOwnerId,
+		codeType = codeType,
+		codeCode = codeCode,
+	)
+
+	/**
 	 * Options for contact filtering which match all contacts shared directly (i.e. ignoring hierarchies) with the current data owner that have a certain tag.
 	 * If you specify only the [tagType] you will get all entities that have at least a tag of that type.
 	 *
@@ -607,6 +745,47 @@ object ContactFilters {
 	}
 
 	@Serializable
+	internal class ByOpeningDateForDataOwner(
+		val startDate: Long?,
+		val endDate: Long?,
+		val dataOwnerId: String,
+		val descending: Boolean
+	): BaseSortableFilterOptions<Contact>
+
+	@Serializable
+	internal class ByOpeningDateForSelf(
+		val startDate: Long?,
+		val endDate: Long?,
+		val descending: Boolean
+	): SortableFilterOptions<Contact>
+
+	@Serializable
+	internal class ByServiceTagForDataOwner(
+		val tagType: String,
+		val tagCode: String?,
+		val dataOwnerId: String
+	): BaseFilterOptions<Contact>
+
+	@Serializable
+	internal class ByServiceTagForSelf(
+		val tagType: String,
+		val tagCode: String?,
+	): FilterOptions<Contact>
+
+	@Serializable
+	internal class ByServiceCodeForDataOwner(
+		val codeType: String,
+		val codeCode: String?,
+		val dataOwnerId: String
+	): BaseFilterOptions<Contact>
+
+	@Serializable
+	internal class ByServiceCodeForSelf(
+		val codeType: String,
+		val codeCode: String?,
+	): FilterOptions<Contact>
+
+	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsForDataOwner(
 		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
@@ -787,6 +966,47 @@ internal suspend fun mapContactFilterOptions(
 			startOfContactOpeningDate = filterOptions.startOfContactOpeningDate,
 			endOfContactOpeningDate = filterOptions.endOfContactOpeningDate,
 			healthcarePartyId = selfDataOwnerId
+		)
+	}
+	is ContactFilters.ByOpeningDateForDataOwner -> ContactByDataOwnerOpeningDateFilter(
+		dataOwnerId = filterOptions.dataOwnerId,
+		startDate = filterOptions.startDate,
+		endDate = filterOptions.endDate,
+		descending = filterOptions.descending
+	)
+	is ContactFilters.ByOpeningDateForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByDataOwnerOpeningDateFilter(
+			dataOwnerId = selfDataOwnerId,
+			startDate = filterOptions.startDate,
+			endDate = filterOptions.endDate,
+			descending = filterOptions.descending
+		)
+	}
+	is ContactFilters.ByServiceTagForDataOwner -> ContactByDataOwnerServiceTagFilter(
+		dataOwnerId = filterOptions.dataOwnerId,
+		tagType = filterOptions.tagType,
+		tagCode = filterOptions.tagCode,
+	)
+	is ContactFilters.ByServiceTagForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByDataOwnerServiceTagFilter(
+			dataOwnerId = selfDataOwnerId,
+			tagType = filterOptions.tagType,
+			tagCode = filterOptions.tagCode,
+		)
+	}
+	is ContactFilters.ByServiceCodeForDataOwner -> ContactByDataOwnerServiceCodeFilter(
+		dataOwnerId = filterOptions.dataOwnerId,
+		codeType = filterOptions.codeType,
+		codeCode = filterOptions.codeCode,
+	)
+	is ContactFilters.ByServiceCodeForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		ContactByDataOwnerServiceCodeFilter(
+			dataOwnerId = selfDataOwnerId,
+			codeType = filterOptions.codeType,
+			codeCode = filterOptions.codeCode,
 		)
 	}
 	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Contacts")
