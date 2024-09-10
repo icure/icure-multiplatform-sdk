@@ -1,10 +1,10 @@
 @file:JsQualifier("options")
 package com.icure.cardinal.sdk.js.options.external
 
-import com.icure.kryptom.crypto.external.XCryptoService
 import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesJs
 import com.icure.cardinal.sdk.js.model.UserGroupJs
 import com.icure.cardinal.sdk.js.storage.KeyStorageFacadeJs
+import com.icure.kryptom.crypto.external.XCryptoService
 import kotlin.js.Promise
 
 @JsName("AuthenticationMethod")
@@ -65,7 +65,7 @@ external interface AuthenticationProcessTemplateParametersJs {
 @JsName("SdkOptions")
 external interface SdkOptionsJs {
 	val encryptedFields: EncryptedFieldsConfigurationJs?
-	val disableParentKeysInitialisation: Boolean?
+	val useHierarchicalDataOwners: Boolean?
 	val createTransferKeys: Boolean?
 	val cryptoService: XCryptoService?
 	val saltPasswordWithApplicationId: Boolean?

@@ -1,7 +1,5 @@
 package com.icure.cardinal.sdk.js.options
 
-import com.icure.kryptom.crypto.external.adaptCryptoServiceForExternal
-import com.icure.kryptom.crypto.external.adaptExternalCryptoService
 import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesBridge
 import com.icure.cardinal.sdk.js.model.userGroup_toJs
 import com.icure.cardinal.sdk.js.options.external.BasicSdkOptionsJs
@@ -13,6 +11,8 @@ import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EncryptedFieldsConfiguration
 import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.kryptom.crypto.external.adaptCryptoServiceForExternal
+import com.icure.kryptom.crypto.external.adaptExternalCryptoService
 import kotlinx.coroutines.await
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -24,7 +24,7 @@ suspend fun SdkOptionsJs.toKt(): SdkOptions {
 	val defaultSdkOptions = SdkOptions()
 	return SdkOptions(
 		encryptedFields = this.encryptedFields?.toKt() ?: defaultSdkOptions.encryptedFields,
-		disableParentKeysInitialisation = this.disableParentKeysInitialisation ?: defaultSdkOptions.disableParentKeysInitialisation,
+		useHierarchicalDataOwners = this.useHierarchicalDataOwners ?: defaultSdkOptions.useHierarchicalDataOwners,
 		createTransferKeys = this.createTransferKeys ?: defaultSdkOptions.createTransferKeys,
 		cryptoService = this.cryptoService?.let { adaptExternalCryptoService(it) } ?: defaultSdkOptions.cryptoService,
 		saltPasswordWithApplicationId = this.saltPasswordWithApplicationId ?: defaultSdkOptions.saltPasswordWithApplicationId,

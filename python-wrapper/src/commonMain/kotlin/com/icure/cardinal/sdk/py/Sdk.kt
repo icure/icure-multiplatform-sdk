@@ -14,9 +14,9 @@ import com.icure.cardinal.sdk.storage.KeyStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
 import com.icure.cardinal.sdk.storage.impl.FileStorageFacade
 import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.ensureNonNull
+import com.icure.utils.InternalIcureApi
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.asStableRef
@@ -32,7 +32,7 @@ private data class PySdkParams(
 	val authenticationMethod: PyAuthMethod,
 	val storageFacade: StorageFacadeOptions,
 	val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
-	val disableParentKeysInitialisation: Boolean = false,
+	val useHierarchicalDataOwners: Boolean = false,
 	val createTransferKeys: Boolean = true,
 	val keyStorage: StorageFacadeOptions? = null,
 	val saltPasswordWithApplicationId: Boolean = true,
@@ -64,7 +64,7 @@ private data class PySdkParams(
 		return RichPyApiParams(
 			SdkOptions(
 				encryptedFields = encryptedFields,
-				disableParentKeysInitialisation = disableParentKeysInitialisation,
+				useHierarchicalDataOwners = useHierarchicalDataOwners,
 				createTransferKeys = createTransferKeys,
 				keyStorage = keyStorage,
 				cryptoStrategies = strategies,

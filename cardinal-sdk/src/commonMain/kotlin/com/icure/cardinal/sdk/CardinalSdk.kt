@@ -456,7 +456,7 @@ private suspend fun initializeApiCrypto(
 		iCureStorage,
 		icureKeyRecovery,
 		KeyPairRecovererImpl(recoveryDataEncryption),
-		!options.disableParentKeysInitialisation,
+		!options.useHierarchicalDataOwners,
 	).initialize().also { initInfo ->
 		initInfo.newKey
 	}.manager
@@ -473,7 +473,7 @@ private suspend fun initializeApiCrypto(
 			cryptoStrategies,
 			dataOwnerApi,
 			cryptoService,
-			!options.disableParentKeysInitialisation,
+			!options.useHierarchicalDataOwners,
 		).also { it.initializeCache() }
 	else
 		CachedLruExchangeDataManager(
@@ -483,7 +483,7 @@ private suspend fun initializeApiCrypto(
 			cryptoStrategies,
 			dataOwnerApi,
 			cryptoService,
-			!options.disableParentKeysInitialisation,
+			!options.useHierarchicalDataOwners,
 			100
 		)
 	val secureDelegationsEncryption = SecureDelegationsEncryptionImpl(
@@ -523,7 +523,7 @@ private suspend fun initializeApiCrypto(
 		dataOwnerApi,
 		cryptoService,
 		jsonEncryptionService,
-		!options.disableParentKeysInitialisation,
+		!options.useHierarchicalDataOwners,
 		options.autoCreateEncryptionKeyForExistingLegacyData
 	)
 	val headersProvider: AccessControlKeysHeadersProvider =

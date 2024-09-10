@@ -26,7 +26,7 @@ class EncryptedFieldsConfiguration:
 @dataclass
 class SdkOptions:
     encrypted_fields: EncryptedFieldsConfiguration = field(default_factory=EncryptedFieldsConfiguration)
-    disable_parent_keys_initialisation: bool = False
+    use_hierarchical_data_owners: bool = False
     create_transfer_keys: bool = True
     key_storage: Optional[StorageOptions] = None
     salt_password_with_application_id: bool = True

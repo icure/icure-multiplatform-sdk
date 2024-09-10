@@ -12,16 +12,16 @@ export interface SdkOptions {
   /**
    * Has only effect when logging in as an hcp user.
    *
-   * If false the api will be initialized in a hierarchical mode, where each data owner is considered to have access
+   * If true the api will be initialized in a hierarchical mode, where each data owner is considered to have access
    * to all data of his parents (requires corresponding permission on the server side).
    * In this case the sdk will also expect to have access to at least a key for each parent data owner of the current
    * user.
    *
-   * If true the api will ignore the data owner hierarchies.
+   * If false or undefined the api will ignore the data owner hierarchies.
    * Each data owner is considered to have access only to data shared explicitly with him, and has access only to his
    * own keys.
    */
-  readonly disableParentKeysInitialisation?: boolean
+  readonly useHierarchicalDataOwners?: boolean
   /**
    * If true (default) the sdk will automatically create the transfer keys for the current user if a new keypair is
    * created.

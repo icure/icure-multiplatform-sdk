@@ -146,7 +146,7 @@ data class DataOwnerDetails private constructor (
 				).also { fillStorage(it) }
 			},
 			SdkOptions(
-				disableParentKeysInitialisation = false,
+				useHierarchicalDataOwners = false,
 				cryptoStrategies = cryptoStrategies
 			)
 		)

@@ -70,7 +70,7 @@ class CardinalSdk:
             'authenticationMethod': _serialize_authentication_method(authentication_method),
             'storageFacade': storage_info[0],
             'encryptedFields': _serialize_encrypted_fields(options.encrypted_fields),
-            'disableParentKeysInitialisation': options.disable_parent_keys_initialisation,
+            'useHierarchicalDataOwners': options.use_hierarchical_data_owners,
             'createTransferKeys': options.create_transfer_keys,
             'keyStorage': key_storage_info[0],
         }

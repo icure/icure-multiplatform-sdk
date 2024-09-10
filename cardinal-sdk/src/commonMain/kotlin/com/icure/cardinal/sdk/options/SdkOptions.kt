@@ -1,11 +1,11 @@
 package com.icure.cardinal.sdk.options
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.storage.KeyStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -65,16 +65,16 @@ data class SdkOptions(
 	/**
 	 * Has only effect when logging in as an hcp user.
 	 *
-	 * If false the api will be initialized in a hierarchical mode, where each data owner is considered to have access
+	 * If true the api will be initialized in a hierarchical mode, where each data owner is considered to have access
 	 * to all data of his parents (requires corresponding permission on the server side).
 	 * In this case the sdk will also expect to have access to at least a key for each parent data owner of the current
 	 * user.
 	 *
-	 * If true the api will ignore the data owner hierarchies.
+	 * If false the api will ignore the data owner hierarchies.
 	 * Each data owner is considered to have access only to data shared explicitly with him, and has access only to his
 	 * own keys.
 	 */
-	val disableParentKeysInitialisation: Boolean = false,
+	val useHierarchicalDataOwners: Boolean = true,
 	override val httpClient: HttpClient? = null,
 	override val httpClientJson: Json? = null,
 	/**
