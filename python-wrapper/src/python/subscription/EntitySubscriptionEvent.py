@@ -65,9 +65,9 @@ class EntitySubscriptionEvent(Generic[E]):
             deserialized_dict = json.loads(data)
         else:
             deserialized_dict = data
-        qualifier = deserialized_dict.get("type")
+        qualifier = deserialized_dict.get("kotlinType")
         if qualifier is None:
-            raise Exception("Missing qualifier: type")
+            raise Exception("Missing qualifier: kotlinType")
         if qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.Connected":
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.Connected)
         elif qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.Reconnected":

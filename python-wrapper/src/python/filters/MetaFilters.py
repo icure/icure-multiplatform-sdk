@@ -70,7 +70,7 @@ def intersection(
     if result_info.failure is not None:
         raise Exception(result_info.failure)
     else:
-        filter_type = result_info.success["type"]
+        filter_type = result_info.success["kotlinType"]
         if filter_type == "com.icure.cardinal.sdk.filters.SortableIntersectionFilterOptions":
             return SortableFilterOptions(result_info.success)
         elif filter_type == "com.icure.cardinal.sdk.filters.IntersectionFilterOptions":
@@ -127,7 +127,7 @@ def union(
     if result_info.failure is not None:
         raise Exception(result_info.failure)
     else:
-        filter_type = result_info.success["type"]
+        filter_type = result_info.success["kotlinType"]
         if filter_type == "com.icure.cardinal.sdk.filters.UnionFilterOptions":
             return FilterOptions(result_info.success)
         elif filter_type == "com.icure.cardinal.sdk.filters.BaseUnionFilterOptions":
@@ -191,7 +191,7 @@ def difference(
     if result_info.failure is not None:
         raise Exception(result_info.failure)
     else:
-        filter_type = result_info.success["type"]
+        filter_type = result_info.success["kotlinType"]
         if filter_type == "com.icure.cardinal.sdk.filters.SortableDifferenceFilterOptions":
             return SortableFilterOptions(result_info.success)
         elif filter_type == "com.icure.cardinal.sdk.filters.DifferenceFilterOptions":
