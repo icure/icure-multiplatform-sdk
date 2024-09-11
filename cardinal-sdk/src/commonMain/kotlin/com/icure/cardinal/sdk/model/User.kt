@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.model.enums.UsersType
 import com.icure.cardinal.sdk.model.security.AuthenticationToken
 import com.icure.cardinal.sdk.model.security.Permission
 import com.icure.cardinal.sdk.utils.DefaultValue
+import com.icure.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlin.Boolean

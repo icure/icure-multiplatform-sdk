@@ -1,5 +1,7 @@
 package com.icure.cardinal.sdk.model.embed
 
+import com.icure.cardinal.sdk.serialization.ByteArraySerializer
+import com.icure.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
@@ -8,7 +10,6 @@ import kotlin.Double
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
-import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.serialization.InstantSerializer
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.

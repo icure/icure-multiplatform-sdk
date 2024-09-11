@@ -1,3 +1,4 @@
+// This file is auto-generated
 package com.icure.cardinal.sdk.serialization
 
 import com.icure.cardinal.sdk.model.AccessLog
