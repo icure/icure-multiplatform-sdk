@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.ContactBasicFlavouredApi
 import com.icure.cardinal.sdk.api.ContactBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.ContactFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawContactApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.entities.ContactShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
@@ -72,7 +73,7 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	private val config: BasicApiConfiguration
 ) : ContactBasicFlavouredApi<E, S> {
 	override suspend fun modifyContact(entity: E): E =
-		rawApi.modifyContact(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyContact(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyContacts(entities: List<E>): List<E> =
 		rawApi.modifyContacts(entities.map { validateAndMaybeEncrypt(it) }).successBody().map { maybeDecrypt(it) }

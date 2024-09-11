@@ -4,7 +4,7 @@ import json
 import base64
 from cardinal_sdk.model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ReceiptShareOptions, deserialize_simple_share_result_decrypted_receipt, SimpleShareResultDecryptedReceipt, deserialize_simple_share_result_encrypted_receipt, SimpleShareResultEncryptedReceipt, deserialize_simple_share_result_receipt, SimpleShareResultReceipt
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from cardinal_sdk.model.specializations import HexString
@@ -54,7 +54,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_receipt(result_info.success)
 				return return_value
@@ -95,7 +95,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_receipt(result_info.success)
 				return return_value
@@ -136,7 +136,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedReceipt._deserialize(result_info.success)
 				return return_value
@@ -175,7 +175,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedReceipt._deserialize(result_info.success)
 				return return_value
@@ -214,7 +214,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedReceipt._deserialize(result_info.success)
 				return return_value
@@ -253,7 +253,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedReceipt._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -301,7 +301,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_receipt(result_info.success)
 				return return_value
@@ -342,7 +342,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_receipt(result_info.success)
 				return return_value
@@ -383,7 +383,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_receipt(result_info.success)
 				return return_value
@@ -422,7 +422,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_receipt(result_info.success)
 				return return_value
@@ -461,7 +461,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_receipt(result_info.success)
 				return return_value
@@ -500,7 +500,7 @@ class ReceiptApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_receipt(x1) for x1 in result_info.success]
 				return return_value
@@ -544,7 +544,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -591,7 +591,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -632,7 +632,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -675,7 +675,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -714,7 +714,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -753,7 +753,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -792,7 +792,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -833,7 +833,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def log_receipt_async(self, user: User, doc_id: str, refs: List[str], blob_type: str, blob: bytearray) -> Receipt:
 		loop = asyncio.get_running_loop()
@@ -877,7 +877,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_receipt(result_info.success)
 			return return_value
@@ -916,7 +916,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -955,7 +955,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_receipt(result_info.success)
 			return return_value
@@ -994,7 +994,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
@@ -1033,7 +1033,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -1074,7 +1074,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -1119,7 +1119,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -1162,7 +1162,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_receipt(result_info.success)
 			return return_value
@@ -1203,7 +1203,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_receipt(result_info.success)
 			return return_value
@@ -1244,7 +1244,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -1283,7 +1283,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -1322,7 +1322,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
@@ -1361,7 +1361,7 @@ class ReceiptApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedReceipt._deserialize(x1) for x1 in result_info.success]
 			return return_value

@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.MessageBasicFlavouredApi
 import com.icure.cardinal.sdk.api.MessageBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.MessageFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawMessageApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.MessageShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
@@ -36,12 +37,12 @@ import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.cardinal.sdk.utils.pagination.encodeStartKey
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -52,7 +53,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 ) :
 	MessageBasicFlavouredApi<E> {
 	override suspend fun modifyMessage(entity: E): E =
-		rawApi.modifyMessage(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyMessage(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun getMessage(entityId: String): E = rawApi.getMessage(entityId).successBody().let { maybeDecrypt(it) }
 

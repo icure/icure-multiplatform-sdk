@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.MedicalLocationApi
 import com.icure.cardinal.sdk.api.raw.RawMedicalLocationApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapMedicalLocationFilterOptions
@@ -9,9 +10,9 @@ import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.MedicalLocation
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class MedicalLocationApiImpl(
@@ -31,7 +32,7 @@ internal class MedicalLocationApiImpl(
 		rawApi.getMedicalLocations(startDocumentId, limit).successBody()
 
 	override suspend fun modifyMedicalLocation(medicalLocationDto: MedicalLocation): MedicalLocation =
-		rawApi.modifyMedicalLocation(medicalLocationDto).successBody()
+		rawApi.modifyMedicalLocation(medicalLocationDto).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getMedicalLocations(medicalLocationIds: List<String>): List<MedicalLocation> =
 		rawApi.getMedicalLocationsByIds(ListOfIds(medicalLocationIds)).successBody()

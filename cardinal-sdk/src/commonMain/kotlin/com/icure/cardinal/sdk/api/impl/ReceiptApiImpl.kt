@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.ReceiptBasicFlavouredApi
 import com.icure.cardinal.sdk.api.ReceiptBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.ReceiptFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawReceiptApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
@@ -24,16 +25,16 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
 private abstract class AbstractReceiptBasicFlavouredApi<E : Receipt>(protected val rawApi: RawReceiptApi) :
 	ReceiptBasicFlavouredApi<E> {
 	override suspend fun modifyReceipt(entity: E): E =
-		rawApi.modifyReceipt(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyReceipt(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun getReceipt(entityId: String): E = rawApi.getReceipt(entityId).successBody().let { maybeDecrypt(it) }
 	override suspend fun listByReference(reference: String): List<E> =

@@ -41,7 +41,7 @@ import kotlinx.serialization.builtins.serializer
 
 @Serializable
 private class GetHealthcarePartyParams(
-	public val deviceId: String,
+	public val healthcarePartyId: String,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -50,7 +50,7 @@ public fun getHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetHealthcarePartyParams>(params)
 	runBlocking {
 		sdk.healthcareParty.getHealthcareParty(
-			decodedParams.deviceId,
+			decodedParams.healthcarePartyId,
 		)
 	}
 }.toPyString(HealthcareParty.serializer())
@@ -69,7 +69,7 @@ public fun getHealthcarePartyAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthcareParty.getHealthcareParty(
-				decodedParams.deviceId,
+				decodedParams.healthcarePartyId,
 			)
 		}.toPyStringAsyncCallback(HealthcareParty.serializer(), resultCallback)
 	}
@@ -113,7 +113,7 @@ public fun createHealthcarePartyAsync(
 
 @Serializable
 private class DeleteHealthcarePartyParams(
-	public val deviceId: String,
+	public val healthcarePartyId: String,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -122,7 +122,7 @@ public fun deleteHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: Str
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyParams>(params)
 	runBlocking {
 		sdk.healthcareParty.deleteHealthcareParty(
-			decodedParams.deviceId,
+			decodedParams.healthcarePartyId,
 		)
 	}
 }.toPyString(DocIdentifier.serializer())
@@ -141,7 +141,7 @@ public fun deleteHealthcarePartyAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthcareParty.deleteHealthcareParty(
-				decodedParams.deviceId,
+				decodedParams.healthcarePartyId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
 	}
@@ -150,7 +150,7 @@ public fun deleteHealthcarePartyAsync(
 @Serializable
 private class ModifyHealthcarePartyInGroupParams(
 	public val groupId: String,
-	public val device: HealthcareParty,
+	public val healthcareParty: HealthcareParty,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -161,7 +161,7 @@ public fun modifyHealthcarePartyInGroupBlocking(sdk: CardinalNonCryptoApis, para
 	runBlocking {
 		sdk.healthcareParty.modifyHealthcarePartyInGroup(
 			decodedParams.groupId,
-			decodedParams.device,
+			decodedParams.healthcareParty,
 		)
 	}
 }.toPyString(HealthcareParty.serializer())
@@ -182,7 +182,7 @@ public fun modifyHealthcarePartyInGroupAsync(
 		kotlin.runCatching {
 			sdk.healthcareParty.modifyHealthcarePartyInGroup(
 				decodedParams.groupId,
-				decodedParams.device,
+				decodedParams.healthcareParty,
 			)
 		}.toPyStringAsyncCallback(HealthcareParty.serializer(), resultCallback)
 	}
@@ -191,7 +191,7 @@ public fun modifyHealthcarePartyInGroupAsync(
 @Serializable
 private class CreateHealthcarePartyInGroupParams(
 	public val groupId: String,
-	public val device: HealthcareParty,
+	public val healthcareParty: HealthcareParty,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -202,7 +202,7 @@ public fun createHealthcarePartyInGroupBlocking(sdk: CardinalNonCryptoApis, para
 	runBlocking {
 		sdk.healthcareParty.createHealthcarePartyInGroup(
 			decodedParams.groupId,
-			decodedParams.device,
+			decodedParams.healthcareParty,
 		)
 	}
 }.toPyString(HealthcareParty.serializer())
@@ -223,7 +223,7 @@ public fun createHealthcarePartyInGroupAsync(
 		kotlin.runCatching {
 			sdk.healthcareParty.createHealthcarePartyInGroup(
 				decodedParams.groupId,
-				decodedParams.device,
+				decodedParams.healthcareParty,
 			)
 		}.toPyStringAsyncCallback(HealthcareParty.serializer(), resultCallback)
 	}
@@ -634,7 +634,7 @@ public fun deleteHealthcarePartiesAsync(
 
 @Serializable
 private class ModifyHealthcarePartyParams(
-	public val healthcarePartyDto: HealthcareParty,
+	public val healthcareParty: HealthcareParty,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -643,7 +643,7 @@ public fun modifyHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: Str
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyHealthcarePartyParams>(params)
 	runBlocking {
 		sdk.healthcareParty.modifyHealthcareParty(
-			decodedParams.healthcarePartyDto,
+			decodedParams.healthcareParty,
 		)
 	}
 }.toPyString(HealthcareParty.serializer())
@@ -662,7 +662,7 @@ public fun modifyHealthcarePartyAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthcareParty.modifyHealthcareParty(
-				decodedParams.healthcarePartyDto,
+				decodedParams.healthcareParty,
 			)
 		}.toPyStringAsyncCallback(HealthcareParty.serializer(), resultCallback)
 	}

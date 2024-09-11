@@ -2,13 +2,14 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.DeviceApi
 import com.icure.cardinal.sdk.api.raw.RawDeviceApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapDeviceFilterOptions
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.ListOfIds
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class DeviceApiImpl(
@@ -20,11 +21,11 @@ internal class DeviceApiImpl(
 
 	override suspend fun createDevice(p: Device) = rawApi.createDevice(p).successBody()
 
-	override suspend fun updateDevice(device: Device) = rawApi.updateDevice(device).successBody()
+	override suspend fun modifyDevice(device: Device) = rawApi.updateDevice(device).successBodyOrThrowRevisionConflict()
 
 	override suspend fun createDevices(devices: List<Device>) = rawApi.createDevices(devices).successBody()
 
-	override suspend fun updateDevices(devices: List<Device>) = rawApi.updateDevices(devices).successBody()
+	override suspend fun modifyDevices(devices: List<Device>) = rawApi.updateDevices(devices).successBody()
 
 	override suspend fun filterDevicesBy(filter: BaseFilterOptions<Device>) =
 		IdsPageIterator(matchDevicesBy(filter), this::getDevices)

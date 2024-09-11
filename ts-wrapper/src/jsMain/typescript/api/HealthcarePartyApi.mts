@@ -9,15 +9,17 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface HealthcarePartyApi {
 
-	getHealthcareParty(deviceId: string): Promise<HealthcareParty>;
+	getHealthcareParty(healthcarePartyId: string): Promise<HealthcareParty>;
 
 	createHealthcareParty(p: HealthcareParty): Promise<HealthcareParty>;
 
-	deleteHealthcareParty(deviceId: string): Promise<DocIdentifier>;
+	deleteHealthcareParty(healthcarePartyId: string): Promise<DocIdentifier>;
 
-	modifyHealthcarePartyInGroup(groupId: string, device: HealthcareParty): Promise<HealthcareParty>;
+	modifyHealthcarePartyInGroup(groupId: string,
+			healthcareParty: HealthcareParty): Promise<HealthcareParty>;
 
-	createHealthcarePartyInGroup(groupId: string, device: HealthcareParty): Promise<HealthcareParty>;
+	createHealthcarePartyInGroup(groupId: string,
+			healthcareParty: HealthcareParty): Promise<HealthcareParty>;
 
 	getCurrentHealthcareParty(): Promise<HealthcareParty>;
 
@@ -46,7 +48,7 @@ export interface HealthcarePartyApi {
 
 	deleteHealthcareParties(healthcarePartyIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	modifyHealthcareParty(healthcarePartyDto: HealthcareParty): Promise<HealthcareParty>;
+	modifyHealthcareParty(healthcareParty: HealthcareParty): Promise<HealthcareParty>;
 
 	matchHealthcarePartiesBy(filter: BaseFilterOptions<HealthcareParty>): Promise<Array<string>>;
 

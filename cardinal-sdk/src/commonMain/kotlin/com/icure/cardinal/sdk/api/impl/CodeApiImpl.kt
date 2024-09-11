@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.CodeApi
 import com.icure.cardinal.sdk.api.raw.RawCodeApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapCodeFilterOptions
@@ -9,10 +10,10 @@ import com.icure.cardinal.sdk.model.BooleanResponse
 import com.icure.cardinal.sdk.model.Code
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.cardinal.sdk.utils.pagination.encodeStartKey
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.JsonElement
 
 @InternalIcureApi
@@ -91,7 +92,7 @@ internal class CodeApiImpl(
         version: String,
     ): Code = rawApi.getCodeWithParts(type, code, version).successBody()
 
-    override suspend fun modifyCode(codeDto: Code): Code = rawApi.modifyCode(codeDto).successBody()
+    override suspend fun modifyCode(codeDto: Code): Code = rawApi.modifyCode(codeDto).successBodyOrThrowRevisionConflict()
 
     override suspend fun modifyCodes(codeBatch: List<Code>): List<Code> = rawApi.modifyCodes(codeBatch).successBody()
 

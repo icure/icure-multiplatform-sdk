@@ -46,11 +46,11 @@ import kotlinx.coroutines.promise
 internal class HealthcarePartyApiImplJs(
 	private val healthcarePartyApi: HealthcarePartyApi,
 ) : HealthcarePartyApiJs {
-	override fun getHealthcareParty(deviceId: String): Promise<HealthcarePartyJs> =
+	override fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs> =
 			GlobalScope.promise {
-		val deviceIdConverted: String = deviceId
+		val healthcarePartyIdConverted: String = healthcarePartyId
 		val result = healthcarePartyApi.getHealthcareParty(
-			deviceIdConverted,
+			healthcarePartyIdConverted,
 		)
 		healthcareParty_toJs(result)
 	}
@@ -64,33 +64,33 @@ internal class HealthcarePartyApiImplJs(
 		healthcareParty_toJs(result)
 	}
 
-	override fun deleteHealthcareParty(deviceId: String): Promise<DocIdentifierJs> =
+	override fun deleteHealthcareParty(healthcarePartyId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
-		val deviceIdConverted: String = deviceId
+		val healthcarePartyIdConverted: String = healthcarePartyId
 		val result = healthcarePartyApi.deleteHealthcareParty(
-			deviceIdConverted,
+			healthcarePartyIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun modifyHealthcarePartyInGroup(groupId: String, device: HealthcarePartyJs):
+	override fun modifyHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcarePartyJs):
 			Promise<HealthcarePartyJs> = GlobalScope.promise {
 		val groupIdConverted: String = groupId
-		val deviceConverted: HealthcareParty = healthcareParty_fromJs(device)
+		val healthcarePartyConverted: HealthcareParty = healthcareParty_fromJs(healthcareParty)
 		val result = healthcarePartyApi.modifyHealthcarePartyInGroup(
 			groupIdConverted,
-			deviceConverted,
+			healthcarePartyConverted,
 		)
 		healthcareParty_toJs(result)
 	}
 
-	override fun createHealthcarePartyInGroup(groupId: String, device: HealthcarePartyJs):
+	override fun createHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcarePartyJs):
 			Promise<HealthcarePartyJs> = GlobalScope.promise {
 		val groupIdConverted: String = groupId
-		val deviceConverted: HealthcareParty = healthcareParty_fromJs(device)
+		val healthcarePartyConverted: HealthcareParty = healthcareParty_fromJs(healthcareParty)
 		val result = healthcarePartyApi.createHealthcarePartyInGroup(
 			groupIdConverted,
-			deviceConverted,
+			healthcarePartyConverted,
 		)
 		healthcareParty_toJs(result)
 	}
@@ -380,11 +380,11 @@ internal class HealthcarePartyApiImplJs(
 		)
 	}
 
-	override fun modifyHealthcareParty(healthcarePartyDto: HealthcarePartyJs):
-			Promise<HealthcarePartyJs> = GlobalScope.promise {
-		val healthcarePartyDtoConverted: HealthcareParty = healthcareParty_fromJs(healthcarePartyDto)
+	override fun modifyHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<HealthcarePartyJs>
+			= GlobalScope.promise {
+		val healthcarePartyConverted: HealthcareParty = healthcareParty_fromJs(healthcareParty)
 		val result = healthcarePartyApi.modifyHealthcareParty(
-			healthcarePartyDtoConverted,
+			healthcarePartyConverted,
 		)
 		healthcareParty_toJs(result)
 	}

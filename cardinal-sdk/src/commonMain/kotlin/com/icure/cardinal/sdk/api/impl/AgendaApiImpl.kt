@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.raw.RawAgendaApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapAgendaFilterOptions
@@ -9,9 +10,9 @@ import com.icure.cardinal.sdk.model.Agenda
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class AgendaApiImpl (
@@ -39,7 +40,7 @@ internal class AgendaApiImpl (
 	@Deprecated("Use filter instead")
 	override suspend fun getReadableAgendasForUser(userId: String): List<Agenda> = rawApi.getReadableAgendasForUser(userId).successBody()
 
-	override suspend fun modifyAgenda(agendaDto: Agenda): Agenda = rawApi.modifyAgenda(agendaDto).successBody()
+	override suspend fun modifyAgenda(agendaDto: Agenda): Agenda = rawApi.modifyAgenda(agendaDto).successBodyOrThrowRevisionConflict()
 
 	override suspend fun matchAgendasBy(filter: BaseFilterOptions<Agenda>): List<String> =
 		rawApi.matchAgendasBy(mapAgendaFilterOptions(filter)).successBody()

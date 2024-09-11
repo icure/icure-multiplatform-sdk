@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawDataOwnerApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
@@ -11,8 +12,8 @@ import com.icure.cardinal.sdk.model.extensions.publicKeysSpki
 import com.icure.cardinal.sdk.model.extensions.toStub
 import com.icure.cardinal.sdk.model.extensions.type
 import com.icure.cardinal.sdk.utils.IllegalEntityException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.SingleValueAsyncCache
+import com.icure.utils.InternalIcureApi
 
 @OptIn(InternalIcureApi::class)
 class DataOwnerApiImpl(
@@ -58,7 +59,7 @@ class DataOwnerApiImpl(
 		}
 
 	override suspend fun modifyDataOwnerStub(cryptoActorStubWithTypeDto: CryptoActorStubWithType): CryptoActorStubWithType =
-		rawApi.modifyDataOwnerStub(cryptoActorStubWithTypeDto).successBody()
+		rawApi.modifyDataOwnerStub(cryptoActorStubWithTypeDto).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getCurrentDataOwnerType(): DataOwnerType =
 		getOrCacheInfo().first.type

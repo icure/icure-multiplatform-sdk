@@ -72,9 +72,9 @@ internal class DeviceApiImplJs(
 		device_toJs(result)
 	}
 
-	override fun updateDevice(device: DeviceJs): Promise<DeviceJs> = GlobalScope.promise {
+	override fun modifyDevice(device: DeviceJs): Promise<DeviceJs> = GlobalScope.promise {
 		val deviceConverted: Device = device_fromJs(device)
-		val result = deviceApi.updateDevice(
+		val result = deviceApi.modifyDevice(
 			deviceConverted,
 		)
 		device_toJs(result)
@@ -100,7 +100,7 @@ internal class DeviceApiImplJs(
 		)
 	}
 
-	override fun updateDevices(devices: Array<DeviceJs>): Promise<Array<IdWithRevJs>> =
+	override fun modifyDevices(devices: Array<DeviceJs>): Promise<Array<IdWithRevJs>> =
 			GlobalScope.promise {
 		val devicesConverted: List<Device> = arrayToList(
 			devices,
@@ -109,7 +109,7 @@ internal class DeviceApiImplJs(
 				device_fromJs(x1)
 			},
 		)
-		val result = deviceApi.updateDevices(
+		val result = deviceApi.modifyDevices(
 			devicesConverted,
 		)
 		listToArray(

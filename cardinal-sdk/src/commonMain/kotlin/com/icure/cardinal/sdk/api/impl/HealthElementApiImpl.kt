@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.HealthElementBasicFlavouredApi
 import com.icure.cardinal.sdk.api.HealthElementBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.HealthElementFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawHealthElementApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
@@ -49,7 +50,7 @@ private abstract class AbstractHealthElementBasicFlavouredApi<E : HealthElement>
 	private val config: BasicApiConfiguration
 ) : HealthElementBasicFlavouredApi<E> {
 	override suspend fun modifyHealthElement(entity: E): E =
-		rawApi.modifyHealthElement(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyHealthElement(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyHealthElements(entities: List<E>): List<E> =
 		rawApi.modifyHealthElements(entities.map { validateAndMaybeEncrypt(it) }).successBody().map { maybeDecrypt(it) }

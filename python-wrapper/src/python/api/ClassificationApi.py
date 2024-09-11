@@ -3,7 +3,7 @@ import asyncio
 import json
 from cardinal_sdk.model import DecryptedClassification, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Classification, serialize_classification, EncryptedClassification, deserialize_classification, DocIdentifier, ClassificationShareOptions, deserialize_simple_share_result_decrypted_classification, SimpleShareResultDecryptedClassification, deserialize_simple_share_result_encrypted_classification, SimpleShareResultEncryptedClassification, deserialize_simple_share_result_classification, SimpleShareResultClassification
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from cardinal_sdk.model.specializations import HexString
@@ -55,7 +55,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_classification(result_info.success)
 				return return_value
@@ -96,7 +96,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_classification(result_info.success)
 				return return_value
@@ -137,7 +137,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedClassification._deserialize(result_info.success)
 				return return_value
@@ -179,10 +179,10 @@ class ClassificationApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -229,10 +229,10 @@ class ClassificationApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -276,7 +276,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedClassification._deserialize(result_info.success)
 				return return_value
@@ -315,7 +315,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedClassification._deserialize(result_info.success)
 				return return_value
@@ -354,7 +354,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedClassification._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -402,7 +402,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_classification(result_info.success)
 				return return_value
@@ -443,7 +443,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_classification(result_info.success)
 				return return_value
@@ -484,7 +484,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_classification(result_info.success)
 				return return_value
@@ -526,10 +526,10 @@ class ClassificationApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -576,10 +576,10 @@ class ClassificationApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -623,7 +623,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_classification(result_info.success)
 				return return_value
@@ -662,7 +662,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_classification(result_info.success)
 				return return_value
@@ -701,7 +701,7 @@ class ClassificationApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_classification(x1) for x1 in result_info.success]
 				return return_value
@@ -745,7 +745,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedClassification._deserialize(result_info.success)
 			return return_value
@@ -792,7 +792,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedClassification._deserialize(result_info.success)
 			return return_value
@@ -831,7 +831,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -870,7 +870,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -909,7 +909,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -950,7 +950,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def decrypt_async(self, classification: EncryptedClassification) -> DecryptedClassification:
 		loop = asyncio.get_running_loop()
@@ -986,7 +986,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedClassification._deserialize(result_info.success)
 			return return_value
@@ -1025,7 +1025,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_classification(result_info.success)
 			return return_value
@@ -1064,7 +1064,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1103,7 +1103,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1142,7 +1142,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
@@ -1181,7 +1181,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -1224,7 +1224,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_classification(result_info.success)
 			return return_value
@@ -1265,7 +1265,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_classification(result_info.success)
 			return return_value
@@ -1306,7 +1306,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedClassification._deserialize(result_info.success)
 			return return_value
@@ -1348,10 +1348,10 @@ class ClassificationApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -1398,10 +1398,10 @@ class ClassificationApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -1445,7 +1445,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedClassification._deserialize(result_info.success)
 			return return_value
@@ -1484,7 +1484,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedClassification._deserialize(result_info.success)
 			return return_value
@@ -1523,7 +1523,7 @@ class ClassificationApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedClassification._deserialize(x1) for x1 in result_info.success]
 			return return_value
