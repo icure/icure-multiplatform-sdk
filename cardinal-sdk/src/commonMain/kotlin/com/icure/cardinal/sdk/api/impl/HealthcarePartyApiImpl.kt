@@ -2,30 +2,31 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.HealthcarePartyApi
 import com.icure.cardinal.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapHealthcarePartyFilterOptions
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.ListOfIds
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class HealthcarePartyApiImpl(
 	private val rawApi: RawHealthcarePartyApi,
 ) : HealthcarePartyApi {
-	override suspend fun getHealthcareParty(deviceId: String) = rawApi.getHealthcareParty(deviceId).successBody()
+	override suspend fun getHealthcareParty(healthcarePartyId: String) = rawApi.getHealthcareParty(healthcarePartyId).successBody()
 
 	override suspend fun createHealthcareParty(p: HealthcareParty) = rawApi.createHealthcareParty(p).successBody()
 
-	override suspend fun deleteHealthcareParty(deviceId: String) = rawApi.deleteHealthcareParty(deviceId).successBody()
+	override suspend fun deleteHealthcareParty(healthcarePartyId: String) = rawApi.deleteHealthcareParty(healthcarePartyId).successBody()
 
-	override suspend fun modifyHealthcarePartyInGroup(groupId: String, device: HealthcareParty) =
-		rawApi.modifyHealthcarePartyInGroup(groupId, device).successBody()
+	override suspend fun modifyHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcareParty) =
+		rawApi.modifyHealthcarePartyInGroup(groupId, healthcareParty).successBodyOrThrowRevisionConflict()
 
-	override suspend fun createHealthcarePartyInGroup(groupId: String, device: HealthcareParty) =
-		rawApi.createHealthcarePartyInGroup(groupId, device).successBody()
+	override suspend fun createHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcareParty) =
+		rawApi.createHealthcarePartyInGroup(groupId, healthcareParty).successBody()
 
 
 	override suspend fun getCurrentHealthcareParty() = rawApi.getCurrentHealthcareParty().successBody()
@@ -88,8 +89,8 @@ internal class HealthcarePartyApiImpl(
 	override suspend fun deleteHealthcareParties(healthcarePartyIds: List<String>) =
 		rawApi.deleteHealthcareParties(ListOfIds(healthcarePartyIds)).successBody()
 
-	override suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty) =
-		rawApi.modifyHealthcareParty(healthcarePartyDto).successBody()
+	override suspend fun modifyHealthcareParty(healthcareParty: HealthcareParty) =
+		rawApi.modifyHealthcareParty(healthcareParty).successBodyOrThrowRevisionConflict()
 
 	override suspend fun matchHealthcarePartiesBy(filter: BaseFilterOptions<HealthcareParty>) =
 		rawApi.matchHealthcarePartiesBy(mapHealthcarePartyFilterOptions(filter)).successBody()

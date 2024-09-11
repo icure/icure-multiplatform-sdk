@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.MaintenanceTaskBasicFlavouredApi
 import com.icure.cardinal.sdk.api.MaintenanceTaskBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.MaintenanceTaskFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawMaintenanceTaskApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
@@ -33,11 +34,11 @@ import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
 
@@ -48,7 +49,7 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 ) :
 	MaintenanceTaskBasicFlavouredApi<E> {
 	override suspend fun modifyMaintenanceTask(entity: E): E =
-		rawApi.modifyMaintenanceTask(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyMaintenanceTask(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 
 	override suspend fun getMaintenanceTask(entityId: String): E = rawApi.getMaintenanceTask(entityId).successBody().let { maybeDecrypt(it) }

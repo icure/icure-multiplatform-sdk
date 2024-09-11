@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.FormBasicFlavouredApi
 import com.icure.cardinal.sdk.api.FormBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.FormFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawFormApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
@@ -30,18 +31,18 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
 private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val rawApi: RawFormApi) :
 	FormBasicFlavouredApi<E> {
 	override suspend fun modifyForm(entity: E): E =
-		rawApi.modifyForm(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyForm(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyForms(entities: List<E>): List<E> =
 		rawApi.modifyForms(entities.map { validateAndMaybeEncrypt(it) }).successBody().map { maybeDecrypt(it) }

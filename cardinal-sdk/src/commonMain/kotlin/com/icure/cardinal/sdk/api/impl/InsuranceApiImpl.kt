@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.InsuranceApi
 import com.icure.cardinal.sdk.api.raw.RawInsuranceApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.Insurance
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.utils.InternalIcureApi
@@ -29,5 +30,5 @@ internal class InsuranceApiImpl(
 
 	override suspend fun listInsurancesByName(insuranceName: String) = rawApi.listInsurancesByName(insuranceName).successBody()
 
-	override suspend fun modifyInsurance(insurance: Insurance) = rawApi.modifyInsurance(insurance).successBody()
+	override suspend fun modifyInsurance(insurance: Insurance) = rawApi.modifyInsurance(insurance).successBodyOrThrowRevisionConflict()
 }

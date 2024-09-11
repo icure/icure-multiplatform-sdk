@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.EntityTemplateApi
 import com.icure.cardinal.sdk.api.raw.RawEntityTemplateApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.EntityTemplate
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.utils.InternalIcureApi
@@ -16,7 +17,7 @@ internal class EntityTemplateApiImpl(
 		rawApi.createEntityTemplate(applicationSettings).successBody()
 
 	override suspend fun modifyEntityTemplate(documentTemplate: EntityTemplate) =
-		rawApi.modifyEntityTemplate(documentTemplate).successBody()
+		rawApi.modifyEntityTemplate(documentTemplate).successBodyOrThrowRevisionConflict()
 
 	override suspend fun listEntityTemplatesBy(
 		userId: String,

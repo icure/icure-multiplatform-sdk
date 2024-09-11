@@ -11,18 +11,18 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
 interface HealthcarePartyApi {
-	suspend fun getHealthcareParty(deviceId: String): HealthcareParty
+	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty
 	suspend fun createHealthcareParty(p: HealthcareParty): HealthcareParty
-	suspend fun deleteHealthcareParty(deviceId: String): DocIdentifier
+	suspend fun deleteHealthcareParty(healthcarePartyId: String): DocIdentifier
 
 	suspend fun modifyHealthcarePartyInGroup(
 		groupId: String,
-		device: HealthcareParty,
+		healthcareParty: HealthcareParty,
 	): HealthcareParty
 
 	suspend fun createHealthcarePartyInGroup(
 		groupId: String,
-		device: HealthcareParty,
+		healthcareParty: HealthcareParty,
 	): HealthcareParty
 
 	suspend fun getCurrentHealthcareParty(): HealthcareParty
@@ -100,7 +100,7 @@ interface HealthcarePartyApi {
 	suspend fun listHealthcarePartiesByParentId(parentId: String): List<HealthcareParty>
 	suspend fun getPublicKey(healthcarePartyId: String): PublicKey
 	suspend fun deleteHealthcareParties(healthcarePartyIds: List<String>): List<DocIdentifier>
-	suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HealthcareParty
+	suspend fun modifyHealthcareParty(healthcareParty: HealthcareParty): HealthcareParty
 	suspend fun matchHealthcarePartiesBy(filter: BaseFilterOptions<HealthcareParty>): List<String>
 
 	suspend fun filterHealthPartiesBy(

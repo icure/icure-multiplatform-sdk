@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.TarificationApi
 import com.icure.cardinal.sdk.api.raw.RawTarificationApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.Tarification
 import com.icure.utils.InternalIcureApi
@@ -21,7 +22,7 @@ internal class TarificationApiImpl(
 		)
 	).successBody()
 
-	override suspend fun modifyTarification(tarification: Tarification) = rawApi.modifyTarification(tarification).successBody()
+	override suspend fun modifyTarification(tarification: Tarification) = rawApi.modifyTarification(tarification).successBodyOrThrowRevisionConflict()
 
 	override suspend fun findTarificationsByLabel(
 		region: String?,

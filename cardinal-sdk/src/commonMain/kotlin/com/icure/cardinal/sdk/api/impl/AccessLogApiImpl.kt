@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.AccessLogBasicFlavouredApi
 import com.icure.cardinal.sdk.api.AccessLogBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.AccessLogFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawAccessLogApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -32,12 +33,12 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochInstant
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
@@ -47,7 +48,7 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 	protected open suspend fun getSecureDelegationKeys() = emptyList<String>()
 
 	override suspend fun modifyAccessLog(entity: E): E =
-		rawApi.modifyAccessLog(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyAccessLog(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun getAccessLog(entityId: String): E = rawApi.getAccessLog(entityId).successBody().let { maybeDecrypt(it) }
 

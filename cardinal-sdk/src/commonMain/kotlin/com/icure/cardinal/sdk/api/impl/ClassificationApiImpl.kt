@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.ClassificationBasicFlavouredApi
 import com.icure.cardinal.sdk.api.ClassificationBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.ClassificationFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawClassificationApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
@@ -29,18 +30,18 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
 private abstract class AbstractClassificationBasicFlavouredApi<E : Classification>(protected val rawApi: RawClassificationApi) :
 	ClassificationBasicFlavouredApi<E> {
 	override suspend fun modifyClassification(entity: E): E =
-		rawApi.modifyClassification(validateAndMaybeEncrypt(entity)).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyClassification(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 
 	override suspend fun getClassification(entityId: String): E = rawApi.getClassification(entityId).successBody().let { maybeDecrypt(it) }

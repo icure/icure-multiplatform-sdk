@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.impl
 import com.icure.cardinal.sdk.api.UserApi
 import com.icure.cardinal.sdk.api.raw.RawPermissionApi
 import com.icure.cardinal.sdk.api.raw.RawUserApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapUserFilterOptions
@@ -11,9 +12,9 @@ import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.Permission
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class UserApiImpl(
@@ -64,7 +65,7 @@ internal class UserApiImpl(
 
 	override suspend fun deleteUser(userId: String) = raw.deleteUser(userId).successBody()
 
-	override suspend fun modifyUser(user: User) = raw.modifyUser(user).successBody()
+	override suspend fun modifyUser(user: User) = raw.modifyUser(user).successBodyOrThrowRevisionConflict()
 
 	override suspend fun assignHealthcareParty(healthcarePartyId: String) = raw.assignHealthcareParty(healthcarePartyId).successBody()
 
@@ -130,7 +131,7 @@ internal class UserApiImpl(
 	override suspend fun modifyUserInGroup(
 		groupId: String,
 		user: User,
-	) = raw.modifyUserInGroup(groupId, user).successBody()
+	) = raw.modifyUserInGroup(groupId, user).successBodyOrThrowRevisionConflict()
 
 	override suspend fun deleteUserInGroup(
 		groupId: String,

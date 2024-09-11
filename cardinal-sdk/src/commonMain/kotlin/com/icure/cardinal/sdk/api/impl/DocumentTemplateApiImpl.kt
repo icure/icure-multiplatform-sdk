@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.DocumentTemplateApi
 import com.icure.cardinal.sdk.api.raw.RawDocumentTemplateApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.DocumentTemplate
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.utils.InternalIcureApi
@@ -17,7 +18,7 @@ internal class DocumentTemplateApiImpl(
 		rawApi.createDocumentTemplate(documentTemplate).successBody()
 
 	override suspend fun modifyDocumentTemplate(documentTemplate: DocumentTemplate) =
-		rawApi.modifyDocumentTemplate(documentTemplate.id, documentTemplate).successBody()
+		rawApi.modifyDocumentTemplate(documentTemplate.id, documentTemplate).successBodyOrThrowRevisionConflict()
 
 	override suspend fun deleteDocumentTemplates(documentTemplateIds: List<String>) = rawApi.deleteDocumentTemplates(
 		ListOfIds(documentTemplateIds)

@@ -1,7 +1,8 @@
 package com.icure.cardinal.sdk.api.raw
 
-import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.utils.RequestStatusException
+import com.icure.utils.InternalIcureApi
 import io.ktor.http.Headers
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
@@ -29,6 +30,10 @@ suspend fun <T : Any> HttpResponse<T>.successBodyOrNull(): T? = if (status.isSuc
 
 @InternalIcureApi
 suspend fun <T : Any> HttpResponse<T>.successBodyOrNull404(): T? = if (status == HttpStatusCode.NotFound) null else successBody()
+
+@InternalIcureApi
+suspend fun <T : Any> HttpResponse<T>.successBodyOrThrowRevisionConflict(): T =
+	if (status == HttpStatusCode.Conflict) throw RevisionConflictException() else successBody()
 
 interface BodyProvider<T> {
 	suspend fun body(response: io.ktor.client.statement.HttpResponse): T

@@ -12,9 +12,9 @@ interface DeviceApi {
 	suspend fun getDevice(deviceId: String): Device
 	suspend fun getDevices(deviceIds: List<String>): List<Device>
 	suspend fun createDevice(p: Device): Device
-	suspend fun updateDevice(device: Device): Device
+	suspend fun modifyDevice(device: Device): Device
 	suspend fun createDevices(devices: List<Device>): List<IdWithRev>
-	suspend fun updateDevices(devices: List<Device>): List<IdWithRev>
+	suspend fun modifyDevices(devices: List<Device>): List<IdWithRev>
 
 	suspend fun filterDevicesBy(
 		filter: BaseFilterOptions<Device>

@@ -153,7 +153,7 @@ public fun updateDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): Str
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDeviceParams>(params)
 	runBlocking {
-		sdk.device.updateDevice(
+		sdk.device.modifyDevice(
 			decodedParams.device,
 		)
 	}
@@ -172,7 +172,7 @@ public fun updateDeviceAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDeviceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.device.updateDevice(
+			sdk.device.modifyDevice(
 				decodedParams.device,
 			)
 		}.toPyStringAsyncCallback(Device.serializer(), resultCallback)
@@ -225,7 +225,7 @@ public fun updateDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): St
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDevicesParams>(params)
 	runBlocking {
-		sdk.device.updateDevices(
+		sdk.device.modifyDevices(
 			decodedParams.devices,
 		)
 	}
@@ -244,7 +244,7 @@ public fun updateDevicesAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDevicesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.device.updateDevices(
+			sdk.device.modifyDevices(
 				decodedParams.devices,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(IdWithRev.serializer()), resultCallback)
