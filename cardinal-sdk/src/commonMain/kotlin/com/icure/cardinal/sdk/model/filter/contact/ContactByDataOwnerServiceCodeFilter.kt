@@ -18,5 +18,6 @@ data class ContactByDataOwnerServiceCodeFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Contact> {
 	// region ContactByDataOwnerServiceCodeFilter-ContactByDataOwnerServiceCodeFilter
+
 	// endregion
 }
