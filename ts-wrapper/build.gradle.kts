@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 import java.io.FileWriter
 
 plugins {
@@ -75,6 +74,13 @@ interface Export {
 	) : Export {
 		override val entry: String
 			get() = "export * from '$from'"
+	}
+	data class Selective(
+		val items: List<String>,
+		val from: String
+	) : Export {
+		override val entry: String
+			get() = "export { ${items.joinToString(",")} } from '$from'"
 	}
 }
 fun copyJsPatching(
@@ -200,7 +206,11 @@ tasks.register("prepareDistributionPackage") {
 			from = ktJsCompiledPackage.resolve("$moduleName.mjs"),
 			into = tsPackage.resolve("$moduleName.mjs"),
 			importing = tsSourcePackagesImport,
-			exporting = tsSourcePackageExports
+			exporting = tsSourcePackageExports + Export.Selective(
+				// Add exports from multiplatform module (not ts wrapper)
+				listOf("RevisionConflictException"),
+				"./cardinal-sdk.mjs"
+			)
 		)
 		copyJsPatching(
 			from = ktJsCompiledPackage.resolve("package.json"),
