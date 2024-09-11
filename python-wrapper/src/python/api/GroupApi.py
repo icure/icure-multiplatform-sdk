@@ -4,7 +4,7 @@ import json
 from cardinal_sdk.model import Group, DatabaseInitialisation, GroupType, RegistrationInformation, PermissionType, RegistrationSuccess, PaginatedList, Operation, UserType, RoleConfiguration, GroupDeletionReport, ListOfProperties, DesignDocument, IdWithRev, GroupDatabasesInfo, ReplicationInfo, DocIdentifier
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List, Optional, Dict
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 
 class GroupApi:
@@ -38,7 +38,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [Group._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -77,7 +77,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -134,7 +134,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -177,7 +177,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = RegistrationSuccess._deserialize(result_info.success)
 			return return_value
@@ -208,7 +208,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [Group._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -255,7 +255,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
@@ -310,7 +310,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
@@ -353,7 +353,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -394,7 +394,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -437,7 +437,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -476,7 +476,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def set_default_roles_async(self, group_id: str, user_type: str, role_ids: List[str]) -> Group:
 		loop = asyncio.get_running_loop()
@@ -516,7 +516,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -555,7 +555,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = dict(map(lambda kv1: (UserType._deserialize(kv1[0]), [RoleConfiguration._deserialize(x2) for x2 in kv1[1]]), result_info.success.items()))
 			return return_value
@@ -594,7 +594,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -635,7 +635,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -674,7 +674,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [GroupDeletionReport._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -715,7 +715,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -756,7 +756,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
@@ -801,7 +801,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DesignDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -844,7 +844,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -889,7 +889,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def get_groups_storage_infos_async(self, groups: List[str]) -> List[GroupDatabasesInfo]:
 		loop = asyncio.get_running_loop()
@@ -925,7 +925,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [GroupDatabasesInfo._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -964,7 +964,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = ReplicationInfo._deserialize(result_info.success)
 			return return_value
@@ -1003,7 +1003,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1034,7 +1034,7 @@ class GroupApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value

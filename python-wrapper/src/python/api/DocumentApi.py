@@ -5,7 +5,7 @@ import base64
 import traceback
 from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, DocumentShareOptions, deserialize_simple_share_result_decrypted_document, SimpleShareResultDecryptedDocument, deserialize_simple_share_result_encrypted_document, SimpleShareResultEncryptedDocument, deserialize_simple_share_result_document, SimpleShareResultDocument
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
 from collections.abc import Callable
@@ -58,7 +58,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_document(result_info.success)
 				return return_value
@@ -99,7 +99,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_document(result_info.success)
 				return return_value
@@ -140,7 +140,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
@@ -182,10 +182,10 @@ class DocumentApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -232,10 +232,10 @@ class DocumentApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -279,7 +279,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
@@ -318,7 +318,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
@@ -357,7 +357,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -396,7 +396,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -444,7 +444,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_document(result_info.success)
 				return return_value
@@ -485,7 +485,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_document(result_info.success)
 				return return_value
@@ -526,7 +526,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_document(result_info.success)
 				return return_value
@@ -568,10 +568,10 @@ class DocumentApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -618,10 +618,10 @@ class DocumentApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -665,7 +665,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_document(result_info.success)
 				return return_value
@@ -704,7 +704,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_document(result_info.success)
 				return return_value
@@ -743,7 +743,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_document(x1) for x1 in result_info.success]
 				return return_value
@@ -782,7 +782,7 @@ class DocumentApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_document(x1) for x1 in result_info.success]
 				return return_value
@@ -826,7 +826,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -873,7 +873,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -934,7 +934,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success)) if result_info.success is not None else None
 			return return_value
@@ -995,7 +995,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -1038,7 +1038,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -1101,7 +1101,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -1146,7 +1146,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -1185,7 +1185,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1224,7 +1224,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -1263,7 +1263,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1304,7 +1304,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def decrypt_async(self, document: EncryptedDocument) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
@@ -1340,7 +1340,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -1379,7 +1379,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_document(result_info.success)
 			return return_value
@@ -1442,7 +1442,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success)) if result_info.success is not None else None
 			return return_value
@@ -1481,7 +1481,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1520,7 +1520,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1559,7 +1559,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
@@ -1598,7 +1598,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -1637,7 +1637,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -1678,7 +1678,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -1725,7 +1725,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -1774,7 +1774,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -1815,7 +1815,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -1858,7 +1858,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -1901,7 +1901,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_document(result_info.success)
 			return return_value
@@ -1942,7 +1942,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_document(result_info.success)
 			return return_value
@@ -1983,7 +1983,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -2025,10 +2025,10 @@ class DocumentApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -2075,10 +2075,10 @@ class DocumentApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -2122,7 +2122,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -2161,7 +2161,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
@@ -2200,7 +2200,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2239,7 +2239,7 @@ class DocumentApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value

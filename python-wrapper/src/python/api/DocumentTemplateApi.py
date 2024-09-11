@@ -4,7 +4,7 @@ import json
 import base64
 from cardinal_sdk.model import DocumentTemplate, DocIdentifier, PaginatedList
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import List, Optional
 
@@ -47,7 +47,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocumentTemplate._deserialize(result_info.success)
 			return return_value
@@ -86,7 +86,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocumentTemplate._deserialize(result_info.success)
 			return return_value
@@ -125,7 +125,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocumentTemplate._deserialize(result_info.success)
 			return return_value
@@ -164,7 +164,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -203,7 +203,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocumentTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -242,7 +242,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocumentTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -281,7 +281,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocumentTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -312,7 +312,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocumentTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -359,7 +359,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
@@ -404,7 +404,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -445,7 +445,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -486,7 +486,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocumentTemplate._deserialize(result_info.success)
 			return return_value
@@ -503,7 +503,7 @@ class DocumentTemplateApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value

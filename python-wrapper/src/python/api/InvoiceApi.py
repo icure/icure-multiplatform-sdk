@@ -4,7 +4,7 @@ import json
 from cardinal_sdk.model import DecryptedInvoice, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Invoice, serialize_invoice, EncryptedInvoice, deserialize_invoice, DocIdentifier, IcureStub, LabelledOccurence, InvoiceShareOptions, deserialize_simple_share_result_decrypted_invoice, SimpleShareResultDecryptedInvoice, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType, deserialize_simple_share_result_encrypted_invoice, SimpleShareResultEncryptedInvoice, deserialize_simple_share_result_invoice, SimpleShareResultInvoice
 from typing import Optional, List, Dict
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.model.specializations import HexString
 
@@ -53,7 +53,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_invoice(result_info.success)
 				return return_value
@@ -94,7 +94,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_invoice(result_info.success)
 				return return_value
@@ -135,7 +135,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedInvoice._deserialize(result_info.success)
 				return return_value
@@ -174,7 +174,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedInvoice._deserialize(result_info.success)
 				return return_value
@@ -213,7 +213,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -252,7 +252,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedInvoice._deserialize(result_info.success)
 				return return_value
@@ -291,7 +291,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -332,7 +332,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -371,7 +371,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedInvoice._deserialize(result_info.success)
 				return return_value
@@ -412,7 +412,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedInvoice._deserialize(result_info.success)
 				return return_value
@@ -455,7 +455,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedInvoice._deserialize(result_info.success)
 				return return_value
@@ -508,7 +508,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -553,7 +553,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -606,7 +606,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = PaginatedList._deserialize(result_info.success)
 				return_value = PaginatedList(
@@ -651,7 +651,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -692,7 +692,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -741,7 +741,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -780,7 +780,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -819,7 +819,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -858,7 +858,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -897,7 +897,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -936,7 +936,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -975,7 +975,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -1014,7 +1014,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -1061,7 +1061,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -1109,7 +1109,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_invoice(result_info.success)
 				return return_value
@@ -1150,7 +1150,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_invoice(result_info.success)
 				return return_value
@@ -1191,7 +1191,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_invoice(result_info.success)
 				return return_value
@@ -1230,7 +1230,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_invoice(result_info.success)
 				return return_value
@@ -1269,7 +1269,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1308,7 +1308,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_invoice(result_info.success)
 				return return_value
@@ -1347,7 +1347,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1388,7 +1388,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1427,7 +1427,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_invoice(result_info.success)
 				return return_value
@@ -1468,7 +1468,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_invoice(result_info.success)
 				return return_value
@@ -1511,7 +1511,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_invoice(result_info.success)
 				return return_value
@@ -1564,7 +1564,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1609,7 +1609,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1662,7 +1662,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = PaginatedList._deserialize(result_info.success)
 				return_value = PaginatedList(
@@ -1707,7 +1707,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1748,7 +1748,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1797,7 +1797,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1836,7 +1836,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1875,7 +1875,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1914,7 +1914,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1953,7 +1953,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -1992,7 +1992,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -2031,7 +2031,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -2070,7 +2070,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -2117,7 +2117,7 @@ class InvoiceApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_invoice(x1) for x1 in result_info.success]
 				return return_value
@@ -2163,7 +2163,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -2202,7 +2202,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2249,7 +2249,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -2288,7 +2288,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -2327,7 +2327,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -2366,7 +2366,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -2407,7 +2407,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def decrypt_async(self, invoice: EncryptedInvoice) -> DecryptedInvoice:
 		loop = asyncio.get_running_loop()
@@ -2443,7 +2443,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -2482,7 +2482,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_invoice(result_info.success)
 			return return_value
@@ -2521,7 +2521,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
@@ -2562,7 +2562,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2601,7 +2601,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2644,7 +2644,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_invoice(result_info.success)
 			return return_value
@@ -2685,7 +2685,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_invoice(result_info.success)
 			return return_value
@@ -2726,7 +2726,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -2765,7 +2765,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -2804,7 +2804,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2843,7 +2843,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -2882,7 +2882,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2923,7 +2923,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2962,7 +2962,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -3003,7 +3003,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -3046,7 +3046,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
@@ -3099,7 +3099,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3144,7 +3144,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3197,7 +3197,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
@@ -3242,7 +3242,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3283,7 +3283,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3332,7 +3332,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3371,7 +3371,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3410,7 +3410,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3449,7 +3449,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3488,7 +3488,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3527,7 +3527,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3566,7 +3566,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3605,7 +3605,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -3652,7 +3652,7 @@ class InvoiceApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value

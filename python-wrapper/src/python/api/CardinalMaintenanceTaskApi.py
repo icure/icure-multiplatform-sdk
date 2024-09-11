@@ -3,7 +3,7 @@ import asyncio
 import json
 from cardinal_sdk.model import KeyPairUpdateNotification, DataOwnerType
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.model.specializations import SpkiHexString
 from typing import Optional, List
@@ -47,7 +47,7 @@ class CardinalMaintenanceTaskApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def create_key_pair_update_notifications_to_all_delegation_counterparts_async(self, key: SpkiHexString, request_to_owner_types: Optional[List[DataOwnerType]] = None) -> None:
 		loop = asyncio.get_running_loop()
@@ -85,7 +85,7 @@ class CardinalMaintenanceTaskApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def create_key_pair_update_notification_to_async(self, data_owner_id: str, key: SpkiHexString) -> None:
 		loop = asyncio.get_running_loop()
@@ -123,4 +123,4 @@ class CardinalMaintenanceTaskApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)

@@ -144,14 +144,14 @@ public fun createDeviceAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class UpdateDeviceParams(
+private class ModifyDeviceParams(
 	public val device: Device,
 )
 
 @OptIn(InternalIcureApi::class)
-public fun updateDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+public fun modifyDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDeviceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDeviceParams>(params)
 	runBlocking {
 		sdk.device.modifyDevice(
 			decodedParams.device,
@@ -163,13 +163,13 @@ public fun updateDeviceBlocking(sdk: CardinalNonCryptoApis, params: String): Str
 	ExperimentalForeignApi::class,
 	InternalIcureApi::class,
 )
-public fun updateDeviceAsync(
+public fun modifyDeviceAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDeviceParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDeviceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.device.modifyDevice(
@@ -216,14 +216,14 @@ public fun createDevicesAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class UpdateDevicesParams(
+private class ModifyDevicesParams(
 	public val devices: List<Device>,
 )
 
 @OptIn(InternalIcureApi::class)
-public fun updateDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+public fun modifyDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDevicesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDevicesParams>(params)
 	runBlocking {
 		sdk.device.modifyDevices(
 			decodedParams.devices,
@@ -235,13 +235,13 @@ public fun updateDevicesBlocking(sdk: CardinalNonCryptoApis, params: String): St
 	ExperimentalForeignApi::class,
 	InternalIcureApi::class,
 )
-public fun updateDevicesAsync(
+public fun modifyDevicesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDevicesParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDevicesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.device.modifyDevices(

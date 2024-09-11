@@ -857,12 +857,12 @@ class DeviceApi(Structure):
 		("matchDevicesByBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchDevicesBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("matchDevicesBySortedBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("modifyDeviceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("modifyDeviceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyDeviceInGroupAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyDeviceInGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("updateDeviceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("updateDeviceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("updateDevicesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("updateDevicesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("modifyDevicesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("modifyDevicesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class encrypted(Structure):

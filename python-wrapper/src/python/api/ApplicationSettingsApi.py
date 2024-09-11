@@ -4,7 +4,7 @@ import json
 from cardinal_sdk.model import ApplicationSettings
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from typing import List
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 
 class ApplicationSettingsApi:
@@ -38,7 +38,7 @@ class ApplicationSettingsApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [ApplicationSettings._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -77,7 +77,7 @@ class ApplicationSettingsApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = ApplicationSettings._deserialize(result_info.success)
 			return return_value
@@ -116,7 +116,7 @@ class ApplicationSettingsApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = ApplicationSettings._deserialize(result_info.success)
 			return return_value

@@ -4,7 +4,7 @@ import json
 from cardinal_sdk.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, ShareAllPatientDataOptions, DocIdentifier, EntityAccessInformation, PatientShareOptions, deserialize_simple_share_result_decrypted_patient, SimpleShareResultDecryptedPatient, SubscriptionEventType, EntitySubscriptionConfiguration, deserialize_simple_share_result_encrypted_patient, SimpleShareResultEncryptedPatient, deserialize_simple_share_result_patient, SimpleShareResultPatient
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.model.specializations import HexString
 from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
@@ -56,7 +56,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_patient(result_info.success)
 				return return_value
@@ -97,7 +97,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_encrypted_patient(result_info.success)
 				return return_value
@@ -138,7 +138,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
@@ -177,7 +177,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
@@ -219,10 +219,10 @@ class PatientApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -269,10 +269,10 @@ class PatientApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -316,7 +316,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
@@ -355,7 +355,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
@@ -396,7 +396,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
@@ -435,7 +435,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [EncryptedPatient._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -474,7 +474,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -515,7 +515,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
@@ -563,7 +563,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_patient(result_info.success)
 				return return_value
@@ -604,7 +604,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_simple_share_result_patient(result_info.success)
 				return return_value
@@ -645,7 +645,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_patient(result_info.success)
 				return return_value
@@ -684,7 +684,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_patient(result_info.success)
 				return return_value
@@ -726,10 +726,10 @@ class PatientApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -776,10 +776,10 @@ class PatientApi:
 			)
 			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 				symbols.DisposeString(error_str_pointer)
 				symbols.DisposeStablePointer(call_result.pinned)
-				raise Exception(error_msg)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
 				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 				symbols.DisposeStablePointer(call_result.pinned)
@@ -823,7 +823,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_patient(result_info.success)
 				return return_value
@@ -862,7 +862,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_patient(result_info.success)
 				return return_value
@@ -903,7 +903,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_patient(result_info.success)
 				return return_value
@@ -942,7 +942,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [deserialize_patient(x1) for x1 in result_info.success]
 				return return_value
@@ -981,7 +981,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 				return return_value
@@ -1022,7 +1022,7 @@ class PatientApi:
 			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise Exception(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_patient(result_info.success)
 				return return_value
@@ -1066,7 +1066,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1105,7 +1105,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1144,7 +1144,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -1187,7 +1187,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -1226,7 +1226,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -1267,7 +1267,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def decrypt_async(self, patient: EncryptedPatient) -> DecryptedPatient:
 		loop = asyncio.get_running_loop()
@@ -1303,7 +1303,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -1342,7 +1342,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_patient(result_info.success)
 			return return_value
@@ -1381,7 +1381,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -1422,7 +1422,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = ShareAllPatientDataOptions.Result._deserialize(result_info.success)
 			return return_value
@@ -1461,7 +1461,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1500,7 +1500,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -1539,7 +1539,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1578,7 +1578,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -1617,7 +1617,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
@@ -1656,7 +1656,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -1695,7 +1695,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -1734,7 +1734,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EntityAccessInformation._deserialize(result_info.success)
 			return return_value
@@ -1777,7 +1777,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_patient(result_info.success)
 			return return_value
@@ -1818,7 +1818,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_simple_share_result_decrypted_patient(result_info.success)
 			return return_value
@@ -1859,7 +1859,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -1898,7 +1898,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -1940,10 +1940,10 @@ class PatientApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -1990,10 +1990,10 @@ class PatientApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -2037,7 +2037,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -2076,7 +2076,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -2117,7 +2117,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -2156,7 +2156,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedPatient._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2195,7 +2195,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -2236,7 +2236,7 @@ class PatientApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
@@ -2282,10 +2282,10 @@ class PatientApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)

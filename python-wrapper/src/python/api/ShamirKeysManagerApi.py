@@ -3,7 +3,7 @@ import json
 import asyncio
 from cardinal_sdk.model import CryptoActor, serialize_crypto_actor, ShamirUpdateRequest, CryptoActorStubWithType
 from cardinal_sdk.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Dict, List
 from cardinal_sdk.model.specializations import KeypairFingerprintV1String
@@ -24,7 +24,7 @@ class ShamirKeysManagerApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = dict(map(lambda kv1: (kv1[0], [x2 for x2 in kv1[1]]), result_info.success.items()))
 			return return_value
@@ -65,7 +65,7 @@ class ShamirKeysManagerApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = CryptoActorStubWithType._deserialize(result_info.success)
 			return return_value

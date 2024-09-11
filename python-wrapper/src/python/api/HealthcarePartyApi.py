@@ -3,7 +3,7 @@ import asyncio
 import json
 from cardinal_sdk.model import HealthcareParty, DocIdentifier, PublicKey, DataOwnerRegistrationSuccess
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
-from cardinal_sdk.model.CallResult import create_result_from_json
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import List, Optional
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
@@ -14,7 +14,7 @@ class HealthcarePartyApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_healthcare_party_async(self, device_id: str) -> HealthcareParty:
+	async def get_healthcare_party_async(self, healthcare_party_id: str) -> HealthcareParty:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -25,7 +25,7 @@ class HealthcarePartyApi:
 				result = HealthcareParty._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"deviceId": device_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -37,9 +37,9 @@ class HealthcarePartyApi:
 		)
 		return await future
 
-	def get_healthcare_party_blocking(self, device_id: str) -> HealthcareParty:
+	def get_healthcare_party_blocking(self, healthcare_party_id: str) -> HealthcareParty:
 		payload = {
-			"deviceId": device_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.getHealthcarePartyBlocking(
 			self.cardinal_sdk._native,
@@ -48,7 +48,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
@@ -87,12 +87,12 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
 
-	async def delete_healthcare_party_async(self, device_id: str) -> DocIdentifier:
+	async def delete_healthcare_party_async(self, healthcare_party_id: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -103,7 +103,7 @@ class HealthcarePartyApi:
 				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"deviceId": device_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -115,9 +115,9 @@ class HealthcarePartyApi:
 		)
 		return await future
 
-	def delete_healthcare_party_blocking(self, device_id: str) -> DocIdentifier:
+	def delete_healthcare_party_blocking(self, healthcare_party_id: str) -> DocIdentifier:
 		payload = {
-			"deviceId": device_id,
+			"healthcarePartyId": healthcare_party_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyBlocking(
 			self.cardinal_sdk._native,
@@ -126,12 +126,12 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def modify_healthcare_party_in_group_async(self, group_id: str, device: HealthcareParty) -> HealthcareParty:
+	async def modify_healthcare_party_in_group_async(self, group_id: str, healthcare_party: HealthcareParty) -> HealthcareParty:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -143,7 +143,7 @@ class HealthcarePartyApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"groupId": group_id,
-			"device": device.__serialize__(),
+			"healthcareParty": healthcare_party.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -155,10 +155,10 @@ class HealthcarePartyApi:
 		)
 		return await future
 
-	def modify_healthcare_party_in_group_blocking(self, group_id: str, device: HealthcareParty) -> HealthcareParty:
+	def modify_healthcare_party_in_group_blocking(self, group_id: str, healthcare_party: HealthcareParty) -> HealthcareParty:
 		payload = {
 			"groupId": group_id,
-			"device": device.__serialize__(),
+			"healthcareParty": healthcare_party.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyInGroupBlocking(
 			self.cardinal_sdk._native,
@@ -167,12 +167,12 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
 
-	async def create_healthcare_party_in_group_async(self, group_id: str, device: HealthcareParty) -> HealthcareParty:
+	async def create_healthcare_party_in_group_async(self, group_id: str, healthcare_party: HealthcareParty) -> HealthcareParty:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -184,7 +184,7 @@ class HealthcarePartyApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"groupId": group_id,
-			"device": device.__serialize__(),
+			"healthcareParty": healthcare_party.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -196,10 +196,10 @@ class HealthcarePartyApi:
 		)
 		return await future
 
-	def create_healthcare_party_in_group_blocking(self, group_id: str, device: HealthcareParty) -> HealthcareParty:
+	def create_healthcare_party_in_group_blocking(self, group_id: str, healthcare_party: HealthcareParty) -> HealthcareParty:
 		payload = {
 			"groupId": group_id,
-			"device": device.__serialize__(),
+			"healthcareParty": healthcare_party.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.createHealthcarePartyInGroupBlocking(
 			self.cardinal_sdk._native,
@@ -208,7 +208,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
@@ -239,7 +239,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
@@ -278,7 +278,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [HealthcareParty._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -317,7 +317,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [HealthcareParty._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -356,7 +356,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [HealthcareParty._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -395,7 +395,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = PublicKey._deserialize(result_info.success)
 			return return_value
@@ -434,12 +434,12 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_healthcare_party_async(self, healthcare_party_dto: HealthcareParty) -> HealthcareParty:
+	async def modify_healthcare_party_async(self, healthcare_party: HealthcareParty) -> HealthcareParty:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -450,7 +450,7 @@ class HealthcarePartyApi:
 				result = HealthcareParty._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"healthcarePartyDto": healthcare_party_dto.__serialize__(),
+			"healthcareParty": healthcare_party.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -462,9 +462,9 @@ class HealthcarePartyApi:
 		)
 		return await future
 
-	def modify_healthcare_party_blocking(self, healthcare_party_dto: HealthcareParty) -> HealthcareParty:
+	def modify_healthcare_party_blocking(self, healthcare_party: HealthcareParty) -> HealthcareParty:
 		payload = {
-			"healthcarePartyDto": healthcare_party_dto.__serialize__(),
+			"healthcareParty": healthcare_party.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.modifyHealthcarePartyBlocking(
 			self.cardinal_sdk._native,
@@ -473,7 +473,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
@@ -512,7 +512,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -554,10 +554,10 @@ class HealthcarePartyApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -601,7 +601,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
@@ -643,10 +643,10 @@ class HealthcarePartyApi:
 		)
 		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_msg = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
 			symbols.DisposeString(error_str_pointer)
 			symbols.DisposeStablePointer(call_result.pinned)
-			raise Exception(error_msg)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
 			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
 			symbols.DisposeStablePointer(call_result.pinned)
@@ -692,7 +692,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [HealthcareParty._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -733,7 +733,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -774,7 +774,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
@@ -821,7 +821,7 @@ class HealthcarePartyApi:
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DataOwnerRegistrationSuccess._deserialize(result_info.success)
 			return return_value
