@@ -13,11 +13,11 @@ export interface DeviceApi {
 
 	createDevice(p: Device): Promise<Device>;
 
-	updateDevice(device: Device): Promise<Device>;
+	modifyDevice(device: Device): Promise<Device>;
 
 	createDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
 
-	updateDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
+	modifyDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
 
 	filterDevicesBy(filter: BaseFilterOptions<Device>): Promise<PaginatedListIterator<Device>>;
 

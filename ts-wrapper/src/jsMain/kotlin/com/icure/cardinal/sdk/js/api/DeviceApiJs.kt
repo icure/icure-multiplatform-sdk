@@ -23,11 +23,11 @@ public external interface DeviceApiJs {
 
 	public fun createDevice(p: DeviceJs): Promise<DeviceJs>
 
-	public fun updateDevice(device: DeviceJs): Promise<DeviceJs>
+	public fun modifyDevice(device: DeviceJs): Promise<DeviceJs>
 
 	public fun createDevices(devices: Array<DeviceJs>): Promise<Array<IdWithRevJs>>
 
-	public fun updateDevices(devices: Array<DeviceJs>): Promise<Array<IdWithRevJs>>
+	public fun modifyDevices(devices: Array<DeviceJs>): Promise<Array<IdWithRevJs>>
 
 	public fun filterDevicesBy(filter: BaseFilterOptionsJs<DeviceJs>):
 			Promise<PaginatedListIteratorJs<DeviceJs>>

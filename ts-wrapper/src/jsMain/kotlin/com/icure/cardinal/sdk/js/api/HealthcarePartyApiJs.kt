@@ -19,16 +19,16 @@ import kotlin.js.Promise
 
 @JsName("HealthcarePartyApi")
 public external interface HealthcarePartyApiJs {
-	public fun getHealthcareParty(deviceId: String): Promise<HealthcarePartyJs>
+	public fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs>
 
 	public fun createHealthcareParty(p: HealthcarePartyJs): Promise<HealthcarePartyJs>
 
-	public fun deleteHealthcareParty(deviceId: String): Promise<DocIdentifierJs>
+	public fun deleteHealthcareParty(healthcarePartyId: String): Promise<DocIdentifierJs>
 
-	public fun modifyHealthcarePartyInGroup(groupId: String, device: HealthcarePartyJs):
+	public fun modifyHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcarePartyJs):
 			Promise<HealthcarePartyJs>
 
-	public fun createHealthcarePartyInGroup(groupId: String, device: HealthcarePartyJs):
+	public fun createHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcarePartyJs):
 			Promise<HealthcarePartyJs>
 
 	public fun getCurrentHealthcareParty(): Promise<HealthcarePartyJs>
@@ -61,7 +61,7 @@ public external interface HealthcarePartyApiJs {
 	public fun deleteHealthcareParties(healthcarePartyIds: Array<String>):
 			Promise<Array<DocIdentifierJs>>
 
-	public fun modifyHealthcareParty(healthcarePartyDto: HealthcarePartyJs): Promise<HealthcarePartyJs>
+	public fun modifyHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<HealthcarePartyJs>
 
 	public fun matchHealthcarePartiesBy(filter: BaseFilterOptionsJs<HealthcarePartyJs>):
 			Promise<Array<String>>
