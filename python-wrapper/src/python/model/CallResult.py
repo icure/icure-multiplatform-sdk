@@ -1,4 +1,5 @@
 import json
+from cardinal_sdk.errors import RevisionConflictError, GenericCardinalError
 
 class CallResult:
     def __init__(self, success=None, failure=None):
@@ -15,4 +16,14 @@ def create_result_from_json(json_str):
     elif 'failure' in data:
         return CallResult(failure=data['failure'])
     else:
-        raise ValueError("Invalid JSON string. Must contain either 'success' or 'failure'.")
+        raise Error("Invalid JSON string. Must contain either 'success' or 'failure'.")
+
+def interpret_kt_error(error_json):
+    type = error_json['type']
+    stack = error_json['stack']
+    if type == 'kotlin.IllegalArgumentException':
+        return ValueError(stack)
+    elif type == 'com.icure.cardinal.sdk.exceptions.RevisionConflictException':
+        return RevisionConflictError(stack)
+    else:
+        return GenericCardinalError(stack)

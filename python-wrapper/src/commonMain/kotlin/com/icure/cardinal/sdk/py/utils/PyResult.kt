@@ -18,8 +18,11 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-private fun Throwable.stringForPy() =
-	stackTraceToString()
+private fun Throwable.toPyJson() =
+	JsonObject(mapOf(
+		"type" to JsonPrimitive(this::class.qualifiedName),
+		"stack" to JsonPrimitive(stackTraceToString())
+	))
 
 /**
  * Converts the kotlin result to a json representation of result understandable by python.
@@ -61,7 +64,7 @@ internal fun Result<JsonElement>.toPyJson() =
 			JsonObject(mapOf("success" to res))
 		},
 		onFailure = { e ->
-			JsonObject(mapOf("failure" to JsonPrimitive(e.stringForPy())))
+			JsonObject(mapOf("failure" to e.toPyJson()))
 		}
 	).toString()
 
@@ -75,7 +78,7 @@ internal fun Result<JsonElement>.toPyJsonAsyncCallback(
 	onSuccess { res ->
 		callback.invoke(res.toString().cstr, null)
 	}.onFailure { e ->
-		callback.invoke(null, e.stringForPy().cstr)
+		callback.invoke(null, e.toPyJson().toString().cstr)
 	}
 }
 
@@ -90,7 +93,7 @@ internal fun Result<*>.failureToPyStringAsyncCallback(
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) {
 	onFailure { e ->
-		callback.invoke(null, e.stringForPy().cstr)
+		callback.invoke(null, e.toPyJson().toString().cstr)
 	}
 }
 
@@ -120,7 +123,7 @@ internal fun <M : Any, P : Any> Result<M?>.toPyResult(
 			PyResult(res?.let { StableRef.create(multiplatformToPythonType(it)).asCPointer() }, null)
 		},
 		onFailure = { e ->
-			PyResult(null, e.stringForPy())
+			PyResult(null, e.toPyJson().toString())
 		}
 	)
 
@@ -141,7 +144,7 @@ internal fun <M : Any, P : Any> Result<M?>.toPyResultAsyncCallback(
 			callback.invoke(res?.let { StableRef.create(multiplatformToPythonType(it)).asCPointer() }, null)
 		},
 		onFailure = { e ->
-			callback.invoke(null, e.stringForPy().cstr)
+			callback.invoke(null, e.toPyJson().toString().cstr)
 		}
 	)
 
@@ -156,7 +159,7 @@ internal fun Result<*>.failureToPyResultAsyncCallback(
 	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ) {
 	onFailure { e ->
-		callback.invoke(null, e.stringForPy().cstr)
+		callback.invoke(null, e.toPyJson().toString().cstr)
 	}
 }
 
