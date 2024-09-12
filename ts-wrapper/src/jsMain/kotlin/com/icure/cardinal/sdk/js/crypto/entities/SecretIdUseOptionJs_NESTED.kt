@@ -1,5 +1,5 @@
 // auto-generated file
-@file:JsQualifier("crypto.SecretIdOption")
+@file:JsQualifier("crypto.SecretIdUseOption")
 
 package com.icure.cardinal.sdk.js.crypto.entities
 
@@ -9,19 +9,19 @@ import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
 @JsName("UseAnyConfidential")
-public external object SecretIdOptionJs_UseAnyConfidentialJs : SecretIdOptionJs {
+public external object SecretIdUseOptionJs_UseAnyConfidentialJs : SecretIdUseOptionJs {
 	override val ktClass: String
 }
 
 @JsName("UseAnySharedWithParent")
-public external object SecretIdOptionJs_UseAnySharedWithParentJs : SecretIdOptionJs {
+public external object SecretIdUseOptionJs_UseAnySharedWithParentJs : SecretIdUseOptionJs {
 	override val ktClass: String
 }
 
 @JsName("Use")
-public external class SecretIdOptionJs_UseJs(
+public external class SecretIdUseOptionJs_UseJs(
 	partial: dynamic,
-) : SecretIdOptionJs {
+) : SecretIdUseOptionJs {
 	public val secretIds: Array<String>
 
 	override val ktClass: String

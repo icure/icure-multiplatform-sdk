@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.js.api.`impl`
 
 import com.icure.cardinal.sdk.api.ClassificationApi
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.js.api.ClassificationApiJs
@@ -11,10 +11,10 @@ import com.icure.cardinal.sdk.js.api.ClassificationFlavouredApiJs
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.crypto.entities.ClassificationShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SecretIdOptionJs
+import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
 import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.classificationShareOptions_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.secretIdOption_fromJs
+import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
@@ -502,12 +502,12 @@ internal class ClassificationApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+			val secretIdConverted: SecretIdUseOption = convertingOptionOrDefaultNonNull(
 				_options,
 				"secretId",
-				com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId: SecretIdOptionJs ->
-				secretIdOption_fromJs(secretId)
+				com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent
+			) { secretId: SecretIdUseOptionJs ->
+				secretIdUseOption_fromJs(secretId)
 			}
 			val result = classificationApi.withEncryptionMetadata(
 				baseConverted,

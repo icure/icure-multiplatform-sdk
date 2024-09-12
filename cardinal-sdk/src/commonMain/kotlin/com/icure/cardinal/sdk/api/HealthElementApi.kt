@@ -218,7 +218,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
-		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedHealthElement
 

@@ -3,7 +3,6 @@
 
 package com.icure.cardinal.sdk.js.crypto.entities
 
-import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -12,9 +11,9 @@ import kotlin.js.JsQualifier
 public external class PatientShareOptionsJs(
 	partial: dynamic,
 ) {
-	public val shareSecretIds: Array<String>
-
 	public val requestedPermissions: String
 
 	public val shareEncryptionKey: String
+
+	public val shareSecretIds: SecretIdShareOptionsJs
 }

@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedCalendarItem, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, CalendarItem, serialize_calendar_item, EncryptedCalendarItem, deserialize_calendar_item, DocIdentifier, CalendarItemShareOptions, deserialize_simple_share_result_decrypted_calendar_item, SimpleShareResultDecryptedCalendarItem, deserialize_simple_share_result_encrypted_calendar_item, SimpleShareResultEncryptedCalendarItem, deserialize_simple_share_result_calendar_item, SimpleShareResultCalendarItem
+from cardinal_sdk.model import DecryptedCalendarItem, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, CalendarItem, serialize_calendar_item, EncryptedCalendarItem, deserialize_calendar_item, DocIdentifier, CalendarItemShareOptions, deserialize_simple_share_result_decrypted_calendar_item, SimpleShareResultDecryptedCalendarItem, deserialize_simple_share_result_encrypted_calendar_item, SimpleShareResultEncryptedCalendarItem, deserialize_simple_share_result_calendar_item, SimpleShareResultCalendarItem
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -836,7 +836,7 @@ class CalendarItemApi:
 			return_value = DecryptedCalendarItem._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedCalendarItem], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedCalendarItem:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedCalendarItem], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedCalendarItem:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -851,7 +851,7 @@ class CalendarItemApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -863,13 +863,13 @@ class CalendarItemApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedCalendarItem], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedCalendarItem:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedCalendarItem], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedCalendarItem:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.withEncryptionMetadataBlocking(
 			self.cardinal_sdk._native,

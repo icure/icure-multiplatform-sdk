@@ -7,8 +7,8 @@ import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
-@JsName("SecretIdOption")
-public sealed external interface SecretIdOptionJs {
+@JsName("SecretIdUseOption")
+public sealed external interface SecretIdUseOptionJs {
 	@JsName("${'$'}ktClass")
 	public val ktClass: String
 }

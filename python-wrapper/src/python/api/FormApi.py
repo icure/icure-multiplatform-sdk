@@ -2,7 +2,7 @@
 import asyncio
 import json
 import base64
-from cardinal_sdk.model import DecryptedForm, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, FormTemplate, FormShareOptions, deserialize_simple_share_result_decrypted_form, SimpleShareResultDecryptedForm, deserialize_simple_share_result_encrypted_form, SimpleShareResultEncryptedForm, deserialize_simple_share_result_form, SimpleShareResultForm
+from cardinal_sdk.model import DecryptedForm, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, FormTemplate, FormShareOptions, deserialize_simple_share_result_decrypted_form, SimpleShareResultDecryptedForm, deserialize_simple_share_result_encrypted_form, SimpleShareResultEncryptedForm, deserialize_simple_share_result_form, SimpleShareResultForm
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -1024,7 +1024,7 @@ class FormApi:
 			return_value = [DecryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedForm:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedForm:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1039,7 +1039,7 @@ class FormApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1051,13 +1051,13 @@ class FormApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedForm:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedForm:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.withEncryptionMetadataBlocking(
 			self.cardinal_sdk._native,

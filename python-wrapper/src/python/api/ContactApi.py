@@ -2,7 +2,7 @@
 import asyncio
 import json
 from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
-from cardinal_sdk.model import Contact, Service, DecryptedContact, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, EntitySubscriptionConfiguration, DocIdentifier, LabelledOccurence, ContactShareOptions, deserialize_simple_share_result_decrypted_contact, SimpleShareResultDecryptedContact, SubscriptionEventType, deserialize_simple_share_result_encrypted_contact, SimpleShareResultEncryptedContact, deserialize_simple_share_result_contact, SimpleShareResultContact
+from cardinal_sdk.model import Contact, Service, DecryptedContact, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, EntitySubscriptionConfiguration, DocIdentifier, LabelledOccurence, ContactShareOptions, deserialize_simple_share_result_decrypted_contact, SimpleShareResultDecryptedContact, SubscriptionEventType, deserialize_simple_share_result_encrypted_contact, SimpleShareResultEncryptedContact, deserialize_simple_share_result_contact, SimpleShareResultContact
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
@@ -1380,7 +1380,7 @@ class ContactApi:
 			return_value = [DecryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedContact], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedContact:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedContact], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedContact:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1395,7 +1395,7 @@ class ContactApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1407,13 +1407,13 @@ class ContactApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedContact], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedContact:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedContact], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedContact:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.withEncryptionMetadataBlocking(
 			self.cardinal_sdk._native,

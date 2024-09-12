@@ -1,6 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TopicShareOptions} from '../crypto/entities/TopicShareOptions.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -25,7 +25,7 @@ export interface TopicApi {
 	createTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
 
 	withEncryptionMetadata(base: DecryptedTopic | undefined, patient: Patient | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedTopic>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedTopic>;
 
 	getEncryptionKeysOf(topic: Topic): Promise<Array<HexString>>;
 

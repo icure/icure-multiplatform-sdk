@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {ClassificationShareOptions} from '../crypto/entities/ClassificationShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Classification, DecryptedClassification, EncryptedClassification} from '../model/Classification.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -21,7 +21,7 @@ export interface ClassificationApi {
 	createClassification(entity: DecryptedClassification): Promise<DecryptedClassification>;
 
 	withEncryptionMetadata(base: DecryptedClassification | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedClassification>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedClassification>;
 
 	getEncryptionKeysOf(classification: Classification): Promise<Array<HexString>>;
 

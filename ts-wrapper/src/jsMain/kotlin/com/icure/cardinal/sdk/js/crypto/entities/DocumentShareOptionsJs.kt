@@ -16,4 +16,6 @@ public external class DocumentShareOptionsJs(
 	public val shareEncryptionKey: String
 
 	public val shareMessageId: String
+
+	public val shareSecretIds: SecretIdShareOptionsJs
 }

@@ -2,7 +2,7 @@
 package com.icure.cardinal.sdk.js.api.`impl`
 
 import com.icure.cardinal.sdk.api.TimeTableApi
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -10,10 +10,10 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.api.TimeTableApiJs
 import com.icure.cardinal.sdk.js.api.TimeTableFlavouredApiJs
-import com.icure.cardinal.sdk.js.crypto.entities.SecretIdOptionJs
+import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
 import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.TimeTableShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.secretIdOption_fromJs
+import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.crypto.entities.timeTableShareOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
@@ -478,12 +478,12 @@ internal class TimeTableApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+			val secretIdConverted: SecretIdUseOption = convertingOptionOrDefaultNonNull(
 				_options,
 				"secretId",
-				com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId: SecretIdOptionJs ->
-				secretIdOption_fromJs(secretId)
+				com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent
+			) { secretId: SecretIdUseOptionJs ->
+				secretIdUseOption_fromJs(secretId)
 			}
 			val result = timeTableApi.withEncryptionMetadata(
 				baseConverted,

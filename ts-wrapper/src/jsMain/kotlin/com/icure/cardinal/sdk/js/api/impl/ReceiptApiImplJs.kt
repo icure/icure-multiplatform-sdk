@@ -3,16 +3,16 @@ package com.icure.cardinal.sdk.js.api.`impl`
 
 import com.icure.cardinal.sdk.api.ReceiptApi
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.api.ReceiptApiJs
 import com.icure.cardinal.sdk.js.api.ReceiptFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.ReceiptShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SecretIdOptionJs
+import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
 import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.receiptShareOptions_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.secretIdOption_fromJs
+import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
@@ -328,12 +328,12 @@ internal class ReceiptApiImplJs(
 					},
 				)
 			}
-			val secretIdConverted: SecretIdOption = convertingOptionOrDefaultNonNull(
+			val secretIdConverted: SecretIdUseOption = convertingOptionOrDefaultNonNull(
 				_options,
 				"secretId",
-				com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent
-			) { secretId: SecretIdOptionJs ->
-				secretIdOption_fromJs(secretId)
+				com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent
+			) { secretId: SecretIdUseOptionJs ->
+				secretIdUseOption_fromJs(secretId)
 			}
 			val result = receiptApi.withEncryptionMetadata(
 				baseConverted,

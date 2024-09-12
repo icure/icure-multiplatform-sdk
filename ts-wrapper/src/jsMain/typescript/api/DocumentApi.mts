@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {DocumentShareOptions} from '../crypto/entities/DocumentShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedDocument, Document, EncryptedDocument} from '../model/Document.mjs';
 import {Message} from '../model/Message.mjs';
@@ -22,7 +22,7 @@ export interface DocumentApi {
 	createDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
 
 	withEncryptionMetadata(base: DecryptedDocument | undefined, message: Message | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedDocument>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedDocument>;
 
 	getAndTryDecryptMainAttachment(document: Document,
 			options?: { decryptedAttachmentValidator?: (x1: Int8Array) => Promise<boolean> }): Promise<Int8Array | undefined>;

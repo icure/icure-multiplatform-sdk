@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.py.api.AccessLogApi
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -92,8 +92,8 @@ private class WithEncryptionMetadataParams(
 	public val patient: Patient,
 	public val user: User? = null,
 	public val delegates: Map<String, AccessLevel> = emptyMap(),
-	public val secretId: SecretIdOption =
-			com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent,
+	public val secretId: SecretIdUseOption =
+			com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent,
 )
 
 @OptIn(InternalIcureApi::class)

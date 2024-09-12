@@ -1,7 +1,7 @@
 // auto-generated file
 import {PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {InvoiceShareOptions} from '../crypto/entities/InvoiceShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
 import {DecryptedInvoice, EncryptedInvoice, Invoice} from '../model/Invoice.mjs';
@@ -29,7 +29,7 @@ export interface InvoiceApi {
 	createInvoices(entities: Array<DecryptedInvoice>): Promise<Array<DecryptedInvoice>>;
 
 	withEncryptionMetadata(base: DecryptedInvoice | undefined, patient: Patient | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedInvoice>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedInvoice>;
 
 	getEncryptionKeysOf(invoice: Invoice): Promise<Array<HexString>>;
 

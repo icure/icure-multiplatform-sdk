@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedInvoice, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, Invoice, serialize_invoice, EncryptedInvoice, deserialize_invoice, DocIdentifier, IcureStub, LabelledOccurence, InvoiceShareOptions, deserialize_simple_share_result_decrypted_invoice, SimpleShareResultDecryptedInvoice, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType, deserialize_simple_share_result_encrypted_invoice, SimpleShareResultEncryptedInvoice, deserialize_simple_share_result_invoice, SimpleShareResultInvoice
+from cardinal_sdk.model import DecryptedInvoice, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Invoice, serialize_invoice, EncryptedInvoice, deserialize_invoice, DocIdentifier, IcureStub, LabelledOccurence, InvoiceShareOptions, deserialize_simple_share_result_decrypted_invoice, SimpleShareResultDecryptedInvoice, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType, deserialize_simple_share_result_encrypted_invoice, SimpleShareResultEncryptedInvoice, deserialize_simple_share_result_invoice, SimpleShareResultInvoice
 from typing import Optional, List, Dict
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
@@ -2207,7 +2207,7 @@ class InvoiceApi:
 			return_value = [DecryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedInvoice], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedInvoice:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedInvoice], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedInvoice:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2222,7 +2222,7 @@ class InvoiceApi:
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -2234,13 +2234,13 @@ class InvoiceApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedInvoice], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedInvoice:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedInvoice], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedInvoice:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceApi.withEncryptionMetadataBlocking(
 			self.cardinal_sdk._native,

@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {ContactShareOptions} from '../crypto/entities/ContactShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../model/Contact.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
@@ -38,7 +38,7 @@ export interface ContactApi {
 	createContacts(entities: Array<DecryptedContact>): Promise<Array<DecryptedContact>>;
 
 	withEncryptionMetadata(base: DecryptedContact | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedContact>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedContact>;
 
 	getEncryptionKeysOf(contact: Contact): Promise<Array<HexString>>;
 

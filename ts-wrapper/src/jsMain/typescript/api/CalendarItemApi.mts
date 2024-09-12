@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {CalendarItemShareOptions} from '../crypto/entities/CalendarItemShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {CalendarItem, DecryptedCalendarItem, EncryptedCalendarItem} from '../model/CalendarItem.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
@@ -22,7 +22,7 @@ export interface CalendarItemApi {
 	createCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
 
 	withEncryptionMetadata(base: DecryptedCalendarItem | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedCalendarItem>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedCalendarItem>;
 
 	getEncryptionKeysOf(calendarItem: CalendarItem): Promise<Array<HexString>>;
 

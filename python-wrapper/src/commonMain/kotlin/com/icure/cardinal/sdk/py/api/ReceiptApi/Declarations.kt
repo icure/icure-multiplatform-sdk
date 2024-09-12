@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.py.api.ReceiptApi
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.model.DecryptedReceipt
 import com.icure.cardinal.sdk.model.EncryptedReceipt
@@ -83,8 +83,8 @@ private class WithEncryptionMetadataParams(
 	public val patient: Patient?,
 	public val user: User? = null,
 	public val delegates: Map<String, AccessLevel> = emptyMap(),
-	public val secretId: SecretIdOption =
-			com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent,
+	public val secretId: SecretIdUseOption =
+			com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent,
 )
 
 @OptIn(InternalIcureApi::class)

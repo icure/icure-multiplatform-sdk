@@ -1,6 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TimeTableShareOptions} from '../crypto/entities/TimeTableShareOptions.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -21,7 +21,7 @@ export interface TimeTableApi {
 	createTimeTable(entity: DecryptedTimeTable): Promise<DecryptedTimeTable>;
 
 	withEncryptionMetadata(base: DecryptedTimeTable | undefined, patient: Patient | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedTimeTable>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedTimeTable>;
 
 	getEncryptionKeysOf(timeTable: TimeTable): Promise<Array<HexString>>;
 

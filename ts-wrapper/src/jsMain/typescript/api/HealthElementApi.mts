@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {HealthElementShareOptions} from '../crypto/entities/HealthElementShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedHealthElement, EncryptedHealthElement, HealthElement} from '../model/HealthElement.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
@@ -27,7 +27,7 @@ export interface HealthElementApi {
 	createHealthElements(entities: Array<DecryptedHealthElement>): Promise<Array<DecryptedHealthElement>>;
 
 	withEncryptionMetadata(base: DecryptedHealthElement | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedHealthElement>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedHealthElement>;
 
 	getEncryptionKeysOf(healthElement: HealthElement): Promise<Array<HexString>>;
 

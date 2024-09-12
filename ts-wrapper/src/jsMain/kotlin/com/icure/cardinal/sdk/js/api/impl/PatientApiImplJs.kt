@@ -1811,6 +1811,33 @@ internal class PatientApiImplJs(
 		)
 	}
 
+	override fun ensureEncryptionMetadataForSelfIsInitialized(options: dynamic):
+			Promise<EncryptedPatientJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val sharingWithConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"sharingWith",
+				emptyMap()
+			) { sharingWith: Record<String, String> ->
+				objectToMap(
+					sharingWith,
+					"sharingWith",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val result = patientApi.ensureEncryptionMetadataForSelfIsInitialized(
+				sharingWithConverted,
+			)
+			patient_toJs(result)
+		}
+	}
+
 	override fun deletePatient(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = patientApi.deletePatient(

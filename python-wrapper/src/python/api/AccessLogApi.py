@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdOption, SecretIdOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, AccessLogShareOptions, deserialize_simple_share_result_decrypted_access_log, SimpleShareResultDecryptedAccessLog, deserialize_simple_share_result_encrypted_access_log, SimpleShareResultEncryptedAccessLog, deserialize_simple_share_result_access_log, SimpleShareResultAccessLog
+from cardinal_sdk.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, AccessLogShareOptions, deserialize_simple_share_result_decrypted_access_log, SimpleShareResultDecryptedAccessLog, deserialize_simple_share_result_encrypted_access_log, SimpleShareResultEncryptedAccessLog, deserialize_simple_share_result_access_log, SimpleShareResultAccessLog
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -750,7 +750,7 @@ class AccessLogApi:
 			return_value = DecryptedAccessLog._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedAccessLog:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedAccessLog:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -765,7 +765,7 @@ class AccessLogApi:
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -777,13 +777,13 @@ class AccessLogApi:
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdOption = SecretIdOptionUseAnySharedWithParent()) -> DecryptedAccessLog:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedAccessLog], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedAccessLog:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": serialize_secret_id_option(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogApi.withEncryptionMetadataBlocking(
 			self.cardinal_sdk._native,

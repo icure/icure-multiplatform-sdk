@@ -70,6 +70,9 @@ public external interface PatientApiJs {
 	public fun matchPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
 			Promise<Array<String>>
 
+	public fun ensureEncryptionMetadataForSelfIsInitialized(options: dynamic):
+			Promise<EncryptedPatientJs>
+
 	public fun deletePatient(entityId: String): Promise<DocIdentifierJs>
 
 	public fun deletePatients(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>

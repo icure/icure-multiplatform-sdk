@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {AccessLogShareOptions} from '../crypto/entities/AccessLogShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {AccessLog, DecryptedAccessLog, EncryptedAccessLog} from '../model/AccessLog.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
@@ -22,7 +22,7 @@ export interface AccessLogApi {
 	createAccessLog(entity: DecryptedAccessLog): Promise<DecryptedAccessLog>;
 
 	withEncryptionMetadata(base: DecryptedAccessLog | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedAccessLog>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedAccessLog>;
 
 	getEncryptionKeysOf(accessLog: AccessLog): Promise<Array<HexString>>;
 

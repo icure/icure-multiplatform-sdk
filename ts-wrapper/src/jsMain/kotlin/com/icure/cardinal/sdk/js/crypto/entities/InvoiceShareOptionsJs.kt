@@ -16,4 +16,6 @@ public external class InvoiceShareOptionsJs(
 	public val shareEncryptionKey: String
 
 	public val sharePatientId: String
+
+	public val shareSecretIds: SecretIdShareOptionsJs
 }

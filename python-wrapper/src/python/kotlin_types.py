@@ -2378,6 +2378,8 @@ class PatientApi(Structure):
 		("deletePatientBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("deletePatientsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("deletePatientsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("ensureEncryptionMetadataForSelfIsInitializedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("ensureEncryptionMetadataForSelfIsInitializedBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("filterPatientsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("filterPatientsByBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("filterPatientsBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),

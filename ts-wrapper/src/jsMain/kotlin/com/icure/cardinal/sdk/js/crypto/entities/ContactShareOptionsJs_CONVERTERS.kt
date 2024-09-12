@@ -11,10 +11,12 @@ public fun contactShareOptions_toJs(obj: ContactShareOptions): ContactShareOptio
 	val requestedPermissions = obj.requestedPermissions.name
 	val shareEncryptionKey = obj.shareEncryptionKey.name
 	val sharePatientId = obj.sharePatientId.name
+	val shareSecretIds = secretIdShareOptions_toJs(obj.shareSecretIds)
 	return ContactShareOptionsJs(js("{" +
 		"requestedPermissions:requestedPermissions," +
 		"shareEncryptionKey:shareEncryptionKey," +
 		"sharePatientId:sharePatientId," +
+		"shareSecretIds:shareSecretIds," +
 	"}"))
 }
 
@@ -22,9 +24,11 @@ public fun contactShareOptions_fromJs(obj: ContactShareOptionsJs): ContactShareO
 	val requestedPermissions = RequestedPermission.valueOf(obj.requestedPermissions)
 	val shareEncryptionKey = ShareMetadataBehaviour.valueOf(obj.shareEncryptionKey)
 	val sharePatientId = ShareMetadataBehaviour.valueOf(obj.sharePatientId)
+	val shareSecretIds = secretIdShareOptions_fromJs(obj.shareSecretIds)
 	return ContactShareOptions(
 		requestedPermissions = requestedPermissions,
 		shareEncryptionKey = shareEncryptionKey,
 		sharePatientId = sharePatientId,
+		shareSecretIds = shareSecretIds,
 	)
 }

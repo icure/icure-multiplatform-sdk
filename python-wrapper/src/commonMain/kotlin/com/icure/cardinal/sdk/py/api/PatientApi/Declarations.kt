@@ -613,6 +613,44 @@ public fun matchPatientsBySortedAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class EnsureEncryptionMetadataForSelfIsInitializedParams(
+	public val sharingWith: Map<String, AccessLevel> = emptyMap(),
+)
+
+@OptIn(InternalIcureApi::class)
+public fun ensureEncryptionMetadataForSelfIsInitializedBlocking(sdk: CardinalApis, params: String):
+		String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<EnsureEncryptionMetadataForSelfIsInitializedParams>(params)
+	runBlocking {
+		sdk.patient.ensureEncryptionMetadataForSelfIsInitialized(
+			decodedParams.sharingWith,
+		)
+	}
+}.toPyString(EncryptedPatient.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun ensureEncryptionMetadataForSelfIsInitializedAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<EnsureEncryptionMetadataForSelfIsInitializedParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.patient.ensureEncryptionMetadataForSelfIsInitialized(
+				decodedParams.sharingWith,
+			)
+		}.toPyStringAsyncCallback(EncryptedPatient.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class DeletePatientParams(
 	public val entityId: String,
 )

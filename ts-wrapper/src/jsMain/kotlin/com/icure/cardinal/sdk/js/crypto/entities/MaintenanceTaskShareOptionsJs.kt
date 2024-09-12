@@ -14,4 +14,6 @@ public external class MaintenanceTaskShareOptionsJs(
 	public val requestedPermissions: String
 
 	public val shareEncryptionKey: String
+
+	public val shareSecretIds: SecretIdShareOptionsJs
 }

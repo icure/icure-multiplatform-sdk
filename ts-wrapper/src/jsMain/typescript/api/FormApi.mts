@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {FormShareOptions} from '../crypto/entities/FormShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedForm, EncryptedForm, Form} from '../model/Form.mjs';
 import {FormTemplate} from '../model/FormTemplate.mjs';
@@ -24,7 +24,7 @@ export interface FormApi {
 	createForms(entities: Array<DecryptedForm>): Promise<Array<DecryptedForm>>;
 
 	withEncryptionMetadata(base: DecryptedForm | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedForm>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedForm>;
 
 	getEncryptionKeysOf(form: Form): Promise<Array<HexString>>;
 

@@ -1,7 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MessageShareOptions} from '../crypto/entities/MessageShareOptions.mjs';
-import {SecretIdOption} from '../crypto/entities/SecretIdOption.mjs';
+import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedMessage, EncryptedMessage, Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
@@ -27,7 +27,7 @@ export interface MessageApi {
 	createMessageInTopic(entity: DecryptedMessage): Promise<DecryptedMessage>;
 
 	withEncryptionMetadata(base: DecryptedMessage | undefined, patient: Patient | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdOption }): Promise<DecryptedMessage>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedMessage>;
 
 	getEncryptionKeysOf(message: Message): Promise<Array<HexString>>;
 
