@@ -22,6 +22,8 @@ import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest
+import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
+import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -29,6 +31,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapPatientFilterOptions
+import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.IcureStub
@@ -60,6 +63,7 @@ import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -670,6 +674,49 @@ internal class PatientApiImpl(
 			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
 			config = subscriptionConfig
 		)
+	}
+
+	override suspend fun ensureEncryptionMetadataForSelfIsInitialized(sharingWith: Map<String, AccessLevel>): EncryptedPatient {
+		val self = config.crypto.dataOwnerApi.getCurrentDataOwner()
+		require (self is DataOwnerWithType.PatientDataOwner) { "Current user is not a data owner" }
+		val selfWithTypeInfo = self.dataOwner.withTypeInfo()
+		val availableSecretIds = config.crypto.entity.secretIdsOf(selfWithTypeInfo, null)
+		return if (availableSecretIds.isNotEmpty()) {
+			self.dataOwner
+		} else if (config.crypto.entity.hasEmptyEncryptionMetadata(selfWithTypeInfo)) {
+			config.crypto.entity.entityWithInitializedEncryptedMetadata(
+				entity = selfWithTypeInfo,
+				owningEntityId = null,
+				owningEntitySecretId = null,
+				initializeEncryptionKey = true,
+				initializeSecretId = true,
+				autoDelegations = sharingWith
+			).updatedEntity
+		} else {
+			val newSecretId = defaultCryptoService.strongRandom.randomUUID()
+			config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+				selfWithTypeInfo,
+				false,
+				mapOf(
+					self.dataOwner.id to SimpleDelegateShareOptionsImpl(
+						shareEncryptionKey = ShareMetadataBehaviour.IfAvailable,
+						shareOwningEntityIds = ShareMetadataBehaviour.Never,
+						shareSecretIds = setOf(newSecretId),
+						requestedPermissions = RequestedPermission.Root
+					)
+				) + sharingWith.mapValues { (_, accessLevel) ->
+					SimpleDelegateShareOptionsImpl(
+						shareEncryptionKey = ShareMetadataBehaviour.Never,
+						shareOwningEntityIds = ShareMetadataBehaviour.Never,
+						shareSecretIds = setOf(newSecretId),
+						requestedPermissions = when (accessLevel) {
+							AccessLevel.Read -> RequestedPermission.FullRead
+							AccessLevel.Write -> RequestedPermission.FullWrite
+						}
+					)
+				}
+			) { rawApi.bulkShare(it).successBody() }.updatedEntityOrThrow()
+		}
 	}
 }
 

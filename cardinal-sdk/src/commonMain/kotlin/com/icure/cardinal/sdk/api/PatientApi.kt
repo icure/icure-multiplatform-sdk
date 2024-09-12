@@ -599,6 +599,27 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * @return a list of patient ids
 	 */
 	suspend fun matchPatientsBySorted(filter: SortableFilterOptions<Patient>): List<String>
+
+	/**
+	 * Can only be used if the current data owner is a patient.
+	 * Initializes the encryption metadata for the current user's patient if it is not already initialized in a way that
+	 * allows the current user to produce medical data for himself.
+	 * - If there is no encryption metadata initialized at all, the method will initialize the encryption key and secret
+	 *   ids for the patient.
+	 * - If there is some encryption metadata initialized but the current user can't access any secret id of the patient
+	 *   this method will create a new secret id for the patient.
+	 * - In all other cases, this method does nothing. Note that this doesn't mean that the patient can access his own
+	 *   encrypted information. If the encryption key was initialized by someone else and not shared with the patient,
+	 *   then the patient will only have access to a new secret id.
+	 * If you provided any value for [sharingWith] any metadata created by this method will be immediately shared with
+	 * the provided delegates: note that this doesn't share any existing data (if no new data was created the delegates
+	 * may not have access to any secret id for the current patient).
+	 * @throws IllegalArgumentException If the current user is not a patient
+	 */
+	suspend fun ensureEncryptionMetadataForSelfIsInitialized(
+		@DefaultValue("emptyMap()")
+		sharingWith: Map<String, AccessLevel> = emptyMap()
+	): EncryptedPatient
 }
 
 interface PatientBasicApi : PatientBasicFlavourlessApi, PatientBasicFlavouredApi<EncryptedPatient>,

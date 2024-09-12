@@ -13,13 +13,12 @@ import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByDataOwnerPatientOpeningDate
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyIdentifiersFilter
-import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartySecretForeignKeysFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyStatusFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyTagCodeFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByIdsFilter
 import com.icure.cardinal.sdk.utils.DefaultValue
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.requireUniqueElements
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
 object HealthElementFilters {
@@ -570,7 +569,7 @@ internal suspend fun mapHealthElementFilterOptions(
         )
     }
     is HealthElementFilters.ByPatientsForDataOwner -> {
-        HealthElementByHcPartySecretForeignKeysFilter(
+	    HealthElementByDataOwnerPatientOpeningDate(
             patientSecretForeignKeys = filterOptions.patients.flatMap {
                 requireNotNull(entityEncryptionService) {
                     "Health element filter options `byPatients` can't be used in iCure base apis"
@@ -580,7 +579,7 @@ internal suspend fun mapHealthElementFilterOptions(
         )
     }
     is HealthElementFilters.ByPatientsSecretIdsForDataOwner -> {
-        HealthElementByHcPartySecretForeignKeysFilter(
+	    HealthElementByDataOwnerPatientOpeningDate(
             patientSecretForeignKeys = filterOptions.secretIds.toSet(),
             healthcarePartyId = filterOptions.dataOwnerId
         )
@@ -614,7 +613,7 @@ internal suspend fun mapHealthElementFilterOptions(
     }
     is HealthElementFilters.ByPatientsForSelf -> {
         filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
-        HealthElementByHcPartySecretForeignKeysFilter(
+	    HealthElementByDataOwnerPatientOpeningDate(
             patientSecretForeignKeys = filterOptions.patients.flatMap {
                 entityEncryptionService.secretIdsOf(it, null)
             }.toSet(),
@@ -623,7 +622,7 @@ internal suspend fun mapHealthElementFilterOptions(
     }
     is HealthElementFilters.ByPatientsSecretIdsForSelf -> {
         filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
-        HealthElementByHcPartySecretForeignKeysFilter(
+	    HealthElementByDataOwnerPatientOpeningDate(
             patientSecretForeignKeys = filterOptions.secretIds.toSet(),
             healthcarePartyId = selfDataOwnerId
         )

@@ -1,8 +1,5 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.EntityValidationService
@@ -37,10 +34,13 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.IllegalEntityException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.ensure
 import com.icure.cardinal.sdk.utils.getLogger
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -388,7 +388,7 @@ class EntityEncryptionServiceImpl(
 				val potentialParentDelegations = secureDelegationsDecryptor.getDelegationMemberDetails(entity).mapNotNullTo(
 					mutableSetOf()
 				) { (delegationKey, delegationInfo) ->
-					if (delegationInfo.delegate in hierarchySet || delegationInfo.delegate in optionsForDelegates.keys)
+					if (delegationInfo.delegate in hierarchySet || delegationInfo.delegator in hierarchySet)
 						delegationKey
 					else
 						null

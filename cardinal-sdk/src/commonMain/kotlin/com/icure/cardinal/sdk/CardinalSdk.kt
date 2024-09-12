@@ -78,7 +78,6 @@ import com.icure.cardinal.sdk.api.impl.TopicApiImpl
 import com.icure.cardinal.sdk.api.impl.UserApiImpl
 import com.icure.cardinal.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
-import com.icure.cardinal.sdk.api.raw.RawPatientApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawAgendaApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
@@ -128,10 +127,6 @@ import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
-import com.icure.cardinal.sdk.crypto.EntityEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.cardinal.sdk.crypto.impl.BaseExchangeDataManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.BaseExchangeKeysManagerImpl
@@ -156,10 +151,8 @@ import com.icure.cardinal.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.cardinal.sdk.crypto.impl.TransferKeysManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.UserEncryptionKeysManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.UserSignatureKeysManagerImpl
-import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.LoginCredentials
 import com.icure.cardinal.sdk.model.extensions.toStub
-import com.icure.cardinal.sdk.model.requests.RequestedPermission
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.ApiConfigurationImpl
 import com.icure.cardinal.sdk.options.AuthenticationMethod
@@ -551,8 +544,6 @@ private suspend fun initializeApiCrypto(
 		headersProvider,
 		cryptoStrategies
 	)
-	val updatedSelf =
-		ensureDelegationForSelf(dataOwnerApi, entityEncryptionService, rawPatientApiNoAccessKeys, cryptoService)
 	if (options.createTransferKeys) {
 		TransferKeysManagerImpl(
 			userEncryptionKeys,
@@ -560,7 +551,7 @@ private suspend fun initializeApiCrypto(
 			cryptoService,
 			exchangeDataManager,
 			dataOwnerApi
-		).updateTransferKeys(updatedSelf.toStub())
+		).updateTransferKeys(dataOwnerApi.getCurrentDataOwnerStub())
 	}
 
 	val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
@@ -838,46 +829,3 @@ private class CardinalApiImpl(
 		)
 	}
 }
-
-@InternalIcureApi
-private suspend fun ensureDelegationForSelf(
-	dataOwnerApi: DataOwnerApi,
-	encryptionService: EntityEncryptionService,
-	patientApi: RawPatientApi,
-	cryptoService: CryptoService
-): DataOwnerWithType {
-	val self = dataOwnerApi.getCurrentDataOwner()
-	return if (self is DataOwnerWithType.PatientDataOwner) {
-		val availableSecretIds = encryptionService.secretIdsOf(self.dataOwner.withTypeInfo(), null)
-		if (availableSecretIds.isEmpty()) {
-			val patientSelf = self.dataOwner.withTypeInfo()
-			if (encryptionService.hasEmptyEncryptionMetadata(patientSelf)) {
-				val updatedPatient = encryptionService.entityWithInitializedEncryptedMetadata(
-					entity = patientSelf,
-					owningEntityId = null,
-					owningEntitySecretId = null,
-					initializeEncryptionKey = true,
-					initializeSecretId = true,
-					autoDelegations = emptyMap()
-				).updatedEntity
-				return DataOwnerWithType.PatientDataOwner(patientApi.modifyPatient(updatedPatient).successBody())
-			} else {
-				encryptionService.simpleShareOrUpdateEncryptedEntityMetadata(
-					patientSelf,
-					false,
-					mapOf(
-						self.dataOwner.id to SimpleDelegateShareOptionsImpl(
-							shareEncryptionKey = ShareMetadataBehaviour.IfAvailable,
-							shareOwningEntityIds = ShareMetadataBehaviour.Never,
-							shareSecretIds = setOf(cryptoService.strongRandom.randomUUID()),
-							requestedPermissions = RequestedPermission.Root
-						)
-					),
-				) { patientApi.bulkShare(it).successBody() }.updatedEntityOrThrow().let { updatedPatient ->
-					DataOwnerWithType.PatientDataOwner(updatedPatient)
-				}
-			}
-		} else self
-	} else self
-}
-

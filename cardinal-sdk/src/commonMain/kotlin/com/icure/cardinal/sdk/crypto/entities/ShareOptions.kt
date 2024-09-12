@@ -22,6 +22,17 @@ interface SimpleDelegateShareOptions {
 	val shareOwningEntityIds: ShareMetadataBehaviour
 	/**
 	 * Specifies the permissions that the delegate will have on the shared entity.
+	 * - FullWrite: the delegate will get write access to the full entity. If the delegator is not allowed to give
+	 *   write access, the sharing will fail
+	 * - MaxWrite: the delegate will get the highest permissions that the current user can grant. In the current version
+	 *   of the SDK this means that if the delegator can grant full write access, the delegate will have full write
+	 *   access, otherwise the delegate will have full read access.
+	 * - FullRead: gives the delegate full read access to the entity, failing if the delegator can't grant read to
+	 *   the full entity. In the current version of the SDK this can never fail as long as the delegator has access to
+	 *   the entity.
+	 * - MaxRead: gives the delegate as much read access to the entity as the delegator can give. In the current version
+	 *   of the SDK as long this is equivalent to FullRead.
+	 * - Root: for internal use only
 	 */
 	val requestedPermissions: RequestedPermission
 }
