@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.options
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.cardinal.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
@@ -20,9 +19,10 @@ import com.icure.cardinal.sdk.auth.services.SmartAuthProvider
 import com.icure.cardinal.sdk.model.Group
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.embed.AuthenticationClass
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.ensureNonNull
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 
@@ -206,7 +206,7 @@ internal suspend fun AuthenticationMethod.getAuthProviderInGroup(
 	groupSelector: GroupSelector?
 ): AuthProvider {
 	val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, httpClient, json = Serialization.json)
-	val messageGatewayApi = RawMessageGatewayApi(httpClient)
+	val messageGatewayApi = RawMessageGatewayApi(httpClient, cryptoService)
 	val authProvider = getAuthProvider(rawAuthApi, cryptoService, applicationId, options, messageGatewayApi)
 	val userApi = RawUserApiImpl(apiUrl, authProvider, httpClient, json = Serialization.json)
 	val matches = userApi.getMatchingUsers().successBody()

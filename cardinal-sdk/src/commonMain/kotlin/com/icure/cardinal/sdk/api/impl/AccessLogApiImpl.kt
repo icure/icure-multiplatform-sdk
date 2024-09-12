@@ -10,7 +10,7 @@ import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -111,7 +111,6 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			accessLog.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: AccessLogShareOptions()),
 			),
@@ -122,7 +121,6 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	override suspend fun tryShareWithMany(accessLog: E, delegates: Map<String, AccessLogShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			accessLog.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -247,7 +245,7 @@ internal class AccessLogApiImpl(
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 	): DecryptedAccessLog =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedAccessLog(crypto.primitives.strongRandom.randomUUID())).copy(
@@ -260,7 +258,6 @@ internal class AccessLogApiImpl(
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 

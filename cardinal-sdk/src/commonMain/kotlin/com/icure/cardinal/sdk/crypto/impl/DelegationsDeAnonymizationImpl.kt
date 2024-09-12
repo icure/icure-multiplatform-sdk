@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawSecureDelegationKeyMapApi
 import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
@@ -11,6 +10,7 @@ import com.icure.cardinal.sdk.crypto.SecureDelegationsDecryptor
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
@@ -21,10 +21,11 @@ import com.icure.cardinal.sdk.model.SecureDelegationKeyMap
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.requests.RequestedPermission
 import com.icure.cardinal.sdk.model.specializations.encodeAsAccessControlHeaders
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.ensure
 import com.icure.cardinal.sdk.utils.getLogger
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
@@ -150,10 +151,9 @@ class DelegationsDeAnonymizationImpl(
 		if (dataOwnersNeedingShare.isNotEmpty()) {
 			entity.simpleShareOrUpdateEncryptedEntityMetadata(
 				keyMapWithType,
-				false,
 				dataOwnersNeedingShare.associateWith {
 					SimpleDelegateShareOptionsImpl(
-						shareSecretIds = emptySet(),
+						shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 						shareEncryptionKey = ShareMetadataBehaviour.Required,
 						shareOwningEntityIds = ShareMetadataBehaviour.Never,
 						requestedPermissions = RequestedPermission.FullRead
@@ -199,7 +199,6 @@ class DelegationsDeAnonymizationImpl(
 			owningEntityId = null,
 			owningEntitySecretId = null,
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = initialDelegates.associateWith { AccessLevel.Read }
 		)
 		val encryptedKeyMap = entity.encryptEntity(

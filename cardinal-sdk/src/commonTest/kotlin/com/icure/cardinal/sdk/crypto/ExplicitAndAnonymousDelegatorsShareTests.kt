@@ -1,8 +1,8 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
+import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.test.DataOwnerDetails
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -88,7 +89,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		delegatorApi.patient.shareWith(
 			delegate.dataOwnerId,
 			patient,
-			PatientShareOptions(shareSecretIds = sfk)
+			PatientShareOptions(shareSecretIds = SecretIdShareOptions.UseExactly(sfk, false))
 		).shouldNotBeNull()
 		delegatorApi.healthElement.shareWith(
 			delegate.dataOwnerId,

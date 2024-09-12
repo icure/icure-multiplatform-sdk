@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.api.TopicBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.TopicFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawTopicApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
@@ -83,7 +83,6 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			topic.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: TopicShareOptions()),
 			),
@@ -94,7 +93,6 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 	override suspend fun tryShareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			topic.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -190,7 +188,7 @@ internal class TopicApiImpl(
 		patient: Patient?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedTopic =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -203,7 +201,6 @@ internal class TopicApiImpl(
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

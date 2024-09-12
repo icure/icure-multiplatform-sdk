@@ -325,7 +325,7 @@ interface CardinalSdk : CardinalApis {
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
 			options: SdkOptions = SdkOptions()
 		): AuthenticationWithProcessStep {
-			val api = RawMessageGatewayApi(options.httpClient ?: sharedHttpClient)
+			val api = RawMessageGatewayApi(options.httpClient ?: sharedHttpClient, options.cryptoService)
 			val requestId = api.startProcess(
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,

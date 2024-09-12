@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -190,7 +190,7 @@ interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationF
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
-		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedClassification
 
 	/**

@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.api.TimeTableBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.TimeTableFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawTimeTableApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
@@ -75,7 +75,6 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			timeTable.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: TimeTableShareOptions()),
 			),
@@ -86,7 +85,6 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 	override suspend fun tryShareWithMany(timeTable: E, delegates: Map<String, TimeTableShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			timeTable.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -195,7 +193,7 @@ internal class TimeTableApiImpl(
 		patient: Patient?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 	): DecryptedTimeTable =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedTimeTable(crypto.primitives.strongRandom.randomUUID())).copy(
@@ -207,7 +205,6 @@ internal class TimeTableApiImpl(
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 

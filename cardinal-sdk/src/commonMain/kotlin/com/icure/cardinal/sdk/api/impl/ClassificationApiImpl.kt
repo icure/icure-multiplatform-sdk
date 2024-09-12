@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.api.ClassificationFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawClassificationApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -68,7 +68,6 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			classification.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: ClassificationShareOptions()),
 			),
@@ -79,7 +78,6 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 	override suspend fun tryShareWithMany(classification: E, delegates: Map<String, ClassificationShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			classification.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -203,7 +201,7 @@ internal class ClassificationApiImpl(
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 	): DecryptedClassification =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedClassification(crypto.primitives.strongRandom.randomUUID())).copy(
@@ -215,7 +213,6 @@ internal class ClassificationApiImpl(
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

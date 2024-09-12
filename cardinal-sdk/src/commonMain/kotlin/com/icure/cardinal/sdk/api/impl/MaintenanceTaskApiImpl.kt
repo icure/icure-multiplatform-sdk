@@ -75,7 +75,6 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			maintenanceTask.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: MaintenanceTaskShareOptions()),
 			),
@@ -86,7 +85,6 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 	override suspend fun tryShareWithMany(maintenanceTask: E, delegates: Map<String, MaintenanceTaskShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			maintenanceTask.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -207,7 +205,6 @@ internal class MaintenanceTaskApiImpl(
 			null,
 			null,
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates + (user?.autoDelegationsFor(DelegationTag.All) ?: emptyMap()),
 		).updatedEntity
 

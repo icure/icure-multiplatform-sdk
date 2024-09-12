@@ -12,7 +12,7 @@ import com.icure.cardinal.sdk.crypto.entities.ContactShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -163,7 +163,6 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			contact.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: ContactShareOptions()),
 			),
@@ -174,7 +173,6 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	override suspend fun tryShareWithMany(contact: E, delegates: Map<String, ContactShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			contact.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -459,7 +457,7 @@ internal class ContactApiImpl(
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedContact =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -474,7 +472,6 @@ internal class ContactApiImpl(
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 

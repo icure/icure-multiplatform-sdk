@@ -10,7 +10,7 @@ import com.icure.cardinal.sdk.api.raw.RawInvoiceApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrNull
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.model.DecryptedInvoice
@@ -191,7 +191,6 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			invoice.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: InvoiceShareOptions()),
 			),
@@ -202,7 +201,6 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 	override suspend fun tryShareWithMany(invoice: E, delegates: Map<String, InvoiceShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			invoice.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -371,7 +369,7 @@ internal class InvoiceApiImpl(
 		patient: Patient?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedInvoice =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -386,7 +384,6 @@ internal class InvoiceApiImpl(
 			patient?.id,
 			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 

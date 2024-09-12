@@ -1,8 +1,8 @@
 package com.icure.cardinal.sdk.api.raw
 
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -15,7 +15,8 @@ import kotlinx.serialization.json.JsonPrimitive
 
 @InternalIcureApi
 class RawMessageGatewayApi(
-	private val client: HttpClient
+	private val client: HttpClient,
+	private val cryptoService: CryptoService
 ) {
 
 	suspend fun startProcess(
@@ -39,7 +40,7 @@ class RawMessageGatewayApi(
 			"email" to JsonPrimitive(if (userTelecomType == AuthenticationProcessTelecomType.Email) userTelecom else ""),
 			"mobilePhone" to JsonPrimitive(if (userTelecomType == AuthenticationProcessTelecomType.MobilePhone) userTelecom else ""),
 		))
-		val requestId = defaultCryptoService.strongRandom.randomUUID()
+		val requestId = cryptoService.strongRandom.randomUUID()
 		client.post("${messageGatewayUrl}/${externalServicesSpecId}/process/${processId}/${requestId}") {
 			contentType(ContentType.Application.Json)
 			setBody(requestBodyJson)

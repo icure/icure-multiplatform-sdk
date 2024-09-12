@@ -2,7 +2,7 @@ package com.icure.cardinal.sdk.crypto
 
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.CardinalSdk
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -91,7 +91,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 				patient,
 				hcpApi.user.getCurrentUser(),
 				mapOf(parent.dataOwnerId to AccessLevel.Write),
-				SecretIdOption.UseAnyConfidential
+				SecretIdUseOption.UseAnyConfidential
 			)
 		).shouldNotBeNull()
 

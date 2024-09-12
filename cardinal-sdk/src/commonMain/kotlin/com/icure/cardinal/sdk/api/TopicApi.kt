@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.api
 
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -202,7 +202,7 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
-		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedTopic
 
 	/**

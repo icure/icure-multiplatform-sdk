@@ -10,7 +10,7 @@ interface SimpleDelegateShareOptions {
 	/**
 	 * The secret ids you want to share with the delegate.
 	 */
-	val shareSecretIds: Set<String>?
+	val shareSecretIds: SecretIdShareOptions
 	/**
 	 * Specifies if the encryption key of the entity should be shared (giving access to the encrypted information)
 	 */
@@ -39,7 +39,7 @@ interface SimpleDelegateShareOptions {
 
 @InternalIcureApi
 internal data class SimpleDelegateShareOptionsImpl(
-	override val shareSecretIds: Set<String>?,
+	override val shareSecretIds: SecretIdShareOptions,
 	override val shareEncryptionKey: ShareMetadataBehaviour,
 	override val shareOwningEntityIds: ShareMetadataBehaviour,
 	override val requestedPermissions: RequestedPermission
@@ -56,11 +56,12 @@ data class AccessLogShareOptions(
 	 * Specifies if the id of the patient linked to the access log should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -74,11 +75,12 @@ data class CalendarItemShareOptions(
 	 * Specifies if the id of the patient linked to the calendar item should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -92,11 +94,12 @@ data class ClassificationShareOptions(
 	 * Specifies if the id of the patient linked to the classification should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -110,11 +113,12 @@ data class ContactShareOptions(
 	 * Specifies if the id of the patient linked to the contact should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -128,11 +132,12 @@ data class DocumentShareOptions(
 	 * Specifies if the id of the message linked to the document (if any) should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val shareMessageId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val shareMessageId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = shareMessageId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -146,11 +151,12 @@ data class FormShareOptions(
 	 * Specifies if the id of the patient linked to the form should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -164,11 +170,12 @@ data class HealthElementShareOptions(
 	 * Specifies if the id of the patient linked to the health element should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -182,11 +189,12 @@ data class InvoiceShareOptions(
 	 * Specifies if the id of the patient linked to the invoice should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -196,16 +204,16 @@ data class MaintenanceTaskShareOptions(
 	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class MessageShareOptions(
-	override val shareSecretIds: Set<String>,
 	@DefaultValue("com.icure.cardinal.sdk.model.requests.RequestedPermission.MaxWrite")
 	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
@@ -215,6 +223,8 @@ data class MessageShareOptions(
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
@@ -223,11 +233,12 @@ data class MessageShareOptions(
 @OptIn(InternalIcureApi::class)
 @Serializable
 data class PatientShareOptions(
-	override val shareSecretIds: Set<String>,
 	@DefaultValue("com.icure.cardinal.sdk.model.requests.RequestedPermission.MaxWrite")
 	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
@@ -240,10 +251,11 @@ data class ReceiptShareOptions(
 	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -253,10 +265,11 @@ data class TimeTableShareOptions(
 	override val requestedPermissions:  RequestedPermission = RequestedPermission.MaxWrite,
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
 	override val shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = ShareMetadataBehaviour.Never
-	override val shareSecretIds get() = null
 }
 
 @OptIn(InternalIcureApi::class)
@@ -270,9 +283,10 @@ data class TopicShareOptions(
 	 * Specifies if the id of the patient linked to the topic should be shared with the delegate
 	 */
 	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour.IfAvailable")
-	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable
+	val sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable,
+	@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable(false)")
+	override val shareSecretIds: SecretIdShareOptions = SecretIdShareOptions.AllAvailable(false),
 ) : SimpleDelegateShareOptions {
 
 	override val shareOwningEntityIds get() = sharePatientId
-	override val shareSecretIds get() = null
 }

@@ -97,8 +97,8 @@ import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.options.getAuthProviderInGroup
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.Json
 
 /**
@@ -136,7 +136,7 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 				cryptoService,
 				null,
 				options,
-				RawMessageGatewayApi(client)
+				RawMessageGatewayApi(client, cryptoService)
 			)
 
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)

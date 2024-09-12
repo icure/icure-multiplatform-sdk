@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.api.HealthElementFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawHealthElementApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -84,7 +84,6 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			healthElement.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: HealthElementShareOptions()),
 			),
@@ -95,7 +94,6 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 	override suspend fun tryShareWithMany(healthElement: E, delegates: Map<String, HealthElementShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			healthElement.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -233,7 +231,7 @@ internal class HealthElementApiImpl(
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedHealthElement =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -246,7 +244,6 @@ internal class HealthElementApiImpl(
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

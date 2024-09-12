@@ -18,7 +18,8 @@ import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.FailedRequestDetails
 import com.icure.cardinal.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.cardinal.sdk.crypto.entities.MinimalBulkShareResult
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
@@ -152,7 +153,6 @@ class EntityEncryptionServiceImpl(
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
 		initializeEncryptionKey: Boolean,
-		initializeSecretId: Boolean,
 		autoDelegations: Map<String, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T> {
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = true)
@@ -160,13 +160,10 @@ class EntityEncryptionServiceImpl(
 			HexString(cryptoService.aes.exportKey(cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)).toHexString())
 		else
 			null
-		val newSecretId = if (initializeSecretId)
-			cryptoService.strongRandom.randomUUID()
-		else
-			null
+		val newSecretId = cryptoService.strongRandom.randomUUID()
 		val entityWitSecurityMetadata = secureDelegationsManager.entityWithInitializedEncryptedMetadata(
 			entity = entity,
-			secretIds = setOfNotNull(newSecretId),
+			secretIds = setOf(newSecretId),
 			owningEntityIds = setOfNotNull(owningEntityId),
 			encryptionKeys = setOfNotNull(newRawKey),
 			owningEntitySecretIds = owningEntitySecretId ?: emptySet(),
@@ -479,13 +476,12 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
 		entity: EntityWithTypeInfo<T>,
-		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T> {
 		val availableEncryptionKeys = encryptionKeysOf(entity, null)
 		val availableOwningEntityIds = owningEntityIdsOf(entity, null)
-		val availableSecretIds = if (unusedSecretIds) secretIdsOf(entity, null) else null
+		val availableSecretIds = secretIdsOf(entity, null)
 		val extendedDelegateOptions = delegates.mapValues { (_, simpleShareOptions) ->
 			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Required) {
 				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entity.type.id} ${entity.id}, but sharing is required.")
@@ -493,13 +489,8 @@ class EntityEncryptionServiceImpl(
 			if (availableOwningEntityIds.isEmpty() && simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Required) {
 				throw IllegalArgumentException("The current data owner can't access any owning entity id in ${entity.type.id} ${entity.id}, but sharing is required.")
 			}
-			if (simpleShareOptions.shareSecretIds == null && !unusedSecretIds) {
-				throw IllegalArgumentException("Share secret ids parameter is mandatory for entities of type ${entity.type.id}.")
-			} else if (simpleShareOptions.shareSecretIds != null && unusedSecretIds) {
-				throw IllegalArgumentException("Share secret ids parameter must not be unused with entities of type ${entity.type.id}.")
-			}
 			DelegateShareOptions(
-				shareSecretIds = simpleShareOptions.shareSecretIds ?: availableSecretIds ?: emptySet(),
+				shareSecretIds = simpleShareOptions.shareSecretIds.resolve(availableSecretIds, entity),
 				shareEncryptionKeys = if (simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Never) emptySet() else availableEncryptionKeys,
 				shareOwningEntityIds = if (simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Never) emptySet() else availableOwningEntityIds,
 				requestedPermissions = simpleShareOptions.requestedPermissions
@@ -562,9 +553,11 @@ class EntityEncryptionServiceImpl(
 		if (getConfidentialSecretIdsOf(entity, null).isNotEmpty()) return null
 		return simpleShareOrUpdateEncryptedEntityMetadata(
 			entity,
-			false,
 			mapOf(dataOwnerApi.getCurrentDataOwnerId() to SimpleDelegateShareOptionsImpl(
-				shareSecretIds = setOf(cryptoService.strongRandom.randomUUID()),
+				shareSecretIds = SecretIdShareOptions.UseExactly(
+					secretIds = setOf(cryptoService.strongRandom.randomUUID()),
+					createUnknownSecretIds = true
+				),
 				shareEncryptionKey = ShareMetadataBehaviour.Never,
 				shareOwningEntityIds = ShareMetadataBehaviour.Never,
 				requestedPermissions = RequestedPermission.MaxWrite
@@ -588,13 +581,13 @@ class EntityEncryptionServiceImpl(
 	override suspend fun getSecretIdsSharedWithParentsOf(entity: EntityWithTypeInfo<*>): Set<String> =
 		secretIdsForHcpHierarchyOf(entity).first().extracted
 
-	override suspend fun resolveSecretIdOption(entity: EntityWithTypeInfo<*>, secretIdOption: SecretIdOption): Set<String> =
-		when (secretIdOption) {
-			is SecretIdOption.Use -> secretIdOption.secretIds
-			SecretIdOption.UseAnyConfidential -> getConfidentialSecretIdsOf(entity, null)
-			SecretIdOption.UseAnySharedWithParent -> getSecretIdsSharedWithParentsOf(entity)
+	override suspend fun resolveSecretIdOption(entity: EntityWithTypeInfo<*>, secretIdUseOption: SecretIdUseOption): Set<String> =
+		when (secretIdUseOption) {
+			is SecretIdUseOption.Use -> secretIdUseOption.secretIds
+			SecretIdUseOption.UseAnyConfidential -> getConfidentialSecretIdsOf(entity, null)
+			SecretIdUseOption.UseAnySharedWithParent -> getSecretIdsSharedWithParentsOf(entity)
 		}.also {
-			require(it.isNotEmpty()) { "No valid secret id found for option $secretIdOption" }
+			require(it.isNotEmpty()) { "No valid secret id found for option $secretIdUseOption" }
 		}
 
 	private suspend fun dataOwnersForDecryption(startingFrom: String?) =
@@ -613,4 +606,22 @@ class EntityEncryptionServiceImpl(
 
 	private fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
 		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }
+
+	private suspend fun SecretIdShareOptions.resolve(entitySecretIds: Set<String>, entity: EntityWithTypeInfo<*>) = when (this) {
+		is SecretIdShareOptions.AllAvailable -> entitySecretIds.also {
+			require (!requireAtLeastOne || it.isNotEmpty()) {
+				"No secret id could be extracted by the current user for ${entity.type} ${entity.id}"
+			}
+		}
+		is SecretIdShareOptions.UseExactly ->
+			secretIds.also {
+				if (!createUnknownSecretIds) {
+					require (entitySecretIds.containsAll(secretIds)) {
+						"Unknown secret ids for ${entity.type} ${entity.id} and `createUnknownSecretIds` is false: ${
+							secretIds - entitySecretIds
+						}"
+					}
+				}
+			}
+	}
 }

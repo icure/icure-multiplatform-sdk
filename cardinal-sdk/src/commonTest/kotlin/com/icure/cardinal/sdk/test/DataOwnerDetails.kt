@@ -1,10 +1,5 @@
 package com.icure.cardinal.sdk.test
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
@@ -13,15 +8,20 @@ import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.AuthenticationMethod
+import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
 import com.icure.cardinal.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 
 @OptIn(InternalIcureApi::class)
 @ConsistentCopyVisibility
@@ -123,7 +123,7 @@ data class DataOwnerDetails private constructor (
 			defaultCryptoService,
 			null,
 			SdkOptions(saltPasswordWithApplicationId = false),
-			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient)
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient, defaultCryptoService)
 		)
 
 

@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.api.DocumentFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawDocumentApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -95,7 +95,6 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			document.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: DocumentShareOptions()),
 			),
@@ -106,7 +105,6 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	override suspend fun tryShareWithMany(document: E, delegates: Map<String, DocumentShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			document.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -266,7 +264,7 @@ internal class DocumentApiImpl(
 		message: Message?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedDocument =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -279,7 +277,6 @@ internal class DocumentApiImpl(
 			message?.id,
 			message?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

@@ -1,16 +1,10 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesService
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
+import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.DecryptedPatient
@@ -23,9 +17,16 @@ import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.test.internal
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.decode
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesService
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 import io.kotest.assertions.fail
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -92,12 +93,12 @@ class RecoveryDataEncryptionTest : StringSpec({
 				),
 			)
 		)
-		val secretIds = api.patient.getSecretIdsOf(patient)
+		val secretIdsOptions = SecretIdShareOptions.AllAvailable(true)
 		shouldThrow<IllegalArgumentException> {
-			api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds = secretIds))
+			api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds = secretIdsOptions))
 		}
 		api.patient.forceInitializeExchangeDataToNewlyInvitedPatient(patient.id) shouldBe true
-		api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds = secretIds))
+		api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds = secretIdsOptions))
 		val recoveryKey = api.recovery.createExchangeDataRecoveryInfo(patient.id)
 		val patientUser = createPatientUser(existingPatientId = patient.id)
 		val apiPatient = patientUser.api()

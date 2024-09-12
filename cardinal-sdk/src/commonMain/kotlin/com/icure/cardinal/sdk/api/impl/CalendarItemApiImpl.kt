@@ -11,7 +11,7 @@ import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -105,7 +105,6 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			calendarItem.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: CalendarItemShareOptions()),
 			),
@@ -116,7 +115,6 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	override suspend fun tryShareWithMany(calendarItem: E, delegates: Map<String, CalendarItemShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			calendarItem.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -266,7 +264,7 @@ internal class CalendarItemApiImpl(
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 	) =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
@@ -278,7 +276,6 @@ internal class CalendarItemApiImpl(
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

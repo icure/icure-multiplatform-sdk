@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.api.FormFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawFormApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -92,7 +92,6 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			form.withTypeInfo(),
-			true,
 			mapOf(
 				delegateId to (options ?: FormShareOptions()),
 			),
@@ -103,7 +102,6 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 	override suspend fun tryShareWithMany(form: E, delegates: Map<String, FormShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			form.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -275,7 +273,7 @@ internal class FormApiImpl(
 		patient: Patient,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		secretId: SecretIdOption,
+		secretId: SecretIdUseOption,
 	): DecryptedForm =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
 			(base ?: DecryptedForm(crypto.primitives.strongRandom.randomUUID())).copy(
@@ -287,7 +285,6 @@ internal class FormApiImpl(
 			patient.id,
 			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
 			initializeEncryptionKey = true,
-			initializeSecretId = false,
 			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
 

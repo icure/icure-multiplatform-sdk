@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.model.DecryptedReceipt
@@ -89,7 +89,7 @@ interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<Decrypted
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
-		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedReceipt
 	suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String): ByteArray
 	suspend fun encryptAndSetReceiptAttachment(receipt: Receipt, blobType: String, attachment: ByteArray): EncryptedReceipt

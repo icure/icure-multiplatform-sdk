@@ -8,5 +8,5 @@ import com.icure.utils.InternalIcureApi
 data class EntityEncryptionMetadataInitialisationResult<T : HasEncryptionMetadata>(
 	val updatedEntity: T,
 	val rawEncryptionKey: HexString?,
-	val secretId: String?
+	val secretId: String
 )

@@ -19,6 +19,7 @@ import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
+import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest
@@ -63,7 +64,6 @@ import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
@@ -260,7 +260,6 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			patient.withTypeInfo(),
-			false,
 			mapOf(delegateId to options),
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -269,7 +268,6 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	override suspend fun tryShareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): SimpleShareResult<E> =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			patient.withTypeInfo(),
-			true,
 			delegates
 		) {
 			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
@@ -605,7 +603,6 @@ internal class PatientApiImpl(
 			null,
 			null,
 			initializeEncryptionKey = true,
-			initializeSecretId = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
@@ -689,26 +686,27 @@ internal class PatientApiImpl(
 				owningEntityId = null,
 				owningEntitySecretId = null,
 				initializeEncryptionKey = true,
-				initializeSecretId = true,
 				autoDelegations = sharingWith
 			).updatedEntity
 		} else {
-			val newSecretId = defaultCryptoService.strongRandom.randomUUID()
+			val secretIdShareOptions = SecretIdShareOptions.UseExactly(
+				secretIds = setOf(config.crypto.primitives.strongRandom.randomUUID()),
+				createUnknownSecretIds = true
+			)
 			config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 				selfWithTypeInfo,
-				false,
 				mapOf(
 					self.dataOwner.id to SimpleDelegateShareOptionsImpl(
 						shareEncryptionKey = ShareMetadataBehaviour.IfAvailable,
 						shareOwningEntityIds = ShareMetadataBehaviour.Never,
-						shareSecretIds = setOf(newSecretId),
+						shareSecretIds = secretIdShareOptions,
 						requestedPermissions = RequestedPermission.Root
 					)
 				) + sharingWith.mapValues { (_, accessLevel) ->
 					SimpleDelegateShareOptionsImpl(
 						shareEncryptionKey = ShareMetadataBehaviour.Never,
 						shareOwningEntityIds = ShareMetadataBehaviour.Never,
-						shareSecretIds = setOf(newSecretId),
+						shareSecretIds = secretIdShareOptions,
 						requestedPermissions = when (accessLevel) {
 							AccessLevel.Read -> RequestedPermission.FullRead
 							AccessLevel.Write -> RequestedPermission.FullWrite

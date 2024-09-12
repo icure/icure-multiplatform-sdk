@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
@@ -275,7 +275,7 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdOption.UseAnySharedWithParent")
-		secretId: SecretIdOption = SecretIdOption.UseAnySharedWithParent,
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedInvoice
 
 	/**

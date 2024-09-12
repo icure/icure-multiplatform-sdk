@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionMetadataInitialisa
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.cardinal.sdk.crypto.entities.MinimalBulkShareResult
-import com.icure.cardinal.sdk.crypto.entities.SecretIdOption
+import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
@@ -129,7 +129,6 @@ interface EntityEncryptionService : EntityValidationService {
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
 		initializeEncryptionKey: Boolean,
-		initializeSecretId: Boolean,
 		autoDelegations: Map<String, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T>
 
@@ -188,7 +187,6 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
 		entity: EntityWithTypeInfo<T>,
-		unusedSecretIds: Boolean,
 		delegates: Map<String, SimpleDelegateShareOptions>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T>
@@ -333,14 +331,14 @@ interface EntityEncryptionService : EntityValidationService {
 	suspend fun getSecretIdsSharedWithParentsOf(entity: EntityWithTypeInfo<*>): Set<String>
 
 	/**
-	 * Get the secret ids for [entity] that match the provided [secretIdOption]. Note that if [secretIdOption] is
-	 * [SecretIdOption.Use] the secret id won't be validated.
+	 * Get the secret ids for [entity] that match the provided [secretIdUseOption]. Note that if [secretIdUseOption] is
+	 * [SecretIdUseOption.Use] the secret id won't be validated.
 	 * @throws IllegalArgumentException if there is no valid secret id matching the requested option
 	 * @return a set of secret ids to use for the entity. Never empty.
 	 */
 	suspend fun resolveSecretIdOption(
 		entity: EntityWithTypeInfo<*>,
-		secretIdOption: SecretIdOption
+		secretIdUseOption: SecretIdUseOption
 	): Set<String>
 	// endregion
 }
