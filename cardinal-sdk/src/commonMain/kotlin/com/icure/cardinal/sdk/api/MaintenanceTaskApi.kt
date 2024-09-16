@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -85,21 +84,7 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 		maintenanceTask: E,
 		@DefaultValue("null")
 		options: MaintenanceTaskShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a maintenance task with multiple data owners. The maintenance task must already exist in the database for this method to
-	 * succeed. If you want to share the maintenance task before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param maintenanceTask the maintenance task to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated maintenance task if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		maintenanceTask: E,
-		delegates: Map<String, MaintenanceTaskShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a maintenance task with multiple data owners. The maintenance task must already exist in the database for this method to

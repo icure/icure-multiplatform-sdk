@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -110,21 +109,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 		topic: E,
 		@DefaultValue("null")
 		options: TopicShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a topic with multiple data owners. The topic must already exist in the database for this method to
-	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param topic the topic to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated topic if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		topic: E,
-		delegates: Map<String, TopicShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a topic with multiple data owners. The topic must already exist in the database for this method to

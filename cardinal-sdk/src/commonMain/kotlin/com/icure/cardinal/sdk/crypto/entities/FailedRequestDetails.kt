@@ -9,5 +9,6 @@ data class FailedRequestDetails(
 	val updatedForMigration: Boolean,
 	val code: Int?,
 	val reason: String?,
-	val request: DelegateShareOptions?
+	val request: DelegateShareOptions?,
+	val shouldRetry: Boolean
 )

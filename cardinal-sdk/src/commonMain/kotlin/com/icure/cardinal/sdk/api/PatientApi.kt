@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -331,22 +330,9 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		patient: E,
-		options: PatientShareOptions
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a patient with multiple data owners. The patient must already exist in the database for this method to
-	 * succeed. If you want to share the patient before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param patient the patient to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated patient if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		patient: E,
-		delegates: Map<String, PatientShareOptions>
-	): SimpleShareResult<E>
+		@DefaultValue("null")
+		options: PatientShareOptions?
+	): E
 
 	/**
 	 * Share a patient with multiple data owners. The patient must already exist in the database for this method to

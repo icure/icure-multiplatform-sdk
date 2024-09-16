@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -115,29 +114,17 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 	 * @param accessLog the access log to share with [delegateId]
 	 * @param options specifies how the access log will be shared. By default, all data available to the current user
 	 * will be shared, and the delegate will have the same permissions as the current user on the access log.
-	 * @return the updated access log if the sharing was successful, or details on the errors if the sharing failed.
+	 * @return the updated access log
 	 */
 	suspend fun shareWith(
 		delegateId: String,
 		accessLog: E,
 		@DefaultValue("null")
 		options: AccessLogShareOptions? = null,
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share an access log with multiple data owners.
-	 * @param accessLog the access log to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated access log if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		accessLog: E,
-		delegates: Map<String, AccessLogShareOptions>
-	): SimpleShareResult<E>
-
-	/**
-	 * Share an access log with multiple data owners. Throws an exception if the operation fails.
 	 * @param accessLog the access log to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
 	 * each of them.

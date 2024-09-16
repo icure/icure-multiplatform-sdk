@@ -157,11 +157,15 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<T>, Map<String, DelegateShareOptions>>>,
+		autoRetry: Boolean,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T>
 
 	suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
+		autoRetry: Boolean,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<*>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 	): MinimalBulkShareResult
 
@@ -188,6 +192,8 @@ interface EntityEncryptionService : EntityValidationService {
 	suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
 		entity: EntityWithTypeInfo<T>,
 		delegates: Map<String, SimpleDelegateShareOptions>,
+		autoRetry: Boolean,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T>
 	// endregion
@@ -309,6 +315,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
 		entity: EntityWithTypeInfo<T>,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T?
 

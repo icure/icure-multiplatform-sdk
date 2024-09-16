@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.HealthElement
+import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.Message
@@ -16,6 +17,7 @@ import com.icure.cardinal.sdk.model.Receipt
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
+import com.icure.cardinal.sdk.model.base.ICureDocument
 import com.icure.cardinal.sdk.model.embed.Delegation
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.utils.InternalIcureApi
@@ -73,3 +75,24 @@ fun <T:Receipt> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryption
 fun <T:TimeTable> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.TimeTable)
 fun <T:Topic> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Topic)
 
+fun <T> EntityWithTypeInfo<T>.asIcureStub(): EntityWithTypeInfo<IcureStub> where T : HasEncryptionMetadata, T : ICureDocument<String> =
+	EntityWithTypeInfo(
+		IcureStub(
+			id = entity.id,
+			rev = entity.rev,
+			created = entity.created,
+			modified = entity.modified,
+			author = entity.author,
+			responsible = entity.responsible,
+			medicalLocationId = entity.medicalLocationId,
+			tags = entity.tags,
+			codes = entity.codes,
+			endOfLife = entity.endOfLife,
+			secretForeignKeys = entity.secretForeignKeys,
+			cryptedForeignKeys = entity.cryptedForeignKeys,
+			delegations = entity.delegations,
+			encryptionKeys = entity.encryptionKeys,
+			securityMetadata = entity.securityMetadata,
+		),
+		type
+	)

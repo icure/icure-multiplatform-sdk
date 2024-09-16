@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -94,28 +93,14 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	 * @param options specifies how the calendar item will be shared. By default, all data available to the current user
 	 * will be shared, and the delegate will have the same permissions as the current user on the calendar item. Refer
 	 * to the documentation of [CalendarItemShareOptions] for more information.
-	 * @return the updated calendar item if the sharing was successful, or details on the errors if the sharing failed.
+	 * @return the updated calendar item
 	 */
 	suspend fun shareWith(
 		delegateId: String,
 		calendarItem: E,
 		@DefaultValue("null")
 		options: CalendarItemShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a calendar item with multiple data owners. The calendar item must already exist in the database for this method to
-	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param calendarItem the calendar item to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated calendar item if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		calendarItem: E,
-		delegates: Map<String, CalendarItemShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a calendar item with multiple data owners. The calendar item must already exist in the database for this method to

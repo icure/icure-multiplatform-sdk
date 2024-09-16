@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -86,21 +85,7 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 		classification: E,
 		@DefaultValue("null")
 		options: ClassificationShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a classification with multiple data owners. The classification must already exist in the database for this method to
-	 * succeed. If you want to share the classification before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param classification the classification to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated classification if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		classification: E,
-		delegates: Map<String, ClassificationShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a classification with multiple data owners. The classification must already exist in the database for this method to

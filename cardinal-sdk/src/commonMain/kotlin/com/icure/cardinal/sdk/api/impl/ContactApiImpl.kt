@@ -13,7 +13,6 @@ import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -160,26 +159,17 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 		delegateId: String,
 		contact: E,
 		options: ContactShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			contact.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: ContactShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(contact: E, delegates: Map<String, ContactShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			contact.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(contact, mapOf(delegateId to (options ?: ContactShareOptions())))
 
 	override suspend fun shareWithMany(contact: E, delegates: Map<String, ContactShareOptions>): E =
-		tryShareWithMany(contact, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			contact.withTypeInfo(),
+			delegates,
+			true,
+			{ getContact(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } },
+		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
 	override suspend fun findContactsByHcPartyPatient(

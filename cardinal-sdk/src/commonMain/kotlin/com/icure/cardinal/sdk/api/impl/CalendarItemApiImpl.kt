@@ -12,7 +12,6 @@ import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -102,25 +101,17 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		delegateId: String,
 		calendarItem: E,
 		options: CalendarItemShareOptions?,
-	): SimpleShareResult<E> =
+	): E =
+		shareWithMany(calendarItem, mapOf(delegateId to (options ?: CalendarItemShareOptions())))
+
+	override suspend fun shareWithMany(calendarItem: E, delegates: Map<String, CalendarItemShareOptions>): E =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			calendarItem.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: CalendarItemShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(calendarItem: E, delegates: Map<String, CalendarItemShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			calendarItem.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun shareWithMany(calendarItem: E, delegates: Map<String, CalendarItemShareOptions>): E = tryShareWithMany(calendarItem, delegates).updatedEntityOrThrow()
+			delegates,
+			true,
+			{ getCalendarItem(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
 	override suspend fun findCalendarItemsByHcPartyPatient(
@@ -158,8 +149,11 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 						requestedPermissions = RequestedPermission.FullRead
 					)
 				}
-			))
-		) { rawApi.bulkShare(it).successBody() }
+			)),
+			true,
+			{ getCalendarItem(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody() }
+		)
 		if(shareResult.updatedEntities.isEmpty() || shareResult.updatedEntities.first().id != calendarItem.id) {
 			val errorsForEntity = shareResult.updateErrors.filter { it.entityId == calendarItem.id }
 			if (errorsForEntity.isEmpty() || errorsForEntity.none { it.code == 409 }) {

@@ -191,21 +191,7 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 		invoice: E,
 		@DefaultValue("null")
 		options: InvoiceShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share an invoice with multiple data owners. The invoice must already exist in the database for this method to
-	 * succeed. If you want to share the invoice before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param invoice the invoice to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated invoice if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		invoice: E,
-		delegates: Map<String, InvoiceShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share an invoice with multiple data owners. The invoice must already exist in the database for this method to

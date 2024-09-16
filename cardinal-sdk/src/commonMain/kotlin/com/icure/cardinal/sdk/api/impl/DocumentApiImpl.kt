@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.api.raw.RawDocumentApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -92,26 +91,17 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 		delegateId: String,
 		document: E,
 		options: DocumentShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			document.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: DocumentShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(document: E, delegates: Map<String, DocumentShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			document.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(document, mapOf(Pair(delegateId, options ?: DocumentShareOptions())))
 
 	override suspend fun shareWithMany(document: E, delegates: Map<String, DocumentShareOptions>): E =
-		tryShareWithMany(document, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			document.withTypeInfo(),
+			delegates,
+			true,
+			{ getDocument(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
 	override suspend fun findDocumentsByHcPartyPatient(

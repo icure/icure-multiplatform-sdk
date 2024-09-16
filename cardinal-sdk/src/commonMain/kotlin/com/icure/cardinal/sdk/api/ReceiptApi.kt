@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.api
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.model.DecryptedReceipt
 import com.icure.cardinal.sdk.model.EncryptedReceipt
 import com.icure.cardinal.sdk.model.Patient
@@ -36,26 +35,7 @@ interface ReceiptFlavouredApi<E : Receipt> : ReceiptBasicFlavouredApi<E> {
 		receipt: E,
 		@DefaultValue("null")
 		options: ReceiptShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the
-	 * encrypted content, with read-only or read-write permissions.
-	 * @param receipt the [Receipt] to share.
-	 * @param delegates associates the id of data owners which will be granted access to the entity, to the following sharing options:
-	 * - shareEncryptionKey: specifies if the encryption key of the access log should be shared with the delegate, giving access to all encrypted
-	 * content of the entity, excluding other encrypted metadata (defaults to [ShareMetadataBehaviour.IfAvailable]).
-	 * - sharePatientId: specifies if the id of the patient that this access log refers to should be shared with the delegate. Normally this would
-	 * be the same as objectId, but it is encrypted separately from it allowing you to give access to the patient id without giving access to the other
-	 * encrypted data of the access log (defaults to [ShareMetadataBehaviour.IfAvailable]).
-	 * - requestedPermissions: the requested permissions for the delegate, defaults to [ShareMetadataBehaviour.IfAvailable].
-	 * @return the [SimpleShareResult] of the operation: the updated entity if the operation was successful or details of the error if
-	 * the operation failed.
-	 */
-	suspend fun tryShareWithMany(
-		receipt: E,
-		delegates: Map<String, ReceiptShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Shares an existing access log with other data owners, allowing them to access the non-encrypted data of the access log and optionally also the

@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.api.TimeTableFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawTimeTableApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -72,26 +71,17 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 		delegateId: String,
 		timeTable: E,
 		options: TimeTableShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			timeTable.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: TimeTableShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(timeTable: E, delegates: Map<String, TimeTableShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			timeTable.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(timeTable, mapOf(delegateId to (options ?: TimeTableShareOptions())))
 
 	override suspend fun shareWithMany(timeTable: E, delegates: Map<String, TimeTableShareOptions>): E =
-		tryShareWithMany(timeTable, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			timeTable.withTypeInfo(),
+			delegates,
+			true,
+			{ getTimeTable(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
 
 	override suspend fun filterTimeTablesBySorted(filter: SortableFilterOptions<TimeTable>): PaginatedListIterator<E> =
 		filterTimeTablesBy(filter)

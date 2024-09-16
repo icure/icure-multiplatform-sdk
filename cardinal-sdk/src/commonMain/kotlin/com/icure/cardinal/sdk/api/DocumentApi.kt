@@ -223,21 +223,7 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 		document: E,
 		@DefaultValue("null")
 		options: DocumentShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a document with multiple data owners. The document must already exist in the database for this method to
-	 * succeed. If you want to share the document before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param document the document to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated document if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		document: E,
-		delegates: Map<String, DocumentShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a document with multiple data owners. The document must already exist in the database for this method to

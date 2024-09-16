@@ -106,21 +106,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 		healthElement: E,
 		@DefaultValue("null")
 		options: HealthElementShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a health element with multiple data owners. The health element must already exist in the database for this method to
-	 * succeed. If you want to share the health element before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param healthElement the health element to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated health element if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		healthElement: E,
-		delegates: Map<String, HealthElementShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a health element with multiple data owners. The health element must already exist in the database for this method to

@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.api.raw.RawClassificationApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -65,26 +64,17 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 		delegateId: String,
 		classification: E,
 		options: ClassificationShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			classification.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: ClassificationShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(classification: E, delegates: Map<String, ClassificationShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			classification.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(classification, mapOf(delegateId to (options ?: ClassificationShareOptions())))
 
 	override suspend fun shareWithMany(classification: E, delegates: Map<String, ClassificationShareOptions>): E =
-		tryShareWithMany(classification, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			classification.withTypeInfo(),
+			delegates,
+			true,
+			{ getClassification(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
 	override suspend fun findClassificationsByHcPartyPatient(

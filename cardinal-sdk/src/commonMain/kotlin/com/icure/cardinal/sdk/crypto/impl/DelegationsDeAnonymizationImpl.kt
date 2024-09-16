@@ -158,13 +158,21 @@ class DelegationsDeAnonymizationImpl(
 						shareOwningEntityIds = ShareMetadataBehaviour.Never,
 						requestedPermissions = RequestedPermission.FullRead
 					)
+				},
+				true,
+				{ id ->
+					EntityWithTypeInfo(
+						getDecryptedSecureDelegationKeyMaps(setOf(keyMap.delegationKey), entityType).first { it.id == id },
+						entityType
+					)
+				},
+				{
+					delegationKeyMapsApi.bulkShare(
+						it,
+						accessControlKeysHeadersProvider.getAccessControlKeysHeadersFor(entityType)
+					).successBody()
 				}
-			) {
-				delegationKeyMapsApi.bulkShare(
-					it,
-					accessControlKeysHeadersProvider.getAccessControlKeysHeadersFor(entityType)
-				).successBody()
-			}.updatedEntityOrThrow()
+			).updatedEntityOrThrow()
 		}
 	}
 

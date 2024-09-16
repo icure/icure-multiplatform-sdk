@@ -26,6 +26,7 @@ import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedR
 import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
+import com.icure.cardinal.sdk.crypto.entities.asIcureStub
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -58,6 +59,7 @@ import com.icure.cardinal.sdk.subscription.EntitySubscription
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
+import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
@@ -256,25 +258,19 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	override suspend fun shareWith(
 		delegateId: String,
 		patient: E,
-		options: PatientShareOptions,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			patient.withTypeInfo(),
-			mapOf(delegateId to options),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			patient.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+		@DefaultValue("null")
+		options: PatientShareOptions?,
+	): E =
+		shareWithMany(patient, mapOf(delegateId to (options ?: PatientShareOptions())))
 
 	override suspend fun shareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): E =
-		tryShareWithMany(patient, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			patient.withTypeInfo(),
+			delegates,
+			true,
+			{ getPatient(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
 
 	override suspend fun initializeConfidentialSecretId(patient: E): E {
 		requireNotNull(patient.rev) {
@@ -282,9 +278,9 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 		}
 		return crypto.entity.initializeConfidentialSecretId(
 			patient.withTypeInfo(),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		} ?: patient
+			{ getPatient(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		) ?: patient
 	}
 
 	override suspend fun filterPatientsBySorted(filter: SortableFilterOptions<Patient>): PaginatedListIterator<E> =
@@ -416,6 +412,7 @@ internal class PatientApiImpl(
 			suspend fun <T : HasEncryptionMetadata> doShareEntitiesAndUpdateStatus(
 				entities: List<EntityWithTypeInfo<T>>,
 				tagsCondition: (tags: Set<ShareAllPatientDataOptions.Tag>) -> Boolean,
+				getEntity: suspend (id: String) -> EntityWithTypeInfo<T>,
 				doShareMinimal: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 			): ShareAllPatientDataOptions.EntityResult {
 				val delegatesToApply = delegatesWithShareType.entries.mapNotNull { (delegateId, types) ->
@@ -438,7 +435,7 @@ internal class PatientApiImpl(
 						}
 					}
 					try {
-						val result = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadataNoEntities(updates, doShareMinimal)
+						val result = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadataNoEntities(updates, true, getEntity, doShareMinimal)
 						ShareAllPatientDataOptions.EntityResult(
 							success = result.updateErrors.isEmpty(),
 							error = BulkShareFailure(
@@ -465,7 +462,9 @@ internal class PatientApiImpl(
 				entities = retrievedHealthElements.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.HealthElement) },
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(
 					ShareAllPatientDataOptions.Tag.MedicalInformation) },
-			) { params -> rawHealthElementApi.bulkShareMinimal(params).successBody() }
+				{ rawHealthElementApi.getHealthElement(it).successBody().withTypeInfo().asIcureStub() },
+				{ params -> rawHealthElementApi.bulkShareMinimal(params).successBody() }
+			)
 
 			val retrievedForms = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawFormApi.findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
@@ -474,7 +473,9 @@ internal class PatientApiImpl(
 				entities = retrievedForms.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Form) },
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(
 					ShareAllPatientDataOptions.Tag.MedicalInformation) },
-			) { params -> rawFormApi.bulkShareMinimal(params).successBody() }
+				{ rawFormApi.getForm(it).successBody().withTypeInfo().asIcureStub() },
+				{ params -> rawFormApi.bulkShareMinimal(params).successBody() }
+			)
 
 			val retrievedContacts = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
@@ -483,7 +484,9 @@ internal class PatientApiImpl(
 				entities = retrievedContacts.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Contact) },
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(
 					ShareAllPatientDataOptions.Tag.MedicalInformation) },
-			) { params -> rawContactApi.bulkShareMinimal(params).successBody() }
+				{ rawContactApi.getContact(it).successBody().withTypeInfo().asIcureStub() },
+				{ params -> rawContactApi.bulkShareMinimal(params).successBody() }
+			)
 
 			val retrievedInvoices = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
@@ -492,7 +495,9 @@ internal class PatientApiImpl(
 				entities = retrievedInvoices.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Invoice) },
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(
 					ShareAllPatientDataOptions.Tag.FinancialInformation) },
-			) { params -> rawInvoiceApi.bulkShareMinimal(params).successBody() }
+				{ rawInvoiceApi.getInvoice(it).successBody().withTypeInfo().asIcureStub() },
+				{ params -> rawInvoiceApi.bulkShareMinimal(params).successBody() }
+			)
 
 			val retrievedCalendarItems = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawCalendarItemApi.findCalendarItemsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
@@ -501,7 +506,9 @@ internal class PatientApiImpl(
 				entities = retrievedCalendarItems.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.CalendarItem) },
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(
 					ShareAllPatientDataOptions.Tag.MedicalInformation) },
-			) { params -> rawCalendarItemApi.bulkShareMinimal(params).successBody() }
+				{ rawCalendarItemApi.getCalendarItem(it).successBody().withTypeInfo().asIcureStub() },
+				{ params -> rawCalendarItemApi.bulkShareMinimal(params).successBody() }
+			)
 
 			val retrievedClassifications = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
 				rawClassificationApi.findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
@@ -510,7 +517,9 @@ internal class PatientApiImpl(
 				entities = retrievedClassifications.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Classification) },
 				tagsCondition = { it.contains(ShareAllPatientDataOptions.Tag.All) || it.contains(
 					ShareAllPatientDataOptions.Tag.MedicalInformation) },
-			) { params -> rawClassificationApi.bulkShareMinimal(params).successBody() }
+				{ rawClassificationApi.getClassification(it).successBody().withTypeInfo().asIcureStub() },
+				{ params -> rawClassificationApi.bulkShareMinimal(params).successBody() }
+			)
 
 			mapOf(
 				ShareAllPatientDataOptions.ShareableEntity.HealthElement to shareHealthElementsResult,
@@ -532,16 +541,21 @@ internal class PatientApiImpl(
 		}
 
 		val patientStatus = try {
-			val result = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadataNoEntities(listOf(
-				patient.withTypeInfo() to delegatesWithShareType.keys.associateWith {
-					DelegateShareOptions(
-						shareSecretIds = delegationSecretKeys,
-						shareEncryptionKeys = getEncryptionKeysOf(patient),
-						shareOwningEntityIds = setOf(),
-						requestedPermissions = RequestedPermission.MaxWrite
-					)
-				}
-			)) { params -> rawApi.bulkShareMinimal(params).successBody() }
+			val result = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
+				listOf(
+					patient.withTypeInfo() to delegatesWithShareType.keys.associateWith {
+						DelegateShareOptions(
+							shareSecretIds = delegationSecretKeys,
+							shareEncryptionKeys = getEncryptionKeysOf(patient),
+							shareOwningEntityIds = setOf(),
+							requestedPermissions = RequestedPermission.MaxWrite
+						)
+					}
+				),
+				true,
+				{ getPatient(it).withTypeInfo() },
+				{ params -> rawApi.bulkShareMinimal(params).successBody() }
+			)
 			ShareAllPatientDataOptions.EntityResult(
 				success = result.updateErrors.isEmpty(),
 				error = BulkShareFailure(
@@ -676,45 +690,59 @@ internal class PatientApiImpl(
 	override suspend fun ensureEncryptionMetadataForSelfIsInitialized(sharingWith: Map<String, AccessLevel>): EncryptedPatient {
 		val self = config.crypto.dataOwnerApi.getCurrentDataOwner()
 		require (self is DataOwnerWithType.PatientDataOwner) { "Current user is not a data owner" }
-		val selfWithTypeInfo = self.dataOwner.withTypeInfo()
-		val availableSecretIds = config.crypto.entity.secretIdsOf(selfWithTypeInfo, null)
-		return if (availableSecretIds.isNotEmpty()) {
-			self.dataOwner
-		} else if (config.crypto.entity.hasEmptyEncryptionMetadata(selfWithTypeInfo)) {
-			config.crypto.entity.entityWithInitializedEncryptedMetadata(
-				entity = selfWithTypeInfo,
-				owningEntityId = null,
-				owningEntitySecretId = null,
-				initializeEncryptionKey = true,
-				autoDelegations = sharingWith
-			).updatedEntity
-		} else {
-			val secretIdShareOptions = SecretIdShareOptions.UseExactly(
-				secretIds = setOf(config.crypto.primitives.strongRandom.randomUUID()),
-				createUnknownSecretIds = true
-			)
-			config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-				selfWithTypeInfo,
-				mapOf(
-					self.dataOwner.id to SimpleDelegateShareOptionsImpl(
-						shareEncryptionKey = ShareMetadataBehaviour.IfAvailable,
-						shareOwningEntityIds = ShareMetadataBehaviour.Never,
-						shareSecretIds = secretIdShareOptions,
-						requestedPermissions = RequestedPermission.Root
-					)
-				) + sharingWith.mapValues { (_, accessLevel) ->
-					SimpleDelegateShareOptionsImpl(
-						shareEncryptionKey = ShareMetadataBehaviour.Never,
-						shareOwningEntityIds = ShareMetadataBehaviour.Never,
-						shareSecretIds = secretIdShareOptions,
-						requestedPermissions = when (accessLevel) {
-							AccessLevel.Read -> RequestedPermission.FullRead
-							AccessLevel.Write -> RequestedPermission.FullWrite
-						}
-					)
-				}
-			) { rawApi.bulkShare(it).successBody() }.updatedEntityOrThrow()
+
+		suspend fun doWith(self: EncryptedPatient): EncryptedPatient {
+			val selfWithTypeInfo = self.withTypeInfo()
+			val availableSecretIds = config.crypto.entity.secretIdsOf(selfWithTypeInfo, null)
+			return if (availableSecretIds.isNotEmpty()) {
+				self
+			} else if (config.crypto.entity.hasEmptyEncryptionMetadata(selfWithTypeInfo)) {
+				config.crypto.entity.entityWithInitializedEncryptedMetadata(
+					entity = selfWithTypeInfo,
+					owningEntityId = null,
+					owningEntitySecretId = null,
+					initializeEncryptionKey = true,
+					autoDelegations = sharingWith
+				).updatedEntity
+			} else {
+				val secretIdShareOptions = SecretIdShareOptions.UseExactly(
+					secretIds = setOf(config.crypto.primitives.strongRandom.randomUUID()),
+					createUnknownSecretIds = true
+				)
+				val shareResult = config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+					selfWithTypeInfo,
+					mapOf(
+						self.id to SimpleDelegateShareOptionsImpl(
+							shareEncryptionKey = ShareMetadataBehaviour.IfAvailable,
+							shareOwningEntityIds = ShareMetadataBehaviour.Never,
+							shareSecretIds = secretIdShareOptions,
+							requestedPermissions = RequestedPermission.Root
+						)
+					) + sharingWith.mapValues { (_, accessLevel) ->
+						SimpleDelegateShareOptionsImpl(
+							shareEncryptionKey = ShareMetadataBehaviour.Never,
+							shareOwningEntityIds = ShareMetadataBehaviour.Never,
+							shareSecretIds = secretIdShareOptions,
+							requestedPermissions = when (accessLevel) {
+								AccessLevel.Read -> RequestedPermission.FullRead
+								AccessLevel.Write -> RequestedPermission.FullWrite
+							}
+						)
+					},
+					false, // Will retry with the updated entity: maybe no need to update metadata after all
+					{ throw UnsupportedOperationException("No retry") },
+					{ rawApi.bulkShare(it).successBody() }
+				)
+				if (shareResult is SimpleShareResult.Failure && shareResult.errorsDetails.all { it.shouldRetry }) {
+					val updatedSelf = rawApi.getPatient(self.id).successBody()
+					if (updatedSelf.rev != self.rev) {
+						ensureEncryptionMetadataForSelfIsInitialized(sharingWith)
+					} else shareResult.updatedEntityOrThrow()
+				} else shareResult.updatedEntityOrThrow()
+			}
 		}
+
+		return doWith(self.dataOwner)
 	}
 }
 

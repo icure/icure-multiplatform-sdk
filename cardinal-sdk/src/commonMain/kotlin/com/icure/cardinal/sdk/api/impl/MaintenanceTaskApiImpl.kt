@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.api.MaintenanceTaskFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -72,26 +71,19 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 		delegateId: String,
 		maintenanceTask: E,
 		options: MaintenanceTaskShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			maintenanceTask.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: MaintenanceTaskShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(maintenanceTask: E, delegates: Map<String, MaintenanceTaskShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			maintenanceTask.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(maintenanceTask, mapOf(delegateId to (options ?: MaintenanceTaskShareOptions())))
 
 	override suspend fun shareWithMany(maintenanceTask: E, delegates: Map<String, MaintenanceTaskShareOptions>): E =
-		tryShareWithMany(maintenanceTask, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			maintenanceTask.withTypeInfo(),
+			delegates,
+			true,
+			{ getMaintenanceTask(it).withTypeInfo() },
+			{
+				rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+			}
+		).updatedEntityOrThrow()
 
 	override suspend fun filterMaintenanceTasksBySorted(filter: SortableFilterOptions<MaintenanceTask>): PaginatedListIterator<E> =
 		filterMaintenanceTasksBy(filter)

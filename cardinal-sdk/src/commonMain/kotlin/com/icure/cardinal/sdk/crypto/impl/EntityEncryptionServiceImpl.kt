@@ -261,6 +261,8 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<T>, Map<String, DelegateShareOptions>>>,
+		autoRetry: Boolean,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T> {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
@@ -278,11 +280,43 @@ class EntityEncryptionServiceImpl(
 		val updateErrors = shareResult.flatMap { result ->
 			makeFailedRequestDetails(result.entityId, result.rejectedRequests, requestDetails)
 		}
+		if (autoRetry && updateErrors.isNotEmpty()) {
+			val updateErrorsByEntityId = updateErrors.groupBy { it.entityId }
+			val updatedEntitiesId = updatedEntities.map { it.id }.toSet()
+			val toRetryEntitiesId = updateErrorsByEntityId.filter { (k, v) ->
+				v.all { it.shouldRetry } && k !in requestDetails.unmodifiedEntityIds && k !in updatedEntitiesId
+			}.keys
+			if (toRetryEntitiesId.isNotEmpty()) {
+				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
+					if (entity.id in toRetryEntitiesId) {
+						val updatedEntity = getUpdatedEntity(entity.id)
+						if (updatedEntity.rev != entity.rev) {
+							Pair(updatedEntity, request)
+						} else null
+					} else null
+				}
+				if (updatedRequests.isNotEmpty()) {
+					val newResults = bulkShareOrUpdateEncryptedEntityMetadata(
+						updatedRequests,
+						autoRetry,
+						getUpdatedEntity,
+						doRequestBulkShareOrUpdate
+					)
+					return BulkShareResult(
+						updatedEntities = newResults.updatedEntities + updatedEntities.filter { it.id !in toRetryEntitiesId },
+						unmodifiedEntitiesIds = newResults.unmodifiedEntitiesIds + requestDetails.unmodifiedEntityIds,
+						updateErrors = newResults.updateErrors + updateErrors.filter { it.entityId !in toRetryEntitiesId }
+					)
+				}
+			}
+		}
 		return BulkShareResult(updatedEntities, requestDetails.unmodifiedEntityIds, updateErrors)
 	}
 
 	override suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
+		autoRetry: Boolean,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<*>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 	): MinimalBulkShareResult {
 		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
@@ -309,6 +343,35 @@ class EntityEncryptionServiceImpl(
 				}
 			}
 		}
+		if (autoRetry && updateErrors.isNotEmpty()) {
+			val updateErrorsByEntityId = updateErrors.groupBy { it.entityId }
+			val toRetryEntitiesId = updateErrorsByEntityId.filter { (k, v) ->
+				v.all { it.shouldRetry } && k !in requestDetails.unmodifiedEntityIds && successfulUpdates.none { it.entityId == k }
+			}.keys
+			if (toRetryEntitiesId.isNotEmpty()) {
+				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
+					if (entity.id in toRetryEntitiesId) {
+						val updatedEntity = getUpdatedEntity(entity.id)
+						if (updatedEntity.rev != entity.rev) {
+							Pair(updatedEntity, request)
+						} else null
+					} else null
+				}
+				if (updatedRequests.isNotEmpty()) {
+					val newResults = bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
+						updatedRequests,
+						autoRetry,
+						getUpdatedEntity,
+						doRequestBulkShareOrUpdate
+					)
+					return MinimalBulkShareResult(
+						successfulUpdates = newResults.successfulUpdates + successfulUpdates.filter { it.entityId !in toRetryEntitiesId },
+						unmodifiedEntitiesIds = newResults.unmodifiedEntitiesIds + requestDetails.unmodifiedEntityIds,
+						updateErrors = newResults.updateErrors + updateErrors.filter { it.entityId !in toRetryEntitiesId }
+					)
+				}
+			}
+		}
 		return MinimalBulkShareResult(successfulUpdates, requestDetails.unmodifiedEntityIds, updateErrors)
 	}
 
@@ -325,12 +388,14 @@ class EntityEncryptionServiceImpl(
 				request = originalRequestDetails.options,
 				updatedForMigration = originalRequestDetails.updatedForMigration,
 				code = error.code,
-				reason = error.reason
+				reason = error.reason,
+				shouldRetry = error.shouldRetry
 			)
 		}
 
 
 	private data class BulkShareRequestsDetails(
+		// Entities that haven't been modified because no request was made. Doesn't include entities not modified due to errors.
 		val unmodifiedEntityIds: Set<String>,
 		val requestsByEntityId: Map<String, EntityShareRequestDetails>
 	)
@@ -477,6 +542,8 @@ class EntityEncryptionServiceImpl(
 	override suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
 		entity: EntityWithTypeInfo<T>,
 		delegates: Map<String, SimpleDelegateShareOptions>,
+		autoRetry: Boolean,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T> {
 		val availableEncryptionKeys = encryptionKeysOf(entity, null)
@@ -498,6 +565,8 @@ class EntityEncryptionServiceImpl(
 		}
 		val shareResult = bulkShareOrUpdateEncryptedEntityMetadata(
 			listOf(entity to extendedDelegateOptions),
+			false,
+			getUpdatedEntity,
 			doRequestBulkShareOrUpdate
 		)
 		if (shareResult.unmodifiedEntitiesIds.contains(entity.id)) {
@@ -510,6 +579,12 @@ class EntityEncryptionServiceImpl(
 		if (errorsOfRequestedDelegates.isEmpty() && shareResult.updatedEntities.size == 1) {
 			log.w { "There was an internal error with the migration of encrypted metadata: ${shareResult.updateErrors}" }
 			return SimpleShareResult.Success(shareResult.updatedEntities.first())
+		}
+		if (autoRetry && shareResult.updateErrors.all { it.shouldRetry }) {
+			val updatedEntity = getUpdatedEntity(entity.id)
+			if (updatedEntity.rev != entity.rev) {
+				return simpleShareOrUpdateEncryptedEntityMetadata(updatedEntity, delegates, autoRetry, getUpdatedEntity, doRequestBulkShareOrUpdate)
+			}
 		}
 		return SimpleShareResult.Failure(shareResult.updateErrors)
 	}
@@ -545,6 +620,7 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
 		entity: EntityWithTypeInfo<T>,
+		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T? {
 		if (entity.rev == null) {
@@ -562,6 +638,8 @@ class EntityEncryptionServiceImpl(
 				shareOwningEntityIds = ShareMetadataBehaviour.Never,
 				requestedPermissions = RequestedPermission.MaxWrite
 			)),
+			true,
+			getUpdatedEntity,
 			doRequestBulkShareOrUpdate
 		).updatedEntityOrThrow()
 	}

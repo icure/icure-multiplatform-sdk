@@ -11,7 +11,6 @@ import com.icure.cardinal.sdk.api.raw.successBodyOrNull
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
@@ -188,26 +187,18 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 		delegateId: String,
 		invoice: E,
 		options: InvoiceShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			invoice.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: InvoiceShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(invoice: E, delegates: Map<String, InvoiceShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			invoice.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(invoice, mapOf(delegateId to (options ?: InvoiceShareOptions())))
 
 	override suspend fun shareWithMany(invoice: E, delegates: Map<String, InvoiceShareOptions>): E =
-		tryShareWithMany(invoice, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			invoice.withTypeInfo(),
+			delegates,
+			true,
+			{ getInvoice(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
+
 
 	@Deprecated("Use filter instead")
 	override suspend fun findInvoicesByHcPartyPatient(

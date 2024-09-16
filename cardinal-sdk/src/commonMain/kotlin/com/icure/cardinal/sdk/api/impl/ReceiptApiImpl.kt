@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.api.raw.RawReceiptApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.model.DecryptedReceipt
 import com.icure.cardinal.sdk.model.EncryptedReceipt
@@ -56,26 +55,18 @@ private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 		delegateId: String,
 		receipt: E,
 		options: ReceiptShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			receipt.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: ReceiptShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(receipt: E, delegates: Map<String, ReceiptShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			receipt.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(receipt, mapOf(delegateId to (options ?: ReceiptShareOptions())))
 
 	override suspend fun shareWithMany(receipt: E, delegates: Map<String, ReceiptShareOptions>): E =
-		tryShareWithMany(receipt, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			receipt.withTypeInfo(),
+			delegates,
+			true,
+			{ getReceipt(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
+
 }
 
 @InternalIcureApi

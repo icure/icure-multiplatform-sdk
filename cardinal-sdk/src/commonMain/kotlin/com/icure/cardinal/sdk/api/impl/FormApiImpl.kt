@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.api.raw.RawFormApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -89,26 +88,17 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 		delegateId: String,
 		form: E,
 		options: FormShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			form.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: FormShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(form: E, delegates: Map<String, FormShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			form.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(form, mapOf(delegateId to (options ?: FormShareOptions())))
 
 	override suspend fun shareWithMany(form: E, delegates: Map<String, FormShareOptions>): E =
-		tryShareWithMany(form, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			form.withTypeInfo(),
+			delegates,
+			true,
+			{ getForm(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
 	override suspend fun findFormsByHcPartyPatient(

@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.api.raw.RawMessageApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.MessageShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -149,27 +148,20 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 	override suspend fun shareWith(
 		delegateId: String,
 		message: E,
-		options: MessageShareOptions,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			message.withTypeInfo(),
-			mapOf(
-				delegateId to options,
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(message: E, delegates: Map<String, MessageShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			message.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+		options: MessageShareOptions?,
+	): E =
+		shareWithMany(message, mapOf(delegateId to (options ?: MessageShareOptions())))
 
 	override suspend fun shareWithMany(message: E, delegates: Map<String, MessageShareOptions>): E =
-		tryShareWithMany(message, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			message.withTypeInfo(),
+			delegates,
+			true,
+			{ getMessage(it).withTypeInfo() },
+			{
+				rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
+			}
+		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
 	override suspend fun findMessagesByHcPartyPatient(

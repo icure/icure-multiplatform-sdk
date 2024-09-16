@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -92,22 +91,7 @@ interface TimeTableFlavouredApi<E : TimeTable> : TimeTableBasicFlavouredApi<E> {
 		timeTable: E,
 		@DefaultValue("null")
 		options: TimeTableShareOptions? = null
-	): SimpleShareResult<E>
-
-
-	/**
-	 * Share a time-table with multiple data owners. The time-table must already exist in the database for this method to
-	 * succeed. If you want to share the time-table before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param timeTable the time-table to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated time-table if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		timeTable: E,
-		delegates: Map<String, TimeTableShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a time-table with multiple data owners. The time-table must already exist in the database for this method to

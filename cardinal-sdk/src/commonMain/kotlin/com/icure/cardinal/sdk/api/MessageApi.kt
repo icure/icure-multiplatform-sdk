@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.MessageShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -173,22 +172,9 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	suspend fun shareWith(
 		delegateId: String,
 		message: E,
-		options: MessageShareOptions
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a message with multiple data owners. The Message must already exist in the database for this method to
-	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param message the Message to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated Message if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		message: E,
-		delegates: Map<String, MessageShareOptions>
-	): SimpleShareResult<E>
+		@DefaultValue("null")
+		options: MessageShareOptions?
+	): E
 
 	/**
 	 * Share a message with multiple data owners. The Message must already exist in the database for this method to

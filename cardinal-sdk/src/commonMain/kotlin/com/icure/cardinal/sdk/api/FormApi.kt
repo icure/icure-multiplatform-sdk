@@ -193,21 +193,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 		form: E,
 		@DefaultValue("null")
 		options: FormShareOptions? = null
-	): SimpleShareResult<E>
-
-	/**
-	 * Share a form with multiple data owners. The form must already exist in the database for this method to
-	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
-	 * the initialize encryption metadata method.
-	 * @param form the form to share
-	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
-	 * each of them.
-	 * @return the updated form if the sharing was successful, or details on the errors if the sharing failed.
-	 */
-	suspend fun tryShareWithMany(
-		form: E,
-		delegates: Map<String, FormShareOptions>
-	): SimpleShareResult<E>
+	): E
 
 	/**
 	 * Share a form with multiple data owners. The form must already exist in the database for this method to

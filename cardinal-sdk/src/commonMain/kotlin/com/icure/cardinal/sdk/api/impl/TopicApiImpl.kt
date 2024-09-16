@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.api.TopicFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawTopicApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -80,26 +79,17 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 		delegateId: String,
 		topic: E,
 		options: TopicShareOptions?,
-	): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			topic.withTypeInfo(),
-			mapOf(
-				delegateId to (options ?: TopicShareOptions()),
-			),
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
-
-	override suspend fun tryShareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): SimpleShareResult<E> =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			topic.withTypeInfo(),
-			delegates
-		) {
-			rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } }
-		}
+	): E =
+		shareWithMany(topic, mapOf(delegateId to (options ?: TopicShareOptions())))
 
 	override suspend fun shareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): E =
-		tryShareWithMany(topic, delegates).updatedEntityOrThrow()
+		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			topic.withTypeInfo(),
+			delegates,
+			true,
+			{ getTopic(it).withTypeInfo() },
+			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+		).updatedEntityOrThrow()
 
 	override suspend fun filterTopicsBy(filter: FilterOptions<Topic>): PaginatedListIterator<E> =
 		IdsPageIterator(
