@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.model.Receipt
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
@@ -44,7 +43,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Receipt::class)))
+}.toPyString(PolymorphicSerializer(Receipt::class))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -64,48 +63,7 @@ public fun shareWithAsync(
 				decodedParams.receipt,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Receipt::class)),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val receipt: Receipt,
-	public val delegates: Map<String, ReceiptShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.receipt.tryAndRecover.tryShareWithMany(
-			decodedParams.receipt,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Receipt::class)))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.receipt.tryAndRecover.tryShareWithMany(
-				decodedParams.receipt,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Receipt::class)),
-				resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Receipt::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

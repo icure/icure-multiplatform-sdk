@@ -24,4 +24,6 @@ public external class FailedRequestDetailsJs(
 	public val reason: String?
 
 	public val request: DelegateShareOptionsJs?
+
+	public val shouldRetry: Boolean
 }

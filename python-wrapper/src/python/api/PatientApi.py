@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, ShareAllPatientDataOptions, DocIdentifier, EntityAccessInformation, PatientShareOptions, deserialize_simple_share_result_decrypted_patient, SimpleShareResultDecryptedPatient, SubscriptionEventType, EntitySubscriptionConfiguration, deserialize_simple_share_result_encrypted_patient, SimpleShareResultEncryptedPatient, deserialize_simple_share_result_patient, SimpleShareResultPatient
+from cardinal_sdk.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, ShareAllPatientDataOptions, DocIdentifier, EntityAccessInformation, PatientShareOptions, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
@@ -18,7 +18,7 @@ class PatientApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, patient: EncryptedPatient, options: PatientShareOptions) -> SimpleShareResultEncryptedPatient:
+		async def share_with_async(self, delegate_id: str, patient: EncryptedPatient, options: Optional[PatientShareOptions] = None) -> EncryptedPatient:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -26,12 +26,12 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_encrypted_patient(json.loads(success.decode('utf-8')))
+					result = EncryptedPatient._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"patient": patient.__serialize__(),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -43,11 +43,11 @@ class PatientApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, patient: EncryptedPatient, options: PatientShareOptions) -> SimpleShareResultEncryptedPatient:
+		def share_with_blocking(self, delegate_id: str, patient: EncryptedPatient, options: Optional[PatientShareOptions] = None) -> EncryptedPatient:
 			payload = {
 				"delegateId": delegate_id,
 				"patient": patient.__serialize__(),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.shareWithBlocking(
 				self.cardinal_sdk._native,
@@ -58,48 +58,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_encrypted_patient(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, patient: EncryptedPatient, delegates: Dict[str, PatientShareOptions]) -> SimpleShareResultEncryptedPatient:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_encrypted_patient(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"patient": patient.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, patient: EncryptedPatient, delegates: Dict[str, PatientShareOptions]) -> SimpleShareResultEncryptedPatient:
-			payload = {
-				"patient": patient.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_encrypted_patient(result_info.success)
+				return_value = EncryptedPatient._deserialize(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, patient: EncryptedPatient, delegates: Dict[str, PatientShareOptions]) -> EncryptedPatient:
@@ -525,7 +484,7 @@ class PatientApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, patient: Patient, options: PatientShareOptions) -> SimpleShareResultPatient:
+		async def share_with_async(self, delegate_id: str, patient: Patient, options: Optional[PatientShareOptions] = None) -> Patient:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -533,12 +492,12 @@ class PatientApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_patient(json.loads(success.decode('utf-8')))
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"patient": serialize_patient(patient),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -550,11 +509,11 @@ class PatientApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, patient: Patient, options: PatientShareOptions) -> SimpleShareResultPatient:
+		def share_with_blocking(self, delegate_id: str, patient: Patient, options: Optional[PatientShareOptions] = None) -> Patient:
 			payload = {
 				"delegateId": delegate_id,
 				"patient": serialize_patient(patient),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.shareWithBlocking(
 				self.cardinal_sdk._native,
@@ -565,48 +524,7 @@ class PatientApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_patient(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, patient: Patient, delegates: Dict[str, PatientShareOptions]) -> SimpleShareResultPatient:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_patient(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"patient": serialize_patient(patient),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, patient: Patient, delegates: Dict[str, PatientShareOptions]) -> SimpleShareResultPatient:
-			payload = {
-				"patient": serialize_patient(patient),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_patient(result_info.success)
+				return_value = deserialize_patient(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, patient: Patient, delegates: Dict[str, PatientShareOptions]) -> Patient:
@@ -1778,7 +1696,7 @@ class PatientApi:
 			return_value = EntityAccessInformation._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, patient: DecryptedPatient, options: PatientShareOptions) -> SimpleShareResultDecryptedPatient:
+	async def share_with_async(self, delegate_id: str, patient: DecryptedPatient, options: Optional[PatientShareOptions] = None) -> DecryptedPatient:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1786,12 +1704,12 @@ class PatientApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result_decrypted_patient(json.loads(success.decode('utf-8')))
+				result = DecryptedPatient._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"patient": patient.__serialize__(),
-			"options": options.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1803,11 +1721,11 @@ class PatientApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, patient: DecryptedPatient, options: PatientShareOptions) -> SimpleShareResultDecryptedPatient:
+	def share_with_blocking(self, delegate_id: str, patient: DecryptedPatient, options: Optional[PatientShareOptions] = None) -> DecryptedPatient:
 		payload = {
 			"delegateId": delegate_id,
 			"patient": patient.__serialize__(),
-			"options": options.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.shareWithBlocking(
 			self.cardinal_sdk._native,
@@ -1818,48 +1736,7 @@ class PatientApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result_decrypted_patient(result_info.success)
-			return return_value
-
-	async def try_share_with_many_async(self, patient: DecryptedPatient, delegates: Dict[str, PatientShareOptions]) -> SimpleShareResultDecryptedPatient:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_simple_share_result_decrypted_patient(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"patient": patient.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryShareWithManyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def try_share_with_many_blocking(self, patient: DecryptedPatient, delegates: Dict[str, PatientShareOptions]) -> SimpleShareResultDecryptedPatient:
-		payload = {
-			"patient": patient.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryShareWithManyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = deserialize_simple_share_result_decrypted_patient(result_info.success)
+			return_value = DecryptedPatient._deserialize(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, patient: DecryptedPatient, delegates: Dict[str, PatientShareOptions]) -> DecryptedPatient:

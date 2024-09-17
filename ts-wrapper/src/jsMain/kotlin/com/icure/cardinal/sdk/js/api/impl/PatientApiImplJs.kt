@@ -15,11 +15,9 @@ import com.icure.cardinal.sdk.js.crypto.entities.EntityAccessInformationJs
 import com.icure.cardinal.sdk.js.crypto.entities.EntityWithTypeInfoJs
 import com.icure.cardinal.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.ShareAllPatientDataOptionsJs_ResultJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.entityAccessInformation_toJs
 import com.icure.cardinal.sdk.js.crypto.entities.patientShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.shareAllPatientDataOptions_Result_toJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -91,48 +89,28 @@ internal class PatientApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			patient: EncryptedPatientJs,
-			options: PatientShareOptionsJs,
-		): Promise<SimpleShareResultJs<EncryptedPatientJs>> = GlobalScope.promise {
-			val delegateIdConverted: String = delegateId
-			val patientConverted: EncryptedPatient = patient_fromJs(patient)
-			val optionsConverted: PatientShareOptions = patientShareOptions_fromJs(options)
-			val result = patientApi.encrypted.shareWith(
-				delegateIdConverted,
-				patientConverted,
-				optionsConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)
-		}
-
-		override fun tryShareWithMany(patient: EncryptedPatientJs,
-				delegates: Record<String, PatientShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedPatientJs>> = GlobalScope.promise {
-			val patientConverted: EncryptedPatient = patient_fromJs(patient)
-			val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: PatientShareOptionsJs ->
-					patientShareOptions_fromJs(x1)
-				},
-			)
-			val result = patientApi.encrypted.tryShareWithMany(
-				patientConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedPatient ->
-					patient_toJs(x1)
-				},
-			)
+			options: dynamic,
+		): Promise<EncryptedPatientJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val patientConverted: EncryptedPatient = patient_fromJs(patient)
+				val optionsConverted: PatientShareOptions? = convertingOptionOrDefaultNullable(
+					_options,
+					"options",
+					null
+				) { options: PatientShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						patientShareOptions_fromJs(nonNull1)
+					}
+				}
+				val result = patientApi.encrypted.shareWith(
+					delegateIdConverted,
+					patientConverted,
+					optionsConverted,
+				)
+				patient_toJs(result)
+			}
 		}
 
 		override fun shareWithMany(patient: EncryptedPatientJs,
@@ -841,48 +819,28 @@ internal class PatientApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			patient: PatientJs,
-			options: PatientShareOptionsJs,
-		): Promise<SimpleShareResultJs<PatientJs>> = GlobalScope.promise {
-			val delegateIdConverted: String = delegateId
-			val patientConverted: Patient = patient_fromJs(patient)
-			val optionsConverted: PatientShareOptions = patientShareOptions_fromJs(options)
-			val result = patientApi.tryAndRecover.shareWith(
-				delegateIdConverted,
-				patientConverted,
-				optionsConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)
-		}
-
-		override fun tryShareWithMany(patient: PatientJs,
-				delegates: Record<String, PatientShareOptionsJs>): Promise<SimpleShareResultJs<PatientJs>> =
-				GlobalScope.promise {
-			val patientConverted: Patient = patient_fromJs(patient)
-			val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: PatientShareOptionsJs ->
-					patientShareOptions_fromJs(x1)
-				},
-			)
-			val result = patientApi.tryAndRecover.tryShareWithMany(
-				patientConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Patient ->
-					patient_toJs(x1)
-				},
-			)
+			options: dynamic,
+		): Promise<PatientJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val patientConverted: Patient = patient_fromJs(patient)
+				val optionsConverted: PatientShareOptions? = convertingOptionOrDefaultNullable(
+					_options,
+					"options",
+					null
+				) { options: PatientShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						patientShareOptions_fromJs(nonNull1)
+					}
+				}
+				val result = patientApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					patientConverted,
+					optionsConverted,
+				)
+				patient_toJs(result)
+			}
 		}
 
 		override fun shareWithMany(patient: PatientJs, delegates: Record<String, PatientShareOptionsJs>):
@@ -1906,48 +1864,28 @@ internal class PatientApiImplJs(
 	override fun shareWith(
 		delegateId: String,
 		patient: DecryptedPatientJs,
-		options: PatientShareOptionsJs,
-	): Promise<SimpleShareResultJs<DecryptedPatientJs>> = GlobalScope.promise {
-		val delegateIdConverted: String = delegateId
-		val patientConverted: DecryptedPatient = patient_fromJs(patient)
-		val optionsConverted: PatientShareOptions = patientShareOptions_fromJs(options)
-		val result = patientApi.shareWith(
-			delegateIdConverted,
-			patientConverted,
-			optionsConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)
-	}
-
-	override fun tryShareWithMany(patient: DecryptedPatientJs,
-			delegates: Record<String, PatientShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedPatientJs>> = GlobalScope.promise {
-		val patientConverted: DecryptedPatient = patient_fromJs(patient)
-		val delegatesConverted: Map<String, PatientShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: PatientShareOptionsJs ->
-				patientShareOptions_fromJs(x1)
-			},
-		)
-		val result = patientApi.tryShareWithMany(
-			patientConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedPatient ->
-				patient_toJs(x1)
-			},
-		)
+		options: dynamic,
+	): Promise<DecryptedPatientJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val patientConverted: DecryptedPatient = patient_fromJs(patient)
+			val optionsConverted: PatientShareOptions? = convertingOptionOrDefaultNullable(
+				_options,
+				"options",
+				null
+			) { options: PatientShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					patientShareOptions_fromJs(nonNull1)
+				}
+			}
+			val result = patientApi.shareWith(
+				delegateIdConverted,
+				patientConverted,
+				optionsConverted,
+			)
+			patient_toJs(result)
+		}
 	}
 
 	override fun shareWithMany(patient: DecryptedPatientJs,

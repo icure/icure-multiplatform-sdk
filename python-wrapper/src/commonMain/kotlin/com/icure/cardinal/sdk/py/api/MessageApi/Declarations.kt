@@ -4,7 +4,6 @@ package com.icure.cardinal.sdk.py.api.MessageApi
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.MessageShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
@@ -538,7 +537,7 @@ public fun deleteMessagesAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val message: DecryptedMessage,
-	public val options: MessageShareOptions,
+	public val options: MessageShareOptions? = null,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -551,7 +550,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(DecryptedMessage.serializer()))
+}.toPyString(DecryptedMessage.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -571,48 +570,7 @@ public fun shareWithAsync(
 				decodedParams.message,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedMessage.serializer()),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val message: DecryptedMessage,
-	public val delegates: Map<String, MessageShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.message.tryShareWithMany(
-			decodedParams.message,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(DecryptedMessage.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.message.tryShareWithMany(
-				decodedParams.message,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedMessage.serializer()),
-				resultCallback)
+		}.toPyStringAsyncCallback(DecryptedMessage.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

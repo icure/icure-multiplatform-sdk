@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.MaintenanceTaskShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedMaintenanceTaskJs
@@ -62,11 +61,7 @@ public external interface MaintenanceTaskApiJs {
 		delegateId: String,
 		maintenanceTask: DecryptedMaintenanceTaskJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>>
-
-	public fun tryShareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,
-			delegates: Record<String, MaintenanceTaskShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>>
+	): Promise<DecryptedMaintenanceTaskJs>
 
 	public fun shareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,
 			delegates: Record<String, MaintenanceTaskShareOptionsJs>): Promise<DecryptedMaintenanceTaskJs>

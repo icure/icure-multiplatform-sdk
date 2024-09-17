@@ -4,7 +4,6 @@ package com.icure.cardinal.sdk.py.api.AccessLogApi
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
@@ -513,7 +512,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(DecryptedAccessLog.serializer()))
+}.toPyString(DecryptedAccessLog.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -533,48 +532,7 @@ public fun shareWithAsync(
 				decodedParams.accessLog,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedAccessLog.serializer()),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val accessLog: DecryptedAccessLog,
-	public val delegates: Map<String, AccessLogShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.accessLog.tryShareWithMany(
-			decodedParams.accessLog,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(DecryptedAccessLog.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.accessLog.tryShareWithMany(
-				decodedParams.accessLog,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedAccessLog.serializer()),
-				resultCallback)
+		}.toPyStringAsyncCallback(DecryptedAccessLog.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

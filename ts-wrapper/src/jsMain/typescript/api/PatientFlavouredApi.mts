@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {PatientShareOptions} from '../crypto/entities/PatientShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {EncryptedPatient, Patient} from '../model/Patient.mjs';
@@ -11,10 +10,7 @@ import {SortDirection} from '../model/couchdb/SortDirection.mjs';
 export interface PatientFlavouredApi<E extends Patient> {
 
 	shareWith(delegateId: string, patient: E,
-			options: PatientShareOptions): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(patient: E,
-			delegates: { [ key: string ]: PatientShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: PatientShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(patient: E, delegates: { [ key: string ]: PatientShareOptions }): Promise<E>;
 

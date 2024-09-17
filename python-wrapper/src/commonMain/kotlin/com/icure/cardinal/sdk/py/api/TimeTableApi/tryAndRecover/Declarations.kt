@@ -2,7 +2,6 @@
 package com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover
 
 import com.icure.cardinal.sdk.CardinalApis
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -54,7 +53,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(TimeTable::class)))
+}.toPyString(PolymorphicSerializer(TimeTable::class))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -74,48 +73,7 @@ public fun shareWithAsync(
 				decodedParams.timeTable,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(TimeTable::class)),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val timeTable: TimeTable,
-	public val delegates: Map<String, TimeTableShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.timeTable.tryAndRecover.tryShareWithMany(
-			decodedParams.timeTable,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(TimeTable::class)))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.timeTable.tryAndRecover.tryShareWithMany(
-				decodedParams.timeTable,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(TimeTable::class)),
-				resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(TimeTable::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.py.api.ClassificationApi.tryAndRecover
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Classification
@@ -56,7 +55,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Classification::class)))
+}.toPyString(PolymorphicSerializer(Classification::class))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -76,48 +75,7 @@ public fun shareWithAsync(
 				decodedParams.classification,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Classification::class)),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val classification: Classification,
-	public val delegates: Map<String, ClassificationShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.classification.tryAndRecover.tryShareWithMany(
-			decodedParams.classification,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Classification::class)))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.classification.tryAndRecover.tryShareWithMany(
-				decodedParams.classification,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Classification::class)),
-				resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Classification::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

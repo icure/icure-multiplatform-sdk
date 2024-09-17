@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, AccessLogShareOptions, deserialize_simple_share_result_decrypted_access_log, SimpleShareResultDecryptedAccessLog, deserialize_simple_share_result_encrypted_access_log, SimpleShareResultEncryptedAccessLog, deserialize_simple_share_result_access_log, SimpleShareResultAccessLog
+from cardinal_sdk.model import DecryptedAccessLog, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, AccessLog, serialize_access_log, EncryptedAccessLog, deserialize_access_log, DocIdentifier, AccessLogShareOptions
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -17,7 +17,7 @@ class AccessLogApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultEncryptedAccessLog:
+		async def share_with_async(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> EncryptedAccessLog:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -25,7 +25,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_encrypted_access_log(json.loads(success.decode('utf-8')))
+					result = EncryptedAccessLog._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -42,7 +42,7 @@ class AccessLogApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultEncryptedAccessLog:
+		def share_with_blocking(self, delegate_id: str, access_log: EncryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> EncryptedAccessLog:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": access_log.__serialize__(),
@@ -57,48 +57,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_encrypted_access_log(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultEncryptedAccessLog:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_encrypted_access_log(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"accessLog": access_log.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogApi.encrypted.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultEncryptedAccessLog:
-			payload = {
-				"accessLog": access_log.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogApi.encrypted.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_encrypted_access_log(result_info.success)
+				return_value = EncryptedAccessLog._deserialize(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, access_log: EncryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> EncryptedAccessLog:
@@ -364,7 +323,7 @@ class AccessLogApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultAccessLog:
+		async def share_with_async(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> AccessLog:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -372,7 +331,7 @@ class AccessLogApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_access_log(json.loads(success.decode('utf-8')))
+					result = deserialize_access_log(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -389,7 +348,7 @@ class AccessLogApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultAccessLog:
+		def share_with_blocking(self, delegate_id: str, access_log: AccessLog, options: Optional[AccessLogShareOptions] = None) -> AccessLog:
 			payload = {
 				"delegateId": delegate_id,
 				"accessLog": serialize_access_log(access_log),
@@ -404,48 +363,7 @@ class AccessLogApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_access_log(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultAccessLog:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_access_log(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"accessLog": serialize_access_log(access_log),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogApi.tryAndRecover.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultAccessLog:
-			payload = {
-				"accessLog": serialize_access_log(access_log),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogApi.tryAndRecover.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_access_log(result_info.success)
+				return_value = deserialize_access_log(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, access_log: AccessLog, delegates: Dict[str, AccessLogShareOptions]) -> AccessLog:
@@ -1186,7 +1104,7 @@ class AccessLogApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultDecryptedAccessLog:
+	async def share_with_async(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> DecryptedAccessLog:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1194,7 +1112,7 @@ class AccessLogApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result_decrypted_access_log(json.loads(success.decode('utf-8')))
+				result = DecryptedAccessLog._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1211,7 +1129,7 @@ class AccessLogApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> SimpleShareResultDecryptedAccessLog:
+	def share_with_blocking(self, delegate_id: str, access_log: DecryptedAccessLog, options: Optional[AccessLogShareOptions] = None) -> DecryptedAccessLog:
 		payload = {
 			"delegateId": delegate_id,
 			"accessLog": access_log.__serialize__(),
@@ -1226,48 +1144,7 @@ class AccessLogApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result_decrypted_access_log(result_info.success)
-			return return_value
-
-	async def try_share_with_many_async(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultDecryptedAccessLog:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_simple_share_result_decrypted_access_log(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"accessLog": access_log.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogApi.tryShareWithManyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def try_share_with_many_blocking(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> SimpleShareResultDecryptedAccessLog:
-		payload = {
-			"accessLog": access_log.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogApi.tryShareWithManyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = deserialize_simple_share_result_decrypted_access_log(result_info.success)
+			return_value = DecryptedAccessLog._deserialize(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, access_log: DecryptedAccessLog, delegates: Dict[str, AccessLogShareOptions]) -> DecryptedAccessLog:

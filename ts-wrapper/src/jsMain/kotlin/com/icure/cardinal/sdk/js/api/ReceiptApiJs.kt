@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.ReceiptShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.model.DecryptedReceiptJs
 import com.icure.cardinal.sdk.js.model.EncryptedReceiptJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -82,11 +81,7 @@ public external interface ReceiptApiJs {
 		delegateId: String,
 		receipt: DecryptedReceiptJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedReceiptJs>>
-
-	public fun tryShareWithMany(receipt: DecryptedReceiptJs,
-			delegates: Record<String, ReceiptShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedReceiptJs>>
+	): Promise<DecryptedReceiptJs>
 
 	public fun shareWithMany(receipt: DecryptedReceiptJs,
 			delegates: Record<String, ReceiptShareOptionsJs>): Promise<DecryptedReceiptJs>

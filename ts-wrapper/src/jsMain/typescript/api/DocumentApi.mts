@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {DocumentShareOptions} from '../crypto/entities/DocumentShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedDocument, Document, EncryptedDocument} from '../model/Document.mjs';
 import {Message} from '../model/Message.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -99,10 +98,7 @@ export interface DocumentApi {
 			rev: string): Promise<EncryptedDocument>;
 
 	shareWith(delegateId: string, document: DecryptedDocument,
-			options?: { options?: DocumentShareOptions | undefined }): Promise<SimpleShareResult<DecryptedDocument>>;
-
-	tryShareWithMany(document: DecryptedDocument,
-			delegates: { [ key: string ]: DocumentShareOptions }): Promise<SimpleShareResult<DecryptedDocument>>;
+			options?: { options?: DocumentShareOptions | undefined }): Promise<DecryptedDocument>;
 
 	shareWithMany(document: DecryptedDocument,
 			delegates: { [ key: string ]: DocumentShareOptions }): Promise<DecryptedDocument>;

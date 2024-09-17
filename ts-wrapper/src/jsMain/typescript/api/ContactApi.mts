@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {ContactShareOptions} from '../crypto/entities/ContactShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../model/Contact.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
@@ -70,10 +69,7 @@ export interface ContactApi {
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
 
 	shareWith(delegateId: string, contact: DecryptedContact,
-			options?: { options?: ContactShareOptions | undefined }): Promise<SimpleShareResult<DecryptedContact>>;
-
-	tryShareWithMany(contact: DecryptedContact,
-			delegates: { [ key: string ]: ContactShareOptions }): Promise<SimpleShareResult<DecryptedContact>>;
+			options?: { options?: ContactShareOptions | undefined }): Promise<DecryptedContact>;
 
 	shareWithMany(contact: DecryptedContact,
 			delegates: { [ key: string ]: ContactShareOptions }): Promise<DecryptedContact>;

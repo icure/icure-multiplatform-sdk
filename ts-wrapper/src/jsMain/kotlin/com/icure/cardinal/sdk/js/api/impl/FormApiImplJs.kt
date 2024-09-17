@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.FormApiJs
 import com.icure.cardinal.sdk.js.api.FormFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.FormShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.formShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -80,7 +78,7 @@ internal class FormApiImplJs(
 			delegateId: String,
 			form: EncryptedFormJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedFormJs>> {
+		): Promise<EncryptedFormJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -99,39 +97,8 @@ internal class FormApiImplJs(
 					formConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedForm ->
-						form_toJs(x1)
-					},
-				)
+				form_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(form: EncryptedFormJs,
-				delegates: Record<String, FormShareOptionsJs>): Promise<SimpleShareResultJs<EncryptedFormJs>> =
-				GlobalScope.promise {
-			val formConverted: EncryptedForm = form_fromJs(form)
-			val delegatesConverted: Map<String, FormShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: FormShareOptionsJs ->
-					formShareOptions_fromJs(x1)
-				},
-			)
-			val result = formApi.encrypted.tryShareWithMany(
-				formConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedForm ->
-					form_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(form: EncryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
@@ -398,7 +365,7 @@ internal class FormApiImplJs(
 			delegateId: String,
 			form: FormJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<FormJs>> {
+		): Promise<FormJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -417,38 +384,8 @@ internal class FormApiImplJs(
 					formConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Form ->
-						form_toJs(x1)
-					},
-				)
+				form_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(form: FormJs, delegates: Record<String, FormShareOptionsJs>):
-				Promise<SimpleShareResultJs<FormJs>> = GlobalScope.promise {
-			val formConverted: Form = form_fromJs(form)
-			val delegatesConverted: Map<String, FormShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: FormShareOptionsJs ->
-					formShareOptions_fromJs(x1)
-				},
-			)
-			val result = formApi.tryAndRecover.tryShareWithMany(
-				formConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Form ->
-					form_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(form: FormJs, delegates: Record<String, FormShareOptionsJs>):
@@ -1048,7 +985,7 @@ internal class FormApiImplJs(
 		delegateId: String,
 		form: DecryptedFormJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedFormJs>> {
+	): Promise<DecryptedFormJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -1067,39 +1004,8 @@ internal class FormApiImplJs(
 				formConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedForm ->
-					form_toJs(x1)
-				},
-			)
+			form_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(form: DecryptedFormJs,
-			delegates: Record<String, FormShareOptionsJs>): Promise<SimpleShareResultJs<DecryptedFormJs>> =
-			GlobalScope.promise {
-		val formConverted: DecryptedForm = form_fromJs(form)
-		val delegatesConverted: Map<String, FormShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: FormShareOptionsJs ->
-				formShareOptions_fromJs(x1)
-			},
-		)
-		val result = formApi.tryShareWithMany(
-			formConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedForm ->
-				form_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):

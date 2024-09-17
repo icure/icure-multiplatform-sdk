@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.MessageShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.MessageJs
@@ -25,11 +24,8 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 	public fun shareWith(
 		delegateId: String,
 		message: E,
-		options: MessageShareOptionsJs,
-	): Promise<SimpleShareResultJs<E>>
-
-	public fun tryShareWithMany(message: E, delegates: Record<String, MessageShareOptionsJs>):
-			Promise<SimpleShareResultJs<E>>
+		options: dynamic,
+	): Promise<E>
 
 	public fun shareWithMany(message: E, delegates: Record<String, MessageShareOptionsJs>): Promise<E>
 

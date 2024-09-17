@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {DocumentShareOptions} from '../crypto/entities/DocumentShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Document} from '../model/Document.mjs';
 import {Patient} from '../model/Patient.mjs';
 
@@ -9,10 +8,7 @@ import {Patient} from '../model/Patient.mjs';
 export interface DocumentFlavouredApi<E extends Document> {
 
 	shareWith(delegateId: string, document: E,
-			options?: { options?: DocumentShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(document: E,
-			delegates: { [ key: string ]: DocumentShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: DocumentShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(document: E, delegates: { [ key: string ]: DocumentShareOptions }): Promise<E>;
 

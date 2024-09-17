@@ -4,7 +4,6 @@ package com.icure.cardinal.sdk.py.api.HealthElementApi
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
@@ -596,7 +595,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(DecryptedHealthElement.serializer()))
+}.toPyString(DecryptedHealthElement.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -616,48 +615,7 @@ public fun shareWithAsync(
 				decodedParams.healthElement,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedHealthElement.serializer()),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val healthElement: DecryptedHealthElement,
-	public val delegates: Map<String, HealthElementShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.healthElement.tryShareWithMany(
-			decodedParams.healthElement,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(DecryptedHealthElement.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.healthElement.tryShareWithMany(
-				decodedParams.healthElement,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedHealthElement.serializer()),
-				resultCallback)
+		}.toPyStringAsyncCallback(DecryptedHealthElement.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

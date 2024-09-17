@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {ClassificationShareOptions} from '../crypto/entities/ClassificationShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Classification} from '../model/Classification.mjs';
 import {Patient} from '../model/Patient.mjs';
 
@@ -9,10 +8,7 @@ import {Patient} from '../model/Patient.mjs';
 export interface ClassificationFlavouredApi<E extends Classification> {
 
 	shareWith(delegateId: string, classification: E,
-			options?: { options?: ClassificationShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(classification: E,
-			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: ClassificationShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(classification: E,
 			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<E>;

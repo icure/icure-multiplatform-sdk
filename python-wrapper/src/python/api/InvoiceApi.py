@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedInvoice, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Invoice, serialize_invoice, EncryptedInvoice, deserialize_invoice, DocIdentifier, IcureStub, LabelledOccurence, InvoiceShareOptions, deserialize_simple_share_result_decrypted_invoice, SimpleShareResultDecryptedInvoice, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType, deserialize_simple_share_result_encrypted_invoice, SimpleShareResultEncryptedInvoice, deserialize_simple_share_result_invoice, SimpleShareResultInvoice
+from cardinal_sdk.model import DecryptedInvoice, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Invoice, serialize_invoice, EncryptedInvoice, deserialize_invoice, DocIdentifier, IcureStub, LabelledOccurence, InvoiceShareOptions, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType
 from typing import Optional, List, Dict
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
@@ -15,7 +15,7 @@ class InvoiceApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, invoice: EncryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> SimpleShareResultEncryptedInvoice:
+		async def share_with_async(self, delegate_id: str, invoice: EncryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> EncryptedInvoice:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -23,7 +23,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_encrypted_invoice(json.loads(success.decode('utf-8')))
+					result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -40,7 +40,7 @@ class InvoiceApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, invoice: EncryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> SimpleShareResultEncryptedInvoice:
+		def share_with_blocking(self, delegate_id: str, invoice: EncryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> EncryptedInvoice:
 			payload = {
 				"delegateId": delegate_id,
 				"invoice": invoice.__serialize__(),
@@ -55,48 +55,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_encrypted_invoice(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, invoice: EncryptedInvoice, delegates: Dict[str, InvoiceShareOptions]) -> SimpleShareResultEncryptedInvoice:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_encrypted_invoice(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"invoice": invoice.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceApi.encrypted.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, invoice: EncryptedInvoice, delegates: Dict[str, InvoiceShareOptions]) -> SimpleShareResultEncryptedInvoice:
-			payload = {
-				"invoice": invoice.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceApi.encrypted.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_encrypted_invoice(result_info.success)
+				return_value = EncryptedInvoice._deserialize(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, invoice: EncryptedInvoice, delegates: Dict[str, InvoiceShareOptions]) -> EncryptedInvoice:
@@ -1071,7 +1030,7 @@ class InvoiceApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, invoice: Invoice, options: Optional[InvoiceShareOptions] = None) -> SimpleShareResultInvoice:
+		async def share_with_async(self, delegate_id: str, invoice: Invoice, options: Optional[InvoiceShareOptions] = None) -> Invoice:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -1079,7 +1038,7 @@ class InvoiceApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_invoice(json.loads(success.decode('utf-8')))
+					result = deserialize_invoice(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -1096,7 +1055,7 @@ class InvoiceApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, invoice: Invoice, options: Optional[InvoiceShareOptions] = None) -> SimpleShareResultInvoice:
+		def share_with_blocking(self, delegate_id: str, invoice: Invoice, options: Optional[InvoiceShareOptions] = None) -> Invoice:
 			payload = {
 				"delegateId": delegate_id,
 				"invoice": serialize_invoice(invoice),
@@ -1111,48 +1070,7 @@ class InvoiceApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_invoice(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, invoice: Invoice, delegates: Dict[str, InvoiceShareOptions]) -> SimpleShareResultInvoice:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_invoice(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"invoice": serialize_invoice(invoice),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceApi.tryAndRecover.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, invoice: Invoice, delegates: Dict[str, InvoiceShareOptions]) -> SimpleShareResultInvoice:
-			payload = {
-				"invoice": serialize_invoice(invoice),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceApi.tryAndRecover.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_invoice(result_info.success)
+				return_value = deserialize_invoice(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, invoice: Invoice, delegates: Dict[str, InvoiceShareOptions]) -> Invoice:
@@ -2606,7 +2524,7 @@ class InvoiceApi:
 			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, invoice: DecryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> SimpleShareResultDecryptedInvoice:
+	async def share_with_async(self, delegate_id: str, invoice: DecryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> DecryptedInvoice:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2614,7 +2532,7 @@ class InvoiceApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result_decrypted_invoice(json.loads(success.decode('utf-8')))
+				result = DecryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -2631,7 +2549,7 @@ class InvoiceApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, invoice: DecryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> SimpleShareResultDecryptedInvoice:
+	def share_with_blocking(self, delegate_id: str, invoice: DecryptedInvoice, options: Optional[InvoiceShareOptions] = None) -> DecryptedInvoice:
 		payload = {
 			"delegateId": delegate_id,
 			"invoice": invoice.__serialize__(),
@@ -2646,48 +2564,7 @@ class InvoiceApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result_decrypted_invoice(result_info.success)
-			return return_value
-
-	async def try_share_with_many_async(self, invoice: DecryptedInvoice, delegates: Dict[str, InvoiceShareOptions]) -> SimpleShareResultDecryptedInvoice:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_simple_share_result_decrypted_invoice(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"invoice": invoice.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceApi.tryShareWithManyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def try_share_with_many_blocking(self, invoice: DecryptedInvoice, delegates: Dict[str, InvoiceShareOptions]) -> SimpleShareResultDecryptedInvoice:
-		payload = {
-			"invoice": invoice.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceApi.tryShareWithManyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = deserialize_simple_share_result_decrypted_invoice(result_info.success)
+			return_value = DecryptedInvoice._deserialize(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, invoice: DecryptedInvoice, delegates: Dict[str, InvoiceShareOptions]) -> DecryptedInvoice:

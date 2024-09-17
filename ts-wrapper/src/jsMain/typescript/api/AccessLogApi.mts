@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {AccessLogShareOptions} from '../crypto/entities/AccessLogShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {AccessLog, DecryptedAccessLog, EncryptedAccessLog} from '../model/AccessLog.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -46,10 +45,7 @@ export interface AccessLogApi {
 	deleteAccessLogs(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, accessLog: DecryptedAccessLog,
-			options?: { options?: AccessLogShareOptions | undefined }): Promise<SimpleShareResult<DecryptedAccessLog>>;
-
-	tryShareWithMany(accessLog: DecryptedAccessLog,
-			delegates: { [ key: string ]: AccessLogShareOptions }): Promise<SimpleShareResult<DecryptedAccessLog>>;
+			options?: { options?: AccessLogShareOptions | undefined }): Promise<DecryptedAccessLog>;
 
 	shareWithMany(accessLog: DecryptedAccessLog,
 			delegates: { [ key: string ]: AccessLogShareOptions }): Promise<DecryptedAccessLog>;

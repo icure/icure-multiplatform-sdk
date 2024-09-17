@@ -4,7 +4,6 @@ package com.icure.cardinal.sdk.py.api.CalendarItemApi
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
@@ -517,7 +516,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(DecryptedCalendarItem.serializer()))
+}.toPyString(DecryptedCalendarItem.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -537,48 +536,7 @@ public fun shareWithAsync(
 				decodedParams.calendarItem,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedCalendarItem.serializer()),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val calendarItem: DecryptedCalendarItem,
-	public val delegates: Map<String, CalendarItemShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.calendarItem.tryShareWithMany(
-			decodedParams.calendarItem,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(DecryptedCalendarItem.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.calendarItem.tryShareWithMany(
-				decodedParams.calendarItem,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedCalendarItem.serializer()),
-				resultCallback)
+		}.toPyStringAsyncCallback(DecryptedCalendarItem.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.HealthElementShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedHealthElementJs
@@ -70,11 +69,7 @@ public external interface HealthElementApiJs {
 		delegateId: String,
 		healthElement: DecryptedHealthElementJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
-
-	public fun tryShareWithMany(healthElement: DecryptedHealthElementJs,
-			delegates: Record<String, HealthElementShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedHealthElementJs>>
+	): Promise<DecryptedHealthElementJs>
 
 	public fun shareWithMany(healthElement: DecryptedHealthElementJs,
 			delegates: Record<String, HealthElementShareOptionsJs>): Promise<DecryptedHealthElementJs>

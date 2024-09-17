@@ -1,7 +1,6 @@
 // auto-generated file
 import {ReceiptShareOptions} from '../crypto/entities/ReceiptShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {DecryptedReceipt, EncryptedReceipt, Receipt} from '../model/Receipt.mjs';
 import {User} from '../model/User.mjs';
@@ -57,10 +56,7 @@ export interface ReceiptApi {
 			attachment: Int8Array): Promise<EncryptedReceipt>;
 
 	shareWith(delegateId: string, receipt: DecryptedReceipt,
-			options?: { options?: ReceiptShareOptions | undefined }): Promise<SimpleShareResult<DecryptedReceipt>>;
-
-	tryShareWithMany(receipt: DecryptedReceipt,
-			delegates: { [ key: string ]: ReceiptShareOptions }): Promise<SimpleShareResult<DecryptedReceipt>>;
+			options?: { options?: ReceiptShareOptions | undefined }): Promise<DecryptedReceipt>;
 
 	shareWithMany(receipt: DecryptedReceipt,
 			delegates: { [ key: string ]: ReceiptShareOptions }): Promise<DecryptedReceipt>;

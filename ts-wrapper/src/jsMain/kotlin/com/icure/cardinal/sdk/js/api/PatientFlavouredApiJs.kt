@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.PatientShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
@@ -25,11 +24,8 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 	public fun shareWith(
 		delegateId: String,
 		patient: E,
-		options: PatientShareOptionsJs,
-	): Promise<SimpleShareResultJs<E>>
-
-	public fun tryShareWithMany(patient: E, delegates: Record<String, PatientShareOptionsJs>):
-			Promise<SimpleShareResultJs<E>>
+		options: dynamic,
+	): Promise<E>
 
 	public fun shareWithMany(patient: E, delegates: Record<String, PatientShareOptionsJs>): Promise<E>
 

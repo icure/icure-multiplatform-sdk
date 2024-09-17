@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.crypto.entities.AccessLogShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.accessLogShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -79,7 +77,7 @@ internal class AccessLogApiImplJs(
 			delegateId: String,
 			accessLog: EncryptedAccessLogJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedAccessLogJs>> {
+		): Promise<EncryptedAccessLogJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -98,39 +96,8 @@ internal class AccessLogApiImplJs(
 					accessLogConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedAccessLog ->
-						accessLog_toJs(x1)
-					},
-				)
+				accessLog_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(accessLog: EncryptedAccessLogJs,
-				delegates: Record<String, AccessLogShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedAccessLogJs>> = GlobalScope.promise {
-			val accessLogConverted: EncryptedAccessLog = accessLog_fromJs(accessLog)
-			val delegatesConverted: Map<String, AccessLogShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: AccessLogShareOptionsJs ->
-					accessLogShareOptions_fromJs(x1)
-				},
-			)
-			val result = accessLogApi.encrypted.tryShareWithMany(
-				accessLogConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedAccessLog ->
-					accessLog_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(accessLog: EncryptedAccessLogJs,
@@ -421,7 +388,7 @@ internal class AccessLogApiImplJs(
 			delegateId: String,
 			accessLog: AccessLogJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<AccessLogJs>> {
+		): Promise<AccessLogJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -440,39 +407,8 @@ internal class AccessLogApiImplJs(
 					accessLogConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: AccessLog ->
-						accessLog_toJs(x1)
-					},
-				)
+				accessLog_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(accessLog: AccessLogJs,
-				delegates: Record<String, AccessLogShareOptionsJs>): Promise<SimpleShareResultJs<AccessLogJs>> =
-				GlobalScope.promise {
-			val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
-			val delegatesConverted: Map<String, AccessLogShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: AccessLogShareOptionsJs ->
-					accessLogShareOptions_fromJs(x1)
-				},
-			)
-			val result = accessLogApi.tryAndRecover.tryShareWithMany(
-				accessLogConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: AccessLog ->
-					accessLog_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(accessLog: AccessLogJs,
@@ -950,7 +886,7 @@ internal class AccessLogApiImplJs(
 		delegateId: String,
 		accessLog: DecryptedAccessLogJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>> {
+	): Promise<DecryptedAccessLogJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -969,39 +905,8 @@ internal class AccessLogApiImplJs(
 				accessLogConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedAccessLog ->
-					accessLog_toJs(x1)
-				},
-			)
+			accessLog_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(accessLog: DecryptedAccessLogJs,
-			delegates: Record<String, AccessLogShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedAccessLogJs>> = GlobalScope.promise {
-		val accessLogConverted: DecryptedAccessLog = accessLog_fromJs(accessLog)
-		val delegatesConverted: Map<String, AccessLogShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: AccessLogShareOptionsJs ->
-				accessLogShareOptions_fromJs(x1)
-			},
-		)
-		val result = accessLogApi.tryShareWithMany(
-			accessLogConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedAccessLog ->
-				accessLog_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(accessLog: DecryptedAccessLogJs,

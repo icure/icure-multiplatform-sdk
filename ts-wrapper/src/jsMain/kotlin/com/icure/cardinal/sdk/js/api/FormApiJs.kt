@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.FormShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedFormJs
@@ -86,10 +85,7 @@ public external interface FormApiJs {
 		delegateId: String,
 		form: DecryptedFormJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedFormJs>>
-
-	public fun tryShareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedFormJs>>
+	): Promise<DecryptedFormJs>
 
 	public fun shareWithMany(form: DecryptedFormJs, delegates: Record<String, FormShareOptionsJs>):
 			Promise<DecryptedFormJs>

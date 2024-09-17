@@ -3,7 +3,6 @@
 
 package com.icure.cardinal.sdk.js.api
 
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.TimeTableShareOptionsJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
@@ -23,10 +22,7 @@ public external interface TimeTableFlavouredApiJs<E : TimeTableJs> {
 		delegateId: String,
 		timeTable: E,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<E>>
-
-	public fun tryShareWithMany(timeTable: E, delegates: Record<String, TimeTableShareOptionsJs>):
-			Promise<SimpleShareResultJs<E>>
+	): Promise<E>
 
 	public fun shareWithMany(timeTable: E, delegates: Record<String, TimeTableShareOptionsJs>):
 			Promise<E>

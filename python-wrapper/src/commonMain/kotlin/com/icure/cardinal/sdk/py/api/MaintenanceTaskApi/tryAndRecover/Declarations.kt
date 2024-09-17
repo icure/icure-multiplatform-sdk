@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.tryAndRecover
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.MaintenanceTask
@@ -53,7 +52,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(MaintenanceTask::class)))
+}.toPyString(PolymorphicSerializer(MaintenanceTask::class))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -73,48 +72,7 @@ public fun shareWithAsync(
 				decodedParams.maintenanceTask,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(MaintenanceTask::class)),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val maintenanceTask: MaintenanceTask,
-	public val delegates: Map<String, MaintenanceTaskShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.maintenanceTask.tryAndRecover.tryShareWithMany(
-			decodedParams.maintenanceTask,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(MaintenanceTask::class)))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.maintenanceTask.tryAndRecover.tryShareWithMany(
-				decodedParams.maintenanceTask,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(MaintenanceTask::class)),
-				resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(MaintenanceTask::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

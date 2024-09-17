@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, TimeTable, serialize_time_table, EncryptedTimeTable, deserialize_time_table, DocIdentifier, TimeTableShareOptions, deserialize_simple_share_result_decrypted_time_table, SimpleShareResultDecryptedTimeTable, deserialize_simple_share_result_encrypted_time_table, SimpleShareResultEncryptedTimeTable, deserialize_simple_share_result_time_table, SimpleShareResultTimeTable
+from cardinal_sdk.model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, TimeTable, serialize_time_table, EncryptedTimeTable, deserialize_time_table, DocIdentifier, TimeTableShareOptions
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -17,7 +17,7 @@ class TimeTableApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultEncryptedTimeTable:
+		async def share_with_async(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> EncryptedTimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -25,7 +25,7 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_encrypted_time_table(json.loads(success.decode('utf-8')))
+					result = EncryptedTimeTable._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -42,7 +42,7 @@ class TimeTableApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultEncryptedTimeTable:
+		def share_with_blocking(self, delegate_id: str, time_table: EncryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> EncryptedTimeTable:
 			payload = {
 				"delegateId": delegate_id,
 				"timeTable": time_table.__serialize__(),
@@ -57,48 +57,7 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_encrypted_time_table(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultEncryptedTimeTable:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_encrypted_time_table(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"timeTable": time_table.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.encrypted.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultEncryptedTimeTable:
-			payload = {
-				"timeTable": time_table.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.encrypted.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_encrypted_time_table(result_info.success)
+				return_value = EncryptedTimeTable._deserialize(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, time_table: EncryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> EncryptedTimeTable:
@@ -364,7 +323,7 @@ class TimeTableApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultTimeTable:
+		async def share_with_async(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> TimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -372,7 +331,7 @@ class TimeTableApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_time_table(json.loads(success.decode('utf-8')))
+					result = deserialize_time_table(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -389,7 +348,7 @@ class TimeTableApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultTimeTable:
+		def share_with_blocking(self, delegate_id: str, time_table: TimeTable, options: Optional[TimeTableShareOptions] = None) -> TimeTable:
 			payload = {
 				"delegateId": delegate_id,
 				"timeTable": serialize_time_table(time_table),
@@ -404,48 +363,7 @@ class TimeTableApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_time_table(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultTimeTable:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_time_table(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"timeTable": serialize_time_table(time_table),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultTimeTable:
-			payload = {
-				"timeTable": serialize_time_table(time_table),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_time_table(result_info.success)
+				return_value = deserialize_time_table(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, time_table: TimeTable, delegates: Dict[str, TimeTableShareOptions]) -> TimeTable:
@@ -1186,7 +1104,7 @@ class TimeTableApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultDecryptedTimeTable:
+	async def share_with_async(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> DecryptedTimeTable:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1194,7 +1112,7 @@ class TimeTableApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result_decrypted_time_table(json.loads(success.decode('utf-8')))
+				result = DecryptedTimeTable._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1211,7 +1129,7 @@ class TimeTableApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> SimpleShareResultDecryptedTimeTable:
+	def share_with_blocking(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> DecryptedTimeTable:
 		payload = {
 			"delegateId": delegate_id,
 			"timeTable": time_table.__serialize__(),
@@ -1226,48 +1144,7 @@ class TimeTableApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result_decrypted_time_table(result_info.success)
-			return return_value
-
-	async def try_share_with_many_async(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultDecryptedTimeTable:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_simple_share_result_decrypted_time_table(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"timeTable": time_table.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryShareWithManyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def try_share_with_many_blocking(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> SimpleShareResultDecryptedTimeTable:
-		payload = {
-			"timeTable": time_table.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryShareWithManyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = deserialize_simple_share_result_decrypted_time_table(result_info.success)
+			return_value = DecryptedTimeTable._deserialize(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, time_table: DecryptedTimeTable, delegates: Dict[str, TimeTableShareOptions]) -> DecryptedTimeTable:

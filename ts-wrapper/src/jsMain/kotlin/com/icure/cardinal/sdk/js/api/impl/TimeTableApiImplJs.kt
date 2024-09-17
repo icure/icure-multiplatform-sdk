@@ -11,10 +11,8 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.TimeTableApiJs
 import com.icure.cardinal.sdk.js.api.TimeTableFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.TimeTableShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.crypto.entities.timeTableShareOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
@@ -74,7 +72,7 @@ internal class TimeTableApiImplJs(
 			delegateId: String,
 			timeTable: EncryptedTimeTableJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedTimeTableJs>> {
+		): Promise<EncryptedTimeTableJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -93,39 +91,8 @@ internal class TimeTableApiImplJs(
 					timeTableConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedTimeTable ->
-						timeTable_toJs(x1)
-					},
-				)
+				timeTable_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(timeTable: EncryptedTimeTableJs,
-				delegates: Record<String, TimeTableShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedTimeTableJs>> = GlobalScope.promise {
-			val timeTableConverted: EncryptedTimeTable = timeTable_fromJs(timeTable)
-			val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: TimeTableShareOptionsJs ->
-					timeTableShareOptions_fromJs(x1)
-				},
-			)
-			val result = timeTableApi.encrypted.tryShareWithMany(
-				timeTableConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedTimeTable ->
-					timeTable_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(timeTable: EncryptedTimeTableJs,
@@ -256,7 +223,7 @@ internal class TimeTableApiImplJs(
 			delegateId: String,
 			timeTable: TimeTableJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<TimeTableJs>> {
+		): Promise<TimeTableJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -275,39 +242,8 @@ internal class TimeTableApiImplJs(
 					timeTableConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: TimeTable ->
-						timeTable_toJs(x1)
-					},
-				)
+				timeTable_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(timeTable: TimeTableJs,
-				delegates: Record<String, TimeTableShareOptionsJs>): Promise<SimpleShareResultJs<TimeTableJs>> =
-				GlobalScope.promise {
-			val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
-			val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: TimeTableShareOptionsJs ->
-					timeTableShareOptions_fromJs(x1)
-				},
-			)
-			val result = timeTableApi.tryAndRecover.tryShareWithMany(
-				timeTableConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: TimeTable ->
-					timeTable_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(timeTable: TimeTableJs,
@@ -627,7 +563,7 @@ internal class TimeTableApiImplJs(
 		delegateId: String,
 		timeTable: DecryptedTimeTableJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedTimeTableJs>> {
+	): Promise<DecryptedTimeTableJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -646,39 +582,8 @@ internal class TimeTableApiImplJs(
 				timeTableConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedTimeTable ->
-					timeTable_toJs(x1)
-				},
-			)
+			timeTable_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(timeTable: DecryptedTimeTableJs,
-			delegates: Record<String, TimeTableShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedTimeTableJs>> = GlobalScope.promise {
-		val timeTableConverted: DecryptedTimeTable = timeTable_fromJs(timeTable)
-		val delegatesConverted: Map<String, TimeTableShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: TimeTableShareOptionsJs ->
-				timeTableShareOptions_fromJs(x1)
-			},
-		)
-		val result = timeTableApi.tryShareWithMany(
-			timeTableConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedTimeTable ->
-				timeTable_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(timeTable: DecryptedTimeTableJs,

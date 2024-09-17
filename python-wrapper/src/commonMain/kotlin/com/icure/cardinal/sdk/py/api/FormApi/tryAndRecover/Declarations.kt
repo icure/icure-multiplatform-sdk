@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Form
@@ -56,7 +55,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Form::class)))
+}.toPyString(PolymorphicSerializer(Form::class))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -76,48 +75,7 @@ public fun shareWithAsync(
 				decodedParams.form,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Form::class)),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val form: Form,
-	public val delegates: Map<String, FormShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.form.tryAndRecover.tryShareWithMany(
-			decodedParams.form,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(PolymorphicSerializer(Form::class)))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.form.tryAndRecover.tryShareWithMany(
-				decodedParams.form,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(PolymorphicSerializer(Form::class)),
-				resultCallback)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Form::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

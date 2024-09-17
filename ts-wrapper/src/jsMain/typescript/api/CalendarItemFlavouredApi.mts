@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {CalendarItemShareOptions} from '../crypto/entities/CalendarItemShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {CalendarItem} from '../model/CalendarItem.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -10,10 +9,7 @@ import {Patient} from '../model/Patient.mjs';
 export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 
 	shareWith(delegateId: string, calendarItem: E,
-			options?: { options?: CalendarItemShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(calendarItem: E,
-			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: CalendarItemShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(calendarItem: E,
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<E>;

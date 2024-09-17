@@ -3,7 +3,7 @@ import asyncio
 import json
 import base64
 import traceback
-from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_use_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, DocumentShareOptions, deserialize_simple_share_result_decrypted_document, SimpleShareResultDecryptedDocument, deserialize_simple_share_result_encrypted_document, SimpleShareResultEncryptedDocument, deserialize_simple_share_result_document, SimpleShareResultDocument
+from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_use_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, DocumentShareOptions
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -20,7 +20,7 @@ class DocumentApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultEncryptedDocument:
+		async def share_with_async(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -28,7 +28,7 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_encrypted_document(json.loads(success.decode('utf-8')))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -45,7 +45,7 @@ class DocumentApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultEncryptedDocument:
+		def share_with_blocking(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
 			payload = {
 				"delegateId": delegate_id,
 				"document": document.__serialize__(),
@@ -60,48 +60,7 @@ class DocumentApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_encrypted_document(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, document: EncryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> SimpleShareResultEncryptedDocument:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_encrypted_document(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"document": document.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, document: EncryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> SimpleShareResultEncryptedDocument:
-			payload = {
-				"document": document.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_encrypted_document(result_info.success)
+				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, document: EncryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> EncryptedDocument:
@@ -406,7 +365,7 @@ class DocumentApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultDocument:
+		async def share_with_async(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -414,7 +373,7 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_document(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -431,7 +390,7 @@ class DocumentApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultDocument:
+		def share_with_blocking(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
 			payload = {
 				"delegateId": delegate_id,
 				"document": serialize_document(document),
@@ -446,48 +405,7 @@ class DocumentApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_document(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> SimpleShareResultDocument:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_document(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"document": serialize_document(document),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> SimpleShareResultDocument:
-			payload = {
-				"document": serialize_document(document),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_document(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> Document:
@@ -1863,7 +1781,7 @@ class DocumentApi:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, document: DecryptedDocument, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultDecryptedDocument:
+	async def share_with_async(self, delegate_id: str, document: DecryptedDocument, options: Optional[DocumentShareOptions] = None) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1871,7 +1789,7 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result_decrypted_document(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1888,7 +1806,7 @@ class DocumentApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, document: DecryptedDocument, options: Optional[DocumentShareOptions] = None) -> SimpleShareResultDecryptedDocument:
+	def share_with_blocking(self, delegate_id: str, document: DecryptedDocument, options: Optional[DocumentShareOptions] = None) -> DecryptedDocument:
 		payload = {
 			"delegateId": delegate_id,
 			"document": document.__serialize__(),
@@ -1903,48 +1821,7 @@ class DocumentApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result_decrypted_document(result_info.success)
-			return return_value
-
-	async def try_share_with_many_async(self, document: DecryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> SimpleShareResultDecryptedDocument:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_simple_share_result_decrypted_document(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"document": document.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryShareWithManyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def try_share_with_many_blocking(self, document: DecryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> SimpleShareResultDecryptedDocument:
-		payload = {
-			"document": document.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryShareWithManyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = deserialize_simple_share_result_decrypted_document(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, document: DecryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> DecryptedDocument:

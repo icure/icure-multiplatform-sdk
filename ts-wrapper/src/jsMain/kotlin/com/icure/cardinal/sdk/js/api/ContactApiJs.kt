@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.ContactShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.ContactJs
@@ -90,11 +89,7 @@ public external interface ContactApiJs {
 		delegateId: String,
 		contact: DecryptedContactJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedContactJs>>
-
-	public fun tryShareWithMany(contact: DecryptedContactJs,
-			delegates: Record<String, ContactShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedContactJs>>
+	): Promise<DecryptedContactJs>
 
 	public fun shareWithMany(contact: DecryptedContactJs,
 			delegates: Record<String, ContactShareOptionsJs>): Promise<DecryptedContactJs>

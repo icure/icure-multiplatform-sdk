@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {AccessLogShareOptions} from '../crypto/entities/AccessLogShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {AccessLog} from '../model/AccessLog.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -10,10 +9,7 @@ import {Patient} from '../model/Patient.mjs';
 export interface AccessLogFlavouredApi<E extends AccessLog> {
 
 	shareWith(delegateId: string, accessLog: E,
-			options?: { options?: AccessLogShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(accessLog: E,
-			delegates: { [ key: string ]: AccessLogShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: AccessLogShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(accessLog: E, delegates: { [ key: string ]: AccessLogShareOptions }): Promise<E>;
 

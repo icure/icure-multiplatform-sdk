@@ -10,10 +10,8 @@ import com.icure.cardinal.sdk.js.api.InvoiceApiJs
 import com.icure.cardinal.sdk.js.api.InvoiceFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.InvoiceShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.invoiceShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
@@ -85,7 +83,7 @@ internal class InvoiceApiImplJs(
 			delegateId: String,
 			invoice: EncryptedInvoiceJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedInvoiceJs>> {
+		): Promise<EncryptedInvoiceJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -104,39 +102,8 @@ internal class InvoiceApiImplJs(
 					invoiceConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedInvoice ->
-						invoice_toJs(x1)
-					},
-				)
+				invoice_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(invoice: EncryptedInvoiceJs,
-				delegates: Record<String, InvoiceShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedInvoiceJs>> = GlobalScope.promise {
-			val invoiceConverted: EncryptedInvoice = invoice_fromJs(invoice)
-			val delegatesConverted: Map<String, InvoiceShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: InvoiceShareOptionsJs ->
-					invoiceShareOptions_fromJs(x1)
-				},
-			)
-			val result = invoiceApi.encrypted.tryShareWithMany(
-				invoiceConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedInvoice ->
-					invoice_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(invoice: EncryptedInvoiceJs,
@@ -783,7 +750,7 @@ internal class InvoiceApiImplJs(
 			delegateId: String,
 			invoice: InvoiceJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<InvoiceJs>> {
+		): Promise<InvoiceJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -802,39 +769,8 @@ internal class InvoiceApiImplJs(
 					invoiceConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Invoice ->
-						invoice_toJs(x1)
-					},
-				)
+				invoice_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(invoice: InvoiceJs,
-				delegates: Record<String, InvoiceShareOptionsJs>): Promise<SimpleShareResultJs<InvoiceJs>> =
-				GlobalScope.promise {
-			val invoiceConverted: Invoice = invoice_fromJs(invoice)
-			val delegatesConverted: Map<String, InvoiceShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: InvoiceShareOptionsJs ->
-					invoiceShareOptions_fromJs(x1)
-				},
-			)
-			val result = invoiceApi.tryAndRecover.tryShareWithMany(
-				invoiceConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Invoice ->
-					invoice_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(invoice: InvoiceJs, delegates: Record<String, InvoiceShareOptionsJs>):
@@ -1675,7 +1611,7 @@ internal class InvoiceApiImplJs(
 		delegateId: String,
 		invoice: DecryptedInvoiceJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedInvoiceJs>> {
+	): Promise<DecryptedInvoiceJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -1694,39 +1630,8 @@ internal class InvoiceApiImplJs(
 				invoiceConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedInvoice ->
-					invoice_toJs(x1)
-				},
-			)
+			invoice_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(invoice: DecryptedInvoiceJs,
-			delegates: Record<String, InvoiceShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedInvoiceJs>> = GlobalScope.promise {
-		val invoiceConverted: DecryptedInvoice = invoice_fromJs(invoice)
-		val delegatesConverted: Map<String, InvoiceShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: InvoiceShareOptionsJs ->
-				invoiceShareOptions_fromJs(x1)
-			},
-		)
-		val result = invoiceApi.tryShareWithMany(
-			invoiceConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(invoice: DecryptedInvoiceJs,

@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.DocumentApiJs
 import com.icure.cardinal.sdk.js.api.DocumentFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.DocumentShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.documentShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -84,7 +82,7 @@ internal class DocumentApiImplJs(
 			delegateId: String,
 			document: EncryptedDocumentJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedDocumentJs>> {
+		): Promise<EncryptedDocumentJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -103,39 +101,8 @@ internal class DocumentApiImplJs(
 					documentConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedDocument ->
-						document_toJs(x1)
-					},
-				)
+				document_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(document: EncryptedDocumentJs,
-				delegates: Record<String, DocumentShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedDocumentJs>> = GlobalScope.promise {
-			val documentConverted: EncryptedDocument = document_fromJs(document)
-			val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: DocumentShareOptionsJs ->
-					documentShareOptions_fromJs(x1)
-				},
-			)
-			val result = documentApi.encrypted.tryShareWithMany(
-				documentConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedDocument ->
-					document_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(document: EncryptedDocumentJs,
@@ -361,7 +328,7 @@ internal class DocumentApiImplJs(
 			delegateId: String,
 			document: DocumentJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<DocumentJs>> {
+		): Promise<DocumentJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -380,39 +347,8 @@ internal class DocumentApiImplJs(
 					documentConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Document ->
-						document_toJs(x1)
-					},
-				)
+				document_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(document: DocumentJs,
-				delegates: Record<String, DocumentShareOptionsJs>): Promise<SimpleShareResultJs<DocumentJs>> =
-				GlobalScope.promise {
-			val documentConverted: Document = document_fromJs(document)
-			val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: DocumentShareOptionsJs ->
-					documentShareOptions_fromJs(x1)
-				},
-			)
-			val result = documentApi.tryAndRecover.tryShareWithMany(
-				documentConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Document ->
-					document_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(document: DocumentJs,
@@ -1162,7 +1098,7 @@ internal class DocumentApiImplJs(
 		delegateId: String,
 		document: DecryptedDocumentJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedDocumentJs>> {
+	): Promise<DecryptedDocumentJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -1181,39 +1117,8 @@ internal class DocumentApiImplJs(
 				documentConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedDocument ->
-					document_toJs(x1)
-				},
-			)
+			document_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(document: DecryptedDocumentJs,
-			delegates: Record<String, DocumentShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedDocumentJs>> = GlobalScope.promise {
-		val documentConverted: DecryptedDocument = document_fromJs(document)
-		val delegatesConverted: Map<String, DocumentShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: DocumentShareOptionsJs ->
-				documentShareOptions_fromJs(x1)
-			},
-		)
-		val result = documentApi.tryShareWithMany(
-			documentConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedDocument ->
-				document_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(document: DecryptedDocumentJs,

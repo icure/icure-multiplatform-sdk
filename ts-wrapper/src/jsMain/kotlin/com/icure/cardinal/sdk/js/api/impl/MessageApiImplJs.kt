@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.MessageApiJs
 import com.icure.cardinal.sdk.js.api.MessageFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.MessageShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.messageShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -86,48 +84,28 @@ internal class MessageApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			message: EncryptedMessageJs,
-			options: MessageShareOptionsJs,
-		): Promise<SimpleShareResultJs<EncryptedMessageJs>> = GlobalScope.promise {
-			val delegateIdConverted: String = delegateId
-			val messageConverted: EncryptedMessage = message_fromJs(message)
-			val optionsConverted: MessageShareOptions = messageShareOptions_fromJs(options)
-			val result = messageApi.encrypted.shareWith(
-				delegateIdConverted,
-				messageConverted,
-				optionsConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedMessage ->
-					message_toJs(x1)
-				},
-			)
-		}
-
-		override fun tryShareWithMany(message: EncryptedMessageJs,
-				delegates: Record<String, MessageShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedMessageJs>> = GlobalScope.promise {
-			val messageConverted: EncryptedMessage = message_fromJs(message)
-			val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: MessageShareOptionsJs ->
-					messageShareOptions_fromJs(x1)
-				},
-			)
-			val result = messageApi.encrypted.tryShareWithMany(
-				messageConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedMessage ->
-					message_toJs(x1)
-				},
-			)
+			options: dynamic,
+		): Promise<EncryptedMessageJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val messageConverted: EncryptedMessage = message_fromJs(message)
+				val optionsConverted: MessageShareOptions? = convertingOptionOrDefaultNullable(
+					_options,
+					"options",
+					null
+				) { options: MessageShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						messageShareOptions_fromJs(nonNull1)
+					}
+				}
+				val result = messageApi.encrypted.shareWith(
+					delegateIdConverted,
+					messageConverted,
+					optionsConverted,
+				)
+				message_toJs(result)
+			}
 		}
 
 		override fun shareWithMany(message: EncryptedMessageJs,
@@ -556,48 +534,28 @@ internal class MessageApiImplJs(
 		override fun shareWith(
 			delegateId: String,
 			message: MessageJs,
-			options: MessageShareOptionsJs,
-		): Promise<SimpleShareResultJs<MessageJs>> = GlobalScope.promise {
-			val delegateIdConverted: String = delegateId
-			val messageConverted: Message = message_fromJs(message)
-			val optionsConverted: MessageShareOptions = messageShareOptions_fromJs(options)
-			val result = messageApi.tryAndRecover.shareWith(
-				delegateIdConverted,
-				messageConverted,
-				optionsConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Message ->
-					message_toJs(x1)
-				},
-			)
-		}
-
-		override fun tryShareWithMany(message: MessageJs,
-				delegates: Record<String, MessageShareOptionsJs>): Promise<SimpleShareResultJs<MessageJs>> =
-				GlobalScope.promise {
-			val messageConverted: Message = message_fromJs(message)
-			val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: MessageShareOptionsJs ->
-					messageShareOptions_fromJs(x1)
-				},
-			)
-			val result = messageApi.tryAndRecover.tryShareWithMany(
-				messageConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Message ->
-					message_toJs(x1)
-				},
-			)
+			options: dynamic,
+		): Promise<MessageJs> {
+			val _options = options ?: js("{}")
+			return GlobalScope.promise {
+				val delegateIdConverted: String = delegateId
+				val messageConverted: Message = message_fromJs(message)
+				val optionsConverted: MessageShareOptions? = convertingOptionOrDefaultNullable(
+					_options,
+					"options",
+					null
+				) { options: MessageShareOptionsJs? ->
+					options?.let { nonNull1 ->
+						messageShareOptions_fromJs(nonNull1)
+					}
+				}
+				val result = messageApi.tryAndRecover.shareWith(
+					delegateIdConverted,
+					messageConverted,
+					optionsConverted,
+				)
+				message_toJs(result)
+			}
 		}
 
 		override fun shareWithMany(message: MessageJs, delegates: Record<String, MessageShareOptionsJs>):
@@ -1221,48 +1179,28 @@ internal class MessageApiImplJs(
 	override fun shareWith(
 		delegateId: String,
 		message: DecryptedMessageJs,
-		options: MessageShareOptionsJs,
-	): Promise<SimpleShareResultJs<DecryptedMessageJs>> = GlobalScope.promise {
-		val delegateIdConverted: String = delegateId
-		val messageConverted: DecryptedMessage = message_fromJs(message)
-		val optionsConverted: MessageShareOptions = messageShareOptions_fromJs(options)
-		val result = messageApi.shareWith(
-			delegateIdConverted,
-			messageConverted,
-			optionsConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedMessage ->
-				message_toJs(x1)
-			},
-		)
-	}
-
-	override fun tryShareWithMany(message: DecryptedMessageJs,
-			delegates: Record<String, MessageShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedMessageJs>> = GlobalScope.promise {
-		val messageConverted: DecryptedMessage = message_fromJs(message)
-		val delegatesConverted: Map<String, MessageShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: MessageShareOptionsJs ->
-				messageShareOptions_fromJs(x1)
-			},
-		)
-		val result = messageApi.tryShareWithMany(
-			messageConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedMessage ->
-				message_toJs(x1)
-			},
-		)
+		options: dynamic,
+	): Promise<DecryptedMessageJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val delegateIdConverted: String = delegateId
+			val messageConverted: DecryptedMessage = message_fromJs(message)
+			val optionsConverted: MessageShareOptions? = convertingOptionOrDefaultNullable(
+				_options,
+				"options",
+				null
+			) { options: MessageShareOptionsJs? ->
+				options?.let { nonNull1 ->
+					messageShareOptions_fromJs(nonNull1)
+				}
+			}
+			val result = messageApi.shareWith(
+				delegateIdConverted,
+				messageConverted,
+				optionsConverted,
+			)
+			message_toJs(result)
+		}
 	}
 
 	override fun shareWithMany(message: DecryptedMessageJs,

@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.CalendarItemShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.CalendarItemJs
@@ -64,11 +63,7 @@ public external interface CalendarItemApiJs {
 		delegateId: String,
 		calendarItem: DecryptedCalendarItemJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
-
-	public fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs,
-			delegates: Record<String, CalendarItemShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedCalendarItemJs>>
+	): Promise<DecryptedCalendarItemJs>
 
 	public fun shareWithMany(calendarItem: DecryptedCalendarItemJs,
 			delegates: Record<String, CalendarItemShareOptionsJs>): Promise<DecryptedCalendarItemJs>

@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.py.api.DocumentApi.encrypted
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Document
@@ -57,7 +56,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(EncryptedDocument.serializer()))
+}.toPyString(EncryptedDocument.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -77,48 +76,7 @@ public fun shareWithAsync(
 				decodedParams.document,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(EncryptedDocument.serializer()),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val document: EncryptedDocument,
-	public val delegates: Map<String, DocumentShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.document.encrypted.tryShareWithMany(
-			decodedParams.document,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(EncryptedDocument.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.document.encrypted.tryShareWithMany(
-				decodedParams.document,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(EncryptedDocument.serializer()),
-				resultCallback)
+		}.toPyStringAsyncCallback(EncryptedDocument.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

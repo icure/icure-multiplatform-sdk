@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.py.api.TopicApi
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -512,7 +511,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(DecryptedTopic.serializer()))
+}.toPyString(DecryptedTopic.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -532,48 +531,7 @@ public fun shareWithAsync(
 				decodedParams.topic,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedTopic.serializer()),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val topic: DecryptedTopic,
-	public val delegates: Map<String, TopicShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.topic.tryShareWithMany(
-			decodedParams.topic,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(DecryptedTopic.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.topic.tryShareWithMany(
-				decodedParams.topic,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedTopic.serializer()),
-				resultCallback)
+		}.toPyStringAsyncCallback(DecryptedTopic.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

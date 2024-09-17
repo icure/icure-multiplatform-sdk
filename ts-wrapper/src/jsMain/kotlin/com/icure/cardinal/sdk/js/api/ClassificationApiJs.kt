@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.ClassificationShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.ClassificationJs
@@ -64,11 +63,7 @@ public external interface ClassificationApiJs {
 		delegateId: String,
 		classification: DecryptedClassificationJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedClassificationJs>>
-
-	public fun tryShareWithMany(classification: DecryptedClassificationJs,
-			delegates: Record<String, ClassificationShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedClassificationJs>>
+	): Promise<DecryptedClassificationJs>
 
 	public fun shareWithMany(classification: DecryptedClassificationJs,
 			delegates: Record<String, ClassificationShareOptionsJs>): Promise<DecryptedClassificationJs>

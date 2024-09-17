@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedMessage, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Message, serialize_message, EncryptedMessage, deserialize_message, DocIdentifier, MessageShareOptions, deserialize_simple_share_result_decrypted_message, SimpleShareResultDecryptedMessage, SubscriptionEventType, EntitySubscriptionConfiguration, deserialize_simple_share_result_encrypted_message, SimpleShareResultEncryptedMessage, deserialize_simple_share_result_message, SimpleShareResultMessage
+from cardinal_sdk.model import DecryptedMessage, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Message, serialize_message, EncryptedMessage, deserialize_message, DocIdentifier, MessageShareOptions, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -18,7 +18,7 @@ class MessageApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResultEncryptedMessage:
+		async def share_with_async(self, delegate_id: str, message: EncryptedMessage, options: Optional[MessageShareOptions] = None) -> EncryptedMessage:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -26,12 +26,12 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_encrypted_message(json.loads(success.decode('utf-8')))
+					result = EncryptedMessage._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -43,11 +43,11 @@ class MessageApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, message: EncryptedMessage, options: MessageShareOptions) -> SimpleShareResultEncryptedMessage:
+		def share_with_blocking(self, delegate_id: str, message: EncryptedMessage, options: Optional[MessageShareOptions] = None) -> EncryptedMessage:
 			payload = {
 				"delegateId": delegate_id,
 				"message": message.__serialize__(),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.encrypted.shareWithBlocking(
 				self.cardinal_sdk._native,
@@ -58,48 +58,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_encrypted_message(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultEncryptedMessage:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_encrypted_message(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"message": message.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.encrypted.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultEncryptedMessage:
-			payload = {
-				"message": message.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.encrypted.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_encrypted_message(result_info.success)
+				return_value = EncryptedMessage._deserialize(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, message: EncryptedMessage, delegates: Dict[str, MessageShareOptions]) -> EncryptedMessage:
@@ -410,7 +369,7 @@ class MessageApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResultMessage:
+		async def share_with_async(self, delegate_id: str, message: Message, options: Optional[MessageShareOptions] = None) -> Message:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -418,12 +377,12 @@ class MessageApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_message(json.loads(success.decode('utf-8')))
+					result = deserialize_message(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"message": serialize_message(message),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
@@ -435,11 +394,11 @@ class MessageApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, message: Message, options: MessageShareOptions) -> SimpleShareResultMessage:
+		def share_with_blocking(self, delegate_id: str, message: Message, options: Optional[MessageShareOptions] = None) -> Message:
 			payload = {
 				"delegateId": delegate_id,
 				"message": serialize_message(message),
-				"options": options.__serialize__(),
+				"options": options.__serialize__() if options is not None else None,
 			}
 			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.tryAndRecover.shareWithBlocking(
 				self.cardinal_sdk._native,
@@ -450,48 +409,7 @@ class MessageApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_message(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultMessage:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_message(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"message": serialize_message(message),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.tryAndRecover.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultMessage:
-			payload = {
-				"message": serialize_message(message),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.tryAndRecover.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_message(result_info.success)
+				return_value = deserialize_message(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, message: Message, delegates: Dict[str, MessageShareOptions]) -> Message:
@@ -1316,7 +1234,7 @@ class MessageApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResultDecryptedMessage:
+	async def share_with_async(self, delegate_id: str, message: DecryptedMessage, options: Optional[MessageShareOptions] = None) -> DecryptedMessage:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1324,12 +1242,12 @@ class MessageApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result_decrypted_message(json.loads(success.decode('utf-8')))
+				result = DecryptedMessage._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"message": message.__serialize__(),
-			"options": options.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1341,11 +1259,11 @@ class MessageApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, message: DecryptedMessage, options: MessageShareOptions) -> SimpleShareResultDecryptedMessage:
+	def share_with_blocking(self, delegate_id: str, message: DecryptedMessage, options: Optional[MessageShareOptions] = None) -> DecryptedMessage:
 		payload = {
 			"delegateId": delegate_id,
 			"message": message.__serialize__(),
-			"options": options.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.shareWithBlocking(
 			self.cardinal_sdk._native,
@@ -1356,48 +1274,7 @@ class MessageApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result_decrypted_message(result_info.success)
-			return return_value
-
-	async def try_share_with_many_async(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultDecryptedMessage:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_simple_share_result_decrypted_message(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"message": message.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.tryShareWithManyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def try_share_with_many_blocking(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> SimpleShareResultDecryptedMessage:
-		payload = {
-			"message": message.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageApi.tryShareWithManyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = deserialize_simple_share_result_decrypted_message(result_info.success)
+			return_value = DecryptedMessage._deserialize(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, message: DecryptedMessage, delegates: Dict[str, MessageShareOptions]) -> DecryptedMessage:

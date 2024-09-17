@@ -1,7 +1,6 @@
 // auto-generated file
 import {PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {InvoiceShareOptions} from '../crypto/entities/InvoiceShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Invoice} from '../model/Invoice.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -13,10 +12,7 @@ import {MediumType} from '../model/embed/MediumType.mjs';
 export interface InvoiceFlavouredApi<E extends Invoice> {
 
 	shareWith(delegateId: string, invoice: E,
-			options?: { options?: InvoiceShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(invoice: E,
-			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: InvoiceShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(invoice: E, delegates: { [ key: string ]: InvoiceShareOptions }): Promise<E>;
 

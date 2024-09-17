@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.DocumentShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
@@ -134,11 +133,7 @@ public external interface DocumentApiJs {
 		delegateId: String,
 		document: DecryptedDocumentJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedDocumentJs>>
-
-	public fun tryShareWithMany(document: DecryptedDocumentJs,
-			delegates: Record<String, DocumentShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedDocumentJs>>
+	): Promise<DecryptedDocumentJs>
 
 	public fun shareWithMany(document: DecryptedDocumentJs,
 			delegates: Record<String, DocumentShareOptionsJs>): Promise<DecryptedDocumentJs>

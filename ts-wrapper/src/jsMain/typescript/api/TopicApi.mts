@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TopicShareOptions} from '../crypto/entities/TopicShareOptions.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {DecryptedTopic, EncryptedTopic, Topic} from '../model/Topic.mjs';
@@ -48,10 +47,7 @@ export interface TopicApi {
 	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, topic: DecryptedTopic,
-			options?: { options?: TopicShareOptions | undefined }): Promise<SimpleShareResult<DecryptedTopic>>;
-
-	tryShareWithMany(topic: DecryptedTopic,
-			delegates: { [ key: string ]: TopicShareOptions }): Promise<SimpleShareResult<DecryptedTopic>>;
+			options?: { options?: TopicShareOptions | undefined }): Promise<DecryptedTopic>;
 
 	shareWithMany(topic: DecryptedTopic,
 			delegates: { [ key: string ]: TopicShareOptions }): Promise<DecryptedTopic>;

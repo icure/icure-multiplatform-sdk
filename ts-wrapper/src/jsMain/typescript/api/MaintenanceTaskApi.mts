@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MaintenanceTaskShareOptions} from '../crypto/entities/MaintenanceTaskShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedMaintenanceTask, EncryptedMaintenanceTask, MaintenanceTask} from '../model/MaintenanceTask.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -46,10 +45,7 @@ export interface MaintenanceTaskApi {
 	deleteMaintenanceTasks(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, maintenanceTask: DecryptedMaintenanceTask,
-			options?: { options?: MaintenanceTaskShareOptions | undefined }): Promise<SimpleShareResult<DecryptedMaintenanceTask>>;
-
-	tryShareWithMany(maintenanceTask: DecryptedMaintenanceTask,
-			delegates: { [ key: string ]: MaintenanceTaskShareOptions }): Promise<SimpleShareResult<DecryptedMaintenanceTask>>;
+			options?: { options?: MaintenanceTaskShareOptions | undefined }): Promise<DecryptedMaintenanceTask>;
 
 	shareWithMany(maintenanceTask: DecryptedMaintenanceTask,
 			delegates: { [ key: string ]: MaintenanceTaskShareOptions }): Promise<DecryptedMaintenanceTask>;

@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {ContactShareOptions} from '../crypto/entities/ContactShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Contact} from '../model/Contact.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -11,10 +10,7 @@ import {Service} from '../model/embed/Service.mjs';
 export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	shareWith(delegateId: string, contact: E,
-			options?: { options?: ContactShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(contact: E,
-			delegates: { [ key: string ]: ContactShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: ContactShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(contact: E, delegates: { [ key: string ]: ContactShareOptions }): Promise<E>;
 

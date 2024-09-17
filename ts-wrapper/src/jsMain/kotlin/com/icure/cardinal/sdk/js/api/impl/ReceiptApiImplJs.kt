@@ -10,10 +10,8 @@ import com.icure.cardinal.sdk.js.api.ReceiptApiJs
 import com.icure.cardinal.sdk.js.api.ReceiptFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.ReceiptShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.receiptShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
@@ -64,7 +62,7 @@ internal class ReceiptApiImplJs(
 			delegateId: String,
 			receipt: EncryptedReceiptJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedReceiptJs>> {
+		): Promise<EncryptedReceiptJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -83,39 +81,8 @@ internal class ReceiptApiImplJs(
 					receiptConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedReceipt ->
-						receipt_toJs(x1)
-					},
-				)
+				receipt_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(receipt: EncryptedReceiptJs,
-				delegates: Record<String, ReceiptShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedReceiptJs>> = GlobalScope.promise {
-			val receiptConverted: EncryptedReceipt = receipt_fromJs(receipt)
-			val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: ReceiptShareOptionsJs ->
-					receiptShareOptions_fromJs(x1)
-				},
-			)
-			val result = receiptApi.encrypted.tryShareWithMany(
-				receiptConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedReceipt ->
-					receipt_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(receipt: EncryptedReceiptJs,
@@ -177,7 +144,7 @@ internal class ReceiptApiImplJs(
 			delegateId: String,
 			receipt: ReceiptJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<ReceiptJs>> {
+		): Promise<ReceiptJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -196,39 +163,8 @@ internal class ReceiptApiImplJs(
 					receiptConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Receipt ->
-						receipt_toJs(x1)
-					},
-				)
+				receipt_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(receipt: ReceiptJs,
-				delegates: Record<String, ReceiptShareOptionsJs>): Promise<SimpleShareResultJs<ReceiptJs>> =
-				GlobalScope.promise {
-			val receiptConverted: Receipt = receipt_fromJs(receipt)
-			val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: ReceiptShareOptionsJs ->
-					receiptShareOptions_fromJs(x1)
-				},
-			)
-			val result = receiptApi.tryAndRecover.tryShareWithMany(
-				receiptConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Receipt ->
-					receipt_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(receipt: ReceiptJs, delegates: Record<String, ReceiptShareOptionsJs>):
@@ -532,7 +468,7 @@ internal class ReceiptApiImplJs(
 		delegateId: String,
 		receipt: DecryptedReceiptJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedReceiptJs>> {
+	): Promise<DecryptedReceiptJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -551,39 +487,8 @@ internal class ReceiptApiImplJs(
 				receiptConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedReceipt ->
-					receipt_toJs(x1)
-				},
-			)
+			receipt_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(receipt: DecryptedReceiptJs,
-			delegates: Record<String, ReceiptShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedReceiptJs>> = GlobalScope.promise {
-		val receiptConverted: DecryptedReceipt = receipt_fromJs(receipt)
-		val delegatesConverted: Map<String, ReceiptShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: ReceiptShareOptionsJs ->
-				receiptShareOptions_fromJs(x1)
-			},
-		)
-		val result = receiptApi.tryShareWithMany(
-			receiptConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedReceipt ->
-				receipt_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(receipt: DecryptedReceiptJs,

@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MessageShareOptions} from '../crypto/entities/MessageShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedMessage, EncryptedMessage, Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -50,10 +49,7 @@ export interface MessageApi {
 	deleteMessages(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, message: DecryptedMessage,
-			options: MessageShareOptions): Promise<SimpleShareResult<DecryptedMessage>>;
-
-	tryShareWithMany(message: DecryptedMessage,
-			delegates: { [ key: string ]: MessageShareOptions }): Promise<SimpleShareResult<DecryptedMessage>>;
+			options?: { options?: MessageShareOptions | undefined }): Promise<DecryptedMessage>;
 
 	shareWithMany(message: DecryptedMessage,
 			delegates: { [ key: string ]: MessageShareOptions }): Promise<DecryptedMessage>;

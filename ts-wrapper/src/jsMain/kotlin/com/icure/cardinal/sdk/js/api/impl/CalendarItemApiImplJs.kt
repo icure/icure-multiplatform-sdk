@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.crypto.entities.CalendarItemShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.calendarItemShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -79,7 +77,7 @@ internal class CalendarItemApiImplJs(
 			delegateId: String,
 			calendarItem: EncryptedCalendarItemJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> {
+		): Promise<EncryptedCalendarItemJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -98,39 +96,8 @@ internal class CalendarItemApiImplJs(
 					calendarItemConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedCalendarItem ->
-						calendarItem_toJs(x1)
-					},
-				)
+				calendarItem_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(calendarItem: EncryptedCalendarItemJs,
-				delegates: Record<String, CalendarItemShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedCalendarItemJs>> = GlobalScope.promise {
-			val calendarItemConverted: EncryptedCalendarItem = calendarItem_fromJs(calendarItem)
-			val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: CalendarItemShareOptionsJs ->
-					calendarItemShareOptions_fromJs(x1)
-				},
-			)
-			val result = calendarItemApi.encrypted.tryShareWithMany(
-				calendarItemConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedCalendarItem ->
-					calendarItem_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(calendarItem: EncryptedCalendarItemJs,
@@ -361,7 +328,7 @@ internal class CalendarItemApiImplJs(
 			delegateId: String,
 			calendarItem: CalendarItemJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<CalendarItemJs>> {
+		): Promise<CalendarItemJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -380,39 +347,8 @@ internal class CalendarItemApiImplJs(
 					calendarItemConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: CalendarItem ->
-						calendarItem_toJs(x1)
-					},
-				)
+				calendarItem_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(calendarItem: CalendarItemJs,
-				delegates: Record<String, CalendarItemShareOptionsJs>):
-				Promise<SimpleShareResultJs<CalendarItemJs>> = GlobalScope.promise {
-			val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
-			val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: CalendarItemShareOptionsJs ->
-					calendarItemShareOptions_fromJs(x1)
-				},
-			)
-			val result = calendarItemApi.tryAndRecover.tryShareWithMany(
-				calendarItemConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: CalendarItem ->
-					calendarItem_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(calendarItem: CalendarItemJs,
@@ -830,7 +766,7 @@ internal class CalendarItemApiImplJs(
 		delegateId: String,
 		calendarItem: DecryptedCalendarItemJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> {
+	): Promise<DecryptedCalendarItemJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -849,39 +785,8 @@ internal class CalendarItemApiImplJs(
 				calendarItemConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedCalendarItem ->
-					calendarItem_toJs(x1)
-				},
-			)
+			calendarItem_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(calendarItem: DecryptedCalendarItemJs,
-			delegates: Record<String, CalendarItemShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedCalendarItemJs>> = GlobalScope.promise {
-		val calendarItemConverted: DecryptedCalendarItem = calendarItem_fromJs(calendarItem)
-		val delegatesConverted: Map<String, CalendarItemShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: CalendarItemShareOptionsJs ->
-				calendarItemShareOptions_fromJs(x1)
-			},
-		)
-		val result = calendarItemApi.tryShareWithMany(
-			calendarItemConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedCalendarItem ->
-				calendarItem_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(calendarItem: DecryptedCalendarItemJs,

@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.InvoiceShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.model.InvoiceJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -25,10 +24,7 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 		delegateId: String,
 		invoice: E,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<E>>
-
-	public fun tryShareWithMany(invoice: E, delegates: Record<String, InvoiceShareOptionsJs>):
-			Promise<SimpleShareResultJs<E>>
+	): Promise<E>
 
 	public fun shareWithMany(invoice: E, delegates: Record<String, InvoiceShareOptionsJs>): Promise<E>
 

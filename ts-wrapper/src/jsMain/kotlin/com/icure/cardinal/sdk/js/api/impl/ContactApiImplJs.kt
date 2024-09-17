@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.crypto.entities.ContactShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.contactShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -101,7 +99,7 @@ internal class ContactApiImplJs(
 			delegateId: String,
 			contact: EncryptedContactJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedContactJs>> {
+		): Promise<EncryptedContactJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -120,39 +118,8 @@ internal class ContactApiImplJs(
 					contactConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedContact ->
-						contact_toJs(x1)
-					},
-				)
+				contact_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(contact: EncryptedContactJs,
-				delegates: Record<String, ContactShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedContactJs>> = GlobalScope.promise {
-			val contactConverted: EncryptedContact = contact_fromJs(contact)
-			val delegatesConverted: Map<String, ContactShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: ContactShareOptionsJs ->
-					contactShareOptions_fromJs(x1)
-				},
-			)
-			val result = contactApi.encrypted.tryShareWithMany(
-				contactConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedContact ->
-					contact_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(contact: EncryptedContactJs,
@@ -583,7 +550,7 @@ internal class ContactApiImplJs(
 			delegateId: String,
 			contact: ContactJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<ContactJs>> {
+		): Promise<ContactJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -602,39 +569,8 @@ internal class ContactApiImplJs(
 					contactConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Contact ->
-						contact_toJs(x1)
-					},
-				)
+				contact_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(contact: ContactJs,
-				delegates: Record<String, ContactShareOptionsJs>): Promise<SimpleShareResultJs<ContactJs>> =
-				GlobalScope.promise {
-			val contactConverted: Contact = contact_fromJs(contact)
-			val delegatesConverted: Map<String, ContactShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: ContactShareOptionsJs ->
-					contactShareOptions_fromJs(x1)
-				},
-			)
-			val result = contactApi.tryAndRecover.tryShareWithMany(
-				contactConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Contact ->
-					contact_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(contact: ContactJs, delegates: Record<String, ContactShareOptionsJs>):
@@ -1381,7 +1317,7 @@ internal class ContactApiImplJs(
 		delegateId: String,
 		contact: DecryptedContactJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedContactJs>> {
+	): Promise<DecryptedContactJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -1400,39 +1336,8 @@ internal class ContactApiImplJs(
 				contactConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedContact ->
-					contact_toJs(x1)
-				},
-			)
+			contact_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(contact: DecryptedContactJs,
-			delegates: Record<String, ContactShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedContactJs>> = GlobalScope.promise {
-		val contactConverted: DecryptedContact = contact_fromJs(contact)
-		val delegatesConverted: Map<String, ContactShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: ContactShareOptionsJs ->
-				contactShareOptions_fromJs(x1)
-			},
-		)
-		val result = contactApi.tryShareWithMany(
-			contactConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedContact ->
-				contact_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(contact: DecryptedContactJs,

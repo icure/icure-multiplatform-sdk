@@ -11,10 +11,8 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.TopicApiJs
 import com.icure.cardinal.sdk.js.api.TopicFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.TopicShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.crypto.entities.topicShareOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
@@ -78,7 +76,7 @@ internal class TopicApiImplJs(
 			delegateId: String,
 			topic: EncryptedTopicJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedTopicJs>> {
+		): Promise<EncryptedTopicJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -97,39 +95,8 @@ internal class TopicApiImplJs(
 					topicConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedTopic ->
-						topic_toJs(x1)
-					},
-				)
+				topic_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(topic: EncryptedTopicJs,
-				delegates: Record<String, TopicShareOptionsJs>): Promise<SimpleShareResultJs<EncryptedTopicJs>>
-				= GlobalScope.promise {
-			val topicConverted: EncryptedTopic = topic_fromJs(topic)
-			val delegatesConverted: Map<String, TopicShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: TopicShareOptionsJs ->
-					topicShareOptions_fromJs(x1)
-				},
-			)
-			val result = topicApi.encrypted.tryShareWithMany(
-				topicConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedTopic ->
-					topic_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(topic: EncryptedTopicJs,
@@ -251,7 +218,7 @@ internal class TopicApiImplJs(
 			delegateId: String,
 			topic: TopicJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<TopicJs>> {
+		): Promise<TopicJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -270,38 +237,8 @@ internal class TopicApiImplJs(
 					topicConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Topic ->
-						topic_toJs(x1)
-					},
-				)
+				topic_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(topic: TopicJs, delegates: Record<String, TopicShareOptionsJs>):
-				Promise<SimpleShareResultJs<TopicJs>> = GlobalScope.promise {
-			val topicConverted: Topic = topic_fromJs(topic)
-			val delegatesConverted: Map<String, TopicShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: TopicShareOptionsJs ->
-					topicShareOptions_fromJs(x1)
-				},
-			)
-			val result = topicApi.tryAndRecover.tryShareWithMany(
-				topicConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Topic ->
-					topic_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(topic: TopicJs, delegates: Record<String, TopicShareOptionsJs>):
@@ -607,7 +544,7 @@ internal class TopicApiImplJs(
 		delegateId: String,
 		topic: DecryptedTopicJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedTopicJs>> {
+	): Promise<DecryptedTopicJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -626,39 +563,8 @@ internal class TopicApiImplJs(
 				topicConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedTopic ->
-					topic_toJs(x1)
-				},
-			)
+			topic_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(topic: DecryptedTopicJs,
-			delegates: Record<String, TopicShareOptionsJs>): Promise<SimpleShareResultJs<DecryptedTopicJs>> =
-			GlobalScope.promise {
-		val topicConverted: DecryptedTopic = topic_fromJs(topic)
-		val delegatesConverted: Map<String, TopicShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: TopicShareOptionsJs ->
-				topicShareOptions_fromJs(x1)
-			},
-		)
-		val result = topicApi.tryShareWithMany(
-			topicConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedTopic ->
-				topic_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(topic: DecryptedTopicJs,

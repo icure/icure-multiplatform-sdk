@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.HealthElementApiJs
 import com.icure.cardinal.sdk.js.api.HealthElementFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.HealthElementShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.healthElementShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -84,7 +82,7 @@ internal class HealthElementApiImplJs(
 			delegateId: String,
 			healthElement: EncryptedHealthElementJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedHealthElementJs>> {
+		): Promise<EncryptedHealthElementJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -103,39 +101,8 @@ internal class HealthElementApiImplJs(
 					healthElementConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedHealthElement ->
-						healthElement_toJs(x1)
-					},
-				)
+				healthElement_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(healthElement: EncryptedHealthElementJs,
-				delegates: Record<String, HealthElementShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedHealthElementJs>> = GlobalScope.promise {
-			val healthElementConverted: EncryptedHealthElement = healthElement_fromJs(healthElement)
-			val delegatesConverted: Map<String, HealthElementShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: HealthElementShareOptionsJs ->
-					healthElementShareOptions_fromJs(x1)
-				},
-			)
-			val result = healthElementApi.encrypted.tryShareWithMany(
-				healthElementConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedHealthElement ->
-					healthElement_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(healthElement: EncryptedHealthElementJs,
@@ -321,7 +288,7 @@ internal class HealthElementApiImplJs(
 			delegateId: String,
 			healthElement: HealthElementJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<HealthElementJs>> {
+		): Promise<HealthElementJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -340,39 +307,8 @@ internal class HealthElementApiImplJs(
 					healthElementConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: HealthElement ->
-						healthElement_toJs(x1)
-					},
-				)
+				healthElement_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(healthElement: HealthElementJs,
-				delegates: Record<String, HealthElementShareOptionsJs>):
-				Promise<SimpleShareResultJs<HealthElementJs>> = GlobalScope.promise {
-			val healthElementConverted: HealthElement = healthElement_fromJs(healthElement)
-			val delegatesConverted: Map<String, HealthElementShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: HealthElementShareOptionsJs ->
-					healthElementShareOptions_fromJs(x1)
-				},
-			)
-			val result = healthElementApi.tryAndRecover.tryShareWithMany(
-				healthElementConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: HealthElement ->
-					healthElement_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(healthElement: HealthElementJs,
@@ -788,7 +724,7 @@ internal class HealthElementApiImplJs(
 		delegateId: String,
 		healthElement: DecryptedHealthElementJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedHealthElementJs>> {
+	): Promise<DecryptedHealthElementJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -807,39 +743,8 @@ internal class HealthElementApiImplJs(
 				healthElementConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedHealthElement ->
-					healthElement_toJs(x1)
-				},
-			)
+			healthElement_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(healthElement: DecryptedHealthElementJs,
-			delegates: Record<String, HealthElementShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedHealthElementJs>> = GlobalScope.promise {
-		val healthElementConverted: DecryptedHealthElement = healthElement_fromJs(healthElement)
-		val delegatesConverted: Map<String, HealthElementShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: HealthElementShareOptionsJs ->
-				healthElementShareOptions_fromJs(x1)
-			},
-		)
-		val result = healthElementApi.tryShareWithMany(
-			healthElementConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedHealthElement ->
-				healthElement_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(healthElement: DecryptedHealthElementJs,

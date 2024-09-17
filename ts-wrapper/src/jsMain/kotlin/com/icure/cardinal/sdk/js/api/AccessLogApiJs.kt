@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.AccessLogShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.AccessLogJs
@@ -64,11 +63,7 @@ public external interface AccessLogApiJs {
 		delegateId: String,
 		accessLog: DecryptedAccessLogJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedAccessLogJs>>
-
-	public fun tryShareWithMany(accessLog: DecryptedAccessLogJs,
-			delegates: Record<String, AccessLogShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedAccessLogJs>>
+	): Promise<DecryptedAccessLogJs>
 
 	public fun shareWithMany(accessLog: DecryptedAccessLogJs,
 			delegates: Record<String, AccessLogShareOptionsJs>): Promise<DecryptedAccessLogJs>

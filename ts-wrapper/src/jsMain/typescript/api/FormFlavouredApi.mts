@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {FormShareOptions} from '../crypto/entities/FormShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Form} from '../model/Form.mjs';
 import {Patient} from '../model/Patient.mjs';
 
@@ -9,10 +8,7 @@ import {Patient} from '../model/Patient.mjs';
 export interface FormFlavouredApi<E extends Form> {
 
 	shareWith(delegateId: string, form: E,
-			options?: { options?: FormShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(form: E,
-			delegates: { [ key: string ]: FormShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: FormShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(form: E, delegates: { [ key: string ]: FormShareOptions }): Promise<E>;
 

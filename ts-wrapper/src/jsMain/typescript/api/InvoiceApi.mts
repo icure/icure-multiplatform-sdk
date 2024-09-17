@@ -2,7 +2,6 @@
 import {PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {InvoiceShareOptions} from '../crypto/entities/InvoiceShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
 import {DecryptedInvoice, EncryptedInvoice, Invoice} from '../model/Invoice.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
@@ -51,10 +50,7 @@ export interface InvoiceApi {
 	getTarificationsCodesOccurrences(minOccurrence: number): Promise<Array<LabelledOccurence>>;
 
 	shareWith(delegateId: string, invoice: DecryptedInvoice,
-			options?: { options?: InvoiceShareOptions | undefined }): Promise<SimpleShareResult<DecryptedInvoice>>;
-
-	tryShareWithMany(invoice: DecryptedInvoice,
-			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<SimpleShareResult<DecryptedInvoice>>;
+			options?: { options?: InvoiceShareOptions | undefined }): Promise<DecryptedInvoice>;
 
 	shareWithMany(invoice: DecryptedInvoice,
 			delegates: { [ key: string ]: InvoiceShareOptions }): Promise<DecryptedInvoice>;

@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {FormShareOptions} from '../crypto/entities/FormShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedForm, EncryptedForm, Form} from '../model/Form.mjs';
 import {FormTemplate} from '../model/FormTemplate.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -66,10 +65,7 @@ export interface FormApi {
 	setTemplateAttachment(formTemplateId: string, payload: Int8Array): Promise<string>;
 
 	shareWith(delegateId: string, form: DecryptedForm,
-			options?: { options?: FormShareOptions | undefined }): Promise<SimpleShareResult<DecryptedForm>>;
-
-	tryShareWithMany(form: DecryptedForm,
-			delegates: { [ key: string ]: FormShareOptions }): Promise<SimpleShareResult<DecryptedForm>>;
+			options?: { options?: FormShareOptions | undefined }): Promise<DecryptedForm>;
 
 	shareWithMany(form: DecryptedForm,
 			delegates: { [ key: string ]: FormShareOptions }): Promise<DecryptedForm>;

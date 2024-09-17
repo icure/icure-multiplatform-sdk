@@ -24,13 +24,15 @@ public fun failedRequestDetails_toJs(obj: FailedRequestDetails): FailedRequestDe
 			delegateShareOptions_toJs(nonNull1)
 		}
 	)
+	val shouldRetry = obj.shouldRetry
 	return FailedRequestDetailsJs(js("{" +
 		"entityId:entityId," +
 		"delegateId:delegateId," +
 		"updatedForMigration:updatedForMigration," +
 		"code:code," +
 		"reason:reason," +
-		"request:request" +
+		"request:request," +
+		"shouldRetry:shouldRetry" +
 	"}"))
 }
 
@@ -43,6 +45,7 @@ public fun failedRequestDetails_fromJs(obj: FailedRequestDetailsJs): FailedReque
 	val request = obj.request?.let { nonNull1 ->
 		delegateShareOptions_fromJs(nonNull1)
 	}
+	val shouldRetry = obj.shouldRetry
 	return FailedRequestDetails(
 		entityId = entityId,
 		delegateId = delegateId,
@@ -50,5 +53,6 @@ public fun failedRequestDetails_fromJs(obj: FailedRequestDetailsJs): FailedReque
 		code = code,
 		reason = reason,
 		request = request,
+		shouldRetry = shouldRetry,
 	)
 }

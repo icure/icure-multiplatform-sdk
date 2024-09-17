@@ -10,9 +10,7 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.MaintenanceTaskApiJs
 import com.icure.cardinal.sdk.js.api.MaintenanceTaskFlavouredApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.MaintenanceTaskShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.maintenanceTaskShareOptions_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -71,7 +69,7 @@ internal class MaintenanceTaskApiImplJs(
 			delegateId: String,
 			maintenanceTask: EncryptedMaintenanceTaskJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedMaintenanceTaskJs>> {
+		): Promise<EncryptedMaintenanceTaskJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -90,39 +88,8 @@ internal class MaintenanceTaskApiImplJs(
 					maintenanceTaskConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedMaintenanceTask ->
-						maintenanceTask_toJs(x1)
-					},
-				)
+				maintenanceTask_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(maintenanceTask: EncryptedMaintenanceTaskJs,
-				delegates: Record<String, MaintenanceTaskShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedMaintenanceTaskJs>> = GlobalScope.promise {
-			val maintenanceTaskConverted: EncryptedMaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
-			val delegatesConverted: Map<String, MaintenanceTaskShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: MaintenanceTaskShareOptionsJs ->
-					maintenanceTaskShareOptions_fromJs(x1)
-				},
-			)
-			val result = maintenanceTaskApi.encrypted.tryShareWithMany(
-				maintenanceTaskConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedMaintenanceTask ->
-					maintenanceTask_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(maintenanceTask: EncryptedMaintenanceTaskJs,
@@ -220,7 +187,7 @@ internal class MaintenanceTaskApiImplJs(
 			delegateId: String,
 			maintenanceTask: MaintenanceTaskJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<MaintenanceTaskJs>> {
+		): Promise<MaintenanceTaskJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -239,39 +206,8 @@ internal class MaintenanceTaskApiImplJs(
 					maintenanceTaskConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: MaintenanceTask ->
-						maintenanceTask_toJs(x1)
-					},
-				)
+				maintenanceTask_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(maintenanceTask: MaintenanceTaskJs,
-				delegates: Record<String, MaintenanceTaskShareOptionsJs>):
-				Promise<SimpleShareResultJs<MaintenanceTaskJs>> = GlobalScope.promise {
-			val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
-			val delegatesConverted: Map<String, MaintenanceTaskShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: MaintenanceTaskShareOptionsJs ->
-					maintenanceTaskShareOptions_fromJs(x1)
-				},
-			)
-			val result = maintenanceTaskApi.tryAndRecover.tryShareWithMany(
-				maintenanceTaskConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: MaintenanceTask ->
-					maintenanceTask_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(maintenanceTask: MaintenanceTaskJs,
@@ -546,7 +482,7 @@ internal class MaintenanceTaskApiImplJs(
 		delegateId: String,
 		maintenanceTask: DecryptedMaintenanceTaskJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>> {
+	): Promise<DecryptedMaintenanceTaskJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -565,39 +501,8 @@ internal class MaintenanceTaskApiImplJs(
 				maintenanceTaskConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedMaintenanceTask ->
-					maintenanceTask_toJs(x1)
-				},
-			)
+			maintenanceTask_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,
-			delegates: Record<String, MaintenanceTaskShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedMaintenanceTaskJs>> = GlobalScope.promise {
-		val maintenanceTaskConverted: DecryptedMaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
-		val delegatesConverted: Map<String, MaintenanceTaskShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: MaintenanceTaskShareOptionsJs ->
-				maintenanceTaskShareOptions_fromJs(x1)
-			},
-		)
-		val result = maintenanceTaskApi.tryShareWithMany(
-			maintenanceTaskConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedMaintenanceTask ->
-				maintenanceTask_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(maintenanceTask: DecryptedMaintenanceTaskJs,

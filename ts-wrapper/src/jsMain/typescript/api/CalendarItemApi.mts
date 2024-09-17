@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {CalendarItemShareOptions} from '../crypto/entities/CalendarItemShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {CalendarItem, DecryptedCalendarItem, EncryptedCalendarItem} from '../model/CalendarItem.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -46,10 +45,7 @@ export interface CalendarItemApi {
 	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, calendarItem: DecryptedCalendarItem,
-			options?: { options?: CalendarItemShareOptions | undefined }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
-
-	tryShareWithMany(calendarItem: DecryptedCalendarItem,
-			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<SimpleShareResult<DecryptedCalendarItem>>;
+			options?: { options?: CalendarItemShareOptions | undefined }): Promise<DecryptedCalendarItem>;
 
 	shareWithMany(calendarItem: DecryptedCalendarItem,
 			delegates: { [ key: string ]: CalendarItemShareOptions }): Promise<DecryptedCalendarItem>;

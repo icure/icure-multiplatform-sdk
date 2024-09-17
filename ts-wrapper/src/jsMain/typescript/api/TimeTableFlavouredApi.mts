@@ -1,6 +1,5 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TimeTableShareOptions} from '../crypto/entities/TimeTableShareOptions.mjs';
 import {TimeTable} from '../model/TimeTable.mjs';
 
@@ -8,10 +7,7 @@ import {TimeTable} from '../model/TimeTable.mjs';
 export interface TimeTableFlavouredApi<E extends TimeTable> {
 
 	shareWith(delegateId: string, timeTable: E,
-			options?: { options?: TimeTableShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(timeTable: E,
-			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: TimeTableShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(timeTable: E, delegates: { [ key: string ]: TimeTableShareOptions }): Promise<E>;
 

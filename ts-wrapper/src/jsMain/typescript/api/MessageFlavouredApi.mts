@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MessageShareOptions} from '../crypto/entities/MessageShareOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -10,10 +9,7 @@ import {Patient} from '../model/Patient.mjs';
 export interface MessageFlavouredApi<E extends Message> {
 
 	shareWith(delegateId: string, message: E,
-			options: MessageShareOptions): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(message: E,
-			delegates: { [ key: string ]: MessageShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: MessageShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(message: E, delegates: { [ key: string ]: MessageShareOptions }): Promise<E>;
 

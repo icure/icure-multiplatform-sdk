@@ -2,7 +2,7 @@
 import asyncio
 import json
 import base64
-from cardinal_sdk.model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ReceiptShareOptions, deserialize_simple_share_result_decrypted_receipt, SimpleShareResultDecryptedReceipt, deserialize_simple_share_result_encrypted_receipt, SimpleShareResultEncryptedReceipt, deserialize_simple_share_result_receipt, SimpleShareResultReceipt
+from cardinal_sdk.model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ReceiptShareOptions
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -16,7 +16,7 @@ class ReceiptApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultEncryptedReceipt:
+		async def share_with_async(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> EncryptedReceipt:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -24,7 +24,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_encrypted_receipt(json.loads(success.decode('utf-8')))
+					result = EncryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -41,7 +41,7 @@ class ReceiptApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultEncryptedReceipt:
+		def share_with_blocking(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> EncryptedReceipt:
 			payload = {
 				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
@@ -56,48 +56,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_encrypted_receipt(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultEncryptedReceipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_encrypted_receipt(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"receipt": receipt.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encrypted.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultEncryptedReceipt:
-			payload = {
-				"receipt": receipt.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encrypted.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_encrypted_receipt(result_info.success)
+				return_value = EncryptedReceipt._deserialize(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> EncryptedReceipt:
@@ -263,7 +222,7 @@ class ReceiptApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultReceipt:
+		async def share_with_async(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> Receipt:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -271,7 +230,7 @@ class ReceiptApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = deserialize_simple_share_result_receipt(json.loads(success.decode('utf-8')))
+					result = deserialize_receipt(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
@@ -288,7 +247,7 @@ class ReceiptApi:
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultReceipt:
+		def share_with_blocking(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> Receipt:
 			payload = {
 				"delegateId": delegate_id,
 				"receipt": serialize_receipt(receipt),
@@ -303,48 +262,7 @@ class ReceiptApi:
 			if result_info.failure is not None:
 				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = deserialize_simple_share_result_receipt(result_info.success)
-				return return_value
-
-		async def try_share_with_many_async(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultReceipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_simple_share_result_receipt(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
-			payload = {
-				"receipt": serialize_receipt(receipt),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
-				self.cardinal_sdk._executor,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover.tryShareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-				callback
-			)
-			return await future
-
-		def try_share_with_many_blocking(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultReceipt:
-			payload = {
-				"receipt": serialize_receipt(receipt),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover.tryShareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_simple_share_result_receipt(result_info.success)
+				return_value = deserialize_receipt(result_info.success)
 				return return_value
 
 		async def share_with_many_async(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> Receipt:
@@ -1124,7 +1042,7 @@ class ReceiptApi:
 			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultDecryptedReceipt:
+	async def share_with_async(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> DecryptedReceipt:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1132,7 +1050,7 @@ class ReceiptApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = deserialize_simple_share_result_decrypted_receipt(json.loads(success.decode('utf-8')))
+				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
@@ -1149,7 +1067,7 @@ class ReceiptApi:
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> SimpleShareResultDecryptedReceipt:
+	def share_with_blocking(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> DecryptedReceipt:
 		payload = {
 			"delegateId": delegate_id,
 			"receipt": receipt.__serialize__(),
@@ -1164,48 +1082,7 @@ class ReceiptApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = deserialize_simple_share_result_decrypted_receipt(result_info.success)
-			return return_value
-
-	async def try_share_with_many_async(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultDecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_simple_share_result_decrypted_receipt(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"receipt": receipt.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryShareWithManyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def try_share_with_many_blocking(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> SimpleShareResultDecryptedReceipt:
-		payload = {
-			"receipt": receipt.__serialize__(),
-			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryShareWithManyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = deserialize_simple_share_result_decrypted_receipt(result_info.success)
+			return_value = DecryptedReceipt._deserialize(result_info.success)
 			return return_value
 
 	async def share_with_many_async(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> DecryptedReceipt:

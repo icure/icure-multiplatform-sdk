@@ -62,8 +62,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -90,8 +88,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class AccessLogApi(Structure):
@@ -142,8 +138,6 @@ class AccessLogApi(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -242,8 +236,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -272,8 +264,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class CalendarItemApi(Structure):
@@ -326,8 +316,6 @@ class CalendarItemApi(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -388,8 +376,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -410,8 +396,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class ClassificationApi(Structure):
@@ -456,8 +440,6 @@ class ClassificationApi(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -580,8 +562,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -630,8 +610,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class ContactApi(Structure):
@@ -722,8 +700,6 @@ class ContactApi(Structure):
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptServiceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptServiceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -893,8 +869,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -925,8 +899,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class DocumentApi(Structure):
@@ -1013,8 +985,6 @@ class DocumentApi(Structure):
 		("tryDecryptAttachmentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, c_void_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p, c_void_p)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -1162,8 +1132,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -1198,8 +1166,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class FormApi(Structure):
@@ -1274,8 +1240,6 @@ class FormApi(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("updateFormTemplateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("updateFormTemplateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1426,8 +1390,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -1452,8 +1414,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class HealthElementApi(Structure):
@@ -1508,8 +1468,6 @@ class HealthElementApi(Structure):
 		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -1670,8 +1628,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("validateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("validateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -1730,8 +1686,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("validateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("validateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -1814,8 +1768,6 @@ class InvoiceApi(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("validateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("validateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1912,8 +1864,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -1932,8 +1882,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class MaintenanceTaskApi(Structure):
@@ -1978,8 +1926,6 @@ class MaintenanceTaskApi(Structure):
 		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -2074,8 +2020,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -2120,8 +2064,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class MessageApi(Structure):
@@ -2194,8 +2136,6 @@ class MessageApi(Structure):
 		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -2300,8 +2240,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -2356,8 +2294,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class PatientApi(Structure):
@@ -2454,8 +2390,6 @@ class PatientApi(Structure):
 		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("undeletePatientsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeletePatientsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2558,8 +2492,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -2574,8 +2506,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class ReceiptApi(Structure):
@@ -2620,8 +2550,6 @@ class ReceiptApi(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -2744,8 +2672,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -2768,8 +2694,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class TimeTableApi(Structure):
@@ -2816,8 +2740,6 @@ class TimeTableApi(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
@@ -2868,8 +2790,6 @@ class encrypted(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class tryAndRecover(Structure):
@@ -2892,8 +2812,6 @@ class tryAndRecover(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class TopicApi(Structure):
@@ -2942,8 +2860,6 @@ class TopicApi(Structure):
 		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryShareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryShareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]

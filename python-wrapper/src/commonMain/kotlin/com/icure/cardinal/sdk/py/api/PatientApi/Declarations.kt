@@ -6,7 +6,6 @@ import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedPatient
@@ -833,7 +832,7 @@ public fun countOfPatientsAsync(
 private class ShareWithParams(
 	public val delegateId: String,
 	public val patient: DecryptedPatient,
-	public val options: PatientShareOptions,
+	public val options: PatientShareOptions? = null,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -846,7 +845,7 @@ public fun shareWithBlocking(sdk: CardinalApis, params: String): String = kotlin
 			decodedParams.options,
 		)
 	}
-}.toPyString(SimpleShareResult.serializer(DecryptedPatient.serializer()))
+}.toPyString(DecryptedPatient.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -866,48 +865,7 @@ public fun shareWithAsync(
 				decodedParams.patient,
 				decodedParams.options,
 			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedPatient.serializer()),
-				resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class TryShareWithManyParams(
-	public val patient: DecryptedPatient,
-	public val delegates: Map<String, PatientShareOptions>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun tryShareWithManyBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	runBlocking {
-		sdk.patient.tryShareWithMany(
-			decodedParams.patient,
-			decodedParams.delegates,
-		)
-	}
-}.toPyString(SimpleShareResult.serializer(DecryptedPatient.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun tryShareWithManyAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<TryShareWithManyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.patient.tryShareWithMany(
-				decodedParams.patient,
-				decodedParams.delegates,
-			)
-		}.toPyStringAsyncCallback(SimpleShareResult.serializer(DecryptedPatient.serializer()),
-				resultCallback)
+		}.toPyStringAsyncCallback(DecryptedPatient.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {HealthElementShareOptions} from '../crypto/entities/HealthElementShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {DecryptedHealthElement, EncryptedHealthElement, HealthElement} from '../model/HealthElement.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -54,10 +53,7 @@ export interface HealthElementApi {
 			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
 
 	shareWith(delegateId: string, healthElement: DecryptedHealthElement,
-			options?: { options?: HealthElementShareOptions | undefined }): Promise<SimpleShareResult<DecryptedHealthElement>>;
-
-	tryShareWithMany(healthElement: DecryptedHealthElement,
-			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<SimpleShareResult<DecryptedHealthElement>>;
+			options?: { options?: HealthElementShareOptions | undefined }): Promise<DecryptedHealthElement>;
 
 	shareWithMany(healthElement: DecryptedHealthElement,
 			delegates: { [ key: string ]: HealthElementShareOptions }): Promise<DecryptedHealthElement>;

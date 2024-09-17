@@ -1,6 +1,5 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TopicShareOptions} from '../crypto/entities/TopicShareOptions.mjs';
 import {Topic} from '../model/Topic.mjs';
 import {TopicRole} from '../model/TopicRole.mjs';
@@ -9,10 +8,7 @@ import {TopicRole} from '../model/TopicRole.mjs';
 export interface TopicFlavouredApi<E extends Topic> {
 
 	shareWith(delegateId: string, topic: E,
-			options?: { options?: TopicShareOptions | undefined }): Promise<SimpleShareResult<E>>;
-
-	tryShareWithMany(topic: E,
-			delegates: { [ key: string ]: TopicShareOptions }): Promise<SimpleShareResult<E>>;
+			options?: { options?: TopicShareOptions | undefined }): Promise<E>;
 
 	shareWithMany(topic: E, delegates: { [ key: string ]: TopicShareOptions }): Promise<E>;
 

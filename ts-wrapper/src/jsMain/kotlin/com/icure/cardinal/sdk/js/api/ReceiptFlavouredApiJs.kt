@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.crypto.entities.ReceiptShareOptionsJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.model.ReceiptJs
 import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
@@ -19,10 +18,7 @@ public external interface ReceiptFlavouredApiJs<E : ReceiptJs> {
 		delegateId: String,
 		receipt: E,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<E>>
-
-	public fun tryShareWithMany(receipt: E, delegates: Record<String, ReceiptShareOptionsJs>):
-			Promise<SimpleShareResultJs<E>>
+	): Promise<E>
 
 	public fun shareWithMany(receipt: E, delegates: Record<String, ReceiptShareOptionsJs>): Promise<E>
 

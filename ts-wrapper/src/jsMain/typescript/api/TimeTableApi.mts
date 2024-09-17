@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {TimeTableShareOptions} from '../crypto/entities/TimeTableShareOptions.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {DecryptedTimeTable, EncryptedTimeTable, TimeTable} from '../model/TimeTable.mjs';
@@ -45,10 +44,7 @@ export interface TimeTableApi {
 	deleteTimeTables(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, timeTable: DecryptedTimeTable,
-			options?: { options?: TimeTableShareOptions | undefined }): Promise<SimpleShareResult<DecryptedTimeTable>>;
-
-	tryShareWithMany(timeTable: DecryptedTimeTable,
-			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<SimpleShareResult<DecryptedTimeTable>>;
+			options?: { options?: TimeTableShareOptions | undefined }): Promise<DecryptedTimeTable>;
 
 	shareWithMany(timeTable: DecryptedTimeTable,
 			delegates: { [ key: string ]: TimeTableShareOptions }): Promise<DecryptedTimeTable>;

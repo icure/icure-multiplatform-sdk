@@ -4,7 +4,6 @@ import {EntityAccessInformation} from '../crypto/entities/EntityAccessInformatio
 import {EntityWithTypeInfo} from '../crypto/entities/EntityWithTypeInfo.mjs';
 import {PatientShareOptions} from '../crypto/entities/PatientShareOptions.mjs';
 import {ShareAllPatientDataOptions} from '../crypto/entities/ShareAllPatientDataOptions.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DecryptedPatient, EncryptedPatient, Patient} from '../model/Patient.mjs';
@@ -70,10 +69,7 @@ export interface PatientApi {
 	countOfPatients(hcPartyId: string): Promise<number>;
 
 	shareWith(delegateId: string, patient: DecryptedPatient,
-			options: PatientShareOptions): Promise<SimpleShareResult<DecryptedPatient>>;
-
-	tryShareWithMany(patient: DecryptedPatient,
-			delegates: { [ key: string ]: PatientShareOptions }): Promise<SimpleShareResult<DecryptedPatient>>;
+			options?: { options?: PatientShareOptions | undefined }): Promise<DecryptedPatient>;
 
 	shareWithMany(patient: DecryptedPatient,
 			delegates: { [ key: string ]: PatientShareOptions }): Promise<DecryptedPatient>;

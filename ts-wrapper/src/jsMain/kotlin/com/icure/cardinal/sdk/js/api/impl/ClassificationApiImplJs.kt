@@ -12,10 +12,8 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.crypto.entities.ClassificationShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.SecretIdUseOptionJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.classificationShareOptions_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
-import com.icure.cardinal.sdk.js.crypto.entities.simpleShareResult_toJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
@@ -75,7 +73,7 @@ internal class ClassificationApiImplJs(
 			delegateId: String,
 			classification: EncryptedClassificationJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<EncryptedClassificationJs>> {
+		): Promise<EncryptedClassificationJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -94,39 +92,8 @@ internal class ClassificationApiImplJs(
 					classificationConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: EncryptedClassification ->
-						classification_toJs(x1)
-					},
-				)
+				classification_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(classification: EncryptedClassificationJs,
-				delegates: Record<String, ClassificationShareOptionsJs>):
-				Promise<SimpleShareResultJs<EncryptedClassificationJs>> = GlobalScope.promise {
-			val classificationConverted: EncryptedClassification = classification_fromJs(classification)
-			val delegatesConverted: Map<String, ClassificationShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: ClassificationShareOptionsJs ->
-					classificationShareOptions_fromJs(x1)
-				},
-			)
-			val result = classificationApi.encrypted.tryShareWithMany(
-				classificationConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: EncryptedClassification ->
-					classification_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(classification: EncryptedClassificationJs,
@@ -269,7 +236,7 @@ internal class ClassificationApiImplJs(
 			delegateId: String,
 			classification: ClassificationJs,
 			options: dynamic,
-		): Promise<SimpleShareResultJs<ClassificationJs>> {
+		): Promise<ClassificationJs> {
 			val _options = options ?: js("{}")
 			return GlobalScope.promise {
 				val delegateIdConverted: String = delegateId
@@ -288,39 +255,8 @@ internal class ClassificationApiImplJs(
 					classificationConverted,
 					optionsConverted,
 				)
-				simpleShareResult_toJs(
-					result,
-					{ x1: Classification ->
-						classification_toJs(x1)
-					},
-				)
+				classification_toJs(result)
 			}
-		}
-
-		override fun tryShareWithMany(classification: ClassificationJs,
-				delegates: Record<String, ClassificationShareOptionsJs>):
-				Promise<SimpleShareResultJs<ClassificationJs>> = GlobalScope.promise {
-			val classificationConverted: Classification = classification_fromJs(classification)
-			val delegatesConverted: Map<String, ClassificationShareOptions> = objectToMap(
-				delegates,
-				"delegates",
-				{ x1: String ->
-					x1
-				},
-				{ x1: ClassificationShareOptionsJs ->
-					classificationShareOptions_fromJs(x1)
-				},
-			)
-			val result = classificationApi.tryAndRecover.tryShareWithMany(
-				classificationConverted,
-				delegatesConverted,
-			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: Classification ->
-					classification_toJs(x1)
-				},
-			)
 		}
 
 		override fun shareWithMany(classification: ClassificationJs,
@@ -653,7 +589,7 @@ internal class ClassificationApiImplJs(
 		delegateId: String,
 		classification: DecryptedClassificationJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedClassificationJs>> {
+	): Promise<DecryptedClassificationJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -672,39 +608,8 @@ internal class ClassificationApiImplJs(
 				classificationConverted,
 				optionsConverted,
 			)
-			simpleShareResult_toJs(
-				result,
-				{ x1: DecryptedClassification ->
-					classification_toJs(x1)
-				},
-			)
+			classification_toJs(result)
 		}
-	}
-
-	override fun tryShareWithMany(classification: DecryptedClassificationJs,
-			delegates: Record<String, ClassificationShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedClassificationJs>> = GlobalScope.promise {
-		val classificationConverted: DecryptedClassification = classification_fromJs(classification)
-		val delegatesConverted: Map<String, ClassificationShareOptions> = objectToMap(
-			delegates,
-			"delegates",
-			{ x1: String ->
-				x1
-			},
-			{ x1: ClassificationShareOptionsJs ->
-				classificationShareOptions_fromJs(x1)
-			},
-		)
-		val result = classificationApi.tryShareWithMany(
-			classificationConverted,
-			delegatesConverted,
-		)
-		simpleShareResult_toJs(
-			result,
-			{ x1: DecryptedClassification ->
-				classification_toJs(x1)
-			},
-		)
 	}
 
 	override fun shareWithMany(classification: DecryptedClassificationJs,

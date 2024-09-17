@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.js.crypto.entities.EntityAccessInformationJs
 import com.icure.cardinal.sdk.js.crypto.entities.EntityWithTypeInfoJs
 import com.icure.cardinal.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.cardinal.sdk.js.crypto.entities.ShareAllPatientDataOptionsJs_ResultJs
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedPatientJs
@@ -86,12 +85,8 @@ public external interface PatientApiJs {
 	public fun shareWith(
 		delegateId: String,
 		patient: DecryptedPatientJs,
-		options: PatientShareOptionsJs,
-	): Promise<SimpleShareResultJs<DecryptedPatientJs>>
-
-	public fun tryShareWithMany(patient: DecryptedPatientJs,
-			delegates: Record<String, PatientShareOptionsJs>):
-			Promise<SimpleShareResultJs<DecryptedPatientJs>>
+		options: dynamic,
+	): Promise<DecryptedPatientJs>
 
 	public fun shareWithMany(patient: DecryptedPatientJs,
 			delegates: Record<String, PatientShareOptionsJs>): Promise<DecryptedPatientJs>

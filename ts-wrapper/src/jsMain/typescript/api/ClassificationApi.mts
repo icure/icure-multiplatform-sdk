@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {ClassificationShareOptions} from '../crypto/entities/ClassificationShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {SimpleShareResult} from '../crypto/entities/SimpleShareResult.mjs';
 import {Classification, DecryptedClassification, EncryptedClassification} from '../model/Classification.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
@@ -45,10 +44,7 @@ export interface ClassificationApi {
 	deleteClassifications(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	shareWith(delegateId: string, classification: DecryptedClassification,
-			options?: { options?: ClassificationShareOptions | undefined }): Promise<SimpleShareResult<DecryptedClassification>>;
-
-	tryShareWithMany(classification: DecryptedClassification,
-			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<SimpleShareResult<DecryptedClassification>>;
+			options?: { options?: ClassificationShareOptions | undefined }): Promise<DecryptedClassification>;
 
 	shareWithMany(classification: DecryptedClassification,
 			delegates: { [ key: string ]: ClassificationShareOptions }): Promise<DecryptedClassification>;

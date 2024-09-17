@@ -3,7 +3,6 @@
 
 package com.icure.cardinal.sdk.js.api
 
-import com.icure.cardinal.sdk.js.crypto.entities.SimpleShareResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.TopicShareOptionsJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
@@ -62,10 +61,7 @@ public external interface TopicApiJs {
 		delegateId: String,
 		topic: DecryptedTopicJs,
 		options: dynamic,
-	): Promise<SimpleShareResultJs<DecryptedTopicJs>>
-
-	public fun tryShareWithMany(topic: DecryptedTopicJs,
-			delegates: Record<String, TopicShareOptionsJs>): Promise<SimpleShareResultJs<DecryptedTopicJs>>
+	): Promise<DecryptedTopicJs>
 
 	public fun shareWithMany(topic: DecryptedTopicJs, delegates: Record<String, TopicShareOptionsJs>):
 			Promise<DecryptedTopicJs>
