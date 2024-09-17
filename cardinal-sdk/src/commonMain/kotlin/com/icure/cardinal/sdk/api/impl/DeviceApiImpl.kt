@@ -5,15 +5,25 @@ import com.icure.cardinal.sdk.api.raw.RawDeviceApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapDeviceFilterOptions
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.serialization.DeviceAbstractFilterSerializer
+import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
+import com.icure.cardinal.sdk.subscription.EntitySubscription
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
+import com.icure.cardinal.sdk.subscription.WebSocketSubscription
+import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class DeviceApiImpl(
 	private val rawApi: RawDeviceApi,
+	private val config: ApiConfiguration,
 ) : DeviceApi {
 	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()
 
@@ -56,5 +66,27 @@ internal class DeviceApiImpl(
 
 	override suspend fun deleteDevicesInGroup(groupId: String, deviceIds: String) =
 		rawApi.deleteDevicesInGroup(groupId, deviceIds).successBody()
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: FilterOptions<Device>,
+		subscriptionConfig: EntitySubscriptionConfiguration?,
+	): EntitySubscription<Device> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = Device.serializer(),
+			events = events,
+			filter = mapDeviceFilterOptions(filter),
+			qualifiedName = Device.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(DeviceAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 
 }

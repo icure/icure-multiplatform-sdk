@@ -2,15 +2,17 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
-interface HealthcarePartyApi {
+interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, FilterOptions<HealthcareParty>> {
 	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty
 	suspend fun createHealthcareParty(p: HealthcareParty): HealthcareParty
 	suspend fun deleteHealthcareParty(healthcarePartyId: String): DocIdentifier

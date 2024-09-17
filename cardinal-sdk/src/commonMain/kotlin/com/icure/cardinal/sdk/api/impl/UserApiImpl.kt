@@ -6,12 +6,21 @@ import com.icure.cardinal.sdk.api.raw.RawUserApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapUserFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedPropertyStub
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.Permission
+import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
+import com.icure.cardinal.sdk.serialization.UserAbstractFilterSerializer
+import com.icure.cardinal.sdk.subscription.EntitySubscription
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
+import com.icure.cardinal.sdk.subscription.WebSocketSubscription
+import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.utils.InternalIcureApi
@@ -20,6 +29,7 @@ import com.icure.utils.InternalIcureApi
 internal class UserApiImpl(
 	private val raw: RawUserApi,
 	private val rawPermissionApi: RawPermissionApi,
+	private val config: ApiConfiguration,
 ) : UserApi {
 
 	override suspend fun getCurrentUser(): User =
@@ -196,6 +206,28 @@ internal class UserApiImpl(
 		groupId: String,
 		user: User,
 	) = raw.createAdminUserInGroup(groupId, user).successBody()
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: FilterOptions<User>,
+		subscriptionConfig: EntitySubscriptionConfiguration?,
+	): EntitySubscription<User> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = User.serializer(),
+			events = events,
+			filter = mapUserFilterOptions(filter),
+			qualifiedName = User.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(UserAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 
 	suspend fun modifyUserPermissions(
 		userId: String,

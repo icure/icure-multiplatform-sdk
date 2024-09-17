@@ -2,13 +2,15 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
-interface DeviceApi {
+interface DeviceApi: Subscribable<Device, Device, FilterOptions<Device>> {
 	suspend fun getDevice(deviceId: String): Device
 	suspend fun getDevices(deviceIds: List<String>): List<Device>
 	suspend fun createDevice(p: Device): Device
