@@ -132,6 +132,8 @@ import com.icure.cardinal.sdk.model.filter.user.UserByNameEmailPhoneFilter
 import com.icure.cardinal.sdk.model.filter.user.UsersByPatientIdFilter
 import com.icure.cardinal.sdk.utils.CustomJsonPolymorphicSerializer
 import kotlinx.serialization.KSerializer
+import kotlin.String
+import kotlin.Suppress
 import kotlin.reflect.KClass
 
 internal object AnyAbstractFilterSerializer :
