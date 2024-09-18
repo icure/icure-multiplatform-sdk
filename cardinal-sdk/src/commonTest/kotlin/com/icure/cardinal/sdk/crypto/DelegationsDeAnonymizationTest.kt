@@ -67,7 +67,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write,
@@ -90,7 +90,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		apiP1.crypto.forceReload()
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
@@ -123,7 +123,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullRead
 		)
-		).updatedEntityOrThrow()
+		)
 		apiP1.crypto.forceReload()
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
@@ -157,7 +157,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullRead
 		)
-		).updatedEntityOrThrow()
+		)
 		apiP2.crypto.forceReload()
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
@@ -202,7 +202,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		apiP2.crypto.forceReload()
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
@@ -250,7 +250,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		patientApi.crypto.forceReload()
 		val expectedAccessInfo = EntityAccessInformation(
 			permissionsByDataOwnerId = mapOf(
@@ -275,28 +275,28 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = apiA.patient.shareWith(userInfoP1.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = apiB.patient.shareWith(userInfoP1.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullRead
 		)
-		).updatedEntityOrThrow()
+		)
 		apiP1.crypto.forceReload()
 		entity = apiP1.patient.shareWith(userInfoP2.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullRead
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = apiA.patient.shareWith(userInfoP2.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		/*
 		 * A->A  A->B    B->?P1
 		 *       A->?P1  P1->?P2
@@ -375,7 +375,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		parentApi.patient.createDelegationDeAnonymizationMetadata(entity, setOf(grandUserInfo.dataOwnerId))
 		patientApi.crypto.forceReload()
 		val expectedAccess = EntityAccessInformation(
@@ -402,12 +402,12 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = apiA.patient.shareWith(userInfoP.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		apiA.patient.createDelegationDeAnonymizationMetadata(entity, setOf(userInfoB.dataOwnerId, userInfoP.dataOwnerId))
 		val secureDelegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
@@ -440,23 +440,23 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity1 = apiA.patient.shareWith(userInfoP1.dataOwnerId, entity1, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		var entity2 = apiA.createSamplePatient()
 		entity2 = apiA.patient.shareWith(userInfoB.dataOwnerId, entity2, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity2 = apiA.patient.shareWith(userInfoP1.dataOwnerId, entity2, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		apiA.patient.createDelegationDeAnonymizationMetadata(entity1, setOf(userInfoB.dataOwnerId, userInfoP1.dataOwnerId))
 		val expectedAccess = EntityAccessInformation(
 			mapOf(
@@ -490,12 +490,12 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = apiP1.patient.shareWith(userInfoP2.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		apiP1.patient.createDelegationDeAnonymizationMetadata(entity, setOf(userInfoA.dataOwnerId, userInfoP2.dataOwnerId))
 		val p1ToP2DelegationKey = entity.securityMetadata?.secureDelegations?.filter { (_ ,v) ->
 			v.delegate == null && v.delegator == null && v.parentDelegations.isNotEmpty()
@@ -528,17 +528,17 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = apiA.patient.shareWith(userInfoC.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = apiA.patient.shareWith(userInfoP.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		apiA.patient.createDelegationDeAnonymizationMetadata(entity, setOf(userInfoB.dataOwnerId))
 		val expectedFullAccess = EntityAccessInformation(
 			mapOf(
@@ -576,22 +576,22 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = parentApi.patient.shareWith(userInfoB.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = parentApi.patient.shareWith(userInfoC.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		entity = parentApi.patient.shareWith(userInfoP.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
 			requestedPermissions = RequestedPermission.FullWrite
 		)
-		).updatedEntityOrThrow()
+		)
 		// Child shares de-anonymization info with A
 		childApi.patient.createDelegationDeAnonymizationMetadata(
 			entity,
