@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapHealthcarePartyFilterOptions
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.ListOfIds
-import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.serialization.HealthcarePartyAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscription
@@ -24,7 +24,7 @@ import com.icure.utils.InternalIcureApi
 @InternalIcureApi
 internal class HealthcarePartyApiImpl(
 	private val rawApi: RawHealthcarePartyApi,
-	private val config: ApiConfiguration,
+	private val config: BasicApiConfiguration,
 ) : HealthcarePartyApi {
 	override suspend fun getHealthcareParty(healthcarePartyId: String) = rawApi.getHealthcareParty(healthcarePartyId).successBody()
 

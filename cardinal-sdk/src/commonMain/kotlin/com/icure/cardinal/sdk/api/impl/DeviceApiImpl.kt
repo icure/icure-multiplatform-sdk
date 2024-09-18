@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapDeviceFilterOptions
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.ListOfIds
-import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.serialization.DeviceAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscription
@@ -23,7 +23,7 @@ import com.icure.utils.InternalIcureApi
 @InternalIcureApi
 internal class DeviceApiImpl(
 	private val rawApi: RawDeviceApi,
-	private val config: ApiConfiguration,
+	private val config: BasicApiConfiguration,
 ) : DeviceApi {
 	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()
 

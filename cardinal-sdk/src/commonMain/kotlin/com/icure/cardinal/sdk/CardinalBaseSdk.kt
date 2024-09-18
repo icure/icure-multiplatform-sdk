@@ -276,7 +276,7 @@ private class CardinalBaseApisImpl(
 			), config
 		)
 	}
-	override val device by lazy { DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, client, json = httpClientJson)) }
+	override val device by lazy { DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, client, json = httpClientJson), config) }
 	override val document by lazy {
 		DocumentBasicApiImpl(
 			RawDocumentApiImpl(
@@ -327,7 +327,8 @@ private class CardinalBaseApisImpl(
 				authProvider,
 				client,
 				json = httpClientJson
-			)
+			),
+			config
 		)
 	}
 	override val invoice by lazy {
@@ -420,7 +421,8 @@ private class CardinalBaseApisImpl(
 	override val user: UserApi by lazy {
 		UserApiImpl(
 			RawUserApiImpl(apiUrl, authProvider, client, json = httpClientJson),
-			RawPermissionApiImpl(apiUrl, authProvider, client, json = httpClientJson)
+			RawPermissionApiImpl(apiUrl, authProvider, client, json = httpClientJson),
+			config
 		)
 	}
 

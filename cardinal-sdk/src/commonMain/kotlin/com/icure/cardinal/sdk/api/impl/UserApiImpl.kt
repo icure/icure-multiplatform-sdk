@@ -13,7 +13,7 @@ import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.Permission
-import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
 import com.icure.cardinal.sdk.serialization.UserAbstractFilterSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscription
@@ -29,7 +29,7 @@ import com.icure.utils.InternalIcureApi
 internal class UserApiImpl(
 	private val raw: RawUserApi,
 	private val rawPermissionApi: RawPermissionApi,
-	private val config: ApiConfiguration,
+	private val config: BasicApiConfiguration,
 ) : UserApi {
 
 	override suspend fun getCurrentUser(): User =
