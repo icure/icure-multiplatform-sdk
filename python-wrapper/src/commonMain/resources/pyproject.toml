@@ -4,16 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cardinal-sdk"
-version = "0.0.1.rc6" # TODO: this can be retrieved from GitHub by setuptools
+version = "1.0.0-RC.1" # TODO: this can be retrieved from GitHub by setuptools
 requires-python = ">=3.9"
 authors = [
     { name = "iCure" }
 ]
 # TODO: add readme
 license = {text = "MIT License"}
-keywords = ["iCure", "medical data", "encryption"]
+keywords = ["cardinal", "medical data", "encryption"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: MacOS :: MacOS X",
@@ -23,7 +22,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://icure.com/en/"
+Homepage = "https://cardinalsdk.com/en/"
 Documentation = "https://docs.icure.com/"
 
 [tool.setuptools]
