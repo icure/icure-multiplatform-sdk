@@ -16,7 +16,9 @@ val repoUsername: String by project
 val repoPassword: String by project
 val mavenReleasesRepository: String by project
 
-val version = "2.0.50.alpha1"
+group = "com.icure"
+
+val version = "1.0.0-RC1"
 project.version = version ?: "0.0.0-snapshot"
 
 kotlin {
@@ -96,7 +98,7 @@ kotlin {
 }
 
 android {
-	namespace = "com.icure.sdk"
+	namespace = "com.icure.cardinal.sdk"
 	configureAndroidLibrary()
 }
 
@@ -162,7 +164,7 @@ if (projectHasSignatureProperties()) {
 }
 
 mavenPublishing {
-	coordinates(group as String, rootProject.name, project.version as String)
+	coordinates(group as String, project.name, project.version as String)
 
 	pom {
 		name.set("CardinalSDK")
