@@ -330,7 +330,7 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun addRolesToUser(
+	override suspend fun setRolesForUser(
 		userId: String,
 		rolesId: ListOfIds,
 	): HttpResponse<User> =
@@ -344,7 +344,7 @@ class RawUserApiImpl(
 			setBody(rolesId)
 		}.wrap()
 
-	override suspend fun addRolesToUserInGroup(
+	override suspend fun setRolesForUserInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIds,
@@ -359,7 +359,7 @@ class RawUserApiImpl(
 			setBody(rolesId)
 		}.wrap()
 
-	override suspend fun removeRolesFromUser(userId: String): HttpResponse<User> =
+	override suspend fun resetUserRoles(userId: String): HttpResponse<User> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -369,7 +369,7 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun removeRolesFromUserInGroup(
+	override suspend fun resetUserRolesInGroup(
 		userId: String,
 		groupId: String,
 	): HttpResponse<User> =
