@@ -106,20 +106,20 @@ public interface RawUserApi {
 		userId: String,
 	): HttpResponse<DocIdentifier>
 
-	suspend fun addRolesToUser(
+	suspend fun setRolesForUser(
 		userId: String,
 		rolesId: ListOfIds,
 	): HttpResponse<User>
 
-	suspend fun addRolesToUserInGroup(
+	suspend fun setRolesForUserInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIds,
 	): HttpResponse<User>
 
-	suspend fun removeRolesFromUser(userId: String): HttpResponse<User>
+	suspend fun resetUserRoles(userId: String): HttpResponse<User>
 
-	suspend fun removeRolesFromUserInGroup(
+	suspend fun resetUserRolesInGroup(
 		userId: String,
 		groupId: String,
 	): HttpResponse<User>
