@@ -79,11 +79,20 @@ public interface RawHealthcarePartyApi {
 
 	suspend fun deleteHealthcarePartiesWithRev(healthcarePartyIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteHealthcareParty(
+		healthcarePartyId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteHealthcareParty(healthcarePartyId: String): HttpResponse<HealthcareParty>
+	suspend fun undeleteHealthcareParty(
+		healthcarePartyId: String,
+		rev: String,
+	): HttpResponse<HealthcareParty>
 
-	suspend fun purgeHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeHealthcareParty(
+		healthcarePartyId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty>
 
@@ -117,6 +126,7 @@ public interface RawHealthcarePartyApi {
 	suspend fun deleteHealthcarePartyInGroup(
 		healthcarePartyId: String,
 		groupId: String,
+		rev: String? = null,
 	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyHealthcarePartyInGroup(

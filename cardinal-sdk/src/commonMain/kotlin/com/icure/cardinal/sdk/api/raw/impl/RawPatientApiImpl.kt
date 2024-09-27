@@ -349,30 +349,53 @@ class RawPatientApiImpl(
 			setBody(patientIds)
 		}.wrap()
 
-	override suspend fun deletePatient(patientId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deletePatient(
+		patientId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", patientId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeletePatient(patientId: String): HttpResponse<EncryptedPatient> =
+	override suspend fun undeletePatient(
+		patientId: String,
+		rev: String,
+	): HttpResponse<EncryptedPatient> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "undelete", patientId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgePatient(patientId: String): HttpResponse<DocIdentifier> =
+	override suspend fun undeletePatients(ids: ListOfIdsAndRev): HttpResponse<List<EncryptedPatient>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "undelete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(ids)
+		}.wrap()
+
+	override suspend fun purgePatient(
+		patientId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "purge", patientId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

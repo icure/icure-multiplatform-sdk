@@ -174,30 +174,42 @@ class RawDeviceApiImpl(
 			setBody(deviceIds)
 		}.wrap()
 
-	override suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteDevice(
+		deviceId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", deviceId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteDevice(deviceId: String): HttpResponse<Device> =
+	override suspend fun undeleteDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<Device> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "undelete", deviceId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeDevice(deviceId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "device", "purge", deviceId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

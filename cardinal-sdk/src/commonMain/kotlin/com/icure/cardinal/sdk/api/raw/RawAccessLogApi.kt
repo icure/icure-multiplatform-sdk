@@ -28,11 +28,20 @@ public interface RawAccessLogApi {
 
 	suspend fun deleteAccessLogsWithRev(accessLogIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteAccessLog(
+		accessLogId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog>
+	suspend fun undeleteAccessLog(
+		accessLogId: String,
+		rev: String,
+	): HttpResponse<EncryptedAccessLog>
 
-	suspend fun purgeAccessLog(accessLogId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeAccessLog(
+		accessLogId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog>
 

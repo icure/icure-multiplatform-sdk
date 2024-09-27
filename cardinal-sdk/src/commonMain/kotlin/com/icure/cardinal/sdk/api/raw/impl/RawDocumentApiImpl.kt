@@ -93,30 +93,42 @@ class RawDocumentApiImpl(
 			setBody(documentIds)
 		}.wrap()
 
-	override suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteDocument(
+		documentId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteDocument(documentId: String): HttpResponse<EncryptedDocument> =
+	override suspend fun undeleteDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<EncryptedDocument> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "undelete", documentId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeDocument(documentId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", "purge", documentId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

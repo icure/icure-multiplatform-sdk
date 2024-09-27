@@ -35,11 +35,20 @@ public interface RawCalendarItemApi {
 
 	suspend fun deleteCalendarItemsWithRev(calendarItemIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteCalendarItem(
+		calendarItemId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem>
+	suspend fun undeleteCalendarItem(
+		calendarItemId: String,
+		rev: String,
+	): HttpResponse<EncryptedCalendarItem>
 
-	suspend fun purgeCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeCalendarItem(
+		calendarItemId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem>
 

@@ -90,30 +90,42 @@ class RawAgendaApiImpl(
 			setBody(agendaIds)
 		}.wrap()
 
-	override suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteAgenda(
+		agendaId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "agenda", agendaId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteAgenda(agendaId: String): HttpResponse<Agenda> =
+	override suspend fun undeleteAgenda(
+		agendaId: String,
+		rev: String,
+	): HttpResponse<Agenda> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "agenda", "undelete", agendaId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeAgenda(agendaId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeAgenda(
+		agendaId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "agenda", "purge", agendaId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

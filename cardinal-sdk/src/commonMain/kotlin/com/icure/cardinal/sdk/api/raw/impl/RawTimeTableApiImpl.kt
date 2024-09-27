@@ -83,30 +83,42 @@ class RawTimeTableApiImpl(
 			setBody(timeTableIds)
 		}.wrap()
 
-	override suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteTimeTable(
+		timeTableId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "timeTable", timeTableId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable> =
+	override suspend fun undeleteTimeTable(
+		timeTableId: String,
+		rev: String,
+	): HttpResponse<EncryptedTimeTable> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "timeTable", "undelete", timeTableId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeTimeTable(timeTableId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeTimeTable(
+		timeTableId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "timeTable", "purge", timeTableId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

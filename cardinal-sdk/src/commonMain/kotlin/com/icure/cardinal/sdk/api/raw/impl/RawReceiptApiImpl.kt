@@ -81,30 +81,42 @@ class RawReceiptApiImpl(
 			setBody(receiptIds)
 		}.wrap()
 
-	override suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteReceipt(
+		receiptId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "receipt", receiptId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteReceipt(receiptId: String): HttpResponse<EncryptedReceipt> =
+	override suspend fun undeleteReceipt(
+		receiptId: String,
+		rev: String,
+	): HttpResponse<EncryptedReceipt> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "receipt", "undelete", receiptId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeReceipt(receiptId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeReceipt(
+		receiptId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "receipt", "purge", receiptId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

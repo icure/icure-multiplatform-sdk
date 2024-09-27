@@ -174,30 +174,42 @@ class RawFormApiImpl(
 			setBody(formIds)
 		}.wrap()
 
-	override suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteForm(
+		formId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", formId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteForm(formId: String): HttpResponse<EncryptedForm> =
+	override suspend fun undeleteForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<EncryptedForm> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "undelete", formId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeForm(formId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", "purge", formId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

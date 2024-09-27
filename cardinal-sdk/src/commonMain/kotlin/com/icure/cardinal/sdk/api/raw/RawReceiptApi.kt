@@ -23,11 +23,20 @@ public interface RawReceiptApi {
 
 	suspend fun deleteReceiptsWithRev(receiptIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteReceipt(
+		receiptId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteReceipt(receiptId: String): HttpResponse<EncryptedReceipt>
+	suspend fun undeleteReceipt(
+		receiptId: String,
+		rev: String,
+	): HttpResponse<EncryptedReceipt>
 
-	suspend fun purgeReceipt(receiptId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeReceipt(
+		receiptId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getReceiptAttachment(
 		receiptId: String,

@@ -32,11 +32,20 @@ public interface RawDocumentApi {
 
 	suspend fun deleteDocumentsWithRev(documentIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteDocument(
+		documentId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteDocument(documentId: String): HttpResponse<EncryptedDocument>
+	suspend fun undeleteDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<EncryptedDocument>
 
-	suspend fun purgeDocument(documentId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getMainAttachment(
 		documentId: String,

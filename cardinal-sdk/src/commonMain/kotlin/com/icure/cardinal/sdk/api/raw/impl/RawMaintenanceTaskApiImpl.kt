@@ -86,30 +86,42 @@ class RawMaintenanceTaskApiImpl(
 			setBody(maintenanceTaskIds)
 		}.wrap()
 
-	override suspend fun deleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteMaintenanceTask(
+		maintenanceTaskId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "maintenancetask", maintenanceTaskId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask> =
+	override suspend fun undeleteMaintenanceTask(
+		maintenanceTaskId: String,
+		rev: String,
+	): HttpResponse<EncryptedMaintenanceTask> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "maintenancetask", "undelete", maintenanceTaskId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeMaintenanceTask(
+		maintenanceTaskId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "maintenancetask", "purge", maintenanceTaskId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

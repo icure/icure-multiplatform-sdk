@@ -143,30 +143,42 @@ class RawClassificationApiImpl(
 			setBody(classificationIds)
 		}.wrap()
 
-	override suspend fun deleteClassification(classificationId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteClassification(
+		classificationId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", classificationId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteClassification(classificationId: String): HttpResponse<EncryptedClassification> =
+	override suspend fun undeleteClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<EncryptedClassification> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "undelete", classificationId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeClassification(classificationId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", "purge", classificationId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

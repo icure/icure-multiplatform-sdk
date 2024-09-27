@@ -49,11 +49,20 @@ public interface RawFormApi {
 
 	suspend fun deleteFormsWithRev(formIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteForm(
+		formId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteForm(formId: String): HttpResponse<EncryptedForm>
+	suspend fun undeleteForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<EncryptedForm>
 
-	suspend fun purgeForm(formId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>>
 
