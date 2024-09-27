@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -91,11 +92,41 @@ class RawCalendarItemApiImpl(
 			setBody(calendarItemIds)
 		}.wrap()
 
+	override suspend fun deleteCalendarItemsWithRev(calendarItemIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(calendarItemIds)
+		}.wrap()
+
 	override suspend fun deleteCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", calendarItemId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "undelete", calendarItemId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "purge", calendarItemId)
 			}
 			accept(Application.Json)
 		}.wrap()

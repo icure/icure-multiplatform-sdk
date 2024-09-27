@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.EntityTemplate
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -52,6 +53,8 @@ public interface RawEntityTemplateApi {
 
 	suspend fun createEntityTemplates(entityTemplateDtos: List<EntityTemplate>): HttpResponse<List<EntityTemplate>>
 
-	suspend fun deleteEntityTemplate(entityTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>>
+	suspend fun deleteEntityTemplates(entityTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteEntityTemplatesWithRev(entityTemplateIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 	// endregion
 }

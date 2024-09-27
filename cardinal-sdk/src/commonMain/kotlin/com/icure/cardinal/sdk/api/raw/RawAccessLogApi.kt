@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -25,7 +26,13 @@ public interface RawAccessLogApi {
 
 	suspend fun deleteAccessLogs(accessLogIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
+	suspend fun deleteAccessLogsWithRev(accessLogIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
 	suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog>
+
+	suspend fun purgeAccessLog(accessLogId: String): HttpResponse<DocIdentifier>
 
 	suspend fun getAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog>
 

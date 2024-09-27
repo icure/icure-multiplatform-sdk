@@ -161,6 +161,25 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun undeleteUser(userId: String): HttpResponse<User> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "undelete", userId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeUser(userId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "purge", userId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
 	override suspend fun modifyUser(userDto: User): HttpResponse<User> =
 		put(authProvider) {
 			url {

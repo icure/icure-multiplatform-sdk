@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.EncryptedContact
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
@@ -102,7 +103,13 @@ public interface RawContactApi {
 
 	suspend fun deleteContacts(contactIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
+	suspend fun deleteContactsWithRev(contactIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
 	suspend fun deleteContact(contactId: String): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteContact(contactId: String): HttpResponse<EncryptedContact>
+
+	suspend fun purgeContact(contactId: String): HttpResponse<DocIdentifier>
 
 	suspend fun modifyContact(contactDto: EncryptedContact): HttpResponse<EncryptedContact>
 

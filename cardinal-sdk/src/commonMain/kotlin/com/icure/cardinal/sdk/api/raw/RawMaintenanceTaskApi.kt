@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -24,7 +25,13 @@ public interface RawMaintenanceTaskApi {
 
 	suspend fun deleteMaintenanceTasks(maintenanceTaskIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
+	suspend fun deleteMaintenanceTasksWithRev(maintenanceTaskIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
 	suspend fun deleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask>
+
+	suspend fun purgeMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier>
 
 	suspend fun getMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask>
 

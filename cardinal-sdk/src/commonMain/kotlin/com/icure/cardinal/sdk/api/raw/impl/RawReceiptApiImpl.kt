@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.EncryptedReceipt
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
@@ -69,11 +70,41 @@ class RawReceiptApiImpl(
 			setBody(receiptIds)
 		}.wrap()
 
+	override suspend fun deleteReceiptsWithRev(receiptIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "receipt", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(receiptIds)
+		}.wrap()
+
 	override suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "receipt", receiptId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteReceipt(receiptId: String): HttpResponse<EncryptedReceipt> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "receipt", "undelete", receiptId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeReceipt(receiptId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "receipt", "purge", receiptId)
 			}
 			accept(Application.Json)
 		}.wrap()

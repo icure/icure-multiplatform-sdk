@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.EncryptedMessage
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.MessagesReadStatusUpdate
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -77,11 +78,41 @@ class RawMessageApiImpl(
 			setBody(messageIds)
 		}.wrap()
 
+	override suspend fun deleteMessagesWithRev(messageIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "message", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(messageIds)
+		}.wrap()
+
 	override suspend fun deleteMessage(messageId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", messageId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteMessage(messageId: String): HttpResponse<EncryptedMessage> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "message", "undelete", messageId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeMessage(messageId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "message", "purge", messageId)
 			}
 			accept(Application.Json)
 		}.wrap()

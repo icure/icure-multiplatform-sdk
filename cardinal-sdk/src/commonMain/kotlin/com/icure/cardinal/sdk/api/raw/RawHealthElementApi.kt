@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -60,7 +61,13 @@ public interface RawHealthElementApi {
 
 	suspend fun deleteHealthElements(healthElementIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
+	suspend fun deleteHealthElementsWithRev(healthElementIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
 	suspend fun deleteHealthElement(healthElementId: String): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement>
+
+	suspend fun purgeHealthElement(healthElementId: String): HttpResponse<DocIdentifier>
 
 	suspend fun modifyHealthElement(healthElementDto: EncryptedHealthElement): HttpResponse<EncryptedHealthElement>
 

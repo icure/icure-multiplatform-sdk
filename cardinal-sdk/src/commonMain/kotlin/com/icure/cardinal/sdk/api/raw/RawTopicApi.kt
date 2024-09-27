@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.EncryptedTopic
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -32,7 +33,13 @@ public interface RawTopicApi {
 
 	suspend fun deleteTopics(topicIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
+	suspend fun deleteTopicsWithRev(topicIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
 	suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteTopic(topicId: String): HttpResponse<EncryptedTopic>
+
+	suspend fun purgeTopic(topicId: String): HttpResponse<DocIdentifier>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>>
 

@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -180,11 +181,41 @@ class RawHealthElementApiImpl(
 			setBody(healthElementIds)
 		}.wrap()
 
+	override suspend fun deleteHealthElementsWithRev(healthElementIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "helement", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(healthElementIds)
+		}.wrap()
+
 	override suspend fun deleteHealthElement(healthElementId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "helement", healthElementId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "helement", "undelete", healthElementId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeHealthElement(healthElementId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "helement", "purge", healthElementId)
 			}
 			accept(Application.Json)
 		}.wrap()
