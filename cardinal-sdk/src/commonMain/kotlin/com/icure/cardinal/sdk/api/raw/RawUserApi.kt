@@ -49,6 +49,10 @@ public interface RawUserApi {
 
 	suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier>
 
+	suspend fun undeleteUser(userId: String): HttpResponse<User>
+
+	suspend fun purgeUser(userId: String): HttpResponse<DocIdentifier>
+
 	suspend fun modifyUser(userDto: User): HttpResponse<User>
 
 	suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User>

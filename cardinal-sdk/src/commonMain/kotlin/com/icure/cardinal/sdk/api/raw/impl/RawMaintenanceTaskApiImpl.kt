@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -74,11 +75,41 @@ class RawMaintenanceTaskApiImpl(
 			setBody(maintenanceTaskIds)
 		}.wrap()
 
+	override suspend fun deleteMaintenanceTasksWithRev(maintenanceTaskIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "maintenancetask", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(maintenanceTaskIds)
+		}.wrap()
+
 	override suspend fun deleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "maintenancetask", maintenanceTaskId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "maintenancetask", "undelete", maintenanceTaskId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "maintenancetask", "purge", maintenanceTaskId)
 			}
 			accept(Application.Json)
 		}.wrap()

@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.EncryptedContact
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
@@ -302,11 +303,41 @@ class RawContactApiImpl(
 			setBody(contactIds)
 		}.wrap()
 
+	override suspend fun deleteContactsWithRev(contactIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "contact", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(contactIds)
+		}.wrap()
+
 	override suspend fun deleteContact(contactId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", contactId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteContact(contactId: String): HttpResponse<EncryptedContact> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "contact", "undelete", contactId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeContact(contactId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "contact", "purge", contactId)
 			}
 			accept(Application.Json)
 		}.wrap()

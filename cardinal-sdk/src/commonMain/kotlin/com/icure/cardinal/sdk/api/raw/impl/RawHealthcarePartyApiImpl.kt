@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -224,11 +225,41 @@ class RawHealthcarePartyApiImpl(
 			setBody(healthcarePartyIds)
 		}.wrap()
 
+	override suspend fun deleteHealthcarePartiesWithRev(healthcarePartyIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "hcparty", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(healthcarePartyIds)
+		}.wrap()
+
 	override suspend fun deleteHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteHealthcareParty(healthcarePartyId: String): HttpResponse<HealthcareParty> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "hcparty", "undelete", healthcarePartyId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "hcparty", "purge", healthcarePartyId)
 			}
 			accept(Application.Json)
 		}.wrap()
@@ -301,6 +332,20 @@ class RawHealthcarePartyApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "delete", "batch", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(healthcarePartyIds)
+		}.wrap()
+
+	override suspend fun deleteHealthcarePartiesInGroupWithRev(
+		groupId: String,
+		healthcarePartyIds: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "hcparty", "delete", "batch", "withrev", "inGroup", groupId)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)

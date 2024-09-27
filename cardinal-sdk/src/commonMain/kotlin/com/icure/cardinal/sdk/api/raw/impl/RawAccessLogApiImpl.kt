@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeNa
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -74,11 +75,41 @@ class RawAccessLogApiImpl(
 			setBody(accessLogIds)
 		}.wrap()
 
+	override suspend fun deleteAccessLogsWithRev(accessLogIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "accesslog", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(accessLogIds)
+		}.wrap()
+
 	override suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "accesslog", accessLogId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "accesslog", "undelete", accessLogId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeAccessLog(accessLogId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "accesslog", "purge", accessLogId)
 			}
 			accept(Application.Json)
 		}.wrap()

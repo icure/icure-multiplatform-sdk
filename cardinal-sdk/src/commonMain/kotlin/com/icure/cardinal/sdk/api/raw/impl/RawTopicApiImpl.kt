@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.model.EncryptedTopic
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -104,11 +105,41 @@ class RawTopicApiImpl(
 			setBody(topicIds)
 		}.wrap()
 
+	override suspend fun deleteTopicsWithRev(topicIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "topic", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(topicIds)
+		}.wrap()
+
 	override suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", topicId)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteTopic(topicId: String): HttpResponse<EncryptedTopic> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "topic", "undelete", topicId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeTopic(topicId: String): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "topic", "purge", topicId)
 			}
 			accept(Application.Json)
 		}.wrap()

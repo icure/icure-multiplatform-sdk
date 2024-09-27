@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
@@ -30,7 +31,15 @@ public interface RawInvoiceApi {
 
 	suspend fun createInvoice(invoiceDto: EncryptedInvoice): HttpResponse<EncryptedInvoice>
 
+	suspend fun deleteInvoices(invoiceIds: ListOfIds): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteInvoicesWithRev(invoiceIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
 	suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteInvoice(invoiceId: String): HttpResponse<EncryptedInvoice>
+
+	suspend fun purgeInvoice(invoiceId: String): HttpResponse<DocIdentifier>
 
 	suspend fun getInvoice(invoiceId: String): HttpResponse<EncryptedInvoice>
 
