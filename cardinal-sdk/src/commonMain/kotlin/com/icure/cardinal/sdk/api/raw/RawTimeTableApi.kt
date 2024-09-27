@@ -25,11 +25,20 @@ public interface RawTimeTableApi {
 
 	suspend fun deleteTimeTablesWithRev(timeTableIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteTimeTable(
+		timeTableId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable>
+	suspend fun undeleteTimeTable(
+		timeTableId: String,
+		rev: String,
+	): HttpResponse<EncryptedTimeTable>
 
-	suspend fun purgeTimeTable(timeTableId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeTimeTable(
+		timeTableId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable>
 

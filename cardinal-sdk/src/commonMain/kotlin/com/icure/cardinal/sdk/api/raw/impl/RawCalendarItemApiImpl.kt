@@ -103,30 +103,42 @@ class RawCalendarItemApiImpl(
 			setBody(calendarItemIds)
 		}.wrap()
 
-	override suspend fun deleteCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteCalendarItem(
+		calendarItemId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", calendarItemId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem> =
+	override suspend fun undeleteCalendarItem(
+		calendarItemId: String,
+		rev: String,
+	): HttpResponse<EncryptedCalendarItem> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "undelete", calendarItemId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeCalendarItem(
+		calendarItemId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "purge", calendarItemId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

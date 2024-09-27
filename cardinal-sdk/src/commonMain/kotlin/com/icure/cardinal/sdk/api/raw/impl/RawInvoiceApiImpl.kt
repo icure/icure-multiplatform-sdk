@@ -94,30 +94,42 @@ class RawInvoiceApiImpl(
 			setBody(invoiceIds)
 		}.wrap()
 
-	override suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteInvoice(
+		invoiceId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "invoice", invoiceId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteInvoice(invoiceId: String): HttpResponse<EncryptedInvoice> =
+	override suspend fun undeleteInvoice(
+		invoiceId: String,
+		rev: String,
+	): HttpResponse<EncryptedInvoice> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "invoice", "undelete", invoiceId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeInvoice(invoiceId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeInvoice(
+		invoiceId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "invoice", "purge", invoiceId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

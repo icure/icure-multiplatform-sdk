@@ -63,11 +63,20 @@ public interface RawHealthElementApi {
 
 	suspend fun deleteHealthElementsWithRev(healthElementIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteHealthElement(healthElementId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteHealthElement(
+		healthElementId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement>
+	suspend fun undeleteHealthElement(
+		healthElementId: String,
+		rev: String,
+	): HttpResponse<EncryptedHealthElement>
 
-	suspend fun purgeHealthElement(healthElementId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeHealthElement(
+		healthElementId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyHealthElement(healthElementDto: EncryptedHealthElement): HttpResponse<EncryptedHealthElement>
 

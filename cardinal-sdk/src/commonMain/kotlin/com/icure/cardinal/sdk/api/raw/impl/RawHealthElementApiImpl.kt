@@ -192,30 +192,42 @@ class RawHealthElementApiImpl(
 			setBody(healthElementIds)
 		}.wrap()
 
-	override suspend fun deleteHealthElement(healthElementId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteHealthElement(
+		healthElementId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "helement", healthElementId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteHealthElement(healthElementId: String): HttpResponse<EncryptedHealthElement> =
+	override suspend fun undeleteHealthElement(
+		healthElementId: String,
+		rev: String,
+	): HttpResponse<EncryptedHealthElement> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "helement", "undelete", healthElementId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeHealthElement(healthElementId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeHealthElement(
+		healthElementId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "helement", "purge", healthElementId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

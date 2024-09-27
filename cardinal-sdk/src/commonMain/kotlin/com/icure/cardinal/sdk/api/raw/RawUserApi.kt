@@ -47,11 +47,20 @@ public interface RawUserApi {
 
 	suspend fun findByPatientId(id: String): HttpResponse<List<String>>
 
-	suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteUser(
+		userId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteUser(userId: String): HttpResponse<User>
+	suspend fun undeleteUser(
+		userId: String,
+		rev: String,
+	): HttpResponse<User>
 
-	suspend fun purgeUser(userId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeUser(
+		userId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyUser(userDto: User): HttpResponse<User>
 
@@ -108,6 +117,7 @@ public interface RawUserApi {
 	suspend fun deleteUserInGroup(
 		groupId: String,
 		userId: String,
+		rev: String? = null,
 	): HttpResponse<DocIdentifier>
 
 	suspend fun setRolesForUser(

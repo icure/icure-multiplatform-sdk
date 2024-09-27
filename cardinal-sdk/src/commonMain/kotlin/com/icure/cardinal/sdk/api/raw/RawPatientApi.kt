@@ -126,11 +126,22 @@ public interface RawPatientApi {
 
 	suspend fun deletePatientsWithRev(patientIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deletePatient(patientId: String): HttpResponse<DocIdentifier>
+	suspend fun deletePatient(
+		patientId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeletePatient(patientId: String): HttpResponse<EncryptedPatient>
+	suspend fun undeletePatient(
+		patientId: String,
+		rev: String,
+	): HttpResponse<EncryptedPatient>
 
-	suspend fun purgePatient(patientId: String): HttpResponse<DocIdentifier>
+	suspend fun undeletePatients(ids: ListOfIdsAndRev): HttpResponse<List<EncryptedPatient>>
+
+	suspend fun purgePatient(
+		patientId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun findDeletedPatients(
 		startDate: Long,

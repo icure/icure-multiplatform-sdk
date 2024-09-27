@@ -30,11 +30,20 @@ public interface RawMessageApi {
 
 	suspend fun deleteMessagesWithRev(messageIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteMessage(messageId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteMessage(
+		messageId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteMessage(messageId: String): HttpResponse<EncryptedMessage>
+	suspend fun undeleteMessage(
+		messageId: String,
+		rev: String,
+	): HttpResponse<EncryptedMessage>
 
-	suspend fun purgeMessage(messageId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeMessage(
+		messageId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getMessage(messageId: String): HttpResponse<EncryptedMessage>
 

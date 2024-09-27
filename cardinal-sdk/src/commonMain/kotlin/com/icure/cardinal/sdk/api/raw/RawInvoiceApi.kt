@@ -35,11 +35,20 @@ public interface RawInvoiceApi {
 
 	suspend fun deleteInvoicesWithRev(invoiceIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteInvoice(
+		invoiceId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteInvoice(invoiceId: String): HttpResponse<EncryptedInvoice>
+	suspend fun undeleteInvoice(
+		invoiceId: String,
+		rev: String,
+	): HttpResponse<EncryptedInvoice>
 
-	suspend fun purgeInvoice(invoiceId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeInvoice(
+		invoiceId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getInvoice(invoiceId: String): HttpResponse<EncryptedInvoice>
 

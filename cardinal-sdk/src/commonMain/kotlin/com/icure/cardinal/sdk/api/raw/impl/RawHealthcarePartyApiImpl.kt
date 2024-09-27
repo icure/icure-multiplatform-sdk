@@ -236,30 +236,42 @@ class RawHealthcarePartyApiImpl(
 			setBody(healthcarePartyIds)
 		}.wrap()
 
-	override suspend fun deleteHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteHealthcareParty(
+		healthcarePartyId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteHealthcareParty(healthcarePartyId: String): HttpResponse<HealthcareParty> =
+	override suspend fun undeleteHealthcareParty(
+		healthcarePartyId: String,
+		rev: String,
+	): HttpResponse<HealthcareParty> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "undelete", healthcarePartyId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeHealthcareParty(
+		healthcarePartyId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "purge", healthcarePartyId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
@@ -355,11 +367,13 @@ class RawHealthcarePartyApiImpl(
 	override suspend fun deleteHealthcarePartyInGroup(
 		healthcarePartyId: String,
 		groupId: String,
+		rev: String?,
 	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", healthcarePartyId, "inGroup", groupId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

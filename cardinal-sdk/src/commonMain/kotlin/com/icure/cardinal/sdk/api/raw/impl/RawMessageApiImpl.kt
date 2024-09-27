@@ -89,30 +89,42 @@ class RawMessageApiImpl(
 			setBody(messageIds)
 		}.wrap()
 
-	override suspend fun deleteMessage(messageId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteMessage(
+		messageId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", messageId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteMessage(messageId: String): HttpResponse<EncryptedMessage> =
+	override suspend fun undeleteMessage(
+		messageId: String,
+		rev: String,
+	): HttpResponse<EncryptedMessage> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", "undelete", messageId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeMessage(messageId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeMessage(
+		messageId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", "purge", messageId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

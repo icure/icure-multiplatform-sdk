@@ -105,11 +105,20 @@ public interface RawContactApi {
 
 	suspend fun deleteContactsWithRev(contactIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteContact(contactId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteContact(
+		contactId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteContact(contactId: String): HttpResponse<EncryptedContact>
+	suspend fun undeleteContact(
+		contactId: String,
+		rev: String,
+	): HttpResponse<EncryptedContact>
 
-	suspend fun purgeContact(contactId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeContact(
+		contactId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyContact(contactDto: EncryptedContact): HttpResponse<EncryptedContact>
 

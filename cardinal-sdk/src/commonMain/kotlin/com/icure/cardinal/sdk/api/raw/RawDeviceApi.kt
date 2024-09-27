@@ -50,11 +50,20 @@ public interface RawDeviceApi {
 
 	suspend fun deleteDevicesWithRev(deviceIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteDevice(
+		deviceId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteDevice(deviceId: String): HttpResponse<Device>
+	suspend fun undeleteDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<Device>
 
-	suspend fun purgeDevice(deviceId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 	// endregion
 
 	// region cloud endpoints

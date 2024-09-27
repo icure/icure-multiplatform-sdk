@@ -45,11 +45,20 @@ public interface RawClassificationApi {
 
 	suspend fun deleteClassificationsWithRev(classificationIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteClassification(classificationId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteClassification(
+		classificationId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteClassification(classificationId: String): HttpResponse<EncryptedClassification>
+	suspend fun undeleteClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<EncryptedClassification>
 
-	suspend fun purgeClassification(classificationId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification>
 

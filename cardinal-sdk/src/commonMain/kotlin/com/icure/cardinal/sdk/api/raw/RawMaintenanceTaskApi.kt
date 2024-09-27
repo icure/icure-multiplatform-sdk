@@ -27,11 +27,20 @@ public interface RawMaintenanceTaskApi {
 
 	suspend fun deleteMaintenanceTasksWithRev(maintenanceTaskIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteMaintenanceTask(
+		maintenanceTaskId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask>
+	suspend fun undeleteMaintenanceTask(
+		maintenanceTaskId: String,
+		rev: String,
+	): HttpResponse<EncryptedMaintenanceTask>
 
-	suspend fun purgeMaintenanceTask(maintenanceTaskId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeMaintenanceTask(
+		maintenanceTaskId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getMaintenanceTask(maintenanceTaskId: String): HttpResponse<EncryptedMaintenanceTask>
 

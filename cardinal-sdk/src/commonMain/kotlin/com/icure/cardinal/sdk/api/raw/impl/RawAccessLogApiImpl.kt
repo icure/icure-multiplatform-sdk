@@ -86,30 +86,42 @@ class RawAccessLogApiImpl(
 			setBody(accessLogIds)
 		}.wrap()
 
-	override suspend fun deleteAccessLog(accessLogId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteAccessLog(
+		accessLogId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "accesslog", accessLogId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteAccessLog(accessLogId: String): HttpResponse<EncryptedAccessLog> =
+	override suspend fun undeleteAccessLog(
+		accessLogId: String,
+		rev: String,
+	): HttpResponse<EncryptedAccessLog> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "accesslog", "undelete", accessLogId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeAccessLog(accessLogId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeAccessLog(
+		accessLogId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "accesslog", "purge", accessLogId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

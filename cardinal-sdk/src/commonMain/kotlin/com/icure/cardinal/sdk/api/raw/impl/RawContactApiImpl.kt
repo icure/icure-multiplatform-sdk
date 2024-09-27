@@ -314,30 +314,42 @@ class RawContactApiImpl(
 			setBody(contactIds)
 		}.wrap()
 
-	override suspend fun deleteContact(contactId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteContact(
+		contactId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", contactId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteContact(contactId: String): HttpResponse<EncryptedContact> =
+	override suspend fun undeleteContact(
+		contactId: String,
+		rev: String,
+	): HttpResponse<EncryptedContact> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "undelete", contactId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeContact(contactId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeContact(
+		contactId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "contact", "purge", contactId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

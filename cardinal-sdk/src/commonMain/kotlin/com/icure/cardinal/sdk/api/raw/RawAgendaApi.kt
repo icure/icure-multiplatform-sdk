@@ -28,11 +28,20 @@ public interface RawAgendaApi {
 
 	suspend fun deleteAgendasWithRev(agendaIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteAgenda(
+		agendaId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteAgenda(agendaId: String): HttpResponse<Agenda>
+	suspend fun undeleteAgenda(
+		agendaId: String,
+		rev: String,
+	): HttpResponse<Agenda>
 
-	suspend fun purgeAgenda(agendaId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeAgenda(
+		agendaId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda>
 

@@ -116,30 +116,42 @@ class RawTopicApiImpl(
 			setBody(topicIds)
 		}.wrap()
 
-	override suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteTopic(
+		topicId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", topicId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun undeleteTopic(topicId: String): HttpResponse<EncryptedTopic> =
+	override suspend fun undeleteTopic(
+		topicId: String,
+		rev: String,
+	): HttpResponse<EncryptedTopic> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "undelete", topicId)
+				parameter("rev", rev)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun purgeTopic(topicId: String): HttpResponse<DocIdentifier> =
+	override suspend fun purgeTopic(
+		topicId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "purge", topicId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

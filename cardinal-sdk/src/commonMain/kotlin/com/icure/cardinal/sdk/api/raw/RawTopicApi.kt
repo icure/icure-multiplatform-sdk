@@ -35,11 +35,20 @@ public interface RawTopicApi {
 
 	suspend fun deleteTopicsWithRev(topicIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteTopic(topicId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteTopic(
+		topicId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun undeleteTopic(topicId: String): HttpResponse<EncryptedTopic>
+	suspend fun undeleteTopic(
+		topicId: String,
+		rev: String,
+	): HttpResponse<EncryptedTopic>
 
-	suspend fun purgeTopic(topicId: String): HttpResponse<DocIdentifier>
+	suspend fun purgeTopic(
+		topicId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTopic>>>
 
