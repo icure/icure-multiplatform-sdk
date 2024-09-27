@@ -1,12 +1,14 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -20,24 +22,43 @@ import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MaintenanceTaskBasicFlavourlessApi {
 	/**
-	 * Deletes a maintenance task. If you don't have write access to the maintenance task the method will fail.
-	 * @param entityId id of the maintenance task.
-	 * @return the id and revision of the deleted maintenance task.
+	 * Deletes a maintenanceTask. If you don't have write access to the maintenanceTask the method will fail.
+	 * @param entityId id of the maintenanceTask.
+	 * @param rev the latest known rev of the maintenanceTask to delete
+	 * @return the id and revision of the deleted maintenanceTask.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteMaintenanceTask(entityId: String): DocIdentifier
+	suspend fun deleteMaintenanceTask(entityId: String, rev: String): DocIdentifier
 
 	/**
-	 * Deletes many maintenance tasks. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * Deletes many maintenanceTasks. Ids that do not correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the maintenance tasks.
-	 * @return the id and revision of the deleted maintenance tasks. If some entities could not be deleted (for example
+	 * @param entityIds ids and revisions of the maintenanceTasks to delete.
+	 * @return the id and revision of the deleted maintenanceTasks. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteMaintenanceTasks(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteMaintenanceTasks(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+
+	/**
+	 * Permanently deletes a maintenanceTask.
+	 * @param id id of the maintenanceTask to purge
+	 * @param rev latest revision of the maintenanceTask
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeMaintenanceTask(id: String, rev: String)
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
+	/**
+	 * Restores a maintenanceTask that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteMaintenanceTask(id: String, rev: String): E
+	
 	/**
 	 * Modifies a maintenance task. You need to have write access to the entity.
 	 * Flavoured method.

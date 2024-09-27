@@ -432,7 +432,7 @@ public fun deleteEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: Stri
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplateParams>(params)
 	runBlocking {
-		sdk.entityTemplate.deleteEntityTemplate(
+		sdk.entityTemplate.deleteEntityTemplates(
 			decodedParams.entityTemplateIds,
 		)
 	}
@@ -451,7 +451,7 @@ public fun deleteEntityTemplateAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.entityTemplate.deleteEntityTemplate(
+			sdk.entityTemplate.deleteEntityTemplates(
 				decodedParams.entityTemplateIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

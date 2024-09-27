@@ -4,12 +4,14 @@ import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -29,26 +31,28 @@ interface PatientBasicFlavourlessApi {
 	/**
 	 * Deletes a patient. If you don't have write access to the patient the method will fail.
 	 * @param entityId id of the patient.
+	 * @param rev the latest known rev of the patient to delete
 	 * @return the id and revision of the deleted patient.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deletePatient(entityId: String): DocIdentifier
+	suspend fun deletePatient(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many patients. Ids that do not correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the patients.
+	 * @param entityIds ids and revisions of the patients to delete.
 	 * @return the id and revision of the deleted patients. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deletePatients(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
-	 * Restores patients that were marked as deleted (but not purged). This method won't restore any content if before
-	 * deletion you had destroyed the content.
-	 * @param patientIds the ids of patients to restore
-	 * @return the undeleted patient ids and revisions
+	 * Permanently deletes a patient.
+	 * @param id id of the patient to purge
+	 * @param rev latest revision of the patient
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeletePatients(patientIds: List<String>): List<DocIdentifier>
+	suspend fun purgePatient(id: String, rev: String)
 
 	/**
 	 * Get all data owners with access to the provided patient, attempting to identify any unknown anonymous data owners
@@ -71,6 +75,24 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 * @return the patient updated with the provided content and a new revision.
 	 */
 	suspend fun modifyPatient(entity: E): E
+
+	/**
+	 * Restores a patient that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeletePatient(id: String, rev: String): E
+
+	/**
+	 * Restores one or more patients that were marked as deleted.
+	 * Ignores any entities that the current user is not allowed to restore or that have a revision different from the
+	 * provided revision.
+	 * @param ids the ids and revisions of the patients to restore
+	 * @return the restored entities.
+	 */
+	suspend fun undeletePatients(ids: List<IdWithMandatoryRev>): List<E>
 
 	/**
 	 * Get a patient by its id. You must have read access to the entity. Fails if the id does not correspond to any

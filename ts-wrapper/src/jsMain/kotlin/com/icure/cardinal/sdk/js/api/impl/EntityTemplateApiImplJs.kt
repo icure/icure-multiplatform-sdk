@@ -249,7 +249,7 @@ internal class EntityTemplateApiImplJs(
 				x1
 			},
 		)
-		val result = entityTemplateApi.deleteEntityTemplate(
+		val result = entityTemplateApi.deleteEntityTemplates(
 			entityTemplateIdsConverted,
 		)
 		listToArray(

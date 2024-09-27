@@ -2,12 +2,14 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.MessageShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -24,22 +26,31 @@ import kotlinx.serialization.json.JsonElement
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MessageBasicFlavourlessApi {
-
 	/**
-	 * Deletes a message. If you don't have write access to the Message the method will fail.
-	 * @param entityId id of the Message.
-	 * @return the id and revision of the deleted Message.
+	 * Deletes a message. If you don't have write access to the message the method will fail.
+	 * @param entityId id of the message.
+	 * @param rev the latest known rev of the message to delete
+	 * @return the id and revision of the deleted message.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteMessage(entityId: String): DocIdentifier
+	suspend fun deleteMessage(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many messages. Ids that do not correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the messages.
+	 * @param entityIds ids and revisions of the messages to delete.
 	 * @return the id and revision of the deleted messages. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteMessages(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteMessages(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+
+	/**
+	 * Permanently deletes a message.
+	 * @param id id of the message to purge
+	 * @param rev latest revision of the message
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeMessage(id: String, rev: String)
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -51,6 +62,15 @@ interface MessageBasicFlavouredApi<E : Message> {
 	 * @return the Message updated with the provided content and a new revision.
 	 */
 	suspend fun modifyMessage(entity: E): E
+
+	/**
+	 * Restores a message that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteMessage(id: String, rev: String): E
 
 	/**
 	 * Get a message by its id. You must have read access to the entity. Fails if the id does not correspond to any

@@ -7,7 +7,10 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapHealthcarePartyFilterOptions
 import com.icure.cardinal.sdk.model.HealthcareParty
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.utils.InternalIcureApi
@@ -19,8 +22,6 @@ internal class HealthcarePartyApiImpl(
 	override suspend fun getHealthcareParty(healthcarePartyId: String) = rawApi.getHealthcareParty(healthcarePartyId).successBody()
 
 	override suspend fun createHealthcareParty(p: HealthcareParty) = rawApi.createHealthcareParty(p).successBody()
-
-	override suspend fun deleteHealthcareParty(healthcarePartyId: String) = rawApi.deleteHealthcareParty(healthcarePartyId).successBody()
 
 	override suspend fun modifyHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcareParty) =
 		rawApi.modifyHealthcarePartyInGroup(groupId, healthcareParty).successBodyOrThrowRevisionConflict()
@@ -86,8 +87,6 @@ internal class HealthcarePartyApiImpl(
 
 	override suspend fun listHealthcarePartiesByParentId(parentId: String) = rawApi.listHealthcarePartiesByParentId(parentId).successBody()
 	override suspend fun getPublicKey(healthcarePartyId: String) = rawApi.getPublicKey(healthcarePartyId).successBody()
-	override suspend fun deleteHealthcareParties(healthcarePartyIds: List<String>) =
-		rawApi.deleteHealthcareParties(ListOfIds(healthcarePartyIds)).successBody()
 
 	override suspend fun modifyHealthcareParty(healthcareParty: HealthcareParty) =
 		rawApi.modifyHealthcareParty(healthcareParty).successBodyOrThrowRevisionConflict()
@@ -109,15 +108,31 @@ internal class HealthcarePartyApiImpl(
 		healthcarePartyIds: List<String>?,
 	) = rawApi.getHealthcarePartiesInGroup(groupId, healthcarePartyIds?.let { ListOfIds(it) }).successBody()
 
+	override suspend fun deleteHealthcareParty(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteHealthcareParty(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteHealthcareParties(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteHealthcarePartiesWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun deleteHealthcarePartyInGroup(groupId: String, entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteHealthcarePartyInGroup(
+			healthcarePartyId = entityId,
+			rev = rev,
+			groupId = groupId
+		).successBodyOrThrowRevisionConflict()
+
 	override suspend fun deleteHealthcarePartiesInGroup(
 		groupId: String,
-		healthcarePartyIds: List<String>,
-	) = rawApi.deleteHealthcarePartiesInGroup(groupId, ListOfIds(healthcarePartyIds)).successBody()
+		entityIds: List<IdWithMandatoryRev>
+	): List<DocIdentifier> =
+		rawApi.deleteHealthcarePartiesInGroupWithRev(groupId, ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun deleteHealthcarePartyInGroup(
-		healthcarePartyId: String,
-		groupId: String,
-	) = rawApi.deleteHealthcarePartyInGroup(healthcarePartyId, groupId).successBody()
+	override suspend fun purgeHealthcareParty(id: String, rev: String) {
+		rawApi.purgeHealthcareParty(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
+	override suspend fun undeleteHealthcareParty(id: String, rev: String): HealthcareParty =
+		rawApi.undeleteHealthcareParty(id, rev).successBodyOrThrowRevisionConflict()
 
 	override suspend fun registerPatient(
 		groupId: String,

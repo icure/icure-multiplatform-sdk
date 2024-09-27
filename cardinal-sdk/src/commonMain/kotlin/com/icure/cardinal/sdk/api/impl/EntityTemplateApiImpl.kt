@@ -4,7 +4,9 @@ import com.icure.cardinal.sdk.api.EntityTemplateApi
 import com.icure.cardinal.sdk.api.raw.RawEntityTemplateApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.EntityTemplate
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
@@ -54,9 +56,7 @@ internal class EntityTemplateApiImpl(
 	override suspend fun createEntityTemplates(entityTemplates: List<EntityTemplate>) =
 		rawApi.createEntityTemplates(entityTemplates).successBody()
 
-	override suspend fun deleteEntityTemplate(entityTemplateIds: List<String>) = rawApi.deleteEntityTemplate(
-		ListOfIds(
-			entityTemplateIds
-		)
+	override suspend fun deleteEntityTemplates(entityTemplateIds: List<IdWithMandatoryRev>) = rawApi.deleteEntityTemplatesWithRev(
+		ListOfIdsAndRev(entityTemplateIds)
 	).successBody()
 }

@@ -201,7 +201,7 @@ public fun deleteRecoveryInfoBlocking(sdk: CardinalApis, params: String): String
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteRecoveryInfoParams>(params)
 	runBlocking {
-		sdk.recovery.deleteRecoveryInfo(
+		sdk.recovery.purgeRecoveryInfo(
 			decodedParams.recoveryKey,
 		)
 	}
@@ -220,7 +220,7 @@ public fun deleteRecoveryInfoAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteRecoveryInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.recovery.deleteRecoveryInfo(
+			sdk.recovery.purgeRecoveryInfo(
 				decodedParams.recoveryKey,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)

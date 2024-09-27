@@ -18,9 +18,12 @@ import com.icure.cardinal.sdk.filters.mapHealthElementFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -66,6 +69,9 @@ private abstract class AbstractHealthElementBasicFlavouredApi<E : HealthElement>
 
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedHealthElement
 	abstract suspend fun maybeDecrypt(entity: EncryptedHealthElement): E
+
+	override suspend fun undeleteHealthElement(id: String, rev: String): E =
+		rawApi.undeleteHealthElement(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 }
 
 @InternalIcureApi
@@ -130,8 +136,16 @@ private class AbstractHealthElementBasicFlavourlessApi(
 	val rawApi: RawHealthElementApi,
 	private val config: BasicApiConfiguration
 ) : HealthElementBasicFlavourlessApi {
-	override suspend fun deleteHealthElement(entityId: String) = rawApi.deleteHealthElement(entityId).successBody()
-	override suspend fun deleteHealthElements(entityIds: List<String>) = rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody()
+	override suspend fun deleteHealthElement(entityId: String, rev: String?): DocIdentifier =
+		rawApi.deleteHealthElement(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteHealthElements(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteHealthElementsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeHealthElement(id: String, rev: String) {
+		rawApi.purgeHealthElement(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
 	@Deprecated("Use filter instead")
 	override suspend fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
 		hcPartyId: String,

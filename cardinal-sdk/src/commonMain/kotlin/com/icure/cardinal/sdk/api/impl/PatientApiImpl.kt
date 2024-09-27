@@ -37,10 +37,13 @@ import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.IcureStub
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.SortDirection
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
@@ -75,6 +78,12 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 	private val config: BasicApiConfiguration,
 ) :
 	PatientBasicFlavouredApi<E> {
+	override suspend fun undeletePatient(id: String, rev: String): E =
+		rawApi.undeletePatient(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
+	override suspend fun undeletePatients(ids: List<IdWithMandatoryRev>): List<E> =
+		rawApi.undeletePatients(ListOfIdsAndRev(ids)).successBody().map { maybeDecrypt(it) }
+
 	override suspend fun modifyPatient(entity: E): E =
 		rawApi.modifyPatient(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -296,9 +305,16 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 @InternalIcureApi
 private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val config: BasicApiConfiguration) :
 	PatientBasicFlavourlessApi {
-	override suspend fun deletePatient(entityId: String) = rawApi.deletePatient(entityId).successBody()
-	override suspend fun deletePatients(entityIds: List<String>) = rawApi.deletePatients(ListOfIds(entityIds)).successBody()
-	override suspend fun undeletePatients(patientIds: List<String>) = rawApi.undeletePatient(patientIds.joinToString(",")).successBody()
+	override suspend fun deletePatient(entityId: String, rev: String): DocIdentifier =
+		rawApi.deletePatient(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deletePatients(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deletePatientsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgePatient(id: String, rev: String) {
+		rawApi.purgePatient(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
 	override suspend fun getDataOwnersWithAccessTo(patient: Patient): EntityAccessInformation =
 		config.crypto.entityAccessInformationProvider.getDataOwnersWithAccessTo(patient.withTypeInfo())
 	@Deprecated("This method gives inaccurate results outside of the simples scenarios, use match instead")

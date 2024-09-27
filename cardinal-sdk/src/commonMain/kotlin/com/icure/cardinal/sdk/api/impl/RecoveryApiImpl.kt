@@ -108,7 +108,7 @@ internal class RecoveryApiImpl(
 			}
 		}
 
-	override suspend fun deleteRecoveryInfo(recoveryKey: RecoveryDataKey) {
+	override suspend fun purgeRecoveryInfo(recoveryKey: RecoveryDataKey) {
 		crypto.recoveryDataEncryption.raw.deleteRecoveryData(
 			crypto.recoveryDataEncryption.recoveryKeyToId(recoveryKey)
 		).successBody()

@@ -19,9 +19,12 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -40,6 +43,9 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @InternalIcureApi
 private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val rawApi: RawFormApi) :
 	FormBasicFlavouredApi<E> {
+	override suspend fun undeleteForm(id: String, rev: String): E =
+		rawApi.undeleteForm(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	override suspend fun modifyForm(entity: E): E =
 		rawApi.modifyForm(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -137,8 +143,16 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 
 @InternalIcureApi
 private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasicFlavourlessApi {
-	override suspend fun deleteForm(entityId: String) = rawApi.deleteForm(entityId).successBody()
-	override suspend fun deleteForms(entityIds: List<String>) = rawApi.deleteForms(ListOfIds(entityIds)).successBody()
+	override suspend fun deleteForm(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteForm(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteForms(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteFormsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeForm(id: String, rev: String) {
+		rawApi.purgeForm(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
 	override suspend fun getFormTemplate(
 		formTemplateId: String,
 		raw: Boolean?,
