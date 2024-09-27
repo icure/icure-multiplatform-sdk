@@ -101,19 +101,19 @@ interface UserApi {
 		userId: String,
 	): DocIdentifier
 
-	suspend fun addRolesToUser(
+	suspend fun setUserRoles(
 		userId: String,
 		rolesId: ListOfIds,
 	): User
 
-	suspend fun addRolesToUserInGroup(
+	suspend fun setUserRolesInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIds,
 	): User
 
-	suspend fun removeRolesFromUser(userId: String): User
-	suspend fun removeRolesFromUserInGroup(
+	suspend fun resetUserRoles(userId: String): User
+	suspend fun resetUserRolesInGroup(
 		userId: String,
 		groupId: String,
 	): User

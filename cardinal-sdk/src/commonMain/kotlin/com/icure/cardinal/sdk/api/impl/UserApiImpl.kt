@@ -138,23 +138,23 @@ internal class UserApiImpl(
 		userId: String,
 	) = raw.deleteUserInGroup(groupId, userId).successBody()
 
-	override suspend fun addRolesToUser(
+	override suspend fun setUserRoles(
 		userId: String,
 		rolesId: ListOfIds,
-	) = raw.addRolesToUser(userId, rolesId).successBody()
+	) = raw.setRolesForUser(userId, rolesId).successBody()
 
-	override suspend fun addRolesToUserInGroup(
+	override suspend fun setUserRolesInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIds,
-	) = raw.addRolesToUserInGroup(userId, groupId, rolesId).successBody()
+	) = raw.setRolesForUserInGroup(userId, groupId, rolesId).successBody()
 
-	override suspend fun removeRolesFromUser(userId: String) = raw.removeRolesFromUser(userId).successBody()
+	override suspend fun resetUserRoles(userId: String) = raw.resetUserRoles(userId).successBody()
 
-	override suspend fun removeRolesFromUserInGroup(
+	override suspend fun resetUserRolesInGroup(
 		userId: String,
 		groupId: String,
-	) = raw.removeRolesFromUserInGroup(userId, groupId).successBody()
+	) = raw.resetUserRolesInGroup(userId, groupId).successBody()
 
 	override suspend fun getTokenInGroup(
 		groupId: String,
