@@ -24,10 +24,13 @@ import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
 import com.icure.cardinal.sdk.model.IcureStub
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.DelegationTag
@@ -71,6 +74,9 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	protected val rawApi: RawContactApi,
 	private val config: BasicApiConfiguration
 ) : ContactBasicFlavouredApi<E, S> {
+	override suspend fun undeleteContactById(id: String, rev: String): E =
+		rawApi.undeleteContact(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	override suspend fun modifyContact(entity: E): E =
 		rawApi.modifyContact(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -345,8 +351,16 @@ private class AbstractContactBasicFlavourlessApi(
 	val rawApi: RawContactApi,
 	private val config: BasicApiConfiguration
 ) : ContactBasicFlavourlessApi {
-	override suspend fun deleteContact(entityId: String) = rawApi.deleteContact(entityId).successBody()
-	override suspend fun deleteContacts(entityIds: List<String>) = rawApi.deleteContacts(ListOfIds(entityIds)).successBody()
+	override suspend fun deleteContactById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteContact(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteContactsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteContactsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeContactById(id: String, rev: String) {
+		rawApi.purgeContact(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
 	@Deprecated("Use filter instead")
 	override suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
 		hcPartyId: String,

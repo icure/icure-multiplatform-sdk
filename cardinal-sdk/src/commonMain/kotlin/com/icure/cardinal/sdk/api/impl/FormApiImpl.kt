@@ -43,7 +43,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @InternalIcureApi
 private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val rawApi: RawFormApi) :
 	FormBasicFlavouredApi<E> {
-	override suspend fun undeleteForm(id: String, rev: String): E =
+	override suspend fun undeleteFormById(id: String, rev: String): E =
 		rawApi.undeleteForm(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyForm(entity: E): E =
@@ -143,13 +143,13 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 
 @InternalIcureApi
 private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasicFlavourlessApi {
-	override suspend fun deleteForm(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteFormById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteForm(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteForms(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteFormsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteFormsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeForm(id: String, rev: String) {
+	override suspend fun purgeFormById(id: String, rev: String) {
 		rawApi.purgeForm(id, rev).successBodyOrThrowRevisionConflict()
 	}
 

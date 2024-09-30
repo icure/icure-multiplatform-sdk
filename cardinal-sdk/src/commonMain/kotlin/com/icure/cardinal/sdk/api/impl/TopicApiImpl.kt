@@ -54,7 +54,7 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 	private val config: BasicApiConfiguration,
 ) :
 	TopicBasicFlavouredApi<E> {
-	override suspend fun undeleteTopic(id: String, rev: String): E =
+	override suspend fun undeleteTopicById(id: String, rev: String): E =
 		rawApi.undeleteTopic(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyTopic(entity: E): E =
@@ -110,13 +110,13 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 @InternalIcureApi
 private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private val config: BasicApiConfiguration) :
 	TopicBasicFlavourlessApi {
-	override suspend fun deleteTopic(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteTopicById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteTopic(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteTopics(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteTopicsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteTopicsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeTopic(id: String, rev: String) {
+	override suspend fun purgeTopicById(id: String, rev: String) {
 		rawApi.purgeTopic(id, rev).successBodyOrThrowRevisionConflict()
 	}
 }

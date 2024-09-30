@@ -51,7 +51,7 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 ) :
 	MaintenanceTaskBasicFlavouredApi<E> {
 
-	override suspend fun undeleteMaintenanceTask(id: String, rev: String): E =
+	override suspend fun undeleteMaintenanceTaskById(id: String, rev: String): E =
 		rawApi.undeleteMaintenanceTask(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyMaintenanceTask(entity: E): E =
@@ -109,15 +109,15 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 @InternalIcureApi
 private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintenanceTaskApi, private val config: BasicApiConfiguration) :
 	MaintenanceTaskBasicFlavourlessApi {
-	override suspend fun deleteMaintenanceTask(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteMaintenanceTaskById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteMaintenanceTask(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteMaintenanceTasks(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
-		rawApi.deleteMaintenanceTasksWithRev(ListOfIdsAndRev(entityIds)).successBody()
-
-	override suspend fun purgeMaintenanceTask(id: String, rev: String) {
+	override suspend fun purgeMaintenanceTaskById(id: String, rev: String) {
 		rawApi.purgeMaintenanceTask(id, rev).successBodyOrThrowRevisionConflict()
 	}
+
+	override suspend fun deleteMaintenanceTasksByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteMaintenanceTasksWithRev(ListOfIdsAndRev(entityIds)).successBody()
 }
 
 @InternalIcureApi

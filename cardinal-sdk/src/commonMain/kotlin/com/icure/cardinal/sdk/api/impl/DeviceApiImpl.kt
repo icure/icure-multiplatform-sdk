@@ -43,17 +43,17 @@ internal class DeviceApiImpl(
 	override suspend fun matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>) =
 		matchDevicesBy(filter)
 
-	override suspend fun deleteDevice(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteDeviceById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteDevice(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteDevices(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteDevicesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteDevicesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeDevice(id: String, rev: String) {
+	override suspend fun purgeDeviceById(id: String, rev: String) {
 		rawApi.purgeDevice(id, rev).successBodyOrThrowRevisionConflict()
 	}
 
-	override suspend fun undeleteDevice(id: String, rev: String): Device =
+	override suspend fun undeleteDeviceById(id: String, rev: String): Device =
 		rawApi.undeleteDevice(id, rev).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getDevicesInGroup(groupId: String, deviceIds: List<String>?) =

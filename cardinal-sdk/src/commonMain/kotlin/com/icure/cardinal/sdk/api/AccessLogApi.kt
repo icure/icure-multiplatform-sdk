@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -9,6 +10,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -22,23 +24,81 @@ import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface AccessLogBasicFlavourlessApi {
 	/**
-	 * Deletes an access log. If you don't have write access to the entity the method will fail.
-	 * @param entityId id of the access log.
-	 * @return the id and revision of the deleted entity.
+	 * Deletes a accessLog. If you don't have write access to the accessLog the method will fail.
+	 * @param entityId id of the accessLog.
+	 * @param rev the latest known rev of the accessLog to delete
+	 * @return the id and revision of the deleted accessLog.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteAccessLog(entityId: String): DocIdentifier
+	suspend fun deleteAccessLogById(entityId: String, rev: String): DocIdentifier
+
 	/**
-	 * Deletes many access logs. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * Deletes many accessLogs. Ids that don't correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of access logs.
-	 * @return the id and revision of the deleted access logs. If some entities could not be deleted (for example
+	 * @param entityIds ids and revisions of the accessLogs to delete.
+	 * @return the id and revision of the deleted accessLogs. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteAccessLogs(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteAccessLogsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+
+	/**
+	 * Permanently deletes a accessLog.
+	 * @param id id of the accessLog to purge
+	 * @param rev latest revision of the accessLog
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeAccessLogById(id: String, rev: String)
+
+	/**
+	 * Deletes a accessLog. If you don't have write access to the accessLog the method will fail.
+	 * @param accessLog the accessLog to delete
+	 * @return the id and revision of the deleted accessLog.
+	 * @throws RevisionConflictException if the provided accessLog doesn't match the latest known revision
+	 */
+	suspend fun deleteAccessLog(accessLog: AccessLog): DocIdentifier =
+		deleteAccessLogById(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
+
+	/**
+	 * Deletes many accessLogs. Ignores accessLog for which you don't have write access or that don't match the latest revision.
+	 * @param accessLogs the accessLogs to delete
+	 * @return the id and revision of the deleted accessLogs. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteAccessLogs(accessLogs: List<AccessLog>): List<DocIdentifier> =
+		deleteAccessLogsByIds(accessLogs.map { accessLog ->
+			IdWithMandatoryRev(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a accessLog.
+	 * @param accessLog the accessLog to purge.
+	 * @throws RevisionConflictException if the provided accessLog doesn't match the latest known revision
+	 */
+	suspend fun purgeAccessLog(accessLog: AccessLog) {
+		purgeAccessLogById(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
+	}
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface AccessLogBasicFlavouredApi<E : AccessLog> {
+	/**
+	 * Restores a accessLog that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteAccessLogById(id: String, rev: String): E
+
+	/**
+	 * Restores a accessLog that was marked as deleted.
+	 * @param accessLog the accessLog to undelete
+	 * @return the restored accessLog.
+	 * @throws RevisionConflictException if the provided accessLog doesn't match the latest known revision
+	 */
+	suspend fun undeleteAccessLog(accessLog: AccessLog): E =
+		undeleteAccessLogById(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
+
 	/**
 	 * Modifies an access log. You need to have write access to the entity.
 	 * Flavoured method.

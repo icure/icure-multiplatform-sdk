@@ -108,30 +108,30 @@ internal class HealthcarePartyApiImpl(
 		healthcarePartyIds: List<String>?,
 	) = rawApi.getHealthcarePartiesInGroup(groupId, healthcarePartyIds?.let { ListOfIds(it) }).successBody()
 
-	override suspend fun deleteHealthcareParty(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteHealthcarePartyById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteHealthcareParty(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteHealthcareParties(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteHealthcarePartiesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteHealthcarePartiesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun deleteHealthcarePartyInGroup(groupId: String, entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteHealthcarePartyInGroupById(groupId: String, entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteHealthcarePartyInGroup(
 			healthcarePartyId = entityId,
 			rev = rev,
 			groupId = groupId
 		).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteHealthcarePartiesInGroup(
+	override suspend fun deleteHealthcarePartiesInGroupByIds(
 		groupId: String,
 		entityIds: List<IdWithMandatoryRev>
 	): List<DocIdentifier> =
 		rawApi.deleteHealthcarePartiesInGroupWithRev(groupId, ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeHealthcareParty(id: String, rev: String) {
+	override suspend fun purgeHealthcarePartyById(id: String, rev: String) {
 		rawApi.purgeHealthcareParty(id, rev).successBodyOrThrowRevisionConflict()
 	}
 
-	override suspend fun undeleteHealthcareParty(id: String, rev: String): HealthcareParty =
+	override suspend fun undeleteHealthcarePartyById(id: String, rev: String): HealthcareParty =
 		rawApi.undeleteHealthcareParty(id, rev).successBodyOrThrowRevisionConflict()
 
 	override suspend fun registerPatient(

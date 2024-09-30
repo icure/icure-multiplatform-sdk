@@ -28,6 +28,7 @@ interface DeviceApi {
 
 	suspend fun matchDevicesBy(filter: BaseFilterOptions<Device>): List<String>
 	suspend fun matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>): List<String>
+	
 	/**
 	 * Deletes a device. If you don't have write access to the device the method will fail.
 	 * @param entityId id of the device.
@@ -35,7 +36,7 @@ interface DeviceApi {
 	 * @return the id and revision of the deleted device.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteDevice(entityId: String, rev: String): DocIdentifier
+	suspend fun deleteDeviceById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many devices. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -44,7 +45,7 @@ interface DeviceApi {
 	 * @return the id and revision of the deleted devices. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteDevices(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteDevicesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a device.
@@ -52,7 +53,7 @@ interface DeviceApi {
 	 * @param rev latest revision of the device
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun purgeDevice(id: String, rev: String)
+	suspend fun purgeDeviceById(id: String, rev: String)
 
 	/**
 	 * Restores a device that was marked as deleted.
@@ -61,7 +62,46 @@ interface DeviceApi {
 	 * @return the restored entity.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeleteDevice(id: String, rev: String): Device
+	suspend fun undeleteDeviceById(id: String, rev: String): Device
+
+	/**
+	 * Deletes a device. If you don't have write access to the device the method will fail.
+	 * @param device the device to delete
+	 * @return the id and revision of the deleted device.
+	 * @throws RevisionConflictException if the provided device doesn't match the latest known revision
+	 */
+	suspend fun deleteDevice(device: Device): DocIdentifier =
+		deleteDeviceById(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+
+	/**
+	 * Deletes many devices. Ignores device for which you don't have write access or that don't match the latest revision.
+	 * @param devices the devices to delete
+	 * @return the id and revision of the deleted devices. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteDevices(devices: List<Device>): List<DocIdentifier> =
+		deleteDevicesByIds(devices.map { device ->
+			IdWithMandatoryRev(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a device.
+	 * @param device the device to purge.
+	 * @throws RevisionConflictException if the provided device doesn't match the latest known revision
+	 */
+	suspend fun purgeDevice(device: Device) {
+		purgeDeviceById(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+	}
+	/**
+	 * Restores a device that was marked as deleted.
+	 * @param device the device to undelete
+	 * @return the restored device.
+	 * @throws RevisionConflictException if the provided device doesn't match the latest known revision
+	 */
+	suspend fun undeleteDevice(device: Device): Device =
+		undeleteDeviceById(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+
+
 	suspend fun getDevicesInGroup(
 		groupId: String,
 		@DefaultValue("null")

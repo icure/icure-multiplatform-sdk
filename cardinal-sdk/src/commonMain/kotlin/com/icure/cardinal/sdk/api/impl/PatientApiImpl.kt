@@ -78,7 +78,7 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 	private val config: BasicApiConfiguration,
 ) :
 	PatientBasicFlavouredApi<E> {
-	override suspend fun undeletePatient(id: String, rev: String): E =
+	override suspend fun undeletePatientById(id: String, rev: String): E =
 		rawApi.undeletePatient(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun undeletePatients(ids: List<IdWithMandatoryRev>): List<E> =
@@ -305,13 +305,13 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 @InternalIcureApi
 private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val config: BasicApiConfiguration) :
 	PatientBasicFlavourlessApi {
-	override suspend fun deletePatient(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deletePatientById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deletePatient(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deletePatients(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deletePatientsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deletePatientsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgePatient(id: String, rev: String) {
+	override suspend fun purgePatientById(id: String, rev: String) {
 		rawApi.purgePatient(id, rev).successBodyOrThrowRevisionConflict()
 	}
 

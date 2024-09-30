@@ -24,7 +24,6 @@ import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface HealthElementBasicFlavourlessApi  {
-
 	/**
 	 * Deletes a healthElement. If you don't have write access to the healthElement the method will fail.
 	 * @param entityId id of the healthElement.
@@ -32,7 +31,7 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @return the id and revision of the deleted healthElement.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteHealthElement(entityId: String, rev: String?): DocIdentifier
+	suspend fun deleteHealthElementById(entityId: String, rev: String?): DocIdentifier
 
 	/**
 	 * Deletes many healthElements. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -41,7 +40,7 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @return the id and revision of the deleted healthElements. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteHealthElements(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteHealthElementsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a healthElement.
@@ -49,7 +48,36 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @param rev latest revision of the healthElement
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun purgeHealthElement(id: String, rev: String)
+	suspend fun purgeHealthElementById(id: String, rev: String)
+
+	/**
+	 * Deletes a healthElement. If you don't have write access to the healthElement the method will fail.
+	 * @param healthElement the healthElement to delete
+	 * @return the id and revision of the deleted healthElement.
+	 * @throws RevisionConflictException if the provided healthElement doesn't match the latest known revision
+	 */
+	suspend fun deleteHealthElement(healthElement: HealthElement): DocIdentifier =
+		deleteHealthElementById(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
+
+	/**
+	 * Deletes many healthElements. Ignores healthElement for which you don't have write access or that don't match the latest revision.
+	 * @param healthElements the healthElements to delete
+	 * @return the id and revision of the deleted healthElements. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteHealthElements(healthElements: List<HealthElement>): List<DocIdentifier> =
+		deleteHealthElementsByIds(healthElements.map { healthElement ->
+			IdWithMandatoryRev(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a healthElement.
+	 * @param healthElement the healthElement to purge.
+	 * @throws RevisionConflictException if the provided healthElement doesn't match the latest known revision
+	 */
+	suspend fun purgeHealthElement(healthElement: HealthElement) {
+		purgeHealthElementById(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
+	}
 
 	@Deprecated("Use filter instead")
 	suspend fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -67,7 +95,16 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	 * @return the restored entity.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeleteHealthElement(id: String, rev: String): E
+	suspend fun undeleteHealthElementById(id: String, rev: String): E
+	
+	/**
+	 * Restores a healthElement that was marked as deleted.
+	 * @param healthElement the healthElement to undelete
+	 * @return the restored healthElement.
+	 * @throws RevisionConflictException if the provided healthElement doesn't match the latest known revision
+	 */
+	suspend fun undeleteHealthElement(healthElement: HealthElement): E =
+		undeleteHealthElementById(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
 
 	/**
 	 * Modifies a health element. You need to have write access to the entity.

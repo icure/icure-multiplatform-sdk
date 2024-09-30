@@ -20,10 +20,13 @@ import com.icure.cardinal.sdk.filters.mapAccessLogFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -44,6 +47,9 @@ import kotlinx.serialization.json.decodeFromJsonElement
 private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 	protected val rawApi: RawAccessLogApi
 ) : AccessLogBasicFlavouredApi<E> {
+	override suspend fun undeleteAccessLogById(id: String, rev: String): E =
+		rawApi.undeleteAccessLog(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	protected open suspend fun getSecureDelegationKeys() = emptyList<String>()
 
 	override suspend fun modifyAccessLog(entity: E): E =
@@ -150,8 +156,15 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 
 @InternalIcureApi
 private class AbstractAccessLogBasicFlavourlessApi(val rawApi: RawAccessLogApi) : AccessLogBasicFlavourlessApi {
-	override suspend fun deleteAccessLog(entityId: String) = rawApi.deleteAccessLog(entityId).successBody()
-	override suspend fun deleteAccessLogs(entityIds: List<String>) = rawApi.deleteAccessLogs(ListOfIds(entityIds)).successBody()
+	override suspend fun deleteAccessLogById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteAccessLog(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteAccessLogsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteAccessLogsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeAccessLogById(id: String, rev: String) {
+		rawApi.purgeAccessLog(id, rev).successBodyOrThrowRevisionConflict()
+	}
 }
 
 @InternalIcureApi

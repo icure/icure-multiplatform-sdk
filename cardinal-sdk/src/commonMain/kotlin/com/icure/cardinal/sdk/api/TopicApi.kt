@@ -31,7 +31,7 @@ interface TopicBasicFlavourlessApi {
 	 * @return the id and revision of the deleted topic.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteTopic(entityId: String, rev: String): DocIdentifier
+	suspend fun deleteTopicById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many topics. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -40,7 +40,7 @@ interface TopicBasicFlavourlessApi {
 	 * @return the id and revision of the deleted topics. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteTopics(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteTopicsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a topic.
@@ -48,11 +48,49 @@ interface TopicBasicFlavourlessApi {
 	 * @param rev latest revision of the topic
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun purgeTopic(id: String, rev: String)
+	suspend fun purgeTopicById(id: String, rev: String)
+
+	/**
+	 * Deletes a topic. If you don't have write access to the topic the method will fail.
+	 * @param topic the topic to delete
+	 * @return the id and revision of the deleted topic.
+	 * @throws RevisionConflictException if the provided topic doesn't match the latest known revision
+	 */
+	suspend fun deleteTopic(topic: Topic): DocIdentifier =
+		deleteTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+
+	/**
+	 * Deletes many topics. Ignores topic for which you don't have write access or that don't match the latest revision.
+	 * @param topics the topics to delete
+	 * @return the id and revision of the deleted topics. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteTopics(topics: List<Topic>): List<DocIdentifier> =
+		deleteTopicsByIds(topics.map { topic ->
+			IdWithMandatoryRev(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a topic.
+	 * @param topic the topic to purge.
+	 * @throws RevisionConflictException if the provided topic doesn't match the latest known revision
+	 */
+	suspend fun purgeTopic(topic: Topic) {
+		purgeTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+	}
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface TopicBasicFlavouredApi<E : Topic> {
+	/**
+	 * Restores a topic that was marked as deleted.
+	 * @param topic the topic to undelete
+	 * @return the restored topic.
+	 * @throws RevisionConflictException if the provided topic doesn't match the latest known revision
+	 */
+	suspend fun undeleteTopic(topic: Topic): Topic =
+		undeleteTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+	
 	/**
 	 * Modifies a topic. You need to have write access to the entity.
 	 * Flavoured method.
@@ -68,7 +106,7 @@ interface TopicBasicFlavouredApi<E : Topic> {
 	 * @return the restored entity.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeleteTopic(id: String, rev: String): E
+	suspend fun undeleteTopicById(id: String, rev: String): E
 
 	/**
 	 * Get a topic by its id. You must have read access to the entity. Fails if the id does not correspond to any

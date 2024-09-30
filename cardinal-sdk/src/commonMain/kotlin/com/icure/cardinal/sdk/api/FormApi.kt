@@ -30,7 +30,7 @@ interface FormBasicFlavourlessApi {
 	 * @return the id and revision of the deleted form.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteForm(entityId: String, rev: String): DocIdentifier
+	suspend fun deleteFormById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many forms. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -39,7 +39,7 @@ interface FormBasicFlavourlessApi {
 	 * @return the id and revision of the deleted forms. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteForms(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteFormsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a form.
@@ -47,7 +47,36 @@ interface FormBasicFlavourlessApi {
 	 * @param rev latest revision of the form
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun purgeForm(id: String, rev: String)
+	suspend fun purgeFormById(id: String, rev: String)
+
+	/**
+	 * Deletes a form. If you don't have write access to the form the method will fail.
+	 * @param form the form to delete
+	 * @return the id and revision of the deleted form.
+	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
+	 */
+	suspend fun deleteForm(form: Form): DocIdentifier =
+		deleteFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+
+	/**
+	 * Deletes many forms. Ignores form for which you don't have write access or that don't match the latest revision.
+	 * @param forms the forms to delete
+	 * @return the id and revision of the deleted forms. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteForms(forms: List<Form>): List<DocIdentifier> =
+		deleteFormsByIds(forms.map { form ->
+			IdWithMandatoryRev(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a form.
+	 * @param form the form to purge.
+	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
+	 */
+	suspend fun purgeForm(form: Form) {
+		purgeFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+	}
 
 	suspend fun getFormTemplate(
 		formTemplateId: String,
@@ -117,7 +146,16 @@ interface FormBasicFlavouredApi<E : Form> {
 	 * @return the restored entity.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeleteForm(id: String, rev: String): E
+	suspend fun undeleteFormById(id: String, rev: String): E
+
+	/**
+	 * Restores a form that was marked as deleted.
+	 * @param form the form to undelete
+	 * @return the restored form.
+	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
+	 */
+	suspend fun undeleteForm(form: Form): E =
+		undeleteFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
 
 	/**
 	 * Modifies multiple forms. Ignores all forms for which you don't have write access.

@@ -28,17 +28,17 @@ internal class AgendaApiImpl (
 
 	override suspend fun createAgenda(agendaDto: Agenda): Agenda = rawApi.createAgenda(agendaDto).successBody()
 
-	override suspend fun deleteAgenda(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteAgendaById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteAgenda(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteAgendas(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteAgendasByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteAgendasWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeAgenda(id: String, rev: String) {
+	override suspend fun purgeAgendaById(id: String, rev: String) {
 		rawApi.purgeAgenda(id, rev).successBodyOrThrowRevisionConflict()
 	}
 
-	override suspend fun undeleteAgenda(id: String, rev: String): Agenda =
+	override suspend fun undeleteAgendaById(id: String, rev: String): Agenda =
 		rawApi.undeleteAgenda(id, rev).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getAgenda(agendaId: String): Agenda = rawApi.getAgenda(agendaId).successBody()

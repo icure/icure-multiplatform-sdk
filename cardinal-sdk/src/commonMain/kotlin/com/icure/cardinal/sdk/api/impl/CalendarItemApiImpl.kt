@@ -21,10 +21,13 @@ import com.icure.cardinal.sdk.filters.mapCalendarItemFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -45,6 +48,8 @@ import kotlinx.serialization.json.decodeFromJsonElement
 private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 	protected val rawApi: RawCalendarItemApi
 ) : CalendarItemBasicFlavouredApi<E> {
+	override suspend fun undeleteCalendarItemById(id: String, rev: String): E =
+		rawApi.undeleteCalendarItem(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	protected open suspend fun getSecureDelegationKeys(): List<String> =
 		emptyList()
@@ -184,8 +189,15 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 @InternalIcureApi
 private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarItemApi) :
 	CalendarItemBasicFlavourlessApi {
-	override suspend fun deleteCalendarItem(entityId: String) = rawApi.deleteCalendarItem(entityId).successBody()
-	override suspend fun deleteCalendarItems(entityIds: List<String>) = rawApi.deleteCalendarItems(ListOfIds(entityIds)).successBody()
+	override suspend fun deleteCalendarItemById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteCalendarItem(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteCalendarItemsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteCalendarItemsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeCalendarItemById(id: String, rev: String) {
+		rawApi.purgeCalendarItem(id, rev).successBodyOrThrowRevisionConflict()
+	}
 }
 
 @InternalIcureApi

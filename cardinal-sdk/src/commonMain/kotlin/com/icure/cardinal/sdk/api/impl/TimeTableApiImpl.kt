@@ -42,7 +42,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @InternalIcureApi
 private abstract class AbstractTimeTableBasicFlavouredApi<E : TimeTable>(protected val rawApi: RawTimeTableApi) :
 	TimeTableBasicFlavouredApi<E> {
-	override suspend fun undeleteTimeTable(id: String, rev: String): E =
+	override suspend fun undeleteTimeTableById(id: String, rev: String): E =
 		rawApi.undeleteTimeTable(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyTimeTable(entity: E): E =
@@ -107,13 +107,13 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 
 @InternalIcureApi
 private class AbstractTimeTableBasicFlavourlessApi(val rawApi: RawTimeTableApi) : TimeTableBasicFlavourlessApi {
-	override suspend fun deleteTimeTable(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteTimeTableById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteTimeTable(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteTimeTables(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteTimeTablesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteTimeTablesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeTimeTable(id: String, rev: String) {
+	override suspend fun purgeTimeTableById(id: String, rev: String) {
 		rawApi.purgeTimeTable(id, rev).successBodyOrThrowRevisionConflict()
 	}
 }

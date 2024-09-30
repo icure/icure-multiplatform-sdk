@@ -29,7 +29,7 @@ interface TimeTableBasicFlavourlessApi {
 	 * @return the id and revision of the deleted timeTable.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteTimeTable(entityId: String, rev: String): DocIdentifier
+	suspend fun deleteTimeTableById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many timeTables. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -38,7 +38,7 @@ interface TimeTableBasicFlavourlessApi {
 	 * @return the id and revision of the deleted timeTables. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteTimeTables(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteTimeTablesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a timeTable.
@@ -46,11 +46,49 @@ interface TimeTableBasicFlavourlessApi {
 	 * @param rev latest revision of the timeTable
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun purgeTimeTable(id: String, rev: String)
+	suspend fun purgeTimeTableById(id: String, rev: String)
+
+	/**
+	 * Deletes a timeTable. If you don't have write access to the timeTable the method will fail.
+	 * @param timeTable the timeTable to delete
+	 * @return the id and revision of the deleted timeTable.
+	 * @throws RevisionConflictException if the provided timeTable doesn't match the latest known revision
+	 */
+	suspend fun deleteTimeTable(timeTable: TimeTable): DocIdentifier =
+		deleteTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+
+	/**
+	 * Deletes many timeTables. Ignores timeTable for which you don't have write access or that don't match the latest revision.
+	 * @param timeTables the timeTables to delete
+	 * @return the id and revision of the deleted timeTables. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteTimeTables(timeTables: List<TimeTable>): List<DocIdentifier> =
+		deleteTimeTablesByIds(timeTables.map { timeTable ->
+			IdWithMandatoryRev(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a timeTable.
+	 * @param timeTable the timeTable to purge.
+	 * @throws RevisionConflictException if the provided timeTable doesn't match the latest known revision
+	 */
+	suspend fun purgeTimeTable(timeTable: TimeTable) {
+		purgeTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+	}
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface TimeTableBasicFlavouredApi<E : TimeTable> {
+	/**
+	 * Restores a timeTable that was marked as deleted.
+	 * @param timeTable the timeTable to undelete
+	 * @return the restored timeTable.
+	 * @throws RevisionConflictException if the provided timeTable doesn't match the latest known revision
+	 */
+	suspend fun undeleteTimeTable(timeTable: TimeTable): TimeTable =
+		undeleteTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+	
 	/**
 	 * Modifies a time-table. You need to have write access to the entity.
 	 * Flavoured method.
@@ -66,7 +104,7 @@ interface TimeTableBasicFlavouredApi<E : TimeTable> {
 	 * @return the restored entity.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeleteTimeTable(id: String, rev: String): E
+	suspend fun undeleteTimeTableById(id: String, rev: String): E
 
 	/**
 	 * Get a time-table by its id. You must have read access to the entity. Fails if the id does not correspond to any

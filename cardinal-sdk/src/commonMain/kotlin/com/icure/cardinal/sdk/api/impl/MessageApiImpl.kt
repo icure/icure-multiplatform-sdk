@@ -54,7 +54,7 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	private val config: BasicApiConfiguration,
 ) :
 	MessageBasicFlavouredApi<E> {
-	override suspend fun undeleteMessage(id: String, rev: String): E =
+	override suspend fun undeleteMessageById(id: String, rev: String): E =
 		rawApi.undeleteMessage(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	override suspend fun modifyMessage(entity: E): E =
@@ -200,13 +200,13 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 @InternalIcureApi
 private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, private val config: BasicApiConfiguration) :
 	MessageBasicFlavourlessApi {
-	override suspend fun deleteMessage(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteMessageById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteMessage(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteMessages(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteMessagesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteMessagesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeMessage(id: String, rev: String) {
+	override suspend fun purgeMessageById(id: String, rev: String) {
 		rawApi.purgeMessage(id, rev).successBodyOrThrowRevisionConflict()
 	}
 }

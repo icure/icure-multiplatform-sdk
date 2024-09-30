@@ -70,7 +70,7 @@ private abstract class AbstractHealthElementBasicFlavouredApi<E : HealthElement>
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedHealthElement
 	abstract suspend fun maybeDecrypt(entity: EncryptedHealthElement): E
 
-	override suspend fun undeleteHealthElement(id: String, rev: String): E =
+	override suspend fun undeleteHealthElementById(id: String, rev: String): E =
 		rawApi.undeleteHealthElement(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 }
 
@@ -136,13 +136,13 @@ private class AbstractHealthElementBasicFlavourlessApi(
 	val rawApi: RawHealthElementApi,
 	private val config: BasicApiConfiguration
 ) : HealthElementBasicFlavourlessApi {
-	override suspend fun deleteHealthElement(entityId: String, rev: String?): DocIdentifier =
+	override suspend fun deleteHealthElementById(entityId: String, rev: String?): DocIdentifier =
 		rawApi.deleteHealthElement(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteHealthElements(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteHealthElementsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
 		rawApi.deleteHealthElementsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
-	override suspend fun purgeHealthElement(id: String, rev: String) {
+	override suspend fun purgeHealthElementById(id: String, rev: String) {
 		rawApi.purgeHealthElement(id, rev).successBodyOrThrowRevisionConflict()
 	}
 

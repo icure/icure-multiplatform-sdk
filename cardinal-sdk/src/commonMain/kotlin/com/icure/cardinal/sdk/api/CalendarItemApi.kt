@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -9,6 +10,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -22,24 +24,81 @@ import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface CalendarItemBasicFlavourlessApi {
 	/**
-	 * Deletes a calendar item. If you don't have write access to the calendar item the method will fail.
-	 * @param entityId id of the calendar item.
-	 * @return the id and revision of the deleted calendar item.
+	 * Deletes a calendarItem. If you don't have write access to the calendarItem the method will fail.
+	 * @param entityId id of the calendarItem.
+	 * @param rev the latest known rev of the calendarItem to delete
+	 * @return the id and revision of the deleted calendarItem.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteCalendarItem(entityId: String): DocIdentifier
+	suspend fun deleteCalendarItemById(entityId: String, rev: String): DocIdentifier
 
 	/**
-	 * Deletes many calendar items. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * Deletes many calendarItems. Ids that don't correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the calendar items.
-	 * @return the id and revision of the deleted calendar items. If some entities could not be deleted (for example
+	 * @param entityIds ids and revisions of the calendarItems to delete.
+	 * @return the id and revision of the deleted calendarItems. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteCalendarItems(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteCalendarItemsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+
+	/**
+	 * Permanently deletes a calendarItem.
+	 * @param id id of the calendarItem to purge
+	 * @param rev latest revision of the calendarItem
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeCalendarItemById(id: String, rev: String)
+
+	/**
+	 * Deletes a calendarItem. If you don't have write access to the calendarItem the method will fail.
+	 * @param calendarItem the calendarItem to delete
+	 * @return the id and revision of the deleted calendarItem.
+	 * @throws RevisionConflictException if the provided calendarItem doesn't match the latest known revision
+	 */
+	suspend fun deleteCalendarItem(calendarItem: CalendarItem): DocIdentifier =
+		deleteCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+
+	/**
+	 * Deletes many calendarItems. Ignores calendarItem for which you don't have write access or that don't match the latest revision.
+	 * @param calendarItems the calendarItems to delete
+	 * @return the id and revision of the deleted calendarItems. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteCalendarItems(calendarItems: List<CalendarItem>): List<DocIdentifier> =
+		deleteCalendarItemsByIds(calendarItems.map { calendarItem ->
+			IdWithMandatoryRev(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a calendarItem.
+	 * @param calendarItem the calendarItem to purge.
+	 * @throws RevisionConflictException if the provided calendarItem doesn't match the latest known revision
+	 */
+	suspend fun purgeCalendarItem(calendarItem: CalendarItem) {
+		purgeCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+	}
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
+	/**
+	 * Restores a calendarItem that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteCalendarItemById(id: String, rev: String): E
+
+	/**
+	 * Restores a calendarItem that was marked as deleted.
+	 * @param calendarItem the calendarItem to undelete
+	 * @return the restored calendarItem.
+	 * @throws RevisionConflictException if the provided calendarItem doesn't match the latest known revision
+	 */
+	suspend fun undeleteCalendarItem(calendarItem: CalendarItem): E =
+		undeleteCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+
 	/**
 	 * Modifies a calendar item. You need to have write access to the entity.
 	 * Flavoured method.

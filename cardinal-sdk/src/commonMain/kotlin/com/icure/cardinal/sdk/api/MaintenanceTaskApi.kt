@@ -28,7 +28,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 * @return the id and revision of the deleted maintenanceTask.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteMaintenanceTask(entityId: String, rev: String): DocIdentifier
+	suspend fun deleteMaintenanceTaskById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many maintenanceTasks. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -37,7 +37,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 * @return the id and revision of the deleted maintenanceTasks. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteMaintenanceTasks(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteMaintenanceTasksByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a maintenanceTask.
@@ -45,11 +45,49 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 * @param rev latest revision of the maintenanceTask
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun purgeMaintenanceTask(id: String, rev: String)
+	suspend fun purgeMaintenanceTaskById(id: String, rev: String)
+
+	/**
+	 * Deletes a maintenanceTask. If you don't have write access to the maintenanceTask the method will fail.
+	 * @param maintenanceTask the maintenanceTask to delete
+	 * @return the id and revision of the deleted maintenanceTask.
+	 * @throws RevisionConflictException if the provided maintenanceTask doesn't match the latest known revision
+	 */
+	suspend fun deleteMaintenanceTask(maintenanceTask: MaintenanceTask): DocIdentifier =
+		deleteMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+
+	/**
+	 * Deletes many maintenanceTasks. Ignores maintenanceTask for which you don't have write access or that don't match the latest revision.
+	 * @param maintenanceTasks the maintenanceTasks to delete
+	 * @return the id and revision of the deleted maintenanceTasks. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteMaintenanceTasks(maintenanceTasks: List<MaintenanceTask>): List<DocIdentifier> =
+		deleteMaintenanceTasksByIds(maintenanceTasks.map { maintenanceTask ->
+			IdWithMandatoryRev(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a maintenanceTask.
+	 * @param maintenanceTask the maintenanceTask to purge.
+	 * @throws RevisionConflictException if the provided maintenanceTask doesn't match the latest known revision
+	 */
+	suspend fun purgeMaintenanceTask(maintenanceTask: MaintenanceTask) {
+		purgeMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+	}
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
+	/**
+	 * Restores a maintenanceTask that was marked as deleted.
+	 * @param maintenanceTask the maintenanceTask to undelete
+	 * @return the restored maintenanceTask.
+	 * @throws RevisionConflictException if the provided maintenanceTask doesn't match the latest known revision
+	 */
+	suspend fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTask): MaintenanceTask =
+		undeleteMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+	
 	/**
 	 * Restores a maintenanceTask that was marked as deleted.
 	 * @param id the id of the entity
@@ -57,8 +95,8 @@ interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 	 * @return the restored entity.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeleteMaintenanceTask(id: String, rev: String): E
-	
+	suspend fun undeleteMaintenanceTaskById(id: String, rev: String): E
+
 	/**
 	 * Modifies a maintenance task. You need to have write access to the entity.
 	 * Flavoured method.
