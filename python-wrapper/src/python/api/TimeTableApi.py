@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, TimeTable, serialize_time_table, EncryptedTimeTable, deserialize_time_table, DocIdentifier, TimeTableShareOptions
+from cardinal_sdk.model import DecryptedTimeTable, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, TimeTable, serialize_time_table, EncryptedTimeTable, deserialize_time_table, DocIdentifier, IdWithMandatoryRev, TimeTableShareOptions
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -201,6 +201,45 @@ class TimeTableApi:
 					executor = self.cardinal_sdk._executor
 				)
 
+		async def undelete_time_table_async(self, time_table: TimeTable) -> TimeTable:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_time_table(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"timeTable": serialize_time_table(time_table),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.encrypted.undeleteTimeTableAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_time_table_blocking(self, time_table: TimeTable) -> TimeTable:
+			payload = {
+				"timeTable": serialize_time_table(time_table),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.encrypted.undeleteTimeTableBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_time_table(result_info.success)
+				return return_value
+
 		async def modify_time_table_async(self, entity: EncryptedTimeTable) -> EncryptedTimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -229,6 +268,47 @@ class TimeTableApi:
 				"entity": entity.__serialize__(),
 			}
 			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.encrypted.modifyTimeTableBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = EncryptedTimeTable._deserialize(result_info.success)
+				return return_value
+
+		async def undelete_time_table_by_id_async(self, id: str, rev: str) -> EncryptedTimeTable:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = EncryptedTimeTable._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.encrypted.undeleteTimeTableByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_time_table_by_id_blocking(self, id: str, rev: str) -> EncryptedTimeTable:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.encrypted.undeleteTimeTableByIdBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -507,6 +587,45 @@ class TimeTableApi:
 					executor = self.cardinal_sdk._executor
 				)
 
+		async def undelete_time_table_async(self, time_table: TimeTable) -> TimeTable:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_time_table(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"timeTable": serialize_time_table(time_table),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover.undeleteTimeTableAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_time_table_blocking(self, time_table: TimeTable) -> TimeTable:
+			payload = {
+				"timeTable": serialize_time_table(time_table),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover.undeleteTimeTableBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_time_table(result_info.success)
+				return return_value
+
 		async def modify_time_table_async(self, entity: TimeTable) -> TimeTable:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -535,6 +654,47 @@ class TimeTableApi:
 				"entity": serialize_time_table(entity),
 			}
 			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover.modifyTimeTableBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_time_table(result_info.success)
+				return return_value
+
+		async def undelete_time_table_by_id_async(self, id: str, rev: str) -> TimeTable:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_time_table(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover.undeleteTimeTableByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_time_table_by_id_blocking(self, id: str, rev: str) -> TimeTable:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.tryAndRecover.undeleteTimeTableByIdBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
@@ -1026,7 +1186,7 @@ class TimeTableApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def delete_time_table_async(self, entity_id: str) -> DocIdentifier:
+	async def delete_time_table_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1038,6 +1198,124 @@ class TimeTableApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.deleteTimeTableByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_time_table_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.deleteTimeTableByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_time_tables_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.deleteTimeTablesByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_time_tables_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.deleteTimeTablesByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_time_table_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.purgeTimeTableByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_time_table_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.purgeTimeTableByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def delete_time_table_async(self, time_table: TimeTable) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"timeTable": serialize_time_table(time_table),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1049,9 +1327,9 @@ class TimeTableApi:
 		)
 		return await future
 
-	def delete_time_table_blocking(self, entity_id: str) -> DocIdentifier:
+	def delete_time_table_blocking(self, time_table: TimeTable) -> DocIdentifier:
 		payload = {
-			"entityId": entity_id,
+			"timeTable": serialize_time_table(time_table),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.deleteTimeTableBlocking(
 			self.cardinal_sdk._native,
@@ -1065,7 +1343,7 @@ class TimeTableApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_time_tables_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_time_tables_async(self, time_tables: List[TimeTable]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1076,7 +1354,7 @@ class TimeTableApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"timeTables": [serialize_time_table(x0) for x0 in time_tables],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1088,9 +1366,9 @@ class TimeTableApi:
 		)
 		return await future
 
-	def delete_time_tables_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	def delete_time_tables_blocking(self, time_tables: List[TimeTable]) -> List[DocIdentifier]:
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"timeTables": [serialize_time_table(x0) for x0 in time_tables],
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.deleteTimeTablesBlocking(
 			self.cardinal_sdk._native,
@@ -1103,6 +1381,42 @@ class TimeTableApi:
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
+
+	async def purge_time_table_async(self, time_table: TimeTable) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"timeTable": serialize_time_table(time_table),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.purgeTimeTableAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_time_table_blocking(self, time_table: TimeTable) -> None:
+		payload = {
+			"timeTable": serialize_time_table(time_table),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.purgeTimeTableBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
 
 	async def share_with_async(self, delegate_id: str, time_table: DecryptedTimeTable, options: Optional[TimeTableShareOptions] = None) -> DecryptedTimeTable:
 		loop = asyncio.get_running_loop()
@@ -1288,6 +1602,45 @@ class TimeTableApi:
 				executor = self.cardinal_sdk._executor
 			)
 
+	async def undelete_time_table_async(self, time_table: TimeTable) -> TimeTable:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = deserialize_time_table(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"timeTable": serialize_time_table(time_table),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.undeleteTimeTableAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_time_table_blocking(self, time_table: TimeTable) -> TimeTable:
+		payload = {
+			"timeTable": serialize_time_table(time_table),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.undeleteTimeTableBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_time_table(result_info.success)
+			return return_value
+
 	async def modify_time_table_async(self, entity: DecryptedTimeTable) -> DecryptedTimeTable:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -1316,6 +1669,47 @@ class TimeTableApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.modifyTimeTableBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DecryptedTimeTable._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_time_table_by_id_async(self, id: str, rev: str) -> DecryptedTimeTable:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedTimeTable._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.undeleteTimeTableByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_time_table_by_id_blocking(self, id: str, rev: str) -> DecryptedTimeTable:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TimeTableApi.undeleteTimeTableByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)

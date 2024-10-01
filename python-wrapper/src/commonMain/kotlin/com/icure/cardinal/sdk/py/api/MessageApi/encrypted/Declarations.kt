@@ -37,6 +37,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -246,6 +247,41 @@ public fun filterMessagesBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class UndeleteMessageParams(
+	public val message: Message,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteMessageBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageParams>(params)
+	runBlocking {
+		sdk.message.encrypted.undeleteMessage(
+			decodedParams.message,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Message::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteMessageAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.encrypted.undeleteMessage(
+				decodedParams.message,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Message::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyMessageParams(
 	public val entity: EncryptedMessage,
 )
@@ -275,6 +311,45 @@ public fun modifyMessageAsync(
 		kotlin.runCatching {
 			sdk.message.encrypted.modifyMessage(
 				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedMessage.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteMessageByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteMessageByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageByIdParams>(params)
+	runBlocking {
+		sdk.message.encrypted.undeleteMessageById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(EncryptedMessage.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteMessageByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.encrypted.undeleteMessageById(
+				decodedParams.id,
+				decodedParams.rev,
 			)
 		}.toPyStringAsyncCallback(EncryptedMessage.serializer(), resultCallback)
 	}

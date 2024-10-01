@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -14,6 +15,7 @@ import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -31,9 +33,24 @@ public external interface DocumentBasicApiJs {
 	public fun filterDocumentsBySorted(filter: BaseSortableFilterOptionsJs<DocumentJs>):
 			Promise<PaginatedListIteratorJs<EncryptedDocumentJs>>
 
+	@JsName("deleteDocumentUnsafe")
 	public fun deleteDocument(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteDocumentsUnsafe")
 	public fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteDocumentById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeDocumentById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteDocument(document: DocumentJs): Promise<DocIdentifierJs>
+
+	public fun deleteDocuments(documents: Array<DocumentJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeDocument(document: DocumentJs): Promise<Unit>
 
 	public fun getRawMainAttachment(documentId: String): Promise<ByteArray>
 
@@ -67,6 +84,10 @@ public external interface DocumentBasicApiJs {
 		key: String,
 		rev: String,
 	): Promise<EncryptedDocumentJs>
+
+	public fun undeleteDocumentById(id: String, rev: String): Promise<EncryptedDocumentJs>
+
+	public fun undeleteDocument(document: DocumentJs): Promise<EncryptedDocumentJs>
 
 	public fun modifyDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs>
 

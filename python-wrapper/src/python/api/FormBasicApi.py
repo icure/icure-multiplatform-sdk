@@ -3,7 +3,7 @@ import asyncio
 import json
 import base64
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import Form, EncryptedForm, DocIdentifier, FormTemplate
+from cardinal_sdk.model import Form, EncryptedForm, DocIdentifier, IdWithMandatoryRev, serialize_form, FormTemplate
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
@@ -193,7 +193,7 @@ class FormBasicApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def delete_form_async(self, entity_id: str) -> DocIdentifier:
+	async def delete_form_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -205,6 +205,124 @@ class FormBasicApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.deleteFormByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_form_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.deleteFormByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_forms_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.deleteFormsByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_forms_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.deleteFormsByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_form_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.purgeFormByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_form_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.purgeFormByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def delete_form_async(self, form: Form) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"form": serialize_form(form),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -216,9 +334,9 @@ class FormBasicApi:
 		)
 		return await future
 
-	def delete_form_blocking(self, entity_id: str) -> DocIdentifier:
+	def delete_form_blocking(self, form: Form) -> DocIdentifier:
 		payload = {
-			"entityId": entity_id,
+			"form": serialize_form(form),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.deleteFormBlocking(
 			self.cardinal_sdk._native,
@@ -232,7 +350,7 @@ class FormBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_forms_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_forms_async(self, forms: List[Form]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -243,7 +361,7 @@ class FormBasicApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"forms": [serialize_form(x0) for x0 in forms],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -255,9 +373,9 @@ class FormBasicApi:
 		)
 		return await future
 
-	def delete_forms_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	def delete_forms_blocking(self, forms: List[Form]) -> List[DocIdentifier]:
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"forms": [serialize_form(x0) for x0 in forms],
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.deleteFormsBlocking(
 			self.cardinal_sdk._native,
@@ -270,6 +388,42 @@ class FormBasicApi:
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
+
+	async def purge_form_async(self, form: Form) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"form": serialize_form(form),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.purgeFormAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_form_blocking(self, form: Form) -> None:
+		payload = {
+			"form": serialize_form(form),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.purgeFormBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
 
 	async def get_form_template_async(self, form_template_id: str, raw: Optional[bool] = None) -> FormTemplate:
 		loop = asyncio.get_running_loop()
@@ -498,6 +652,86 @@ class FormBasicApi:
 			"entity": entity.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.modifyFormBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedForm._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_form_by_id_async(self, id: str, rev: str) -> EncryptedForm:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.undeleteFormByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_form_by_id_blocking(self, id: str, rev: str) -> EncryptedForm:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.undeleteFormByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedForm._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_form_async(self, form: Form) -> EncryptedForm:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"form": serialize_form(form),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.undeleteFormAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_form_blocking(self, form: Form) -> EncryptedForm:
+		payload = {
+			"form": serialize_form(form),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.undeleteFormBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)

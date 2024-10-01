@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.py.api.EntityTemplateApi
 
 import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.model.EntityTemplate
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
@@ -423,14 +424,14 @@ public fun createEntityTemplatesAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class DeleteEntityTemplateParams(
-	public val entityTemplateIds: List<String>,
+private class DeleteEntityTemplatesParams(
+	public val entityTemplateIds: List<IdWithMandatoryRev>,
 )
 
 @OptIn(InternalIcureApi::class)
-public fun deleteEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+public fun deleteEntityTemplatesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplatesParams>(params)
 	runBlocking {
 		sdk.entityTemplate.deleteEntityTemplates(
 			decodedParams.entityTemplateIds,
@@ -442,13 +443,13 @@ public fun deleteEntityTemplateBlocking(sdk: CardinalNonCryptoApis, params: Stri
 	ExperimentalForeignApi::class,
 	InternalIcureApi::class,
 )
-public fun deleteEntityTemplateAsync(
+public fun deleteEntityTemplatesAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplateParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteEntityTemplatesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.entityTemplate.deleteEntityTemplates(

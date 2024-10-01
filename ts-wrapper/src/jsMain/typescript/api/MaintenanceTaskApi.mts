@@ -1,6 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MaintenanceTaskShareOptions} from '../crypto/entities/MaintenanceTaskShareOptions.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {DecryptedMaintenanceTask, EncryptedMaintenanceTask, MaintenanceTask} from '../model/MaintenanceTask.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -44,6 +45,18 @@ export interface MaintenanceTaskApi {
 
 	deleteMaintenanceTasks(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteMaintenanceTaskById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteMaintenanceTasksByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeMaintenanceTaskById(id: string, rev: string): Promise<void>;
+
+	deleteMaintenanceTask(maintenanceTask: MaintenanceTask): Promise<DocIdentifier>;
+
+	deleteMaintenanceTasks(maintenanceTasks: Array<MaintenanceTask>): Promise<Array<DocIdentifier>>;
+
+	purgeMaintenanceTask(maintenanceTask: MaintenanceTask): Promise<void>;
+
 	shareWith(delegateId: string, maintenanceTask: DecryptedMaintenanceTask,
 			options?: { options?: MaintenanceTaskShareOptions | undefined }): Promise<DecryptedMaintenanceTask>;
 
@@ -53,6 +66,10 @@ export interface MaintenanceTaskApi {
 	filterMaintenanceTasksBy(filter: FilterOptions<MaintenanceTask>): Promise<PaginatedListIterator<DecryptedMaintenanceTask>>;
 
 	filterMaintenanceTasksBySorted(filter: SortableFilterOptions<MaintenanceTask>): Promise<PaginatedListIterator<DecryptedMaintenanceTask>>;
+
+	undeleteMaintenanceTask(maintenanceTask: MaintenanceTask): Promise<MaintenanceTask>;
+
+	undeleteMaintenanceTaskById(id: string, rev: string): Promise<DecryptedMaintenanceTask>;
 
 	modifyMaintenanceTask(entity: DecryptedMaintenanceTask): Promise<DecryptedMaintenanceTask>;
 

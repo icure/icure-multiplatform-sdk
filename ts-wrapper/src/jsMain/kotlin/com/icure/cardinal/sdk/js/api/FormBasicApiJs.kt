@@ -8,12 +8,14 @@ import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -30,9 +32,24 @@ public external interface FormBasicApiJs {
 	public fun filterFormsBySorted(filter: BaseSortableFilterOptionsJs<FormJs>):
 			Promise<PaginatedListIteratorJs<EncryptedFormJs>>
 
+	@JsName("deleteFormUnsafe")
 	public fun deleteForm(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteFormsUnsafe")
 	public fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteFormById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteFormsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeFormById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteForm(form: FormJs): Promise<DocIdentifierJs>
+
+	public fun deleteForms(forms: Array<FormJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeForm(form: FormJs): Promise<Unit>
 
 	public fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs>
 
@@ -56,6 +73,10 @@ public external interface FormBasicApiJs {
 	public fun setTemplateAttachment(formTemplateId: String, payload: ByteArray): Promise<String>
 
 	public fun modifyForm(entity: EncryptedFormJs): Promise<EncryptedFormJs>
+
+	public fun undeleteFormById(id: String, rev: String): Promise<EncryptedFormJs>
+
+	public fun undeleteForm(form: FormJs): Promise<EncryptedFormJs>
 
 	public fun modifyForms(entities: Array<EncryptedFormJs>): Promise<Array<EncryptedFormJs>>
 

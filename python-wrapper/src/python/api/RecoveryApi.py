@@ -174,7 +174,7 @@ class RecoveryApi:
 			return_value = RecoveryDataUseFailureReason._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def delete_recovery_info_async(self, recovery_key: RecoveryDataKey) -> None:
+	async def purge_recovery_info_async(self, recovery_key: RecoveryDataKey) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -190,18 +190,18 @@ class RecoveryApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteRecoveryInfoAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_recovery_info_blocking(self, recovery_key: RecoveryDataKey) -> None:
+	def purge_recovery_info_blocking(self, recovery_key: RecoveryDataKey) -> None:
 		payload = {
 			"recoveryKey": recovery_key,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteRecoveryInfoBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)

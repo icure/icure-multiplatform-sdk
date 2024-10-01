@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedPatientJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -72,11 +73,24 @@ public external interface PatientApiJs {
 	public fun ensureEncryptionMetadataForSelfIsInitialized(options: dynamic):
 			Promise<EncryptedPatientJs>
 
+	@JsName("deletePatientUnsafe")
 	public fun deletePatient(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deletePatientsUnsafe")
 	public fun deletePatients(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun undeletePatients(patientIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deletePatientById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deletePatientsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgePatientById(id: String, rev: String): Promise<Unit>
+
+	public fun deletePatient(patient: PatientJs): Promise<DocIdentifierJs>
+
+	public fun deletePatients(patients: Array<PatientJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgePatient(patient: PatientJs): Promise<Unit>
 
 	public fun getDataOwnersWithAccessTo(patient: PatientJs): Promise<EntityAccessInformationJs>
 
@@ -99,7 +113,13 @@ public external interface PatientApiJs {
 	public fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
 			Promise<PaginatedListIteratorJs<DecryptedPatientJs>>
 
+	public fun undeletePatient(patient: PatientJs): Promise<PatientJs>
+
 	public fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs>
+
+	public fun undeletePatientById(id: String, rev: String): Promise<DecryptedPatientJs>
+
+	public fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<DecryptedPatientJs>>
 
 	public fun getPatient(entityId: String): Promise<DecryptedPatientJs>
 

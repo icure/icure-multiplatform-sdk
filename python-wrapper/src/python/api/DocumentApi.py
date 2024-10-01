@@ -3,7 +3,7 @@ import asyncio
 import json
 import base64
 import traceback
-from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_use_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, DocumentShareOptions
+from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_use_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, IdWithMandatoryRev, DocumentShareOptions
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -203,6 +203,86 @@ class DocumentApi:
 					deserializer = lambda x: EncryptedDocument._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
+
+		async def undelete_document_by_id_async(self, id: str, rev: str) -> EncryptedDocument:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_document_by_id_blocking(self, id: str, rev: str) -> EncryptedDocument:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = EncryptedDocument._deserialize(result_info.success)
+				return return_value
+
+		async def undelete_document_async(self, document: Document) -> EncryptedDocument:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"document": serialize_document(document),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_document_blocking(self, document: Document) -> EncryptedDocument:
+			payload = {
+				"document": serialize_document(document),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = EncryptedDocument._deserialize(result_info.success)
+				return return_value
 
 		async def modify_document_async(self, entity: EncryptedDocument) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
@@ -548,6 +628,86 @@ class DocumentApi:
 					deserializer = lambda x: deserialize_document(x),
 					executor = self.cardinal_sdk._executor
 				)
+
+		async def undelete_document_by_id_async(self, id: str, rev: str) -> Document:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_document(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_document_by_id_blocking(self, id: str, rev: str) -> Document:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_document(result_info.success)
+				return return_value
+
+		async def undelete_document_async(self, document: Document) -> Document:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_document(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"document": serialize_document(document),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_document_blocking(self, document: Document) -> Document:
+			payload = {
+				"document": serialize_document(document),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_document(result_info.success)
+				return return_value
 
 		async def modify_document_async(self, entity: Document) -> Document:
 			loop = asyncio.get_running_loop()
@@ -1443,7 +1603,7 @@ class DocumentApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def delete_document_async(self, entity_id: str) -> DocIdentifier:
+	async def delete_document_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1455,6 +1615,124 @@ class DocumentApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_document_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_documents_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_documents_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_document_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_document_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def delete_document_async(self, document: Document) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"document": serialize_document(document),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1466,9 +1744,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def delete_document_blocking(self, entity_id: str) -> DocIdentifier:
+	def delete_document_blocking(self, document: Document) -> DocIdentifier:
 		payload = {
-			"entityId": entity_id,
+			"document": serialize_document(document),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentBlocking(
 			self.cardinal_sdk._native,
@@ -1482,7 +1760,7 @@ class DocumentApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_documents_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_documents_async(self, documents: List[Document]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1493,7 +1771,7 @@ class DocumentApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"documents": [serialize_document(x0) for x0 in documents],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1505,9 +1783,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def delete_documents_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	def delete_documents_blocking(self, documents: List[Document]) -> List[DocIdentifier]:
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"documents": [serialize_document(x0) for x0 in documents],
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsBlocking(
 			self.cardinal_sdk._native,
@@ -1520,6 +1798,42 @@ class DocumentApi:
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
+
+	async def purge_document_async(self, document: Document) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"document": serialize_document(document),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_document_blocking(self, document: Document) -> None:
+		payload = {
+			"document": serialize_document(document),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
 
 	async def get_raw_main_attachment_async(self, document_id: str) -> bytearray:
 		loop = asyncio.get_running_loop()
@@ -1964,6 +2278,86 @@ class DocumentApi:
 				deserializer = lambda x: DecryptedDocument._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)
+
+	async def undelete_document_by_id_async(self, id: str, rev: str) -> DecryptedDocument:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_document_by_id_blocking(self, id: str, rev: str) -> DecryptedDocument:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DecryptedDocument._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_document_async(self, document: Document) -> DecryptedDocument:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"document": serialize_document(document),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_document_blocking(self, document: Document) -> DecryptedDocument:
+		payload = {
+			"document": serialize_document(document),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DecryptedDocument._deserialize(result_info.success)
+			return return_value
 
 	async def modify_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()

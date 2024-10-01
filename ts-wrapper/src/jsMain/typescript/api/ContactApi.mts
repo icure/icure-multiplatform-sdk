@@ -4,6 +4,7 @@ import {ContactShareOptions} from '../crypto/entities/ContactShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../model/Contact.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
@@ -62,6 +63,18 @@ export interface ContactApi {
 
 	deleteContacts(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteContactById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteContactsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeContactById(id: string, rev: string): Promise<void>;
+
+	deleteContact(contact: Contact): Promise<DocIdentifier>;
+
+	deleteContacts(contacts: Array<Contact>): Promise<Array<DocIdentifier>>;
+
+	purgeContact(contact: Contact): Promise<void>;
+
 	findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
 
@@ -84,6 +97,10 @@ export interface ContactApi {
 	filterContactsBySorted(filter: SortableFilterOptions<Contact>): Promise<PaginatedListIterator<DecryptedContact>>;
 
 	filterServicesBySorted(filter: SortableFilterOptions<Service>): Promise<PaginatedListIterator<DecryptedService>>;
+
+	undeleteContactById(id: string, rev: string): Promise<DecryptedContact>;
+
+	undeleteContact(contact: Contact): Promise<DecryptedContact>;
 
 	modifyContact(entity: DecryptedContact): Promise<DecryptedContact>;
 

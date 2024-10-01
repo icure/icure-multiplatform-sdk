@@ -1,11 +1,16 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Device} from '../model/Device.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 
 export interface DeviceApi {
+
+	deleteDevice(entityId: string): Promise<DocIdentifier>;
+
+	deleteDevices(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getDevice(deviceId: string): Promise<Device>;
 
@@ -27,9 +32,21 @@ export interface DeviceApi {
 
 	matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>): Promise<Array<string>>;
 
-	deleteDevice(deviceId: string): Promise<DocIdentifier>;
+	deleteDeviceById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteDevices(deviceIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteDevicesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeDeviceById(id: string, rev: string): Promise<void>;
+
+	undeleteDeviceById(id: string, rev: string): Promise<Device>;
+
+	deleteDevice(device: Device): Promise<DocIdentifier>;
+
+	deleteDevices(devices: Array<Device>): Promise<Array<DocIdentifier>>;
+
+	purgeDevice(device: Device): Promise<void>;
+
+	undeleteDevice(device: Device): Promise<Device>;
 
 	getDevicesInGroup(groupId: string,
 			options?: { deviceIds?: Array<string> | undefined }): Promise<Array<Device>>;
@@ -38,6 +55,6 @@ export interface DeviceApi {
 
 	createDeviceInGroup(groupId: string, device: Device): Promise<Device>;
 
-	deleteDevicesInGroup(groupId: string, deviceIds: string): Promise<Array<DocIdentifier>>;
+	deleteDevicesInGroup(groupId: string, deviceIds: Array<IdWithRev>): Promise<Array<DocIdentifier>>;
 
 }

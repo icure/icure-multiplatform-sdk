@@ -3,6 +3,7 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {AccessLogShareOptions} from '../crypto/entities/AccessLogShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {AccessLog, DecryptedAccessLog, EncryptedAccessLog} from '../model/AccessLog.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
@@ -44,6 +45,18 @@ export interface AccessLogApi {
 
 	deleteAccessLogs(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteAccessLogById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeAccessLogById(id: string, rev: string): Promise<void>;
+
+	deleteAccessLog(accessLog: AccessLog): Promise<DocIdentifier>;
+
+	deleteAccessLogs(accessLogs: Array<AccessLog>): Promise<Array<DocIdentifier>>;
+
+	purgeAccessLog(accessLog: AccessLog): Promise<void>;
+
 	shareWith(delegateId: string, accessLog: DecryptedAccessLog,
 			options?: { options?: AccessLogShareOptions | undefined }): Promise<DecryptedAccessLog>;
 
@@ -56,6 +69,10 @@ export interface AccessLogApi {
 	filterAccessLogsBy(filter: FilterOptions<AccessLog>): Promise<PaginatedListIterator<DecryptedAccessLog>>;
 
 	filterAccessLogsBySorted(filter: SortableFilterOptions<AccessLog>): Promise<PaginatedListIterator<DecryptedAccessLog>>;
+
+	undeleteAccessLogById(id: string, rev: string): Promise<DecryptedAccessLog>;
+
+	undeleteAccessLog(accessLog: AccessLog): Promise<DecryptedAccessLog>;
 
 	modifyAccessLog(entity: DecryptedAccessLog): Promise<DecryptedAccessLog>;
 

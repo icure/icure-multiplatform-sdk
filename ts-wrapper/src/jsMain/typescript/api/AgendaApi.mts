@@ -1,7 +1,7 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Agenda} from '../model/Agenda.mjs';
-import {ListOfIds} from '../model/ListOfIds.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
@@ -13,9 +13,25 @@ export interface AgendaApi {
 
 	createAgenda(agendaDto: Agenda): Promise<Agenda>;
 
-	deleteAgendas(agendaIds: ListOfIds): Promise<Array<DocIdentifier>>;
+	deleteAgenda(entityId: string): Promise<DocIdentifier>;
 
-	deleteAgenda(agendaId: string): Promise<DocIdentifier>;
+	deleteAgendas(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+
+	deleteAgendaById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteAgendasByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeAgendaById(id: string, rev: string): Promise<void>;
+
+	undeleteAgendaById(id: string, rev: string): Promise<Agenda>;
+
+	deleteAgenda(agenda: Agenda): Promise<DocIdentifier>;
+
+	deleteAgendas(agendas: Array<Agenda>): Promise<Array<DocIdentifier>>;
+
+	purgeAgenda(agenda: Agenda): Promise<void>;
+
+	undeleteAgenda(agenda: Agenda): Promise<Agenda>;
 
 	getAgenda(agendaId: string): Promise<Agenda>;
 

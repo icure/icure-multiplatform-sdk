@@ -29,6 +29,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedAccessLogJs
 import com.icure.cardinal.sdk.js.model.EncryptedAccessLogJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.UserJs
@@ -36,6 +37,7 @@ import com.icure.cardinal.sdk.js.model.accessLog_fromJs
 import com.icure.cardinal.sdk.js.model.accessLog_toJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -46,6 +48,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -193,6 +196,26 @@ internal class AccessLogApiImplJs(
 					accessLog_toJs(x1)
 				},
 			)
+		}
+
+		override fun undeleteAccessLogById(id: String, rev: String): Promise<EncryptedAccessLogJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = accessLogApi.encrypted.undeleteAccessLogById(
+				idConverted,
+				revConverted,
+			)
+			accessLog_toJs(result)
+		}
+
+		override fun undeleteAccessLog(accessLog: AccessLogJs): Promise<EncryptedAccessLogJs> =
+				GlobalScope.promise {
+			val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+			val result = accessLogApi.encrypted.undeleteAccessLog(
+				accessLogConverted,
+			)
+			accessLog_toJs(result)
 		}
 
 		override fun modifyAccessLog(entity: EncryptedAccessLogJs): Promise<EncryptedAccessLogJs> =
@@ -504,6 +527,26 @@ internal class AccessLogApiImplJs(
 					accessLog_toJs(x1)
 				},
 			)
+		}
+
+		override fun undeleteAccessLogById(id: String, rev: String): Promise<AccessLogJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = accessLogApi.tryAndRecover.undeleteAccessLogById(
+				idConverted,
+				revConverted,
+			)
+			accessLog_toJs(result)
+		}
+
+		override fun undeleteAccessLog(accessLog: AccessLogJs): Promise<AccessLogJs> =
+				GlobalScope.promise {
+			val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+			val result = accessLogApi.tryAndRecover.undeleteAccessLog(
+				accessLogConverted,
+			)
+			accessLog_toJs(result)
 		}
 
 		override fun modifyAccessLog(entity: AccessLogJs): Promise<AccessLogJs> = GlobalScope.promise {
@@ -882,6 +925,84 @@ internal class AccessLogApiImplJs(
 		)
 	}
 
+	override fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = accessLogApi.deleteAccessLogById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = accessLogApi.deleteAccessLogsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeAccessLogById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		accessLogApi.purgeAccessLogById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteAccessLog(accessLog: AccessLogJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+		val result = accessLogApi.deleteAccessLog(
+			accessLogConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteAccessLogs(accessLogs: Array<AccessLogJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val accessLogsConverted: List<AccessLog> = arrayToList(
+			accessLogs,
+			"accessLogs",
+			{ x1: AccessLogJs ->
+				accessLog_fromJs(x1)
+			},
+		)
+		val result = accessLogApi.deleteAccessLogs(
+			accessLogsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeAccessLog(accessLog: AccessLogJs): Promise<Unit> = GlobalScope.promise {
+		val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+		accessLogApi.purgeAccessLog(
+			accessLogConverted,
+		)
+
+	}
+
 	override fun shareWith(
 		delegateId: String,
 		accessLog: DecryptedAccessLogJs,
@@ -1002,6 +1123,26 @@ internal class AccessLogApiImplJs(
 				accessLog_toJs(x1)
 			},
 		)
+	}
+
+	override fun undeleteAccessLogById(id: String, rev: String): Promise<DecryptedAccessLogJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = accessLogApi.undeleteAccessLogById(
+			idConverted,
+			revConverted,
+		)
+		accessLog_toJs(result)
+	}
+
+	override fun undeleteAccessLog(accessLog: AccessLogJs): Promise<DecryptedAccessLogJs> =
+			GlobalScope.promise {
+		val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+		val result = accessLogApi.undeleteAccessLog(
+			accessLogConverted,
+		)
+		accessLog_toJs(result)
 	}
 
 	override fun modifyAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs> =

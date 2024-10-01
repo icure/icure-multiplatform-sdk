@@ -16,6 +16,10 @@ export interface MaintenanceTaskFlavouredApi<E extends MaintenanceTask> {
 
 	filterMaintenanceTasksBySorted(filter: SortableFilterOptions<MaintenanceTask>): Promise<PaginatedListIterator<E>>;
 
+	undeleteMaintenanceTask(maintenanceTask: MaintenanceTask): Promise<MaintenanceTask>;
+
+	undeleteMaintenanceTaskById(id: string, rev: string): Promise<E>;
+
 	modifyMaintenanceTask(entity: E): Promise<E>;
 
 	getMaintenanceTask(entityId: string): Promise<E>;

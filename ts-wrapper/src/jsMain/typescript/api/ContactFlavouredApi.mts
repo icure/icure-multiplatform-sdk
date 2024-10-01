@@ -25,6 +25,10 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	filterServicesBySorted(filter: SortableFilterOptions<Service>): Promise<PaginatedListIterator<S>>;
 
+	undeleteContactById(id: string, rev: string): Promise<E>;
+
+	undeleteContact(contact: Contact): Promise<E>;
+
 	modifyContact(entity: E): Promise<E>;
 
 	modifyContacts(entities: Array<E>): Promise<Array<E>>;

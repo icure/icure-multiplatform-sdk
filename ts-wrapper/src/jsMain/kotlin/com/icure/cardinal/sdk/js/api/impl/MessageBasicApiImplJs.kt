@@ -18,10 +18,12 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.EncryptedMessageJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.message_toJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
@@ -32,6 +34,7 @@ import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.EncryptedMessage
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
@@ -43,6 +46,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Set
 import kotlin.js.Promise
@@ -139,11 +143,107 @@ internal class MessageBasicApiImplJs(
 		)
 	}
 
+	override fun deleteMessageById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = messageBasicApi.deleteMessageById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteMessagesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = messageBasicApi.deleteMessagesByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeMessageById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		messageBasicApi.purgeMessageById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteMessage(message: MessageJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val messageConverted: Message = message_fromJs(message)
+		val result = messageBasicApi.deleteMessage(
+			messageConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteMessages(messages: Array<MessageJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val messagesConverted: List<Message> = arrayToList(
+			messages,
+			"messages",
+			{ x1: MessageJs ->
+				message_fromJs(x1)
+			},
+		)
+		val result = messageBasicApi.deleteMessages(
+			messagesConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeMessage(message: MessageJs): Promise<Unit> = GlobalScope.promise {
+		val messageConverted: Message = message_fromJs(message)
+		messageBasicApi.purgeMessage(
+			messageConverted,
+		)
+
+	}
+
+	override fun undeleteMessage(message: MessageJs): Promise<MessageJs> = GlobalScope.promise {
+		val messageConverted: Message = message_fromJs(message)
+		val result = messageBasicApi.undeleteMessage(
+			messageConverted,
+		)
+		message_toJs(result)
+	}
+
 	override fun modifyMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs> =
 			GlobalScope.promise {
 		val entityConverted: EncryptedMessage = message_fromJs(entity)
 		val result = messageBasicApi.modifyMessage(
 			entityConverted,
+		)
+		message_toJs(result)
+	}
+
+	override fun undeleteMessageById(id: String, rev: String): Promise<EncryptedMessageJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = messageBasicApi.undeleteMessageById(
+			idConverted,
+			revConverted,
 		)
 		message_toJs(result)
 	}

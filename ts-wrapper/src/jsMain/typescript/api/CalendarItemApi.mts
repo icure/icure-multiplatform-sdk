@@ -3,6 +3,7 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {CalendarItemShareOptions} from '../crypto/entities/CalendarItemShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {CalendarItem, DecryptedCalendarItem, EncryptedCalendarItem} from '../model/CalendarItem.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
@@ -44,6 +45,18 @@ export interface CalendarItemApi {
 
 	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteCalendarItemById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeCalendarItemById(id: string, rev: string): Promise<void>;
+
+	deleteCalendarItem(calendarItem: CalendarItem): Promise<DocIdentifier>;
+
+	deleteCalendarItems(calendarItems: Array<CalendarItem>): Promise<Array<DocIdentifier>>;
+
+	purgeCalendarItem(calendarItem: CalendarItem): Promise<void>;
+
 	shareWith(delegateId: string, calendarItem: DecryptedCalendarItem,
 			options?: { options?: CalendarItemShareOptions | undefined }): Promise<DecryptedCalendarItem>;
 
@@ -59,6 +72,10 @@ export interface CalendarItemApi {
 	filterCalendarItemsBy(filter: FilterOptions<CalendarItem>): Promise<PaginatedListIterator<DecryptedCalendarItem>>;
 
 	filterCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): Promise<PaginatedListIterator<DecryptedCalendarItem>>;
+
+	undeleteCalendarItemById(id: string, rev: string): Promise<DecryptedCalendarItem>;
+
+	undeleteCalendarItem(calendarItem: CalendarItem): Promise<DecryptedCalendarItem>;
 
 	modifyCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
 

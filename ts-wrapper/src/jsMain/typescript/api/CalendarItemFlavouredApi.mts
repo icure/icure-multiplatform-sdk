@@ -24,6 +24,10 @@ export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 
 	filterCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): Promise<PaginatedListIterator<E>>;
 
+	undeleteCalendarItemById(id: string, rev: string): Promise<E>;
+
+	undeleteCalendarItem(calendarItem: CalendarItem): Promise<E>;
+
 	modifyCalendarItem(entity: E): Promise<E>;
 
 	getCalendarItem(entityId: string): Promise<E>;

@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.HealthcareParty
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -38,6 +39,82 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+
+@Serializable
+private class DeleteHealthcarePartyUnsafeParams(
+	public val entityId: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartyUnsafeBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyUnsafeParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcareParty(
+			decodedParams.entityId,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartyUnsafeAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyUnsafeParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcareParty(
+				decodedParams.entityId,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartiesUnsafeParams(
+	public val entityIds: List<String>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartiesUnsafeBlocking(sdk: CardinalNonCryptoApis, params: String): String
+		= kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesUnsafeParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcareParties(
+			decodedParams.entityIds,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartiesUnsafeAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesUnsafeParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcareParties(
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class GetHealthcarePartyParams(
@@ -108,42 +185,6 @@ public fun createHealthcarePartyAsync(
 				decodedParams.p,
 			)
 		}.toPyStringAsyncCallback(HealthcareParty.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class DeleteHealthcarePartyParams(
-	public val healthcarePartyId: String,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun deleteHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyParams>(params)
-	runBlocking {
-		sdk.healthcareParty.deleteHealthcareParty(
-			decodedParams.healthcarePartyId,
-		)
-	}
-}.toPyString(DocIdentifier.serializer())
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun deleteHealthcarePartyAsync(
-	sdk: CardinalNonCryptoApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.healthcareParty.deleteHealthcareParty(
-				decodedParams.healthcarePartyId,
-			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -597,42 +638,6 @@ public fun getPublicKeyAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class DeleteHealthcarePartiesParams(
-	public val healthcarePartyIds: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun deleteHealthcarePartiesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesParams>(params)
-	runBlocking {
-		sdk.healthcareParty.deleteHealthcareParties(
-			decodedParams.healthcarePartyIds,
-		)
-	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun deleteHealthcarePartiesAsync(
-	sdk: CardinalNonCryptoApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.healthcareParty.deleteHealthcareParties(
-				decodedParams.healthcarePartyIds,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class ModifyHealthcarePartyParams(
 	public val healthcareParty: HealthcareParty,
 )
@@ -862,88 +867,6 @@ public fun getHealthcarePartiesInGroupAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class DeleteHealthcarePartiesInGroupParams(
-	public val groupId: String,
-	public val healthcarePartyIds: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun deleteHealthcarePartiesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String):
-		String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupParams>(params)
-	runBlocking {
-		sdk.healthcareParty.deleteHealthcarePartiesInGroup(
-			decodedParams.groupId,
-			decodedParams.healthcarePartyIds,
-		)
-	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun deleteHealthcarePartiesInGroupAsync(
-	sdk: CardinalNonCryptoApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.healthcareParty.deleteHealthcarePartiesInGroup(
-				decodedParams.groupId,
-				decodedParams.healthcarePartyIds,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class DeleteHealthcarePartyInGroupParams(
-	public val healthcarePartyId: String,
-	public val groupId: String,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun deleteHealthcarePartyInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String
-		= kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupParams>(params)
-	runBlocking {
-		sdk.healthcareParty.deleteHealthcarePartyInGroup(
-			decodedParams.healthcarePartyId,
-			decodedParams.groupId,
-		)
-	}
-}.toPyString(DocIdentifier.serializer())
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun deleteHealthcarePartyInGroupAsync(
-	sdk: CardinalNonCryptoApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.healthcareParty.deleteHealthcarePartyInGroup(
-				decodedParams.healthcarePartyId,
-				decodedParams.groupId,
-			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class RegisterPatientParams(
 	public val groupId: String,
 	public val parentHcPartyId: String? = null,
@@ -988,5 +911,477 @@ public fun registerPatientAsync(
 				decodedParams.hcp,
 			)
 		}.toPyStringAsyncCallback(DataOwnerRegistrationSuccess.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartyByIdParams(
+	public val entityId: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartyByIdBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyByIdParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcarePartyById(
+			decodedParams.entityId,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartyByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcarePartyById(
+				decodedParams.entityId,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartiesByIdsParams(
+	public val entityIds: List<IdWithMandatoryRev>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartiesByIdsBlocking(sdk: CardinalNonCryptoApis, params: String): String
+		= kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesByIdsParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcarePartiesByIds(
+			decodedParams.entityIds,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartiesByIdsAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesByIdsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcarePartiesByIds(
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartyInGroupByIdParams(
+	public val groupId: String,
+	public val entityId: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartyInGroupByIdBlocking(sdk: CardinalNonCryptoApis, params: String):
+		String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupByIdParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcarePartyInGroupById(
+			decodedParams.groupId,
+			decodedParams.entityId,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartyInGroupByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcarePartyInGroupById(
+				decodedParams.groupId,
+				decodedParams.entityId,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartiesInGroupByIdsParams(
+	public val groupId: String,
+	public val entityIds: List<IdWithMandatoryRev>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartiesInGroupByIdsBlocking(sdk: CardinalNonCryptoApis, params: String):
+		String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupByIdsParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcarePartiesInGroupByIds(
+			decodedParams.groupId,
+			decodedParams.entityIds,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartiesInGroupByIdsAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupByIdsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcarePartiesInGroupByIds(
+				decodedParams.groupId,
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PurgeHealthcarePartyByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun purgeHealthcarePartyByIdBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<PurgeHealthcarePartyByIdParams>(params)
+	runBlocking {
+		sdk.healthcareParty.purgeHealthcarePartyById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(Unit.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun purgeHealthcarePartyByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<PurgeHealthcarePartyByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.purgeHealthcarePartyById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteHealthcarePartyByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteHealthcarePartyByIdBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteHealthcarePartyByIdParams>(params)
+	runBlocking {
+		sdk.healthcareParty.undeleteHealthcarePartyById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(HealthcareParty.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteHealthcarePartyByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteHealthcarePartyByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.undeleteHealthcarePartyById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(HealthcareParty.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartyParams(
+	public val healthcareParty: HealthcareParty,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcareParty(
+			decodedParams.healthcareParty,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartyAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcareParty(
+				decodedParams.healthcareParty,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartiesParams(
+	public val healthcareParties: List<HealthcareParty>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartiesBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcareParties(
+			decodedParams.healthcareParties,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartiesAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcareParties(
+				decodedParams.healthcareParties,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PurgeHealthcarePartyParams(
+	public val healthcareParty: HealthcareParty,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun purgeHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeHealthcarePartyParams>(params)
+	runBlocking {
+		sdk.healthcareParty.purgeHealthcareParty(
+			decodedParams.healthcareParty,
+		)
+	}
+}.toPyString(Unit.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun purgeHealthcarePartyAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeHealthcarePartyParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.purgeHealthcareParty(
+				decodedParams.healthcareParty,
+			)
+		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteHealthcarePartyParams(
+	public val healthcareParty: HealthcareParty,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteHealthcarePartyBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteHealthcarePartyParams>(params)
+	runBlocking {
+		sdk.healthcareParty.undeleteHealthcareParty(
+			decodedParams.healthcareParty,
+		)
+	}
+}.toPyString(HealthcareParty.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteHealthcarePartyAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteHealthcarePartyParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.undeleteHealthcareParty(
+				decodedParams.healthcareParty,
+			)
+		}.toPyStringAsyncCallback(HealthcareParty.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartyInGroupParams(
+	public val groupId: String,
+	public val hcp: HealthcareParty,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartyInGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String
+		= kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcarePartyInGroup(
+			decodedParams.groupId,
+			decodedParams.hcp,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartyInGroupAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcarePartyInGroup(
+				decodedParams.groupId,
+				decodedParams.hcp,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteHealthcarePartiesInGroupParams(
+	public val groupId: String,
+	public val healthcareParties: List<HealthcareParty>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteHealthcarePartiesInGroupBlocking(sdk: CardinalNonCryptoApis, params: String):
+		String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupParams>(params)
+	runBlocking {
+		sdk.healthcareParty.deleteHealthcarePartiesInGroup(
+			decodedParams.groupId,
+			decodedParams.healthcareParties,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteHealthcarePartiesInGroupAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthcareParty.deleteHealthcarePartiesInGroup(
+				decodedParams.groupId,
+				decodedParams.healthcareParties,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)

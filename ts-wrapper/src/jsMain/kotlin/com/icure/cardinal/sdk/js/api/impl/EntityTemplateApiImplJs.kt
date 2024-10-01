@@ -8,11 +8,14 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.EntityTemplateJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.entityTemplate_fromJs
 import com.icure.cardinal.sdk.js.model.entityTemplate_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.model.EntityTemplate
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
 import kotlin.Boolean
@@ -240,13 +243,13 @@ internal class EntityTemplateApiImplJs(
 		)
 	}
 
-	override fun deleteEntityTemplate(entityTemplateIds: Array<String>):
+	override fun deleteEntityTemplates(entityTemplateIds: Array<IdWithMandatoryRevJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val entityTemplateIdsConverted: List<String> = arrayToList(
+		val entityTemplateIdsConverted: List<IdWithMandatoryRev> = arrayToList(
 			entityTemplateIds,
 			"entityTemplateIds",
-			{ x1: String ->
-				x1
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
 			},
 		)
 		val result = entityTemplateApi.deleteEntityTemplates(

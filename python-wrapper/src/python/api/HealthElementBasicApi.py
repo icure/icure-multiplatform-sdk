@@ -2,7 +2,7 @@
 import asyncio
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import HealthElement, EncryptedHealthElement, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.model import HealthElement, EncryptedHealthElement, DocIdentifier, IdWithMandatoryRev, serialize_health_element, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
@@ -193,7 +193,7 @@ class HealthElementBasicApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def delete_health_element_async(self, entity_id: str) -> DocIdentifier:
+	async def delete_health_element_by_id_async(self, entity_id: str, rev: Optional[str]) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -205,6 +205,124 @@ class HealthElementBasicApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.deleteHealthElementByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_health_element_by_id_blocking(self, entity_id: str, rev: Optional[str]) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.deleteHealthElementByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_health_elements_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.deleteHealthElementsByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_health_elements_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.deleteHealthElementsByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_health_element_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.purgeHealthElementByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_health_element_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.purgeHealthElementByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def delete_health_element_async(self, health_element: HealthElement) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"healthElement": serialize_health_element(health_element),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -216,9 +334,9 @@ class HealthElementBasicApi:
 		)
 		return await future
 
-	def delete_health_element_blocking(self, entity_id: str) -> DocIdentifier:
+	def delete_health_element_blocking(self, health_element: HealthElement) -> DocIdentifier:
 		payload = {
-			"entityId": entity_id,
+			"healthElement": serialize_health_element(health_element),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.deleteHealthElementBlocking(
 			self.cardinal_sdk._native,
@@ -232,7 +350,7 @@ class HealthElementBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_health_elements_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_health_elements_async(self, health_elements: List[HealthElement]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -243,7 +361,7 @@ class HealthElementBasicApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"healthElements": [serialize_health_element(x0) for x0 in health_elements],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -255,9 +373,9 @@ class HealthElementBasicApi:
 		)
 		return await future
 
-	def delete_health_elements_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	def delete_health_elements_blocking(self, health_elements: List[HealthElement]) -> List[DocIdentifier]:
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"healthElements": [serialize_health_element(x0) for x0 in health_elements],
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.deleteHealthElementsBlocking(
 			self.cardinal_sdk._native,
@@ -269,6 +387,122 @@ class HealthElementBasicApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_health_element_async(self, health_element: HealthElement) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"healthElement": serialize_health_element(health_element),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.purgeHealthElementAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_health_element_blocking(self, health_element: HealthElement) -> None:
+		payload = {
+			"healthElement": serialize_health_element(health_element),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.purgeHealthElementBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def undelete_health_element_by_id_async(self, id: str, rev: str) -> EncryptedHealthElement:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = EncryptedHealthElement._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.undeleteHealthElementByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_health_element_by_id_blocking(self, id: str, rev: str) -> EncryptedHealthElement:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.undeleteHealthElementByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedHealthElement._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_health_element_async(self, health_element: HealthElement) -> EncryptedHealthElement:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = EncryptedHealthElement._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"healthElement": serialize_health_element(health_element),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.undeleteHealthElementAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_health_element_blocking(self, health_element: HealthElement) -> EncryptedHealthElement:
+		payload = {
+			"healthElement": serialize_health_element(health_element),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.undeleteHealthElementBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedHealthElement._deserialize(result_info.success)
 			return return_value
 
 	async def modify_health_element_async(self, entity: EncryptedHealthElement) -> EncryptedHealthElement:

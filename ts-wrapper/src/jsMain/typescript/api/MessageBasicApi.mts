@@ -1,5 +1,6 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {EncryptedMessage, Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -22,7 +23,23 @@ export interface MessageBasicApi {
 
 	deleteMessages(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteMessageById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteMessagesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeMessageById(id: string, rev: string): Promise<void>;
+
+	deleteMessage(message: Message): Promise<DocIdentifier>;
+
+	deleteMessages(messages: Array<Message>): Promise<Array<DocIdentifier>>;
+
+	purgeMessage(message: Message): Promise<void>;
+
+	undeleteMessage(message: Message): Promise<Message>;
+
 	modifyMessage(entity: EncryptedMessage): Promise<EncryptedMessage>;
+
+	undeleteMessageById(id: string, rev: string): Promise<EncryptedMessage>;
 
 	getMessage(entityId: string): Promise<EncryptedMessage>;
 

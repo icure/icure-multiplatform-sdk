@@ -7,12 +7,14 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.AccessLogJs
 import com.icure.cardinal.sdk.js.model.EncryptedAccessLogJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -30,9 +32,28 @@ public external interface AccessLogBasicApiJs {
 	public fun filterAccessLogsBySorted(filter: BaseSortableFilterOptionsJs<AccessLogJs>):
 			Promise<PaginatedListIteratorJs<EncryptedAccessLogJs>>
 
+	@JsName("deleteAccessLogUnsafe")
 	public fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteAccessLogsUnsafe")
 	public fun deleteAccessLogs(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeAccessLogById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteAccessLog(accessLog: AccessLogJs): Promise<DocIdentifierJs>
+
+	public fun deleteAccessLogs(accessLogs: Array<AccessLogJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeAccessLog(accessLog: AccessLogJs): Promise<Unit>
+
+	public fun undeleteAccessLogById(id: String, rev: String): Promise<EncryptedAccessLogJs>
+
+	public fun undeleteAccessLog(accessLog: AccessLogJs): Promise<EncryptedAccessLogJs>
 
 	public fun modifyAccessLog(entity: EncryptedAccessLogJs): Promise<EncryptedAccessLogJs>
 

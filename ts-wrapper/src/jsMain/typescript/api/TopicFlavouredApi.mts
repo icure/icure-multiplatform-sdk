@@ -16,7 +16,11 @@ export interface TopicFlavouredApi<E extends Topic> {
 
 	filterTopicsBySorted(filter: SortableFilterOptions<Topic>): Promise<PaginatedListIterator<E>>;
 
+	undeleteTopic(topic: Topic): Promise<Topic>;
+
 	modifyTopic(entity: E): Promise<E>;
+
+	undeleteTopicById(id: string, rev: string): Promise<E>;
 
 	getTopic(entityId: string): Promise<E>;
 

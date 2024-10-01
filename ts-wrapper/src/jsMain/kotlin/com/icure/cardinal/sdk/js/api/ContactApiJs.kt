@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.DecryptedContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
 import com.icure.cardinal.sdk.js.model.IcureStubJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.`data`.LabelledOccurenceJs
@@ -75,9 +76,24 @@ public external interface ContactApiJs {
 	public fun subscribeToServiceCreateOrUpdateEvents(filter: FilterOptionsJs<ServiceJs>,
 			options: dynamic): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
 
+	@JsName("deleteContactUnsafe")
 	public fun deleteContact(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteContactsUnsafe")
 	public fun deleteContacts(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteContactById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteContactsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeContactById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteContact(contact: ContactJs): Promise<DocIdentifierJs>
+
+	public fun deleteContacts(contacts: Array<ContactJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeContact(contact: ContactJs): Promise<Unit>
 
 	public fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>>
@@ -111,6 +127,10 @@ public external interface ContactApiJs {
 
 	public fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
 			Promise<PaginatedListIteratorJs<DecryptedServiceJs>>
+
+	public fun undeleteContactById(id: String, rev: String): Promise<DecryptedContactJs>
+
+	public fun undeleteContact(contact: ContactJs): Promise<DecryptedContactJs>
 
 	public fun modifyContact(entity: DecryptedContactJs): Promise<DecryptedContactJs>
 
