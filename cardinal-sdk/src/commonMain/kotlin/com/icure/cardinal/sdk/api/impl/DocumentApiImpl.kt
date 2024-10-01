@@ -146,6 +146,15 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 
 @InternalIcureApi
 private class AbstractDocumentBasicFlavourlessApi(val rawApi: RawDocumentApi) : DocumentBasicFlavourlessApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteDocument(entityId: String): DocIdentifier =
+		rawApi.deleteDocument(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteDocuments(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteDocuments(ListOfIds(entityIds)).successBody()
+	
 	override suspend fun deleteDocumentById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteDocument(entityId, rev).successBodyOrThrowRevisionConflict()
 

@@ -156,6 +156,14 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 
 @InternalIcureApi
 private class AbstractAccessLogBasicFlavourlessApi(val rawApi: RawAccessLogApi) : AccessLogBasicFlavourlessApi {
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteAccessLog(entityId: String): DocIdentifier =
+		rawApi.deleteAccessLog(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteAccessLogs(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteAccessLogs(ListOfIds(entityIds)).successBody()
+
 	override suspend fun deleteAccessLogById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteAccessLog(entityId, rev).successBodyOrThrowRevisionConflict()
 

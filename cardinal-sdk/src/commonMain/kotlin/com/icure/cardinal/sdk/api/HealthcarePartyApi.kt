@@ -11,8 +11,16 @@ import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import kotlin.js.JsName
 
 interface HealthcarePartyApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteHealthcarePartyUnsafe")
+	suspend fun deleteHealthcareParty(entityId: String): DocIdentifier
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteHealthcarePartiesUnsafe")
+	suspend fun deleteHealthcareParties(entityIds: List<String>): List<DocIdentifier>
+	
 	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty
 	suspend fun createHealthcareParty(p: HealthcareParty): HealthcareParty
 

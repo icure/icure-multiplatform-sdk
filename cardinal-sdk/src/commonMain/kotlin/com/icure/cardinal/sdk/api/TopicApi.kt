@@ -21,9 +21,17 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface TopicBasicFlavourlessApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteTopicUnsafe")
+	suspend fun deleteTopic(entityId: String): DocIdentifier
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteTopicsUnsafe")
+	suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier>
+	
 	/**
 	 * Deletes a topic. If you don't have write access to the topic the method will fail.
 	 * @param entityId id of the topic.

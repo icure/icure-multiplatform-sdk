@@ -107,6 +107,15 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 
 @InternalIcureApi
 private class AbstractTimeTableBasicFlavourlessApi(val rawApi: RawTimeTableApi) : TimeTableBasicFlavourlessApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTimeTable(entityId: String): DocIdentifier =
+		rawApi.deleteTimeTable(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTimeTables(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteTimeTables(ListOfIds(entityIds)).successBody()
+	
 	override suspend fun deleteTimeTableById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteTimeTable(entityId, rev).successBodyOrThrowRevisionConflict()
 

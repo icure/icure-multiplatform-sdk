@@ -19,6 +19,15 @@ import com.icure.utils.InternalIcureApi
 internal class HealthcarePartyApiImpl(
 	private val rawApi: RawHealthcarePartyApi,
 ) : HealthcarePartyApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteHealthcareParty(entityId: String): DocIdentifier =
+		rawApi.deleteHealthcareParty(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteHealthcareParties(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteHealthcareParties(ListOfIds(entityIds)).successBody()
+	
 	override suspend fun getHealthcareParty(healthcarePartyId: String) = rawApi.getHealthcareParty(healthcarePartyId).successBody()
 
 	override suspend fun createHealthcareParty(p: HealthcareParty) = rawApi.createHealthcareParty(p).successBody()

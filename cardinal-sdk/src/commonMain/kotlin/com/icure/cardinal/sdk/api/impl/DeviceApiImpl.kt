@@ -19,6 +19,15 @@ import com.icure.utils.InternalIcureApi
 internal class DeviceApiImpl(
 	private val rawApi: RawDeviceApi,
 ) : DeviceApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteDevice(entityId: String): DocIdentifier =
+		rawApi.deleteDevice(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteDevices(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteDevices(ListOfIds(entityIds)).successBody()
+	
 	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()
 
 	override suspend fun getDevices(deviceIds: List<String>) = rawApi.getDevices(ListOfIds(deviceIds)).successBody()

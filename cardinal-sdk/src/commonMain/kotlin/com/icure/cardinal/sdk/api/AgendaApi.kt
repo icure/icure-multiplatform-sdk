@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import kotlin.js.JsName
 
 interface AgendaApi {
 	@Deprecated("Use filter instead")
@@ -17,6 +18,13 @@ interface AgendaApi {
 	): PaginatedList<Agenda>
 
 	suspend fun createAgenda(agendaDto: Agenda): Agenda
+
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteAgendaUnsafe")
+	suspend fun deleteAgenda(entityId: String): DocIdentifier
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteAgendasUnsafe")
+	suspend fun deleteAgendas(entityIds: List<String>): List<DocIdentifier>
 
 	/**
 	 * Deletes a agenda. If you don't have write access to the agenda the method will fail.

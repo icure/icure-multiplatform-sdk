@@ -305,6 +305,15 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 @InternalIcureApi
 private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val config: BasicApiConfiguration) :
 	PatientBasicFlavourlessApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deletePatient(entityId: String): DocIdentifier =
+		rawApi.deletePatient(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deletePatients(ListOfIds(entityIds)).successBody()
+		
 	override suspend fun deletePatientById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deletePatient(entityId, rev).successBodyOrThrowRevisionConflict()
 

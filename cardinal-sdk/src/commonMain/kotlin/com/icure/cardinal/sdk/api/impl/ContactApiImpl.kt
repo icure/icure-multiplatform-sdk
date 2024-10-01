@@ -351,6 +351,15 @@ private class AbstractContactBasicFlavourlessApi(
 	val rawApi: RawContactApi,
 	private val config: BasicApiConfiguration
 ) : ContactBasicFlavourlessApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteContact(entityId: String): DocIdentifier =
+		rawApi.deleteContact(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteContacts(ListOfIds(entityIds)).successBody()
+	
 	override suspend fun deleteContactById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteContact(entityId, rev).successBodyOrThrowRevisionConflict()
 

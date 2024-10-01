@@ -110,6 +110,15 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 @InternalIcureApi
 private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private val config: BasicApiConfiguration) :
 	TopicBasicFlavourlessApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTopic(entityId: String): DocIdentifier =
+		rawApi.deleteTopic(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
+		
 	override suspend fun deleteTopicById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteTopic(entityId, rev).successBodyOrThrowRevisionConflict()
 

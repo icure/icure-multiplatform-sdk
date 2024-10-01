@@ -16,6 +16,10 @@ import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlin.js.JsName
 
 interface UserApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteUserUnsafe")
+	suspend fun deleteUser(entityId: String): DocIdentifier
+
 	suspend fun getCurrentUser(): User
 
 	@Deprecated(

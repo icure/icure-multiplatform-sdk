@@ -22,10 +22,12 @@ internal class UserApiImpl(
 	private val raw: RawUserApi,
 	private val rawPermissionApi: RawPermissionApi,
 ) : UserApi {
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteUser(entityId: String): DocIdentifier =
+		raw.deleteUser(entityId).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getCurrentUser(): User =
 		raw.getCurrentUser().successBody()
-
 
 	@Deprecated(
 		"List methods are deprecated",

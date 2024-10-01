@@ -109,6 +109,15 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 @InternalIcureApi
 private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintenanceTaskApi, private val config: BasicApiConfiguration) :
 	MaintenanceTaskBasicFlavourlessApi {
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteMaintenanceTask(entityId: String): DocIdentifier =
+		rawApi.deleteMaintenanceTask(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteMaintenanceTasks(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteMaintenanceTasks(ListOfIds(entityIds)).successBody()
+		
 	override suspend fun deleteMaintenanceTaskById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteMaintenanceTask(entityId, rev).successBodyOrThrowRevisionConflict()
 

@@ -20,6 +20,14 @@ import com.icure.utils.InternalIcureApi
 internal class AgendaApiImpl (
 	private val rawApi: RawAgendaApi,
 ) : AgendaApi {
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteAgenda(entityId: String): DocIdentifier =
+		rawApi.deleteAgenda(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteAgendas(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteAgendas(ListOfIds(entityIds)).successBody()
+	
 	@Deprecated("Use filter instead")
 	override suspend fun getAllAgendas(
 		startDocumentId: String?,
