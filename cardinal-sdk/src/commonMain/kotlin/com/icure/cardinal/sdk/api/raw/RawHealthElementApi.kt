@@ -31,11 +31,6 @@ public interface RawHealthElementApi {
 
 	suspend fun getHealthElements(healthElementIds: ListOfIds): HttpResponse<List<EncryptedHealthElement>>
 
-	suspend fun listHealthElementsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedHealthElement>>
-
 	suspend fun listHealthElementIdsByDataOwnerPatientOpeningDate(
 		dataOwnerId: String,
 		startDate: Long? = null,
@@ -44,20 +39,7 @@ public interface RawHealthElementApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
-	suspend fun findHealthElementsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<EncryptedHealthElement>>
-
-	public suspend fun listHealthElementsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>>
-
-	suspend fun findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>>
+	suspend fun listHealthElementsDelegationsStubById(healthElementIds: ListOfIds): HttpResponse<List<IcureStub>>
 
 	suspend fun deleteHealthElements(healthElementIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 

@@ -68,22 +68,6 @@ public interface RawFormApi {
 
 	suspend fun createForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>>
 
-	suspend fun listFormsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		healthElementId: String? = null,
-		planOfActionId: String? = null,
-		formTemplateId: String? = null,
-	): HttpResponse<List<EncryptedForm>>
-
-	suspend fun findFormsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-		healthElementId: String? = null,
-		planOfActionId: String? = null,
-		formTemplateId: String? = null,
-	): HttpResponse<List<EncryptedForm>>
-
 	suspend fun listFormIdsByDataOwnerPatientOpeningDate(
 		dataOwnerId: String,
 		startDate: Long? = null,
@@ -92,15 +76,7 @@ public interface RawFormApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
-	suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>>
-
-	suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>>
+	suspend fun findFormsDelegationsStubsByIds(formIds: ListOfIds): HttpResponse<List<IcureStub>>
 
 	suspend fun getFormTemplate(
 		formTemplateId: String,

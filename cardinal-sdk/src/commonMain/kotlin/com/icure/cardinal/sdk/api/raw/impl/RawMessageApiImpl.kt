@@ -165,17 +165,6 @@ class RawMessageApiImpl(
 			setBody(transportGuids)
 		}.wrap()
 
-	override suspend fun findMessagesByHCPartyPatientForeignKeys(secretFKeys: String): HttpResponse<List<EncryptedMessage>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "message", "byHcPartySecretForeignKeys")
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun listMessageIdsByDataOwnerPatientSentDate(
 		dataOwnerId: String,
 		startDate: Long?,
@@ -191,17 +180,6 @@ class RawMessageApiImpl(
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
 				parameter("descending", descending)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(secretPatientKeys)
-		}.wrap()
-
-	override suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): HttpResponse<List<EncryptedMessage>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "message", "byHcPartySecretForeignKeys")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)

@@ -59,11 +59,6 @@ public interface RawContactApi {
 		formIds: ListOfIds,
 	): HttpResponse<List<EncryptedContact>>
 
-	suspend fun listContactsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		patientForeignKeys: ListOfIds,
-	): HttpResponse<List<EncryptedContact>>
-
 	suspend fun listContactIdsByDataOwnerPatientOpeningDate(
 		dataOwnerId: String,
 		startDate: Long? = null,
@@ -72,34 +67,7 @@ public interface RawContactApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
-	suspend fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		planOfActionsIds: String? = null,
-		skipClosedContacts: Boolean? = null,
-	): HttpResponse<List<EncryptedContact>>
-
-	suspend fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-		planOfActionsIds: String? = null,
-		skipClosedContacts: Boolean? = null,
-	): HttpResponse<List<EncryptedContact>>
-
-	suspend fun listContactsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>>
-
-	suspend fun findContactsDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>>
-
-	suspend fun closeForHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedContact>>
+	suspend fun findContactsDelegationsStubsByIds(contactIds: ListOfIds): HttpResponse<List<IcureStub>>
 
 	suspend fun deleteContacts(contactIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 

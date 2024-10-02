@@ -96,21 +96,6 @@ public interface RawInvoiceApi {
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<EncryptedInvoice>>
 
-	suspend fun listInvoicesByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedInvoice>>
-
-	suspend fun findInvoicesByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<EncryptedInvoice>>
-
-	suspend fun listInvoicesDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>>
-
 	suspend fun listInvoiceIdsByDataOwnerPatientInvoiceDate(
 		dataOwnerId: String,
 		startDate: Long? = null,
@@ -119,10 +104,7 @@ public interface RawInvoiceApi {
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
 
-	suspend fun findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>>
+	suspend fun listInvoicesDelegationsStubsByIds(invoiceIds: ListOfIds): HttpResponse<List<IcureStub>>
 
 	suspend fun listInvoicesByHcPartyAndGroupId(
 		hcPartyId: String,

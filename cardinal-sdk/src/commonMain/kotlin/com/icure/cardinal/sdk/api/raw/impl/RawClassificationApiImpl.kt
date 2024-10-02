@@ -85,21 +85,6 @@ class RawClassificationApiImpl(
 			setBody(classificationIds)
 		}.wrap()
 
-	override suspend fun findClassificationsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedClassification>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "classification", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun listClassificationIdsByDataOwnerPatientCreated(
 		dataOwnerId: String,
 		startDate: Long?,
@@ -194,19 +179,15 @@ class RawClassificationApiImpl(
 			setBody(classificationDto)
 		}.wrap()
 
-	override suspend fun findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>> =
+	override suspend fun findClassificationsDelegationsStubsByIds(classificationIds: ListOfIds): HttpResponse<List<IcureStub>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "classification", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
+				appendPathSegments("rest", "v2", "classification", "delegations")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(secretPatientKeys)
+			setBody(classificationIds)
 		}.wrap()
 
 	override suspend fun matchClassificationBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>> =
