@@ -17,16 +17,19 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.EncryptedAccessLogJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.accessLog_fromJs
 import com.icure.cardinal.sdk.js.model.accessLog_toJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
 import kotlin.Boolean
@@ -35,6 +38,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -129,6 +133,104 @@ internal class AccessLogBasicApiImplJs(
 				docIdentifier_toJs(x1)
 			},
 		)
+	}
+
+	override fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = accessLogBasicApi.deleteAccessLogById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = accessLogBasicApi.deleteAccessLogsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeAccessLogById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		accessLogBasicApi.purgeAccessLogById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteAccessLog(accessLog: AccessLogJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+		val result = accessLogBasicApi.deleteAccessLog(
+			accessLogConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteAccessLogs(accessLogs: Array<AccessLogJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val accessLogsConverted: List<AccessLog> = arrayToList(
+			accessLogs,
+			"accessLogs",
+			{ x1: AccessLogJs ->
+				accessLog_fromJs(x1)
+			},
+		)
+		val result = accessLogBasicApi.deleteAccessLogs(
+			accessLogsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeAccessLog(accessLog: AccessLogJs): Promise<Unit> = GlobalScope.promise {
+		val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+		accessLogBasicApi.purgeAccessLog(
+			accessLogConverted,
+		)
+
+	}
+
+	override fun undeleteAccessLogById(id: String, rev: String): Promise<EncryptedAccessLogJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = accessLogBasicApi.undeleteAccessLogById(
+			idConverted,
+			revConverted,
+		)
+		accessLog_toJs(result)
+	}
+
+	override fun undeleteAccessLog(accessLog: AccessLogJs): Promise<EncryptedAccessLogJs> =
+			GlobalScope.promise {
+		val accessLogConverted: AccessLog = accessLog_fromJs(accessLog)
+		val result = accessLogBasicApi.undeleteAccessLog(
+			accessLogConverted,
+		)
+		accessLog_toJs(result)
 	}
 
 	override fun modifyAccessLog(entity: EncryptedAccessLogJs): Promise<EncryptedAccessLogJs> =

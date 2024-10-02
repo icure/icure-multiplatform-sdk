@@ -277,6 +277,80 @@ public fun modifyFormAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class UndeleteFormByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteFormByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteFormByIdParams>(params)
+	runBlocking {
+		sdk.form.tryAndRecover.undeleteFormById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Form::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteFormByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteFormByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.tryAndRecover.undeleteFormById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Form::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteFormParams(
+	public val form: Form,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteFormParams>(params)
+	runBlocking {
+		sdk.form.tryAndRecover.undeleteForm(
+			decodedParams.form,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Form::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteFormAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteFormParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.tryAndRecover.undeleteForm(
+				decodedParams.form,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Form::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyFormsParams(
 	public val entities: List<Form>,
 )

@@ -2,6 +2,7 @@
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {EncryptedHealthElement, HealthElement} from '../model/HealthElement.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
@@ -22,8 +23,24 @@ export interface HealthElementBasicApi {
 
 	deleteHealthElements(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteHealthElementById(entityId: string, rev: string | undefined): Promise<DocIdentifier>;
+
+	deleteHealthElementsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeHealthElementById(id: string, rev: string): Promise<void>;
+
+	deleteHealthElement(healthElement: HealthElement): Promise<DocIdentifier>;
+
+	deleteHealthElements(healthElements: Array<HealthElement>): Promise<Array<DocIdentifier>>;
+
+	purgeHealthElement(healthElement: HealthElement): Promise<void>;
+
 	findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
+
+	undeleteHealthElementById(id: string, rev: string): Promise<EncryptedHealthElement>;
+
+	undeleteHealthElement(healthElement: HealthElement): Promise<EncryptedHealthElement>;
 
 	modifyHealthElement(entity: EncryptedHealthElement): Promise<EncryptedHealthElement>;
 

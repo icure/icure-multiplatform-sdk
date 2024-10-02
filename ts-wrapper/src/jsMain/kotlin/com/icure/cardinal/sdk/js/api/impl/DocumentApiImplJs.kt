@@ -31,6 +31,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.UserJs
@@ -38,6 +39,7 @@ import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.document_fromJs
 import com.icure.cardinal.sdk.js.model.document_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -48,6 +50,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -198,6 +201,26 @@ internal class DocumentApiImplJs(
 					document_toJs(x1)
 				},
 			)
+		}
+
+		override fun undeleteDocumentById(id: String, rev: String): Promise<EncryptedDocumentJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = documentApi.encrypted.undeleteDocumentById(
+				idConverted,
+				revConverted,
+			)
+			document_toJs(result)
+		}
+
+		override fun undeleteDocument(document: DocumentJs): Promise<EncryptedDocumentJs> =
+				GlobalScope.promise {
+			val documentConverted: Document = document_fromJs(document)
+			val result = documentApi.encrypted.undeleteDocument(
+				documentConverted,
+			)
+			document_toJs(result)
 		}
 
 		override fun modifyDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs> =
@@ -443,6 +466,25 @@ internal class DocumentApiImplJs(
 					document_toJs(x1)
 				},
 			)
+		}
+
+		override fun undeleteDocumentById(id: String, rev: String): Promise<DocumentJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = documentApi.tryAndRecover.undeleteDocumentById(
+				idConverted,
+				revConverted,
+			)
+			document_toJs(result)
+		}
+
+		override fun undeleteDocument(document: DocumentJs): Promise<DocumentJs> = GlobalScope.promise {
+			val documentConverted: Document = document_fromJs(document)
+			val result = documentApi.tryAndRecover.undeleteDocument(
+				documentConverted,
+			)
+			document_toJs(result)
 		}
 
 		override fun modifyDocument(entity: DocumentJs): Promise<DocumentJs> = GlobalScope.promise {
@@ -972,6 +1014,83 @@ internal class DocumentApiImplJs(
 		)
 	}
 
+	override fun deleteDocumentById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = documentApi.deleteDocumentById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = documentApi.deleteDocumentsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeDocumentById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		documentApi.purgeDocumentById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteDocument(document: DocumentJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val result = documentApi.deleteDocument(
+			documentConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteDocuments(documents: Array<DocumentJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val documentsConverted: List<Document> = arrayToList(
+			documents,
+			"documents",
+			{ x1: DocumentJs ->
+				document_fromJs(x1)
+			},
+		)
+		val result = documentApi.deleteDocuments(
+			documentsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeDocument(document: DocumentJs): Promise<Unit> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		documentApi.purgeDocument(
+			documentConverted,
+		)
+
+	}
+
 	override fun getRawMainAttachment(documentId: String): Promise<ByteArray> = GlobalScope.promise {
 		val documentIdConverted: String = documentId
 		val result = documentApi.getRawMainAttachment(
@@ -1214,6 +1333,26 @@ internal class DocumentApiImplJs(
 				document_toJs(x1)
 			},
 		)
+	}
+
+	override fun undeleteDocumentById(id: String, rev: String): Promise<DecryptedDocumentJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = documentApi.undeleteDocumentById(
+			idConverted,
+			revConverted,
+		)
+		document_toJs(result)
+	}
+
+	override fun undeleteDocument(document: DocumentJs): Promise<DecryptedDocumentJs> =
+			GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val result = documentApi.undeleteDocument(
+			documentConverted,
+		)
+		document_toJs(result)
 	}
 
 	override fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs> =

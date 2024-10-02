@@ -2,7 +2,7 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -19,24 +20,71 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface FormBasicFlavourlessApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteFormUnsafe")
+	suspend fun deleteForm(entityId: String): DocIdentifier
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteFormsUnsafe")
+	suspend fun deleteForms(entityIds: List<String>): List<DocIdentifier>
+	
 	/**
 	 * Deletes a form. If you don't have write access to the form the method will fail.
 	 * @param entityId id of the form.
+	 * @param rev the latest known rev of the form to delete
 	 * @return the id and revision of the deleted form.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteForm(entityId: String): DocIdentifier
+	suspend fun deleteFormById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many forms. Ids that do not correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the forms.
+	 * @param entityIds ids and revisions of the forms to delete.
 	 * @return the id and revision of the deleted forms. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteForms(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteFormsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+
+	/**
+	 * Permanently deletes a form.
+	 * @param id id of the form to purge
+	 * @param rev latest revision of the form
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeFormById(id: String, rev: String)
+
+	/**
+	 * Deletes a form. If you don't have write access to the form the method will fail.
+	 * @param form the form to delete
+	 * @return the id and revision of the deleted form.
+	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
+	 */
+	suspend fun deleteForm(form: Form): DocIdentifier =
+		deleteFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+
+	/**
+	 * Deletes many forms. Ignores form for which you don't have write access or that don't match the latest revision.
+	 * @param forms the forms to delete
+	 * @return the id and revision of the deleted forms. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteForms(forms: List<Form>): List<DocIdentifier> =
+		deleteFormsByIds(forms.map { form ->
+			IdWithMandatoryRev(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a form.
+	 * @param form the form to purge.
+	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
+	 */
+	suspend fun purgeForm(form: Form) {
+		purgeFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+	}
 
 	suspend fun getFormTemplate(
 		formTemplateId: String,
@@ -98,6 +146,24 @@ interface FormBasicFlavouredApi<E : Form> {
 	 * @return the form updated with the provided content and a new revision.
 	 */
 	suspend fun modifyForm(entity: E): E
+
+	/**
+	 * Restores a form that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteFormById(id: String, rev: String): E
+
+	/**
+	 * Restores a form that was marked as deleted.
+	 * @param form the form to undelete
+	 * @return the restored form.
+	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
+	 */
+	suspend fun undeleteForm(form: Form): E =
+		undeleteFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
 
 	/**
 	 * Modifies multiple forms. Ignores all forms for which you don't have write access.

@@ -16,14 +16,17 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.document_fromJs
 import com.icure.cardinal.sdk.js.model.document_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
 import kotlin.Boolean
@@ -32,6 +35,7 @@ import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -126,6 +130,83 @@ internal class DocumentBasicApiImplJs(
 				docIdentifier_toJs(x1)
 			},
 		)
+	}
+
+	override fun deleteDocumentById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = documentBasicApi.deleteDocumentById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = documentBasicApi.deleteDocumentsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeDocumentById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		documentBasicApi.purgeDocumentById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteDocument(document: DocumentJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val result = documentBasicApi.deleteDocument(
+			documentConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteDocuments(documents: Array<DocumentJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val documentsConverted: List<Document> = arrayToList(
+			documents,
+			"documents",
+			{ x1: DocumentJs ->
+				document_fromJs(x1)
+			},
+		)
+		val result = documentBasicApi.deleteDocuments(
+			documentsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeDocument(document: DocumentJs): Promise<Unit> = GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		documentBasicApi.purgeDocument(
+			documentConverted,
+		)
+
 	}
 
 	override fun getRawMainAttachment(documentId: String): Promise<ByteArray> = GlobalScope.promise {
@@ -246,6 +327,26 @@ internal class DocumentBasicApiImplJs(
 			documentIdConverted,
 			keyConverted,
 			revConverted,
+		)
+		document_toJs(result)
+	}
+
+	override fun undeleteDocumentById(id: String, rev: String): Promise<EncryptedDocumentJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = documentBasicApi.undeleteDocumentById(
+			idConverted,
+			revConverted,
+		)
+		document_toJs(result)
+	}
+
+	override fun undeleteDocument(document: DocumentJs): Promise<EncryptedDocumentJs> =
+			GlobalScope.promise {
+		val documentConverted: Document = document_fromJs(document)
+		val result = documentBasicApi.undeleteDocument(
+			documentConverted,
 		)
 		document_toJs(result)
 	}

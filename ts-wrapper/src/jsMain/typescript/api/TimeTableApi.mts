@@ -2,6 +2,7 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {TimeTableShareOptions} from '../crypto/entities/TimeTableShareOptions.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {DecryptedTimeTable, EncryptedTimeTable, TimeTable} from '../model/TimeTable.mjs';
 import {User} from '../model/User.mjs';
@@ -43,6 +44,18 @@ export interface TimeTableApi {
 
 	deleteTimeTables(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteTimeTableById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteTimeTablesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeTimeTableById(id: string, rev: string): Promise<void>;
+
+	deleteTimeTable(timeTable: TimeTable): Promise<DocIdentifier>;
+
+	deleteTimeTables(timeTables: Array<TimeTable>): Promise<Array<DocIdentifier>>;
+
+	purgeTimeTable(timeTable: TimeTable): Promise<void>;
+
 	shareWith(delegateId: string, timeTable: DecryptedTimeTable,
 			options?: { options?: TimeTableShareOptions | undefined }): Promise<DecryptedTimeTable>;
 
@@ -53,7 +66,11 @@ export interface TimeTableApi {
 
 	filterTimeTablesBySorted(filter: SortableFilterOptions<TimeTable>): Promise<PaginatedListIterator<DecryptedTimeTable>>;
 
+	undeleteTimeTable(timeTable: TimeTable): Promise<TimeTable>;
+
 	modifyTimeTable(entity: DecryptedTimeTable): Promise<DecryptedTimeTable>;
+
+	undeleteTimeTableById(id: string, rev: string): Promise<DecryptedTimeTable>;
 
 	getTimeTable(entityId: string): Promise<DecryptedTimeTable>;
 

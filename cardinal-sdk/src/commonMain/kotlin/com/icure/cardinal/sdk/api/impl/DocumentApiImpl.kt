@@ -18,10 +18,13 @@ import com.icure.cardinal.sdk.filters.mapDocumentFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -41,6 +44,9 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @InternalIcureApi
 private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected val rawApi: RawDocumentApi) :
 	DocumentBasicFlavouredApi<E> {
+	override suspend fun undeleteDocumentById(id: String, rev: String): E =
+		rawApi.undeleteDocument(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	override suspend fun modifyDocument(entity: E) =
 		rawApi.modifyDocument(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -140,8 +146,24 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 
 @InternalIcureApi
 private class AbstractDocumentBasicFlavourlessApi(val rawApi: RawDocumentApi) : DocumentBasicFlavourlessApi {
-	override suspend fun deleteDocument(entityId: String) = rawApi.deleteDocument(entityId).successBody()
-	override suspend fun deleteDocuments(entityIds: List<String>) = rawApi.deleteDocuments(ListOfIds(entityIds)).successBody()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteDocument(entityId: String): DocIdentifier =
+		rawApi.deleteDocument(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteDocuments(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteDocuments(ListOfIds(entityIds)).successBody()
+	
+	override suspend fun deleteDocumentById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteDocument(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteDocumentsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteDocumentsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeDocumentById(id: String, rev: String) {
+		rawApi.purgeDocument(id, rev).successBodyOrThrowRevisionConflict()
+	}
 
 	override suspend fun getRawMainAttachment(documentId: String) =
 		rawApi.getMainAttachment(documentId).successBody()

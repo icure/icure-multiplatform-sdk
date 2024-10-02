@@ -4,6 +4,7 @@ import {EntityAccessInformation} from '../crypto/entities/EntityAccessInformatio
 import {EntityWithTypeInfo} from '../crypto/entities/EntityWithTypeInfo.mjs';
 import {PatientShareOptions} from '../crypto/entities/PatientShareOptions.mjs';
 import {ShareAllPatientDataOptions} from '../crypto/entities/ShareAllPatientDataOptions.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DecryptedPatient, EncryptedPatient, Patient} from '../model/Patient.mjs';
@@ -62,7 +63,17 @@ export interface PatientApi {
 
 	deletePatients(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	undeletePatients(patientIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deletePatientById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deletePatientsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgePatientById(id: string, rev: string): Promise<void>;
+
+	deletePatient(patient: Patient): Promise<DocIdentifier>;
+
+	deletePatients(patients: Array<Patient>): Promise<Array<DocIdentifier>>;
+
+	purgePatient(patient: Patient): Promise<void>;
 
 	getDataOwnersWithAccessTo(patient: Patient): Promise<EntityAccessInformation>;
 
@@ -80,7 +91,13 @@ export interface PatientApi {
 
 	filterPatientsBySorted(filter: SortableFilterOptions<Patient>): Promise<PaginatedListIterator<DecryptedPatient>>;
 
+	undeletePatient(patient: Patient): Promise<Patient>;
+
 	modifyPatient(entity: DecryptedPatient): Promise<DecryptedPatient>;
+
+	undeletePatientById(id: string, rev: string): Promise<DecryptedPatient>;
+
+	undeletePatients(ids: Array<IdWithMandatoryRev>): Promise<Array<DecryptedPatient>>;
 
 	getPatient(entityId: string): Promise<DecryptedPatient>;
 

@@ -13,14 +13,17 @@ import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.EncryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.HealthElementJs
 import com.icure.cardinal.sdk.js.model.IcureStubJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.healthElement_fromJs
 import com.icure.cardinal.sdk.js.model.healthElement_toJs
 import com.icure.cardinal.sdk.js.model.icureStub_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
@@ -30,12 +33,14 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.IcureStub
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Set
 import kotlin.js.Promise
@@ -134,6 +139,85 @@ internal class HealthElementBasicApiImplJs(
 		)
 	}
 
+	override fun deleteHealthElementById(entityId: String, rev: String?): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String? = undefinedToNull(rev)
+		val result = healthElementBasicApi.deleteHealthElementById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteHealthElementsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = healthElementBasicApi.deleteHealthElementsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeHealthElementById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		healthElementBasicApi.purgeHealthElementById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteHealthElement(healthElement: HealthElementJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val healthElementConverted: HealthElement = healthElement_fromJs(healthElement)
+		val result = healthElementBasicApi.deleteHealthElement(
+			healthElementConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteHealthElements(healthElements: Array<HealthElementJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val healthElementsConverted: List<HealthElement> = arrayToList(
+			healthElements,
+			"healthElements",
+			{ x1: HealthElementJs ->
+				healthElement_fromJs(x1)
+			},
+		)
+		val result = healthElementBasicApi.deleteHealthElements(
+			healthElementsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeHealthElement(healthElement: HealthElementJs): Promise<Unit> =
+			GlobalScope.promise {
+		val healthElementConverted: HealthElement = healthElement_fromJs(healthElement)
+		healthElementBasicApi.purgeHealthElement(
+			healthElementConverted,
+		)
+
+	}
+
 	override fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
 		val hcPartyIdConverted: String = hcPartyId
@@ -154,6 +238,26 @@ internal class HealthElementBasicApiImplJs(
 				icureStub_toJs(x1)
 			},
 		)
+	}
+
+	override fun undeleteHealthElementById(id: String, rev: String): Promise<EncryptedHealthElementJs>
+			= GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = healthElementBasicApi.undeleteHealthElementById(
+			idConverted,
+			revConverted,
+		)
+		healthElement_toJs(result)
+	}
+
+	override fun undeleteHealthElement(healthElement: HealthElementJs):
+			Promise<EncryptedHealthElementJs> = GlobalScope.promise {
+		val healthElementConverted: HealthElement = healthElement_fromJs(healthElement)
+		val result = healthElementBasicApi.undeleteHealthElement(
+			healthElementConverted,
+		)
+		healthElement_toJs(result)
 	}
 
 	override fun modifyHealthElement(entity: EncryptedHealthElementJs):

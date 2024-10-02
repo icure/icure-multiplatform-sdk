@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedTimeTable
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
@@ -32,6 +33,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -185,8 +187,194 @@ public fun filterTimeTablesBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
-private class DeleteTimeTableParams(
+private class DeleteTimeTableUnsafeParams(
 	public val entityId: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteTimeTableUnsafeBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableUnsafeParams>(params)
+	runBlocking {
+		sdk.timeTable.deleteTimeTable(
+			decodedParams.entityId,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteTimeTableUnsafeAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableUnsafeParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.deleteTimeTable(
+				decodedParams.entityId,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteTimeTablesUnsafeParams(
+	public val entityIds: List<String>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteTimeTablesUnsafeBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesUnsafeParams>(params)
+	runBlocking {
+		sdk.timeTable.deleteTimeTables(
+			decodedParams.entityIds,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteTimeTablesUnsafeAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesUnsafeParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.deleteTimeTables(
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteTimeTableByIdParams(
+	public val entityId: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteTimeTableByIdBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableByIdParams>(params)
+	runBlocking {
+		sdk.timeTable.deleteTimeTableById(
+			decodedParams.entityId,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteTimeTableByIdAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.deleteTimeTableById(
+				decodedParams.entityId,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteTimeTablesByIdsParams(
+	public val entityIds: List<IdWithMandatoryRev>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteTimeTablesByIdsBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesByIdsParams>(params)
+	runBlocking {
+		sdk.timeTable.deleteTimeTablesByIds(
+			decodedParams.entityIds,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteTimeTablesByIdsAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesByIdsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.deleteTimeTablesByIds(
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PurgeTimeTableByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun purgeTimeTableByIdBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeTimeTableByIdParams>(params)
+	runBlocking {
+		sdk.timeTable.purgeTimeTableById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(Unit.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun purgeTimeTableByIdAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeTimeTableByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.purgeTimeTableById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteTimeTableParams(
+	public val timeTable: TimeTable,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -195,7 +383,7 @@ public fun deleteTimeTableBlocking(sdk: CardinalBaseApis, params: String): Strin
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableParams>(params)
 	runBlocking {
 		sdk.timeTable.deleteTimeTable(
-			decodedParams.entityId,
+			decodedParams.timeTable,
 		)
 	}
 }.toPyString(DocIdentifier.serializer())
@@ -214,7 +402,7 @@ public fun deleteTimeTableAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.deleteTimeTable(
-				decodedParams.entityId,
+				decodedParams.timeTable,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
 	}
@@ -222,7 +410,7 @@ public fun deleteTimeTableAsync(
 
 @Serializable
 private class DeleteTimeTablesParams(
-	public val entityIds: List<String>,
+	public val timeTables: List<TimeTable>,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -231,7 +419,7 @@ public fun deleteTimeTablesBlocking(sdk: CardinalBaseApis, params: String): Stri
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesParams>(params)
 	runBlocking {
 		sdk.timeTable.deleteTimeTables(
-			decodedParams.entityIds,
+			decodedParams.timeTables,
 		)
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
@@ -250,9 +438,81 @@ public fun deleteTimeTablesAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.timeTable.deleteTimeTables(
-				decodedParams.entityIds,
+				decodedParams.timeTables,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PurgeTimeTableParams(
+	public val timeTable: TimeTable,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun purgeTimeTableBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeTimeTableParams>(params)
+	runBlocking {
+		sdk.timeTable.purgeTimeTable(
+			decodedParams.timeTable,
+		)
+	}
+}.toPyString(Unit.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun purgeTimeTableAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeTimeTableParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.purgeTimeTable(
+				decodedParams.timeTable,
+			)
+		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteTimeTableParams(
+	public val timeTable: TimeTable,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteTimeTableBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTimeTableParams>(params)
+	runBlocking {
+		sdk.timeTable.undeleteTimeTable(
+			decodedParams.timeTable,
+		)
+	}
+}.toPyString(PolymorphicSerializer(TimeTable::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteTimeTableAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTimeTableParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.undeleteTimeTable(
+				decodedParams.timeTable,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(TimeTable::class), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -287,6 +547,45 @@ public fun modifyTimeTableAsync(
 		kotlin.runCatching {
 			sdk.timeTable.modifyTimeTable(
 				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedTimeTable.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteTimeTableByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteTimeTableByIdBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTimeTableByIdParams>(params)
+	runBlocking {
+		sdk.timeTable.undeleteTimeTableById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(EncryptedTimeTable.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteTimeTableByIdAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTimeTableByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.timeTable.undeleteTimeTableById(
+				decodedParams.id,
+				decodedParams.rev,
 			)
 		}.toPyStringAsyncCallback(EncryptedTimeTable.serializer(), resultCallback)
 	}

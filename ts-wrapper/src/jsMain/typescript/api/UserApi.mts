@@ -12,6 +12,8 @@ import {TokenWithGroup} from '../model/security/TokenWithGroup.mjs';
 
 export interface UserApi {
 
+	deleteUser(entityId: string): Promise<DocIdentifier>;
+
 	getCurrentUser(): Promise<User>;
 
 	listUsersBy(options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined, skipPatients?: boolean | undefined }): Promise<PaginatedList<User>>;
@@ -29,8 +31,6 @@ export interface UserApi {
 	findByHcpartyId(id: string): Promise<Array<string>>;
 
 	findByPatientId(id: string): Promise<Array<string>>;
-
-	deleteUser(userId: string): Promise<DocIdentifier>;
 
 	modifyUser(user: User): Promise<User>;
 
@@ -61,15 +61,13 @@ export interface UserApi {
 
 	modifyUserInGroup(groupId: string, user: User): Promise<User>;
 
-	deleteUserInGroup(groupId: string, userId: string): Promise<DocIdentifier>;
+	setUserRoles(userId: string, rolesId: ListOfIds): Promise<User>;
 
-	addRolesToUser(userId: string, rolesId: ListOfIds): Promise<User>;
+	setUserRolesInGroup(userId: string, groupId: string, rolesId: ListOfIds): Promise<User>;
 
-	addRolesToUserInGroup(userId: string, groupId: string, rolesId: ListOfIds): Promise<User>;
+	resetUserRoles(userId: string): Promise<User>;
 
-	removeRolesFromUser(userId: string): Promise<User>;
-
-	removeRolesFromUserInGroup(userId: string, groupId: string): Promise<User>;
+	resetUserRolesInGroup(userId: string, groupId: string): Promise<User>;
 
 	getTokenInGroup(groupId: string, userId: string, key: string,
 			options?: { token?: string | undefined, tokenValidity?: number | undefined }): Promise<string>;
@@ -99,5 +97,13 @@ export interface UserApi {
 	createAdminUser(user: User): Promise<User>;
 
 	createAdminUserInGroup(groupId: string, user: User): Promise<User>;
+
+	deleteUser(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteUserInGroup(groupId: string, entityId: string, rev: string): Promise<DocIdentifier>;
+
+	purgeUser(id: string, rev: string): Promise<void>;
+
+	undeleteUser(id: string, rev: string): Promise<User>;
 
 }

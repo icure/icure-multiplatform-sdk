@@ -1,6 +1,7 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {CalendarItem, EncryptedCalendarItem} from '../model/CalendarItem.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
@@ -18,6 +19,22 @@ export interface CalendarItemBasicApi {
 	deleteCalendarItem(entityId: string): Promise<DocIdentifier>;
 
 	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+
+	deleteCalendarItemById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeCalendarItemById(id: string, rev: string): Promise<void>;
+
+	deleteCalendarItem(calendarItem: CalendarItem): Promise<DocIdentifier>;
+
+	deleteCalendarItems(calendarItems: Array<CalendarItem>): Promise<Array<DocIdentifier>>;
+
+	purgeCalendarItem(calendarItem: CalendarItem): Promise<void>;
+
+	undeleteCalendarItemById(id: string, rev: string): Promise<EncryptedCalendarItem>;
+
+	undeleteCalendarItem(calendarItem: CalendarItem): Promise<EncryptedCalendarItem>;
 
 	modifyCalendarItem(entity: EncryptedCalendarItem): Promise<EncryptedCalendarItem>;
 

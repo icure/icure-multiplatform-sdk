@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.api
 
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedPropertyStub
@@ -15,6 +16,10 @@ import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlin.js.JsName
 
 interface UserApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteUserUnsafe")
+	suspend fun deleteUser(entityId: String): DocIdentifier
+
 	suspend fun getCurrentUser(): User
 
 	@Deprecated(
@@ -42,7 +47,6 @@ interface UserApi {
 	suspend fun getUserByPhoneNumber(phoneNumber: String): User
 	suspend fun findByHcpartyId(id: String): List<String>
 	suspend fun findByPatientId(id: String): List<String>
-	suspend fun deleteUser(userId: String): DocIdentifier
 	suspend fun modifyUser(user: User): User
 	suspend fun assignHealthcareParty(healthcarePartyId: String): User
 	suspend fun modifyProperties(
@@ -95,11 +99,6 @@ interface UserApi {
 		groupId: String,
 		user: User,
 	): User
-
-	suspend fun deleteUserInGroup(
-		groupId: String,
-		userId: String,
-	): DocIdentifier
 
 	suspend fun setUserRoles(
 		userId: String,
@@ -176,5 +175,40 @@ interface UserApi {
 		user: User,
 	): User
 
+	/**
+	 * Deletes a user. If you don't have write access to the user the method will fail.
+	 * @param entityId id of the user.
+	 * @param rev the latest known rev of the user to delete
+	 * @return the id and revision of the deleted user.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun deleteUser(entityId: String, rev: String): DocIdentifier
+
+	/**
+	 * Deletes a user in a specific group. If you don't have write access to the user the method will fail.
+	 * @param entityId id of the user.
+	 * @param rev the latest known rev of the user to delete
+	 * @param groupId the group of the user
+	 * @return the id and revision of the deleted user.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun deleteUserInGroup(groupId: String, entityId: String, rev: String): DocIdentifier
+
+	/**
+	 * Permanently deletes a user.
+	 * @param id id of the user to purge
+	 * @param rev latest revision of the user
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeUser(id: String, rev: String)
+
+	/**
+	 * Restores a user that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteUser(id: String, rev: String): User
 }
 

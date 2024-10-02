@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import HealthcareParty, DocIdentifier, PublicKey, DataOwnerRegistrationSuccess
+from cardinal_sdk.model import HealthcareParty, PublicKey, DataOwnerRegistrationSuccess, DocIdentifier, IdWithMandatoryRev
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -90,45 +90,6 @@ class HealthcarePartyApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = HealthcareParty._deserialize(result_info.success)
-			return return_value
-
-	async def delete_healthcare_party_async(self, healthcare_party_id: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"healthcarePartyId": healthcare_party_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def delete_healthcare_party_blocking(self, healthcare_party_id: str) -> DocIdentifier:
-		payload = {
-			"healthcarePartyId": healthcare_party_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
 	async def modify_healthcare_party_in_group_async(self, group_id: str, healthcare_party: HealthcareParty) -> HealthcareParty:
@@ -400,45 +361,6 @@ class HealthcarePartyApi:
 			return_value = PublicKey._deserialize(result_info.success)
 			return return_value
 
-	async def delete_healthcare_parties_async(self, healthcare_party_ids: List[str]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def delete_healthcare_parties_blocking(self, healthcare_party_ids: List[str]) -> List[DocIdentifier]:
-		payload = {
-			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
 	async def modify_healthcare_party_async(self, healthcare_party: HealthcareParty) -> HealthcareParty:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -697,88 +619,6 @@ class HealthcarePartyApi:
 			return_value = [HealthcareParty._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def delete_healthcare_parties_in_group_async(self, group_id: str, healthcare_party_ids: List[str]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"groupId": group_id,
-			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def delete_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_party_ids: List[str]) -> List[DocIdentifier]:
-		payload = {
-			"groupId": group_id,
-			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def delete_healthcare_party_in_group_async(self, healthcare_party_id: str, group_id: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"healthcarePartyId": healthcare_party_id,
-			"groupId": group_id,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def delete_healthcare_party_in_group_blocking(self, healthcare_party_id: str, group_id: str) -> DocIdentifier:
-		payload = {
-			"healthcarePartyId": healthcare_party_id,
-			"groupId": group_id,
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = DocIdentifier._deserialize(result_info.success)
-			return return_value
-
 	async def register_patient_async(self, group_id: str, hcp: HealthcareParty, parent_hc_party_id: Optional[str] = None, token: Optional[str] = None, use_short_token: Optional[bool] = None) -> DataOwnerRegistrationSuccess:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -824,4 +664,482 @@ class HealthcarePartyApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DataOwnerRegistrationSuccess._deserialize(result_info.success)
+			return return_value
+
+	async def delete_healthcare_party_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_party_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_healthcare_parties_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_parties_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def delete_healthcare_party_in_group_by_id_async(self, group_id: str, entity_id: str, rev: str) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_party_in_group_by_id_blocking(self, group_id: str, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"groupId": group_id,
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_healthcare_parties_in_group_by_ids_async(self, group_id: str, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_parties_in_group_by_ids_blocking(self, group_id: str, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"groupId": group_id,
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_healthcare_party_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.purgeHealthcarePartyByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_healthcare_party_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.purgeHealthcarePartyByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def undelete_healthcare_party_by_id_async(self, id: str, rev: str) -> HealthcareParty:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = HealthcareParty._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.undeleteHealthcarePartyByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_healthcare_party_by_id_blocking(self, id: str, rev: str) -> HealthcareParty:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.undeleteHealthcarePartyByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = HealthcareParty._deserialize(result_info.success)
+			return return_value
+
+	async def delete_healthcare_party_async(self, healthcare_party: HealthcareParty) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"healthcareParty": healthcare_party.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_party_blocking(self, healthcare_party: HealthcareParty) -> DocIdentifier:
+		payload = {
+			"healthcareParty": healthcare_party.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_healthcare_parties_async(self, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"healthcareParties": [x0.__serialize__() for x0 in healthcare_parties],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_parties_blocking(self, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+		payload = {
+			"healthcareParties": [x0.__serialize__() for x0 in healthcare_parties],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_healthcare_party_async(self, healthcare_party: HealthcareParty) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"healthcareParty": healthcare_party.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.purgeHealthcarePartyAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_healthcare_party_blocking(self, healthcare_party: HealthcareParty) -> None:
+		payload = {
+			"healthcareParty": healthcare_party.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.purgeHealthcarePartyBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def undelete_healthcare_party_async(self, healthcare_party: HealthcareParty) -> HealthcareParty:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = HealthcareParty._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"healthcareParty": healthcare_party.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.undeleteHealthcarePartyAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_healthcare_party_blocking(self, healthcare_party: HealthcareParty) -> HealthcareParty:
+		payload = {
+			"healthcareParty": healthcare_party.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.undeleteHealthcarePartyBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = HealthcareParty._deserialize(result_info.success)
+			return return_value
+
+	async def delete_healthcare_party_in_group_async(self, group_id: str, hcp: HealthcareParty) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"hcp": hcp.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_party_in_group_blocking(self, group_id: str, hcp: HealthcareParty) -> DocIdentifier:
+		payload = {
+			"groupId": group_id,
+			"hcp": hcp.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartyInGroupBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_healthcare_parties_in_group_async(self, group_id: str, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"healthcareParties": [x0.__serialize__() for x0 in healthcare_parties],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+		payload = {
+			"groupId": group_id,
+			"healthcareParties": [x0.__serialize__() for x0 in healthcare_parties],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthcarePartyApi.deleteHealthcarePartiesInGroupBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value

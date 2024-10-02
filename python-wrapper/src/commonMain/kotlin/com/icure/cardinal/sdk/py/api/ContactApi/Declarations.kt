@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
 import com.icure.cardinal.sdk.model.IcureStub
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -652,8 +653,194 @@ public fun subscribeToServiceCreateOrUpdateEventsAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
-private class DeleteContactParams(
+private class DeleteContactUnsafeParams(
 	public val entityId: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteContactUnsafeBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactUnsafeParams>(params)
+	runBlocking {
+		sdk.contact.deleteContact(
+			decodedParams.entityId,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteContactUnsafeAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactUnsafeParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.deleteContact(
+				decodedParams.entityId,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteContactsUnsafeParams(
+	public val entityIds: List<String>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteContactsUnsafeBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactsUnsafeParams>(params)
+	runBlocking {
+		sdk.contact.deleteContacts(
+			decodedParams.entityIds,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteContactsUnsafeAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactsUnsafeParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.deleteContacts(
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteContactByIdParams(
+	public val entityId: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteContactByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactByIdParams>(params)
+	runBlocking {
+		sdk.contact.deleteContactById(
+			decodedParams.entityId,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteContactByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.deleteContactById(
+				decodedParams.entityId,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteContactsByIdsParams(
+	public val entityIds: List<IdWithMandatoryRev>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteContactsByIdsBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactsByIdsParams>(params)
+	runBlocking {
+		sdk.contact.deleteContactsByIds(
+			decodedParams.entityIds,
+		)
+	}
+}.toPyString(ListSerializer(DocIdentifier.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteContactsByIdsAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactsByIdsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.deleteContactsByIds(
+				decodedParams.entityIds,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PurgeContactByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun purgeContactByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeContactByIdParams>(params)
+	runBlocking {
+		sdk.contact.purgeContactById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(Unit.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun purgeContactByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeContactByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.purgeContactById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteContactParams(
+	public val contact: Contact,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -661,7 +848,7 @@ public fun deleteContactBlocking(sdk: CardinalApis, params: String): String = ko
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactParams>(params)
 	runBlocking {
 		sdk.contact.deleteContact(
-			decodedParams.entityId,
+			decodedParams.contact,
 		)
 	}
 }.toPyString(DocIdentifier.serializer())
@@ -680,7 +867,7 @@ public fun deleteContactAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.contact.deleteContact(
-				decodedParams.entityId,
+				decodedParams.contact,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
 	}
@@ -688,7 +875,7 @@ public fun deleteContactAsync(
 
 @Serializable
 private class DeleteContactsParams(
-	public val entityIds: List<String>,
+	public val contacts: List<Contact>,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -696,7 +883,7 @@ public fun deleteContactsBlocking(sdk: CardinalApis, params: String): String = k
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactsParams>(params)
 	runBlocking {
 		sdk.contact.deleteContacts(
-			decodedParams.entityIds,
+			decodedParams.contacts,
 		)
 	}
 }.toPyString(ListSerializer(DocIdentifier.serializer()))
@@ -715,9 +902,44 @@ public fun deleteContactsAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.contact.deleteContacts(
-				decodedParams.entityIds,
+				decodedParams.contacts,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PurgeContactParams(
+	public val contact: Contact,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun purgeContactBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeContactParams>(params)
+	runBlocking {
+		sdk.contact.purgeContact(
+			decodedParams.contact,
+		)
+	}
+}.toPyString(Unit.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun purgeContactAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeContactParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.purgeContact(
+				decodedParams.contact,
+			)
+		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -1080,6 +1302,80 @@ public fun filterServicesBySortedAsync(
 			PaginatedListIteratorAndSerializer(it, DecryptedService.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteContactByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteContactByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteContactByIdParams>(params)
+	runBlocking {
+		sdk.contact.undeleteContactById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(DecryptedContact.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteContactByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteContactByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.undeleteContactById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(DecryptedContact.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteContactParams(
+	public val contact: Contact,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteContactBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteContactParams>(params)
+	runBlocking {
+		sdk.contact.undeleteContact(
+			decodedParams.contact,
+		)
+	}
+}.toPyString(DecryptedContact.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteContactAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteContactParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.undeleteContact(
+				decodedParams.contact,
+			)
+		}.toPyStringAsyncCallback(DecryptedContact.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class ModifyContactParams(

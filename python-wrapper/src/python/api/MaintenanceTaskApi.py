@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, EncryptedMaintenanceTask, deserialize_maintenance_task, DocIdentifier, MaintenanceTaskShareOptions, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.model import DecryptedMaintenanceTask, User, AccessLevel, MaintenanceTask, serialize_maintenance_task, EncryptedMaintenanceTask, deserialize_maintenance_task, DocIdentifier, IdWithMandatoryRev, MaintenanceTaskShareOptions, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -201,6 +201,86 @@ class MaintenanceTaskApi:
 					deserializer = lambda x: EncryptedMaintenanceTask._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
+
+		async def undelete_maintenance_task_async(self, maintenance_task: MaintenanceTask) -> MaintenanceTask:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.encrypted.undeleteMaintenanceTaskAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_maintenance_task_blocking(self, maintenance_task: MaintenanceTask) -> MaintenanceTask:
+			payload = {
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.encrypted.undeleteMaintenanceTaskBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_maintenance_task(result_info.success)
+				return return_value
+
+		async def undelete_maintenance_task_by_id_async(self, id: str, rev: str) -> EncryptedMaintenanceTask:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = EncryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.encrypted.undeleteMaintenanceTaskByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_maintenance_task_by_id_blocking(self, id: str, rev: str) -> EncryptedMaintenanceTask:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.encrypted.undeleteMaintenanceTaskByIdBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = EncryptedMaintenanceTask._deserialize(result_info.success)
+				return return_value
 
 		async def modify_maintenance_task_async(self, entity: EncryptedMaintenanceTask) -> EncryptedMaintenanceTask:
 			loop = asyncio.get_running_loop()
@@ -507,6 +587,86 @@ class MaintenanceTaskApi:
 					deserializer = lambda x: deserialize_maintenance_task(x),
 					executor = self.cardinal_sdk._executor
 				)
+
+		async def undelete_maintenance_task_async(self, maintenance_task: MaintenanceTask) -> MaintenanceTask:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.tryAndRecover.undeleteMaintenanceTaskAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_maintenance_task_blocking(self, maintenance_task: MaintenanceTask) -> MaintenanceTask:
+			payload = {
+				"maintenanceTask": serialize_maintenance_task(maintenance_task),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.tryAndRecover.undeleteMaintenanceTaskBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_maintenance_task(result_info.success)
+				return return_value
+
+		async def undelete_maintenance_task_by_id_async(self, id: str, rev: str) -> MaintenanceTask:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.tryAndRecover.undeleteMaintenanceTaskByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_maintenance_task_by_id_blocking(self, id: str, rev: str) -> MaintenanceTask:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.tryAndRecover.undeleteMaintenanceTaskByIdBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_maintenance_task(result_info.success)
+				return return_value
 
 		async def modify_maintenance_task_async(self, entity: MaintenanceTask) -> MaintenanceTask:
 			loop = asyncio.get_running_loop()
@@ -1023,7 +1183,7 @@ class MaintenanceTaskApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def delete_maintenance_task_async(self, entity_id: str) -> DocIdentifier:
+	async def delete_maintenance_task_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1035,6 +1195,124 @@ class MaintenanceTaskApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.deleteMaintenanceTaskByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_maintenance_task_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.deleteMaintenanceTaskByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_maintenance_tasks_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.deleteMaintenanceTasksByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_maintenance_tasks_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.deleteMaintenanceTasksByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_maintenance_task_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.purgeMaintenanceTaskByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_maintenance_task_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.purgeMaintenanceTaskByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def delete_maintenance_task_async(self, maintenance_task: MaintenanceTask) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1046,9 +1324,9 @@ class MaintenanceTaskApi:
 		)
 		return await future
 
-	def delete_maintenance_task_blocking(self, entity_id: str) -> DocIdentifier:
+	def delete_maintenance_task_blocking(self, maintenance_task: MaintenanceTask) -> DocIdentifier:
 		payload = {
-			"entityId": entity_id,
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.deleteMaintenanceTaskBlocking(
 			self.cardinal_sdk._native,
@@ -1062,7 +1340,7 @@ class MaintenanceTaskApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_maintenance_tasks_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_maintenance_tasks_async(self, maintenance_tasks: List[MaintenanceTask]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1073,7 +1351,7 @@ class MaintenanceTaskApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"maintenanceTasks": [serialize_maintenance_task(x0) for x0 in maintenance_tasks],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1085,9 +1363,9 @@ class MaintenanceTaskApi:
 		)
 		return await future
 
-	def delete_maintenance_tasks_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	def delete_maintenance_tasks_blocking(self, maintenance_tasks: List[MaintenanceTask]) -> List[DocIdentifier]:
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"maintenanceTasks": [serialize_maintenance_task(x0) for x0 in maintenance_tasks],
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.deleteMaintenanceTasksBlocking(
 			self.cardinal_sdk._native,
@@ -1100,6 +1378,42 @@ class MaintenanceTaskApi:
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
+
+	async def purge_maintenance_task_async(self, maintenance_task: MaintenanceTask) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.purgeMaintenanceTaskAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_maintenance_task_blocking(self, maintenance_task: MaintenanceTask) -> None:
+		payload = {
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.purgeMaintenanceTaskBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
 
 	async def share_with_async(self, delegate_id: str, maintenance_task: DecryptedMaintenanceTask, options: Optional[MaintenanceTaskShareOptions] = None) -> DecryptedMaintenanceTask:
 		loop = asyncio.get_running_loop()
@@ -1284,6 +1598,86 @@ class MaintenanceTaskApi:
 				deserializer = lambda x: DecryptedMaintenanceTask._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)
+
+	async def undelete_maintenance_task_async(self, maintenance_task: MaintenanceTask) -> MaintenanceTask:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = deserialize_maintenance_task(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.undeleteMaintenanceTaskAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_maintenance_task_blocking(self, maintenance_task: MaintenanceTask) -> MaintenanceTask:
+		payload = {
+			"maintenanceTask": serialize_maintenance_task(maintenance_task),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.undeleteMaintenanceTaskBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_maintenance_task(result_info.success)
+			return return_value
+
+	async def undelete_maintenance_task_by_id_async(self, id: str, rev: str) -> DecryptedMaintenanceTask:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedMaintenanceTask._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.undeleteMaintenanceTaskByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_maintenance_task_by_id_blocking(self, id: str, rev: str) -> DecryptedMaintenanceTask:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskApi.undeleteMaintenanceTaskByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DecryptedMaintenanceTask._deserialize(result_info.success)
+			return return_value
 
 	async def modify_maintenance_task_async(self, entity: DecryptedMaintenanceTask) -> DecryptedMaintenanceTask:
 		loop = asyncio.get_running_loop()

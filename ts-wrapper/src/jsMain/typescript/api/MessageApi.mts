@@ -2,6 +2,7 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MessageShareOptions} from '../crypto/entities/MessageShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {DecryptedMessage, EncryptedMessage, Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -48,6 +49,18 @@ export interface MessageApi {
 
 	deleteMessages(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteMessageById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteMessagesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeMessageById(id: string, rev: string): Promise<void>;
+
+	deleteMessage(message: Message): Promise<DocIdentifier>;
+
+	deleteMessages(messages: Array<Message>): Promise<Array<DocIdentifier>>;
+
+	purgeMessage(message: Message): Promise<void>;
+
 	shareWith(delegateId: string, message: DecryptedMessage,
 			options?: { options?: MessageShareOptions | undefined }): Promise<DecryptedMessage>;
 
@@ -61,7 +74,11 @@ export interface MessageApi {
 
 	filterMessagesBySorted(filter: SortableFilterOptions<Message>): Promise<PaginatedListIterator<DecryptedMessage>>;
 
+	undeleteMessage(message: Message): Promise<Message>;
+
 	modifyMessage(entity: DecryptedMessage): Promise<DecryptedMessage>;
+
+	undeleteMessageById(id: string, rev: string): Promise<DecryptedMessage>;
 
 	getMessage(entityId: string): Promise<DecryptedMessage>;
 

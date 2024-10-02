@@ -1,7 +1,5 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.cardinal.sdk.crypto.entities.CachedKeypairDetails
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
@@ -9,6 +7,8 @@ import com.icure.cardinal.sdk.crypto.entities.UserKeyPairInformation
 import com.icure.cardinal.sdk.model.CryptoActorStub
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.utils.InternalIcureApi
 
 /**
@@ -20,6 +20,7 @@ interface UserEncryptionKeysManager {
 		/**
 		 * Details of a newly initialized encryption keys manager.
 		 */
+		@ConsistentCopyVisibility
 		data class InitialisationDetails internal constructor(
 			/**
 			 * The newly created keys manager.

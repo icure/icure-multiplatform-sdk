@@ -21,6 +21,10 @@ export interface FormFlavouredApi<E extends Form> {
 
 	modifyForm(entity: E): Promise<E>;
 
+	undeleteFormById(id: string, rev: string): Promise<E>;
+
+	undeleteForm(form: Form): Promise<E>;
+
 	modifyForms(entities: Array<E>): Promise<Array<E>>;
 
 	getForm(entityId: string): Promise<E>;

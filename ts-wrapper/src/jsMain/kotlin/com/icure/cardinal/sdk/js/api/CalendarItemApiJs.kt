@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.CalendarItemJs
 import com.icure.cardinal.sdk.js.model.DecryptedCalendarItemJs
 import com.icure.cardinal.sdk.js.model.EncryptedCalendarItemJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
@@ -55,9 +56,25 @@ public external interface CalendarItemApiJs {
 	public fun matchCalendarItemsBySorted(filter: SortableFilterOptionsJs<CalendarItemJs>):
 			Promise<Array<String>>
 
+	@JsName("deleteCalendarItemUnsafe")
 	public fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteCalendarItemsUnsafe")
 	public fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteCalendarItemById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeCalendarItemById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteCalendarItem(calendarItem: CalendarItemJs): Promise<DocIdentifierJs>
+
+	public fun deleteCalendarItems(calendarItems: Array<CalendarItemJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeCalendarItem(calendarItem: CalendarItemJs): Promise<Unit>
 
 	public fun shareWith(
 		delegateId: String,
@@ -85,6 +102,10 @@ public external interface CalendarItemApiJs {
 
 	public fun filterCalendarItemsBySorted(filter: SortableFilterOptionsJs<CalendarItemJs>):
 			Promise<PaginatedListIteratorJs<DecryptedCalendarItemJs>>
+
+	public fun undeleteCalendarItemById(id: String, rev: String): Promise<DecryptedCalendarItemJs>
+
+	public fun undeleteCalendarItem(calendarItem: CalendarItemJs): Promise<DecryptedCalendarItemJs>
 
 	public fun modifyCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>
 

@@ -246,6 +246,41 @@ public fun filterMessagesBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class UndeleteMessageParams(
+	public val message: Message,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteMessageBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageParams>(params)
+	runBlocking {
+		sdk.message.tryAndRecover.undeleteMessage(
+			decodedParams.message,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Message::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteMessageAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.tryAndRecover.undeleteMessage(
+				decodedParams.message,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Message::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyMessageParams(
 	public val entity: Message,
 )
@@ -275,6 +310,45 @@ public fun modifyMessageAsync(
 		kotlin.runCatching {
 			sdk.message.tryAndRecover.modifyMessage(
 				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Message::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteMessageByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteMessageByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageByIdParams>(params)
+	runBlocking {
+		sdk.message.tryAndRecover.undeleteMessageById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Message::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteMessageByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMessageByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.tryAndRecover.undeleteMessageById(
+				decodedParams.id,
+				decodedParams.rev,
 			)
 		}.toPyStringAsyncCallback(PolymorphicSerializer(Message::class), resultCallback)
 	}

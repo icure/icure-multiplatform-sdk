@@ -13,14 +13,17 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.EncryptedTimeTableJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.TimeTableJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.timeTable_fromJs
 import com.icure.cardinal.sdk.js.model.timeTable_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.EncryptedTimeTable
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
@@ -28,6 +31,7 @@ import kotlin.Double
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -124,11 +128,109 @@ internal class TimeTableBasicApiImplJs(
 		)
 	}
 
+	override fun deleteTimeTableById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = timeTableBasicApi.deleteTimeTableById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteTimeTablesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = timeTableBasicApi.deleteTimeTablesByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeTimeTableById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		timeTableBasicApi.purgeTimeTableById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteTimeTable(timeTable: TimeTableJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+		val result = timeTableBasicApi.deleteTimeTable(
+			timeTableConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteTimeTables(timeTables: Array<TimeTableJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val timeTablesConverted: List<TimeTable> = arrayToList(
+			timeTables,
+			"timeTables",
+			{ x1: TimeTableJs ->
+				timeTable_fromJs(x1)
+			},
+		)
+		val result = timeTableBasicApi.deleteTimeTables(
+			timeTablesConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeTimeTable(timeTable: TimeTableJs): Promise<Unit> = GlobalScope.promise {
+		val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+		timeTableBasicApi.purgeTimeTable(
+			timeTableConverted,
+		)
+
+	}
+
+	override fun undeleteTimeTable(timeTable: TimeTableJs): Promise<TimeTableJs> =
+			GlobalScope.promise {
+		val timeTableConverted: TimeTable = timeTable_fromJs(timeTable)
+		val result = timeTableBasicApi.undeleteTimeTable(
+			timeTableConverted,
+		)
+		timeTable_toJs(result)
+	}
+
 	override fun modifyTimeTable(entity: EncryptedTimeTableJs): Promise<EncryptedTimeTableJs> =
 			GlobalScope.promise {
 		val entityConverted: EncryptedTimeTable = timeTable_fromJs(entity)
 		val result = timeTableBasicApi.modifyTimeTable(
 			entityConverted,
+		)
+		timeTable_toJs(result)
+	}
+
+	override fun undeleteTimeTableById(id: String, rev: String): Promise<EncryptedTimeTableJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = timeTableBasicApi.undeleteTimeTableById(
+			idConverted,
+			revConverted,
 		)
 		timeTable_toJs(result)
 	}

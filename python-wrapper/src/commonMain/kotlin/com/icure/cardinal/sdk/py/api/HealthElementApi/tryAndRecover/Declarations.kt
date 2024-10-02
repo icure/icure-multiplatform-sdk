@@ -245,6 +245,83 @@ public fun filterHealthElementsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class UndeleteHealthElementByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteHealthElementByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteHealthElementByIdParams>(params)
+	runBlocking {
+		sdk.healthElement.tryAndRecover.undeleteHealthElementById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(PolymorphicSerializer(HealthElement::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteHealthElementByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteHealthElementByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.tryAndRecover.undeleteHealthElementById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(HealthElement::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteHealthElementParams(
+	public val healthElement: HealthElement,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteHealthElementBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteHealthElementParams>(params)
+	runBlocking {
+		sdk.healthElement.tryAndRecover.undeleteHealthElement(
+			decodedParams.healthElement,
+		)
+	}
+}.toPyString(PolymorphicSerializer(HealthElement::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteHealthElementAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteHealthElementParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.tryAndRecover.undeleteHealthElement(
+				decodedParams.healthElement,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(HealthElement::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyHealthElementParams(
 	public val entity: HealthElement,
 )

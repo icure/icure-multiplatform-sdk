@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.filters.mapUserFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedPropertyStub
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.Permission
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
@@ -21,10 +22,12 @@ internal class UserApiImpl(
 	private val raw: RawUserApi,
 	private val rawPermissionApi: RawPermissionApi,
 ) : UserApi {
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteUser(entityId: String): DocIdentifier =
+		raw.deleteUser(entityId).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getCurrentUser(): User =
 		raw.getCurrentUser().successBody()
-
 
 	@Deprecated(
 		"List methods are deprecated",
@@ -63,7 +66,6 @@ internal class UserApiImpl(
 
 	override suspend fun findByPatientId(id: String) = raw.findByPatientId(id).successBody()
 
-	override suspend fun deleteUser(userId: String) = raw.deleteUser(userId).successBody()
 
 	override suspend fun modifyUser(user: User) = raw.modifyUser(user).successBodyOrThrowRevisionConflict()
 
@@ -133,10 +135,18 @@ internal class UserApiImpl(
 		user: User,
 	) = raw.modifyUserInGroup(groupId, user).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteUserInGroup(
-		groupId: String,
-		userId: String,
-	) = raw.deleteUserInGroup(groupId, userId).successBody()
+	override suspend fun deleteUser(entityId: String, rev: String): DocIdentifier =
+		raw.deleteUser(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteUserInGroup(groupId: String, entityId: String, rev: String): DocIdentifier =
+		raw.deleteUserInGroup(groupId = groupId, userId = entityId, rev = rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun purgeUser(id: String, rev: String) {
+		raw.purgeUser(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
+	override suspend fun undeleteUser(id: String, rev: String): User =
+		raw.undeleteUser(id, rev).successBodyOrThrowRevisionConflict()
 
 	override suspend fun setUserRoles(
 		userId: String,

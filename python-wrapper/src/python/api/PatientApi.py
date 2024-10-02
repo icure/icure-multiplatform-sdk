@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, ShareAllPatientDataOptions, DocIdentifier, EntityAccessInformation, PatientShareOptions, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.model import Patient, serialize_patient, DecryptedPatient, User, AccessLevel, EncryptedPatient, deserialize_patient, IdWithRev, ShareAllPatientDataOptions, DocIdentifier, IdWithMandatoryRev, EntityAccessInformation, PatientShareOptions, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from typing import List, Optional, Dict
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
@@ -241,6 +241,45 @@ class PatientApi:
 					executor = self.cardinal_sdk._executor
 				)
 
+		async def undelete_patient_async(self, patient: Patient) -> Patient:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"patient": serialize_patient(patient),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.undeletePatientAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_patient_blocking(self, patient: Patient) -> Patient:
+			payload = {
+				"patient": serialize_patient(patient),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.undeletePatientBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_patient(result_info.success)
+				return return_value
+
 		async def modify_patient_async(self, entity: EncryptedPatient) -> EncryptedPatient:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -278,6 +317,86 @@ class PatientApi:
 				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = EncryptedPatient._deserialize(result_info.success)
+				return return_value
+
+		async def undelete_patient_by_id_async(self, id: str, rev: str) -> EncryptedPatient:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = EncryptedPatient._deserialize(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.undeletePatientByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_patient_by_id_blocking(self, id: str, rev: str) -> EncryptedPatient:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.undeletePatientByIdBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = EncryptedPatient._deserialize(result_info.success)
+				return return_value
+
+		async def undelete_patients_async(self, ids: List[IdWithMandatoryRev]) -> List[EncryptedPatient]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = [EncryptedPatient._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"ids": [x0.__serialize__() for x0 in ids],
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.undeletePatientsAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_patients_blocking(self, ids: List[IdWithMandatoryRev]) -> List[EncryptedPatient]:
+			payload = {
+				"ids": [x0.__serialize__() for x0 in ids],
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.encrypted.undeletePatientsBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = [EncryptedPatient._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
 		async def get_patient_async(self, entity_id: str) -> EncryptedPatient:
@@ -707,6 +826,45 @@ class PatientApi:
 					executor = self.cardinal_sdk._executor
 				)
 
+		async def undelete_patient_async(self, patient: Patient) -> Patient:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"patient": serialize_patient(patient),
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.undeletePatientAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_patient_blocking(self, patient: Patient) -> Patient:
+			payload = {
+				"patient": serialize_patient(patient),
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.undeletePatientBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_patient(result_info.success)
+				return return_value
+
 		async def modify_patient_async(self, entity: Patient) -> Patient:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
@@ -744,6 +902,86 @@ class PatientApi:
 				raise interpret_kt_error(result_info.failure)
 			else:
 				return_value = deserialize_patient(result_info.success)
+				return return_value
+
+		async def undelete_patient_by_id_async(self, id: str, rev: str) -> Patient:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = deserialize_patient(json.loads(success.decode('utf-8')))
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.undeletePatientByIdAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_patient_by_id_blocking(self, id: str, rev: str) -> Patient:
+			payload = {
+				"id": id,
+				"rev": rev,
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.undeletePatientByIdBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = deserialize_patient(result_info.success)
+				return return_value
+
+		async def undelete_patients_async(self, ids: List[IdWithMandatoryRev]) -> List[Patient]:
+			loop = asyncio.get_running_loop()
+			future = loop.create_future()
+			def make_result_and_complete(success, failure):
+				if failure is not None:
+					result = Exception(failure.decode('utf-8'))
+					loop.call_soon_threadsafe(lambda: future.set_exception(result))
+				else:
+					result = [deserialize_patient(x1) for x1 in json.loads(success.decode('utf-8'))]
+					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			payload = {
+				"ids": [x0.__serialize__() for x0 in ids],
+			}
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+			loop.run_in_executor(
+				self.cardinal_sdk._executor,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.undeletePatientsAsync,
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+				callback
+			)
+			return await future
+
+		def undelete_patients_blocking(self, ids: List[IdWithMandatoryRev]) -> List[Patient]:
+			payload = {
+				"ids": [x0.__serialize__() for x0 in ids],
+			}
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.tryAndRecover.undeletePatientsBlocking(
+				self.cardinal_sdk._native,
+				json.dumps(payload).encode('utf-8'),
+			)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
+			if result_info.failure is not None:
+				raise interpret_kt_error(result_info.failure)
+			else:
+				return_value = [deserialize_patient(x1) for x1 in result_info.success]
 				return return_value
 
 		async def get_patient_async(self, entity_id: str) -> Patient:
@@ -1540,7 +1778,7 @@ class PatientApi:
 			return_value = EncryptedPatient._deserialize(result_info.success)
 			return return_value
 
-	async def delete_patient_async(self, entity_id: str) -> DocIdentifier:
+	async def delete_patient_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1552,6 +1790,124 @@ class PatientApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.deletePatientByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_patient_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.deletePatientByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_patients_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.deletePatientsByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_patients_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.deletePatientsByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_patient_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.purgePatientByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_patient_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.purgePatientByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def delete_patient_async(self, patient: Patient) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"patient": serialize_patient(patient),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1563,9 +1919,9 @@ class PatientApi:
 		)
 		return await future
 
-	def delete_patient_blocking(self, entity_id: str) -> DocIdentifier:
+	def delete_patient_blocking(self, patient: Patient) -> DocIdentifier:
 		payload = {
-			"entityId": entity_id,
+			"patient": serialize_patient(patient),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.deletePatientBlocking(
 			self.cardinal_sdk._native,
@@ -1579,7 +1935,7 @@ class PatientApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_patients_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_patients_async(self, patients: List[Patient]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1590,7 +1946,7 @@ class PatientApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"patients": [serialize_patient(x0) for x0 in patients],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -1602,9 +1958,9 @@ class PatientApi:
 		)
 		return await future
 
-	def delete_patients_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	def delete_patients_blocking(self, patients: List[Patient]) -> List[DocIdentifier]:
 		payload = {
-			"entityIds": [x0 for x0 in entity_ids],
+			"patients": [serialize_patient(x0) for x0 in patients],
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.deletePatientsBlocking(
 			self.cardinal_sdk._native,
@@ -1618,7 +1974,7 @@ class PatientApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def undelete_patients_async(self, patient_ids: List[str]) -> List[DocIdentifier]:
+	async def purge_patient_async(self, patient: Patient) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1626,26 +1982,26 @@ class PatientApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"patientIds": [x0 for x0 in patient_ids],
+			"patient": serialize_patient(patient),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.purgePatientAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def undelete_patients_blocking(self, patient_ids: List[str]) -> List[DocIdentifier]:
+	def purge_patient_blocking(self, patient: Patient) -> None:
 		payload = {
-			"patientIds": [x0 for x0 in patient_ids],
+			"patient": serialize_patient(patient),
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.purgePatientBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1653,9 +2009,6 @@ class PatientApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
-			return return_value
 
 	async def get_data_owners_with_access_to_async(self, patient: Patient) -> EntityAccessInformation:
 		loop = asyncio.get_running_loop()
@@ -1919,6 +2272,45 @@ class PatientApi:
 				executor = self.cardinal_sdk._executor
 			)
 
+	async def undelete_patient_async(self, patient: Patient) -> Patient:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = deserialize_patient(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"patient": serialize_patient(patient),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_patient_blocking(self, patient: Patient) -> Patient:
+		payload = {
+			"patient": serialize_patient(patient),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_patient(result_info.success)
+			return return_value
+
 	async def modify_patient_async(self, entity: DecryptedPatient) -> DecryptedPatient:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
@@ -1956,6 +2348,86 @@ class PatientApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DecryptedPatient._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_patient_by_id_async(self, id: str, rev: str) -> DecryptedPatient:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DecryptedPatient._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_patient_by_id_blocking(self, id: str, rev: str) -> DecryptedPatient:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DecryptedPatient._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_patients_async(self, ids: List[IdWithMandatoryRev]) -> List[DecryptedPatient]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DecryptedPatient._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"ids": [x0.__serialize__() for x0 in ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_patients_blocking(self, ids: List[IdWithMandatoryRev]) -> List[DecryptedPatient]:
+		payload = {
+			"ids": [x0.__serialize__() for x0 in ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PatientApi.undeletePatientsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DecryptedPatient._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_patient_async(self, entity_id: str) -> DecryptedPatient:

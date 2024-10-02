@@ -17,10 +17,13 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapTimeTableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTimeTable
 import com.icure.cardinal.sdk.model.EncryptedTimeTable
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -39,6 +42,9 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @InternalIcureApi
 private abstract class AbstractTimeTableBasicFlavouredApi<E : TimeTable>(protected val rawApi: RawTimeTableApi) :
 	TimeTableBasicFlavouredApi<E> {
+	override suspend fun undeleteTimeTableById(id: String, rev: String): E =
+		rawApi.undeleteTimeTable(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	override suspend fun modifyTimeTable(entity: E): E =
 		rawApi.modifyTimeTable(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -101,8 +107,24 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 
 @InternalIcureApi
 private class AbstractTimeTableBasicFlavourlessApi(val rawApi: RawTimeTableApi) : TimeTableBasicFlavourlessApi {
-	override suspend fun deleteTimeTable(entityId: String) = rawApi.deleteTimeTable(entityId).successBody()
-	override suspend fun deleteTimeTables(entityIds: List<String>) = rawApi.deleteTimeTables(ListOfIds(entityIds)).successBody()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTimeTable(entityId: String): DocIdentifier =
+		rawApi.deleteTimeTable(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTimeTables(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteTimeTables(ListOfIds(entityIds)).successBody()
+	
+	override suspend fun deleteTimeTableById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteTimeTable(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteTimeTablesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteTimeTablesWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeTimeTableById(id: String, rev: String) {
+		rawApi.purgeTimeTable(id, rev).successBodyOrThrowRevisionConflict()
+	}
 }
 
 @InternalIcureApi

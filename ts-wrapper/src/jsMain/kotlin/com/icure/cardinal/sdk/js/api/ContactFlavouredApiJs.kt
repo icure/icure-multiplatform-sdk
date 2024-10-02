@@ -47,6 +47,10 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
 			Promise<PaginatedListIteratorJs<S>>
 
+	public fun undeleteContactById(id: String, rev: String): Promise<E>
+
+	public fun undeleteContact(contact: ContactJs): Promise<E>
+
 	public fun modifyContact(entity: E): Promise<E>
 
 	public fun modifyContacts(entities: Array<E>): Promise<Array<E>>

@@ -247,6 +247,81 @@ public fun filterAccessLogsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class UndeleteAccessLogByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteAccessLogByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteAccessLogByIdParams>(params)
+	runBlocking {
+		sdk.accessLog.encrypted.undeleteAccessLogById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(EncryptedAccessLog.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteAccessLogByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteAccessLogByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.accessLog.encrypted.undeleteAccessLogById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(EncryptedAccessLog.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteAccessLogParams(
+	public val accessLog: AccessLog,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteAccessLogBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteAccessLogParams>(params)
+	runBlocking {
+		sdk.accessLog.encrypted.undeleteAccessLog(
+			decodedParams.accessLog,
+		)
+	}
+}.toPyString(EncryptedAccessLog.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteAccessLogAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteAccessLogParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.accessLog.encrypted.undeleteAccessLog(
+				decodedParams.accessLog,
+			)
+		}.toPyStringAsyncCallback(EncryptedAccessLog.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyAccessLogParams(
 	public val entity: EncryptedAccessLog,
 )

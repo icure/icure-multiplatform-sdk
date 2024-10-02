@@ -17,7 +17,7 @@ export interface RecoveryApi {
 
 	recoverExchangeData(recoveryKey: RecoveryDataKey): Promise<RecoveryDataUseFailureReason | undefined>;
 
-	deleteRecoveryInfo(recoveryKey: RecoveryDataKey): Promise<void>;
+	purgeRecoveryInfo(recoveryKey: RecoveryDataKey): Promise<void>;
 
 	deleteAllRecoveryInfoFor(dataOwnerId: string): Promise<number>;
 

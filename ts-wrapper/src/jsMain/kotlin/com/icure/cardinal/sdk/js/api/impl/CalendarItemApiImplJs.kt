@@ -29,6 +29,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedCalendarItemJs
 import com.icure.cardinal.sdk.js.model.EncryptedCalendarItemJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.UserJs
@@ -36,6 +37,7 @@ import com.icure.cardinal.sdk.js.model.calendarItem_fromJs
 import com.icure.cardinal.sdk.js.model.calendarItem_toJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -46,6 +48,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -215,6 +218,26 @@ internal class CalendarItemApiImplJs(
 					calendarItem_toJs(x1)
 				},
 			)
+		}
+
+		override fun undeleteCalendarItemById(id: String, rev: String): Promise<EncryptedCalendarItemJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = calendarItemApi.encrypted.undeleteCalendarItemById(
+				idConverted,
+				revConverted,
+			)
+			calendarItem_toJs(result)
+		}
+
+		override fun undeleteCalendarItem(calendarItem: CalendarItemJs): Promise<EncryptedCalendarItemJs>
+				= GlobalScope.promise {
+			val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+			val result = calendarItemApi.encrypted.undeleteCalendarItem(
+				calendarItemConverted,
+			)
+			calendarItem_toJs(result)
 		}
 
 		override fun modifyCalendarItem(entity: EncryptedCalendarItemJs): Promise<EncryptedCalendarItemJs>
@@ -466,6 +489,26 @@ internal class CalendarItemApiImplJs(
 					calendarItem_toJs(x1)
 				},
 			)
+		}
+
+		override fun undeleteCalendarItemById(id: String, rev: String): Promise<CalendarItemJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = calendarItemApi.tryAndRecover.undeleteCalendarItemById(
+				idConverted,
+				revConverted,
+			)
+			calendarItem_toJs(result)
+		}
+
+		override fun undeleteCalendarItem(calendarItem: CalendarItemJs): Promise<CalendarItemJs> =
+				GlobalScope.promise {
+			val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+			val result = calendarItemApi.tryAndRecover.undeleteCalendarItem(
+				calendarItemConverted,
+			)
+			calendarItem_toJs(result)
 		}
 
 		override fun modifyCalendarItem(entity: CalendarItemJs): Promise<CalendarItemJs> =
@@ -762,6 +805,84 @@ internal class CalendarItemApiImplJs(
 		)
 	}
 
+	override fun deleteCalendarItemById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = calendarItemApi.deleteCalendarItemById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = calendarItemApi.deleteCalendarItemsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeCalendarItemById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		calendarItemApi.purgeCalendarItemById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteCalendarItem(calendarItem: CalendarItemJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+		val result = calendarItemApi.deleteCalendarItem(
+			calendarItemConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteCalendarItems(calendarItems: Array<CalendarItemJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val calendarItemsConverted: List<CalendarItem> = arrayToList(
+			calendarItems,
+			"calendarItems",
+			{ x1: CalendarItemJs ->
+				calendarItem_fromJs(x1)
+			},
+		)
+		val result = calendarItemApi.deleteCalendarItems(
+			calendarItemsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeCalendarItem(calendarItem: CalendarItemJs): Promise<Unit> = GlobalScope.promise {
+		val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+		calendarItemApi.purgeCalendarItem(
+			calendarItemConverted,
+		)
+
+	}
+
 	override fun shareWith(
 		delegateId: String,
 		calendarItem: DecryptedCalendarItemJs,
@@ -904,6 +1025,26 @@ internal class CalendarItemApiImplJs(
 				calendarItem_toJs(x1)
 			},
 		)
+	}
+
+	override fun undeleteCalendarItemById(id: String, rev: String): Promise<DecryptedCalendarItemJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = calendarItemApi.undeleteCalendarItemById(
+			idConverted,
+			revConverted,
+		)
+		calendarItem_toJs(result)
+	}
+
+	override fun undeleteCalendarItem(calendarItem: CalendarItemJs): Promise<DecryptedCalendarItemJs> =
+			GlobalScope.promise {
+		val calendarItemConverted: CalendarItem = calendarItem_fromJs(calendarItem)
+		val result = calendarItemApi.undeleteCalendarItem(
+			calendarItemConverted,
+		)
+		calendarItem_toJs(result)
 	}
 
 	override fun modifyCalendarItem(entity: DecryptedCalendarItemJs): Promise<DecryptedCalendarItemJs>

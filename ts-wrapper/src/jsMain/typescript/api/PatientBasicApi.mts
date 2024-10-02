@@ -1,6 +1,7 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {EntityAccessInformation} from '../crypto/entities/EntityAccessInformation.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {EncryptedPatient, Patient} from '../model/Patient.mjs';
@@ -25,13 +26,29 @@ export interface PatientBasicApi {
 
 	deletePatients(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	undeletePatients(patientIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deletePatientById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deletePatientsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgePatientById(id: string, rev: string): Promise<void>;
+
+	deletePatient(patient: Patient): Promise<DocIdentifier>;
+
+	deletePatients(patients: Array<Patient>): Promise<Array<DocIdentifier>>;
+
+	purgePatient(patient: Patient): Promise<void>;
 
 	getDataOwnersWithAccessTo(patient: Patient): Promise<EntityAccessInformation>;
 
 	countOfPatients(hcPartyId: string): Promise<number>;
 
+	undeletePatient(patient: Patient): Promise<Patient>;
+
 	modifyPatient(entity: EncryptedPatient): Promise<EncryptedPatient>;
+
+	undeletePatientById(id: string, rev: string): Promise<EncryptedPatient>;
+
+	undeletePatients(ids: Array<IdWithMandatoryRev>): Promise<Array<EncryptedPatient>>;
 
 	getPatient(entityId: string): Promise<EncryptedPatient>;
 

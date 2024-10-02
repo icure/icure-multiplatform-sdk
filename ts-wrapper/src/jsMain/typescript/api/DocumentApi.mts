@@ -3,6 +3,7 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {DocumentShareOptions} from '../crypto/entities/DocumentShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {DecryptedDocument, Document, EncryptedDocument} from '../model/Document.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Message} from '../model/Message.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
@@ -67,6 +68,18 @@ export interface DocumentApi {
 
 	deleteDocuments(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteDocumentById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeDocumentById(id: string, rev: string): Promise<void>;
+
+	deleteDocument(document: Document): Promise<DocIdentifier>;
+
+	deleteDocuments(documents: Array<Document>): Promise<Array<DocIdentifier>>;
+
+	purgeDocument(document: Document): Promise<void>;
+
 	getRawMainAttachment(documentId: string): Promise<Int8Array>;
 
 	getMainAttachmentAsPlainText(documentId: string): Promise<string>;
@@ -109,6 +122,10 @@ export interface DocumentApi {
 	filterDocumentsBy(filter: FilterOptions<Document>): Promise<PaginatedListIterator<DecryptedDocument>>;
 
 	filterDocumentsBySorted(filter: SortableFilterOptions<Document>): Promise<PaginatedListIterator<DecryptedDocument>>;
+
+	undeleteDocumentById(id: string, rev: string): Promise<DecryptedDocument>;
+
+	undeleteDocument(document: Document): Promise<DecryptedDocument>;
 
 	modifyDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
 

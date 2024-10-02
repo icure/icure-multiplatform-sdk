@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedTimeTableJs
 import com.icure.cardinal.sdk.js.model.EncryptedTimeTableJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.TimeTableJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
@@ -54,9 +55,24 @@ public external interface TimeTableApiJs {
 	public fun matchTimeTablesBySorted(filter: SortableFilterOptionsJs<TimeTableJs>):
 			Promise<Array<String>>
 
+	@JsName("deleteTimeTableUnsafe")
 	public fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteTimeTablesUnsafe")
 	public fun deleteTimeTables(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteTimeTableById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteTimeTablesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeTimeTableById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteTimeTable(timeTable: TimeTableJs): Promise<DocIdentifierJs>
+
+	public fun deleteTimeTables(timeTables: Array<TimeTableJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeTimeTable(timeTable: TimeTableJs): Promise<Unit>
 
 	public fun shareWith(
 		delegateId: String,
@@ -73,7 +89,11 @@ public external interface TimeTableApiJs {
 	public fun filterTimeTablesBySorted(filter: SortableFilterOptionsJs<TimeTableJs>):
 			Promise<PaginatedListIteratorJs<DecryptedTimeTableJs>>
 
+	public fun undeleteTimeTable(timeTable: TimeTableJs): Promise<TimeTableJs>
+
 	public fun modifyTimeTable(entity: DecryptedTimeTableJs): Promise<DecryptedTimeTableJs>
+
+	public fun undeleteTimeTableById(id: String, rev: String): Promise<DecryptedTimeTableJs>
 
 	public fun getTimeTable(entityId: String): Promise<DecryptedTimeTableJs>
 

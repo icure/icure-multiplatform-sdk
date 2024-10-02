@@ -17,6 +17,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.cardinal.sdk.js.model.HealthcarePartyJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PublicKeyJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
@@ -24,11 +25,13 @@ import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.dataOwnerRegistrationSuccess_toJs
 import com.icure.cardinal.sdk.js.model.healthcareParty_fromJs
 import com.icure.cardinal.sdk.js.model.healthcareParty_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.publicKey_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.HealthcareParty
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
 import kotlin.Boolean
@@ -36,6 +39,7 @@ import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -46,6 +50,35 @@ import kotlinx.coroutines.promise
 internal class HealthcarePartyApiImplJs(
 	private val healthcarePartyApi: HealthcarePartyApi,
 ) : HealthcarePartyApiJs {
+	override fun deleteHealthcareParty(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val result = healthcarePartyApi.deleteHealthcareParty(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteHealthcareParties(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = healthcarePartyApi.deleteHealthcareParties(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
 	override fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs> =
 			GlobalScope.promise {
 		val healthcarePartyIdConverted: String = healthcarePartyId
@@ -62,15 +95,6 @@ internal class HealthcarePartyApiImplJs(
 			pConverted,
 		)
 		healthcareParty_toJs(result)
-	}
-
-	override fun deleteHealthcareParty(healthcarePartyId: String): Promise<DocIdentifierJs> =
-			GlobalScope.promise {
-		val healthcarePartyIdConverted: String = healthcarePartyId
-		val result = healthcarePartyApi.deleteHealthcareParty(
-			healthcarePartyIdConverted,
-		)
-		docIdentifier_toJs(result)
 	}
 
 	override fun modifyHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcarePartyJs):
@@ -360,26 +384,6 @@ internal class HealthcarePartyApiImplJs(
 		publicKey_toJs(result)
 	}
 
-	override fun deleteHealthcareParties(healthcarePartyIds: Array<String>):
-			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val healthcarePartyIdsConverted: List<String> = arrayToList(
-			healthcarePartyIds,
-			"healthcarePartyIds",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = healthcarePartyApi.deleteHealthcareParties(
-			healthcarePartyIdsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DocIdentifier ->
-				docIdentifier_toJs(x1)
-			},
-		)
-	}
-
 	override fun modifyHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<HealthcarePartyJs>
 			= GlobalScope.promise {
 		val healthcarePartyConverted: HealthcareParty = healthcareParty_fromJs(healthcareParty)
@@ -479,39 +483,6 @@ internal class HealthcarePartyApiImplJs(
 		}
 	}
 
-	override fun deleteHealthcarePartiesInGroup(groupId: String, healthcarePartyIds: Array<String>):
-			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val groupIdConverted: String = groupId
-		val healthcarePartyIdsConverted: List<String> = arrayToList(
-			healthcarePartyIds,
-			"healthcarePartyIds",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = healthcarePartyApi.deleteHealthcarePartiesInGroup(
-			groupIdConverted,
-			healthcarePartyIdsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DocIdentifier ->
-				docIdentifier_toJs(x1)
-			},
-		)
-	}
-
-	override fun deleteHealthcarePartyInGroup(healthcarePartyId: String, groupId: String):
-			Promise<DocIdentifierJs> = GlobalScope.promise {
-		val healthcarePartyIdConverted: String = healthcarePartyId
-		val groupIdConverted: String = groupId
-		val result = healthcarePartyApi.deleteHealthcarePartyInGroup(
-			healthcarePartyIdConverted,
-			groupIdConverted,
-		)
-		docIdentifier_toJs(result)
-	}
-
 	override fun registerPatient(
 		groupId: String,
 		hcp: HealthcarePartyJs,
@@ -551,5 +522,177 @@ internal class HealthcarePartyApiImplJs(
 			)
 			dataOwnerRegistrationSuccess_toJs(result)
 		}
+	}
+
+	override fun deleteHealthcarePartyById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = healthcarePartyApi.deleteHealthcarePartyById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteHealthcarePartiesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = healthcarePartyApi.deleteHealthcarePartiesByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun deleteHealthcarePartyInGroupById(
+		groupId: String,
+		entityId: String,
+		rev: String,
+	): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = healthcarePartyApi.deleteHealthcarePartyInGroupById(
+			groupIdConverted,
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteHealthcarePartiesInGroupByIds(groupId: String,
+			entityIds: Array<IdWithMandatoryRevJs>): Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = healthcarePartyApi.deleteHealthcarePartiesInGroupByIds(
+			groupIdConverted,
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeHealthcarePartyById(id: String, rev: String): Promise<Unit> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		healthcarePartyApi.purgeHealthcarePartyById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun undeleteHealthcarePartyById(id: String, rev: String): Promise<HealthcarePartyJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = healthcarePartyApi.undeleteHealthcarePartyById(
+			idConverted,
+			revConverted,
+		)
+		healthcareParty_toJs(result)
+	}
+
+	override fun deleteHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val healthcarePartyConverted: HealthcareParty = healthcareParty_fromJs(healthcareParty)
+		val result = healthcarePartyApi.deleteHealthcareParty(
+			healthcarePartyConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteHealthcareParties(healthcareParties: Array<HealthcarePartyJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val healthcarePartiesConverted: List<HealthcareParty> = arrayToList(
+			healthcareParties,
+			"healthcareParties",
+			{ x1: HealthcarePartyJs ->
+				healthcareParty_fromJs(x1)
+			},
+		)
+		val result = healthcarePartyApi.deleteHealthcareParties(
+			healthcarePartiesConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<Unit> =
+			GlobalScope.promise {
+		val healthcarePartyConverted: HealthcareParty = healthcareParty_fromJs(healthcareParty)
+		healthcarePartyApi.purgeHealthcareParty(
+			healthcarePartyConverted,
+		)
+
+	}
+
+	override fun undeleteHealthcareParty(healthcareParty: HealthcarePartyJs):
+			Promise<HealthcarePartyJs> = GlobalScope.promise {
+		val healthcarePartyConverted: HealthcareParty = healthcareParty_fromJs(healthcareParty)
+		val result = healthcarePartyApi.undeleteHealthcareParty(
+			healthcarePartyConverted,
+		)
+		healthcareParty_toJs(result)
+	}
+
+	override fun deleteHealthcarePartyInGroup(groupId: String, hcp: HealthcarePartyJs):
+			Promise<DocIdentifierJs> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val hcpConverted: HealthcareParty = healthcareParty_fromJs(hcp)
+		val result = healthcarePartyApi.deleteHealthcarePartyInGroup(
+			groupIdConverted,
+			hcpConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteHealthcarePartiesInGroup(groupId: String,
+			healthcareParties: Array<HealthcarePartyJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val healthcarePartiesConverted: List<HealthcareParty> = arrayToList(
+			healthcareParties,
+			"healthcareParties",
+			{ x1: HealthcarePartyJs ->
+				healthcareParty_fromJs(x1)
+			},
+		)
+		val result = healthcarePartyApi.deleteHealthcarePartiesInGroup(
+			groupIdConverted,
+			healthcarePartiesConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
 	}
 }
