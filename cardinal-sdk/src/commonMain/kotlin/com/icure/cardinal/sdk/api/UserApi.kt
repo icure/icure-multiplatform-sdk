@@ -182,7 +182,7 @@ interface UserApi {
 	 * @return the id and revision of the deleted user.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteUser(entityId: String, rev: String): DocIdentifier
+	suspend fun deleteUserById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes a user in a specific group. If you don't have write access to the user the method will fail.
@@ -192,7 +192,7 @@ interface UserApi {
 	 * @return the id and revision of the deleted user.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteUserInGroup(groupId: String, entityId: String, rev: String): DocIdentifier
+	suspend fun deleteUserInGroupById(groupId: String, entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Permanently deletes a user.
@@ -200,7 +200,7 @@ interface UserApi {
 	 * @param rev latest revision of the user
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun purgeUser(id: String, rev: String)
+	suspend fun purgeUserById(id: String, rev: String)
 
 	/**
 	 * Restores a user that was marked as deleted.
@@ -209,6 +209,41 @@ interface UserApi {
 	 * @return the restored entity.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeleteUser(id: String, rev: String): User
+	suspend fun undeleteUserById(id: String, rev: String): User
+
+	/**
+	 * Deletes a user. If you don't have write access to the user the method will fail.
+	 * @param user the user to delete
+	 * @return the id and revision of the deleted user.
+	 * @throws RevisionConflictException if the provided user doesn't match the latest known revision
+	 */
+	suspend fun deleteUser(user: User): DocIdentifier =
+		deleteUserById(user.id, requireNotNull(user.rev) { "Can't delete a user that has no rev" })
+
+	/**
+	 * Deletes a user in a specific group. If you don't have write access to the user the method will fail.
+	 * @param groupId the group of the user
+	 * @param user the user to delete
+	 * @return the id and revision of the deleted user.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun deleteUserInGroup(groupId: String, user: User): DocIdentifier =
+		deleteUserInGroupById(groupId, user.id, requireNotNull(user.rev) { "Can't delete a user that has no rev" })
+	/**
+	 * Permanently deletes a user.
+	 * @param user the user to purge.
+	 * @throws RevisionConflictException if the provided user doesn't match the latest known revision
+	 */
+	suspend fun purgeUser(user: User) {
+		purgeUserById(user.id, requireNotNull(user.rev) { "Can't delete a user that has no rev" })
+	}
+	/**
+	 * Restores a user that was marked as deleted.
+	 * @param user the user to undelete
+	 * @return the restored user.
+	 * @throws RevisionConflictException if the provided user doesn't match the latest known revision
+	 */
+	suspend fun undeleteUser(user: User): User =
+		undeleteUserById(user.id, requireNotNull(user.rev) { "Can't delete a user that has no rev" })
 }
 

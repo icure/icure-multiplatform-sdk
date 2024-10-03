@@ -64,7 +64,7 @@ interface DocumentBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided document doesn't match the latest known revision
 	 */
 	suspend fun deleteDocument(document: Document): DocIdentifier =
-		deleteDocumentById(document.id, requireNotNull(document.rev) { "Can't delete an document that has no rev" })
+		deleteDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 
 	/**
 	 * Deletes many documents. Ignores document for which you don't have write access or that don't match the latest revision.
@@ -74,7 +74,7 @@ interface DocumentBasicFlavourlessApi {
 	 */
 	suspend fun deleteDocuments(documents: List<Document>): List<DocIdentifier> =
 		deleteDocumentsByIds(documents.map { document ->
-			IdWithMandatoryRev(document.id, requireNotNull(document.rev) { "Can't delete an document that has no rev" })
+			IdWithMandatoryRev(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 		})
 
 	/**
@@ -83,7 +83,7 @@ interface DocumentBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided document doesn't match the latest known revision
 	 */
 	suspend fun purgeDocument(document: Document) {
-		purgeDocumentById(document.id, requireNotNull(document.rev) { "Can't delete an document that has no rev" })
+		purgeDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 	}
 	
 	/**
@@ -213,7 +213,7 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	 * @throws RevisionConflictException if the provided document doesn't match the latest known revision
 	 */
 	suspend fun undeleteDocument(document: Document): E =
-		undeleteDocumentById(document.id, requireNotNull(document.rev) { "Can't delete an document that has no rev" })
+		undeleteDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 
 	/**
 	 * Modifies a document. You need to have write access to the entity. Note that you can't use this method to

@@ -63,7 +63,7 @@ interface TimeTableBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided timeTable doesn't match the latest known revision
 	 */
 	suspend fun deleteTimeTable(timeTable: TimeTable): DocIdentifier =
-		deleteTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+		deleteTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete a timeTable that has no rev" })
 
 	/**
 	 * Deletes many timeTables. Ignores timeTable for which you don't have write access or that don't match the latest revision.
@@ -73,7 +73,7 @@ interface TimeTableBasicFlavourlessApi {
 	 */
 	suspend fun deleteTimeTables(timeTables: List<TimeTable>): List<DocIdentifier> =
 		deleteTimeTablesByIds(timeTables.map { timeTable ->
-			IdWithMandatoryRev(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+			IdWithMandatoryRev(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete a timeTable that has no rev" })
 		})
 
 	/**
@@ -82,7 +82,7 @@ interface TimeTableBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided timeTable doesn't match the latest known revision
 	 */
 	suspend fun purgeTimeTable(timeTable: TimeTable) {
-		purgeTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+		purgeTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete a timeTable that has no rev" })
 	}
 }
 
@@ -95,7 +95,7 @@ interface TimeTableBasicFlavouredApi<E : TimeTable> {
 	 * @throws RevisionConflictException if the provided timeTable doesn't match the latest known revision
 	 */
 	suspend fun undeleteTimeTable(timeTable: TimeTable): TimeTable =
-		undeleteTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete an timeTable that has no rev" })
+		undeleteTimeTableById(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete a timeTable that has no rev" })
 	
 	/**
 	 * Modifies a time-table. You need to have write access to the entity.

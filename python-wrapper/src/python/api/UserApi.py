@@ -1488,7 +1488,7 @@ class UserApi:
 			return_value = User._deserialize(result_info.success)
 			return return_value
 
-	async def delete_user_async(self, entity_id: str, rev: str) -> DocIdentifier:
+	async def delete_user_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1505,19 +1505,19 @@ class UserApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_user_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+	def delete_user_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1529,7 +1529,7 @@ class UserApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_user_in_group_async(self, group_id: str, entity_id: str, rev: str) -> DocIdentifier:
+	async def delete_user_in_group_by_id_async(self, group_id: str, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1547,20 +1547,20 @@ class UserApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserInGroupAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserInGroupByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_user_in_group_blocking(self, group_id: str, entity_id: str, rev: str) -> DocIdentifier:
+	def delete_user_in_group_by_id_blocking(self, group_id: str, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
 			"groupId": group_id,
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserInGroupBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserInGroupByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1572,7 +1572,7 @@ class UserApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def purge_user_async(self, id: str, rev: str) -> None:
+	async def purge_user_by_id_async(self, id: str, rev: str) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1589,19 +1589,19 @@ class UserApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.purgeUserAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.purgeUserByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def purge_user_blocking(self, id: str, rev: str) -> None:
+	def purge_user_by_id_blocking(self, id: str, rev: str) -> None:
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.purgeUserBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.purgeUserByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -1610,7 +1610,7 @@ class UserApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 
-	async def undelete_user_async(self, id: str, rev: str) -> User:
+	async def undelete_user_by_id_async(self, id: str, rev: str) -> User:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1627,6 +1627,162 @@ class UserApi:
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.undeleteUserByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_user_by_id_blocking(self, id: str, rev: str) -> User:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.undeleteUserByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = User._deserialize(result_info.success)
+			return return_value
+
+	async def delete_user_async(self, user: User) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"user": user.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_user_blocking(self, user: User) -> DocIdentifier:
+		payload = {
+			"user": user.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_user_in_group_async(self, group_id: str, user: User) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"groupId": group_id,
+			"user": user.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserInGroupAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_user_in_group_blocking(self, group_id: str, user: User) -> DocIdentifier:
+		payload = {
+			"groupId": group_id,
+			"user": user.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.deleteUserInGroupBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def purge_user_async(self, user: User) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"user": user.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.purgeUserAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_user_blocking(self, user: User) -> None:
+		payload = {
+			"user": user.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.purgeUserBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def undelete_user_async(self, user: User) -> User:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = User._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"user": user.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.undeleteUserAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
@@ -1634,10 +1790,9 @@ class UserApi:
 		)
 		return await future
 
-	def undelete_user_blocking(self, id: str, rev: str) -> User:
+	def undelete_user_blocking(self, user: User) -> User:
 		payload = {
-			"id": id,
-			"rev": rev,
+			"user": user.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.undeleteUserBlocking(
 			self.cardinal_sdk._native,

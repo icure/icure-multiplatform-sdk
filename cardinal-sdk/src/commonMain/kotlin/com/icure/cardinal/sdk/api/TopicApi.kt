@@ -65,7 +65,7 @@ interface TopicBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided topic doesn't match the latest known revision
 	 */
 	suspend fun deleteTopic(topic: Topic): DocIdentifier =
-		deleteTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+		deleteTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete a topic that has no rev" })
 
 	/**
 	 * Deletes many topics. Ignores topic for which you don't have write access or that don't match the latest revision.
@@ -75,7 +75,7 @@ interface TopicBasicFlavourlessApi {
 	 */
 	suspend fun deleteTopics(topics: List<Topic>): List<DocIdentifier> =
 		deleteTopicsByIds(topics.map { topic ->
-			IdWithMandatoryRev(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+			IdWithMandatoryRev(topic.id, requireNotNull(topic.rev) { "Can't delete a topic that has no rev" })
 		})
 
 	/**
@@ -84,7 +84,7 @@ interface TopicBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided topic doesn't match the latest known revision
 	 */
 	suspend fun purgeTopic(topic: Topic) {
-		purgeTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+		purgeTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete a topic that has no rev" })
 	}
 }
 
@@ -97,7 +97,7 @@ interface TopicBasicFlavouredApi<E : Topic> {
 	 * @throws RevisionConflictException if the provided topic doesn't match the latest known revision
 	 */
 	suspend fun undeleteTopic(topic: Topic): Topic =
-		undeleteTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete an topic that has no rev" })
+		undeleteTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete a topic that has no rev" })
 	
 	/**
 	 * Modifies a topic. You need to have write access to the entity.

@@ -135,17 +135,17 @@ internal class UserApiImpl(
 		user: User,
 	) = raw.modifyUserInGroup(groupId, user).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteUser(entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteUserById(entityId: String, rev: String): DocIdentifier =
 		raw.deleteUser(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteUserInGroup(groupId: String, entityId: String, rev: String): DocIdentifier =
+	override suspend fun deleteUserInGroupById(groupId: String, entityId: String, rev: String): DocIdentifier =
 		raw.deleteUserInGroup(groupId = groupId, userId = entityId, rev = rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun purgeUser(id: String, rev: String) {
+	override suspend fun purgeUserById(id: String, rev: String) {
 		raw.purgeUser(id, rev).successBodyOrThrowRevisionConflict()
 	}
 
-	override suspend fun undeleteUser(id: String, rev: String): User =
+	override suspend fun undeleteUserById(id: String, rev: String): User =
 		raw.undeleteUser(id, rev).successBodyOrThrowRevisionConflict()
 
 	override suspend fun setUserRoles(

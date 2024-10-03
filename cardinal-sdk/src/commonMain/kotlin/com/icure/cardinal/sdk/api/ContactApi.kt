@@ -73,7 +73,7 @@ interface ContactBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided contact doesn't match the latest known revision
 	 */
 	suspend fun deleteContact(contact: Contact): DocIdentifier =
-		deleteContactById(contact.id, requireNotNull(contact.rev) { "Can't delete an contact that has no rev" })
+		deleteContactById(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
 
 	/**
 	 * Deletes many contacts. Ignores contact for which you don't have write access or that don't match the latest revision.
@@ -83,7 +83,7 @@ interface ContactBasicFlavourlessApi {
 	 */
 	suspend fun deleteContacts(contacts: List<Contact>): List<DocIdentifier> =
 		deleteContactsByIds(contacts.map { contact ->
-			IdWithMandatoryRev(contact.id, requireNotNull(contact.rev) { "Can't delete an contact that has no rev" })
+			IdWithMandatoryRev(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
 		})
 
 	/**
@@ -92,7 +92,7 @@ interface ContactBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided contact doesn't match the latest known revision
 	 */
 	suspend fun purgeContact(contact: Contact) {
-		purgeContactById(contact.id, requireNotNull(contact.rev) { "Can't delete an contact that has no rev" })
+		purgeContactById(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
 	}
 
 	@Deprecated("Use filter instead")
@@ -131,7 +131,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	 * @throws RevisionConflictException if the provided contact doesn't match the latest known revision
 	 */
 	suspend fun undeleteContact(contact: Contact): E =
-		undeleteContactById(contact.id, requireNotNull(contact.rev) { "Can't delete an contact that has no rev" })
+		undeleteContactById(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
 
 	/**
 	 * Modifies a contact. You need to have write access to the entity.

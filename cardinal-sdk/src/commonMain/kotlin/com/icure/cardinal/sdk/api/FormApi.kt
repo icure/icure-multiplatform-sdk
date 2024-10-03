@@ -64,7 +64,7 @@ interface FormBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
 	 */
 	suspend fun deleteForm(form: Form): DocIdentifier =
-		deleteFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+		deleteFormById(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
 
 	/**
 	 * Deletes many forms. Ignores form for which you don't have write access or that don't match the latest revision.
@@ -74,7 +74,7 @@ interface FormBasicFlavourlessApi {
 	 */
 	suspend fun deleteForms(forms: List<Form>): List<DocIdentifier> =
 		deleteFormsByIds(forms.map { form ->
-			IdWithMandatoryRev(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+			IdWithMandatoryRev(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
 		})
 
 	/**
@@ -83,7 +83,7 @@ interface FormBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
 	 */
 	suspend fun purgeForm(form: Form) {
-		purgeFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+		purgeFormById(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
 	}
 
 	suspend fun getFormTemplate(
@@ -163,7 +163,7 @@ interface FormBasicFlavouredApi<E : Form> {
 	 * @throws RevisionConflictException if the provided form doesn't match the latest known revision
 	 */
 	suspend fun undeleteForm(form: Form): E =
-		undeleteFormById(form.id, requireNotNull(form.rev) { "Can't delete an form that has no rev" })
+		undeleteFormById(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
 
 	/**
 	 * Modifies multiple forms. Ignores all forms for which you don't have write access.

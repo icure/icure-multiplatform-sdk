@@ -132,15 +132,23 @@ public external interface UserApiJs {
 
 	public fun createAdminUserInGroup(groupId: String, user: UserJs): Promise<UserJs>
 
-	public fun deleteUser(entityId: String, rev: String): Promise<DocIdentifierJs>
+	public fun deleteUserById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteUserInGroup(
+	public fun deleteUserInGroupById(
 		groupId: String,
 		entityId: String,
 		rev: String,
 	): Promise<DocIdentifierJs>
 
-	public fun purgeUser(id: String, rev: String): Promise<Unit>
+	public fun purgeUserById(id: String, rev: String): Promise<Unit>
 
-	public fun undeleteUser(id: String, rev: String): Promise<UserJs>
+	public fun undeleteUserById(id: String, rev: String): Promise<UserJs>
+
+	public fun deleteUser(user: UserJs): Promise<DocIdentifierJs>
+
+	public fun deleteUserInGroup(groupId: String, user: UserJs): Promise<DocIdentifierJs>
+
+	public fun purgeUser(user: UserJs): Promise<Unit>
+
+	public fun undeleteUser(user: UserJs): Promise<UserJs>
 }
