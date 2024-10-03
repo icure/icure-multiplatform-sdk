@@ -67,7 +67,7 @@ interface MessageBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided message doesn't match the latest known revision
 	 */
 	suspend fun deleteMessage(message: Message): DocIdentifier =
-		deleteMessageById(message.id, requireNotNull(message.rev) { "Can't delete an message that has no rev" })
+		deleteMessageById(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
 
 	/**
 	 * Deletes many messages. Ignores message for which you don't have write access or that don't match the latest revision.
@@ -77,7 +77,7 @@ interface MessageBasicFlavourlessApi {
 	 */
 	suspend fun deleteMessages(messages: List<Message>): List<DocIdentifier> =
 		deleteMessagesByIds(messages.map { message ->
-			IdWithMandatoryRev(message.id, requireNotNull(message.rev) { "Can't delete an message that has no rev" })
+			IdWithMandatoryRev(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
 		})
 
 	/**
@@ -86,7 +86,7 @@ interface MessageBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided message doesn't match the latest known revision
 	 */
 	suspend fun purgeMessage(message: Message) {
-		purgeMessageById(message.id, requireNotNull(message.rev) { "Can't delete an message that has no rev" })
+		purgeMessageById(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
 	}
 }
 
@@ -99,7 +99,7 @@ interface MessageBasicFlavouredApi<E : Message> {
 	 * @throws RevisionConflictException if the provided message doesn't match the latest known revision
 	 */
 	suspend fun undeleteMessage(message: Message): Message =
-		undeleteMessageById(message.id, requireNotNull(message.rev) { "Can't delete an message that has no rev" })
+		undeleteMessageById(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
 	
 	/**
 	 * Modifies a message. You need to have write access to the entity.

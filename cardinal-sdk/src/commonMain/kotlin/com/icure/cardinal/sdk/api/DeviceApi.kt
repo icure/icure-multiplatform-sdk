@@ -78,7 +78,7 @@ interface DeviceApi {
 	 * @throws RevisionConflictException if the provided device doesn't match the latest known revision
 	 */
 	suspend fun deleteDevice(device: Device): DocIdentifier =
-		deleteDeviceById(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+		deleteDeviceById(device.id, requireNotNull(device.rev) { "Can't delete a device that has no rev" })
 
 	/**
 	 * Deletes many devices. Ignores device for which you don't have write access or that don't match the latest revision.
@@ -88,7 +88,7 @@ interface DeviceApi {
 	 */
 	suspend fun deleteDevices(devices: List<Device>): List<DocIdentifier> =
 		deleteDevicesByIds(devices.map { device ->
-			IdWithMandatoryRev(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+			IdWithMandatoryRev(device.id, requireNotNull(device.rev) { "Can't delete a device that has no rev" })
 		})
 
 	/**
@@ -97,7 +97,7 @@ interface DeviceApi {
 	 * @throws RevisionConflictException if the provided device doesn't match the latest known revision
 	 */
 	suspend fun purgeDevice(device: Device) {
-		purgeDeviceById(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+		purgeDeviceById(device.id, requireNotNull(device.rev) { "Can't delete a device that has no rev" })
 	}
 	/**
 	 * Restores a device that was marked as deleted.
@@ -106,7 +106,7 @@ interface DeviceApi {
 	 * @throws RevisionConflictException if the provided device doesn't match the latest known revision
 	 */
 	suspend fun undeleteDevice(device: Device): Device =
-		undeleteDeviceById(device.id, requireNotNull(device.rev) { "Can't delete an device that has no rev" })
+		undeleteDeviceById(device.id, requireNotNull(device.rev) { "Can't delete a device that has no rev" })
 
 
 	suspend fun getDevicesInGroup(

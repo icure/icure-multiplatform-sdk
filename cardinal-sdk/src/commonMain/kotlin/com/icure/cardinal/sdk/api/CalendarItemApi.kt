@@ -64,7 +64,7 @@ interface CalendarItemBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided calendarItem doesn't match the latest known revision
 	 */
 	suspend fun deleteCalendarItem(calendarItem: CalendarItem): DocIdentifier =
-		deleteCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+		deleteCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete a calendarItem that has no rev" })
 
 	/**
 	 * Deletes many calendarItems. Ignores calendarItem for which you don't have write access or that don't match the latest revision.
@@ -74,7 +74,7 @@ interface CalendarItemBasicFlavourlessApi {
 	 */
 	suspend fun deleteCalendarItems(calendarItems: List<CalendarItem>): List<DocIdentifier> =
 		deleteCalendarItemsByIds(calendarItems.map { calendarItem ->
-			IdWithMandatoryRev(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+			IdWithMandatoryRev(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete a calendarItem that has no rev" })
 		})
 
 	/**
@@ -83,7 +83,7 @@ interface CalendarItemBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided calendarItem doesn't match the latest known revision
 	 */
 	suspend fun purgeCalendarItem(calendarItem: CalendarItem) {
-		purgeCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+		purgeCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete a calendarItem that has no rev" })
 	}
 }
 
@@ -105,7 +105,7 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	 * @throws RevisionConflictException if the provided calendarItem doesn't match the latest known revision
 	 */
 	suspend fun undeleteCalendarItem(calendarItem: CalendarItem): E =
-		undeleteCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete an calendarItem that has no rev" })
+		undeleteCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete a calendarItem that has no rev" })
 
 	/**
 	 * Modifies a calendar item. You need to have write access to the entity.

@@ -62,7 +62,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided maintenanceTask doesn't match the latest known revision
 	 */
 	suspend fun deleteMaintenanceTask(maintenanceTask: MaintenanceTask): DocIdentifier =
-		deleteMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+		deleteMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
 
 	/**
 	 * Deletes many maintenanceTasks. Ignores maintenanceTask for which you don't have write access or that don't match the latest revision.
@@ -72,7 +72,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 */
 	suspend fun deleteMaintenanceTasks(maintenanceTasks: List<MaintenanceTask>): List<DocIdentifier> =
 		deleteMaintenanceTasksByIds(maintenanceTasks.map { maintenanceTask ->
-			IdWithMandatoryRev(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+			IdWithMandatoryRev(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
 		})
 
 	/**
@@ -81,7 +81,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided maintenanceTask doesn't match the latest known revision
 	 */
 	suspend fun purgeMaintenanceTask(maintenanceTask: MaintenanceTask) {
-		purgeMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+		purgeMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
 	}
 }
 
@@ -94,7 +94,7 @@ interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 	 * @throws RevisionConflictException if the provided maintenanceTask doesn't match the latest known revision
 	 */
 	suspend fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTask): MaintenanceTask =
-		undeleteMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete an maintenanceTask that has no rev" })
+		undeleteMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
 	
 	/**
 	 * Restores a maintenanceTask that was marked as deleted.

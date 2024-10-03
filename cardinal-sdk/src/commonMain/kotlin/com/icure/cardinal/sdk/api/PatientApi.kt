@@ -68,7 +68,7 @@ interface PatientBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided patient doesn't match the latest known revision
 	 */
 	suspend fun deletePatient(patient: Patient): DocIdentifier =
-		deletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete an patient that has no rev" })
+		deletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
 
 	/**
 	 * Deletes many patients. Ignores patient for which you don't have write access or that don't match the latest revision.
@@ -78,7 +78,7 @@ interface PatientBasicFlavourlessApi {
 	 */
 	suspend fun deletePatients(patients: List<Patient>): List<DocIdentifier> =
 		deletePatientsByIds(patients.map { patient ->
-			IdWithMandatoryRev(patient.id, requireNotNull(patient.rev) { "Can't delete an patient that has no rev" })
+			IdWithMandatoryRev(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
 		})
 
 	/**
@@ -87,7 +87,7 @@ interface PatientBasicFlavourlessApi {
 	 * @throws RevisionConflictException if the provided patient doesn't match the latest known revision
 	 */
 	suspend fun purgePatient(patient: Patient) {
-		purgePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete an patient that has no rev" })
+		purgePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
 	}
 
 	/**
@@ -111,7 +111,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 * @throws RevisionConflictException if the provided patient doesn't match the latest known revision
 	 */
 	suspend fun undeletePatient(patient: Patient): Patient =
-		undeletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete an patient that has no rev" })
+		undeletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
 	
 	/**
 	 * Modifies a patient. You need to have write access to the entity.
