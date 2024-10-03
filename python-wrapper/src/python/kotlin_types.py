@@ -3402,8 +3402,12 @@ class UserApi(Structure):
 		("createUserInGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("deleteUserAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("deleteUserBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("deleteUserByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("deleteUserByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("deleteUserInGroupAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("deleteUserInGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("deleteUserInGroupByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("deleteUserInGroupByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("deleteUserUnsafeAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("deleteUserUnsafeBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("disable2faForUserAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3466,6 +3470,8 @@ class UserApi(Structure):
 		("modifyUserInGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("purgeUserAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("purgeUserBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("purgeUserByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("purgeUserByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("resetUserRolesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("resetUserRolesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("resetUserRolesInGroupAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3476,6 +3482,8 @@ class UserApi(Structure):
 		("setUserRolesInGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("undeleteUserAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteUserBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("undeleteUserByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("undeleteUserByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class api(Structure):

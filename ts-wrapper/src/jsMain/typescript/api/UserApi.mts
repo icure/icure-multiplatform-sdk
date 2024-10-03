@@ -98,12 +98,20 @@ export interface UserApi {
 
 	createAdminUserInGroup(groupId: string, user: User): Promise<User>;
 
-	deleteUser(entityId: string, rev: string): Promise<DocIdentifier>;
+	deleteUserById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteUserInGroup(groupId: string, entityId: string, rev: string): Promise<DocIdentifier>;
+	deleteUserInGroupById(groupId: string, entityId: string, rev: string): Promise<DocIdentifier>;
 
-	purgeUser(id: string, rev: string): Promise<void>;
+	purgeUserById(id: string, rev: string): Promise<void>;
 
-	undeleteUser(id: string, rev: string): Promise<User>;
+	undeleteUserById(id: string, rev: string): Promise<User>;
+
+	deleteUser(user: User): Promise<DocIdentifier>;
+
+	deleteUserInGroup(groupId: string, user: User): Promise<DocIdentifier>;
+
+	purgeUser(user: User): Promise<void>;
+
+	undeleteUser(user: User): Promise<User>;
 
 }

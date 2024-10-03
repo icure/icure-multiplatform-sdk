@@ -1521,9 +1521,167 @@ public fun createAdminUserInGroupAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class DeleteUserParams(
+private class DeleteUserByIdParams(
 	public val entityId: String,
 	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteUserByIdBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteUserByIdParams>(params)
+	runBlocking {
+		sdk.user.deleteUserById(
+			decodedParams.entityId,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteUserByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteUserByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.deleteUserById(
+				decodedParams.entityId,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteUserInGroupByIdParams(
+	public val groupId: String,
+	public val entityId: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun deleteUserInGroupByIdBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteUserInGroupByIdParams>(params)
+	runBlocking {
+		sdk.user.deleteUserInGroupById(
+			decodedParams.groupId,
+			decodedParams.entityId,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(DocIdentifier.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun deleteUserInGroupByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteUserInGroupByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.deleteUserInGroupById(
+				decodedParams.groupId,
+				decodedParams.entityId,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PurgeUserByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun purgeUserByIdBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeUserByIdParams>(params)
+	runBlocking {
+		sdk.user.purgeUserById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(Unit.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun purgeUserByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeUserByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.purgeUserById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteUserByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteUserByIdBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteUserByIdParams>(params)
+	runBlocking {
+		sdk.user.undeleteUserById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(User.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteUserByIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteUserByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.undeleteUserById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(User.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class DeleteUserParams(
+	public val user: User,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -1532,8 +1690,7 @@ public fun deleteUserBlocking(sdk: CardinalNonCryptoApis, params: String): Strin
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteUserParams>(params)
 	runBlocking {
 		sdk.user.deleteUser(
-			decodedParams.entityId,
-			decodedParams.rev,
+			decodedParams.user,
 		)
 	}
 }.toPyString(DocIdentifier.serializer())
@@ -1552,8 +1709,7 @@ public fun deleteUserAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.user.deleteUser(
-				decodedParams.entityId,
-				decodedParams.rev,
+				decodedParams.user,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
 	}
@@ -1562,8 +1718,7 @@ public fun deleteUserAsync(
 @Serializable
 private class DeleteUserInGroupParams(
 	public val groupId: String,
-	public val entityId: String,
-	public val rev: String,
+	public val user: User,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -1573,8 +1728,7 @@ public fun deleteUserInGroupBlocking(sdk: CardinalNonCryptoApis, params: String)
 	runBlocking {
 		sdk.user.deleteUserInGroup(
 			decodedParams.groupId,
-			decodedParams.entityId,
-			decodedParams.rev,
+			decodedParams.user,
 		)
 	}
 }.toPyString(DocIdentifier.serializer())
@@ -1594,8 +1748,7 @@ public fun deleteUserInGroupAsync(
 		kotlin.runCatching {
 			sdk.user.deleteUserInGroup(
 				decodedParams.groupId,
-				decodedParams.entityId,
-				decodedParams.rev,
+				decodedParams.user,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
 	}
@@ -1603,8 +1756,7 @@ public fun deleteUserInGroupAsync(
 
 @Serializable
 private class PurgeUserParams(
-	public val id: String,
-	public val rev: String,
+	public val user: User,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -1613,8 +1765,7 @@ public fun purgeUserBlocking(sdk: CardinalNonCryptoApis, params: String): String
 	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeUserParams>(params)
 	runBlocking {
 		sdk.user.purgeUser(
-			decodedParams.id,
-			decodedParams.rev,
+			decodedParams.user,
 		)
 	}
 }.toPyString(Unit.serializer())
@@ -1633,8 +1784,7 @@ public fun purgeUserAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.user.purgeUser(
-				decodedParams.id,
-				decodedParams.rev,
+				decodedParams.user,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
 	}
@@ -1642,8 +1792,7 @@ public fun purgeUserAsync(
 
 @Serializable
 private class UndeleteUserParams(
-	public val id: String,
-	public val rev: String,
+	public val user: User,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -1652,8 +1801,7 @@ public fun undeleteUserBlocking(sdk: CardinalNonCryptoApis, params: String): Str
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteUserParams>(params)
 	runBlocking {
 		sdk.user.undeleteUser(
-			decodedParams.id,
-			decodedParams.rev,
+			decodedParams.user,
 		)
 	}
 }.toPyString(User.serializer())
@@ -1672,8 +1820,7 @@ public fun undeleteUserAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.user.undeleteUser(
-				decodedParams.id,
-				decodedParams.rev,
+				decodedParams.user,
 			)
 		}.toPyStringAsyncCallback(User.serializer(), resultCallback)
 	}
