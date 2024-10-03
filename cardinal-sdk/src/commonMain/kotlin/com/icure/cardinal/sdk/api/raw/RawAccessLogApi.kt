@@ -64,11 +64,6 @@ public interface RawAccessLogApi {
 		descending: Boolean? = null,
 	): HttpResponse<PaginatedList<EncryptedAccessLog>>
 
-	suspend fun listAccessLogsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedAccessLog>>
-
 	suspend fun listAccessLogIdsByDataOwnerPatientDate(
 		dataOwnerId: String,
 		startDate: Long? = null,
@@ -78,11 +73,6 @@ public interface RawAccessLogApi {
 	): HttpResponse<List<String>>
 
 	suspend fun getAccessLogByIds(accessLogIds: ListOfIds): HttpResponse<List<EncryptedAccessLog>>
-
-	suspend fun findAccessLogsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<EncryptedAccessLog>>
 
 	suspend fun modifyAccessLog(accessLogDto: EncryptedAccessLog): HttpResponse<EncryptedAccessLog>
 
