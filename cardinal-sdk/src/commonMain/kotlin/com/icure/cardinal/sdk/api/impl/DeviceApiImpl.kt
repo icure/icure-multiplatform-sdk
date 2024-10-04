@@ -21,11 +21,11 @@ internal class DeviceApiImpl(
 ) : DeviceApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteDevice(entityId: String): DocIdentifier =
+	override suspend fun deleteDeviceUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteDevice(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteDevices(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteDevicesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteDevices(ListOfIds(entityIds)).successBody()
 	
 	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()

@@ -307,11 +307,11 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 	PatientBasicFlavourlessApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deletePatient(entityId: String): DocIdentifier =
+	override suspend fun deletePatientUnsafe(entityId: String): DocIdentifier =
 		rawApi.deletePatient(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deletePatientsUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deletePatients(ListOfIds(entityIds)).successBody()
 		
 	override suspend fun deletePatientById(entityId: String, rev: String): DocIdentifier =

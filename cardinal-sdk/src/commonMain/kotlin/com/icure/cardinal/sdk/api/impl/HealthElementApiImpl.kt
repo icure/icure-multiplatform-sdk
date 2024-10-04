@@ -138,11 +138,11 @@ private class AbstractHealthElementBasicFlavourlessApi(
 ) : HealthElementBasicFlavourlessApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteHealthElement(entityId: String): DocIdentifier =
+	override suspend fun deleteHealthElementUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteHealthElement(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteHealthElements(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody()
 	
 	override suspend fun deleteHealthElementById(entityId: String, rev: String?): DocIdentifier =

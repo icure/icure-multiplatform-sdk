@@ -15,11 +15,9 @@ import kotlin.js.JsName
 
 interface HealthcarePartyApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteHealthcarePartyUnsafe")
-	suspend fun deleteHealthcareParty(entityId: String): DocIdentifier
+	suspend fun deleteHealthcarePartyUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteHealthcarePartiesUnsafe")
-	suspend fun deleteHealthcareParties(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteHealthcarePartiesUnsafe(entityIds: List<String>): List<DocIdentifier>
 	
 	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty
 	suspend fun createHealthcareParty(p: HealthcareParty): HealthcareParty

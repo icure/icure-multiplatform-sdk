@@ -109,11 +109,11 @@ private abstract class AbstractTimeTableFlavouredApi<E : TimeTable>(
 private class AbstractTimeTableBasicFlavourlessApi(val rawApi: RawTimeTableApi) : TimeTableBasicFlavourlessApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteTimeTable(entityId: String): DocIdentifier =
+	override suspend fun deleteTimeTableUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteTimeTable(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteTimeTables(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteTimeTablesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteTimeTables(ListOfIds(entityIds)).successBody()
 	
 	override suspend fun deleteTimeTableById(entityId: String, rev: String): DocIdentifier =

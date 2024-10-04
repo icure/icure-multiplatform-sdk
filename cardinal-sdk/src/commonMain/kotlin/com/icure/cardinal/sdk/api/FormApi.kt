@@ -25,11 +25,9 @@ import kotlin.js.JsName
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface FormBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteFormUnsafe")
-	suspend fun deleteForm(entityId: String): DocIdentifier
+	suspend fun deleteFormUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteFormsUnsafe")
-	suspend fun deleteForms(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteFormsUnsafe(entityIds: List<String>): List<DocIdentifier>
 	
 	/**
 	 * Deletes a form. If you don't have write access to the form the method will fail.

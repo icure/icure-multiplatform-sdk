@@ -23,11 +23,9 @@ import kotlin.js.JsName
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MaintenanceTaskBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteMaintenanceTaskUnsafe")
-	suspend fun deleteMaintenanceTask(entityId: String): DocIdentifier
+	suspend fun deleteMaintenanceTaskUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteMaintenanceTasksUnsafe")
-	suspend fun deleteMaintenanceTasks(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteMaintenanceTasksUnsafe(entityIds: List<String>): List<DocIdentifier>
 	
 	/**
 	 * Deletes a maintenanceTask. If you don't have write access to the maintenanceTask the method will fail.

@@ -13,11 +13,9 @@ import kotlin.js.JsName
 
 interface DeviceApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteDeviceUnsafe")
-	suspend fun deleteDevice(entityId: String): DocIdentifier
+	suspend fun deleteDeviceUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteDevicesUnsafe")
-	suspend fun deleteDevices(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteDevicesUnsafe(entityIds: List<String>): List<DocIdentifier>
 	suspend fun getDevice(deviceId: String): Device
 	suspend fun getDevices(deviceIds: List<String>): List<Device>
 	suspend fun createDevice(p: Device): Device

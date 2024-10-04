@@ -29,11 +29,9 @@ import kotlin.js.JsName
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface PatientBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deletePatientUnsafe")
-	suspend fun deletePatient(entityId: String): DocIdentifier
+	suspend fun deletePatientUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deletePatientsUnsafe")
-	suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deletePatientsUnsafe(entityIds: List<String>): List<DocIdentifier>
 
 	/**
 	 * Deletes a patient. If you don't have write access to the patient the method will fail.

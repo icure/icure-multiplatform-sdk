@@ -28,11 +28,9 @@ import kotlin.js.JsName
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MessageBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteMessageUnsafe")
-	suspend fun deleteMessage(entityId: String): DocIdentifier
+	suspend fun deleteMessageUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteMessagesUnsafe")
-	suspend fun deleteMessages(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteMessagesUnsafe(entityIds: List<String>): List<DocIdentifier>
 	
 	/**
 	 * Deletes a message. If you don't have write access to the message the method will fail.

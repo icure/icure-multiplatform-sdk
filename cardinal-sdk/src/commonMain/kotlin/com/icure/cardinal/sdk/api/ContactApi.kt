@@ -34,11 +34,9 @@ import kotlin.js.JsName
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteContactUnsafe")
-	suspend fun deleteContact(entityId: String): DocIdentifier
+	suspend fun deleteContactUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteContactsUnsafe")
-	suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteContactsUnsafe(entityIds: List<String>): List<DocIdentifier>
 	
 	/**
 	 * Deletes a contact. If you don't have write access to the contact the method will fail.
