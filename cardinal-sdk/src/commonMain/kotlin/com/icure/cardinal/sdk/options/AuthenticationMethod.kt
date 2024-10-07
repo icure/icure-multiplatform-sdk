@@ -187,7 +187,7 @@ fun AuthenticationMethod.getAuthProvider(
 		applicationId = applicationId,
 		passwordClientSideSalt = options.getPasswordClientSideSalt(applicationId),
 		cryptoService = cryptoService,
-		cacheSecrets = false,
+		cacheSecrets = this.cacheSecrets,
 		allowSecretRetry = true,
 		messageGatewayApi = messageGatewayApi
 	)
