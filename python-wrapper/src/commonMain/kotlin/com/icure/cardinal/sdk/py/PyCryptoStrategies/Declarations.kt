@@ -1,9 +1,5 @@
 package com.icure.cardinal.sdk.py.PyCryptoStrategies
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
@@ -11,13 +7,16 @@ import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.crypto.entities.map
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
-import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.withResultHolder
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.CFunction
@@ -104,7 +103,7 @@ fun recoverWithRecoveryKey(
 ): String = runBlocking {
 	kotlin.runCatching {
 		keyPairRecovererPtr.asStableRef<KeyPairRecoverer>().get().recoverWithRecoveryKey(
-			RecoveryDataKey(HexString(recoveryKey)),
+			RecoveryDataKey.fromHexString(recoveryKey),
 			autoDelete
 		)
 	}.map { recoveryResult ->

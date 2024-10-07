@@ -1,12 +1,12 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 import kotlinx.serialization.Serializable
 
 /**
@@ -38,7 +38,13 @@ interface CryptoStrategies {
 		 * All public keys (in hex-encoded spki format) of `dataOwner` for which the sdk could not recover a private key. May overlap
 		 * (partially or completely) with `unknownKeys`.
 		 */
-		val unavailableKeys: List<SpkiHexString>
+		val unavailableKeys: List<UnavailableKeyInfo>
+	)
+
+	@Serializable
+	data class UnavailableKeyInfo(
+		val publicKey: SpkiHexString,
+		val keyAlgorithm: RsaEncryptionAlgorithm
 	)
 
 	/**

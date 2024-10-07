@@ -8,9 +8,9 @@ import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.cardinal.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.newPlatformHttpClient
+import com.icure.utils.InternalIcureApi
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain

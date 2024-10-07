@@ -1,13 +1,5 @@
 package com.icure.cardinal.sdk.js.crypto
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.kryptom.crypto.external.XCryptoService
-import com.icure.kryptom.crypto.external.XRsaKeypair
-import com.icure.kryptom.crypto.external.toExternal
-import com.icure.kryptom.crypto.external.toKryptom
-import com.icure.kryptom.crypto.external.toKryptomEncryption
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
@@ -19,9 +11,16 @@ import com.icure.cardinal.sdk.js.model.dataOwnerWithType_toJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
-import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.crypto.external.XCryptoService
+import com.icure.kryptom.crypto.external.XRsaKeypair
+import com.icure.kryptom.crypto.external.toExternal
+import com.icure.kryptom.crypto.external.toKryptom
+import com.icure.kryptom.crypto.external.toKryptomEncryption
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
@@ -100,7 +99,7 @@ private class KeyPairRecovererBridge(
 		autoDelete: Boolean
 	): Promise<RecoveryResultJs<Record<String, Record<String, XRsaKeypair>>>> = scope.promise {
 		val ktResult = recoverer.recoverWithRecoveryKey(
-			RecoveryDataKey(HexString(recoveryKey)),
+			RecoveryDataKey.fromHexString(recoveryKey),
 			autoDelete
 		)
 		recoveryResult_toJs(ktResult) { byDataOwnerMap ->
@@ -122,7 +121,7 @@ private class KeyPairRecovererBridge(
 private fun CryptoStrategies.KeyDataRecoveryRequest.toJs(): KeyDataRecoveryRequestJs {
 	val dataOwnerDetails = dataOwnerWithType_toJs(this.dataOwnerDetails)
 	val unknownKeys = this.unknownKeys.map { it.s }.toTypedArray()
-	val unavailableKeys = this.unavailableKeys.map { it.s }.toTypedArray()
+	val unavailableKeys = this.unavailableKeys.map { it.publicKey.s }.toTypedArray()
 	@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
 	return js("{ dataOwnerDetails: dataOwnerDetails, unknownKeys: unknownKeys, unavailableKeys: unavailableKeys}") as KeyDataRecoveryRequestJs
 }

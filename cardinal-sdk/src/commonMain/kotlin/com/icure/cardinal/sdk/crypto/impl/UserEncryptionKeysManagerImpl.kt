@@ -1,17 +1,13 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.kryptom.crypto.RsaService
 import com.icure.cardinal.sdk.api.DataOwnerApi
-import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.CardinalKeyRecovery
+import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CachedKeypairDetails
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.UserKeyPairInformation
 import com.icure.cardinal.sdk.crypto.entities.toPrivateKeyInfo
@@ -23,9 +19,13 @@ import com.icure.cardinal.sdk.model.extensions.toStub
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.ensure
 import com.icure.cardinal.sdk.utils.tryWithLock
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.crypto.RsaService
+import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.sync.Mutex
 import kotlin.concurrent.Volatile
 
@@ -187,7 +187,7 @@ private class KeyLoader(
 				unknownKeys = (found.filter { !it.isDevice } + missing).mapNotNull {
 					if (it.publicKeyString.fingerprintV1() !in keysWithVerificationInfo) it.publicKeyString else null
 				},
-				unavailableKeys = missing.map { it.publicKeyString }
+				unavailableKeys = missing.map { it.asUnavailableKeyInfo() }
 			)
 		}
 		val recoveredKeyData = if (recoveryRequest.any { it.unknownKeys.isNotEmpty() || it.unavailableKeys.isNotEmpty() })
@@ -199,7 +199,7 @@ private class KeyLoader(
 		}
 		recoveredKeyData.forEach { (dataOwnerId, recoveredData) ->
 			val currDataOwnerRequest = recoveryRequest.first { it.dataOwnerDetails.dataOwner.id == dataOwnerId }
-			val allRequestedKeys = currDataOwnerRequest.unknownKeys + currDataOwnerRequest.unavailableKeys
+			val allRequestedKeys = currDataOwnerRequest.unknownKeys + currDataOwnerRequest.unavailableKeys.map { it.publicKey }
 			require (allRequestedKeys.map { it.fingerprintV1() }.containsAll(recoveredData.keyAuthenticity.keys + recoveredData.recoveredKeys.keys)) {
 				"Recovery function should return entries only for the requested keys"
 			}
@@ -290,7 +290,12 @@ private class KeyLoader(
 		data class Missing(
 			override val publicKeyString: SpkiHexString,
 			val algorithm: RsaAlgorithm.RsaEncryptionAlgorithm
-		): DataOwnerKeyInfo
+		): DataOwnerKeyInfo {
+			fun asUnavailableKeyInfo() = CryptoStrategies.UnavailableKeyInfo(
+				publicKey = publicKeyString,
+				keyAlgorithm = algorithm
+			)
+		}
 	}
 	/*
 	 * Load keys from storage

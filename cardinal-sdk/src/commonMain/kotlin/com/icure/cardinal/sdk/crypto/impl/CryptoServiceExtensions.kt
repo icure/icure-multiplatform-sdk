@@ -1,11 +1,5 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.PrivateRsaKey
-import com.icure.kryptom.crypto.PublicRsaKey
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaService
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.RsaSignatureKeysSet
@@ -19,10 +13,16 @@ import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.utils.IllegalEntityException
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.decode
 import com.icure.cardinal.sdk.utils.getLogger
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.PrivateRsaKey
+import com.icure.kryptom.crypto.PublicRsaKey
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaService
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 
 private val log = getLogger("CryptoService")
 
@@ -135,6 +135,5 @@ suspend fun CryptoService.loadEncryptionKeyForDataOwner(
 		else -> throw IllegalArgumentException("The provided spki $spki is not a public key of the crypto actor ${cryptoActor.id}.")
 	}
 
-@InternalIcureApi
 suspend fun RsaService.exportSpkiHex(publicKey: PublicRsaKey<*>) =
 	SpkiHexString(exportPublicKeySpki(publicKey).toHexString())

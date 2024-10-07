@@ -1,5 +1,7 @@
 package com.icure.cardinal.sdk.api
 
+import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+
 
 /**
  * Gives access to cryptographic operations that should be managed by the user, such as the creation of recovery data for keys.
@@ -13,5 +15,16 @@ interface CryptoApi {
 	 * instantiation or last reload.
 	 */
 	suspend fun forceReload()
+
+	/**
+	 * Get the available keys for the current data and his parents (if using hierarchical data owners).
+	 * The result is a map associating the current data owner or parent id to a map containing all the available keys
+	 * for that data owner.
+	 * The keys map associates the key fingerprint to the pkcs8 bytes of the private key.
+	 * @param filterTrustedKeys if true (default) only keys fully trusted by this instance of the sdk will be returned.
+	 * Otherwise, also unverified keys may be returned.
+	 * @return the available keys
+	 */
+	suspend fun currentDataOwnerKeys(filterTrustedKeys: Boolean = true): Map<String, Map<KeypairFingerprintV1String, ByteArray>>
 }
 
