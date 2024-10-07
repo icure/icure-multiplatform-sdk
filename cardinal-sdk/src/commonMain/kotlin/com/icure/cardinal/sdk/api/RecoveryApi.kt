@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.utils.DefaultValue
@@ -43,7 +44,9 @@ interface RecoveryApi {
 		@DefaultValue("false")
 		includeParentsKeys: Boolean = false,
 		@DefaultValue("null")
-		lifetimeSeconds: Int? = null
+		lifetimeSeconds: Int? = null,
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32")
+		recoveryKeySize: RecoveryKeySize = RecoveryKeySize.Bytes32,
 	): RecoveryDataKey
 
 	/**
@@ -81,7 +84,9 @@ interface RecoveryApi {
 	suspend fun createExchangeDataRecoveryInfo(
 		delegateId: String,
 		@DefaultValue("null")
-		lifetimeSeconds: Int? = null
+		lifetimeSeconds: Int? = null,
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32")
+		recoveryKeySize: RecoveryKeySize = RecoveryKeySize.Bytes32,
 	): RecoveryDataKey
 
 	/**

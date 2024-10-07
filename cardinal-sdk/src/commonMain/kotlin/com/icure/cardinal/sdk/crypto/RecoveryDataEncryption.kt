@@ -1,12 +1,13 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.cardinal.sdk.api.raw.RawRecoveryDataApi
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.utils.InternalIcureApi
 
 
@@ -29,7 +30,8 @@ interface RecoveryDataEncryption {
 	suspend fun createAndSaveKeyPairsRecoveryDataFor(
 		recipient: String,
 		keyPairs: Map<String, List<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>,
-		lifetimeSeconds: Int?
+		lifetimeSeconds: Int?,
+		recoveryKeySize: RecoveryKeySize
 	): RecoveryDataKey
 
 	/**
@@ -49,7 +51,8 @@ interface RecoveryDataEncryption {
 	suspend fun createAndSaveExchangeDataRecoveryData(
 		recipient: String,
 		exchangeDataInfo: List<ExchangeDataRecoveryDetails>,
-		lifetimeSeconds: Int?
+		lifetimeSeconds: Int?,
+		recoveryKeySize: RecoveryKeySize
 	): RecoveryDataKey
 
 	/**

@@ -14,15 +14,15 @@ class RecoveryDataKey private constructor(
 	private val _hex: HexString
 ) {
 	companion object {
-		private const val BYTE_LENGTH = 32
+		private val BYTE_LENGTH_OPTIONS = setOf(16, 32)
 
 		/**
 		 * Load the recovery data key from its hexadecimal representation
 		 */
 		fun fromHexString(hex: String): RecoveryDataKey =
 			HexString(hex).let {
-				require(it.decodedBytes().size == BYTE_LENGTH) {
-					"Invalid recovery data key: decoded size should be $BYTE_LENGTH bytes"
+				require(it.decodedBytes().size in BYTE_LENGTH_OPTIONS) {
+					"Invalid recovery data key: decoded size should be in $BYTE_LENGTH_OPTIONS bytes"
 				}
 				RecoveryDataKey(it)
 			}
@@ -31,8 +31,8 @@ class RecoveryDataKey private constructor(
 		 * Load the recovery data key from its raw bytes representation
 		 */
 		fun fromRawBytes(bytes: ByteArray): RecoveryDataKey {
-			require(bytes.size == BYTE_LENGTH) {
-				"Invalid recovery data key: decoded size should be $BYTE_LENGTH bytes"
+			require(bytes.size in BYTE_LENGTH_OPTIONS) {
+				"Invalid recovery data key: decoded size should be in $BYTE_LENGTH_OPTIONS bytes"
 			}
 			return RecoveryDataKey(HexString(bytes.toHexString()))
 		}
@@ -43,6 +43,7 @@ class RecoveryDataKey private constructor(
 		fun fromBase32(base32: String): RecoveryDataKey =
 			fromRawBytes(base32Decode(base32))
 	}
+
 
 	/**
 	 * Give a representation of this recovery data key as a hexadecimal string
@@ -61,4 +62,9 @@ class RecoveryDataKey private constructor(
 
 	internal suspend fun loadAesKey(cryptoService: CryptoService): AesKey<AesAlgorithm.CbcWithPkcs7Padding> =
 		cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, _hex.decodedBytes())
+}
+
+enum class RecoveryKeySize {
+	Bytes16,
+	Bytes32
 }

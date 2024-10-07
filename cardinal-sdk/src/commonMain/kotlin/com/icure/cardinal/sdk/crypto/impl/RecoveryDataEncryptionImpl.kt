@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.crypto.RecoveryDataEncryption
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.RecoveryData
 import com.icure.cardinal.sdk.model.specializations.Base64String
@@ -13,6 +14,7 @@ import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.decode
 import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesService
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
@@ -61,7 +63,8 @@ class RecoveryDataEncryptionImpl(
 	override suspend fun createAndSaveKeyPairsRecoveryDataFor(
 		recipient: String,
 		keyPairs: Map<String, List<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>,
-		lifetimeSeconds: Int?
+		lifetimeSeconds: Int?,
+		recoveryKeySize: RecoveryKeySize
 	): RecoveryDataKey {
 		val content: Map<String, List<DelegateKeyPairInfo>> = keyPairs.mapValues { (_, delegateKeypairs) ->
 			delegateKeypairs.map { keypair ->
@@ -77,7 +80,7 @@ class RecoveryDataEncryptionImpl(
 				)
 			}
 		}
-		return createRecoveryData(recipient, RecoveryData.Type.KeypairRecovery, lifetimeSeconds, Json.encodeToJsonElement(content))
+		return createRecoveryData(recipient, RecoveryData.Type.KeypairRecovery, lifetimeSeconds, Json.encodeToJsonElement(content), recoveryKeySize)
 	}
 
 	override suspend fun getAndDecryptKeyPairsRecoveryData(
@@ -108,13 +111,15 @@ class RecoveryDataEncryptionImpl(
 	override suspend fun createAndSaveExchangeDataRecoveryData(
 		recipient: String,
 		exchangeDataInfo: List<ExchangeDataRecoveryDetails>,
-		lifetimeSeconds: Int?
+		lifetimeSeconds: Int?,
+		recoveryKeySize: RecoveryKeySize
 	): RecoveryDataKey =
 		createRecoveryData(
 			recipient,
 			RecoveryData.Type.ExchangeKeyRecovery,
 			lifetimeSeconds,
-			Json.encodeToJsonElement(exchangeDataInfo)
+			Json.encodeToJsonElement(exchangeDataInfo),
+			recoveryKeySize
 		)
 
 	override suspend fun getAndDecryptExchangeDataRecoveryData(
@@ -128,9 +133,16 @@ class RecoveryDataEncryptionImpl(
 		recipient: String,
 		type: RecoveryData.Type,
 		lifetimeSeconds: Int?,
-		content: JsonElement
+		content: JsonElement,
+		recoveryKeySize: RecoveryKeySize
 	): RecoveryDataKey {
-		val recoveryKeyAes = primitives.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
+		val recoveryKeyAes = primitives.aes.generateKey(
+			AesAlgorithm.CbcWithPkcs7Padding,
+			when (recoveryKeySize) {
+				RecoveryKeySize.Bytes16 -> AesService.KeySize.Aes128
+				RecoveryKeySize.Bytes32 -> AesService.KeySize.Aes256
+			}
+		)
 		val recoveryKey = RecoveryDataKey.fromRawBytes(primitives.aes.exportKey(recoveryKeyAes))
 		val id = recoveryKeyToId(recoveryKey)
 		val encryptedSelf =
