@@ -1,8 +1,7 @@
 package com.icure.cardinal.sdk.api.impl
 
-import com.icure.kryptom.crypto.StrongRandom
-import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.CardinalMaintenanceTaskApi
+import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.MaintenanceTaskApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeKeysManager
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
@@ -15,10 +14,12 @@ import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DecryptedTypedValue
 import com.icure.cardinal.sdk.model.embed.TaskStatus
 import com.icure.cardinal.sdk.model.embed.TypedValuesType
+import com.icure.cardinal.sdk.model.extensions.publicKeysSpki
 import com.icure.cardinal.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.getLogger
+import com.icure.kryptom.crypto.StrongRandom
+import com.icure.utils.InternalIcureApi
 
 @OptIn(InternalIcureApi::class)
 class CardinalMaintenanceTaskApiImpl(
@@ -34,6 +35,10 @@ class CardinalMaintenanceTaskApiImpl(
 	}
 
 	override suspend fun applyKeyPairUpdate(updateRequest: KeyPairUpdateNotification) {
+		val concernedDataOwnerStub = dataOwnerApi.getCryptoActorStub(updateRequest.concernedDataOwnerId).stub
+		require(updateRequest.newPublicKey in concernedDataOwnerStub.publicKeysSpki) {
+			"Invalid key pair update notification: data owner ${updateRequest.concernedDataOwnerId} does not have a key ${updateRequest.newPublicKey}"
+		}
 		exchangeDataManager.giveAccessBackTo(
 			updateRequest.concernedDataOwnerId,
 			updateRequest.newPublicKey

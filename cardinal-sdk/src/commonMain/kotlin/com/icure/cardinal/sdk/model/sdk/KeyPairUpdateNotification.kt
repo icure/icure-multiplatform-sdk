@@ -24,7 +24,7 @@ data class KeyPairUpdateNotification(
 		/**
 		 * Type for maintenance tasks that are key pair update notifications.
 		 */
-		internal const val TASK_TYPE = "KEY_PAIR_UPDATE"
+		const val TASK_TYPE = "KEY_PAIR_UPDATE"
 		/**
 		 * Id of the property containing the [KeyPairUpdateNotification.concernedDataOwnerId]
 		 */
