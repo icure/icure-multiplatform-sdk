@@ -107,6 +107,8 @@ public interface RawCalendarItemApi {
 		secretPatientKeys: List<String>,
 	): HttpResponse<List<IcureStub>>
 
+	suspend fun findCalendarItemsDelegationsStubsByIds(calendarItemIds: ListOfIds): HttpResponse<List<IcureStub>>
+
 	suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String? = null,

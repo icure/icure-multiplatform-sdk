@@ -78,12 +78,6 @@ public interface RawDocumentApi {
 
 	suspend fun modifyDocuments(documentDtos: List<EncryptedDocument>): HttpResponse<List<EncryptedDocument>>
 
-	suspend fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String? = null,
-		secretMessageKeys: ListOfIds,
-	): HttpResponse<List<EncryptedDocument>>
-
 	suspend fun listDocumentIdsByDataOwnerPatientCreated(
 		dataOwnerId: String,
 		startDate: Long? = null,

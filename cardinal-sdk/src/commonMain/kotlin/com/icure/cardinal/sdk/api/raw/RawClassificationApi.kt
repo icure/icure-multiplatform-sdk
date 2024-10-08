@@ -28,11 +28,6 @@ public interface RawClassificationApi {
 
 	suspend fun getClassifications(classificationIds: ListOfIds): HttpResponse<List<EncryptedClassification>>
 
-	suspend fun findClassificationsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedClassification>>
-
 	suspend fun listClassificationIdsByDataOwnerPatientCreated(
 		dataOwnerId: String,
 		startDate: Long? = null,
@@ -62,10 +57,7 @@ public interface RawClassificationApi {
 
 	suspend fun modifyClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification>
 
-	public suspend fun findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>>
+	suspend fun findClassificationsDelegationsStubsByIds(classificationIds: ListOfIds): HttpResponse<List<IcureStub>>
 
 	suspend fun matchClassificationBy(filter: AbstractFilter<Classification>): HttpResponse<List<String>>
 
