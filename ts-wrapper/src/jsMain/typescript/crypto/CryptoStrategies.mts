@@ -7,6 +7,7 @@ import {RecoveryResult} from "./entities/RecoveryResult.mjs";
 import {RecoveryDataKey} from "./entities/RecoveryDataKey.mjs";
 import {RecoveryApi} from "../api/RecoveryApi.mjs";
 import {XCryptoService, XRsaKeypair} from "./CryptoService.mjs";
+import {CardinalApis} from "../sdk/CardinalSdk.mjs";
 
 /**
  * Allows customizing the behavior of the crypto api to better suit your needs.
@@ -37,7 +38,7 @@ export interface CryptoStrategies {
    * @param keyPairRecoverer a key pair recoverer you can use to support the process
    * @return a map that associates to each given data owner id the recovered data.
    */
-  recoverAndVerifySelfHierarchyKeys(
+  recoverAndVerifySelfHierarchyKeys?(
     keysData: Array<CryptoStrategies.KeyDataRecoveryRequest>,
     cryptoPrimitives: XCryptoService,
     keyPairRecoverer: KeyPairRecoverer
@@ -52,7 +53,7 @@ export interface CryptoStrategies {
    * @return an instance of [KeyGenerationRequestResult] specifying how the SDK should behave.
    * @throws Exception you can throw any exception, and it will simply propagate to the api initialisation method.
    */
-  generateNewKeyForDataOwner(
+  generateNewKeyForDataOwner?(
     self: DataOwnerWithType,
     cryptoPrimitives: XCryptoService
   ): Promise<boolean | XRsaKeypair>
@@ -71,19 +72,35 @@ export interface CryptoStrategies {
    * @param cryptoPrimitives cryptographic primitives you can use to support the process.
    * @return all verified public keys, in spki hex-encoded format.
    */
-  verifyDelegatePublicKeys(
+  verifyDelegatePublicKeys?(
     delegate: CryptoActorStubWithType,
     publicKeys: Array<SpkiHexString>,
     cryptoPrimitives: XCryptoService
   ): Promise<Array<SpkiHexString>>
 
   /**
-   * Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure delegations. This should always
-   * be the case for patient data owners.
+   * Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure
+   * delegations.
+   * This should always be the case for patient data owners.
    * @param dataOwner a data owner.
    * @return true if the delegations for the provided data owner should be anonymous.
    */
-  dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Promise<boolean>
+  dataOwnerRequiresAnonymousDelegation?(
+      dataOwner: CryptoActorStubWithType
+  ): Promise<boolean>
+
+  /**
+   * Notifies that a new key for the current data owner was created.
+   * This method is called after the initialization of the other SDK apis.
+   * @param apis the initialized cardinal apis.
+   * @param key the newly created key.
+   * @param cryptoPrimitives cryptographic primitives you can use to support the process.
+   */
+  notifyNewKeyCreated?(
+      apis: CardinalApis,
+      key: XRsaKeypair,
+      cryptoPrimitives: XCryptoService,
+  ): Promise<void>
 }
 
 
@@ -106,7 +123,7 @@ export namespace CryptoStrategies {
      * All public keys (in hex-encoded spki format) of `dataOwner` for which the sdk could not recover a private key. May overlap
      * (partially or completely) with `unknownKeys`.
      */
-    readonly unavailableKeys: Array<SpkiHexString>
+    readonly unavailableKeys: Array<UnavailableKeyInfo>
   }
 
   /**
@@ -130,6 +147,17 @@ export namespace CryptoStrategies {
      * authenticity of that key.
      */
     readonly keyAuthenticity: { [fp: KeypairFingerprintV1String | SpkiHexString]: boolean }
+  }
+
+  export interface UnavailableKeyInfo {
+    /**
+     * The public key
+     */
+    readonly publicKey: SpkiHexString,
+    /**
+     * The algorithm of the keypair
+     */
+    readonly keyAlgorithm: string
   }
 }
 

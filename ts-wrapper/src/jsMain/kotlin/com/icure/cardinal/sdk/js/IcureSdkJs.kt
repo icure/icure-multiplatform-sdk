@@ -1,5 +1,7 @@
 package com.icure.cardinal.sdk.js
 
+import com.icure.cardinal.sdk.CardinalApis
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.CardinalBaseSdk
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.auth.AuthenticationProcessCaptchaType
@@ -108,6 +110,8 @@ import com.icure.cardinal.sdk.js.api.impl.TopicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TopicBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.UserApiImplJs
 import com.icure.cardinal.sdk.js.externalsdk.AuthenticationWithProcessStepJs
+import com.icure.cardinal.sdk.js.externalsdk.CardinalApisJs
+import com.icure.cardinal.sdk.js.externalsdk.CardinalBaseApisJs
 import com.icure.cardinal.sdk.js.externalsdk.CardinalBaseSdkJs
 import com.icure.cardinal.sdk.js.externalsdk.CardinalSdkJs
 import com.icure.cardinal.sdk.js.options.external.AuthenticationMethodJs
@@ -132,7 +136,7 @@ object InternalSdkInitializers {
 		storageFacade: dynamic,
 		options: SdkOptionsJs?
 	): Promise<CardinalSdkJs> = GlobalScope.promise {
-		IcureSdkJsImpl(CardinalSdk.initialize(
+		CardinalSdkJsImpl(CardinalSdk.initialize(
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
@@ -171,7 +175,7 @@ object InternalSdkInitializers {
 		)
 		object : AuthenticationWithProcessStepJs {
 			override fun completeAuthentication(validationCode: String): Promise<CardinalSdkJs> = GlobalScope.promise {
-				IcureSdkJsImpl(ktStep.completeAuthentication(validationCode))
+				CardinalSdkJsImpl(ktStep.completeAuthentication(validationCode))
 			}
 		}
 	}
@@ -182,7 +186,7 @@ object InternalSdkInitializers {
 		authenticationMethod: AuthenticationMethodJs,
 		options: BasicSdkOptionsJs?
 	): Promise<CardinalBaseSdkJs> = GlobalScope.promise {
-		IcureBaseSdkJsImpl(CardinalBaseSdk.initialize(
+		CardinalBaseSdkJsImpl(CardinalBaseSdk.initialize(
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
@@ -191,9 +195,9 @@ object InternalSdkInitializers {
 	}
 }
 
-private class IcureSdkJsImpl(
-	private val sdk: CardinalSdk
-) : CardinalSdkJs {
+internal class CardinalApisJsImpl(
+	private val sdk: CardinalApis
+) : CardinalApisJs {
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }
 	override val device: DeviceApiJs by lazy { DeviceApiImplJs(sdk.device) }
@@ -231,15 +235,19 @@ private class IcureSdkJsImpl(
 	override val recovery: RecoveryApiJs by lazy { RecoveryApiImplJs(sdk.recovery) }
 	override val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs by lazy { CardinalMaintenanceTaskApiImplJs(sdk.cardinalMaintenanceTask) }
 	override val dataOwner: DataOwnerApiJs by lazy { DataOwnerApiImplJs(sdk.dataOwner) }
+}
 
+internal class CardinalSdkJsImpl(
+	private val sdk: CardinalSdk
+) : CardinalSdkJs, CardinalApisJs by CardinalApisJsImpl(sdk) {
 	override fun switchGroup(groupId: String): Promise<CardinalSdkJs> = GlobalScope.promise {
-		IcureSdkJsImpl(sdk.switchGroup(groupId))
+		CardinalSdkJsImpl(sdk.switchGroup(groupId))
 	}
 }
 
-private class IcureBaseSdkJsImpl(
-	private val sdk: CardinalBaseSdk
-) : CardinalBaseSdkJs {
+internal class CardinalBaseApisJsImpl(
+	private val sdk: CardinalBaseApis
+) : CardinalBaseApisJs {
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }
 	override val device: DeviceApiJs by lazy { DeviceApiImplJs(sdk.device) }
@@ -273,8 +281,12 @@ private class IcureBaseSdkJsImpl(
 	override val receipt: ReceiptBasicApiJs by lazy { ReceiptBasicApiImplJs(sdk.receipt) }
 	override val timeTable: TimeTableBasicApiJs by lazy { TimeTableBasicApiImplJs(sdk.timeTable) }
 	override val topic: TopicBasicApiJs by lazy { TopicBasicApiImplJs(sdk.topic) }
+}
 
+internal class CardinalBaseSdkJsImpl(
+	private val sdk: CardinalBaseSdk
+) : CardinalBaseSdkJs, CardinalBaseApisJs by CardinalBaseApisJsImpl(sdk) {
 	override fun switchGroup(groupId: String): Promise<CardinalBaseSdkJs> = GlobalScope.promise {
-		IcureBaseSdkJsImpl(sdk.switchGroup(groupId))
+		CardinalBaseSdkJsImpl(sdk.switchGroup(groupId))
 	}
 }

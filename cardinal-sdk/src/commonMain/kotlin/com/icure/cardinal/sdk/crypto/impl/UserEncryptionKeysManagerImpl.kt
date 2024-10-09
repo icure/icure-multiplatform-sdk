@@ -212,7 +212,10 @@ private class KeyLoader(
 				}
 			}
 			// Save verification information
-			icureStorage.updateAndSaveSelfVerifiedKeys(dataOwnerId, recoveredData.keyAuthenticity)
+			icureStorage.updateAndSaveSelfVerifiedKeys(
+				dataOwnerId,
+				recoveredData.keyAuthenticity + recoveredData.recoveredKeys.keys.associateWith { true }
+			)
 		}
 		val fullyRecoveredKeyData = hierarchy.map { dataOwnerInfo ->
 			val loaded = loadedKeyInfo.first { it.first == dataOwnerInfo }.second.first

@@ -58,11 +58,7 @@ import {TopicBasicApi} from "../api/TopicBasicApi.mjs";
 import {AgendaApi} from "../api/AgendaApi.mjs";
 import {MedicalLocationApi} from "../api/MedicalLocationApi.mjs";
 
-/**
- * Main entry point to use iCure, provides access to the various apis with encryption capabilities.
- * Only data owner users with a valid keypair can use these apis.
- */
-export interface CardinalSdk {
+export interface CardinalApis {
   readonly applicationSettings: ApplicationSettingsApi
   readonly code: CodeApi
   readonly device: DeviceApi
@@ -100,7 +96,13 @@ export interface CardinalSdk {
   readonly recovery: RecoveryApi
   readonly cardinalMaintenanceTask: CardinalMaintenanceTaskApi
   readonly dataOwner: DataOwnerApi
+}
 
+/**
+ * Main entry point to use iCure, provides access to the various apis with encryption capabilities.
+ * Only data owner users with a valid keypair can use these apis.
+ */
+export interface CardinalSdk extends CardinalApis {
   /**
    * Get a new sdk using the same configurations and user authentication methods but for a different group.
    * To use this method, the authentication method provided at initialization of this sdk must be valid also for the
@@ -112,12 +114,7 @@ export interface CardinalSdk {
   switchGroup(groupId: String): Promise<CardinalSdk>
 }
 
-/**
- * A stripped down version of the iCure SDK that can be used also by users that aren't data owners.
- * This could be useful, for example, if you want to perform some system maintenance using an admin user, or compile
- * some statistics without using any encrypted information
- */
-export interface CardinalBaseSdk {
+export interface CardinalBaseApis {
   readonly applicationSettings: ApplicationSettingsApi
   readonly code: CodeApi
   readonly device: DeviceApi
@@ -152,7 +149,14 @@ export interface CardinalBaseSdk {
   readonly timeTable: TimeTableBasicApi
   readonly topic: TopicBasicApi
 
+}
 
+/**
+ * A stripped down version of the iCure SDK that can be used also by users that aren't data owners.
+ * This could be useful, for example, if you want to perform some system maintenance using an admin user, or compile
+ * some statistics without using any encrypted information
+ */
+export interface CardinalBaseSdk extends CardinalBaseApis {
   /**
    * Get a new sdk using the same configurations and user authentication methods but for a different group.
    * To use this method, the authentication method provided at initialization of this sdk must be valid also for the

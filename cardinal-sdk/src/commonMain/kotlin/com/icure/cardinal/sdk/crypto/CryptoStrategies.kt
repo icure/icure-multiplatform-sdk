@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
@@ -45,7 +45,13 @@ interface CryptoStrategies {
 
 	@Serializable
 	data class UnavailableKeyInfo(
+		/**
+		 * The public key
+		 */
 		val publicKey: SpkiHexString,
+		/**
+		 * The algorithm of the keypair
+		 */
 		val keyAlgorithm: RsaEncryptionAlgorithm
 	)
 
@@ -160,13 +166,13 @@ interface CryptoStrategies {
 
 	/**
 	 * Notifies that a new key for the current data owner was created.
-	 * This method is called after the initialization of the other SDK components.
-	 * @param sdk the initialized sdk.
+	 * This method is called after the initialization of the other SDK apis.
+	 * @param apis the initialized cardinal apis.
 	 * @param key the newly created key.
 	 * @param cryptoPrimitives cryptographic primitives you can use to support the process.
 	 */
 	suspend fun notifyNewKeyCreated(
-		sdk: CardinalSdk,
+		apis: CardinalApis,
 		key: RsaKeypair<RsaEncryptionAlgorithm.OaepWithSha256>,
 		cryptoPrimitives: CryptoService,
 	) {}

@@ -1,9 +1,12 @@
 package com.icure.cardinal.sdk.js.crypto
 
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
-import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
+import com.icure.cardinal.sdk.js.CardinalApisJsImpl
+import com.icure.cardinal.sdk.js.crypto.entities.RecoveryDataKeyJs
 import com.icure.cardinal.sdk.js.crypto.entities.RecoveryResultJs
+import com.icure.cardinal.sdk.js.crypto.entities.recoveryDataKey_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.recoveryResult_toJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters
 import com.icure.cardinal.sdk.js.model.cryptoActorStubWithType_toJs
@@ -35,59 +38,81 @@ internal class CryptoStrategiesBridge(
 		keysData: List<CryptoStrategies.KeyDataRecoveryRequest>,
 		cryptoPrimitives: CryptoService,
 		keyPairRecoverer: KeyPairRecoverer
-	): Map<String, CryptoStrategies.RecoveredKeyData> = coroutineScope {
-		val jsResult = js.recoverAndVerifySelfHierarchyKeys(
-			keysData.map { it.toJs() }.toTypedArray(),
-			xCryptoService,
-			KeyPairRecovererBridge(keyPairRecoverer, this)
-		).await()
-		CheckedConverters.objectToMap(
-			jsResult,
-			"recoverAndVerifySelfHierarchyKeys result",
-			{ it },
-			{ it.toKt() }
-		)
-	}
+	): Map<String, CryptoStrategies.RecoveredKeyData> =
+		if (js.recoverAndVerifySelfHierarchyKeys != null) {
+			coroutineScope {
+				val jsResult = js.recoverAndVerifySelfHierarchyKeys!!(
+					keysData.map { it.toJs() }.toTypedArray(),
+					xCryptoService,
+					KeyPairRecovererBridge(keyPairRecoverer, this)
+				).await()
+				CheckedConverters.objectToMap(
+					jsResult,
+					"recoverAndVerifySelfHierarchyKeys result",
+					{ it },
+					{ it.toKt() }
+				)
+			}
+		} else super.recoverAndVerifySelfHierarchyKeys(keysData, cryptoPrimitives, keyPairRecoverer)
 
 	override suspend fun generateNewKeyForDataOwner(
 		self: DataOwnerWithType,
 		cryptoPrimitives: CryptoService
-	): CryptoStrategies.KeyGenerationRequestResult {
-		val jsResult = js.generateNewKeyForDataOwner(
-			dataOwnerWithType_toJs(self),
-			xCryptoService
-		).await()
-		@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
-		return when {
-			jsResult === true ->
-				CryptoStrategies.KeyGenerationRequestResult.Allow
-			jsResult === false ->
-				CryptoStrategies.KeyGenerationRequestResult.Deny
-			jsTypeOf(jsResult.public) === "object" && jsTypeOf(jsResult.private) === "object" -> {
-				val xKeypair = jsResult as XRsaKeypair
-				require(xKeypair.private.algorithm == RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256.identifier) {
-					"Newly generated key should be for OaepWithSha256"
+	): CryptoStrategies.KeyGenerationRequestResult =
+		if (js.generateNewKeyForDataOwner != null) {
+			val jsResult = js.generateNewKeyForDataOwner!!(
+				dataOwnerWithType_toJs(self),
+				xCryptoService
+			).await()
+			@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+			when {
+				jsResult === true ->
+					CryptoStrategies.KeyGenerationRequestResult.Allow
+				jsResult === false ->
+					CryptoStrategies.KeyGenerationRequestResult.Deny
+				jsTypeOf(jsResult.public) === "object" && jsTypeOf(jsResult.private) === "object" -> {
+					val xKeypair = jsResult as XRsaKeypair
+					require(xKeypair.private.algorithm == RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256.identifier) {
+						"Newly generated key should be for OaepWithSha256"
+					}
+					CryptoStrategies.KeyGenerationRequestResult.Use(xKeypair.toKryptom(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256))
 				}
-				CryptoStrategies.KeyGenerationRequestResult.Use(xKeypair.toKryptom(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256))
+				else ->
+					throw IllegalArgumentException("Unexpected value received from generateNewKeyForDataOwner: neither a boolean nor a key. $jsResult")
 			}
-			else ->
-				throw IllegalArgumentException("Unexpected value received from generateNewKeyForDataOwner: neither a boolean nor a key. $jsResult")
-		}
-	}
+		} else super.generateNewKeyForDataOwner(self, cryptoPrimitives)
 
 	override suspend fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithType,
 		publicKeys: List<SpkiHexString>,
 		cryptoPrimitives: CryptoService
 	): List<SpkiHexString> =
-		js.verifyDelegatePublicKeys(
-			cryptoActorStubWithType_toJs(delegate),
-			publicKeys.map { it.s }.toTypedArray(),
-			xCryptoService
-		).await().map { SpkiHexString(it) }
+		if (js.verifyDelegatePublicKeys != null) {
+			js.verifyDelegatePublicKeys!!(
+				cryptoActorStubWithType_toJs(delegate),
+				publicKeys.map { it.s }.toTypedArray(),
+				xCryptoService
+			).await().map { SpkiHexString(it) }
+		} else super.verifyDelegatePublicKeys(delegate, publicKeys, cryptoPrimitives)
 
 	override suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean =
-		js.dataOwnerRequiresAnonymousDelegation(cryptoActorStubWithType_toJs(dataOwner)).await()
+		if (js.dataOwnerRequiresAnonymousDelegation != null) {
+			js.dataOwnerRequiresAnonymousDelegation!!(cryptoActorStubWithType_toJs(dataOwner)).await()
+		} else super.dataOwnerRequiresAnonymousDelegation(dataOwner)
+
+	override suspend fun notifyNewKeyCreated(
+		apis: CardinalApis,
+		key: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>,
+		cryptoPrimitives: CryptoService
+	) {
+		if (js.notifyNewKeyCreated != null) {
+			js.notifyNewKeyCreated!!(
+				CardinalApisJsImpl(apis),
+				key.toExternal(),
+				xCryptoService
+			)
+		} else super.notifyNewKeyCreated(apis, key, cryptoPrimitives)
+	}
 }
 
 private class KeyPairRecovererBridge(
@@ -95,11 +120,11 @@ private class KeyPairRecovererBridge(
 	private val scope: CoroutineScope
 ): KeyPairRecovererJs {
 	override fun recoverWithRecoveryKey(
-		recoveryKey: String,
+		recoveryKey: RecoveryDataKeyJs,
 		autoDelete: Boolean
 	): Promise<RecoveryResultJs<Record<String, Record<String, XRsaKeypair>>>> = scope.promise {
 		val ktResult = recoverer.recoverWithRecoveryKey(
-			RecoveryDataKey.fromHexString(recoveryKey),
+			recoveryDataKey_fromJs(recoveryKey),
 			autoDelete
 		)
 		recoveryResult_toJs(ktResult) { byDataOwnerMap ->
@@ -118,10 +143,17 @@ private class KeyPairRecovererBridge(
 	}
 }
 
+private fun CryptoStrategies.UnavailableKeyInfo.toJs(): UnavailableKeyInfoJs {
+	val publicKeyJs = publicKey.s
+	val keyAlgorithmJs = keyAlgorithm.identifier
+	@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+	return js("{ publicKey: publicKeyJs, keyAlgorithm: keyAlgorithmJs }") as UnavailableKeyInfoJs
+}
+
 private fun CryptoStrategies.KeyDataRecoveryRequest.toJs(): KeyDataRecoveryRequestJs {
 	val dataOwnerDetails = dataOwnerWithType_toJs(this.dataOwnerDetails)
 	val unknownKeys = this.unknownKeys.map { it.s }.toTypedArray()
-	val unavailableKeys = this.unavailableKeys.map { it.publicKey.s }.toTypedArray()
+	val unavailableKeys = this.unavailableKeys.map { it.toJs() }.toTypedArray()
 	@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
 	return js("{ dataOwnerDetails: dataOwnerDetails, unknownKeys: unknownKeys, unavailableKeys: unavailableKeys}") as KeyDataRecoveryRequestJs
 }
