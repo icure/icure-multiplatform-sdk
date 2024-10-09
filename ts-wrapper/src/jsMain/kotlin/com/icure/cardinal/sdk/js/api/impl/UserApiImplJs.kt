@@ -58,9 +58,9 @@ import kotlinx.coroutines.promise
 internal class UserApiImplJs(
 	private val userApi: UserApi,
 ) : UserApiJs {
-	override fun deleteUser(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteUserUnsafe(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = userApi.deleteUser(
+		val result = userApi.deleteUserUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)

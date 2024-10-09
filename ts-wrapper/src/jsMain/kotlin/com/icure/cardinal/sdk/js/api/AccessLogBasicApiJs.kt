@@ -32,11 +32,9 @@ public external interface AccessLogBasicApiJs {
 	public fun filterAccessLogsBySorted(filter: BaseSortableFilterOptionsJs<AccessLogJs>):
 			Promise<PaginatedListIteratorJs<EncryptedAccessLogJs>>
 
-	@JsName("deleteAccessLogUnsafe")
-	public fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteAccessLogUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteAccessLogsUnsafe")
-	public fun deleteAccessLogs(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteAccessLogsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

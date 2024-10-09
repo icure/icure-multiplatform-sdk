@@ -34,11 +34,9 @@ public external interface MessageBasicApiJs {
 	public fun filterMessagesBySorted(filter: BaseSortableFilterOptionsJs<MessageJs>):
 			Promise<PaginatedListIteratorJs<EncryptedMessageJs>>
 
-	@JsName("deleteMessageUnsafe")
-	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteMessageUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteMessagesUnsafe")
-	public fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteMessagesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteMessageById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

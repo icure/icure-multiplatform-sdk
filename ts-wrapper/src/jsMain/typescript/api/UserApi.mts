@@ -12,7 +12,7 @@ import {TokenWithGroup} from '../model/security/TokenWithGroup.mjs';
 
 export interface UserApi {
 
-	deleteUser(entityId: string): Promise<DocIdentifier>;
+	deleteUserUnsafe(entityId: string): Promise<DocIdentifier>;
 
 	getCurrentUser(): Promise<User>;
 

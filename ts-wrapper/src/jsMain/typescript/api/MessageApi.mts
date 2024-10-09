@@ -45,9 +45,9 @@ export interface MessageApi {
 
 	matchMessagesBySorted(filter: SortableFilterOptions<Message>): Promise<Array<string>>;
 
-	deleteMessage(entityId: string): Promise<DocIdentifier>;
+	deleteMessageUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteMessages(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteMessagesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteMessageById(entityId: string, rev: string): Promise<DocIdentifier>;
 

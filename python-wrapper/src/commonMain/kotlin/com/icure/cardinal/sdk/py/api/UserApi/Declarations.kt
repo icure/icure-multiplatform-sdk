@@ -53,7 +53,7 @@ public fun deleteUserUnsafeBlocking(sdk: CardinalNonCryptoApis, params: String):
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteUserUnsafeParams>(params)
 	runBlocking {
-		sdk.user.deleteUser(
+		sdk.user.deleteUserUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -72,7 +72,7 @@ public fun deleteUserUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteUserUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.user.deleteUser(
+			sdk.user.deleteUserUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)

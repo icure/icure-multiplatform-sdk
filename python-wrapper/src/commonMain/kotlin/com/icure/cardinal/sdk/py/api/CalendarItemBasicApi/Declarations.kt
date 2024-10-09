@@ -200,7 +200,7 @@ public fun deleteCalendarItemUnsafeBlocking(sdk: CardinalBaseApis, params: Strin
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteCalendarItemUnsafeParams>(params)
 	runBlocking {
-		sdk.calendarItem.deleteCalendarItem(
+		sdk.calendarItem.deleteCalendarItemUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -220,7 +220,7 @@ public fun deleteCalendarItemUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteCalendarItemUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.calendarItem.deleteCalendarItem(
+			sdk.calendarItem.deleteCalendarItemUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -238,7 +238,7 @@ public fun deleteCalendarItemsUnsafeBlocking(sdk: CardinalBaseApis, params: Stri
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteCalendarItemsUnsafeParams>(params)
 	runBlocking {
-		sdk.calendarItem.deleteCalendarItems(
+		sdk.calendarItem.deleteCalendarItemsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -258,7 +258,7 @@ public fun deleteCalendarItemsUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteCalendarItemsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.calendarItem.deleteCalendarItems(
+			sdk.calendarItem.deleteCalendarItemsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

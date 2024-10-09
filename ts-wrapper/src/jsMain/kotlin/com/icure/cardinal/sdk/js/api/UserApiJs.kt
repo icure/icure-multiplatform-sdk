@@ -23,8 +23,7 @@ import kotlin.js.Promise
 
 @JsName("UserApi")
 public external interface UserApiJs {
-	@JsName("deleteUserUnsafe")
-	public fun deleteUser(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteUserUnsafe(entityId: String): Promise<DocIdentifierJs>
 
 	public fun getCurrentUser(): Promise<UserJs>
 

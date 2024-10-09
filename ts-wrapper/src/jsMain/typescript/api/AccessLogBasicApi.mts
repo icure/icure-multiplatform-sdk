@@ -16,9 +16,9 @@ export interface AccessLogBasicApi {
 
 	filterAccessLogsBySorted(filter: BaseSortableFilterOptions<AccessLog>): Promise<PaginatedListIterator<EncryptedAccessLog>>;
 
-	deleteAccessLog(entityId: string): Promise<DocIdentifier>;
+	deleteAccessLogUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteAccessLogs(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteAccessLogsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteAccessLogById(entityId: string, rev: string): Promise<DocIdentifier>;
 

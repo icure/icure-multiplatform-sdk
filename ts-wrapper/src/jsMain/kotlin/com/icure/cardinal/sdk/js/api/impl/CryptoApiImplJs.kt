@@ -21,6 +21,8 @@ import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.model.base.CryptoActor
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import kotlin.Array
+import kotlin.Boolean
+import kotlin.ByteArray
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
@@ -89,5 +91,30 @@ internal class CryptoApiImplJs(
 		cryptoApi.forceReload(
 		)
 
+	}
+
+	override fun currentDataOwnerKeys(filterTrustedKeys: Boolean):
+			Promise<Record<String, Record<String, ByteArray>>> = GlobalScope.promise {
+		val filterTrustedKeysConverted: Boolean = filterTrustedKeys
+		val result = cryptoApi.currentDataOwnerKeys(
+			filterTrustedKeysConverted,
+		)
+		mapToObject(
+			result,
+			{ x1: String ->
+				x1
+			},
+			{ x1: Map<KeypairFingerprintV1String, ByteArray> ->
+				mapToObject(
+					x1,
+					{ x2: KeypairFingerprintV1String ->
+						keypairFingerprintV1String_toJs(x2)
+					},
+					{ x2: ByteArray ->
+						x2
+					},
+				)
+			},
+		)
 	}
 }

@@ -15,9 +15,9 @@ export interface DocumentBasicApi {
 
 	filterDocumentsBySorted(filter: BaseSortableFilterOptions<Document>): Promise<PaginatedListIterator<EncryptedDocument>>;
 
-	deleteDocument(entityId: string): Promise<DocIdentifier>;
+	deleteDocumentUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteDocuments(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteDocumentsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteDocumentById(entityId: string, rev: string): Promise<DocIdentifier>;
 

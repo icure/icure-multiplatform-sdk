@@ -56,11 +56,9 @@ public external interface AccessLogApiJs {
 	public fun matchAccessLogsBySorted(filter: SortableFilterOptionsJs<AccessLogJs>):
 			Promise<Array<String>>
 
-	@JsName("deleteAccessLogUnsafe")
-	public fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteAccessLogUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteAccessLogsUnsafe")
-	public fun deleteAccessLogs(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteAccessLogsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

@@ -4,6 +4,7 @@ package com.icure.cardinal.sdk.py.api.RecoveryApi
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.py.serialization.RsaEncryptionAlgorithmSerializer
@@ -35,6 +36,8 @@ import kotlinx.serialization.builtins.serializer
 private class CreateRecoveryInfoForAvailableKeyPairsParams(
 	public val includeParentsKeys: Boolean = false,
 	public val lifetimeSeconds: Int? = null,
+	public val recoveryKeySize: RecoveryKeySize =
+			com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -46,6 +49,7 @@ public fun createRecoveryInfoForAvailableKeyPairsBlocking(sdk: CardinalApis, par
 		sdk.recovery.createRecoveryInfoForAvailableKeyPairs(
 			decodedParams.includeParentsKeys,
 			decodedParams.lifetimeSeconds,
+			decodedParams.recoveryKeySize,
 		)
 	}
 }.toPyString(RecoveryDataKey.serializer())
@@ -67,6 +71,7 @@ public fun createRecoveryInfoForAvailableKeyPairsAsync(
 			sdk.recovery.createRecoveryInfoForAvailableKeyPairs(
 				decodedParams.includeParentsKeys,
 				decodedParams.lifetimeSeconds,
+				decodedParams.recoveryKeySize,
 			)
 		}.toPyStringAsyncCallback(RecoveryDataKey.serializer(), resultCallback)
 	}
@@ -118,6 +123,8 @@ public fun recoverKeyPairsAsync(
 private class CreateExchangeDataRecoveryInfoParams(
 	public val delegateId: String,
 	public val lifetimeSeconds: Int? = null,
+	public val recoveryKeySize: RecoveryKeySize =
+			com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -129,6 +136,7 @@ public fun createExchangeDataRecoveryInfoBlocking(sdk: CardinalApis, params: Str
 		sdk.recovery.createExchangeDataRecoveryInfo(
 			decodedParams.delegateId,
 			decodedParams.lifetimeSeconds,
+			decodedParams.recoveryKeySize,
 		)
 	}
 }.toPyString(RecoveryDataKey.serializer())
@@ -150,6 +158,7 @@ public fun createExchangeDataRecoveryInfoAsync(
 			sdk.recovery.createExchangeDataRecoveryInfo(
 				decodedParams.delegateId,
 				decodedParams.lifetimeSeconds,
+				decodedParams.recoveryKeySize,
 			)
 		}.toPyStringAsyncCallback(RecoveryDataKey.serializer(), resultCallback)
 	}

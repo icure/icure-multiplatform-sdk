@@ -40,9 +40,9 @@ export interface TimeTableApi {
 
 	matchTimeTablesBySorted(filter: SortableFilterOptions<TimeTable>): Promise<Array<string>>;
 
-	deleteTimeTable(entityId: string): Promise<DocIdentifier>;
+	deleteTimeTableUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteTimeTables(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteTimeTablesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteTimeTableById(entityId: string, rev: string): Promise<DocIdentifier>;
 

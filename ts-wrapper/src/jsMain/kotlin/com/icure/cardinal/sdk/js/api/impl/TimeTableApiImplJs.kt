@@ -574,15 +574,16 @@ internal class TimeTableApiImplJs(
 		)
 	}
 
-	override fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteTimeTableUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = timeTableApi.deleteTimeTable(
+		val result = timeTableApi.deleteTimeTableUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteTimeTables(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteTimeTablesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -591,7 +592,7 @@ internal class TimeTableApiImplJs(
 				x1
 			},
 		)
-		val result = timeTableApi.deleteTimeTables(
+		val result = timeTableApi.deleteTimeTablesUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

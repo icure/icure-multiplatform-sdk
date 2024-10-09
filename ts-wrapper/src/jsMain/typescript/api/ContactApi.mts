@@ -59,9 +59,9 @@ export interface ContactApi {
 	subscribeToServiceCreateOrUpdateEvents(filter: FilterOptions<Service>,
 			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedService>>;
 
-	deleteContact(entityId: string): Promise<DocIdentifier>;
+	deleteContactUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteContacts(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteContactsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteContactById(entityId: string, rev: string): Promise<DocIdentifier>;
 

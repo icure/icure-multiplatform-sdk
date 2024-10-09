@@ -110,17 +110,17 @@ internal class HealthElementBasicApiImplJs(
 		)
 	}
 
-	override fun deleteHealthElement(entityId: String): Promise<DocIdentifierJs> =
+	override fun deleteHealthElementUnsafe(entityId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = healthElementBasicApi.deleteHealthElement(
+		val result = healthElementBasicApi.deleteHealthElementUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteHealthElements(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
-			GlobalScope.promise {
+	override fun deleteHealthElementsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+			= GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
 			"entityIds",
@@ -128,7 +128,7 @@ internal class HealthElementBasicApiImplJs(
 				x1
 			},
 		)
-		val result = healthElementBasicApi.deleteHealthElements(
+		val result = healthElementBasicApi.deleteHealthElementsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

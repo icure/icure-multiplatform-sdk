@@ -2,8 +2,8 @@
 import asyncio
 import json
 from typing import Optional
+from cardinal_sdk.model import RecoveryKeySize, RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model import RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 
@@ -12,7 +12,7 @@ class RecoveryApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def create_recovery_info_for_available_key_pairs_async(self, include_parents_keys: bool = False, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
+	async def create_recovery_info_for_available_key_pairs_async(self, include_parents_keys: bool = False, lifetime_seconds: Optional[int] = None, recovery_key_size: RecoveryKeySize = RecoveryKeySize.Bytes32) -> RecoveryDataKey:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -20,11 +20,12 @@ class RecoveryApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = json.loads(success.decode('utf-8'))
+				result = RecoveryDataKey._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"includeParentsKeys": include_parents_keys,
 			"lifetimeSeconds": lifetime_seconds,
+			"recoveryKeySize": recovery_key_size.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -36,10 +37,11 @@ class RecoveryApi:
 		)
 		return await future
 
-	def create_recovery_info_for_available_key_pairs_blocking(self, include_parents_keys: bool = False, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
+	def create_recovery_info_for_available_key_pairs_blocking(self, include_parents_keys: bool = False, lifetime_seconds: Optional[int] = None, recovery_key_size: RecoveryKeySize = RecoveryKeySize.Bytes32) -> RecoveryDataKey:
 		payload = {
 			"includeParentsKeys": include_parents_keys,
 			"lifetimeSeconds": lifetime_seconds,
+			"recoveryKeySize": recovery_key_size.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsBlocking(
 			self.cardinal_sdk._native,
@@ -50,7 +52,7 @@ class RecoveryApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = result_info.success
+			return_value = RecoveryDataKey._deserialize(result_info.success)
 			return return_value
 
 	async def recover_key_pairs_async(self, recovery_key: RecoveryDataKey, auto_delete: bool) -> RecoveryResult:
@@ -64,7 +66,7 @@ class RecoveryApi:
 				result = deserialize_recovery_result(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recoveryKey": recovery_key,
+			"recoveryKey": recovery_key.__serialize__(),
 			"autoDelete": auto_delete,
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
@@ -79,7 +81,7 @@ class RecoveryApi:
 
 	def recover_key_pairs_blocking(self, recovery_key: RecoveryDataKey, auto_delete: bool) -> RecoveryResult:
 		payload = {
-			"recoveryKey": recovery_key,
+			"recoveryKey": recovery_key.__serialize__(),
 			"autoDelete": auto_delete,
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.recoverKeyPairsBlocking(
@@ -94,7 +96,7 @@ class RecoveryApi:
 			return_value = deserialize_recovery_result(result_info.success)
 			return return_value
 
-	async def create_exchange_data_recovery_info_async(self, delegate_id: str, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
+	async def create_exchange_data_recovery_info_async(self, delegate_id: str, lifetime_seconds: Optional[int] = None, recovery_key_size: RecoveryKeySize = RecoveryKeySize.Bytes32) -> RecoveryDataKey:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -102,11 +104,12 @@ class RecoveryApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = json.loads(success.decode('utf-8'))
+				result = RecoveryDataKey._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"lifetimeSeconds": lifetime_seconds,
+			"recoveryKeySize": recovery_key_size.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -118,10 +121,11 @@ class RecoveryApi:
 		)
 		return await future
 
-	def create_exchange_data_recovery_info_blocking(self, delegate_id: str, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
+	def create_exchange_data_recovery_info_blocking(self, delegate_id: str, lifetime_seconds: Optional[int] = None, recovery_key_size: RecoveryKeySize = RecoveryKeySize.Bytes32) -> RecoveryDataKey:
 		payload = {
 			"delegateId": delegate_id,
 			"lifetimeSeconds": lifetime_seconds,
+			"recoveryKeySize": recovery_key_size.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoBlocking(
 			self.cardinal_sdk._native,
@@ -132,7 +136,7 @@ class RecoveryApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = result_info.success
+			return_value = RecoveryDataKey._deserialize(result_info.success)
 			return return_value
 
 	async def recover_exchange_data_async(self, recovery_key: RecoveryDataKey) -> Optional[RecoveryDataUseFailureReason]:
@@ -146,7 +150,7 @@ class RecoveryApi:
 				result = RecoveryDataUseFailureReason._deserialize(json.loads(success.decode('utf-8'))) if json.loads(success.decode('utf-8')) is not None else None
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recoveryKey": recovery_key,
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -160,7 +164,7 @@ class RecoveryApi:
 
 	def recover_exchange_data_blocking(self, recovery_key: RecoveryDataKey) -> Optional[RecoveryDataUseFailureReason]:
 		payload = {
-			"recoveryKey": recovery_key,
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.recoverExchangeDataBlocking(
 			self.cardinal_sdk._native,
@@ -185,7 +189,7 @@ class RecoveryApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"recoveryKey": recovery_key,
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -199,7 +203,7 @@ class RecoveryApi:
 
 	def purge_recovery_info_blocking(self, recovery_key: RecoveryDataKey) -> None:
 		payload = {
-			"recoveryKey": recovery_key,
+			"recoveryKey": recovery_key.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoBlocking(
 			self.cardinal_sdk._native,

@@ -10,9 +10,9 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface HealthcarePartyApi {
 
-	deleteHealthcareParty(entityId: string): Promise<DocIdentifier>;
+	deleteHealthcarePartyUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteHealthcareParties(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteHealthcarePartiesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getHealthcareParty(healthcarePartyId: string): Promise<HealthcareParty>;
 

@@ -8,9 +8,9 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface DeviceApi {
 
-	deleteDevice(entityId: string): Promise<DocIdentifier>;
+	deleteDeviceUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteDevices(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteDevicesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getDevice(deviceId: string): Promise<Device>;
 

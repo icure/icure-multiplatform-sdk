@@ -54,11 +54,9 @@ public external interface MaintenanceTaskApiJs {
 	public fun matchMaintenanceTasksBySorted(filter: SortableFilterOptionsJs<MaintenanceTaskJs>):
 			Promise<Array<String>>
 
-	@JsName("deleteMaintenanceTaskUnsafe")
-	public fun deleteMaintenanceTask(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteMaintenanceTaskUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteMaintenanceTasksUnsafe")
-	public fun deleteMaintenanceTasks(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteMaintenanceTasksUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteMaintenanceTaskById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

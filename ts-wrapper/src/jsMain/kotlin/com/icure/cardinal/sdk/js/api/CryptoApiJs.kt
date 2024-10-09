@@ -3,6 +3,10 @@
 
 package com.icure.cardinal.sdk.js.api
 
+import com.icure.cardinal.sdk.js.utils.Record
+import kotlin.Boolean
+import kotlin.ByteArray
+import kotlin.String
 import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -13,4 +17,7 @@ public external interface CryptoApiJs {
 	public val shamirKeysManager: ShamirKeysManagerApiJs
 
 	public fun forceReload(): Promise<Unit>
+
+	public fun currentDataOwnerKeys(filterTrustedKeys: Boolean):
+			Promise<Record<String, Record<String, ByteArray>>>
 }

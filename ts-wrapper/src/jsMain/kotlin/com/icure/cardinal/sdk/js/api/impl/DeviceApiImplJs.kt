@@ -42,15 +42,15 @@ import kotlinx.coroutines.promise
 internal class DeviceApiImplJs(
 	private val deviceApi: DeviceApi,
 ) : DeviceApiJs {
-	override fun deleteDevice(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteDeviceUnsafe(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = deviceApi.deleteDevice(
+		val result = deviceApi.deleteDeviceUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteDevices(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteDevicesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -59,7 +59,7 @@ internal class DeviceApiImplJs(
 				x1
 			},
 		)
-		val result = deviceApi.deleteDevices(
+		val result = deviceApi.deleteDevicesUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

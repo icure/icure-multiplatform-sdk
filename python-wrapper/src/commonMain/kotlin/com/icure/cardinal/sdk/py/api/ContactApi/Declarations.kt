@@ -662,7 +662,7 @@ public fun deleteContactUnsafeBlocking(sdk: CardinalApis, params: String): Strin
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactUnsafeParams>(params)
 	runBlocking {
-		sdk.contact.deleteContact(
+		sdk.contact.deleteContactUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -681,7 +681,7 @@ public fun deleteContactUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.contact.deleteContact(
+			sdk.contact.deleteContactUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -698,7 +698,7 @@ public fun deleteContactsUnsafeBlocking(sdk: CardinalApis, params: String): Stri
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactsUnsafeParams>(params)
 	runBlocking {
-		sdk.contact.deleteContacts(
+		sdk.contact.deleteContactsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -717,7 +717,7 @@ public fun deleteContactsUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteContactsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.contact.deleteContacts(
+			sdk.contact.deleteContactsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

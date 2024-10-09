@@ -64,9 +64,9 @@ export interface DocumentApi {
 
 	matchDocumentsBySorted(filter: SortableFilterOptions<Document>): Promise<Array<string>>;
 
-	deleteDocument(entityId: string): Promise<DocIdentifier>;
+	deleteDocumentUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteDocuments(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteDocumentsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteDocumentById(entityId: string, rev: string): Promise<DocIdentifier>;
 

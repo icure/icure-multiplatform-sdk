@@ -41,9 +41,9 @@ export interface CalendarItemApi {
 
 	matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): Promise<Array<string>>;
 
-	deleteCalendarItem(entityId: string): Promise<DocIdentifier>;
+	deleteCalendarItemUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItemsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteCalendarItemById(entityId: string, rev: string): Promise<DocIdentifier>;
 

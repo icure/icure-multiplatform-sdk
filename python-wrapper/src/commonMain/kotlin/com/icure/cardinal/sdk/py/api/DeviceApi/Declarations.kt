@@ -46,7 +46,7 @@ public fun deleteDeviceUnsafeBlocking(sdk: CardinalNonCryptoApis, params: String
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDeviceUnsafeParams>(params)
 	runBlocking {
-		sdk.device.deleteDevice(
+		sdk.device.deleteDeviceUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -65,7 +65,7 @@ public fun deleteDeviceUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDeviceUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.device.deleteDevice(
+			sdk.device.deleteDeviceUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -82,7 +82,7 @@ public fun deleteDevicesUnsafeBlocking(sdk: CardinalNonCryptoApis, params: Strin
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDevicesUnsafeParams>(params)
 	runBlocking {
-		sdk.device.deleteDevices(
+		sdk.device.deleteDevicesUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -101,7 +101,7 @@ public fun deleteDevicesUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDevicesUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.device.deleteDevices(
+			sdk.device.deleteDevicesUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

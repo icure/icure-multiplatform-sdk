@@ -1,5 +1,6 @@
 import json
 import base64
+from cardinal_sdk.model.RecoveryDataKey import RecoveryDataKey
 from typing import Optional
 from typing import List
 from dataclasses import field
@@ -2997,7 +2998,21 @@ class FormTemplate:
 			template_layout_attachment_id=deserialized_dict.get("templateLayoutAttachmentId"),
 		)
 
-RecoveryDataKey = 'HexString'
+class RecoveryKeySize(Enum):
+	Bytes16 = "Bytes16"
+	Bytes32 = "Bytes32"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RecoveryKeySize':
+		if data == "Bytes16":
+			return RecoveryKeySize.Bytes16
+		elif data == "Bytes32":
+			return RecoveryKeySize.Bytes32
+		else:
+			raise Exception(f"{data} is not a valid value for RecoveryKeySize enum.")
 
 @dataclass
 class RecoveryResultSuccess:

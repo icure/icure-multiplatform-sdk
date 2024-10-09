@@ -33,11 +33,9 @@ public external interface HealthElementBasicApiJs {
 	public fun filterHealthElementsBySorted(filter: BaseSortableFilterOptionsJs<HealthElementJs>):
 			Promise<PaginatedListIteratorJs<EncryptedHealthElementJs>>
 
-	@JsName("deleteHealthElementUnsafe")
-	public fun deleteHealthElement(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteHealthElementUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteHealthElementsUnsafe")
-	public fun deleteHealthElements(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteHealthElementsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteHealthElementById(entityId: String, rev: String?): Promise<DocIdentifierJs>
 

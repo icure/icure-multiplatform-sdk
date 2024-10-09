@@ -860,15 +860,15 @@ internal class FormApiImplJs(
 		)
 	}
 
-	override fun deleteForm(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteFormUnsafe(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = formApi.deleteForm(
+		val result = formApi.deleteFormUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteFormsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -877,7 +877,7 @@ internal class FormApiImplJs(
 				x1
 			},
 		)
-		val result = formApi.deleteForms(
+		val result = formApi.deleteFormsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

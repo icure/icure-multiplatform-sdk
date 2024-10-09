@@ -897,15 +897,16 @@ internal class AccessLogApiImplJs(
 		)
 	}
 
-	override fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteAccessLogUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = accessLogApi.deleteAccessLog(
+		val result = accessLogApi.deleteAccessLogUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteAccessLogs(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteAccessLogsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -914,7 +915,7 @@ internal class AccessLogApiImplJs(
 				x1
 			},
 		)
-		val result = accessLogApi.deleteAccessLogs(
+		val result = accessLogApi.deleteAccessLogsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

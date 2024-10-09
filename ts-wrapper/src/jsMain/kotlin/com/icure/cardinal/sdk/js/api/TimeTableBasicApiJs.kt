@@ -31,11 +31,9 @@ public external interface TimeTableBasicApiJs {
 	public fun filterTimeTablesBySorted(filter: BaseSortableFilterOptionsJs<TimeTableJs>):
 			Promise<PaginatedListIteratorJs<EncryptedTimeTableJs>>
 
-	@JsName("deleteTimeTableUnsafe")
-	public fun deleteTimeTable(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteTimeTableUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteTimeTablesUnsafe")
-	public fun deleteTimeTables(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteTimeTablesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteTimeTableById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

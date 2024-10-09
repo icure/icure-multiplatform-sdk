@@ -105,15 +105,16 @@ internal class CalendarItemBasicApiImplJs(
 		)
 	}
 
-	override fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteCalendarItemUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = calendarItemBasicApi.deleteCalendarItem(
+		val result = calendarItemBasicApi.deleteCalendarItemUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteCalendarItemsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -122,7 +123,7 @@ internal class CalendarItemBasicApiImplJs(
 				x1
 			},
 		)
-		val result = calendarItemBasicApi.deleteCalendarItems(
+		val result = calendarItemBasicApi.deleteCalendarItemsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

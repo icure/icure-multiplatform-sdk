@@ -912,6 +912,8 @@ class shamirKeysManager(Structure):
 class CryptoApi(Structure):
 	_fields_ = [
 		("shamirKeysManager", shamirKeysManager),
+		("currentDataOwnerKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("currentDataOwnerKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("forceReloadAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
 		("forceReloadBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
 	]

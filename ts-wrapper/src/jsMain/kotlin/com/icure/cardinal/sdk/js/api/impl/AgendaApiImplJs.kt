@@ -67,15 +67,15 @@ internal class AgendaApiImplJs(
 		agenda_toJs(result)
 	}
 
-	override fun deleteAgenda(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteAgendaUnsafe(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = agendaApi.deleteAgenda(
+		val result = agendaApi.deleteAgendaUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteAgendas(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteAgendasUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -84,7 +84,7 @@ internal class AgendaApiImplJs(
 				x1
 			},
 		)
-		val result = agendaApi.deleteAgendas(
+		val result = agendaApi.deleteAgendasUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

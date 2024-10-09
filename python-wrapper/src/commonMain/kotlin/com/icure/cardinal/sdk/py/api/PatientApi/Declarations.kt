@@ -660,7 +660,7 @@ public fun deletePatientUnsafeBlocking(sdk: CardinalApis, params: String): Strin
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientUnsafeParams>(params)
 	runBlocking {
-		sdk.patient.deletePatient(
+		sdk.patient.deletePatientUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -679,7 +679,7 @@ public fun deletePatientUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.deletePatient(
+			sdk.patient.deletePatientUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -696,7 +696,7 @@ public fun deletePatientsUnsafeBlocking(sdk: CardinalApis, params: String): Stri
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientsUnsafeParams>(params)
 	runBlocking {
-		sdk.patient.deletePatients(
+		sdk.patient.deletePatientsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -715,7 +715,7 @@ public fun deletePatientsUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeletePatientsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.patient.deletePatients(
+			sdk.patient.deletePatientsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

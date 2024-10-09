@@ -15,9 +15,9 @@ export interface TimeTableBasicApi {
 
 	filterTimeTablesBySorted(filter: BaseSortableFilterOptions<TimeTable>): Promise<PaginatedListIterator<EncryptedTimeTable>>;
 
-	deleteTimeTable(entityId: string): Promise<DocIdentifier>;
+	deleteTimeTableUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteTimeTables(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteTimeTablesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteTimeTableById(entityId: string, rev: string): Promise<DocIdentifier>;
 

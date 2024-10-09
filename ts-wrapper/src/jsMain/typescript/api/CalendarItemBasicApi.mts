@@ -16,9 +16,9 @@ export interface CalendarItemBasicApi {
 
 	filterCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): Promise<PaginatedListIterator<EncryptedCalendarItem>>;
 
-	deleteCalendarItem(entityId: string): Promise<DocIdentifier>;
+	deleteCalendarItemUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItemsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteCalendarItemById(entityId: string, rev: string): Promise<DocIdentifier>;
 

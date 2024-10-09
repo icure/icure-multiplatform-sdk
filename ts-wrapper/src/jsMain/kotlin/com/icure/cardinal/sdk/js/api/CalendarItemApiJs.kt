@@ -56,11 +56,9 @@ public external interface CalendarItemApiJs {
 	public fun matchCalendarItemsBySorted(filter: SortableFilterOptionsJs<CalendarItemJs>):
 			Promise<Array<String>>
 
-	@JsName("deleteCalendarItemUnsafe")
-	public fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteCalendarItemUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteCalendarItemsUnsafe")
-	public fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteCalendarItemsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteCalendarItemById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

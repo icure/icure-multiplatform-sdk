@@ -51,7 +51,7 @@ public fun deleteHealthcarePartyUnsafeBlocking(sdk: CardinalNonCryptoApis, param
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyUnsafeParams>(params)
 	runBlocking {
-		sdk.healthcareParty.deleteHealthcareParty(
+		sdk.healthcareParty.deleteHealthcarePartyUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -71,7 +71,7 @@ public fun deleteHealthcarePartyUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareParty.deleteHealthcareParty(
+			sdk.healthcareParty.deleteHealthcarePartyUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -89,7 +89,7 @@ public fun deleteHealthcarePartiesUnsafeBlocking(sdk: CardinalNonCryptoApis, par
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesUnsafeParams>(params)
 	runBlocking {
-		sdk.healthcareParty.deleteHealthcareParties(
+		sdk.healthcareParty.deleteHealthcarePartiesUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -109,7 +109,7 @@ public fun deleteHealthcarePartiesUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthcareParty.deleteHealthcareParties(
+			sdk.healthcareParty.deleteHealthcarePartiesUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

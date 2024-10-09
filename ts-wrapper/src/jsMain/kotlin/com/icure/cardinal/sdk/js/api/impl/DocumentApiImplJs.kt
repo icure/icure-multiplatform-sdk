@@ -986,15 +986,16 @@ internal class DocumentApiImplJs(
 		)
 	}
 
-	override fun deleteDocument(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteDocumentUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = documentApi.deleteDocument(
+		val result = documentApi.deleteDocumentUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteDocumentsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -1003,7 +1004,7 @@ internal class DocumentApiImplJs(
 				x1
 			},
 		)
-		val result = documentApi.deleteDocuments(
+		val result = documentApi.deleteDocumentsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

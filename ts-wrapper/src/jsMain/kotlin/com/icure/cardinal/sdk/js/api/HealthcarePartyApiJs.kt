@@ -21,11 +21,9 @@ import kotlin.js.Promise
 
 @JsName("HealthcarePartyApi")
 public external interface HealthcarePartyApiJs {
-	@JsName("deleteHealthcarePartyUnsafe")
-	public fun deleteHealthcareParty(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteHealthcarePartyUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteHealthcarePartiesUnsafe")
-	public fun deleteHealthcareParties(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteHealthcarePartiesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs>
 

@@ -19,11 +19,9 @@ import kotlin.js.Promise
 
 @JsName("DeviceApi")
 public external interface DeviceApiJs {
-	@JsName("deleteDeviceUnsafe")
-	public fun deleteDevice(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteDeviceUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteDevicesUnsafe")
-	public fun deleteDevices(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteDevicesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun getDevice(deviceId: String): Promise<DeviceJs>
 

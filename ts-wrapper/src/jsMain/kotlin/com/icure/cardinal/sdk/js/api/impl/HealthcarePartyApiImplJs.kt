@@ -50,17 +50,17 @@ import kotlinx.coroutines.promise
 internal class HealthcarePartyApiImplJs(
 	private val healthcarePartyApi: HealthcarePartyApi,
 ) : HealthcarePartyApiJs {
-	override fun deleteHealthcareParty(entityId: String): Promise<DocIdentifierJs> =
+	override fun deleteHealthcarePartyUnsafe(entityId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = healthcarePartyApi.deleteHealthcareParty(
+		val result = healthcarePartyApi.deleteHealthcarePartyUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteHealthcareParties(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
-			GlobalScope.promise {
+	override fun deleteHealthcarePartiesUnsafe(entityIds: Array<String>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
 			"entityIds",
@@ -68,7 +68,7 @@ internal class HealthcarePartyApiImplJs(
 				x1
 			},
 		)
-		val result = healthcarePartyApi.deleteHealthcareParties(
+		val result = healthcarePartyApi.deleteHealthcarePartiesUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

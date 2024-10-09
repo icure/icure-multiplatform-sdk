@@ -107,17 +107,17 @@ internal class MaintenanceTaskBasicApiImplJs(
 		)
 	}
 
-	override fun deleteMaintenanceTask(entityId: String): Promise<DocIdentifierJs> =
+	override fun deleteMaintenanceTaskUnsafe(entityId: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = maintenanceTaskBasicApi.deleteMaintenanceTask(
+		val result = maintenanceTaskBasicApi.deleteMaintenanceTaskUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteMaintenanceTasks(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
-			GlobalScope.promise {
+	override fun deleteMaintenanceTasksUnsafe(entityIds: Array<String>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
 			"entityIds",
@@ -125,7 +125,7 @@ internal class MaintenanceTaskBasicApiImplJs(
 				x1
 			},
 		)
-		val result = maintenanceTaskBasicApi.deleteMaintenanceTasks(
+		val result = maintenanceTaskBasicApi.deleteMaintenanceTasksUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

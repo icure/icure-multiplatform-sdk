@@ -33,9 +33,9 @@ export interface ContactBasicApi {
 	subscribeToServiceCreateOrUpdateEvents(filter: BaseFilterOptions<Service>,
 			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedService>>;
 
-	deleteContact(entityId: string): Promise<DocIdentifier>;
+	deleteContactUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteContacts(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteContactsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteContactById(entityId: string, rev: string): Promise<DocIdentifier>;
 

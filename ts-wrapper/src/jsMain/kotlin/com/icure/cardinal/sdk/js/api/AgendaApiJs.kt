@@ -25,11 +25,9 @@ public external interface AgendaApiJs {
 
 	public fun createAgenda(agendaDto: AgendaJs): Promise<AgendaJs>
 
-	@JsName("deleteAgendaUnsafe")
-	public fun deleteAgenda(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteAgendaUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteAgendasUnsafe")
-	public fun deleteAgendas(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteAgendasUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteAgendaById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
