@@ -172,7 +172,7 @@ private class KeyLoader(
 	suspend fun doLoadKeys(
 		recoverAndVerifySelfHierarchyKeys: RecoveryFunction,
 		generateNewKeyForDataOwner: KeyGenerationFunction
-	): Pair<KeyData, CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>?> {
+	): Pair<KeyData, CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>>?> {
 		val hierarchy = if (initializeParentKeys)
 			dataOwnerApi.getCurrentDataOwnerHierarchy()
 		else

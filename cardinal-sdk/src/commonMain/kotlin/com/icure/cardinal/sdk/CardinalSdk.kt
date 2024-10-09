@@ -169,6 +169,8 @@ import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.cardinal.sdk.utils.newPlatformHttpClient
 import com.icure.cardinal.sdk.utils.retryWithDelays
 import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
@@ -272,21 +274,22 @@ interface CardinalSdk : CardinalApis {
 				options,
 				options.groupSelector
 			)
+			val (initializedCrypto, newKey) = initializeApiCrypto(
+				apiUrl,
+				authProvider,
+				client,
+				json,
+				cryptoStrategies,
+				cryptoService,
+				iCureStorage,
+				options,
+			)
 			return CardinalApiImpl(
 				authProvider,
 				json,
-				initializeApiCrypto(
-					apiUrl,
-					authProvider,
-					client,
-					json,
-					cryptoStrategies,
-					cryptoService,
-					iCureStorage,
-					options,
-				),
+				initializedCrypto,
 				options
-			)
+			).also { initializedCrypto.notifyNewKeyIfAny(it, newKey) }
 		}
 
 		/**
@@ -407,7 +410,7 @@ private suspend fun initializeApiCrypto(
 	cryptoService: CryptoService,
 	iCureStorage: CardinalStorageFacade,
 	options: SdkOptions
-): ApiConfiguration {
+): Pair<ApiConfiguration, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>?> {
 	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json))
 	val self = dataOwnerApi.getCurrentDataOwner()
 	val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.toStub())
@@ -442,7 +445,7 @@ private suspend fun initializeApiCrypto(
 		cryptoService,
 		RawRecoveryDataApiImpl(apiUrl, authProvider, client, json = json)
 	)
-	val userEncryptionKeys = UserEncryptionKeysManagerImpl.Factory(
+	val userEncryptionKeysInitInfo = UserEncryptionKeysManagerImpl.Factory(
 		cryptoService,
 		cryptoStrategies,
 		dataOwnerApi,
@@ -450,9 +453,8 @@ private suspend fun initializeApiCrypto(
 		icureKeyRecovery,
 		KeyPairRecovererImpl(recoveryDataEncryption),
 		!options.useHierarchicalDataOwners,
-	).initialize().also { initInfo ->
-		initInfo.newKey
-	}.manager
+	).initialize()
+	val userEncryptionKeys = userEncryptionKeysInitInfo.manager
 	val userSignatureKeysManager = UserSignatureKeysManagerImpl(
 		iCureStorage,
 		dataOwnerApi,
@@ -565,7 +567,7 @@ private suspend fun initializeApiCrypto(
 		manifests,
 		iCureStorage,
 		options.jsonPatcher ?: object : JsonPatcher {}
-	)
+	) to userEncryptionKeysInitInfo.newKey?.key
 }
 
 @OptIn(InternalIcureApi::class)
@@ -731,6 +733,7 @@ private class CardinalApiImpl(
 	private val rawInvoiceApi by lazy { RawInvoiceApiImpl(apiUrl, authProvider, config.crypto.headersProvider, client, json = httpClientJson) }
 	private val rawEntityReferenceApi by lazy { RawEntityReferenceApiImpl(apiUrl, authProvider, client, json = httpClientJson) }
 
+	@Deprecated("The invoice API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	override val invoice: InvoiceApi by lazy {
 		InvoiceApiImpl(
 			rawInvoiceApi,
@@ -741,6 +744,7 @@ private class CardinalApiImpl(
 
 	private val rawReceiptApi by lazy { RawReceiptApiImpl(apiUrl, authProvider, config.crypto.headersProvider, client, json = httpClientJson) }
 
+	@Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	override val receipt: ReceiptApi by lazy {
 		ReceiptApiImpl(
 			rawReceiptApi,
@@ -811,7 +815,7 @@ private class CardinalApiImpl(
 
 	override suspend fun switchGroup(groupId: String): CardinalSdk {
 		val switchedProvider = authProvider.switchGroup(groupId)
-		val switchedCryptoConfigs = initializeApiCrypto(
+		val (switchedCryptoConfigs, newKey) = initializeApiCrypto(
 			config.apiUrl,
 			switchedProvider,
 			config.httpClient,
@@ -826,6 +830,20 @@ private class CardinalApiImpl(
 			httpClientJson,
 			switchedCryptoConfigs,
 			options
+		).also { switchedCryptoConfigs.notifyNewKeyIfAny(it, newKey) }
+	}
+}
+
+@InternalIcureApi
+private suspend fun ApiConfiguration.notifyNewKeyIfAny(
+	sdk: CardinalSdk,
+	key: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>?
+) {
+	if (key != null) {
+		crypto.strategies.notifyNewKeyCreated(
+			sdk,
+			key,
+			crypto.primitives
 		)
 	}
 }
