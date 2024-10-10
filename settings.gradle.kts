@@ -18,9 +18,9 @@ pluginManagement {
 dependencyResolutionManagement {
 	repositories {
 		google()
+		mavenLocal()
 		mavenCentral()
 		maven { url = uri("https://maven.taktik.be/content/groups/public") }
-		mavenLocal()
 	}
 }
 include("sdk-codegen:ksp-json-processor")

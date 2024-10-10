@@ -24,8 +24,7 @@ interface AuthenticationProcessApi {
 		processId: String,
 		userTelecomType: AuthenticationProcessTelecomType,
 		userTelecom: String,
-		captchaType: AuthenticationProcessCaptchaType,
-		captchaKey: String,
+		captcha: Captcha,
 		processTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters()
 	): AuthenticationProcessRequest
 }
