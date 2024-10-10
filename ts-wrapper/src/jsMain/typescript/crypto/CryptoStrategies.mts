@@ -6,8 +6,9 @@ import {KeyStorageFacade, StorageFacade} from "../storage/StorageFacade.mjs";
 import {RecoveryResult} from "./entities/RecoveryResult.mjs";
 import {RecoveryDataKey} from "./entities/RecoveryDataKey.mjs";
 import {RecoveryApi} from "../api/RecoveryApi.mjs";
-import {XCryptoService, XRsaKeypair} from "./CryptoService.mjs";
+import {RsaAlgorithm, XCryptoService, XRsaKeypair} from "./CryptoService.mjs";
 import {CardinalApis} from "../sdk/CardinalSdk.mjs";
+import {DataOwnerType} from "../model/DataOwnerType.mjs";
 
 /**
  * Allows customizing the behavior of the crypto api to better suit your needs.
@@ -18,7 +19,7 @@ import {CardinalApis} from "../sdk/CardinalSdk.mjs";
  * Sharing any kind of data using unverified public keys could potentially cause a data leak: this is why when creating new exchange keys or when
  * creating recovery data only verified keys will be considered. For decrypting existing data instead unverified keys will be used without issues.
  */
-export interface CryptoStrategies {
+export class CryptoStrategies {
   /**
    * Method called during initialization of the crypto API to validate keys recovered through iCure's recovery methods and/or to allow recovery of
    * missing keys using means external to iCure.
@@ -38,11 +39,17 @@ export interface CryptoStrategies {
    * @param keyPairRecoverer a key pair recoverer you can use to support the process
    * @return a map that associates to each given data owner id the recovered data.
    */
-  recoverAndVerifySelfHierarchyKeys?(
+  recoverAndVerifySelfHierarchyKeys(
     keysData: Array<CryptoStrategies.KeyDataRecoveryRequest>,
     cryptoPrimitives: XCryptoService,
     keyPairRecoverer: KeyPairRecoverer
-  ): Promise<{ [dataOwnerId: string]: CryptoStrategies.RecoveredKeyData }>
+  ): Promise<{ [dataOwnerId: string]: CryptoStrategies.RecoveredKeyData }> {
+    const res: { [dataOwnerId: string]: CryptoStrategies.RecoveredKeyData } = {}
+    for (const data of keysData) {
+      res[data.dataOwnerDetails.dataOwner.id] = { recoveredKeys: {}, keyAuthenticity: {} }
+    }
+    return Promise.resolve(res)
+  }
 
   /**
    * The correct initialisation of the crypto API requires that at least 1 verified (or device) key pair is available for each data owner part of the
@@ -53,10 +60,12 @@ export interface CryptoStrategies {
    * @return an instance of [KeyGenerationRequestResult] specifying how the SDK should behave.
    * @throws Exception you can throw any exception, and it will simply propagate to the api initialisation method.
    */
-  generateNewKeyForDataOwner?(
+  generateNewKeyForDataOwner(
     self: DataOwnerWithType,
     cryptoPrimitives: XCryptoService
-  ): Promise<boolean | XRsaKeypair>
+  ): Promise<boolean | XRsaKeypair> {
+    return Promise.resolve(true)
+  }
 
   /**
    * Verifies if the public keys of a data owner which will be the delegate of a new exchange key do actually belong to the person the data owner
@@ -72,11 +81,13 @@ export interface CryptoStrategies {
    * @param cryptoPrimitives cryptographic primitives you can use to support the process.
    * @return all verified public keys, in spki hex-encoded format.
    */
-  verifyDelegatePublicKeys?(
+  verifyDelegatePublicKeys(
     delegate: CryptoActorStubWithType,
     publicKeys: Array<SpkiHexString>,
     cryptoPrimitives: XCryptoService
-  ): Promise<Array<SpkiHexString>>
+  ): Promise<Array<SpkiHexString>> {
+    return Promise.resolve(publicKeys)
+  }
 
   /**
    * Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure
@@ -85,9 +96,11 @@ export interface CryptoStrategies {
    * @param dataOwner a data owner.
    * @return true if the delegations for the provided data owner should be anonymous.
    */
-  dataOwnerRequiresAnonymousDelegation?(
+  dataOwnerRequiresAnonymousDelegation(
       dataOwner: CryptoActorStubWithType
-  ): Promise<boolean>
+  ): Promise<boolean> {
+    return Promise.resolve(dataOwner.type != DataOwnerType.Hcp)
+  }
 
   /**
    * Notifies that a new key for the current data owner was created.
@@ -96,11 +109,13 @@ export interface CryptoStrategies {
    * @param key the newly created key.
    * @param cryptoPrimitives cryptographic primitives you can use to support the process.
    */
-  notifyNewKeyCreated?(
+  notifyNewKeyCreated(
       apis: CardinalApis,
       key: XRsaKeypair,
       cryptoPrimitives: XCryptoService,
-  ): Promise<void>
+  ): Promise<void> {
+    return Promise.resolve()
+  }
 }
 
 
@@ -157,7 +172,7 @@ export namespace CryptoStrategies {
     /**
      * The algorithm of the keypair
      */
-    readonly keyAlgorithm: string
+    readonly keyAlgorithm: RsaAlgorithm
   }
 }
 

@@ -13,32 +13,32 @@ import kotlin.js.Promise
 
 @JsName("CryptoStrategies")
 external interface CryptoStrategiesJs {
-	val recoverAndVerifySelfHierarchyKeys: ((
+	fun recoverAndVerifySelfHierarchyKeys(
 		keysData: Array<KeyDataRecoveryRequestJs>,
 		cryptoPrimitives: XCryptoService,
 		keyPairRecoverer: KeyPairRecovererJs
-	) -> Promise<Record<String, RecoveredKeyDataJs>>)?
+	): Promise<Record<String, RecoveredKeyDataJs>>
 
-	val generateNewKeyForDataOwner: ((
+	fun generateNewKeyForDataOwner(
 		self: DataOwnerWithTypeJs,
 		cryptoPrimitives: XCryptoService
-	) -> Promise<dynamic>)? // boolean | XRsaKeypair
+	): Promise<dynamic> // boolean | XRsaKeypair
 
-	val verifyDelegatePublicKeys: ((
+	fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithTypeJs,
 		publicKeys: Array<String>,
 		cryptoPrimitives: XCryptoService
-	) -> Promise<Array<String>>)?
+	): Promise<Array<String>>
 
-	val dataOwnerRequiresAnonymousDelegation: ((
+	fun dataOwnerRequiresAnonymousDelegation(
 		dataOwner: CryptoActorStubWithTypeJs
-	) -> Promise<Boolean>)?
+	): Promise<Boolean>
 
-	val notifyNewKeyCreated: ((
+	fun notifyNewKeyCreated(
 		apis: CardinalApisJs,
 		key: XRsaKeypair,
 		cryptoPrimitives: XCryptoService,
-	) -> Promise<Unit>)?
+	): Promise<Unit>
 }
 
 @JsName("KeyPairRecoverer")

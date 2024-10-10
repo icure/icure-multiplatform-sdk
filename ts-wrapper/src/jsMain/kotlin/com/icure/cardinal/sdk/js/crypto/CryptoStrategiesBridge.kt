@@ -31,7 +31,7 @@ import kotlinx.coroutines.promise
 import kotlin.js.Promise
 
 internal class CryptoStrategiesBridge(
-	private val js: CryptoStrategiesJs,
+	private val cryptoStrategiesJs: CryptoStrategiesJs,
 	private val xCryptoService: XCryptoService
 ) : CryptoStrategies {
 	override suspend fun recoverAndVerifySelfHierarchyKeys(
@@ -39,79 +39,70 @@ internal class CryptoStrategiesBridge(
 		cryptoPrimitives: CryptoService,
 		keyPairRecoverer: KeyPairRecoverer
 	): Map<String, CryptoStrategies.RecoveredKeyData> =
-		if (js.recoverAndVerifySelfHierarchyKeys != null) {
-			coroutineScope {
-				val jsResult = js.recoverAndVerifySelfHierarchyKeys!!(
-					keysData.map { it.toJs() }.toTypedArray(),
-					xCryptoService,
-					KeyPairRecovererBridge(keyPairRecoverer, this)
-				).await()
-				CheckedConverters.objectToMap(
-					jsResult,
-					"recoverAndVerifySelfHierarchyKeys result",
-					{ it },
-					{ it.toKt() }
-				)
-			}
-		} else super.recoverAndVerifySelfHierarchyKeys(keysData, cryptoPrimitives, keyPairRecoverer)
+		coroutineScope {
+			val jsResult = cryptoStrategiesJs.recoverAndVerifySelfHierarchyKeys(
+				keysData.map { it.toJs() }.toTypedArray(),
+				xCryptoService,
+				KeyPairRecovererBridge(keyPairRecoverer, this)
+			).await()
+			CheckedConverters.objectToMap(
+				jsResult,
+				"recoverAndVerifySelfHierarchyKeys result",
+				{ it },
+				{ it.toKt() }
+			)
+		}
 
 	override suspend fun generateNewKeyForDataOwner(
 		self: DataOwnerWithType,
 		cryptoPrimitives: CryptoService
-	): CryptoStrategies.KeyGenerationRequestResult =
-		if (js.generateNewKeyForDataOwner != null) {
-			val jsResult = js.generateNewKeyForDataOwner!!(
-				dataOwnerWithType_toJs(self),
-				xCryptoService
-			).await()
-			@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
-			when {
-				jsResult === true ->
-					CryptoStrategies.KeyGenerationRequestResult.Allow
-				jsResult === false ->
-					CryptoStrategies.KeyGenerationRequestResult.Deny
-				jsTypeOf(jsResult.public) === "object" && jsTypeOf(jsResult.private) === "object" -> {
-					val xKeypair = jsResult as XRsaKeypair
-					require(xKeypair.private.algorithm == RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256.identifier) {
-						"Newly generated key should be for OaepWithSha256"
-					}
-					CryptoStrategies.KeyGenerationRequestResult.Use(xKeypair.toKryptom(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256))
+	): CryptoStrategies.KeyGenerationRequestResult {
+		val jsResult = cryptoStrategiesJs.generateNewKeyForDataOwner(
+			dataOwnerWithType_toJs(self),
+			xCryptoService
+		).await()
+		@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+		return when {
+			jsResult === true ->
+				CryptoStrategies.KeyGenerationRequestResult.Allow
+			jsResult === false ->
+				CryptoStrategies.KeyGenerationRequestResult.Deny
+			jsTypeOf(jsResult.public) === "object" && jsTypeOf(jsResult.private) === "object" -> {
+				val xKeypair = jsResult as XRsaKeypair
+				require(xKeypair.private.algorithm == RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256.identifier) {
+					"Newly generated key should be for OaepWithSha256"
 				}
-				else ->
-					throw IllegalArgumentException("Unexpected value received from generateNewKeyForDataOwner: neither a boolean nor a key. $jsResult")
+				CryptoStrategies.KeyGenerationRequestResult.Use(xKeypair.toKryptom(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256))
 			}
-		} else super.generateNewKeyForDataOwner(self, cryptoPrimitives)
+			else ->
+				throw IllegalArgumentException("Unexpected value received from generateNewKeyForDataOwner: neither a boolean nor a key. $jsResult")
+		}
+	}
 
 	override suspend fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithType,
 		publicKeys: List<SpkiHexString>,
 		cryptoPrimitives: CryptoService
 	): List<SpkiHexString> =
-		if (js.verifyDelegatePublicKeys != null) {
-			js.verifyDelegatePublicKeys!!(
-				cryptoActorStubWithType_toJs(delegate),
-				publicKeys.map { it.s }.toTypedArray(),
-				xCryptoService
-			).await().map { SpkiHexString(it) }
-		} else super.verifyDelegatePublicKeys(delegate, publicKeys, cryptoPrimitives)
+		cryptoStrategiesJs.verifyDelegatePublicKeys(
+			cryptoActorStubWithType_toJs(delegate),
+			publicKeys.map { it.s }.toTypedArray(),
+			xCryptoService
+		).await().map { SpkiHexString(it) }
 
 	override suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean =
-		if (js.dataOwnerRequiresAnonymousDelegation != null) {
-			js.dataOwnerRequiresAnonymousDelegation!!(cryptoActorStubWithType_toJs(dataOwner)).await()
-		} else super.dataOwnerRequiresAnonymousDelegation(dataOwner)
+		cryptoStrategiesJs.dataOwnerRequiresAnonymousDelegation(cryptoActorStubWithType_toJs(dataOwner)).await()
 
 	override suspend fun notifyNewKeyCreated(
 		apis: CardinalApis,
 		key: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>,
 		cryptoPrimitives: CryptoService
 	) {
-		if (js.notifyNewKeyCreated != null) {
-			js.notifyNewKeyCreated!!(
-				CardinalApisJsImpl(apis),
-				key.toExternal(),
-				xCryptoService
-			)
-		} else super.notifyNewKeyCreated(apis, key, cryptoPrimitives)
+		cryptoStrategiesJs.notifyNewKeyCreated(
+			CardinalApisJsImpl(apis),
+			key.toExternal(),
+			xCryptoService
+		)
 	}
 }
 
