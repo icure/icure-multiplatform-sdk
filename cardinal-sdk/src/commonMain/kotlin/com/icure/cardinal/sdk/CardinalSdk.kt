@@ -117,9 +117,9 @@ import com.icure.cardinal.sdk.api.raw.impl.RawTarificationApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawTimeTableApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
-import com.icure.cardinal.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTemplateParameters
+import com.icure.cardinal.sdk.auth.Captcha
 import com.icure.cardinal.sdk.auth.JwtBearer
 import com.icure.cardinal.sdk.auth.JwtCredentials
 import com.icure.cardinal.sdk.auth.JwtRefresh
@@ -319,8 +319,7 @@ interface CardinalSdk : CardinalApis {
 			processId: String,
 			userTelecomType: AuthenticationProcessTelecomType,
 			userTelecom: String,
-			captchaType: AuthenticationProcessCaptchaType,
-			captchaKey: String,
+			captcha: Captcha,
 			baseStorage: StorageFacade,
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
 			options: SdkOptions = SdkOptions()
@@ -330,8 +329,7 @@ interface CardinalSdk : CardinalApis {
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,
 				processId = processId,
-				captchaType = captchaType,
-				captchaKey = captchaKey,
+				captcha = captcha,
 				firstName = authenticationProcessTemplateParameters.firstName,
 				lastName = authenticationProcessTemplateParameters.lastName,
 				userTelecom = userTelecom,
