@@ -4,6 +4,7 @@ package com.icure.cardinal.sdk.js.api.`impl`
 import com.icure.cardinal.sdk.api.CryptoApi
 import com.icure.cardinal.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.cardinal.sdk.js.api.CryptoApiJs
+import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.cardinal.sdk.js.api.ShamirKeysManagerApiJs
 import com.icure.cardinal.sdk.js.crypto.entities.ShamirUpdateRequestJs
 import com.icure.cardinal.sdk.js.crypto.entities.shamirUpdateRequest_fromJs
@@ -93,28 +94,37 @@ internal class CryptoApiImplJs(
 
 	}
 
-	override fun currentDataOwnerKeys(filterTrustedKeys: Boolean):
-			Promise<Record<String, Record<String, ByteArray>>> = GlobalScope.promise {
-		val filterTrustedKeysConverted: Boolean = filterTrustedKeys
-		val result = cryptoApi.currentDataOwnerKeys(
-			filterTrustedKeysConverted,
-		)
-		mapToObject(
-			result,
-			{ x1: String ->
-				x1
-			},
-			{ x1: Map<KeypairFingerprintV1String, ByteArray> ->
-				mapToObject(
-					x1,
-					{ x2: KeypairFingerprintV1String ->
-						keypairFingerprintV1String_toJs(x2)
-					},
-					{ x2: ByteArray ->
-						x2
-					},
-				)
-			},
-		)
+	override fun currentDataOwnerKeys(options: dynamic):
+			Promise<Record<String, Record<String, ByteArray>>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val filterTrustedKeysConverted: Boolean = convertingOptionOrDefaultNonNull(
+				_options,
+				"filterTrustedKeys",
+				true
+			) { filterTrustedKeys: Boolean ->
+				filterTrustedKeys
+			}
+			val result = cryptoApi.currentDataOwnerKeys(
+				filterTrustedKeysConverted,
+			)
+			mapToObject(
+				result,
+				{ x1: String ->
+					x1
+				},
+				{ x1: Map<KeypairFingerprintV1String, ByteArray> ->
+					mapToObject(
+						x1,
+						{ x2: KeypairFingerprintV1String ->
+							keypairFingerprintV1String_toJs(x2)
+						},
+						{ x2: ByteArray ->
+							x2
+						},
+					)
+				},
+			)
+		}
 	}
 }

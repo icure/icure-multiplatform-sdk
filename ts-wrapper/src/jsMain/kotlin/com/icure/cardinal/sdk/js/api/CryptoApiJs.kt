@@ -4,7 +4,6 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.utils.Record
-import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.String
 import kotlin.Unit
@@ -18,6 +17,6 @@ public external interface CryptoApiJs {
 
 	public fun forceReload(): Promise<Unit>
 
-	public fun currentDataOwnerKeys(filterTrustedKeys: Boolean):
+	public fun currentDataOwnerKeys(options: dynamic):
 			Promise<Record<String, Record<String, ByteArray>>>
 }

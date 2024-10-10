@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.cardinal.sdk.utils.DefaultValue
 
 
 /**
@@ -25,6 +26,9 @@ interface CryptoApi {
 	 * Otherwise, also unverified keys may be returned.
 	 * @return the available keys
 	 */
-	suspend fun currentDataOwnerKeys(filterTrustedKeys: Boolean = true): Map<String, Map<KeypairFingerprintV1String, ByteArray>>
+	suspend fun currentDataOwnerKeys(
+		@DefaultValue("true")
+		filterTrustedKeys: Boolean = true
+	): Map<String, Map<KeypairFingerprintV1String, ByteArray>>
 }
 
