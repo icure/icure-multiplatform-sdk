@@ -42,15 +42,17 @@ class EntitySubscriptionEvent(Generic[E]):
     def type(self) -> 'EntitySubscriptionEvent.Type':
         return self.__type
 
+    @property
     def error_message(self) -> str:
-        if self.type == EntitySubscriptionEvent.Type.UnexpectedError:
+        if self.type != EntitySubscriptionEvent.Type.UnexpectedError:
             raise Exception("`error_message` is available only for EntitySubscriptionEvent of type UnexpectedError")
         return self.__error_message
 
+    @property
     def entity(self) -> E:
-        if self.type == EntitySubscriptionEvent.Type.EntityNotification:
+        if self.type != EntitySubscriptionEvent.Type.EntityNotification:
             raise Exception("`entity` is available only for EntitySubscriptionEvent of type EntityNotification")
-        return self.__error_message
+        return self.__entity
 
     @classmethod
     def deserialize_entity_subscription_event(
@@ -63,23 +65,23 @@ class EntitySubscriptionEvent(Generic[E]):
             deserialized_dict = json.loads(data)
         else:
             deserialized_dict = data
-        qualifier = deserialized_dict.get("type")
+        qualifier = deserialized_dict.get("kotlinType")
         if qualifier is None:
-            raise Exception("Missing qualifier: type")
-        if qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.Connected":
+            raise Exception("Missing qualifier: kotlinType")
+        if qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.Connected":
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.Connected)
-        elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.Reconnected":
+        elif qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.Reconnected":
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.Reconnected)
-        elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.UnexpectedError":
+        elif qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.UnexpectedError":
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.UnexpectedError, error_message=deserialized_dict['message'])
-        elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing":
+        elif qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ConnectionError.MissedPing":
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.ConnectionMissedPing)
-        elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer":
+        elif qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer":
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.ConnectionClosedByServer)
-        elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityNotification":
+        elif qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.EntityNotification":
             entity = deserialize_entity(deserialized_dict['entity'])
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.EntityNotification, entity=entity)
-        elif qualifier == "com.icure.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError":
+        elif qualifier == "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.EntityError.DeserializationError":
             return EntitySubscriptionEvent(type=EntitySubscriptionEvent.Type.EntityDeserializationError)
         else:
             raise Exception(f"{qualifier} is not a known subclass of EntitySubscriptionEvent")

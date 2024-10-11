@@ -10,3 +10,6 @@ python.iml
 python-wrapper/src/python/lib
 **/scratch
 !**/scratch/docker-compose-cloud.yaml
+cardinal-sdk/src/commonMain/kotlin/com/icure/cardinal/sdk/example
+python-wrapper/src/commonMain/resources/dist
+python-wrapper/src/commonMain/resources/src

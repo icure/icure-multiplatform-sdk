@@ -1,17 +1,21 @@
 // auto-generated file
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {SecretIdShareOptions} from './SecretIdShareOptions.mjs';
 import {ShareMetadataBehaviour} from './ShareMetadataBehaviour.mjs';
 
 
 export class TimeTableShareOptions {
 
-  requestedPermissions: RequestedPermission;
+	requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite;
 
-  shareEncryptionKey: ShareMetadataBehaviour;
+	shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-  constructor(partial: Partial<TimeTableShareOptions> & Pick<TimeTableShareOptions, "requestedPermissions" | "shareEncryptionKey">) {
-    this.requestedPermissions = partial.requestedPermissions;
-    this.shareEncryptionKey = partial.shareEncryptionKey;
-  }
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({ requireAtLeastOne: false });
+
+	constructor(partial: Partial<TimeTableShareOptions>) {
+		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;
+		if ('shareEncryptionKey' in partial && partial.shareEncryptionKey !== undefined) this.shareEncryptionKey = partial.shareEncryptionKey;
+		if ('shareSecretIds' in partial && partial.shareSecretIds !== undefined) this.shareSecretIds = partial.shareSecretIds;
+	}
 
 }

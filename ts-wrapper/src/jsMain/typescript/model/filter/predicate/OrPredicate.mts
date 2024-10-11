@@ -4,12 +4,12 @@ import {Predicate} from './Predicate.mjs';
 
 export class OrPredicate {
 
-  predicates: Array<Predicate> = [];
+	predicates: Array<Predicate> = [];
 
-  readonly $ktClass: 'com.icure.sdk.model.filter.predicate.OrPredicate' = 'com.icure.sdk.model.filter.predicate.OrPredicate';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.filter.predicate.OrPredicate' = 'com.icure.cardinal.sdk.model.filter.predicate.OrPredicate';
 
-  constructor(partial: Partial<OrPredicate>) {
-    if ('predicates' in partial && partial.predicates !== undefined) this.predicates = partial.predicates;
-  }
+	constructor(partial: Partial<OrPredicate>) {
+		if ('predicates' in partial && partial.predicates !== undefined) this.predicates = partial.predicates;
+	}
 
 }

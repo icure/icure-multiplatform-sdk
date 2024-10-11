@@ -6,16 +6,16 @@ import {Identifiable} from './Identifiable.mjs';
 
 export interface ICureDocument<T> extends Identifiable<T>, HasTags, HasCodes {
 
-  created: number | undefined;
+	created: number | undefined;
 
-  modified: number | undefined;
+	modified: number | undefined;
 
-  author: string | undefined;
+	author: string | undefined;
 
-  responsible: string | undefined;
+	responsible: string | undefined;
 
-  medicalLocationId: string | undefined;
+	medicalLocationId: string | undefined;
 
-  endOfLife: number | undefined;
+	endOfLife: number | undefined;
 
 }

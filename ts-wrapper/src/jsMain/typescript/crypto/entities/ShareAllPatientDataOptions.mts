@@ -1,84 +1,84 @@
 // auto-generated file
-import {Patient} from '../../model/Patient.mjs';
+import {EncryptedPatient} from '../../model/Patient.mjs';
 import {FailedRequestDetails} from './FailedRequestDetails.mjs';
 import {ShareAllPatientDataOptions as ShareAllPatientDataOptions_} from './ShareAllPatientDataOptions.mjs';
 
 
 export namespace ShareAllPatientDataOptions {
 
-  export enum Tag {
-    All = "All",
-    MedicalInformation = "MedicalInformation",
-    FinancialInformation = "FinancialInformation"
-  }
+	export enum Tag {
+		All = "All",
+		MedicalInformation = "MedicalInformation",
+		FinancialInformation = "FinancialInformation"
+	}
 
-  export enum ShareableEntity {
-    CalendarItem = "CalendarItem",
-    Contact = "Contact",
-    Classification = "Classification",
-    Document = "Document",
-    Form = "Form",
-    HealthElement = "HealthElement",
-    Invoice = "Invoice",
-    Patient = "Patient"
-  }
+	export enum ShareableEntity {
+		CalendarItem = "CalendarItem",
+		Contact = "Contact",
+		Classification = "Classification",
+		Document = "Document",
+		Form = "Form",
+		HealthElement = "HealthElement",
+		Invoice = "Invoice",
+		Patient = "Patient"
+	}
 
-  export class EntityResult {
+	export class EntityResult {
 
-    success: boolean | undefined = undefined;
+		success: boolean | undefined = undefined;
 
-    error: ShareAllPatientDataOptions_.SharePatientDataError | undefined = undefined;
+		error: ShareAllPatientDataOptions_.SharePatientDataError | undefined = undefined;
 
-    modified: number;
+		modified: number;
 
-    constructor(partial: Partial<EntityResult> & Pick<EntityResult, "modified">) {
-      if ('success' in partial) this.success = partial.success;
-      if ('error' in partial) this.error = partial.error;
-      this.modified = partial.modified;
-    }
+		constructor(partial: Partial<EntityResult> & Pick<EntityResult, "modified">) {
+			if ('success' in partial) this.success = partial.success;
+			if ('error' in partial) this.error = partial.error;
+			this.modified = partial.modified;
+		}
 
-  }
+	}
 
-  export class Result {
+	export class Result {
 
-    patient: Patient;
+		patient: EncryptedPatient;
 
-    statuses: { [ key in ShareAllPatientDataOptions_.ShareableEntity ]?: ShareAllPatientDataOptions_.EntityResult };
+		statuses: { [ key in ShareAllPatientDataOptions_.ShareableEntity ]?: ShareAllPatientDataOptions_.EntityResult };
 
-    constructor(partial: Partial<Result> & Pick<Result, "patient" | "statuses">) {
-      this.patient = partial.patient;
-      this.statuses = partial.statuses;
-    }
+		constructor(partial: Partial<Result> & Pick<Result, "patient" | "statuses">) {
+			this.patient = partial.patient;
+			this.statuses = partial.statuses;
+		}
 
-  }
+	}
 
-  export type SharePatientDataError = BulkShareFailure | FailedRequest;
+	export type SharePatientDataError = BulkShareFailure | FailedRequest;
 
-  export class BulkShareFailure {
+	export class BulkShareFailure {
 
-    errors: Array<FailedRequestDetails>;
+		errors: Array<FailedRequestDetails>;
 
-    message: string;
+		message: string;
 
-    readonly $ktClass: 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure' = 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure' = 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure';
 
-    constructor(partial: Partial<BulkShareFailure> & Pick<BulkShareFailure, "errors" | "message">) {
-      this.errors = partial.errors;
-      this.message = partial.message;
-    }
+		constructor(partial: Partial<BulkShareFailure> & Pick<BulkShareFailure, "errors" | "message">) {
+			this.errors = partial.errors;
+			this.message = partial.message;
+		}
 
-  }
+	}
 
-  export class FailedRequest {
+	export class FailedRequest {
 
-    description: string;
+		description: string;
 
-    readonly $ktClass: 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest' = 'com.icure.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest';
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest' = 'com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest';
 
-    constructor(partial: Partial<FailedRequest> & Pick<FailedRequest, "description">) {
-      this.description = partial.description;
-    }
+		constructor(partial: Partial<FailedRequest> & Pick<FailedRequest, "description">) {
+			this.description = partial.description;
+		}
 
-  }
+	}
 
 }

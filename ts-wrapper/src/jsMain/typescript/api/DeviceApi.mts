@@ -1,13 +1,16 @@
 // auto-generated file
+import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Device} from '../model/Device.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
-import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
-import {AbstractFilter} from '../model/filter/AbstractFilter.mjs';
-import {FilterChain} from '../model/filter/chain/FilterChain.mjs';
 
 
 export interface DeviceApi {
+
+	deleteDevice(entityId: string): Promise<DocIdentifier>;
+
+	deleteDevices(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getDevice(deviceId: string): Promise<Device>;
 
@@ -15,20 +18,35 @@ export interface DeviceApi {
 
 	createDevice(p: Device): Promise<Device>;
 
-	updateDevice(device: Device): Promise<Device>;
+	modifyDevice(device: Device): Promise<Device>;
 
 	createDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
 
-	updateDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
+	modifyDevices(devices: Array<Device>): Promise<Array<IdWithRev>>;
 
-	filterDevicesBy(filterChain: FilterChain<Device>,
-			options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Device>>;
+	filterDevicesBy(filter: BaseFilterOptions<Device>): Promise<PaginatedListIterator<Device>>;
 
-	matchDevicesBy(filter: AbstractFilter<Device>): Promise<Array<string>>;
+	filterDevicesBySorted(filter: BaseSortableFilterOptions<Device>): Promise<PaginatedListIterator<Device>>;
 
-	deleteDevice(deviceId: string): Promise<DocIdentifier>;
+	matchDevicesBy(filter: BaseFilterOptions<Device>): Promise<Array<string>>;
 
-	deleteDevices(deviceIds: Array<string>): Promise<Array<DocIdentifier>>;
+	matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>): Promise<Array<string>>;
+
+	deleteDeviceById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteDevicesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeDeviceById(id: string, rev: string): Promise<void>;
+
+	undeleteDeviceById(id: string, rev: string): Promise<Device>;
+
+	deleteDevice(device: Device): Promise<DocIdentifier>;
+
+	deleteDevices(devices: Array<Device>): Promise<Array<DocIdentifier>>;
+
+	purgeDevice(device: Device): Promise<void>;
+
+	undeleteDevice(device: Device): Promise<Device>;
 
 	getDevicesInGroup(groupId: string,
 			options?: { deviceIds?: Array<string> | undefined }): Promise<Array<Device>>;
@@ -37,6 +55,6 @@ export interface DeviceApi {
 
 	createDeviceInGroup(groupId: string, device: Device): Promise<Device>;
 
-	deleteDevicesInGroup(groupId: string, deviceIds: string): Promise<Array<DocIdentifier>>;
+	deleteDevicesInGroup(groupId: string, deviceIds: Array<IdWithRev>): Promise<Array<DocIdentifier>>;
 
 }

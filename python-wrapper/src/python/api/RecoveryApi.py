@@ -1,15 +1,16 @@
+# auto-generated file
 import asyncio
 import json
 from typing import Optional
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from icure.model import RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.model import RecoveryDataKey, deserialize_recovery_result, RecoveryResult, RecoveryDataUseFailureReason
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 
 class RecoveryApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def create_recovery_info_for_available_key_pairs_async(self, include_parents_keys: bool = False, lifetime_seconds: Optional[int] = None) -> RecoveryDataKey:
 		loop = asyncio.get_running_loop()
@@ -27,9 +28,9 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -40,14 +41,14 @@ class RecoveryApi:
 			"includeParentsKeys": include_parents_keys,
 			"lifetimeSeconds": lifetime_seconds,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.createRecoveryInfoForAvailableKeyPairsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -68,9 +69,9 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.recoverKeyPairsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -81,14 +82,14 @@ class RecoveryApi:
 			"recoveryKey": recovery_key,
 			"autoDelete": auto_delete,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverKeyPairsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.recoverKeyPairsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = deserialize_recovery_result(result_info.success)
 			return return_value
@@ -109,9 +110,9 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -122,14 +123,14 @@ class RecoveryApi:
 			"delegateId": delegate_id,
 			"lifetimeSeconds": lifetime_seconds,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.createExchangeDataRecoveryInfoBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -149,9 +150,9 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.recoverExchangeDataAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -161,19 +162,19 @@ class RecoveryApi:
 		payload = {
 			"recoveryKey": recovery_key,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.recoverExchangeDataBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.recoverExchangeDataBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = RecoveryDataUseFailureReason._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def delete_recovery_info_async(self, recovery_key: RecoveryDataKey) -> None:
+	async def purge_recovery_info_async(self, recovery_key: RecoveryDataKey) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -188,26 +189,26 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_recovery_info_blocking(self, recovery_key: RecoveryDataKey) -> None:
+	def purge_recovery_info_blocking(self, recovery_key: RecoveryDataKey) -> None:
 		payload = {
 			"recoveryKey": recovery_key,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteRecoveryInfoBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def delete_all_recovery_info_for_async(self, data_owner_id: str) -> int:
 		loop = asyncio.get_running_loop()
@@ -224,9 +225,9 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -236,14 +237,14 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteAllRecoveryInfoForBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -263,9 +264,9 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -275,14 +276,14 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteAllKeyPairRecoveryInfoForBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -302,9 +303,9 @@ class RecoveryApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -314,14 +315,14 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.deleteAllExchangeDataRecoveryInfoForBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value

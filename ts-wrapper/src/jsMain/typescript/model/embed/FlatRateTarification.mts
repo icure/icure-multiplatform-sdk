@@ -7,64 +7,64 @@ import {DecryptedValorisation, EncryptedValorisation, Valorisation} from './Valo
 
 export interface FlatRateTarification extends Encryptable {
 
-  code: string | undefined;
+	code: string | undefined;
 
-  flatRateType: FlatRateType | undefined;
+	flatRateType: FlatRateType | undefined;
 
-  label: { [ key: string ]: string } | undefined;
+	label: { [ key: string ]: string } | undefined;
 
-  valorisations: Array<Valorisation>;
+	valorisations: Array<Valorisation>;
 
-  readonly isEncrypted: boolean;
+	readonly isEncrypted: boolean;
 
 }
 
 export class DecryptedFlatRateTarification {
 
-  code: string | undefined = undefined;
+	code: string | undefined = undefined;
 
-  flatRateType: FlatRateType | undefined = undefined;
+	flatRateType: FlatRateType | undefined = undefined;
 
-  label: { [ key: string ]: string } | undefined = undefined;
+	label: { [ key: string ]: string } | undefined = undefined;
 
-  valorisations: Array<DecryptedValorisation> = [];
+	valorisations: Array<DecryptedValorisation> = [];
 
-  encryptedSelf: Base64String | undefined = undefined;
+	encryptedSelf: Base64String | undefined = undefined;
 
-  readonly isEncrypted: false = false;
+	readonly isEncrypted: false = false;
 
-  constructor(partial: Partial<DecryptedFlatRateTarification>) {
-    if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
-    if ('code' in partial) this.code = partial.code;
-    if ('flatRateType' in partial) this.flatRateType = partial.flatRateType;
-    if ('label' in partial) this.label = partial.label;
-    if ('valorisations' in partial && partial.valorisations !== undefined) this.valorisations = partial.valorisations;
-    if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
-  }
+	constructor(partial: Partial<DecryptedFlatRateTarification>) {
+		if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
+		if ('code' in partial) this.code = partial.code;
+		if ('flatRateType' in partial) this.flatRateType = partial.flatRateType;
+		if ('label' in partial) this.label = partial.label;
+		if ('valorisations' in partial && partial.valorisations !== undefined) this.valorisations = partial.valorisations;
+		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
+	}
 
 }
 
 export class EncryptedFlatRateTarification {
 
-  code: string | undefined = undefined;
+	code: string | undefined = undefined;
 
-  flatRateType: FlatRateType | undefined = undefined;
+	flatRateType: FlatRateType | undefined = undefined;
 
-  label: { [ key: string ]: string } | undefined = undefined;
+	label: { [ key: string ]: string } | undefined = undefined;
 
-  valorisations: Array<EncryptedValorisation> = [];
+	valorisations: Array<EncryptedValorisation> = [];
 
-  encryptedSelf: Base64String | undefined = undefined;
+	encryptedSelf: Base64String | undefined = undefined;
 
-  readonly isEncrypted: true = true;
+	readonly isEncrypted: true = true;
 
-  constructor(partial: Partial<EncryptedFlatRateTarification>) {
-    if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
-    if ('code' in partial) this.code = partial.code;
-    if ('flatRateType' in partial) this.flatRateType = partial.flatRateType;
-    if ('label' in partial) this.label = partial.label;
-    if ('valorisations' in partial && partial.valorisations !== undefined) this.valorisations = partial.valorisations;
-    if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
-  }
+	constructor(partial: Partial<EncryptedFlatRateTarification>) {
+		if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
+		if ('code' in partial) this.code = partial.code;
+		if ('flatRateType' in partial) this.flatRateType = partial.flatRateType;
+		if ('label' in partial) this.label = partial.label;
+		if ('valorisations' in partial && partial.valorisations !== undefined) this.valorisations = partial.valorisations;
+		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
+	}
 
 }

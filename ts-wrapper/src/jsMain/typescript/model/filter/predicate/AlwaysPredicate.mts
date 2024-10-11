@@ -2,9 +2,9 @@
 
 export class AlwaysPredicate {
 
-  readonly $ktClass: 'com.icure.sdk.model.filter.predicate.AlwaysPredicate' = 'com.icure.sdk.model.filter.predicate.AlwaysPredicate';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.filter.predicate.AlwaysPredicate' = 'com.icure.cardinal.sdk.model.filter.predicate.AlwaysPredicate';
 
-  constructor(partial: Partial<AlwaysPredicate>) {
-  }
+	constructor(partial: Partial<AlwaysPredicate>) {
+	}
 
 }

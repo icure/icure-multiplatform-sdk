@@ -5,19 +5,19 @@ import {HexString} from '../../model/specializations/HexString.mjs';
 
 export class DelegateShareOptions {
 
-  shareSecretIds: Array<string>;
+	shareSecretIds: Array<string>;
 
-  shareEncryptionKeys: Array<HexString>;
+	shareEncryptionKeys: Array<HexString>;
 
-  shareOwningEntityIds: Array<string>;
+	shareOwningEntityIds: Array<string>;
 
-  requestedPermissions: RequestedPermission;
+	requestedPermissions: RequestedPermission;
 
-  constructor(partial: Partial<DelegateShareOptions> & Pick<DelegateShareOptions, "shareSecretIds" | "shareEncryptionKeys" | "shareOwningEntityIds" | "requestedPermissions">) {
-    this.shareSecretIds = partial.shareSecretIds;
-    this.shareEncryptionKeys = partial.shareEncryptionKeys;
-    this.shareOwningEntityIds = partial.shareOwningEntityIds;
-    this.requestedPermissions = partial.requestedPermissions;
-  }
+	constructor(partial: Partial<DelegateShareOptions> & Pick<DelegateShareOptions, "shareSecretIds" | "shareEncryptionKeys" | "shareOwningEntityIds" | "requestedPermissions">) {
+		this.shareSecretIds = partial.shareSecretIds;
+		this.shareEncryptionKeys = partial.shareEncryptionKeys;
+		this.shareOwningEntityIds = partial.shareOwningEntityIds;
+		this.requestedPermissions = partial.requestedPermissions;
+	}
 
 }

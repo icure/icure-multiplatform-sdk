@@ -1,9 +1,10 @@
+# auto-generated file
 
-KeypairFingerprintV1String = str
+HexString = str
 
 SpkiHexString = str
 
-HexString = str
+KeypairFingerprintV1String = str
 
 AesExchangeKeyEncryptionKeypairIdentifier = str
 

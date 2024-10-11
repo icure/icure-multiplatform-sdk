@@ -2,10 +2,10 @@
 
 export class ServiceLink {
 
-  serviceId: string | undefined = undefined;
+	serviceId: string | undefined = undefined;
 
-  constructor(partial: Partial<ServiceLink>) {
-    if ('serviceId' in partial) this.serviceId = partial.serviceId;
-  }
+	constructor(partial: Partial<ServiceLink>) {
+		if ('serviceId' in partial) this.serviceId = partial.serviceId;
+	}
 
 }

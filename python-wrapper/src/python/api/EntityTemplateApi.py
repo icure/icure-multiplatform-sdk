@@ -1,15 +1,16 @@
+# auto-generated file
 import asyncio
 import json
-from icure.model import EntityTemplate, DocIdentifier
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import EntityTemplate, IdWithMandatoryRev, DocIdentifier
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Optional, List
 
 class EntityTemplateApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def get_entity_template_async(self, document_template_id: str) -> EntityTemplate:
 		loop = asyncio.get_running_loop()
@@ -26,9 +27,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.getEntityTemplateAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -38,14 +39,14 @@ class EntityTemplateApi:
 		payload = {
 			"documentTemplateId": document_template_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.getEntityTemplateBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EntityTemplate._deserialize(result_info.success)
 			return return_value
@@ -65,9 +66,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.createEntityTemplateAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -77,14 +78,14 @@ class EntityTemplateApi:
 		payload = {
 			"applicationSettings": application_settings.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.createEntityTemplateBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EntityTemplate._deserialize(result_info.success)
 			return return_value
@@ -104,9 +105,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.modifyEntityTemplateAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -116,14 +117,14 @@ class EntityTemplateApi:
 		payload = {
 			"documentTemplate": document_template.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.modifyEntityTemplateBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = EntityTemplate._deserialize(result_info.success)
 			return return_value
@@ -146,9 +147,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.listEntityTemplatesByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -161,14 +162,14 @@ class EntityTemplateApi:
 			"searchString": search_string,
 			"includeEntities": include_entities,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.listEntityTemplatesByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -190,9 +191,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listAllEntityTemplatesByAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.listAllEntityTemplatesByAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -204,14 +205,14 @@ class EntityTemplateApi:
 			"searchString": search_string,
 			"includeEntities": include_entities,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listAllEntityTemplatesByBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.listAllEntityTemplatesByBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -234,9 +235,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByKeywordAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.listEntityTemplatesByKeywordAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -249,14 +250,14 @@ class EntityTemplateApi:
 			"keyword": keyword,
 			"includeEntities": include_entities,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.listEntityTemplatesByKeywordBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.listEntityTemplatesByKeywordBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -278,9 +279,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.findAllEntityTemplatesByKeywordAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.findAllEntityTemplatesByKeywordAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -292,14 +293,14 @@ class EntityTemplateApi:
 			"keyword": keyword,
 			"includeEntities": include_entities,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.findAllEntityTemplatesByKeywordBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.findAllEntityTemplatesByKeywordBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -319,9 +320,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplatesAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.getEntityTemplatesAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -331,14 +332,14 @@ class EntityTemplateApi:
 		payload = {
 			"entityTemplateIds": [x0 for x0 in entity_template_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.getEntityTemplatesBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.getEntityTemplatesBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -358,9 +359,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplatesAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.modifyEntityTemplatesAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -370,14 +371,14 @@ class EntityTemplateApi:
 		payload = {
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.modifyEntityTemplatesBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.modifyEntityTemplatesBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -397,9 +398,9 @@ class EntityTemplateApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplatesAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.createEntityTemplatesAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -409,19 +410,19 @@ class EntityTemplateApi:
 		payload = {
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.createEntityTemplatesBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.createEntityTemplatesBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def delete_entity_template_async(self, entity_template_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_entity_templates_async(self, entity_template_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -432,30 +433,30 @@ class EntityTemplateApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entityTemplateIds": [x0 for x0 in entity_template_ids],
+			"entityTemplateIds": [x0.__serialize__() for x0 in entity_template_ids],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.deleteEntityTemplateAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.deleteEntityTemplatesAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_entity_template_blocking(self, entity_template_ids: List[str]) -> List[DocIdentifier]:
+	def delete_entity_templates_blocking(self, entity_template_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		payload = {
-			"entityTemplateIds": [x0 for x0 in entity_template_ids],
+			"entityTemplateIds": [x0.__serialize__() for x0 in entity_template_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.EntityTemplateApi.deleteEntityTemplateBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.EntityTemplateApi.deleteEntityTemplatesBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value

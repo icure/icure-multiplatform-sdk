@@ -1,15 +1,16 @@
+# auto-generated file
 import asyncio
 import json
-from icure.model import FrontEndMigration, DocIdentifier
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import FrontEndMigration, DocIdentifier
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import List
 
 class FrontEndMigrationApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def get_front_end_migration_async(self, front_end_migration_id: str) -> FrontEndMigration:
 		loop = asyncio.get_running_loop()
@@ -26,9 +27,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -38,14 +39,14 @@ class FrontEndMigrationApi:
 		payload = {
 			"frontEndMigrationId": front_end_migration_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = FrontEndMigration._deserialize(result_info.success)
 			return return_value
@@ -65,9 +66,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -77,14 +78,14 @@ class FrontEndMigrationApi:
 		payload = {
 			"frontEndMigration": front_end_migration.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.createFrontEndMigrationBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = FrontEndMigration._deserialize(result_info.success)
 			return return_value
@@ -101,21 +102,21 @@ class FrontEndMigrationApi:
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsAsync,
+			self.cardinal_sdk._native,
 			callback
 		)
 		return await future
 
 	def get_front_end_migrations_blocking(self) -> List[FrontEndMigration]:
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsBlocking(
+			self.cardinal_sdk._native,
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [FrontEndMigration._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -135,9 +136,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -147,14 +148,14 @@ class FrontEndMigrationApi:
 		payload = {
 			"frontEndMigrationId": front_end_migration_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.deleteFrontEndMigrationBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
@@ -174,9 +175,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -186,14 +187,14 @@ class FrontEndMigrationApi:
 		payload = {
 			"frontEndMigrationName": front_end_migration_name,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationByNameBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [FrontEndMigration._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -213,9 +214,9 @@ class FrontEndMigrationApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -225,14 +226,14 @@ class FrontEndMigrationApi:
 		payload = {
 			"frontEndMigration": front_end_migration.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.modifyFrontEndMigrationBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = FrontEndMigration._deserialize(result_info.success)
 			return return_value

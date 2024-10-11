@@ -10,36 +10,36 @@ import {SpkiHexString} from './specializations/SpkiHexString.mjs';
 
 export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTags {
 
-  id: string;
+	id: string;
 
-  rev: string;
+	rev: string;
 
-  hcPartyKeys: { [ key: string ]: Array<HexString> } = {};
+	hcPartyKeys: { [ key: string ]: Array<HexString> } = {};
 
-  aesExchangeKeys: { [ key: string ]: { [ key: string ]: { [ key: string ]: HexString } } } = {};
+	aesExchangeKeys: { [ key: string ]: { [ key: string ]: { [ key: string ]: HexString } } } = {};
 
-  transferKeys: { [ key: string ]: { [ key: string ]: HexString } } = {};
+	transferKeys: { [ key: string ]: { [ key: string ]: HexString } } = {};
 
-  privateKeyShamirPartitions: { [ key: string ]: HexString } = {};
+	privateKeyShamirPartitions: { [ key: string ]: HexString } = {};
 
-  publicKey: SpkiHexString | undefined = undefined;
+	publicKey: SpkiHexString | undefined = undefined;
 
-  publicKeysForOaepWithSha256: Array<SpkiHexString>;
+	publicKeysForOaepWithSha256: Array<SpkiHexString>;
 
-  tags: Array<CodeStub> = [];
+	tags: Array<CodeStub> = [];
 
-  readonly $ktClass: 'com.icure.sdk.model.CryptoActorStub' = 'com.icure.sdk.model.CryptoActorStub';
+	readonly $ktClass: 'com.icure.cardinal.sdk.model.CryptoActorStub' = 'com.icure.cardinal.sdk.model.CryptoActorStub';
 
-  constructor(partial: Partial<CryptoActorStub> & Pick<CryptoActorStub, "rev" | "publicKeysForOaepWithSha256">) {
-    this.id = partial.id ?? randomUuid();
-    this.rev = partial.rev;
-    if ('hcPartyKeys' in partial && partial.hcPartyKeys !== undefined) this.hcPartyKeys = partial.hcPartyKeys;
-    if ('aesExchangeKeys' in partial && partial.aesExchangeKeys !== undefined) this.aesExchangeKeys = partial.aesExchangeKeys;
-    if ('transferKeys' in partial && partial.transferKeys !== undefined) this.transferKeys = partial.transferKeys;
-    if ('privateKeyShamirPartitions' in partial && partial.privateKeyShamirPartitions !== undefined) this.privateKeyShamirPartitions = partial.privateKeyShamirPartitions;
-    if ('publicKey' in partial) this.publicKey = partial.publicKey;
-    this.publicKeysForOaepWithSha256 = partial.publicKeysForOaepWithSha256;
-    if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
-  }
+	constructor(partial: Partial<CryptoActorStub> & Pick<CryptoActorStub, "rev" | "publicKeysForOaepWithSha256">) {
+		this.id = partial.id ?? randomUuid();
+		this.rev = partial.rev;
+		if ('hcPartyKeys' in partial && partial.hcPartyKeys !== undefined) this.hcPartyKeys = partial.hcPartyKeys;
+		if ('aesExchangeKeys' in partial && partial.aesExchangeKeys !== undefined) this.aesExchangeKeys = partial.aesExchangeKeys;
+		if ('transferKeys' in partial && partial.transferKeys !== undefined) this.transferKeys = partial.transferKeys;
+		if ('privateKeyShamirPartitions' in partial && partial.privateKeyShamirPartitions !== undefined) this.privateKeyShamirPartitions = partial.privateKeyShamirPartitions;
+		if ('publicKey' in partial) this.publicKey = partial.publicKey;
+		this.publicKeysForOaepWithSha256 = partial.publicKeysForOaepWithSha256;
+		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
+	}
 
 }

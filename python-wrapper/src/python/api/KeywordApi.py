@@ -1,15 +1,16 @@
+# auto-generated file
 import asyncio
 import json
-from icure.model import Keyword, PaginatedList, DocIdentifier
-from icure.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from icure.model.CallResult import create_result_from_json
+from cardinal_sdk.model import Keyword, PaginatedList, DocIdentifier
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Optional, List
 
 class KeywordApi:
 
-	def __init__(self, icure_sdk):
-		self.icure_sdk = icure_sdk
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
 
 	async def get_keyword_async(self, front_end_migration_id: str) -> Keyword:
 		loop = asyncio.get_running_loop()
@@ -26,9 +27,9 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.getKeywordAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -38,14 +39,14 @@ class KeywordApi:
 		payload = {
 			"frontEndMigrationId": front_end_migration_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.getKeywordBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Keyword._deserialize(result_info.success)
 			return return_value
@@ -65,9 +66,9 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.createKeywordAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.createKeywordAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -77,14 +78,14 @@ class KeywordApi:
 		payload = {
 			"frontEndMigration": front_end_migration.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.createKeywordBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.createKeywordBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Keyword._deserialize(result_info.success)
 			return return_value
@@ -109,9 +110,9 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.getKeywordsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -122,14 +123,14 @@ class KeywordApi:
 			"startDocumentId": start_document_id,
 			"limit": limit,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.getKeywordsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = PaginatedList._deserialize(result_info.success)
 			return_value = PaginatedList(
@@ -153,9 +154,9 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.modifyKeywordAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.modifyKeywordAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -165,14 +166,14 @@ class KeywordApi:
 		payload = {
 			"keyword": keyword.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.modifyKeywordBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.modifyKeywordBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = Keyword._deserialize(result_info.success)
 			return return_value
@@ -192,9 +193,9 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsByUserAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.getKeywordsByUserAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -204,14 +205,14 @@ class KeywordApi:
 		payload = {
 			"userId": user_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.getKeywordsByUserBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.getKeywordsByUserBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [Keyword._deserialize(x1) for x1 in result_info.success]
 			return return_value
@@ -231,9 +232,9 @@ class KeywordApi:
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
-			self.icure_sdk._executor,
-			symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.deleteKeywordsAsync,
-			self.icure_sdk._native,
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.deleteKeywordsAsync,
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
@@ -243,14 +244,14 @@ class KeywordApi:
 		payload = {
 			"keywordIds": [x0 for x0 in keyword_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.sdk.py.api.KeywordApi.deleteKeywordsBlocking(
-			self.icure_sdk._native,
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.deleteKeywordsBlocking(
+			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
 		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise Exception(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value

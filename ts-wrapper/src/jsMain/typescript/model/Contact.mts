@@ -4,6 +4,7 @@ import {CodeStub} from './base/CodeStub.mjs';
 import {HasEncryptionMetadata} from './base/HasEncryptionMetadata.mjs';
 import {ICureDocument} from './base/ICureDocument.mjs';
 import {Identifier} from './base/Identifier.mjs';
+import {ParticipantType} from './base/ParticipantType.mjs';
 import {StoredDocument} from './base/StoredDocument.mjs';
 import {Address, DecryptedAddress, EncryptedAddress} from './embed/Address.mjs';
 import {Annotation} from './embed/Annotation.mjs';
@@ -17,240 +18,248 @@ import {Base64String} from './specializations/Base64String.mjs';
 
 export interface Contact extends StoredDocument, ICureDocument<string>, HasEncryptionMetadata, Encryptable {
 
-  identifier: Array<Identifier>;
+	identifier: Array<Identifier>;
 
-  groupId: string | undefined;
+	groupId: string | undefined;
 
-  openingDate: number | undefined;
+	openingDate: number | undefined;
 
-  closingDate: number | undefined;
+	closingDate: number | undefined;
 
-  descr: string | undefined;
+	descr: string | undefined;
 
-  location: string | undefined;
+	location: string | undefined;
 
-  externalId: string | undefined;
+	externalId: string | undefined;
 
-  encounterType: CodeStub | undefined;
+	encounterType: CodeStub | undefined;
 
-  encounterLocation: Address | undefined;
+	encounterLocation: Address | undefined;
 
-  subContacts: Array<SubContact>;
+	subContacts: Array<SubContact>;
 
-  services: Array<Service>;
+	services: Array<Service>;
 
-  healthcarePartyId: string | undefined;
+	participants: { [ key in ParticipantType ]?: string };
 
-  modifiedContactId: string | undefined;
+	healthcarePartyId: string | undefined;
 
-  notes: Array<Annotation>;
+	modifiedContactId: string | undefined;
 
-  readonly isEncrypted: boolean;
+	notes: Array<Annotation>;
+
+	readonly isEncrypted: boolean;
 
 }
 
 export class DecryptedContact {
 
-  id: string;
+	id: string;
 
-  rev: string | undefined = undefined;
+	rev: string | undefined = undefined;
 
-  created: number | undefined = undefined;
+	created: number | undefined = undefined;
 
-  modified: number | undefined = undefined;
+	modified: number | undefined = undefined;
 
-  author: string | undefined = undefined;
+	author: string | undefined = undefined;
 
-  responsible: string | undefined = undefined;
+	responsible: string | undefined = undefined;
 
-  medicalLocationId: string | undefined = undefined;
+	medicalLocationId: string | undefined = undefined;
 
-  tags: Array<CodeStub> = [];
+	tags: Array<CodeStub> = [];
 
-  codes: Array<CodeStub> = [];
+	codes: Array<CodeStub> = [];
 
-  identifier: Array<Identifier> = [];
+	identifier: Array<Identifier> = [];
 
-  endOfLife: number | undefined = undefined;
+	endOfLife: number | undefined = undefined;
 
-  deletionDate: number | undefined = undefined;
+	deletionDate: number | undefined = undefined;
 
-  groupId: string | undefined = undefined;
+	groupId: string | undefined = undefined;
 
-  openingDate: number | undefined = undefined;
+	openingDate: number | undefined = undefined;
 
-  closingDate: number | undefined = undefined;
+	closingDate: number | undefined = undefined;
 
-  descr: string | undefined = undefined;
+	descr: string | undefined = undefined;
 
-  location: string | undefined = undefined;
+	location: string | undefined = undefined;
 
-  externalId: string | undefined = undefined;
+	externalId: string | undefined = undefined;
 
-  encounterType: CodeStub | undefined = undefined;
+	encounterType: CodeStub | undefined = undefined;
 
-  encounterLocation: DecryptedAddress | undefined = undefined;
+	encounterLocation: DecryptedAddress | undefined = undefined;
 
-  subContacts: Array<DecryptedSubContact> = [];
+	subContacts: Array<DecryptedSubContact> = [];
 
-  services: Array<DecryptedService> = [];
+	services: Array<DecryptedService> = [];
 
-  healthcarePartyId: string | undefined = undefined;
+	participants: { [ key in ParticipantType ]?: string } = {};
 
-  modifiedContactId: string | undefined = undefined;
+	healthcarePartyId: string | undefined = undefined;
 
-  secretForeignKeys: Array<string> = [];
+	modifiedContactId: string | undefined = undefined;
 
-  cryptedForeignKeys: { [ key: string ]: Array<Delegation> } = {};
+	secretForeignKeys: Array<string> = [];
 
-  delegations: { [ key: string ]: Array<Delegation> } = {};
+	cryptedForeignKeys: { [ key: string ]: Array<Delegation> } = {};
 
-  encryptionKeys: { [ key: string ]: Array<Delegation> } = {};
+	delegations: { [ key: string ]: Array<Delegation> } = {};
 
-  encryptedSelf: Base64String | undefined = undefined;
+	encryptionKeys: { [ key: string ]: Array<Delegation> } = {};
 
-  securityMetadata: SecurityMetadata | undefined = undefined;
+	encryptedSelf: Base64String | undefined = undefined;
 
-  notes: Array<Annotation> = [];
+	securityMetadata: SecurityMetadata | undefined = undefined;
 
-  readonly isEncrypted: false = false;
+	notes: Array<Annotation> = [];
 
-  constructor(partial: Partial<DecryptedContact>) {
-    if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
-    this.id = partial.id ?? randomUuid();
-    if ('rev' in partial) this.rev = partial.rev;
-    if ('created' in partial) this.created = partial.created;
-    if ('modified' in partial) this.modified = partial.modified;
-    if ('author' in partial) this.author = partial.author;
-    if ('responsible' in partial) this.responsible = partial.responsible;
-    if ('medicalLocationId' in partial) this.medicalLocationId = partial.medicalLocationId;
-    if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
-    if ('codes' in partial && partial.codes !== undefined) this.codes = partial.codes;
-    if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
-    if ('endOfLife' in partial) this.endOfLife = partial.endOfLife;
-    if ('deletionDate' in partial) this.deletionDate = partial.deletionDate;
-    if ('groupId' in partial) this.groupId = partial.groupId;
-    if ('openingDate' in partial) this.openingDate = partial.openingDate;
-    if ('closingDate' in partial) this.closingDate = partial.closingDate;
-    if ('descr' in partial) this.descr = partial.descr;
-    if ('location' in partial) this.location = partial.location;
-    if ('externalId' in partial) this.externalId = partial.externalId;
-    if ('encounterType' in partial) this.encounterType = partial.encounterType;
-    if ('encounterLocation' in partial) this.encounterLocation = partial.encounterLocation;
-    if ('subContacts' in partial && partial.subContacts !== undefined) this.subContacts = partial.subContacts;
-    if ('services' in partial && partial.services !== undefined) this.services = partial.services;
-    if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
-    if ('modifiedContactId' in partial) this.modifiedContactId = partial.modifiedContactId;
-    if ('secretForeignKeys' in partial && partial.secretForeignKeys !== undefined) this.secretForeignKeys = partial.secretForeignKeys;
-    if ('cryptedForeignKeys' in partial && partial.cryptedForeignKeys !== undefined) this.cryptedForeignKeys = partial.cryptedForeignKeys;
-    if ('delegations' in partial && partial.delegations !== undefined) this.delegations = partial.delegations;
-    if ('encryptionKeys' in partial && partial.encryptionKeys !== undefined) this.encryptionKeys = partial.encryptionKeys;
-    if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
-    if ('securityMetadata' in partial) this.securityMetadata = partial.securityMetadata;
-    if ('notes' in partial && partial.notes !== undefined) this.notes = partial.notes;
-  }
+	readonly isEncrypted: false = false;
+
+	constructor(partial: Partial<DecryptedContact>) {
+		if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
+		this.id = partial.id ?? randomUuid();
+		if ('rev' in partial) this.rev = partial.rev;
+		if ('created' in partial) this.created = partial.created;
+		if ('modified' in partial) this.modified = partial.modified;
+		if ('author' in partial) this.author = partial.author;
+		if ('responsible' in partial) this.responsible = partial.responsible;
+		if ('medicalLocationId' in partial) this.medicalLocationId = partial.medicalLocationId;
+		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
+		if ('codes' in partial && partial.codes !== undefined) this.codes = partial.codes;
+		if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
+		if ('endOfLife' in partial) this.endOfLife = partial.endOfLife;
+		if ('deletionDate' in partial) this.deletionDate = partial.deletionDate;
+		if ('groupId' in partial) this.groupId = partial.groupId;
+		if ('openingDate' in partial) this.openingDate = partial.openingDate;
+		if ('closingDate' in partial) this.closingDate = partial.closingDate;
+		if ('descr' in partial) this.descr = partial.descr;
+		if ('location' in partial) this.location = partial.location;
+		if ('externalId' in partial) this.externalId = partial.externalId;
+		if ('encounterType' in partial) this.encounterType = partial.encounterType;
+		if ('encounterLocation' in partial) this.encounterLocation = partial.encounterLocation;
+		if ('subContacts' in partial && partial.subContacts !== undefined) this.subContacts = partial.subContacts;
+		if ('services' in partial && partial.services !== undefined) this.services = partial.services;
+		if ('participants' in partial && partial.participants !== undefined) this.participants = partial.participants;
+		if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
+		if ('modifiedContactId' in partial) this.modifiedContactId = partial.modifiedContactId;
+		if ('secretForeignKeys' in partial && partial.secretForeignKeys !== undefined) this.secretForeignKeys = partial.secretForeignKeys;
+		if ('cryptedForeignKeys' in partial && partial.cryptedForeignKeys !== undefined) this.cryptedForeignKeys = partial.cryptedForeignKeys;
+		if ('delegations' in partial && partial.delegations !== undefined) this.delegations = partial.delegations;
+		if ('encryptionKeys' in partial && partial.encryptionKeys !== undefined) this.encryptionKeys = partial.encryptionKeys;
+		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
+		if ('securityMetadata' in partial) this.securityMetadata = partial.securityMetadata;
+		if ('notes' in partial && partial.notes !== undefined) this.notes = partial.notes;
+	}
 
 }
 
 export class EncryptedContact {
 
-  id: string;
+	id: string;
 
-  rev: string | undefined = undefined;
+	rev: string | undefined = undefined;
 
-  created: number | undefined = undefined;
+	created: number | undefined = undefined;
 
-  modified: number | undefined = undefined;
+	modified: number | undefined = undefined;
 
-  author: string | undefined = undefined;
+	author: string | undefined = undefined;
 
-  responsible: string | undefined = undefined;
+	responsible: string | undefined = undefined;
 
-  medicalLocationId: string | undefined = undefined;
+	medicalLocationId: string | undefined = undefined;
 
-  tags: Array<CodeStub> = [];
+	tags: Array<CodeStub> = [];
 
-  codes: Array<CodeStub> = [];
+	codes: Array<CodeStub> = [];
 
-  identifier: Array<Identifier> = [];
+	identifier: Array<Identifier> = [];
 
-  endOfLife: number | undefined = undefined;
+	endOfLife: number | undefined = undefined;
 
-  deletionDate: number | undefined = undefined;
+	deletionDate: number | undefined = undefined;
 
-  groupId: string | undefined = undefined;
+	groupId: string | undefined = undefined;
 
-  openingDate: number | undefined = undefined;
+	openingDate: number | undefined = undefined;
 
-  closingDate: number | undefined = undefined;
+	closingDate: number | undefined = undefined;
 
-  descr: string | undefined = undefined;
+	descr: string | undefined = undefined;
 
-  location: string | undefined = undefined;
+	location: string | undefined = undefined;
 
-  externalId: string | undefined = undefined;
+	externalId: string | undefined = undefined;
 
-  encounterType: CodeStub | undefined = undefined;
+	encounterType: CodeStub | undefined = undefined;
 
-  encounterLocation: EncryptedAddress | undefined = undefined;
+	encounterLocation: EncryptedAddress | undefined = undefined;
 
-  subContacts: Array<EncryptedSubContact> = [];
+	subContacts: Array<EncryptedSubContact> = [];
 
-  services: Array<EncryptedService> = [];
+	services: Array<EncryptedService> = [];
 
-  healthcarePartyId: string | undefined = undefined;
+	participants: { [ key in ParticipantType ]?: string } = {};
 
-  modifiedContactId: string | undefined = undefined;
+	healthcarePartyId: string | undefined = undefined;
 
-  secretForeignKeys: Array<string> = [];
+	modifiedContactId: string | undefined = undefined;
 
-  cryptedForeignKeys: { [ key: string ]: Array<Delegation> } = {};
+	secretForeignKeys: Array<string> = [];
 
-  delegations: { [ key: string ]: Array<Delegation> } = {};
+	cryptedForeignKeys: { [ key: string ]: Array<Delegation> } = {};
 
-  encryptionKeys: { [ key: string ]: Array<Delegation> } = {};
+	delegations: { [ key: string ]: Array<Delegation> } = {};
 
-  encryptedSelf: Base64String | undefined = undefined;
+	encryptionKeys: { [ key: string ]: Array<Delegation> } = {};
 
-  securityMetadata: SecurityMetadata | undefined = undefined;
+	encryptedSelf: Base64String | undefined = undefined;
 
-  notes: Array<Annotation> = [];
+	securityMetadata: SecurityMetadata | undefined = undefined;
 
-  readonly isEncrypted: true = true;
+	notes: Array<Annotation> = [];
 
-  constructor(partial: Partial<EncryptedContact>) {
-    if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
-    this.id = partial.id ?? randomUuid();
-    if ('rev' in partial) this.rev = partial.rev;
-    if ('created' in partial) this.created = partial.created;
-    if ('modified' in partial) this.modified = partial.modified;
-    if ('author' in partial) this.author = partial.author;
-    if ('responsible' in partial) this.responsible = partial.responsible;
-    if ('medicalLocationId' in partial) this.medicalLocationId = partial.medicalLocationId;
-    if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
-    if ('codes' in partial && partial.codes !== undefined) this.codes = partial.codes;
-    if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
-    if ('endOfLife' in partial) this.endOfLife = partial.endOfLife;
-    if ('deletionDate' in partial) this.deletionDate = partial.deletionDate;
-    if ('groupId' in partial) this.groupId = partial.groupId;
-    if ('openingDate' in partial) this.openingDate = partial.openingDate;
-    if ('closingDate' in partial) this.closingDate = partial.closingDate;
-    if ('descr' in partial) this.descr = partial.descr;
-    if ('location' in partial) this.location = partial.location;
-    if ('externalId' in partial) this.externalId = partial.externalId;
-    if ('encounterType' in partial) this.encounterType = partial.encounterType;
-    if ('encounterLocation' in partial) this.encounterLocation = partial.encounterLocation;
-    if ('subContacts' in partial && partial.subContacts !== undefined) this.subContacts = partial.subContacts;
-    if ('services' in partial && partial.services !== undefined) this.services = partial.services;
-    if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
-    if ('modifiedContactId' in partial) this.modifiedContactId = partial.modifiedContactId;
-    if ('secretForeignKeys' in partial && partial.secretForeignKeys !== undefined) this.secretForeignKeys = partial.secretForeignKeys;
-    if ('cryptedForeignKeys' in partial && partial.cryptedForeignKeys !== undefined) this.cryptedForeignKeys = partial.cryptedForeignKeys;
-    if ('delegations' in partial && partial.delegations !== undefined) this.delegations = partial.delegations;
-    if ('encryptionKeys' in partial && partial.encryptionKeys !== undefined) this.encryptionKeys = partial.encryptionKeys;
-    if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
-    if ('securityMetadata' in partial) this.securityMetadata = partial.securityMetadata;
-    if ('notes' in partial && partial.notes !== undefined) this.notes = partial.notes;
-  }
+	readonly isEncrypted: true = true;
+
+	constructor(partial: Partial<EncryptedContact>) {
+		if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
+		this.id = partial.id ?? randomUuid();
+		if ('rev' in partial) this.rev = partial.rev;
+		if ('created' in partial) this.created = partial.created;
+		if ('modified' in partial) this.modified = partial.modified;
+		if ('author' in partial) this.author = partial.author;
+		if ('responsible' in partial) this.responsible = partial.responsible;
+		if ('medicalLocationId' in partial) this.medicalLocationId = partial.medicalLocationId;
+		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
+		if ('codes' in partial && partial.codes !== undefined) this.codes = partial.codes;
+		if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
+		if ('endOfLife' in partial) this.endOfLife = partial.endOfLife;
+		if ('deletionDate' in partial) this.deletionDate = partial.deletionDate;
+		if ('groupId' in partial) this.groupId = partial.groupId;
+		if ('openingDate' in partial) this.openingDate = partial.openingDate;
+		if ('closingDate' in partial) this.closingDate = partial.closingDate;
+		if ('descr' in partial) this.descr = partial.descr;
+		if ('location' in partial) this.location = partial.location;
+		if ('externalId' in partial) this.externalId = partial.externalId;
+		if ('encounterType' in partial) this.encounterType = partial.encounterType;
+		if ('encounterLocation' in partial) this.encounterLocation = partial.encounterLocation;
+		if ('subContacts' in partial && partial.subContacts !== undefined) this.subContacts = partial.subContacts;
+		if ('services' in partial && partial.services !== undefined) this.services = partial.services;
+		if ('participants' in partial && partial.participants !== undefined) this.participants = partial.participants;
+		if ('healthcarePartyId' in partial) this.healthcarePartyId = partial.healthcarePartyId;
+		if ('modifiedContactId' in partial) this.modifiedContactId = partial.modifiedContactId;
+		if ('secretForeignKeys' in partial && partial.secretForeignKeys !== undefined) this.secretForeignKeys = partial.secretForeignKeys;
+		if ('cryptedForeignKeys' in partial && partial.cryptedForeignKeys !== undefined) this.cryptedForeignKeys = partial.cryptedForeignKeys;
+		if ('delegations' in partial && partial.delegations !== undefined) this.delegations = partial.delegations;
+		if ('encryptionKeys' in partial && partial.encryptionKeys !== undefined) this.encryptionKeys = partial.encryptionKeys;
+		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
+		if ('securityMetadata' in partial) this.securityMetadata = partial.securityMetadata;
+		if ('notes' in partial && partial.notes !== undefined) this.notes = partial.notes;
+	}
 
 }

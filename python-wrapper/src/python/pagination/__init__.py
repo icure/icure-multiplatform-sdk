@@ -1,1 +1,1 @@
-from icure.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator

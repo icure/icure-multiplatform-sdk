@@ -2,25 +2,25 @@
 
 export class RegistrationInformation {
 
-  firstName: string;
+	firstName: string;
 
-  lastName: string;
+	lastName: string;
 
-  emailAddress: string;
+	emailAddress: string;
 
-  userOptions: string | undefined = undefined;
+	userOptions: string | undefined = undefined;
 
-  userRoles: Array<string> = [];
+	userRoles: Array<string> = [];
 
-  minimumKrakenVersion: string | undefined = undefined;
+	minimumKrakenVersion: string | undefined = undefined;
 
-  constructor(partial: Partial<RegistrationInformation> & Pick<RegistrationInformation, "firstName" | "lastName" | "emailAddress">) {
-    this.firstName = partial.firstName;
-    this.lastName = partial.lastName;
-    this.emailAddress = partial.emailAddress;
-    if ('userOptions' in partial) this.userOptions = partial.userOptions;
-    if ('userRoles' in partial && partial.userRoles !== undefined) this.userRoles = partial.userRoles;
-    if ('minimumKrakenVersion' in partial) this.minimumKrakenVersion = partial.minimumKrakenVersion;
-  }
+	constructor(partial: Partial<RegistrationInformation> & Pick<RegistrationInformation, "firstName" | "lastName" | "emailAddress">) {
+		this.firstName = partial.firstName;
+		this.lastName = partial.lastName;
+		this.emailAddress = partial.emailAddress;
+		if ('userOptions' in partial) this.userOptions = partial.userOptions;
+		if ('userRoles' in partial && partial.userRoles !== undefined) this.userRoles = partial.userRoles;
+		if ('minimumKrakenVersion' in partial) this.minimumKrakenVersion = partial.minimumKrakenVersion;
+	}
 
 }

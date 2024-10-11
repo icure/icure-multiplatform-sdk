@@ -1,5 +1,5 @@
 // auto-generated file
-import {ShamirKeysManagerApi} from './crypto/ShamirKeysManagerApi.mjs';
+import {ShamirKeysManagerApi} from './ShamirKeysManagerApi.mjs';
 
 
 export interface CryptoApi {

@@ -1,6 +1,6 @@
-rootProject.name = "icure-multiplatform-sdk"
+rootProject.name = "cardinal-multiplatform-sdk"
 
-include("icure-sdk")
+include("cardinal-sdk")
 include("ts-wrapper")
 include("python-wrapper")
 include("sdk-codegen")

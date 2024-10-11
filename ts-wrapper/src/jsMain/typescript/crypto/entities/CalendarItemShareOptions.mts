@@ -1,20 +1,24 @@
 // auto-generated file
 import {RequestedPermission} from '../../model/requests/RequestedPermission.mjs';
+import {SecretIdShareOptions} from './SecretIdShareOptions.mjs';
 import {ShareMetadataBehaviour} from './ShareMetadataBehaviour.mjs';
 
 
 export class CalendarItemShareOptions {
 
-  requestedPermissions: RequestedPermission;
+	requestedPermissions: RequestedPermission = RequestedPermission.MaxWrite;
 
-  shareEncryptionKey: ShareMetadataBehaviour;
+	shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-  sharePatientId: ShareMetadataBehaviour;
+	sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-  constructor(partial: Partial<CalendarItemShareOptions> & Pick<CalendarItemShareOptions, "requestedPermissions" | "shareEncryptionKey" | "sharePatientId">) {
-    this.requestedPermissions = partial.requestedPermissions;
-    this.shareEncryptionKey = partial.shareEncryptionKey;
-    this.sharePatientId = partial.sharePatientId;
-  }
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({ requireAtLeastOne: false });
+
+	constructor(partial: Partial<CalendarItemShareOptions>) {
+		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;
+		if ('shareEncryptionKey' in partial && partial.shareEncryptionKey !== undefined) this.shareEncryptionKey = partial.shareEncryptionKey;
+		if ('sharePatientId' in partial && partial.sharePatientId !== undefined) this.sharePatientId = partial.sharePatientId;
+		if ('shareSecretIds' in partial && partial.shareSecretIds !== undefined) this.shareSecretIds = partial.shareSecretIds;
+	}
 
 }

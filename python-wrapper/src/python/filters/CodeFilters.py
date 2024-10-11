@@ -1,117 +1,113 @@
+# auto-generated file
+import json
+from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
+from ctypes import cast, c_char_p
+from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
+from cardinal_sdk.model import Code
 from typing import List, Optional
 
-from icure.filters.AbstractFilterBuilder import AbstractFilterBuilder
-from icure.model import ComplementFilter, CodeAbstractFilter, AllCodesFilter, CodeByIdsFilter, \
-    CodeByRegionTypeLabelLanguageFilter, CodeIdsByTypeCodeVersionIntervalFilter
-
-
 class CodeFilters:
-    """
-    Factory and builder for creating code filters.
-    """
 
-    @classmethod
-    def complement_filter(cls, super_set: CodeAbstractFilter, sub_set: CodeAbstractFilter) -> CodeAbstractFilter:
-        """
-        :param super_set: a filter
-        :param sub_set: a filter
-        :return: A filter that provides all entities that are in super_set but not in subset. The result will preserve
-        the same ordering it had in the super_set.
-        """
-        return ComplementFilter(super_set=super_set, sub_set=sub_set)
+	@classmethod
+	def all(cls) -> BaseFilterOptions[Code]:
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.all(
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
 
-    @classmethod
-    def all_codes_filter(cls):
-        """
-        :return: A filter to get all codes.
-        """
-        return AllCodesFilter()
+	@classmethod
+	def by_ids(cls, ids: List[str]) -> BaseSortableFilterOptions[Code]:
+		payload = {
+			"ids": [x0 for x0 in ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byIds(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = BaseSortableFilterOptions(result_info.success)
+			return return_value
 
-    class Builder(AbstractFilterBuilder[CodeAbstractFilter, 'CodeFilters.Builder']):
-        """
-        Allows to build complex filters for codes.
-        """
+	@classmethod
+	def by_qualified_link(cls, link_type: str, linked_id: Optional[str] = None) -> BaseFilterOptions[Code]:
+		payload = {
+			"linkType": link_type,
+			"linkedId": linked_id,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byQualifiedLink(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
 
-        def __init__(self):
-            """
-            Initializes the filter builder.
-            """
+	@classmethod
+	def by_region_type_code_version(cls, region: str, type: Optional[str] = None, code: Optional[str] = None, version: Optional[str] = None) -> BaseFilterOptions[Code]:
+		payload = {
+			"region": region,
+			"type": type,
+			"code": code,
+			"version": version,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byRegionTypeCodeVersion(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
 
-        def by_ids(self, ids: List[str], sort: bool = False) -> 'CodeFilters.Builder':
-            """
-            The filter will return all the codes with one of the provided ids.
-            :param ids: a list of ids.
-            :param sort: if True the data obtained through this filter will be returned in the same order as the input ids.
-            :raises ValueError: if sort is True and another filter was previously set as the sort key.
-            :return: self
-            """
-            return self._add_filter(
-                CodeByIdsFilter(ids),
-                sort
-            )
+	@classmethod
+	def by_language_type_label_region(cls, language: str, type: str, label: Optional[str] = None, region: Optional[str] = None) -> BaseFilterOptions[Code]:
+		payload = {
+			"language": language,
+			"type": type,
+			"label": label,
+			"region": region,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byLanguageTypeLabelRegion(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
 
-        def by_language_type_label_region(self, language: str, type: str, label: Optional[str], region: Optional[str], sort: bool = True) -> 'CodeFilters.Builder':
-            """
-            The filter will return all the codes of a type that matches a certain label in a specific language.
-            :param language: the language in ISO standard of the label. Only the codes that have this language as key
-                in the `labels` dict will be included in the result.
-            :param type: the type of the code. Only the codes with this `type` will be included in the result.
-            :param label: a search string. If not None, then only the codes that in the `labels` dict, for the specified
-                language, have a value that starts with the specified search string will be included in the result. If
-                None, the resulting codes will not be filtered based on the labels.
-            :param region: If not None, only the codes that have this region in the `regions` list will be included in
-                the result. If None, the resulting codes will not be filtered based on the region.
-            :param sort: if True the data obtained through this filter will be returned in the same order as the input ids.
-            :return: self
-            """
-            return self._add_filter(
-                CodeByRegionTypeLabelLanguageFilter(
-                    type=type,
-                    language=language,
-                    desc=None,
-                    label=label,
-                    region=region
-                ),
-                sort
-            )
-
-        def by_type_code_version_interval(self, start_type: Optional[str], start_code: Optional[str], start_version: Optional[str], end_type: Optional[str], end_code: Optional[str], end_version: Optional[str]) -> 'CodeFilters.Builder':
-            """
-            The filter will return all the codes between (start_type, start_code, start_version) and (end_type,
-            end_code, end_version), inclusive, ordered lexicographically by `type`, `code`, `version`. If no element of
-            the starting triplet is specified, then all the filters since the beginning will be returned. If no element
-            of the ending triplet is specified, then all the filters until the end will be returned.
-            In each triplet, if `code` is not None, then `type` must be not None and if `version` is not None then
-            `code` must be not None.
-            Example: `by_type_code_version("TYPE_A", "CODE_C", "1", "TYPE_C", "CODE_A", "2")` will return all the codes
-            between ("TYPE_A", "CODE_C", "1") and ("TYPE_C", "CODE_A", "2").
-            ("TYPE_B", "CODE_C", "3") WILL be returned, because "TYPE_A" > "TYPE_B" > "TYPE_C".
-            ("TYPE_A", "CODE_A", "2") WILL NOT be returned because "TYPE_A" == "TYPE_A" byt "CODE_A" < "CODE_C"
-            :param start_type: the start `type`. (optional, but required if start_code is not None).
-            :param start_code: the start `code` (optional, but required if start_version is not None).
-            :param start_version: the start `version` (optional)
-            :param end_type: the end `type`. (optional, but required if end_code is not None).
-            :param end_code: the end `code` (optional, but required if end_version is not None).
-            :param end_version: the end `version`. (optional)
-            :raises ValueError: if code is not None and type is None or if version is not None and code is None.
-            :return: self
-            """
-            if start_code is not None and start_type is None:
-                raise ValueError("Cannot specify a start_code without a start_type")
-            if start_version is not None and start_code is None:
-                raise ValueError("Cannot specify a start_version without a start_code")
-            if end_code is not None and end_type is None:
-                raise ValueError("Cannot specify a end_code without a end_type")
-            if end_version is not None and end_code is None:
-                raise ValueError("Cannot specify a end_version without a end_code")
-            return self._add_filter(
-                CodeIdsByTypeCodeVersionIntervalFilter(
-                    start_type=start_type,
-                    start_code=start_code,
-                    start_version=start_version,
-                    end_type=end_type,
-                    end_code=end_code,
-                    end_version=end_version
-                ),
-                False
-            )
+	@classmethod
+	def by_language_types_label_region_version(cls, language: str, types: List[str], label: str, region: Optional[str] = None, version: Optional[str] = None) -> BaseFilterOptions[Code]:
+		payload = {
+			"language": language,
+			"types": [x0 for x0 in types],
+			"label": label,
+			"region": region,
+			"version": version,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CodeFilters.byLanguageTypesLabelRegionVersion(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
