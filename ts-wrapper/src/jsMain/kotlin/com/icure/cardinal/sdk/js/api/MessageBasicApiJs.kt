@@ -6,6 +6,7 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedMessageJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
@@ -15,6 +16,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -32,11 +34,30 @@ public external interface MessageBasicApiJs {
 	public fun filterMessagesBySorted(filter: BaseSortableFilterOptionsJs<MessageJs>):
 			Promise<PaginatedListIteratorJs<EncryptedMessageJs>>
 
+	@JsName("deleteMessageUnsafe")
 	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteMessagesUnsafe")
 	public fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
+	public fun deleteMessageById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteMessagesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeMessageById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteMessage(message: MessageJs): Promise<DocIdentifierJs>
+
+	public fun deleteMessages(messages: Array<MessageJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeMessage(message: MessageJs): Promise<Unit>
+
+	public fun undeleteMessage(message: MessageJs): Promise<MessageJs>
+
 	public fun modifyMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs>
+
+	public fun undeleteMessageById(id: String, rev: String): Promise<EncryptedMessageJs>
 
 	public fun getMessage(entityId: String): Promise<EncryptedMessageJs>
 

@@ -58,6 +58,14 @@ import kotlinx.coroutines.promise
 internal class UserApiImplJs(
 	private val userApi: UserApi,
 ) : UserApiJs {
+	override fun deleteUser(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val result = userApi.deleteUser(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
 	override fun getCurrentUser(): Promise<UserJs> = GlobalScope.promise {
 		val result = userApi.getCurrentUser(
 		)
@@ -185,14 +193,6 @@ internal class UserApiImplJs(
 				x1
 			},
 		)
-	}
-
-	override fun deleteUser(userId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		val userIdConverted: String = userId
-		val result = userApi.deleteUser(
-			userIdConverted,
-		)
-		docIdentifier_toJs(result)
 	}
 
 	override fun modifyUser(user: UserJs): Promise<UserJs> = GlobalScope.promise {
@@ -414,29 +414,18 @@ internal class UserApiImplJs(
 		user_toJs(result)
 	}
 
-	override fun deleteUserInGroup(groupId: String, userId: String): Promise<DocIdentifierJs> =
-			GlobalScope.promise {
-		val groupIdConverted: String = groupId
-		val userIdConverted: String = userId
-		val result = userApi.deleteUserInGroup(
-			groupIdConverted,
-			userIdConverted,
-		)
-		docIdentifier_toJs(result)
-	}
-
-	override fun addRolesToUser(userId: String, rolesId: ListOfIdsJs): Promise<UserJs> =
+	override fun setUserRoles(userId: String, rolesId: ListOfIdsJs): Promise<UserJs> =
 			GlobalScope.promise {
 		val userIdConverted: String = userId
 		val rolesIdConverted: ListOfIds = listOfIds_fromJs(rolesId)
-		val result = userApi.addRolesToUser(
+		val result = userApi.setUserRoles(
 			userIdConverted,
 			rolesIdConverted,
 		)
 		user_toJs(result)
 	}
 
-	override fun addRolesToUserInGroup(
+	override fun setUserRolesInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIdsJs,
@@ -444,7 +433,7 @@ internal class UserApiImplJs(
 		val userIdConverted: String = userId
 		val groupIdConverted: String = groupId
 		val rolesIdConverted: ListOfIds = listOfIds_fromJs(rolesId)
-		val result = userApi.addRolesToUserInGroup(
+		val result = userApi.setUserRolesInGroup(
 			userIdConverted,
 			groupIdConverted,
 			rolesIdConverted,
@@ -452,19 +441,19 @@ internal class UserApiImplJs(
 		user_toJs(result)
 	}
 
-	override fun removeRolesFromUser(userId: String): Promise<UserJs> = GlobalScope.promise {
+	override fun resetUserRoles(userId: String): Promise<UserJs> = GlobalScope.promise {
 		val userIdConverted: String = userId
-		val result = userApi.removeRolesFromUser(
+		val result = userApi.resetUserRoles(
 			userIdConverted,
 		)
 		user_toJs(result)
 	}
 
-	override fun removeRolesFromUserInGroup(userId: String, groupId: String): Promise<UserJs> =
+	override fun resetUserRolesInGroup(userId: String, groupId: String): Promise<UserJs> =
 			GlobalScope.promise {
 		val userIdConverted: String = userId
 		val groupIdConverted: String = groupId
-		val result = userApi.removeRolesFromUserInGroup(
+		val result = userApi.resetUserRolesInGroup(
 			userIdConverted,
 			groupIdConverted,
 		)
@@ -670,6 +659,88 @@ internal class UserApiImplJs(
 		val userConverted: User = user_fromJs(user)
 		val result = userApi.createAdminUserInGroup(
 			groupIdConverted,
+			userConverted,
+		)
+		user_toJs(result)
+	}
+
+	override fun deleteUserById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = userApi.deleteUserById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteUserInGroupById(
+		groupId: String,
+		entityId: String,
+		rev: String,
+	): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = userApi.deleteUserInGroupById(
+			groupIdConverted,
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun purgeUserById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		userApi.purgeUserById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun undeleteUserById(id: String, rev: String): Promise<UserJs> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = userApi.undeleteUserById(
+			idConverted,
+			revConverted,
+		)
+		user_toJs(result)
+	}
+
+	override fun deleteUser(user: UserJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val userConverted: User = user_fromJs(user)
+		val result = userApi.deleteUser(
+			userConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteUserInGroup(groupId: String, user: UserJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val userConverted: User = user_fromJs(user)
+		val result = userApi.deleteUserInGroup(
+			groupIdConverted,
+			userConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun purgeUser(user: UserJs): Promise<Unit> = GlobalScope.promise {
+		val userConverted: User = user_fromJs(user)
+		userApi.purgeUser(
+			userConverted,
+		)
+
+	}
+
+	override fun undeleteUser(user: UserJs): Promise<UserJs> = GlobalScope.promise {
+		val userConverted: User = user_fromJs(user)
+		val result = userApi.undeleteUser(
 			userConverted,
 		)
 		user_toJs(result)

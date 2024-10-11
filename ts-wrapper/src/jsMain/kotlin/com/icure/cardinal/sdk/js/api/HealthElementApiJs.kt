@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.js.model.DecryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.EncryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.HealthElementJs
 import com.icure.cardinal.sdk.js.model.IcureStubJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -58,9 +59,25 @@ public external interface HealthElementApiJs {
 	public fun matchHealthElementsBySorted(filter: SortableFilterOptionsJs<HealthElementJs>):
 			Promise<Array<String>>
 
+	@JsName("deleteHealthElementUnsafe")
 	public fun deleteHealthElement(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteHealthElementsUnsafe")
 	public fun deleteHealthElements(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteHealthElementById(entityId: String, rev: String?): Promise<DocIdentifierJs>
+
+	public fun deleteHealthElementsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeHealthElementById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteHealthElement(healthElement: HealthElementJs): Promise<DocIdentifierJs>
+
+	public fun deleteHealthElements(healthElements: Array<HealthElementJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeHealthElement(healthElement: HealthElementJs): Promise<Unit>
 
 	public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>>
@@ -85,6 +102,10 @@ public external interface HealthElementApiJs {
 
 	public fun filterHealthElementsBySorted(filter: SortableFilterOptionsJs<HealthElementJs>):
 			Promise<PaginatedListIteratorJs<DecryptedHealthElementJs>>
+
+	public fun undeleteHealthElementById(id: String, rev: String): Promise<DecryptedHealthElementJs>
+
+	public fun undeleteHealthElement(healthElement: HealthElementJs): Promise<DecryptedHealthElementJs>
 
 	public fun modifyHealthElement(entity: DecryptedHealthElementJs): Promise<DecryptedHealthElementJs>
 

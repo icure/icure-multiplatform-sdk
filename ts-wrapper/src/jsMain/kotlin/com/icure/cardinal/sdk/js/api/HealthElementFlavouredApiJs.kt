@@ -39,6 +39,10 @@ public external interface HealthElementFlavouredApiJs<E : HealthElementJs> {
 	public fun filterHealthElementsBySorted(filter: SortableFilterOptionsJs<HealthElementJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun undeleteHealthElementById(id: String, rev: String): Promise<E>
+
+	public fun undeleteHealthElement(healthElement: HealthElementJs): Promise<E>
+
 	public fun modifyHealthElement(entity: E): Promise<E>
 
 	public fun modifyHealthElements(entities: Array<E>): Promise<Array<E>>

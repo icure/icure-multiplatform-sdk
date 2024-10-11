@@ -1,13 +1,13 @@
 package com.icure.cardinal.sdk.api
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.utils.DefaultValue
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 
 interface RecoveryApi {
 	/**
@@ -103,7 +103,7 @@ interface RecoveryApi {
 	 * If there is no data associated to the provided recovery key, this method will do nothing.
 	 * @param recoveryKey the recovery key associated to the recovery information to delete.
 	 */
-	suspend fun deleteRecoveryInfo(recoveryKey: RecoveryDataKey)
+	suspend fun purgeRecoveryInfo(recoveryKey: RecoveryDataKey)
 
 	/**
 	 * Deletes the recovery information associated to a certain data owner, regardless of type.

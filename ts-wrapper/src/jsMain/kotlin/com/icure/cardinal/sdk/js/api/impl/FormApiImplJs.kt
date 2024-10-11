@@ -29,6 +29,7 @@ import com.icure.cardinal.sdk.js.model.DecryptedFormJs
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
@@ -37,6 +38,7 @@ import com.icure.cardinal.sdk.js.model.formTemplate_fromJs
 import com.icure.cardinal.sdk.js.model.formTemplate_toJs
 import com.icure.cardinal.sdk.js.model.form_fromJs
 import com.icure.cardinal.sdk.js.model.form_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
@@ -47,6 +49,7 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -199,6 +202,25 @@ internal class FormApiImplJs(
 			val entityConverted: EncryptedForm = form_fromJs(entity)
 			val result = formApi.encrypted.modifyForm(
 				entityConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun undeleteFormById(id: String, rev: String): Promise<EncryptedFormJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = formApi.encrypted.undeleteFormById(
+				idConverted,
+				revConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun undeleteForm(form: FormJs): Promise<EncryptedFormJs> = GlobalScope.promise {
+			val formConverted: Form = form_fromJs(form)
+			val result = formApi.encrypted.undeleteForm(
+				formConverted,
 			)
 			form_toJs(result)
 		}
@@ -486,6 +508,24 @@ internal class FormApiImplJs(
 			val entityConverted: Form = form_fromJs(entity)
 			val result = formApi.tryAndRecover.modifyForm(
 				entityConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun undeleteFormById(id: String, rev: String): Promise<FormJs> = GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = formApi.tryAndRecover.undeleteFormById(
+				idConverted,
+				revConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun undeleteForm(form: FormJs): Promise<FormJs> = GlobalScope.promise {
+			val formConverted: Form = form_fromJs(form)
+			val result = formApi.tryAndRecover.undeleteForm(
+				formConverted,
 			)
 			form_toJs(result)
 		}
@@ -848,6 +888,83 @@ internal class FormApiImplJs(
 		)
 	}
 
+	override fun deleteFormById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = formApi.deleteFormById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteFormsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = formApi.deleteFormsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeFormById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		formApi.purgeFormById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteForm(form: FormJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val formConverted: Form = form_fromJs(form)
+		val result = formApi.deleteForm(
+			formConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteForms(forms: Array<FormJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val formsConverted: List<Form> = arrayToList(
+			forms,
+			"forms",
+			{ x1: FormJs ->
+				form_fromJs(x1)
+			},
+		)
+		val result = formApi.deleteForms(
+			formsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeForm(form: FormJs): Promise<Unit> = GlobalScope.promise {
+		val formConverted: Form = form_fromJs(form)
+		formApi.purgeForm(
+			formConverted,
+		)
+
+	}
+
 	override fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
@@ -1106,6 +1223,25 @@ internal class FormApiImplJs(
 		val entityConverted: DecryptedForm = form_fromJs(entity)
 		val result = formApi.modifyForm(
 			entityConverted,
+		)
+		form_toJs(result)
+	}
+
+	override fun undeleteFormById(id: String, rev: String): Promise<DecryptedFormJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = formApi.undeleteFormById(
+			idConverted,
+			revConverted,
+		)
+		form_toJs(result)
+	}
+
+	override fun undeleteForm(form: FormJs): Promise<DecryptedFormJs> = GlobalScope.promise {
+		val formConverted: Form = form_fromJs(form)
+		val result = formApi.undeleteForm(
+			formConverted,
 		)
 		form_toJs(result)
 	}

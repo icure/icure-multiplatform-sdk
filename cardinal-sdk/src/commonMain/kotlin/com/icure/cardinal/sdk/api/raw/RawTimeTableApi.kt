@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.EncryptedTimeTable
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -22,7 +23,22 @@ public interface RawTimeTableApi {
 
 	suspend fun deleteTimeTables(timeTableIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteTimeTable(timeTableId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteTimeTablesWithRev(timeTableIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteTimeTable(
+		timeTableId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteTimeTable(
+		timeTableId: String,
+		rev: String,
+	): HttpResponse<EncryptedTimeTable>
+
+	suspend fun purgeTimeTable(
+		timeTableId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable>
 

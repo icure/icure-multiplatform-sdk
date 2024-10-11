@@ -19,6 +19,10 @@ export interface DocumentFlavouredApi<E extends Document> {
 
 	filterDocumentsBySorted(filter: SortableFilterOptions<Document>): Promise<PaginatedListIterator<E>>;
 
+	undeleteDocumentById(id: string, rev: string): Promise<E>;
+
+	undeleteDocument(document: Document): Promise<E>;
+
 	modifyDocument(entity: E): Promise<E>;
 
 	getDocument(entityId: string): Promise<E>;

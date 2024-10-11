@@ -1,5 +1,6 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {EncryptedTimeTable, TimeTable} from '../model/TimeTable.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
@@ -18,7 +19,23 @@ export interface TimeTableBasicApi {
 
 	deleteTimeTables(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteTimeTableById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteTimeTablesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeTimeTableById(id: string, rev: string): Promise<void>;
+
+	deleteTimeTable(timeTable: TimeTable): Promise<DocIdentifier>;
+
+	deleteTimeTables(timeTables: Array<TimeTable>): Promise<Array<DocIdentifier>>;
+
+	purgeTimeTable(timeTable: TimeTable): Promise<void>;
+
+	undeleteTimeTable(timeTable: TimeTable): Promise<TimeTable>;
+
 	modifyTimeTable(entity: EncryptedTimeTable): Promise<EncryptedTimeTable>;
+
+	undeleteTimeTableById(id: string, rev: string): Promise<EncryptedTimeTable>;
 
 	getTimeTable(entityId: string): Promise<EncryptedTimeTable>;
 

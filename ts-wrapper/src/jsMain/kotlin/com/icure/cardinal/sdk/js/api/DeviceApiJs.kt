@@ -6,17 +6,25 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DeviceJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
 
 @JsName("DeviceApi")
 public external interface DeviceApiJs {
+	@JsName("deleteDeviceUnsafe")
+	public fun deleteDevice(entityId: String): Promise<DocIdentifierJs>
+
+	@JsName("deleteDevicesUnsafe")
+	public fun deleteDevices(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
 	public fun getDevice(deviceId: String): Promise<DeviceJs>
 
 	public fun getDevices(deviceIds: Array<String>): Promise<Array<DeviceJs>>
@@ -40,9 +48,22 @@ public external interface DeviceApiJs {
 	public fun matchDevicesBySorted(filter: BaseSortableFilterOptionsJs<DeviceJs>):
 			Promise<Array<String>>
 
-	public fun deleteDevice(deviceId: String): Promise<DocIdentifierJs>
+	public fun deleteDeviceById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteDevices(deviceIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteDevicesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeDeviceById(id: String, rev: String): Promise<Unit>
+
+	public fun undeleteDeviceById(id: String, rev: String): Promise<DeviceJs>
+
+	public fun deleteDevice(device: DeviceJs): Promise<DocIdentifierJs>
+
+	public fun deleteDevices(devices: Array<DeviceJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeDevice(device: DeviceJs): Promise<Unit>
+
+	public fun undeleteDevice(device: DeviceJs): Promise<DeviceJs>
 
 	public fun getDevicesInGroup(groupId: String, options: dynamic): Promise<Array<DeviceJs>>
 
@@ -50,6 +71,6 @@ public external interface DeviceApiJs {
 
 	public fun createDeviceInGroup(groupId: String, device: DeviceJs): Promise<DeviceJs>
 
-	public fun deleteDevicesInGroup(groupId: String, deviceIds: String):
+	public fun deleteDevicesInGroup(groupId: String, deviceIds: Array<IdWithRevJs>):
 			Promise<Array<DocIdentifierJs>>
 }

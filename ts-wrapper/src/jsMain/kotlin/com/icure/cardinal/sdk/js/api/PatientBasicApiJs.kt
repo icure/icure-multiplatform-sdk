@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.js.crypto.entities.EntityAccessInformationJs
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -16,6 +17,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -33,17 +35,36 @@ public external interface PatientBasicApiJs {
 	public fun filterPatientsBySorted(filter: BaseSortableFilterOptionsJs<PatientJs>):
 			Promise<PaginatedListIteratorJs<EncryptedPatientJs>>
 
+	@JsName("deletePatientUnsafe")
 	public fun deletePatient(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deletePatientsUnsafe")
 	public fun deletePatients(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun undeletePatients(patientIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deletePatientById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deletePatientsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgePatientById(id: String, rev: String): Promise<Unit>
+
+	public fun deletePatient(patient: PatientJs): Promise<DocIdentifierJs>
+
+	public fun deletePatients(patients: Array<PatientJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgePatient(patient: PatientJs): Promise<Unit>
 
 	public fun getDataOwnersWithAccessTo(patient: PatientJs): Promise<EntityAccessInformationJs>
 
 	public fun countOfPatients(hcPartyId: String): Promise<Double>
 
+	public fun undeletePatient(patient: PatientJs): Promise<PatientJs>
+
 	public fun modifyPatient(entity: EncryptedPatientJs): Promise<EncryptedPatientJs>
+
+	public fun undeletePatientById(id: String, rev: String): Promise<EncryptedPatientJs>
+
+	public fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<EncryptedPatientJs>>
 
 	public fun getPatient(entityId: String): Promise<EncryptedPatientJs>
 

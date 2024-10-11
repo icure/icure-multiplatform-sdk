@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.ContactShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -10,6 +11,7 @@ import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
 import com.icure.cardinal.sdk.model.IcureStub
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -27,24 +29,71 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
+import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteContactUnsafe")
+	suspend fun deleteContact(entityId: String): DocIdentifier
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteContactsUnsafe")
+	suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier>
+	
 	/**
 	 * Deletes a contact. If you don't have write access to the contact the method will fail.
 	 * @param entityId id of the contact.
+	 * @param rev the latest known rev of the contact to delete
 	 * @return the id and revision of the deleted contact.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteContact(entityId: String): DocIdentifier
+	suspend fun deleteContactById(entityId: String, rev: String): DocIdentifier
 
 	/**
-	 * Deletes many contacts. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * Deletes many contacts. Ids that don't correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the contacts.
-	 * @return the id and revision of the deleted contacts. If some entities could not be deleted (for example
+	 * @param entityIds ids and revisions of the contacts to delete.
+	 * @return the id and revision of the deleted contacts. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteContacts(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteContactsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+
+	/**
+	 * Permanently deletes a contact.
+	 * @param id id of the contact to purge
+	 * @param rev latest revision of the contact
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeContactById(id: String, rev: String)
+
+	/**
+	 * Deletes a contact. If you don't have write access to the contact the method will fail.
+	 * @param contact the contact to delete
+	 * @return the id and revision of the deleted contact.
+	 * @throws RevisionConflictException if the provided contact doesn't match the latest known revision
+	 */
+	suspend fun deleteContact(contact: Contact): DocIdentifier =
+		deleteContactById(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
+
+	/**
+	 * Deletes many contacts. Ignores contact for which you don't have write access or that don't match the latest revision.
+	 * @param contacts the contacts to delete
+	 * @return the id and revision of the deleted contacts. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteContacts(contacts: List<Contact>): List<DocIdentifier> =
+		deleteContactsByIds(contacts.map { contact ->
+			IdWithMandatoryRev(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a contact.
+	 * @param contact the contact to purge.
+	 * @throws RevisionConflictException if the provided contact doesn't match the latest known revision
+	 */
+	suspend fun purgeContact(contact: Contact) {
+		purgeContactById(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
+	}
 
 	@Deprecated("Use filter instead")
 	suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
@@ -66,6 +115,24 @@ interface ContactBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface ContactBasicFlavouredApi<E : Contact, S : Service> {
+	/**
+	 * Restores a contact that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteContactById(id: String, rev: String): E
+
+	/**
+	 * Restores a contact that was marked as deleted.
+	 * @param contact the contact to undelete
+	 * @return the restored contact.
+	 * @throws RevisionConflictException if the provided contact doesn't match the latest known revision
+	 */
+	suspend fun undeleteContact(contact: Contact): E =
+		undeleteContactById(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
+
 	/**
 	 * Modifies a contact. You need to have write access to the entity.
 	 * Flavoured method.

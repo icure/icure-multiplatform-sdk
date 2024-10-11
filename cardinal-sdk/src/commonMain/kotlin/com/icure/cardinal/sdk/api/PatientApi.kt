@@ -4,12 +4,14 @@ import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -22,33 +24,71 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface PatientBasicFlavourlessApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deletePatientUnsafe")
+	suspend fun deletePatient(entityId: String): DocIdentifier
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deletePatientsUnsafe")
+	suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier>
 
 	/**
 	 * Deletes a patient. If you don't have write access to the patient the method will fail.
 	 * @param entityId id of the patient.
+	 * @param rev the latest known rev of the patient to delete
 	 * @return the id and revision of the deleted patient.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deletePatient(entityId: String): DocIdentifier
+	suspend fun deletePatientById(entityId: String, rev: String): DocIdentifier
 
 	/**
 	 * Deletes many patients. Ids that do not correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the patients.
+	 * @param entityIds ids and revisions of the patients to delete.
 	 * @return the id and revision of the deleted patients. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deletePatients(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deletePatientsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
 	/**
-	 * Restores patients that were marked as deleted (but not purged). This method won't restore any content if before
-	 * deletion you had destroyed the content.
-	 * @param patientIds the ids of patients to restore
-	 * @return the undeleted patient ids and revisions
+	 * Permanently deletes a patient.
+	 * @param id id of the patient to purge
+	 * @param rev latest revision of the patient
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun undeletePatients(patientIds: List<String>): List<DocIdentifier>
+	suspend fun purgePatientById(id: String, rev: String)
+
+	/**
+	 * Deletes a patient. If you don't have write access to the patient the method will fail.
+	 * @param patient the patient to delete
+	 * @return the id and revision of the deleted patient.
+	 * @throws RevisionConflictException if the provided patient doesn't match the latest known revision
+	 */
+	suspend fun deletePatient(patient: Patient): DocIdentifier =
+		deletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
+
+	/**
+	 * Deletes many patients. Ignores patient for which you don't have write access or that don't match the latest revision.
+	 * @param patients the patients to delete
+	 * @return the id and revision of the deleted patients. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deletePatients(patients: List<Patient>): List<DocIdentifier> =
+		deletePatientsByIds(patients.map { patient ->
+			IdWithMandatoryRev(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a patient.
+	 * @param patient the patient to purge.
+	 * @throws RevisionConflictException if the provided patient doesn't match the latest known revision
+	 */
+	suspend fun purgePatient(patient: Patient) {
+		purgePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
+	}
 
 	/**
 	 * Get all data owners with access to the provided patient, attempting to identify any unknown anonymous data owners
@@ -65,12 +105,39 @@ interface PatientBasicFlavourlessApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface PatientBasicFlavouredApi<E : Patient> {
 	/**
+	 * Restores a patient that was marked as deleted.
+	 * @param patient the patient to undelete
+	 * @return the restored patient.
+	 * @throws RevisionConflictException if the provided patient doesn't match the latest known revision
+	 */
+	suspend fun undeletePatient(patient: Patient): Patient =
+		undeletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
+	
+	/**
 	 * Modifies a patient. You need to have write access to the entity.
 	 * Flavoured method.
 	 * @param entity a patient with update content
 	 * @return the patient updated with the provided content and a new revision.
 	 */
 	suspend fun modifyPatient(entity: E): E
+
+	/**
+	 * Restores a patient that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeletePatientById(id: String, rev: String): E
+
+	/**
+	 * Restores one or more patients that were marked as deleted.
+	 * Ignores any entities that the current user is not allowed to restore or that have a revision different from the
+	 * provided revision.
+	 * @param ids the ids and revisions of the patients to restore
+	 * @return the restored entities.
+	 */
+	suspend fun undeletePatients(ids: List<IdWithMandatoryRev>): List<E>
 
 	/**
 	 * Get a patient by its id. You must have read access to the entity. Fails if the id does not correspond to any

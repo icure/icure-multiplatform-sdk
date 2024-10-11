@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.AccessLogJs
 import com.icure.cardinal.sdk.js.model.DecryptedAccessLogJs
 import com.icure.cardinal.sdk.js.model.EncryptedAccessLogJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
@@ -55,9 +56,24 @@ public external interface AccessLogApiJs {
 	public fun matchAccessLogsBySorted(filter: SortableFilterOptionsJs<AccessLogJs>):
 			Promise<Array<String>>
 
+	@JsName("deleteAccessLogUnsafe")
 	public fun deleteAccessLog(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteAccessLogsUnsafe")
 	public fun deleteAccessLogs(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeAccessLogById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteAccessLog(accessLog: AccessLogJs): Promise<DocIdentifierJs>
+
+	public fun deleteAccessLogs(accessLogs: Array<AccessLogJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeAccessLog(accessLog: AccessLogJs): Promise<Unit>
 
 	public fun shareWith(
 		delegateId: String,
@@ -79,6 +95,10 @@ public external interface AccessLogApiJs {
 
 	public fun filterAccessLogsBySorted(filter: SortableFilterOptionsJs<AccessLogJs>):
 			Promise<PaginatedListIteratorJs<DecryptedAccessLogJs>>
+
+	public fun undeleteAccessLogById(id: String, rev: String): Promise<DecryptedAccessLogJs>
+
+	public fun undeleteAccessLog(accessLog: AccessLogJs): Promise<DecryptedAccessLogJs>
 
 	public fun modifyAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs>
 

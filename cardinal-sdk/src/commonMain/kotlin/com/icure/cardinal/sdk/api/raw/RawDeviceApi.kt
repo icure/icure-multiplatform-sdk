@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -45,9 +46,24 @@ public interface RawDeviceApi {
 
 	suspend fun matchDevicesBy(filter: AbstractFilter<Device>): HttpResponse<List<String>>
 
-	suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier>
-
 	suspend fun deleteDevices(deviceIds: ListOfIds): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteDevicesWithRev(deviceIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteDevice(
+		deviceId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<Device>
+
+	suspend fun purgeDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 	// endregion
 
 	// region cloud endpoints
@@ -70,6 +86,11 @@ public interface RawDeviceApi {
 	suspend fun deleteDevicesInGroup(
 		groupId: String,
 		deviceIds: String,
+	): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteDevicesInGroupWithRev(
+		groupId: String,
+		deviceIds: ListOfIdsAndRev,
 	): HttpResponse<List<DocIdentifier>>
 
 	suspend fun matchDevicesInGroupBy(

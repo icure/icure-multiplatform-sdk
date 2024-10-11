@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.model.EntityTemplate
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.DefaultValue
 
@@ -36,6 +37,6 @@ interface EntityTemplateApi {
 	suspend fun getEntityTemplates(entityTemplateIds: List<String>): List<EntityTemplate>
 	suspend fun modifyEntityTemplates(entityTemplates: List<EntityTemplate>): List<EntityTemplate>
 	suspend fun createEntityTemplates(entityTemplates: List<EntityTemplate>): List<EntityTemplate>
-	suspend fun deleteEntityTemplate(entityTemplateIds: List<String>): List<DocIdentifier>
+	suspend fun deleteEntityTemplates(entityTemplateIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 }
 

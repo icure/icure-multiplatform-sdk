@@ -39,6 +39,10 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 
 	public fun modifyForm(entity: E): Promise<E>
 
+	public fun undeleteFormById(id: String, rev: String): Promise<E>
+
+	public fun undeleteForm(form: FormJs): Promise<E>
+
 	public fun modifyForms(entities: Array<E>): Promise<Array<E>>
 
 	public fun getForm(entityId: String): Promise<E>

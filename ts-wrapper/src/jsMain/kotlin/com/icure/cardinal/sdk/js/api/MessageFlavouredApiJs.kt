@@ -41,7 +41,11 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 	public fun filterMessagesBySorted(filter: SortableFilterOptionsJs<MessageJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun undeleteMessage(message: MessageJs): Promise<MessageJs>
+
 	public fun modifyMessage(entity: E): Promise<E>
+
+	public fun undeleteMessageById(id: String, rev: String): Promise<E>
 
 	public fun getMessage(entityId: String): Promise<E>
 

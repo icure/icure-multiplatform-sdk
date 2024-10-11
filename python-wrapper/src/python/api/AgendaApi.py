@@ -1,7 +1,7 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import Agenda, ListOfIds, DocIdentifier
+from cardinal_sdk.model import Agenda, DocIdentifier, IdWithMandatoryRev
 from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -53,7 +53,48 @@ class AgendaApi:
 			return_value = Agenda._deserialize(result_info.success)
 			return return_value
 
-	async def delete_agendas_async(self, agenda_ids: ListOfIds) -> List[DocIdentifier]:
+	async def delete_agenda_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendaByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_agenda_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
+		payload = {
+			"entityId": entity_id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendaByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_agendas_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -64,7 +105,164 @@ class AgendaApi:
 				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"agendaIds": agenda_ids.__serialize__(),
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendasByIdsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_agendas_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+		payload = {
+			"entityIds": [x0.__serialize__() for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendasByIdsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def purge_agenda_by_id_async(self, id: str, rev: str) -> None:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = json.loads(success.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.purgeAgendaByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def purge_agenda_by_id_blocking(self, id: str, rev: str) -> None:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.purgeAgendaByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def undelete_agenda_by_id_async(self, id: str, rev: str) -> Agenda:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = Agenda._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.undeleteAgendaByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_agenda_by_id_blocking(self, id: str, rev: str) -> Agenda:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.undeleteAgendaByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = Agenda._deserialize(result_info.success)
+			return return_value
+
+	async def delete_agenda_async(self, agenda: Agenda) -> DocIdentifier:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"agenda": agenda.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendaAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def delete_agenda_blocking(self, agenda: Agenda) -> DocIdentifier:
+		payload = {
+			"agenda": agenda.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendaBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DocIdentifier._deserialize(result_info.success)
+			return return_value
+
+	async def delete_agendas_async(self, agendas: List[Agenda]) -> List[DocIdentifier]:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"agendas": [x0.__serialize__() for x0 in agendas],
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
@@ -76,9 +274,9 @@ class AgendaApi:
 		)
 		return await future
 
-	def delete_agendas_blocking(self, agenda_ids: ListOfIds) -> List[DocIdentifier]:
+	def delete_agendas_blocking(self, agendas: List[Agenda]) -> List[DocIdentifier]:
 		payload = {
-			"agendaIds": agenda_ids.__serialize__(),
+			"agendas": [x0.__serialize__() for x0 in agendas],
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendasBlocking(
 			self.cardinal_sdk._native,
@@ -92,7 +290,7 @@ class AgendaApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def delete_agenda_async(self, agenda_id: str) -> DocIdentifier:
+	async def purge_agenda_async(self, agenda: Agenda) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -100,26 +298,62 @@ class AgendaApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"agendaId": agenda_id,
+			"agenda": agenda.__serialize__(),
 		}
 		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendaAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.purgeAgendaAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_agenda_blocking(self, agenda_id: str) -> DocIdentifier:
+	def purge_agenda_blocking(self, agenda: Agenda) -> None:
 		payload = {
-			"agendaId": agenda_id,
+			"agenda": agenda.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.deleteAgendaBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.purgeAgendaBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+
+	async def undelete_agenda_async(self, agenda: Agenda) -> Agenda:
+		loop = asyncio.get_running_loop()
+		future = loop.create_future()
+		def make_result_and_complete(success, failure):
+			if failure is not None:
+				result = Exception(failure.decode('utf-8'))
+				loop.call_soon_threadsafe(lambda: future.set_exception(result))
+			else:
+				result = Agenda._deserialize(json.loads(success.decode('utf-8')))
+				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		payload = {
+			"agenda": agenda.__serialize__(),
+		}
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		loop.run_in_executor(
+			self.cardinal_sdk._executor,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.undeleteAgendaAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+			callback
+		)
+		return await future
+
+	def undelete_agenda_blocking(self, agenda: Agenda) -> Agenda:
+		payload = {
+			"agenda": agenda.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AgendaApi.undeleteAgendaBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
@@ -128,7 +362,7 @@ class AgendaApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info.success)
+			return_value = Agenda._deserialize(result_info.success)
 			return return_value
 
 	async def get_agenda_async(self, agenda_id: str) -> Agenda:

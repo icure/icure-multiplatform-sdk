@@ -7,23 +7,29 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.cardinal.sdk.js.model.HealthcarePartyJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PublicKeyJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
 
 @JsName("HealthcarePartyApi")
 public external interface HealthcarePartyApiJs {
+	@JsName("deleteHealthcarePartyUnsafe")
+	public fun deleteHealthcareParty(entityId: String): Promise<DocIdentifierJs>
+
+	@JsName("deleteHealthcarePartiesUnsafe")
+	public fun deleteHealthcareParties(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
 	public fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs>
 
 	public fun createHealthcareParty(p: HealthcarePartyJs): Promise<HealthcarePartyJs>
-
-	public fun deleteHealthcareParty(healthcarePartyId: String): Promise<DocIdentifierJs>
 
 	public fun modifyHealthcarePartyInGroup(groupId: String, healthcareParty: HealthcarePartyJs):
 			Promise<HealthcarePartyJs>
@@ -58,9 +64,6 @@ public external interface HealthcarePartyApiJs {
 
 	public fun getPublicKey(healthcarePartyId: String): Promise<PublicKeyJs>
 
-	public fun deleteHealthcareParties(healthcarePartyIds: Array<String>):
-			Promise<Array<DocIdentifierJs>>
-
 	public fun modifyHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<HealthcarePartyJs>
 
 	public fun matchHealthcarePartiesBy(filter: BaseFilterOptionsJs<HealthcarePartyJs>):
@@ -78,15 +81,42 @@ public external interface HealthcarePartyApiJs {
 	public fun getHealthcarePartiesInGroup(groupId: String, options: dynamic):
 			Promise<Array<HealthcarePartyJs>>
 
-	public fun deleteHealthcarePartiesInGroup(groupId: String, healthcarePartyIds: Array<String>):
-			Promise<Array<DocIdentifierJs>>
-
-	public fun deleteHealthcarePartyInGroup(healthcarePartyId: String, groupId: String):
-			Promise<DocIdentifierJs>
-
 	public fun registerPatient(
 		groupId: String,
 		hcp: HealthcarePartyJs,
 		options: dynamic,
 	): Promise<DataOwnerRegistrationSuccessJs>
+
+	public fun deleteHealthcarePartyById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteHealthcarePartiesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun deleteHealthcarePartyInGroupById(
+		groupId: String,
+		entityId: String,
+		rev: String,
+	): Promise<DocIdentifierJs>
+
+	public fun deleteHealthcarePartiesInGroupByIds(groupId: String,
+			entityIds: Array<IdWithMandatoryRevJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeHealthcarePartyById(id: String, rev: String): Promise<Unit>
+
+	public fun undeleteHealthcarePartyById(id: String, rev: String): Promise<HealthcarePartyJs>
+
+	public fun deleteHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<DocIdentifierJs>
+
+	public fun deleteHealthcareParties(healthcareParties: Array<HealthcarePartyJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<Unit>
+
+	public fun undeleteHealthcareParty(healthcareParty: HealthcarePartyJs): Promise<HealthcarePartyJs>
+
+	public fun deleteHealthcarePartyInGroup(groupId: String, hcp: HealthcarePartyJs):
+			Promise<DocIdentifierJs>
+
+	public fun deleteHealthcarePartiesInGroup(groupId: String,
+			healthcareParties: Array<HealthcarePartyJs>): Promise<Array<DocIdentifierJs>>
 }

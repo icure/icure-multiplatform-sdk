@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -10,6 +9,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -20,25 +20,72 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
+import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface DocumentBasicFlavourlessApi {
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteDocumentUnsafe")
+	suspend fun deleteDocument(entityId: String): DocIdentifier
+	@Deprecated("Deletion without rev is unsafe")
+	@JsName("deleteDocumentsUnsafe")
+	suspend fun deleteDocuments(entityIds: List<String>): List<DocIdentifier>
+	
 	/**
 	 * Deletes a document. If you don't have write access to the document the method will fail.
 	 * @param entityId id of the document.
+	 * @param rev the latest known rev of the document to delete
 	 * @return the id and revision of the deleted document.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteDocument(entityId: String): DocIdentifier
+	suspend fun deleteDocumentById(entityId: String, rev: String): DocIdentifier
 
 	/**
-	 * Deletes many documents. Ids that do not correspond to an entity, or that correspond to an entity for which
+	 * Deletes many documents. Ids that don't correspond to an entity, or that correspond to an entity for which
 	 * you don't have write access will be ignored.
-	 * @param entityIds ids of the documents.
-	 * @return the id and revision of the deleted documents. If some entities could not be deleted (for example
+	 * @param entityIds ids and revisions of the documents to delete.
+	 * @return the id and revision of the deleted documents. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteDocuments(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteDocumentsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
 
+	/**
+	 * Permanently deletes a document.
+	 * @param id id of the document to purge
+	 * @param rev latest revision of the document
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun purgeDocumentById(id: String, rev: String)
+
+	/**
+	 * Deletes a document. If you don't have write access to the document the method will fail.
+	 * @param document the document to delete
+	 * @return the id and revision of the deleted document.
+	 * @throws RevisionConflictException if the provided document doesn't match the latest known revision
+	 */
+	suspend fun deleteDocument(document: Document): DocIdentifier =
+		deleteDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
+
+	/**
+	 * Deletes many documents. Ignores document for which you don't have write access or that don't match the latest revision.
+	 * @param documents the documents to delete
+	 * @return the id and revision of the deleted documents. If some entities couldn't be deleted they will not be
+	 * included in this list.
+	 */
+	suspend fun deleteDocuments(documents: List<Document>): List<DocIdentifier> =
+		deleteDocumentsByIds(documents.map { document ->
+			IdWithMandatoryRev(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
+		})
+
+	/**
+	 * Permanently deletes a document.
+	 * @param document the document to purge.
+	 * @throws RevisionConflictException if the provided document doesn't match the latest known revision
+	 */
+	suspend fun purgeDocument(document: Document) {
+		purgeDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
+	}
+	
 	/**
 	 * Get the main attachment from the document with the provided id as raw bytes. This method will not
 	 * perform any transformation on the attachment, and if the attachment was encrypted the returned data is encrypted.
@@ -85,6 +132,7 @@ interface DocumentBasicFlavourlessApi {
 	 * will not be encrypted by this method.
 	 * If a main attachment already exist on the document it will be replaced.
 	 * @param documentId the id of the document.
+	 * 
 	 * @param rev the revision of the document
 	 * @param utis uniform type identifiers for the attachment (https://en.wikipedia.org/wiki/Uniform_Type_Identifier).
 	 * If null and there is already a main attachment for the document the current utis will be reused, otherwise it
@@ -149,6 +197,24 @@ interface DocumentBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface DocumentBasicFlavouredApi<E : Document> {
+	/**
+	 * Restores a document that was marked as deleted.
+	 * @param id the id of the entity
+	 * @param rev the latest revision of the entity.
+	 * @return the restored entity.
+	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
+	 */
+	suspend fun undeleteDocumentById(id: String, rev: String): E
+	
+	/**
+	 * Restores a document that was marked as deleted.
+	 * @param document the document to undelete
+	 * @return the restored document.
+	 * @throws RevisionConflictException if the provided document doesn't match the latest known revision
+	 */
+	suspend fun undeleteDocument(document: Document): E =
+		undeleteDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
+
 	/**
 	 * Modifies a document. You need to have write access to the entity. Note that you can't use this method to
 	 * change the attachments and/or attachment metadata on the document. You should use various set attachment methods

@@ -16,9 +16,12 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapMaintenanceTaskFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -47,6 +50,10 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 	private val config: BasicApiConfiguration
 ) :
 	MaintenanceTaskBasicFlavouredApi<E> {
+
+	override suspend fun undeleteMaintenanceTaskById(id: String, rev: String): E =
+		rawApi.undeleteMaintenanceTask(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	override suspend fun modifyMaintenanceTask(entity: E): E =
 		rawApi.modifyMaintenanceTask(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -102,8 +109,24 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 @InternalIcureApi
 private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintenanceTaskApi, private val config: BasicApiConfiguration) :
 	MaintenanceTaskBasicFlavourlessApi {
-	override suspend fun deleteMaintenanceTask(entityId: String) = rawApi.deleteMaintenanceTask(entityId).successBody()
-	override suspend fun deleteMaintenanceTasks(entityIds: List<String>) = rawApi.deleteMaintenanceTasks(ListOfIds(entityIds)).successBody()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteMaintenanceTask(entityId: String): DocIdentifier =
+		rawApi.deleteMaintenanceTask(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteMaintenanceTasks(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteMaintenanceTasks(ListOfIds(entityIds)).successBody()
+		
+	override suspend fun deleteMaintenanceTaskById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteMaintenanceTask(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun purgeMaintenanceTaskById(id: String, rev: String) {
+		rawApi.purgeMaintenanceTask(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
+	override suspend fun deleteMaintenanceTasksByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteMaintenanceTasksWithRev(ListOfIdsAndRev(entityIds)).successBody()
 }
 
 @InternalIcureApi

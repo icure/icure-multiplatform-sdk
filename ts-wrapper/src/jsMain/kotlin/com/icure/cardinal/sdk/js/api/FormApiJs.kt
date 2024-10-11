@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.js.model.DecryptedFormJs
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.Record
@@ -56,9 +57,24 @@ public external interface FormApiJs {
 
 	public fun matchFormsBySorted(filter: SortableFilterOptionsJs<FormJs>): Promise<Array<String>>
 
+	@JsName("deleteFormUnsafe")
 	public fun deleteForm(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteFormsUnsafe")
 	public fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteFormById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteFormsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeFormById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteForm(form: FormJs): Promise<DocIdentifierJs>
+
+	public fun deleteForms(forms: Array<FormJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeForm(form: FormJs): Promise<Unit>
 
 	public fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs>
 
@@ -103,6 +119,10 @@ public external interface FormApiJs {
 			Promise<PaginatedListIteratorJs<DecryptedFormJs>>
 
 	public fun modifyForm(entity: DecryptedFormJs): Promise<DecryptedFormJs>
+
+	public fun undeleteFormById(id: String, rev: String): Promise<DecryptedFormJs>
+
+	public fun undeleteForm(form: FormJs): Promise<DecryptedFormJs>
 
 	public fun modifyForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>>
 

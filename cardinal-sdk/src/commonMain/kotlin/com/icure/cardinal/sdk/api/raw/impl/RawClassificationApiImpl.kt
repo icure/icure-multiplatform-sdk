@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.EncryptedClassification
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -131,11 +132,53 @@ class RawClassificationApiImpl(
 			setBody(classificationIds)
 		}.wrap()
 
-	override suspend fun deleteClassification(classificationId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteClassificationsWithRev(classificationIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "classification", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(classificationIds)
+		}.wrap()
+
+	override suspend fun deleteClassification(
+		classificationId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "classification", classificationId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<EncryptedClassification> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "classification", "undelete", classificationId)
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "classification", "purge", classificationId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

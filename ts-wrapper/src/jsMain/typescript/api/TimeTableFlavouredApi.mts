@@ -15,7 +15,11 @@ export interface TimeTableFlavouredApi<E extends TimeTable> {
 
 	filterTimeTablesBySorted(filter: SortableFilterOptions<TimeTable>): Promise<PaginatedListIterator<E>>;
 
+	undeleteTimeTable(timeTable: TimeTable): Promise<TimeTable>;
+
 	modifyTimeTable(entity: E): Promise<E>;
+
+	undeleteTimeTableById(id: string, rev: string): Promise<E>;
 
 	getTimeTable(entityId: string): Promise<E>;
 

@@ -32,6 +32,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -191,6 +192,83 @@ public fun filterMaintenanceTasksBySortedAsync(
 			PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteMaintenanceTaskParams(
+	public val maintenanceTask: MaintenanceTask,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteMaintenanceTaskBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMaintenanceTaskParams>(params)
+	runBlocking {
+		sdk.maintenanceTask.encrypted.undeleteMaintenanceTask(
+			decodedParams.maintenanceTask,
+		)
+	}
+}.toPyString(PolymorphicSerializer(MaintenanceTask::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteMaintenanceTaskAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMaintenanceTaskParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.maintenanceTask.encrypted.undeleteMaintenanceTask(
+				decodedParams.maintenanceTask,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(MaintenanceTask::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteMaintenanceTaskByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteMaintenanceTaskByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteMaintenanceTaskByIdParams>(params)
+	runBlocking {
+		sdk.maintenanceTask.encrypted.undeleteMaintenanceTaskById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(EncryptedMaintenanceTask.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteMaintenanceTaskByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteMaintenanceTaskByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.maintenanceTask.encrypted.undeleteMaintenanceTaskById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(EncryptedMaintenanceTask.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class ModifyMaintenanceTaskParams(

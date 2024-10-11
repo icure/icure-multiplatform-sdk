@@ -2,6 +2,7 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {TopicShareOptions} from '../crypto/entities/TopicShareOptions.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {DecryptedTopic, EncryptedTopic, Topic} from '../model/Topic.mjs';
 import {TopicRole} from '../model/TopicRole.mjs';
@@ -46,6 +47,18 @@ export interface TopicApi {
 
 	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteTopicById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteTopicsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeTopicById(id: string, rev: string): Promise<void>;
+
+	deleteTopic(topic: Topic): Promise<DocIdentifier>;
+
+	deleteTopics(topics: Array<Topic>): Promise<Array<DocIdentifier>>;
+
+	purgeTopic(topic: Topic): Promise<void>;
+
 	shareWith(delegateId: string, topic: DecryptedTopic,
 			options?: { options?: TopicShareOptions | undefined }): Promise<DecryptedTopic>;
 
@@ -56,7 +69,11 @@ export interface TopicApi {
 
 	filterTopicsBySorted(filter: SortableFilterOptions<Topic>): Promise<PaginatedListIterator<DecryptedTopic>>;
 
+	undeleteTopic(topic: Topic): Promise<Topic>;
+
 	modifyTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
+
+	undeleteTopicById(id: string, rev: string): Promise<DecryptedTopic>;
 
 	getTopic(entityId: string): Promise<DecryptedTopic>;
 

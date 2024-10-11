@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeNa
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -81,11 +82,53 @@ class RawDocumentApiImpl(
 			setBody(documentIds)
 		}.wrap()
 
-	override suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteDocumentsWithRev(documentIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "document", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(documentIds)
+		}.wrap()
+
+	override suspend fun deleteDocument(
+		documentId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<EncryptedDocument> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "document", "undelete", documentId)
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "document", "purge", documentId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.EncryptedMessage
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.MessagesReadStatusUpdate
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -27,7 +28,22 @@ public interface RawMessageApi {
 
 	suspend fun deleteMessages(messageIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteMessage(messageId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteMessagesWithRev(messageIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteMessage(
+		messageId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteMessage(
+		messageId: String,
+		rev: String,
+	): HttpResponse<EncryptedMessage>
+
+	suspend fun purgeMessage(
+		messageId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getMessage(messageId: String): HttpResponse<EncryptedMessage>
 

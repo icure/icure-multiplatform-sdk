@@ -1,4 +1,4 @@
-rootProject.name = "icure-multiplatform-sdk"
+rootProject.name = "cardinal-multiplatform-sdk"
 
 include("cardinal-sdk")
 include("ts-wrapper")

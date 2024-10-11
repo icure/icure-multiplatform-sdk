@@ -192,16 +192,16 @@ public fun recoverExchangeDataAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class DeleteRecoveryInfoParams(
+private class PurgeRecoveryInfoParams(
 	public val recoveryKey: RecoveryDataKey,
 )
 
 @OptIn(InternalIcureApi::class)
-public fun deleteRecoveryInfoBlocking(sdk: CardinalApis, params: String): String =
+public fun purgeRecoveryInfoBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteRecoveryInfoParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeRecoveryInfoParams>(params)
 	runBlocking {
-		sdk.recovery.deleteRecoveryInfo(
+		sdk.recovery.purgeRecoveryInfo(
 			decodedParams.recoveryKey,
 		)
 	}
@@ -211,16 +211,16 @@ public fun deleteRecoveryInfoBlocking(sdk: CardinalApis, params: String): String
 	ExperimentalForeignApi::class,
 	InternalIcureApi::class,
 )
-public fun deleteRecoveryInfoAsync(
+public fun purgeRecoveryInfoAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
 ): Unit = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteRecoveryInfoParams>(params)
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeRecoveryInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.recovery.deleteRecoveryInfo(
+			sdk.recovery.purgeRecoveryInfo(
 				decodedParams.recoveryKey,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)

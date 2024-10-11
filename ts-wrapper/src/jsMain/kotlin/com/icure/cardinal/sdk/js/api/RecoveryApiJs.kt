@@ -25,7 +25,7 @@ public external interface RecoveryApiJs {
 
 	public fun recoverExchangeData(recoveryKey: String): Promise<String?>
 
-	public fun deleteRecoveryInfo(recoveryKey: String): Promise<Unit>
+	public fun purgeRecoveryInfo(recoveryKey: String): Promise<Unit>
 
 	public fun deleteAllRecoveryInfoFor(dataOwnerId: String): Promise<Double>
 

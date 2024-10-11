@@ -152,11 +152,42 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun deleteUser(userId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteUser(
+		userId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", userId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteUser(
+		userId: String,
+		rev: String,
+	): HttpResponse<User> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "undelete", userId)
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeUser(
+		userId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "purge", userId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
@@ -321,16 +352,18 @@ class RawUserApiImpl(
 	override suspend fun deleteUserInGroup(
 		groupId: String,
 		userId: String,
+		rev: String?,
 	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", "inGroup", groupId, userId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun addRolesToUser(
+	override suspend fun setRolesForUser(
 		userId: String,
 		rolesId: ListOfIds,
 	): HttpResponse<User> =
@@ -344,7 +377,7 @@ class RawUserApiImpl(
 			setBody(rolesId)
 		}.wrap()
 
-	override suspend fun addRolesToUserInGroup(
+	override suspend fun setRolesForUserInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIds,
@@ -359,7 +392,7 @@ class RawUserApiImpl(
 			setBody(rolesId)
 		}.wrap()
 
-	override suspend fun removeRolesFromUser(userId: String): HttpResponse<User> =
+	override suspend fun resetUserRoles(userId: String): HttpResponse<User> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -369,7 +402,7 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun removeRolesFromUserInGroup(
+	override suspend fun resetUserRolesInGroup(
 		userId: String,
 		groupId: String,
 	): HttpResponse<User> =

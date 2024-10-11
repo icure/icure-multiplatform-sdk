@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
@@ -71,11 +72,64 @@ class RawInvoiceApiImpl(
 			setBody(invoiceDto)
 		}.wrap()
 
-	override suspend fun deleteInvoice(invoiceId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteInvoices(invoiceIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "delete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(invoiceIds)
+		}.wrap()
+
+	override suspend fun deleteInvoicesWithRev(invoiceIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(invoiceIds)
+		}.wrap()
+
+	override suspend fun deleteInvoice(
+		invoiceId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "invoice", invoiceId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteInvoice(
+		invoiceId: String,
+		rev: String,
+	): HttpResponse<EncryptedInvoice> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "undelete", invoiceId)
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeInvoice(
+		invoiceId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "purge", invoiceId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

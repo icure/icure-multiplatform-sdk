@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -37,7 +38,13 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 	public fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun undeletePatient(patient: PatientJs): Promise<PatientJs>
+
 	public fun modifyPatient(entity: E): Promise<E>
+
+	public fun undeletePatientById(id: String, rev: String): Promise<E>
+
+	public fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<E>>
 
 	public fun getPatient(entityId: String): Promise<E>
 

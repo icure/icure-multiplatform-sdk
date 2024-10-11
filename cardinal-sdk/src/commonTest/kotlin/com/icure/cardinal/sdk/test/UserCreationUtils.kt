@@ -1,8 +1,5 @@
 package com.icure.cardinal.sdk.test
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawHealthcarePartyApiImpl
@@ -17,8 +14,11 @@ import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 
 fun uuid() = defaultCryptoService.strongRandom.randomUUID()
 
@@ -162,7 +162,7 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 		)
 	).successBody()
 	if (roles != null) {
-		userRawApi.addRolesToUser(created.id, ListOfIds(roles.toList()))
+		userRawApi.setRolesForUser(created.id, ListOfIds(roles.toList()))
 	}
 	return DataOwnerDetails(hcpId, login, password, keypair, parent)
 }

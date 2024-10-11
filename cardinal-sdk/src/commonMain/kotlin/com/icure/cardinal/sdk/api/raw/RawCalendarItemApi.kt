@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -32,7 +33,22 @@ public interface RawCalendarItemApi {
 
 	suspend fun deleteCalendarItems(calendarItemIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteCalendarItem(calendarItemId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteCalendarItemsWithRev(calendarItemIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteCalendarItem(
+		calendarItemId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteCalendarItem(
+		calendarItemId: String,
+		rev: String,
+	): HttpResponse<EncryptedCalendarItem>
+
+	suspend fun purgeCalendarItem(
+		calendarItemId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getCalendarItem(calendarItemId: String): HttpResponse<EncryptedCalendarItem>
 

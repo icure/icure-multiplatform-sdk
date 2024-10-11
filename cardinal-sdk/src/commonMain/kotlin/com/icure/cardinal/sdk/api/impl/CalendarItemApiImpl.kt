@@ -21,10 +21,13 @@ import com.icure.cardinal.sdk.filters.mapCalendarItemFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -33,6 +36,12 @@ import com.icure.cardinal.sdk.model.requests.RequestedPermission
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
+import com.icure.cardinal.sdk.serialization.CalendarItemAbstractFilterSerializer
+import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
+import com.icure.cardinal.sdk.subscription.EntitySubscription
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
+import com.icure.cardinal.sdk.subscription.WebSocketSubscription
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
@@ -45,6 +54,8 @@ import kotlinx.serialization.json.decodeFromJsonElement
 private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 	protected val rawApi: RawCalendarItemApi
 ) : CalendarItemBasicFlavouredApi<E> {
+	override suspend fun undeleteCalendarItemById(id: String, rev: String): E =
+		rawApi.undeleteCalendarItem(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
 	protected open suspend fun getSecureDelegationKeys(): List<String> =
 		emptyList()
@@ -184,8 +195,24 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 @InternalIcureApi
 private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarItemApi) :
 	CalendarItemBasicFlavourlessApi {
-	override suspend fun deleteCalendarItem(entityId: String) = rawApi.deleteCalendarItem(entityId).successBody()
-	override suspend fun deleteCalendarItems(entityIds: List<String>) = rawApi.deleteCalendarItems(ListOfIds(entityIds)).successBody()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteCalendarItem(entityId: String): DocIdentifier =
+		rawApi.deleteCalendarItem(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteCalendarItems(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteCalendarItems(ListOfIds(entityIds)).successBody()
+		
+	override suspend fun deleteCalendarItemById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteCalendarItem(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteCalendarItemsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteCalendarItemsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeCalendarItemById(id: String, rev: String) {
+		rawApi.purgeCalendarItem(id, rev).successBodyOrThrowRevisionConflict()
+	}
 }
 
 @InternalIcureApi
@@ -312,6 +339,32 @@ internal class CalendarItemApiImpl(
 
 	override suspend fun matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): List<String> =
 		matchCalendarItemsBy(filter)
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: FilterOptions<CalendarItem>,
+		subscriptionConfig: EntitySubscriptionConfiguration?
+	): EntitySubscription<EncryptedCalendarItem> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedCalendarItem.serializer(),
+			events = events,
+			filter = mapCalendarItemFilterOptions(
+				filter,
+				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+				config.crypto.entity
+			),
+			qualifiedName = CalendarItem.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(CalendarItemAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
 
 @InternalIcureApi
@@ -336,4 +389,26 @@ internal class CalendarItemBasicApiImpl(
 
 	override suspend fun filterCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): PaginatedListIterator<EncryptedCalendarItem> =
 		filterCalendarItemsBy(filter)
+
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: FilterOptions<CalendarItem>,
+		subscriptionConfig: EntitySubscriptionConfiguration?
+	): EntitySubscription<EncryptedCalendarItem> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = EncryptedCalendarItem.serializer(),
+			events = events,
+			filter = mapCalendarItemFilterOptions(filter, null, null),
+			qualifiedName = CalendarItem.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(CalendarItemAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }

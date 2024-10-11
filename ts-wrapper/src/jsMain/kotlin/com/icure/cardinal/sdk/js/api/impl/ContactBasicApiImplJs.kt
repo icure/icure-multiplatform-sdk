@@ -20,6 +20,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
 import com.icure.cardinal.sdk.js.model.IcureStubJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.cardinal.sdk.js.model.`data`.labelledOccurence_toJs
@@ -31,6 +32,7 @@ import com.icure.cardinal.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.cardinal.sdk.js.model.embed.ServiceJs
 import com.icure.cardinal.sdk.js.model.embed.service_toJs
 import com.icure.cardinal.sdk.js.model.icureStub_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -41,6 +43,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.EncryptedContact
 import com.icure.cardinal.sdk.model.IcureStub
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.EncryptedService
@@ -54,6 +57,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Set
 import kotlin.js.Promise
@@ -234,6 +238,83 @@ internal class ContactBasicApiImplJs(
 		)
 	}
 
+	override fun deleteContactById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = contactBasicApi.deleteContactById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteContactsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = contactBasicApi.deleteContactsByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeContactById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		contactBasicApi.purgeContactById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteContact(contact: ContactJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val contactConverted: Contact = contact_fromJs(contact)
+		val result = contactBasicApi.deleteContact(
+			contactConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteContacts(contacts: Array<ContactJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val contactsConverted: List<Contact> = arrayToList(
+			contacts,
+			"contacts",
+			{ x1: ContactJs ->
+				contact_fromJs(x1)
+			},
+		)
+		val result = contactBasicApi.deleteContacts(
+			contactsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeContact(contact: ContactJs): Promise<Unit> = GlobalScope.promise {
+		val contactConverted: Contact = contact_fromJs(contact)
+		contactBasicApi.purgeContact(
+			contactConverted,
+		)
+
+	}
+
 	override fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
 		val hcPartyIdConverted: String = hcPartyId
@@ -270,6 +351,26 @@ internal class ContactBasicApiImplJs(
 				labelledOccurence_toJs(x1)
 			},
 		)
+	}
+
+	override fun undeleteContactById(id: String, rev: String): Promise<EncryptedContactJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = contactBasicApi.undeleteContactById(
+			idConverted,
+			revConverted,
+		)
+		contact_toJs(result)
+	}
+
+	override fun undeleteContact(contact: ContactJs): Promise<EncryptedContactJs> =
+			GlobalScope.promise {
+		val contactConverted: Contact = contact_fromJs(contact)
+		val result = contactBasicApi.undeleteContact(
+			contactConverted,
+		)
+		contact_toJs(result)
 	}
 
 	override fun modifyContact(entity: EncryptedContactJs): Promise<EncryptedContactJs> =

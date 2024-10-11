@@ -17,11 +17,14 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapTopicFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -51,6 +54,9 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 	private val config: BasicApiConfiguration,
 ) :
 	TopicBasicFlavouredApi<E> {
+	override suspend fun undeleteTopicById(id: String, rev: String): E =
+		rawApi.undeleteTopic(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	override suspend fun modifyTopic(entity: E): E =
 		rawApi.modifyTopic(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -104,8 +110,24 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 @InternalIcureApi
 private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private val config: BasicApiConfiguration) :
 	TopicBasicFlavourlessApi {
-	override suspend fun deleteTopic(entityId: String) = rawApi.deleteTopic(entityId).successBody()
-	override suspend fun deleteTopics(entityIds: List<String>) = rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTopic(entityId: String): DocIdentifier =
+		rawApi.deleteTopic(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
+		
+	override suspend fun deleteTopicById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteTopic(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteTopicsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteTopicsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeTopicById(id: String, rev: String) {
+		rawApi.purgeTopic(id, rev).successBodyOrThrowRevisionConflict()
+	}
 }
 
 @InternalIcureApi

@@ -14,9 +14,11 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.EncryptedMaintenanceTaskJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MaintenanceTaskJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_toJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
@@ -26,6 +28,7 @@ import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
@@ -33,6 +36,7 @@ import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Set
 import kotlin.js.Promise
@@ -130,6 +134,106 @@ internal class MaintenanceTaskBasicApiImplJs(
 				docIdentifier_toJs(x1)
 			},
 		)
+	}
+
+	override fun deleteMaintenanceTaskById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = maintenanceTaskBasicApi.deleteMaintenanceTaskById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteMaintenanceTasksByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = maintenanceTaskBasicApi.deleteMaintenanceTasksByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeMaintenanceTaskById(id: String, rev: String): Promise<Unit> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		maintenanceTaskBasicApi.purgeMaintenanceTaskById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
+		val result = maintenanceTaskBasicApi.deleteMaintenanceTask(
+			maintenanceTaskConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteMaintenanceTasks(maintenanceTasks: Array<MaintenanceTaskJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val maintenanceTasksConverted: List<MaintenanceTask> = arrayToList(
+			maintenanceTasks,
+			"maintenanceTasks",
+			{ x1: MaintenanceTaskJs ->
+				maintenanceTask_fromJs(x1)
+			},
+		)
+		val result = maintenanceTaskBasicApi.deleteMaintenanceTasks(
+			maintenanceTasksConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeMaintenanceTask(maintenanceTask: MaintenanceTaskJs): Promise<Unit> =
+			GlobalScope.promise {
+		val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
+		maintenanceTaskBasicApi.purgeMaintenanceTask(
+			maintenanceTaskConverted,
+		)
+
+	}
+
+	override fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs):
+			Promise<MaintenanceTaskJs> = GlobalScope.promise {
+		val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
+		val result = maintenanceTaskBasicApi.undeleteMaintenanceTask(
+			maintenanceTaskConverted,
+		)
+		maintenanceTask_toJs(result)
+	}
+
+	override fun undeleteMaintenanceTaskById(id: String, rev: String):
+			Promise<EncryptedMaintenanceTaskJs> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = maintenanceTaskBasicApi.undeleteMaintenanceTaskById(
+			idConverted,
+			revConverted,
+		)
+		maintenanceTask_toJs(result)
 	}
 
 	override fun modifyMaintenanceTask(entity: EncryptedMaintenanceTaskJs):

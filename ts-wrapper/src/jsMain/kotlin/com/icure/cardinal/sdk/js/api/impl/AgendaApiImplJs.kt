@@ -14,24 +14,25 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
-import com.icure.cardinal.sdk.js.model.ListOfIdsJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.agenda_fromJs
 import com.icure.cardinal.sdk.js.model.agenda_toJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.listOfIds_fromJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Agenda
-import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
 import kotlin.Double
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
+import kotlin.Unit
 import kotlin.collections.List
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -66,11 +67,25 @@ internal class AgendaApiImplJs(
 		agenda_toJs(result)
 	}
 
-	override fun deleteAgendas(agendaIds: ListOfIdsJs): Promise<Array<DocIdentifierJs>> =
+	override fun deleteAgenda(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val result = agendaApi.deleteAgenda(
+			entityIdConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteAgendas(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
-		val agendaIdsConverted: ListOfIds = listOfIds_fromJs(agendaIds)
+		val entityIdsConverted: List<String> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: String ->
+				x1
+			},
+		)
 		val result = agendaApi.deleteAgendas(
-			agendaIdsConverted,
+			entityIdsConverted,
 		)
 		listToArray(
 			result,
@@ -80,12 +95,99 @@ internal class AgendaApiImplJs(
 		)
 	}
 
-	override fun deleteAgenda(agendaId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
-		val agendaIdConverted: String = agendaId
-		val result = agendaApi.deleteAgenda(
-			agendaIdConverted,
+	override fun deleteAgendaById(entityId: String, rev: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = agendaApi.deleteAgendaById(
+			entityIdConverted,
+			revConverted,
 		)
 		docIdentifier_toJs(result)
+	}
+
+	override fun deleteAgendasByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = agendaApi.deleteAgendasByIds(
+			entityIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeAgendaById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		agendaApi.purgeAgendaById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun undeleteAgendaById(id: String, rev: String): Promise<AgendaJs> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = agendaApi.undeleteAgendaById(
+			idConverted,
+			revConverted,
+		)
+		agenda_toJs(result)
+	}
+
+	override fun deleteAgenda(agenda: AgendaJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val agendaConverted: Agenda = agenda_fromJs(agenda)
+		val result = agendaApi.deleteAgenda(
+			agendaConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deleteAgendas(agendas: Array<AgendaJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val agendasConverted: List<Agenda> = arrayToList(
+			agendas,
+			"agendas",
+			{ x1: AgendaJs ->
+				agenda_fromJs(x1)
+			},
+		)
+		val result = agendaApi.deleteAgendas(
+			agendasConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgeAgenda(agenda: AgendaJs): Promise<Unit> = GlobalScope.promise {
+		val agendaConverted: Agenda = agenda_fromJs(agenda)
+		agendaApi.purgeAgenda(
+			agendaConverted,
+		)
+
+	}
+
+	override fun undeleteAgenda(agenda: AgendaJs): Promise<AgendaJs> = GlobalScope.promise {
+		val agendaConverted: Agenda = agenda_fromJs(agenda)
+		val result = agendaApi.undeleteAgenda(
+			agendaConverted,
+		)
+		agenda_toJs(result)
 	}
 
 	override fun getAgenda(agendaId: String): Promise<AgendaJs> = GlobalScope.promise {

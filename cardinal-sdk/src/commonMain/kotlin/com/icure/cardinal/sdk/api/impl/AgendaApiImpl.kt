@@ -7,7 +7,9 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapAgendaFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
@@ -18,6 +20,14 @@ import com.icure.utils.InternalIcureApi
 internal class AgendaApiImpl (
 	private val rawApi: RawAgendaApi,
 ) : AgendaApi {
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteAgenda(entityId: String): DocIdentifier =
+		rawApi.deleteAgenda(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteAgendas(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteAgendas(ListOfIds(entityIds)).successBody()
+	
 	@Deprecated("Use filter instead")
 	override suspend fun getAllAgendas(
 		startDocumentId: String?,
@@ -26,9 +36,18 @@ internal class AgendaApiImpl (
 
 	override suspend fun createAgenda(agendaDto: Agenda): Agenda = rawApi.createAgenda(agendaDto).successBody()
 
-	override suspend fun deleteAgendas(agendaIds: ListOfIds): List<DocIdentifier> = rawApi.deleteAgendas(agendaIds).successBody()
+	override suspend fun deleteAgendaById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteAgenda(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteAgenda(agendaId: String): DocIdentifier = rawApi.deleteAgenda(agendaId).successBody()
+	override suspend fun deleteAgendasByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteAgendasWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeAgendaById(id: String, rev: String) {
+		rawApi.purgeAgenda(id, rev).successBodyOrThrowRevisionConflict()
+	}
+
+	override suspend fun undeleteAgendaById(id: String, rev: String): Agenda =
+		rawApi.undeleteAgenda(id, rev).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getAgenda(agendaId: String): Agenda = rawApi.getAgenda(agendaId).successBody()
 

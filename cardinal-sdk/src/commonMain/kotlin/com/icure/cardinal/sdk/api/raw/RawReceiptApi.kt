@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.EncryptedReceipt
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
@@ -20,7 +21,22 @@ public interface RawReceiptApi {
 
 	suspend fun deleteReceipts(receiptIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteReceipt(receiptId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteReceiptsWithRev(receiptIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteReceipt(
+		receiptId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteReceipt(
+		receiptId: String,
+		rev: String,
+	): HttpResponse<EncryptedReceipt>
+
+	suspend fun purgeReceipt(
+		receiptId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getReceiptAttachment(
 		receiptId: String,

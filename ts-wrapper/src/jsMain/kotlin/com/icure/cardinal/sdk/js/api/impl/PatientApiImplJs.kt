@@ -34,12 +34,14 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedPatientJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.idWithRev_toJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
@@ -55,6 +57,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -171,6 +174,14 @@ internal class PatientApiImplJs(
 			)
 		}
 
+		override fun undeletePatient(patient: PatientJs): Promise<PatientJs> = GlobalScope.promise {
+			val patientConverted: Patient = patient_fromJs(patient)
+			val result = patientApi.encrypted.undeletePatient(
+				patientConverted,
+			)
+			patient_toJs(result)
+		}
+
 		override fun modifyPatient(entity: EncryptedPatientJs): Promise<EncryptedPatientJs> =
 				GlobalScope.promise {
 			val entityConverted: EncryptedPatient = patient_fromJs(entity)
@@ -178,6 +189,37 @@ internal class PatientApiImplJs(
 				entityConverted,
 			)
 			patient_toJs(result)
+		}
+
+		override fun undeletePatientById(id: String, rev: String): Promise<EncryptedPatientJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = patientApi.encrypted.undeletePatientById(
+				idConverted,
+				revConverted,
+			)
+			patient_toJs(result)
+		}
+
+		override fun undeletePatients(ids: Array<IdWithMandatoryRevJs>):
+				Promise<Array<EncryptedPatientJs>> = GlobalScope.promise {
+			val idsConverted: List<IdWithMandatoryRev> = arrayToList(
+				ids,
+				"ids",
+				{ x1: IdWithMandatoryRevJs ->
+					idWithMandatoryRev_fromJs(x1)
+				},
+			)
+			val result = patientApi.encrypted.undeletePatients(
+				idsConverted,
+			)
+			listToArray(
+				result,
+				{ x1: EncryptedPatient ->
+					patient_toJs(x1)
+				},
+			)
 		}
 
 		override fun getPatient(entityId: String): Promise<EncryptedPatientJs> = GlobalScope.promise {
@@ -900,12 +942,51 @@ internal class PatientApiImplJs(
 			)
 		}
 
+		override fun undeletePatient(patient: PatientJs): Promise<PatientJs> = GlobalScope.promise {
+			val patientConverted: Patient = patient_fromJs(patient)
+			val result = patientApi.tryAndRecover.undeletePatient(
+				patientConverted,
+			)
+			patient_toJs(result)
+		}
+
 		override fun modifyPatient(entity: PatientJs): Promise<PatientJs> = GlobalScope.promise {
 			val entityConverted: Patient = patient_fromJs(entity)
 			val result = patientApi.tryAndRecover.modifyPatient(
 				entityConverted,
 			)
 			patient_toJs(result)
+		}
+
+		override fun undeletePatientById(id: String, rev: String): Promise<PatientJs> =
+				GlobalScope.promise {
+			val idConverted: String = id
+			val revConverted: String = rev
+			val result = patientApi.tryAndRecover.undeletePatientById(
+				idConverted,
+				revConverted,
+			)
+			patient_toJs(result)
+		}
+
+		override fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<PatientJs>> =
+				GlobalScope.promise {
+			val idsConverted: List<IdWithMandatoryRev> = arrayToList(
+				ids,
+				"ids",
+				{ x1: IdWithMandatoryRevJs ->
+					idWithMandatoryRev_fromJs(x1)
+				},
+			)
+			val result = patientApi.tryAndRecover.undeletePatients(
+				idsConverted,
+			)
+			listToArray(
+				result,
+				{ x1: Patient ->
+					patient_toJs(x1)
+				},
+			)
 		}
 
 		override fun getPatient(entityId: String): Promise<PatientJs> = GlobalScope.promise {
@@ -1824,17 +1905,28 @@ internal class PatientApiImplJs(
 		)
 	}
 
-	override fun undeletePatients(patientIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deletePatientById(entityId: String, rev: String): Promise<DocIdentifierJs> =
 			GlobalScope.promise {
-		val patientIdsConverted: List<String> = arrayToList(
-			patientIds,
-			"patientIds",
-			{ x1: String ->
-				x1
+		val entityIdConverted: String = entityId
+		val revConverted: String = rev
+		val result = patientApi.deletePatientById(
+			entityIdConverted,
+			revConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deletePatientsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+			entityIds,
+			"entityIds",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
 			},
 		)
-		val result = patientApi.undeletePatients(
-			patientIdsConverted,
+		val result = patientApi.deletePatientsByIds(
+			entityIdsConverted,
 		)
 		listToArray(
 			result,
@@ -1842,6 +1934,52 @@ internal class PatientApiImplJs(
 				docIdentifier_toJs(x1)
 			},
 		)
+	}
+
+	override fun purgePatientById(id: String, rev: String): Promise<Unit> = GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		patientApi.purgePatientById(
+			idConverted,
+			revConverted,
+		)
+
+	}
+
+	override fun deletePatient(patient: PatientJs): Promise<DocIdentifierJs> = GlobalScope.promise {
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.deletePatient(
+			patientConverted,
+		)
+		docIdentifier_toJs(result)
+	}
+
+	override fun deletePatients(patients: Array<PatientJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
+		val patientsConverted: List<Patient> = arrayToList(
+			patients,
+			"patients",
+			{ x1: PatientJs ->
+				patient_fromJs(x1)
+			},
+		)
+		val result = patientApi.deletePatients(
+			patientsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DocIdentifier ->
+				docIdentifier_toJs(x1)
+			},
+		)
+	}
+
+	override fun purgePatient(patient: PatientJs): Promise<Unit> = GlobalScope.promise {
+		val patientConverted: Patient = patient_fromJs(patient)
+		patientApi.purgePatient(
+			patientConverted,
+		)
+
 	}
 
 	override fun getDataOwnersWithAccessTo(patient: PatientJs): Promise<EntityAccessInformationJs> =
@@ -1946,6 +2084,14 @@ internal class PatientApiImplJs(
 		)
 	}
 
+	override fun undeletePatient(patient: PatientJs): Promise<PatientJs> = GlobalScope.promise {
+		val patientConverted: Patient = patient_fromJs(patient)
+		val result = patientApi.undeletePatient(
+			patientConverted,
+		)
+		patient_toJs(result)
+	}
+
 	override fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs> =
 			GlobalScope.promise {
 		val entityConverted: DecryptedPatient = patient_fromJs(entity)
@@ -1953,6 +2099,37 @@ internal class PatientApiImplJs(
 			entityConverted,
 		)
 		patient_toJs(result)
+	}
+
+	override fun undeletePatientById(id: String, rev: String): Promise<DecryptedPatientJs> =
+			GlobalScope.promise {
+		val idConverted: String = id
+		val revConverted: String = rev
+		val result = patientApi.undeletePatientById(
+			idConverted,
+			revConverted,
+		)
+		patient_toJs(result)
+	}
+
+	override fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<DecryptedPatientJs>>
+			= GlobalScope.promise {
+		val idsConverted: List<IdWithMandatoryRev> = arrayToList(
+			ids,
+			"ids",
+			{ x1: IdWithMandatoryRevJs ->
+				idWithMandatoryRev_fromJs(x1)
+			},
+		)
+		val result = patientApi.undeletePatients(
+			idsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DecryptedPatient ->
+				patient_toJs(x1)
+			},
+		)
 	}
 
 	override fun getPatient(entityId: String): Promise<DecryptedPatientJs> = GlobalScope.promise {

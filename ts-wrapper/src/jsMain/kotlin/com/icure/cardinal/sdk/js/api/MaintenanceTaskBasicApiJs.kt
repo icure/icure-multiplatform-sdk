@@ -6,12 +6,14 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedMaintenanceTaskJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MaintenanceTaskJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -30,9 +32,30 @@ public external interface MaintenanceTaskBasicApiJs {
 	public fun filterMaintenanceTasksBySorted(filter: BaseSortableFilterOptionsJs<MaintenanceTaskJs>):
 			Promise<PaginatedListIteratorJs<EncryptedMaintenanceTaskJs>>
 
+	@JsName("deleteMaintenanceTaskUnsafe")
 	public fun deleteMaintenanceTask(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteMaintenanceTasksUnsafe")
 	public fun deleteMaintenanceTasks(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteMaintenanceTaskById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteMaintenanceTasksByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeMaintenanceTaskById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs): Promise<DocIdentifierJs>
+
+	public fun deleteMaintenanceTasks(maintenanceTasks: Array<MaintenanceTaskJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeMaintenanceTask(maintenanceTask: MaintenanceTaskJs): Promise<Unit>
+
+	public fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs): Promise<MaintenanceTaskJs>
+
+	public fun undeleteMaintenanceTaskById(id: String, rev: String):
+			Promise<EncryptedMaintenanceTaskJs>
 
 	public fun modifyMaintenanceTask(entity: EncryptedMaintenanceTaskJs):
 			Promise<EncryptedMaintenanceTaskJs>

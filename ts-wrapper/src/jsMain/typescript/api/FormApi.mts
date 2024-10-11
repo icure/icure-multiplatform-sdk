@@ -4,6 +4,7 @@ import {FormShareOptions} from '../crypto/entities/FormShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {DecryptedForm, EncryptedForm, Form} from '../model/Form.mjs';
 import {FormTemplate} from '../model/FormTemplate.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -45,6 +46,18 @@ export interface FormApi {
 
 	deleteForms(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteFormById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteFormsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeFormById(id: string, rev: string): Promise<void>;
+
+	deleteForm(form: Form): Promise<DocIdentifier>;
+
+	deleteForms(forms: Array<Form>): Promise<Array<DocIdentifier>>;
+
+	purgeForm(form: Form): Promise<void>;
+
 	getFormTemplate(formTemplateId: string,
 			options?: { raw?: boolean | undefined }): Promise<FormTemplate>;
 
@@ -78,6 +91,10 @@ export interface FormApi {
 	filterFormsBySorted(filter: SortableFilterOptions<Form>): Promise<PaginatedListIterator<DecryptedForm>>;
 
 	modifyForm(entity: DecryptedForm): Promise<DecryptedForm>;
+
+	undeleteFormById(id: string, rev: string): Promise<DecryptedForm>;
+
+	undeleteForm(form: Form): Promise<DecryptedForm>;
 
 	modifyForms(entities: Array<DecryptedForm>): Promise<Array<DecryptedForm>>;
 

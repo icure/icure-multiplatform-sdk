@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -337,11 +338,64 @@ class RawPatientApiImpl(
 			setBody(patientIds)
 		}.wrap()
 
-	override suspend fun deletePatient(patientId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deletePatientsWithRev(patientIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientIds)
+		}.wrap()
+
+	override suspend fun deletePatient(
+		patientId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", patientId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeletePatient(
+		patientId: String,
+		rev: String,
+	): HttpResponse<EncryptedPatient> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "undelete", patientId)
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeletePatients(ids: ListOfIdsAndRev): HttpResponse<List<EncryptedPatient>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "undelete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(ids)
+		}.wrap()
+
+	override suspend fun purgePatient(
+		patientId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "purge", patientId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

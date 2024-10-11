@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -151,15 +152,6 @@ class RawDeviceApiImpl(
 			setBodyWithSerializer(DeviceAbstractFilterSerializer, filter)
 		}.wrap()
 
-	override suspend fun deleteDevice(deviceId: String): HttpResponse<DocIdentifier> =
-		delete(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "device", deviceId)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun deleteDevices(deviceIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 		post(authProvider) {
 			url {
@@ -169,6 +161,57 @@ class RawDeviceApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(deviceIds)
+		}.wrap()
+
+	override suspend fun deleteDevicesWithRev(deviceIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "device", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(deviceIds)
+		}.wrap()
+
+	override suspend fun deleteDevice(
+		deviceId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "device", deviceId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<Device> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "device", "undelete", deviceId)
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeDevice(
+		deviceId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "device", "purge", deviceId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
@@ -227,6 +270,20 @@ class RawDeviceApiImpl(
 				appendPathSegments("rest", "v2", "device", "inGroup", groupId, deviceIds)
 			}
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun deleteDevicesInGroupWithRev(
+		groupId: String,
+		deviceIds: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "device", "delete", "batch", "withrev", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(deviceIds)
 		}.wrap()
 
 	override suspend fun matchDevicesInGroupBy(

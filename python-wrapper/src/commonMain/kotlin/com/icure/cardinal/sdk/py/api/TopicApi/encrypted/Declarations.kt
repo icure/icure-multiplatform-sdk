@@ -33,6 +33,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -190,6 +191,41 @@ public fun filterTopicsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class UndeleteTopicParams(
+	public val topic: Topic,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteTopicBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTopicParams>(params)
+	runBlocking {
+		sdk.topic.encrypted.undeleteTopic(
+			decodedParams.topic,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Topic::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteTopicAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTopicParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.topic.encrypted.undeleteTopic(
+				decodedParams.topic,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Topic::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyTopicParams(
 	public val entity: EncryptedTopic,
 )
@@ -219,6 +255,45 @@ public fun modifyTopicAsync(
 		kotlin.runCatching {
 			sdk.topic.encrypted.modifyTopic(
 				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedTopic.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteTopicByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteTopicByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTopicByIdParams>(params)
+	runBlocking {
+		sdk.topic.encrypted.undeleteTopicById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(EncryptedTopic.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteTopicByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteTopicByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.topic.encrypted.undeleteTopicById(
+				decodedParams.id,
+				decodedParams.rev,
 			)
 		}.toPyStringAsyncCallback(EncryptedTopic.serializer(), resultCallback)
 	}

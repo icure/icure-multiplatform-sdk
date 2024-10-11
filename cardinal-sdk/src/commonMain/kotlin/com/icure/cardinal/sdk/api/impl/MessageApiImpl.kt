@@ -17,11 +17,14 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapMessageFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
+import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.MessagesReadStatusUpdate
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
@@ -51,6 +54,9 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	private val config: BasicApiConfiguration,
 ) :
 	MessageBasicFlavouredApi<E> {
+	override suspend fun undeleteMessageById(id: String, rev: String): E =
+		rawApi.undeleteMessage(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+
 	override suspend fun modifyMessage(entity: E): E =
 		rawApi.modifyMessage(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
 
@@ -194,8 +200,24 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 @InternalIcureApi
 private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, private val config: BasicApiConfiguration) :
 	MessageBasicFlavourlessApi {
-	override suspend fun deleteMessage(entityId: String) = rawApi.deleteMessage(entityId).successBody()
-	override suspend fun deleteMessages(entityIds: List<String>) = rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteMessage(entityId: String): DocIdentifier =
+		rawApi.deleteMessage(entityId).successBodyOrThrowRevisionConflict()
+
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteMessages(entityIds: List<String>): List<DocIdentifier> =
+		rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
+		
+	override suspend fun deleteMessageById(entityId: String, rev: String): DocIdentifier =
+		rawApi.deleteMessage(entityId, rev).successBodyOrThrowRevisionConflict()
+
+	override suspend fun deleteMessagesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+		rawApi.deleteMessagesWithRev(ListOfIdsAndRev(entityIds)).successBody()
+
+	override suspend fun purgeMessageById(id: String, rev: String) {
+		rawApi.purgeMessage(id, rev).successBodyOrThrowRevisionConflict()
+	}
 }
 
 @InternalIcureApi

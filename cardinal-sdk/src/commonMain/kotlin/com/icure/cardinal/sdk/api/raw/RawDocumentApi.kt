@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -29,7 +30,22 @@ public interface RawDocumentApi {
 
 	suspend fun deleteDocuments(documentIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteDocument(documentId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteDocumentsWithRev(documentIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteDocument(
+		documentId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<EncryptedDocument>
+
+	suspend fun purgeDocument(
+		documentId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getMainAttachment(
 		documentId: String,

@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -46,7 +47,22 @@ public interface RawFormApi {
 
 	suspend fun deleteForms(formIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteFormsWithRev(formIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteForm(
+		formId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<EncryptedForm>
+
+	suspend fun purgeForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyForms(formDtos: List<EncryptedForm>): HttpResponse<List<EncryptedForm>>
 

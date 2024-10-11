@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -76,7 +77,22 @@ public interface RawHealthcarePartyApi {
 
 	suspend fun deleteHealthcareParties(healthcarePartyIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteHealthcareParty(healthcarePartyId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteHealthcarePartiesWithRev(healthcarePartyIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteHealthcareParty(
+		healthcarePartyId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteHealthcareParty(
+		healthcarePartyId: String,
+		rev: String,
+	): HttpResponse<HealthcareParty>
+
+	suspend fun purgeHealthcareParty(
+		healthcarePartyId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyHealthcareParty(healthcarePartyDto: HealthcareParty): HttpResponse<HealthcareParty>
 
@@ -102,9 +118,15 @@ public interface RawHealthcarePartyApi {
 		healthcarePartyIds: ListOfIds,
 	): HttpResponse<List<DocIdentifier>>
 
+	suspend fun deleteHealthcarePartiesInGroupWithRev(
+		groupId: String,
+		healthcarePartyIds: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>>
+
 	suspend fun deleteHealthcarePartyInGroup(
 		healthcarePartyId: String,
 		groupId: String,
+		rev: String? = null,
 	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyHealthcarePartyInGroup(

@@ -2,6 +2,7 @@
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Contact, EncryptedContact} from '../model/Contact.mjs';
 import {IcureStub} from '../model/IcureStub.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {LabelledOccurence} from '../model/data/LabelledOccurence.mjs';
@@ -36,11 +37,27 @@ export interface ContactBasicApi {
 
 	deleteContacts(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	deleteContactById(entityId: string, rev: string): Promise<DocIdentifier>;
+
+	deleteContactsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+
+	purgeContactById(id: string, rev: string): Promise<void>;
+
+	deleteContact(contact: Contact): Promise<DocIdentifier>;
+
+	deleteContacts(contacts: Array<Contact>): Promise<Array<DocIdentifier>>;
+
+	purgeContact(contact: Contact): Promise<void>;
+
 	findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
 			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
 
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
+
+	undeleteContactById(id: string, rev: string): Promise<EncryptedContact>;
+
+	undeleteContact(contact: Contact): Promise<EncryptedContact>;
 
 	modifyContact(entity: EncryptedContact): Promise<EncryptedContact>;
 

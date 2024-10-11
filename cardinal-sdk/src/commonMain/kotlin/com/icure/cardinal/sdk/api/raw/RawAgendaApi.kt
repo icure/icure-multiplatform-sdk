@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.Agenda
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
@@ -25,7 +26,22 @@ public interface RawAgendaApi {
 
 	suspend fun deleteAgendas(agendaIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteAgenda(agendaId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteAgendasWithRev(agendaIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteAgenda(
+		agendaId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteAgenda(
+		agendaId: String,
+		rev: String,
+	): HttpResponse<Agenda>
+
+	suspend fun purgeAgenda(
+		agendaId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun getAgenda(agendaId: String): HttpResponse<Agenda>
 

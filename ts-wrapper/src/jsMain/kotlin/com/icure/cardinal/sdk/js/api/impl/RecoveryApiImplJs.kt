@@ -126,9 +126,9 @@ internal class RecoveryApiImplJs(
 		)
 	}
 
-	override fun deleteRecoveryInfo(recoveryKey: String): Promise<Unit> = GlobalScope.promise {
+	override fun purgeRecoveryInfo(recoveryKey: String): Promise<Unit> = GlobalScope.promise {
 		val recoveryKeyConverted: RecoveryDataKey = recoveryDataKey_fromJs(recoveryKey)
-		recoveryApi.deleteRecoveryInfo(
+		recoveryApi.purgeRecoveryInfo(
 			recoveryKeyConverted,
 		)
 

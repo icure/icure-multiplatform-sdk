@@ -23,6 +23,9 @@ import kotlin.js.Promise
 
 @JsName("UserApi")
 public external interface UserApiJs {
+	@JsName("deleteUserUnsafe")
+	public fun deleteUser(entityId: String): Promise<DocIdentifierJs>
+
 	public fun getCurrentUser(): Promise<UserJs>
 
 	public fun listUsersBy(options: dynamic): Promise<PaginatedListJs<UserJs>>
@@ -40,8 +43,6 @@ public external interface UserApiJs {
 	public fun findByHcpartyId(id: String): Promise<Array<String>>
 
 	public fun findByPatientId(id: String): Promise<Array<String>>
-
-	public fun deleteUser(userId: String): Promise<DocIdentifierJs>
 
 	public fun modifyUser(user: UserJs): Promise<UserJs>
 
@@ -76,19 +77,17 @@ public external interface UserApiJs {
 
 	public fun modifyUserInGroup(groupId: String, user: UserJs): Promise<UserJs>
 
-	public fun deleteUserInGroup(groupId: String, userId: String): Promise<DocIdentifierJs>
+	public fun setUserRoles(userId: String, rolesId: ListOfIdsJs): Promise<UserJs>
 
-	public fun addRolesToUser(userId: String, rolesId: ListOfIdsJs): Promise<UserJs>
-
-	public fun addRolesToUserInGroup(
+	public fun setUserRolesInGroup(
 		userId: String,
 		groupId: String,
 		rolesId: ListOfIdsJs,
 	): Promise<UserJs>
 
-	public fun removeRolesFromUser(userId: String): Promise<UserJs>
+	public fun resetUserRoles(userId: String): Promise<UserJs>
 
-	public fun removeRolesFromUserInGroup(userId: String, groupId: String): Promise<UserJs>
+	public fun resetUserRolesInGroup(userId: String, groupId: String): Promise<UserJs>
 
 	public fun getTokenInGroup(
 		groupId: String,
@@ -132,4 +131,24 @@ public external interface UserApiJs {
 	public fun createAdminUser(user: UserJs): Promise<UserJs>
 
 	public fun createAdminUserInGroup(groupId: String, user: UserJs): Promise<UserJs>
+
+	public fun deleteUserById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteUserInGroupById(
+		groupId: String,
+		entityId: String,
+		rev: String,
+	): Promise<DocIdentifierJs>
+
+	public fun purgeUserById(id: String, rev: String): Promise<Unit>
+
+	public fun undeleteUserById(id: String, rev: String): Promise<UserJs>
+
+	public fun deleteUser(user: UserJs): Promise<DocIdentifierJs>
+
+	public fun deleteUserInGroup(groupId: String, user: UserJs): Promise<DocIdentifierJs>
+
+	public fun purgeUser(user: UserJs): Promise<Unit>
+
+	public fun undeleteUser(user: UserJs): Promise<UserJs>
 }

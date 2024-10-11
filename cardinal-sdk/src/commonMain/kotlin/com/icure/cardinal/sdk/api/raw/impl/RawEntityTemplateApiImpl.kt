@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.model.EntityTemplate
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -167,11 +168,22 @@ class RawEntityTemplateApiImpl(
 			setBody(entityTemplateDtos)
 		}.wrap()
 
-	override suspend fun deleteEntityTemplate(entityTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
+	override suspend fun deleteEntityTemplates(entityTemplateIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "entitytemplate", "delete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(entityTemplateIds)
+		}.wrap()
+
+	override suspend fun deleteEntityTemplatesWithRev(entityTemplateIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "entitytemplate", "delete", "batch", "withrev")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)

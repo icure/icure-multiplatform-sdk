@@ -289,6 +289,83 @@ public fun filterCalendarItemsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class UndeleteCalendarItemByIdParams(
+	public val id: String,
+	public val rev: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteCalendarItemByIdBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteCalendarItemByIdParams>(params)
+	runBlocking {
+		sdk.calendarItem.tryAndRecover.undeleteCalendarItemById(
+			decodedParams.id,
+			decodedParams.rev,
+		)
+	}
+}.toPyString(PolymorphicSerializer(CalendarItem::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteCalendarItemByIdAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<UndeleteCalendarItemByIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.calendarItem.tryAndRecover.undeleteCalendarItemById(
+				decodedParams.id,
+				decodedParams.rev,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(CalendarItem::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class UndeleteCalendarItemParams(
+	public val calendarItem: CalendarItem,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun undeleteCalendarItemBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteCalendarItemParams>(params)
+	runBlocking {
+		sdk.calendarItem.tryAndRecover.undeleteCalendarItem(
+			decodedParams.calendarItem,
+		)
+	}
+}.toPyString(PolymorphicSerializer(CalendarItem::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun undeleteCalendarItemAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteCalendarItemParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.calendarItem.tryAndRecover.undeleteCalendarItem(
+				decodedParams.calendarItem,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(CalendarItem::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyCalendarItemParams(
 	public val entity: CalendarItem,
 )

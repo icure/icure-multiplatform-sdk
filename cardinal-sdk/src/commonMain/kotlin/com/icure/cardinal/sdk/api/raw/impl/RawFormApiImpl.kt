@@ -12,6 +12,7 @@ import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -162,11 +163,53 @@ class RawFormApiImpl(
 			setBody(formIds)
 		}.wrap()
 
-	override suspend fun deleteForm(formId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteFormsWithRev(formIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "form", "delete", "batch", "withrev")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(formIds)
+		}.wrap()
+
+	override suspend fun deleteForm(
+		formId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "form", formId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun undeleteForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<EncryptedForm> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "form", "undelete", formId)
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun purgeForm(
+		formId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "form", "purge", formId)
+				parameter("rev", rev)
 			}
 			accept(Application.Json)
 		}.wrap()

@@ -33,7 +33,11 @@ public external interface TimeTableFlavouredApiJs<E : TimeTableJs> {
 	public fun filterTimeTablesBySorted(filter: SortableFilterOptionsJs<TimeTableJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun undeleteTimeTable(timeTable: TimeTableJs): Promise<TimeTableJs>
+
 	public fun modifyTimeTable(entity: E): Promise<E>
+
+	public fun undeleteTimeTableById(id: String, rev: String): Promise<E>
 
 	public fun getTimeTable(entityId: String): Promise<E>
 

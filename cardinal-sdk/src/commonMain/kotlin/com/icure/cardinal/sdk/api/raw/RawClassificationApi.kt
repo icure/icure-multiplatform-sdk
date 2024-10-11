@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.EncryptedClassification
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
@@ -42,7 +43,22 @@ public interface RawClassificationApi {
 
 	suspend fun deleteClassifications(classificationIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteClassification(classificationId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteClassificationsWithRev(classificationIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deleteClassification(
+		classificationId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
+
+	suspend fun undeleteClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<EncryptedClassification>
+
+	suspend fun purgeClassification(
+		classificationId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
 	suspend fun modifyClassification(classificationDto: EncryptedClassification): HttpResponse<EncryptedClassification>
 

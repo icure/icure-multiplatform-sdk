@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import tasks.InitializeTestEnvironment
 
 plugins {
@@ -6,14 +7,18 @@ plugins {
 	kotestMultiplatform()
 	androidLibrary()
 	id("maven-publish")
-	id("com.google.devtools.ksp") version "2.0.20-Beta1-1.0.22"
+	signing
+	id("com.vanniktech.maven.publish") version "0.28.0"
+	id("com.google.devtools.ksp") version "2.0.21-RC-1.0.25"
 }
 
 val repoUsername: String by project
 val repoPassword: String by project
 val mavenReleasesRepository: String by project
 
-val version = "2.0.50.alpha1"
+group = "com.icure"
+
+val version = "1.0.0-RC.1"
 project.version = version ?: "0.0.0-snapshot"
 
 kotlin {
@@ -30,6 +35,7 @@ kotlin {
 				api(libs.kotlinDateTime)
 				implementation(libs.kermit)
 				api(libs.kryptom)
+				api(libs.kerberus)
 				implementation(libs.coroutinesCore)
 				implementation(libs.okio)
 				implementation(kotlin("reflect"))
@@ -93,7 +99,7 @@ kotlin {
 }
 
 android {
-	namespace = "com.icure.sdk"
+	namespace = "com.icure.cardinal.sdk"
 	configureAndroidLibrary()
 }
 
@@ -144,3 +150,63 @@ tasks.named("jvmTest") {
 
 tasks.named("jsNodeDevelopmentRun") { dependsOn("jsProductionExecutableCompileSync") }
 tasks.named("jsNodeProductionRun") { dependsOn("jsProductionExecutableCompileSync") }
+
+fun projectHasSignatureProperties() =
+	project.hasProperty("signing.keyId") && project.hasProperty("signing.secretKeyRingFile") && project.hasProperty("signing.password")
+
+if (projectHasSignatureProperties()) {
+	signing {
+		useInMemoryPgpKeys(
+			file(project.property("signing.secretKeyRingFile") as String).readText(),
+			project.property("signing.password") as String
+		)
+		sign(publishing.publications)
+	}
+}
+
+mavenPublishing {
+	coordinates(group as String, project.name, project.version as String)
+
+	pom {
+		name.set("CardinalSDK")
+		url.set("https://github.com/icure/icure-multiplatform-sdk")
+		description.set("""
+			Cardinal SDK is a multiplatform SDK for the iCure platform.
+		""".trimIndent())
+
+		licenses {
+			license {
+				name.set("MIT License")
+				url.set("https://choosealicense.com/licenses/mit/")
+				distribution.set("https://choosealicense.com/licenses/mit/")
+			}
+		}
+		developers {
+			developer {
+				id.set("icure")
+				name.set("iCure")
+				url.set("https://github.com/iCure/")
+			}
+		}
+		scm {
+			url.set("https://github.com/icure/icure-multiplatform-sdk")
+			connection.set("scm:git:git://github.com/icure/icure-multiplatform-sdk.git")
+			developerConnection.set("scm:git:ssh://git@github.com:icure/icure-multiplatform-sdk.git")
+		}
+	}
+
+	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
+
+	if (projectHasSignatureProperties()) {
+		signAllPublications()
+	}
+}
+
+// Configure all publishing tasks
+if (!projectHasSignatureProperties()) {
+	tasks.withType<PublishToMavenRepository> {
+		doFirst {
+			throw IllegalStateException("Cannot publish to Maven Central without signing properties")
+		}
+	}
+}

@@ -8,11 +8,13 @@ import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.HealthElementJs
 import com.icure.cardinal.sdk.js.model.IcureStubJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
+import kotlin.Unit
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 import kotlin.js.Promise
@@ -31,12 +33,32 @@ public external interface HealthElementBasicApiJs {
 	public fun filterHealthElementsBySorted(filter: BaseSortableFilterOptionsJs<HealthElementJs>):
 			Promise<PaginatedListIteratorJs<EncryptedHealthElementJs>>
 
+	@JsName("deleteHealthElementUnsafe")
 	public fun deleteHealthElement(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteHealthElementsUnsafe")
 	public fun deleteHealthElements(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteHealthElementById(entityId: String, rev: String?): Promise<DocIdentifierJs>
+
+	public fun deleteHealthElementsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeHealthElementById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteHealthElement(healthElement: HealthElementJs): Promise<DocIdentifierJs>
+
+	public fun deleteHealthElements(healthElements: Array<HealthElementJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeHealthElement(healthElement: HealthElementJs): Promise<Unit>
 
 	public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
 			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>>
+
+	public fun undeleteHealthElementById(id: String, rev: String): Promise<EncryptedHealthElementJs>
+
+	public fun undeleteHealthElement(healthElement: HealthElementJs): Promise<EncryptedHealthElementJs>
 
 	public fun modifyHealthElement(entity: EncryptedHealthElementJs): Promise<EncryptedHealthElementJs>
 

@@ -40,6 +40,10 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 	public fun filterDocumentsBySorted(filter: SortableFilterOptionsJs<DocumentJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun undeleteDocumentById(id: String, rev: String): Promise<E>
+
+	public fun undeleteDocument(document: DocumentJs): Promise<E>
+
 	public fun modifyDocument(entity: E): Promise<E>
 
 	public fun getDocument(entityId: String): Promise<E>

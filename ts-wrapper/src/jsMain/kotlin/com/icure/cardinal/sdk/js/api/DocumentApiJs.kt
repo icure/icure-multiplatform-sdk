@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
+import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
@@ -92,9 +93,24 @@ public external interface DocumentApiJs {
 	public fun matchDocumentsBySorted(filter: SortableFilterOptionsJs<DocumentJs>):
 			Promise<Array<String>>
 
+	@JsName("deleteDocumentUnsafe")
 	public fun deleteDocument(entityId: String): Promise<DocIdentifierJs>
 
+	@JsName("deleteDocumentsUnsafe")
 	public fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+
+	public fun deleteDocumentById(entityId: String, rev: String): Promise<DocIdentifierJs>
+
+	public fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+			Promise<Array<DocIdentifierJs>>
+
+	public fun purgeDocumentById(id: String, rev: String): Promise<Unit>
+
+	public fun deleteDocument(document: DocumentJs): Promise<DocIdentifierJs>
+
+	public fun deleteDocuments(documents: Array<DocumentJs>): Promise<Array<DocIdentifierJs>>
+
+	public fun purgeDocument(document: DocumentJs): Promise<Unit>
 
 	public fun getRawMainAttachment(documentId: String): Promise<ByteArray>
 
@@ -149,6 +165,10 @@ public external interface DocumentApiJs {
 
 	public fun filterDocumentsBySorted(filter: SortableFilterOptionsJs<DocumentJs>):
 			Promise<PaginatedListIteratorJs<DecryptedDocumentJs>>
+
+	public fun undeleteDocumentById(id: String, rev: String): Promise<DecryptedDocumentJs>
+
+	public fun undeleteDocument(document: DocumentJs): Promise<DecryptedDocumentJs>
 
 	public fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs>
 

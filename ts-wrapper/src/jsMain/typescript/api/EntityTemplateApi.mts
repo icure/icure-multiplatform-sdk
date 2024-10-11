@@ -1,5 +1,6 @@
 // auto-generated file
 import {EntityTemplate} from '../model/EntityTemplate.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 
@@ -29,6 +30,6 @@ export interface EntityTemplateApi {
 
 	createEntityTemplates(entityTemplates: Array<EntityTemplate>): Promise<Array<EntityTemplate>>;
 
-	deleteEntityTemplate(entityTemplateIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteEntityTemplates(entityTemplateIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
 
 }

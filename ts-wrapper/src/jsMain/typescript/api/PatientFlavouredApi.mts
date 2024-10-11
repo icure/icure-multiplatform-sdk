@@ -1,6 +1,7 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {PatientShareOptions} from '../crypto/entities/PatientShareOptions.mjs';
+import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {EncryptedPatient, Patient} from '../model/Patient.mjs';
@@ -20,7 +21,13 @@ export interface PatientFlavouredApi<E extends Patient> {
 
 	filterPatientsBySorted(filter: SortableFilterOptions<Patient>): Promise<PaginatedListIterator<E>>;
 
+	undeletePatient(patient: Patient): Promise<Patient>;
+
 	modifyPatient(entity: E): Promise<E>;
+
+	undeletePatientById(id: string, rev: string): Promise<E>;
+
+	undeletePatients(ids: Array<IdWithMandatoryRev>): Promise<Array<E>>;
 
 	getPatient(entityId: string): Promise<E>;
 
