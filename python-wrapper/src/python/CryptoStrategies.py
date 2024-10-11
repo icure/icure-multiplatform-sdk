@@ -1,56 +1,13 @@
 import base64
 import json
 from dataclasses import dataclass
-from enum import Enum
-from cardinal_sdk.model import serialize_data_owner_with_type, deserialize_data_owner_with_type, CryptoActorStubWithType, DataOwnerWithType, RecoveryDataUseFailureReason, deserialize_recovery_result, RecoveryResultFailure
-from cardinal_sdk.model.specializations import SpkiHexString, KeypairFingerprintV1String
+from cardinal_sdk.model import deserialize_data_owner_with_type, CryptoActorStubWithType, DataOwnerWithType
 from cardinal_sdk.model.SingletonMeta import SingletonMeta
-from cardinal_sdk.model.CallResult import create_result_from_json
-from typing import Dict, List, Union, Callable, Optional
+from typing import Dict, List, Union, Optional
 from abc import ABC, abstractmethod
 from ctypes import c_void_p, CFUNCTYPE, c_char_p, cast
 import traceback
 from cardinal_sdk.kotlin_types import symbols
-
-
-@dataclass
-class KeyDataRecoveryRequest:
-    """
-    A request to recover key data that was not found for a user.
-
-    Args:
-        data_owner_details (DataOwnerWithType): The data owner for which the key data should be recovered.
-        unknown_keys (List[SpkiHexString]): ll public keys (in hex-encoded spki format) of `dataOwner` for which the
-            authenticity status (verified or unverified) is unknown (no result was cached from a previous api
-            instantiation and the key was not generated on the current device). This could include keys that were
-            recovered automatically by the sdk and may have overlap with `unavailableKeys`.
-        unavailable_keys (List[SpkiHexString]): All public keys (in hex-encoded spki format) of `dataOwner` for which
-            the sdk could not recover a private key. May overlap (partially or completely) with `unknownKeys`.
-    """
-    data_owner_details: DataOwnerWithType
-    unknown_keys: List[SpkiHexString]
-    unavailable_keys: List[SpkiHexString]
-
-    def __serialize__(self) -> object:
-        return {
-            "dataOwnerDetails": serialize_data_owner_with_type(self.data_owner_details),
-            "unknownKeys": self.unknown_keys,
-            "unavailableKeys": self.unavailable_keys
-        }
-
-    @classmethod
-    def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'KeyDataRecoveryRequest':
-        deserialized_dict: dict[str, object]
-        if isinstance(data, str):
-            deserialized_dict = json.loads(data)
-        else:
-            deserialized_dict = data
-        return cls(
-            data_owner_details=deserialize_data_owner_with_type(deserialized_dict["dataOwnerDetails"]),
-            unknown_keys=deserialized_dict["unknownKeys"],
-            unavailable_keys=deserialized_dict["unavailableKeys"]
-        )
-
 
 """
 Specifies how the SDK should behave when a new key pair is required for a data owner.
@@ -147,120 +104,10 @@ def deserialize_key_generation_request_result(data: Union[str, Dict[str, object]
     else:
         raise Exception(f"{qualifier} is not a known subclass of DataOwnerWithType")
 
-
-class RsaEncryptionAlgorithm(Enum):
-    """
-    Represents the encryption algorith used to generate the ExportedKeyData.
-    """
-
-    OaepWithSha1 = "OaepWithSha1"
-    OaepWithSha256 = "OaepWithSha256"
-
-    def __serialize__(self) -> object:
-        return self.value
-
-    @classmethod
-    def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RsaEncryptionAlgorithm':
-        if data == "OaepWithSha1":
-            return RsaEncryptionAlgorithm.OaepWithSha1
-        elif data == "OaepWithSha256":
-            return RsaEncryptionAlgorithm.OaepWithSha256
-        else:
-            raise Exception(f"{data} is not a valid value for RsaEncryptionAlgorithm enum.")
-
-
-@dataclass
-class ExportedKeyData:
-    """
-    Represents a private key with the algorithm used to generate it.
-    """
-    private_key_pkcs8: bytearray
-    algorithm: RsaEncryptionAlgorithm
-
-    def __serialize__(self) -> object:
-        return {
-            "private": base64.b64encode(self.private_key_pkcs8).decode('utf-8'),
-            "algorithm": self.algorithm.__serialize__()
-        }
-
-    @classmethod
-    def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExportedKeyData':
-        deserialized_dict: dict[str, object]
-        if isinstance(data, str):
-            deserialized_dict = json.loads(data)
-        else:
-            deserialized_dict = data
-        return cls(
-            private_key_pkcs8=bytearray(base64.b64decode(deserialized_dict["private"])),
-            algorithm=RsaEncryptionAlgorithm._deserialize(deserialized_dict["algorithm"])
-        )
-
-
-@dataclass
-class RecoveredKeyData:
-    """
-    Data recovered for a data owner.
-
-    Args:
-        recovered_keys (Dict[KeypairFingerprintV1String, RsaKeyPair]): All keys recovered for the data owner (will be
-            automatically considered as verified), by fingerprint.
-        key_authenticity (Dict[KeypairFingerprintV1String, bool]): associates each public key fingerprint its
-            authenticity. Note that if any of the keys from `unknownKeys` is completely missing from this object the
-            key will be considered as unverified in this api instance (same as if associated to false), but this value
-            won't be cached (will be again part of `unknownKeys` in future instances.
-    """
-    recovered_keys: Dict[KeypairFingerprintV1String, ExportedKeyData]
-    key_authenticity: Dict[KeypairFingerprintV1String, bool]
-
-    def __serialize__(self) -> object:
-        return {
-            "recoveredKeys": {k: v.__serialize__() for k, v in self.recovered_keys.items()},
-            "keyAuthenticity": self.key_authenticity
-        }
-
-    @classmethod
-    def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RecoveredKeyData':
-        deserialized_dict: dict[str, object]
-        if isinstance(data, str):
-            deserialized_dict = json.loads(data)
-        else:
-            deserialized_dict = data
-        return cls(
-            recovered_keys={k: ExportedKeyData._deserialize(v) for k, v in deserialized_dict["recoveredKeys"].items()},
-            key_authenticity=deserialized_dict["keyAuthenticity"]
-        )
-
 class CryptoStrategies(ABC):
     """
     Allows to customise the behaviour of the iCure SDK when performing cryptographic operations.
     """
-
-    @abstractmethod
-    def recover_and_verify_self_hierarchy_keys(
-            self,
-            keys_data: List[KeyDataRecoveryRequest],
-            recover_with_icure_recovery_key: Callable[[str, bool], Union[Dict[str, Dict[str, ExportedKeyData]], RecoveryDataUseFailureReason]]
-    ) -> Dict[str, RecoveredKeyData]:
-        """
-        Method called during initialisation of the crypto API to validate keys recovered through iCure's recovery methods and/or to allow recovery of
-        missing keys using means external to iCure.
-        On startup the iCure sdk will try to load all keys for the current data owner and its parent hierarchy: if the sdk can't find some of the keys
-        for any of the data owners (according to the public keys for the data owner in the iCure server) and/or the sdk could recover some private keys
-        but can't verify the authenticity of the key pairs this method will be called.
-        The recovered and verified keys will automatically be cached using the current api {@link KeyStorageFacade} and {@link StorageFacade}
-
-        The input is a list containing an object for each data owner part of the current data owner hierarchy. The objects are ordered from the data
-        for the topmost parent of the current data owner hierarchy (first element) to the data for the current data owner (last element).
-
-        :param keys_data all information on unknown and unavailable keys for each data owner part of the current data owner hierarchy.
-        :param recover_with_icure_recovery_key allows to recover keypairs that were previously created using the RecoveryApi. This function
-        takes in input the recovery key and if the corresponding recovery data should be deleted in case of successful recovery.
-        In output in case of success this returns a dict data_owner_id (self or parent) -> public key spki hex -> corresponding key pair details.
-        In case of recovery failure the output is the reason of the failure.
-        :return a map that associates to each given data owner id the recovered data.
-        """
-        pass
-
     @abstractmethod
     def generate_new_key_for_data_owner(
             self,
@@ -327,38 +174,6 @@ class _CryptoStrategiesBridge:
         if self.__kt_crypto_strategies is not None:
             symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.disposeStablePtr(self.__kt_crypto_strategies)
 
-    def recover_and_verify_self_hierarchy_keys(self, result_holder, keys_data, key_pair_recoverer):
-        try:
-            keys_data_json = json.loads(cast(keys_data, c_char_p).value.decode('utf-8'))
-            def use_key_pair_recover(recovery_key, auto_delete):
-                result_bytes = symbols.kotlin.root.com.icure.cardinal.sdk.py.PyCryptoStrategies.recoverWithRecoveryKey(
-                    key_pair_recoverer,
-                    recovery_key.encode('utf-8'),
-                    auto_delete
-                )
-                result = create_result_from_json(cast(result_bytes, c_char_p).value.decode('utf-8'))
-                symbols.DisposeString(result_bytes)
-                if result.failure is not None:
-                    raise Exception(result.failure)
-                recovery_result = deserialize_recovery_result(result.success)
-                if isinstance(recovery_result, RecoveryResultFailure):
-                    return recovery_result.reason
-                return {
-                    k: {
-                        k1: ExportedKeyData._deserialize(v1) for k1, v1 in v.items()
-                    } for k, v in recovery_result.data.items()
-                }
-            result = self.__py_strategies.recover_and_verify_self_hierarchy_keys(
-                [KeyDataRecoveryRequest._deserialize(x) for x in keys_data_json],
-                use_key_pair_recover
-            )
-            result_json = {
-                k: v.__serialize__() for k, v in result.items()
-            }
-            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result_json).encode('utf-8'))
-        except:
-            symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
-
     def generate_new_key_for_data_owner(self, result_holder, self_data_owner):
         try:
             result = self.__py_strategies.generate_new_key_for_data_owner(
@@ -390,12 +205,10 @@ class _CryptoStrategiesBridge:
 
     def get_kt(self) -> c_void_p:
         if self.__kt_crypto_strategies is None:
-            self.__CALLBACK_RecoverAndVerifySelfHierarchyKeys = _C_RecoverAndVerifySelfHierarchyKeys(self.recover_and_verify_self_hierarchy_keys)
             self.__CALLBACK_GenerateNewKeyForDataOwner = _C_GenerateNewKeyForDataOwner(self.generate_new_key_for_data_owner)
             self.__CALLBACK_VerifyDelegatePublicKeys = _C_VerifyDelegatePublicKeys(self.verify_delegate_public_keys)
             self.__CALLBACK_DataOwnerRequiresAnonymousDelegation = _C_DataOwnerRequiresAnonymousDelegation(self.data_owner_requires_anonymous_delegation)
             self.__kt_crypto_strategies = symbols.kotlin.root.com.icure.cardinal.sdk.py.PyCryptoStrategies.create(
-                self.__CALLBACK_RecoverAndVerifySelfHierarchyKeys,
                 self.__CALLBACK_GenerateNewKeyForDataOwner,
                 self.__CALLBACK_VerifyDelegatePublicKeys,
                 self.__CALLBACK_DataOwnerRequiresAnonymousDelegation,
