@@ -57,6 +57,7 @@ import {TimeTableBasicApi} from "../api/TimeTableBasicApi.mjs";
 import {TopicBasicApi} from "../api/TopicBasicApi.mjs";
 import {AgendaApi} from "../api/AgendaApi.mjs";
 import {MedicalLocationApi} from "../api/MedicalLocationApi.mjs";
+import {CaptchaOptions} from "../auth/CaptchaOptions.mjs";
 
 export interface CardinalApis {
   readonly applicationSettings: ApplicationSettingsApi
@@ -208,9 +209,7 @@ export namespace CardinalSdk {
    * @param userTelecomType the type of telecom number used for the user.
    * @param userTelecom the telecom number of the user for which you want to execute the process. This should be an
    * email address or phone number depending on the type of process you are executing.
-   * @param captchaType the type of captcha you use with your processes.
-   * @param captchaKey the key obtained by resolving the captcha. Used to prevent abuse of the message gateway and
-   * connected external services.
+   * @param captchaOptions the captcha options
    * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
    * information including the user keys if [ApiOptions.keyStorage] is not provided.
    * @param authenticationProcessTemplateParameters optional parameters which may be used by sms/email templates.
@@ -224,8 +223,7 @@ export namespace CardinalSdk {
     processId: string,
     userTelecomType: AuthenticationProcessTelecomType,
     userTelecom: string,
-    captchaType: AuthenticationProcessCaptchaType,
-    captchaKey: string,
+    captchaOptions: CaptchaOptions,
     baseStorage: StorageFacade | CardinalStorageOptions,
     authenticationProcessTemplateParameters?: AuthenticationProcessTemplateParameters,
     options?: SdkOptions
@@ -238,8 +236,7 @@ export namespace CardinalSdk {
       processId,
       userTelecomType,
       userTelecom,
-      captchaType,
-      captchaKey,
+      captchaOptions,
       baseStorage,
       authenticationProcessTemplateParameters,
       options,

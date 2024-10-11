@@ -1,6 +1,7 @@
 @file:JsQualifier("options")
 package com.icure.cardinal.sdk.js.options.external
 
+import com.icure.cardinal.sdk.js.auth.CaptchaOptionsJs
 import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesJs
 import com.icure.cardinal.sdk.js.model.UserGroupJs
 import com.icure.cardinal.sdk.js.storage.KeyStorageFacadeJs
@@ -50,8 +51,7 @@ external interface AuthenticationProcessApiJs {
 		processId: String,
 		userTelecomType: String,
 		userTelecom: String,
-		captchaType: String,
-		captchaKey: String,
+		captchaOptions: CaptchaOptionsJs,
 		processTemplateParameters: AuthenticationProcessTemplateParametersJs?
 	): Promise<AuthenticationProcessRequestJs>
 }

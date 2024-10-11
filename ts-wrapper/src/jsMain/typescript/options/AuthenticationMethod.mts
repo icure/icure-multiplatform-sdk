@@ -1,4 +1,5 @@
 import {AuthenticationClass} from "../model/embed/AuthenticationClass.mjs";
+import {CaptchaOptions} from "../auth/CaptchaOptions.mjs";
 
 export enum ThirdPartyProvider {
   GOOGLE = "GOOGLE"
@@ -267,9 +268,7 @@ export interface AuthenticationProcessApi {
    * @param userTelecomType the type of telecom number used for the user.
    * @param userTelecom the telecom number of the user for which you want to execute the process. This should be an
    * email address or phone number depending on the type of process you are executing.
-   * @param captchaType the type of captcha you use with your processes.
-   * @param captchaKey the key obtained by resolving the captcha. Used to prevent abuse of the message gateway and
-   * connected external services.
+   * @param captchaOptions the captcha solution
    * @param processTemplateParameters additional parameters needed by some process templates.
    */
   executeProcess(
@@ -278,8 +277,7 @@ export interface AuthenticationProcessApi {
     processId: string,
     userTelecomType: AuthenticationProcessTelecomType,
     userTelecom: string,
-    captchaType: AuthenticationProcessCaptchaType,
-    captchaKey: string,
+    captchaOptions: CaptchaOptions,
     processTemplateParameters?: AuthenticationProcessTemplateParameters
   ): Promise<AuthenticationProcessRequest>
 }

@@ -4,8 +4,8 @@ import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.CaptchaOptions
 import com.icure.cardinal.sdk.auth.CaptchaOptions.*
 import com.icure.cardinal.sdk.utils.Serialization
-import com.icure.keberus.Challenge
-import com.icure.keberus.resolveChallenge
+import com.icure.kerberus.Challenge
+import com.icure.kerberus.resolveChallenge
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
