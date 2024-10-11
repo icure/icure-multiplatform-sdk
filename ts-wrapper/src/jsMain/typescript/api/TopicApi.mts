@@ -43,9 +43,9 @@ export interface TopicApi {
 
 	matchTopicsBySorted(filter: SortableFilterOptions<Topic>): Promise<Array<string>>;
 
-	deleteTopic(entityId: string): Promise<DocIdentifier>;
+	deleteTopicUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteTopicsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteTopicById(entityId: string, rev: string): Promise<DocIdentifier>;
 

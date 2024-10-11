@@ -105,15 +105,15 @@ internal class TopicBasicApiImplJs(
 		)
 	}
 
-	override fun deleteTopic(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteTopicUnsafe(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = topicBasicApi.deleteTopic(
+		val result = topicBasicApi.deleteTopicUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteTopics(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteTopicsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -122,7 +122,7 @@ internal class TopicBasicApiImplJs(
 				x1
 			},
 		)
-		val result = topicBasicApi.deleteTopics(
+		val result = topicBasicApi.deleteTopicsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

@@ -196,7 +196,7 @@ public fun deleteTimeTableUnsafeBlocking(sdk: CardinalBaseApis, params: String):
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableUnsafeParams>(params)
 	runBlocking {
-		sdk.timeTable.deleteTimeTable(
+		sdk.timeTable.deleteTimeTableUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -215,7 +215,7 @@ public fun deleteTimeTableUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTableUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.timeTable.deleteTimeTable(
+			sdk.timeTable.deleteTimeTableUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -232,7 +232,7 @@ public fun deleteTimeTablesUnsafeBlocking(sdk: CardinalBaseApis, params: String)
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesUnsafeParams>(params)
 	runBlocking {
-		sdk.timeTable.deleteTimeTables(
+		sdk.timeTable.deleteTimeTablesUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -251,7 +251,7 @@ public fun deleteTimeTablesUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTimeTablesUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.timeTable.deleteTimeTables(
+			sdk.timeTable.deleteTimeTablesUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

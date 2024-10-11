@@ -112,11 +112,11 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 	TopicBasicFlavourlessApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteTopic(entityId: String): DocIdentifier =
+	override suspend fun deleteTopicUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteTopic(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteTopics(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteTopicsUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
 		
 	override suspend fun deleteTopicById(entityId: String, rev: String): DocIdentifier =

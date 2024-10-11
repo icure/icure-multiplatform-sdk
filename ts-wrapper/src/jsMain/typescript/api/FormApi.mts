@@ -42,9 +42,9 @@ export interface FormApi {
 
 	matchFormsBySorted(filter: SortableFilterOptions<Form>): Promise<Array<string>>;
 
-	deleteForm(entityId: string): Promise<DocIdentifier>;
+	deleteFormUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteForms(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteFormsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteFormById(entityId: string, rev: string): Promise<DocIdentifier>;
 

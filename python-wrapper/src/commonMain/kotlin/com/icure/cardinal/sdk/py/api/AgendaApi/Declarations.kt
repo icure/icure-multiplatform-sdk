@@ -122,7 +122,7 @@ public fun deleteAgendaUnsafeBlocking(sdk: CardinalNonCryptoApis, params: String
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAgendaUnsafeParams>(params)
 	runBlocking {
-		sdk.agenda.deleteAgenda(
+		sdk.agenda.deleteAgendaUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -141,7 +141,7 @@ public fun deleteAgendaUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAgendaUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.agenda.deleteAgenda(
+			sdk.agenda.deleteAgendaUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -158,7 +158,7 @@ public fun deleteAgendasUnsafeBlocking(sdk: CardinalNonCryptoApis, params: Strin
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAgendasUnsafeParams>(params)
 	runBlocking {
-		sdk.agenda.deleteAgendas(
+		sdk.agenda.deleteAgendasUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -177,7 +177,7 @@ public fun deleteAgendasUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAgendasUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.agenda.deleteAgendas(
+			sdk.agenda.deleteAgendasUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

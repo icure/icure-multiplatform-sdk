@@ -1,5 +1,5 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {ListOfIds} from '../model/ListOfIds.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {EncryptedPropertyStub} from '../model/PropertyStub.mjs';
@@ -8,11 +8,14 @@ import {UserGroup} from '../model/UserGroup.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {Enable2faRequest} from '../model/security/Enable2faRequest.mjs';
 import {TokenWithGroup} from '../model/security/TokenWithGroup.mjs';
+import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
 
 
 export interface UserApi {
 
-	deleteUser(entityId: string): Promise<DocIdentifier>;
+	deleteUserUnsafe(entityId: string): Promise<DocIdentifier>;
 
 	getCurrentUser(): Promise<User>;
 
@@ -113,5 +116,8 @@ export interface UserApi {
 	purgeUser(user: User): Promise<void>;
 
 	undeleteUser(user: User): Promise<User>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<User>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<User>>;
 
 }

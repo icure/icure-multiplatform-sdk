@@ -1,11 +1,6 @@
-// auto-generated file
 @file:JsQualifier("model")
 
 package com.icure.cardinal.sdk.js.model.sdk
-
-import kotlin.String
-import kotlin.js.JsName
-import kotlin.js.JsQualifier
 
 @JsName("KeyPairUpdateNotification")
 public external class KeyPairUpdateNotificationJs(

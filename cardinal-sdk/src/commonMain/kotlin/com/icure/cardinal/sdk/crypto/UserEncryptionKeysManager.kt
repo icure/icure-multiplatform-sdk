@@ -29,7 +29,7 @@ interface UserEncryptionKeysManager {
 			/**
 			 * If the initialisation required a new key to be created, the newly created key, else undefined.
 			 */
-			val newKey: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>?
+			val newKey: CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>>?
 		)
 
 		/**

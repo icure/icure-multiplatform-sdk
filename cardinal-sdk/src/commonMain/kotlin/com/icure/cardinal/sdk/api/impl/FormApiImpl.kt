@@ -145,11 +145,11 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasicFlavourlessApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteForm(entityId: String): DocIdentifier =
+	override suspend fun deleteFormUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteForm(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteForms(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteFormsUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteForms(ListOfIds(entityIds)).successBody()
 	
 	override suspend fun deleteFormById(entityId: String, rev: String): DocIdentifier =

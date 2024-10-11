@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -56,11 +57,9 @@ public external interface CalendarItemApiJs {
 	public fun matchCalendarItemsBySorted(filter: SortableFilterOptionsJs<CalendarItemJs>):
 			Promise<Array<String>>
 
-	@JsName("deleteCalendarItemUnsafe")
-	public fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteCalendarItemUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteCalendarItemsUnsafe")
-	public fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteCalendarItemsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteCalendarItemById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
@@ -131,4 +130,10 @@ public external interface CalendarItemApiJs {
 		startDocumentId: String?,
 		limit: Double,
 	): Promise<PaginatedListJs<DecryptedCalendarItemJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<CalendarItemJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedCalendarItemJs>>
 }

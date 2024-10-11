@@ -1,6 +1,6 @@
 # auto-generated file
 import platform
-from ctypes import c_void_p, Structure, CFUNCTYPE, c_char_p, c_bool, c_int32, POINTER
+from ctypes import c_void_p, Structure, CFUNCTYPE, c_char_p, c_int32, POINTER
 from cardinal_sdk.kotlin_dll_loader import kdll
 
 class AnyKtRef(Structure):
@@ -29,8 +29,7 @@ class BaseSdkInitializationResult(Structure):
 
 class PyCryptoStrategies(Structure):
 	_fields_ = [
-		("create", CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p, c_void_p)),
-		("recoverWithRecoveryKey", CFUNCTYPE(c_void_p, c_void_p, c_char_p, c_bool)),
+		("create", CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p)),
 	]
 
 class PyStorage(Structure):
@@ -390,6 +389,8 @@ class CalendarItemApi(Structure):
 		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("subscribeToEventsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
+		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("undeleteCalendarItemAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -438,20 +439,12 @@ class CalendarItemBasicApi(Structure):
 		("purgeCalendarItemBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("purgeCalendarItemByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("purgeCalendarItemByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("subscribeToEventsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
+		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("undeleteCalendarItemAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteCalendarItemBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("undeleteCalendarItemByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteCalendarItemByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-	]
-
-class CardinalMaintenanceTaskApi(Structure):
-	_fields_ = [
-		("applyKeyPairUpdateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("applyKeyPairUpdateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createKeyPairUpdateNotificationToAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createKeyPairUpdateNotificationToBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class encrypted(Structure):
@@ -912,6 +905,8 @@ class shamirKeysManager(Structure):
 class CryptoApi(Structure):
 	_fields_ = [
 		("shamirKeysManager", shamirKeysManager),
+		("currentDataOwnerKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("currentDataOwnerKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("forceReloadAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
 		("forceReloadBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
 	]
@@ -987,6 +982,8 @@ class DeviceApi(Structure):
 		("purgeDeviceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("purgeDeviceByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("purgeDeviceByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("subscribeToEventsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
+		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("undeleteDeviceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteDeviceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("undeleteDeviceByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1840,6 +1837,8 @@ class HealthcarePartyApi(Structure):
 		("purgeHealthcarePartyByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("registerPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("registerPatientBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("subscribeToEventsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
+		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("undeleteHealthcarePartyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteHealthcarePartyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("undeleteHealthcarePartyByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2990,22 +2989,14 @@ class ReceiptBasicApi(Structure):
 
 class RecoveryApi(Structure):
 	_fields_ = [
-		("createExchangeDataRecoveryInfoAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createExchangeDataRecoveryInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createRecoveryInfoForAvailableKeyPairsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createRecoveryInfoForAvailableKeyPairsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteAllExchangeDataRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteAllExchangeDataRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteAllKeyPairRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteAllKeyPairRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteAllRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteAllRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("purgeAllExchangeDataRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("purgeAllExchangeDataRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("purgeAllKeyPairRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("purgeAllKeyPairRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("purgeAllRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("purgeAllRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("purgeRecoveryInfoAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("purgeRecoveryInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("recoverExchangeDataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("recoverExchangeDataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("recoverKeyPairsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("recoverKeyPairsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class RoleApi(Structure):
@@ -3480,6 +3471,8 @@ class UserApi(Structure):
 		("setUserRolesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("setUserRolesInGroupAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("setUserRolesInGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("subscribeToEventsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
+		("subscribeToEventsBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("undeleteUserAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteUserBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("undeleteUserByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3494,7 +3487,6 @@ class api(Structure):
 		("ApplicationSettingsApi", ApplicationSettingsApi),
 		("CalendarItemApi", CalendarItemApi),
 		("CalendarItemBasicApi", CalendarItemBasicApi),
-		("CardinalMaintenanceTaskApi", CardinalMaintenanceTaskApi),
 		("ClassificationApi", ClassificationApi),
 		("ClassificationBasicApi", ClassificationBasicApi),
 		("CodeApi", CodeApi),

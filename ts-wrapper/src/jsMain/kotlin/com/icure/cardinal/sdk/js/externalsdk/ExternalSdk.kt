@@ -54,8 +54,8 @@ import com.icure.cardinal.sdk.js.api.TopicBasicApiJs
 import com.icure.cardinal.sdk.js.api.UserApiJs
 import kotlin.js.Promise
 
-@JsName("CardinalSdk")
-external interface CardinalSdkJs {
+@JsName("CardinalApis")
+external interface CardinalApisJs {
 	val applicationSettings: ApplicationSettingsApiJs
 	val code: CodeApiJs
 	val device: DeviceApiJs
@@ -93,12 +93,15 @@ external interface CardinalSdkJs {
 	val recovery: RecoveryApiJs
 	val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs
 	val dataOwner: DataOwnerApiJs
+}
 
+@JsName("CardinalSdk")
+external interface CardinalSdkJs : CardinalApisJs {
 	fun switchGroup(groupId: String): Promise<CardinalSdkJs>
 }
 
-@JsName("CardinalBaseSdk")
-external interface CardinalBaseSdkJs {
+@JsName("CardinalBaseApis")
+external interface CardinalBaseApisJs {
 	val applicationSettings: ApplicationSettingsApiJs
 	val code: CodeApiJs
 	val device: DeviceApiJs
@@ -132,6 +135,9 @@ external interface CardinalBaseSdkJs {
 	val receipt: ReceiptBasicApiJs
 	val timeTable: TimeTableBasicApiJs
 	val topic: TopicBasicApiJs
+}
 
+@JsName("CardinalBaseSdk")
+external interface CardinalBaseSdkJs : CardinalBaseApisJs {
 	fun switchGroup(groupId: String): Promise<CardinalBaseSdkJs>
 }

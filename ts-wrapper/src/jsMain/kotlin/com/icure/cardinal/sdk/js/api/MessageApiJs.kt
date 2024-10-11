@@ -59,11 +59,9 @@ public external interface MessageApiJs {
 	public fun matchMessagesBySorted(filter: SortableFilterOptionsJs<MessageJs>):
 			Promise<Array<String>>
 
-	@JsName("deleteMessageUnsafe")
-	public fun deleteMessage(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteMessageUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteMessagesUnsafe")
-	public fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteMessagesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteMessageById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

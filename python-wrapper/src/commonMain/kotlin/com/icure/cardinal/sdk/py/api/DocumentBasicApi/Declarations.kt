@@ -197,7 +197,7 @@ public fun deleteDocumentUnsafeBlocking(sdk: CardinalBaseApis, params: String): 
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentUnsafeParams>(params)
 	runBlocking {
-		sdk.document.deleteDocument(
+		sdk.document.deleteDocumentUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -216,7 +216,7 @@ public fun deleteDocumentUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.document.deleteDocument(
+			sdk.document.deleteDocumentUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -233,7 +233,7 @@ public fun deleteDocumentsUnsafeBlocking(sdk: CardinalBaseApis, params: String):
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentsUnsafeParams>(params)
 	runBlocking {
-		sdk.document.deleteDocuments(
+		sdk.document.deleteDocumentsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -252,7 +252,7 @@ public fun deleteDocumentsUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.document.deleteDocuments(
+			sdk.document.deleteDocumentsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

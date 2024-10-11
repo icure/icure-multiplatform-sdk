@@ -4,7 +4,7 @@ ktor = "3.0.0-beta-1"
 coroutines = "1.8.0"
 kotlinSerialization = "1.6.1"
 kotlinDateTime = "0.6.0-RC.2"
-kotest = "5.9.1"
+kotest = "6.0.0.M1"
 androidLibrary = "8.2.2"
 kryptom = "1.1.1"
 kermit = "2.0.3"
@@ -49,7 +49,7 @@ kotlinDateTime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", v
 # Kotest
 kotestAssertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotestEngine = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
-kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
+# kotestDatatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
 kotestRunnerJunit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 
 # Mockk

@@ -46,9 +46,9 @@ export interface HealthElementApi {
 
 	matchHealthElementsBySorted(filter: SortableFilterOptions<HealthElement>): Promise<Array<string>>;
 
-	deleteHealthElement(entityId: string): Promise<DocIdentifier>;
+	deleteHealthElementUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteHealthElements(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteHealthElementsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteHealthElementById(entityId: string, rev: string | undefined): Promise<DocIdentifier>;
 

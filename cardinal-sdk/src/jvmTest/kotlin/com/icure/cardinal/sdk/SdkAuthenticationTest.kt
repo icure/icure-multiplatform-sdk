@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk
 
-import com.icure.cardinal.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
+import com.icure.cardinal.sdk.auth.CaptchaOptions
 import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
 import com.icure.cardinal.sdk.test.MockMessageGatewayUtils
 import com.icure.cardinal.sdk.test.baseUrl
@@ -30,8 +30,7 @@ class SdkAuthenticationTest : StringSpec({
 			processId,
 			AuthenticationProcessTelecomType.Email,
 			hcpDetails.testEmail,
-			AuthenticationProcessCaptchaType.Recaptcha,
-			"onmock",
+			CaptchaOptions.Recaptcha("onMock"),
 			VolatileStorageFacade()
 		)
 		val authCode = MockMessageGatewayUtils.getLatestEmailTo(hcpDetails.testEmail).subject

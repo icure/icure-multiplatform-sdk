@@ -42,6 +42,10 @@ import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.cardinal.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
+import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
@@ -54,6 +58,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -777,15 +783,16 @@ internal class CalendarItemApiImplJs(
 		)
 	}
 
-	override fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteCalendarItemUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = calendarItemApi.deleteCalendarItem(
+		val result = calendarItemApi.deleteCalendarItemUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteCalendarItemsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -794,7 +801,7 @@ internal class CalendarItemApiImplJs(
 				x1
 			},
 		)
-		val result = calendarItemApi.deleteCalendarItems(
+		val result = calendarItemApi.deleteCalendarItemsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(
@@ -1149,5 +1156,44 @@ internal class CalendarItemApiImplJs(
 				calendarItem_toJs(x1)
 			},
 		)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<CalendarItemJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedCalendarItemJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: FilterOptions<CalendarItem> = filterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = calendarItemApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedCalendarItem ->
+					calendarItem_toJs(x1)
+				},
+			)
+		}
 	}
 }

@@ -24,11 +24,9 @@ import kotlin.js.JsName
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface TimeTableBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteTimeTableUnsafe")
-	suspend fun deleteTimeTable(entityId: String): DocIdentifier
+	suspend fun deleteTimeTableUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteTimeTablesUnsafe")
-	suspend fun deleteTimeTables(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteTimeTablesUnsafe(entityIds: List<String>): List<DocIdentifier>
 	
 	/**
 	 * Deletes a timeTable. If you don't have write access to the timeTable the method will fail.

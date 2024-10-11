@@ -8,4 +8,6 @@ export interface CryptoApi {
 
 	forceReload(): Promise<void>;
 
+	currentDataOwnerKeys(options?: { filterTrustedKeys?: boolean }): Promise<{ [ key: string ]: { [ key: string ]: Int8Array } }>;
+
 }

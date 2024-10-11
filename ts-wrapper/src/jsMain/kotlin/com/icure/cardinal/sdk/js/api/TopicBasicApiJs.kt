@@ -31,11 +31,9 @@ public external interface TopicBasicApiJs {
 	public fun filterTopicsBySorted(filter: BaseSortableFilterOptionsJs<TopicJs>):
 			Promise<PaginatedListIteratorJs<EncryptedTopicJs>>
 
-	@JsName("deleteTopicUnsafe")
-	public fun deleteTopic(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteTopicUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteTopicsUnsafe")
-	public fun deleteTopics(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteTopicsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteTopicById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

@@ -19,9 +19,9 @@ export interface TopicBasicApi {
 
 	filterTopicsBySorted(filter: BaseSortableFilterOptions<Topic>): Promise<PaginatedListIterator<EncryptedTopic>>;
 
-	deleteTopic(entityId: string): Promise<DocIdentifier>;
+	deleteTopicUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteTopics(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteTopicsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteTopicById(entityId: string, rev: string): Promise<DocIdentifier>;
 

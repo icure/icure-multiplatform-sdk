@@ -20,11 +20,9 @@ interface AgendaApi {
 	suspend fun createAgenda(agendaDto: Agenda): Agenda
 
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteAgendaUnsafe")
-	suspend fun deleteAgenda(entityId: String): DocIdentifier
+	suspend fun deleteAgendaUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteAgendasUnsafe")
-	suspend fun deleteAgendas(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteAgendasUnsafe(entityIds: List<String>): List<DocIdentifier>
 
 	/**
 	 * Deletes a agenda. If you don't have write access to the agenda the method will fail.

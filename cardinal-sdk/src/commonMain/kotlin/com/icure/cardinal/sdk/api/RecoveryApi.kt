@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.utils.DefaultValue
@@ -43,7 +44,9 @@ interface RecoveryApi {
 		@DefaultValue("false")
 		includeParentsKeys: Boolean = false,
 		@DefaultValue("null")
-		lifetimeSeconds: Int? = null
+		lifetimeSeconds: Int? = null,
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32")
+		recoveryKeySize: RecoveryKeySize = RecoveryKeySize.Bytes32,
 	): RecoveryDataKey
 
 	/**
@@ -81,7 +84,9 @@ interface RecoveryApi {
 	suspend fun createExchangeDataRecoveryInfo(
 		delegateId: String,
 		@DefaultValue("null")
-		lifetimeSeconds: Int? = null
+		lifetimeSeconds: Int? = null,
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32")
+		recoveryKeySize: RecoveryKeySize = RecoveryKeySize.Bytes32,
 	): RecoveryDataKey
 
 	/**
@@ -110,20 +115,20 @@ interface RecoveryApi {
 	 * @param dataOwnerId the data owner for which to delete the recovery data.
 	 * @return the number of deleted recovery information.
 	 */
-	suspend fun deleteAllRecoveryInfoFor(dataOwnerId: String): Int
+	suspend fun purgeAllRecoveryInfoFor(dataOwnerId: String): Int
 
 	/**
 	 * Deletes all key pair recovery information for a certain data owner.
 	 * @param dataOwnerId the data owner for which to delete the key pair recovery information.
 	 * @return the number of deleted key pair recovery information.
 	 */
-	suspend fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int
+	suspend fun purgeAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int
 
 	/**
 	 * Deletes all exchange data recovery information for a certain data owner.
 	 * @param dataOwnerId the data owner for which to delete the exchange data recovery information.
 	 * @return the number of deleted exchange data recovery information.
 	 */
-	suspend fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int
+	suspend fun purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int
 }
 

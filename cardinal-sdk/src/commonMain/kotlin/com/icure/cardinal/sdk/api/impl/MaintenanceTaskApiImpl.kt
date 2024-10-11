@@ -111,11 +111,11 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 	MaintenanceTaskBasicFlavourlessApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteMaintenanceTask(entityId: String): DocIdentifier =
+	override suspend fun deleteMaintenanceTaskUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteMaintenanceTask(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteMaintenanceTasks(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteMaintenanceTasksUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteMaintenanceTasks(ListOfIds(entityIds)).successBody()
 		
 	override suspend fun deleteMaintenanceTaskById(entityId: String, rev: String): DocIdentifier =

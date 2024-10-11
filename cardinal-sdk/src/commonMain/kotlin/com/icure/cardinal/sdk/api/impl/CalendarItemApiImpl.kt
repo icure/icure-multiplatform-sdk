@@ -197,11 +197,11 @@ private class AbstractCalendarItemBasicFlavourlessApi(val rawApi: RawCalendarIte
 	CalendarItemBasicFlavourlessApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteCalendarItem(entityId: String): DocIdentifier =
+	override suspend fun deleteCalendarItemUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteCalendarItem(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteCalendarItems(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteCalendarItemsUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteCalendarItems(ListOfIds(entityIds)).successBody()
 		
 	override suspend fun deleteCalendarItemById(entityId: String, rev: String): DocIdentifier =

@@ -3,9 +3,11 @@ package com.icure.cardinal.sdk.js.api.`impl`
 
 import com.icure.cardinal.sdk.api.RecoveryApi
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.api.RecoveryApiJs
+import com.icure.cardinal.sdk.js.crypto.entities.RecoveryDataKeyJs
 import com.icure.cardinal.sdk.js.crypto.entities.RecoveryResultJs
 import com.icure.cardinal.sdk.js.crypto.entities.recoveryDataKey_fromJs
 import com.icure.cardinal.sdk.js.crypto.entities.recoveryDataKey_toJs
@@ -37,7 +39,7 @@ import kotlinx.coroutines.promise
 internal class RecoveryApiImplJs(
 	private val recoveryApi: RecoveryApi,
 ) : RecoveryApiJs {
-	override fun createRecoveryInfoForAvailableKeyPairs(options: dynamic): Promise<String> {
+	override fun createRecoveryInfoForAvailableKeyPairs(options: dynamic): Promise<RecoveryDataKeyJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val includeParentsKeysConverted: Boolean = convertingOptionOrDefaultNonNull(
@@ -54,15 +56,23 @@ internal class RecoveryApiImplJs(
 			) { lifetimeSeconds: Double? ->
 				numberToInt(lifetimeSeconds, "lifetimeSeconds")
 			}
+			val recoveryKeySizeConverted: RecoveryKeySize = convertingOptionOrDefaultNonNull(
+				_options,
+				"recoveryKeySize",
+				com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32
+			) { recoveryKeySize: String ->
+				RecoveryKeySize.valueOf(recoveryKeySize)
+			}
 			val result = recoveryApi.createRecoveryInfoForAvailableKeyPairs(
 				includeParentsKeysConverted,
 				lifetimeSecondsConverted,
+				recoveryKeySizeConverted,
 			)
 			recoveryDataKey_toJs(result)
 		}
 	}
 
-	override fun recoverKeyPairs(recoveryKey: String, autoDelete: Boolean):
+	override fun recoverKeyPairs(recoveryKey: RecoveryDataKeyJs, autoDelete: Boolean):
 			Promise<RecoveryResultJs<Record<String, Record<String, XRsaKeypair>>>> = GlobalScope.promise {
 		val recoveryKeyConverted: RecoveryDataKey = recoveryDataKey_fromJs(recoveryKey)
 		val autoDeleteConverted: Boolean = autoDelete
@@ -95,7 +105,7 @@ internal class RecoveryApiImplJs(
 	}
 
 	override fun createExchangeDataRecoveryInfo(delegateId: String, options: dynamic):
-			Promise<String> {
+			Promise<RecoveryDataKeyJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val delegateIdConverted: String = delegateId
@@ -106,15 +116,24 @@ internal class RecoveryApiImplJs(
 			) { lifetimeSeconds: Double? ->
 				numberToInt(lifetimeSeconds, "lifetimeSeconds")
 			}
+			val recoveryKeySizeConverted: RecoveryKeySize = convertingOptionOrDefaultNonNull(
+				_options,
+				"recoveryKeySize",
+				com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32
+			) { recoveryKeySize: String ->
+				RecoveryKeySize.valueOf(recoveryKeySize)
+			}
 			val result = recoveryApi.createExchangeDataRecoveryInfo(
 				delegateIdConverted,
 				lifetimeSecondsConverted,
+				recoveryKeySizeConverted,
 			)
 			recoveryDataKey_toJs(result)
 		}
 	}
 
-	override fun recoverExchangeData(recoveryKey: String): Promise<String?> = GlobalScope.promise {
+	override fun recoverExchangeData(recoveryKey: RecoveryDataKeyJs): Promise<String?> =
+			GlobalScope.promise {
 		val recoveryKeyConverted: RecoveryDataKey = recoveryDataKey_fromJs(recoveryKey)
 		val result = recoveryApi.recoverExchangeData(
 			recoveryKeyConverted,
@@ -126,7 +145,8 @@ internal class RecoveryApiImplJs(
 		)
 	}
 
-	override fun purgeRecoveryInfo(recoveryKey: String): Promise<Unit> = GlobalScope.promise {
+	override fun purgeRecoveryInfo(recoveryKey: RecoveryDataKeyJs): Promise<Unit> =
+			GlobalScope.promise {
 		val recoveryKeyConverted: RecoveryDataKey = recoveryDataKey_fromJs(recoveryKey)
 		recoveryApi.purgeRecoveryInfo(
 			recoveryKeyConverted,
@@ -134,27 +154,27 @@ internal class RecoveryApiImplJs(
 
 	}
 
-	override fun deleteAllRecoveryInfoFor(dataOwnerId: String): Promise<Double> = GlobalScope.promise {
+	override fun purgeAllRecoveryInfoFor(dataOwnerId: String): Promise<Double> = GlobalScope.promise {
 		val dataOwnerIdConverted: String = dataOwnerId
-		val result = recoveryApi.deleteAllRecoveryInfoFor(
+		val result = recoveryApi.purgeAllRecoveryInfoFor(
 			dataOwnerIdConverted,
 		)
 		intToNumber(result)
 	}
 
-	override fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
+	override fun purgeAllKeyPairRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
 			GlobalScope.promise {
 		val dataOwnerIdConverted: String = dataOwnerId
-		val result = recoveryApi.deleteAllKeyPairRecoveryInfoFor(
+		val result = recoveryApi.purgeAllKeyPairRecoveryInfoFor(
 			dataOwnerIdConverted,
 		)
 		intToNumber(result)
 	}
 
-	override fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
+	override fun purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
 			GlobalScope.promise {
 		val dataOwnerIdConverted: String = dataOwnerId
-		val result = recoveryApi.deleteAllExchangeDataRecoveryInfoFor(
+		val result = recoveryApi.purgeAllExchangeDataRecoveryInfoFor(
 			dataOwnerIdConverted,
 		)
 		intToNumber(result)

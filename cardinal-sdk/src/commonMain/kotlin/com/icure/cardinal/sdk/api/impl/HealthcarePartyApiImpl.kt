@@ -31,11 +31,11 @@ internal class HealthcarePartyApiImpl(
 ) : HealthcarePartyApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteHealthcareParty(entityId: String): DocIdentifier =
+	override suspend fun deleteHealthcarePartyUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteHealthcareParty(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteHealthcareParties(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteHealthcarePartiesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteHealthcareParties(ListOfIds(entityIds)).successBody()
 
 	override suspend fun getHealthcareParty(healthcarePartyId: String) = rawApi.getHealthcareParty(healthcarePartyId).successBody()

@@ -13,9 +13,9 @@ export interface AgendaApi {
 
 	createAgenda(agendaDto: Agenda): Promise<Agenda>;
 
-	deleteAgenda(entityId: string): Promise<DocIdentifier>;
+	deleteAgendaUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteAgendas(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteAgendasUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteAgendaById(entityId: string, rev: string): Promise<DocIdentifier>;
 

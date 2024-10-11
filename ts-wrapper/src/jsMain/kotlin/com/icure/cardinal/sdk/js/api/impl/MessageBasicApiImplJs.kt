@@ -115,15 +115,16 @@ internal class MessageBasicApiImplJs(
 		)
 	}
 
-	override fun deleteMessage(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteMessageUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = messageBasicApi.deleteMessage(
+		val result = messageBasicApi.deleteMessageUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteMessages(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteMessagesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -132,7 +133,7 @@ internal class MessageBasicApiImplJs(
 				x1
 			},
 		)
-		val result = messageBasicApi.deleteMessages(
+		val result = messageBasicApi.deleteMessagesUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

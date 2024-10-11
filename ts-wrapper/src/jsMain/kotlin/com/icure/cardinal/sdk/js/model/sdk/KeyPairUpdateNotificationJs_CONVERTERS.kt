@@ -1,10 +1,8 @@
-// auto-generated file
 package com.icure.cardinal.sdk.js.model.sdk
 
 import com.icure.cardinal.sdk.js.model.specializations.spkiHexString_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.spkiHexString_toJs
 import com.icure.cardinal.sdk.model.sdk.KeyPairUpdateNotification
-import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun keyPairUpdateNotification_toJs(obj: KeyPairUpdateNotification):

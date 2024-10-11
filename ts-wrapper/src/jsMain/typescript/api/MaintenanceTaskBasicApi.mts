@@ -18,9 +18,9 @@ export interface MaintenanceTaskBasicApi {
 
 	filterMaintenanceTasksBySorted(filter: BaseSortableFilterOptions<MaintenanceTask>): Promise<PaginatedListIterator<EncryptedMaintenanceTask>>;
 
-	deleteMaintenanceTask(entityId: string): Promise<DocIdentifier>;
+	deleteMaintenanceTaskUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteMaintenanceTasks(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteMaintenanceTasksUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteMaintenanceTaskById(entityId: string, rev: string): Promise<DocIdentifier>;
 

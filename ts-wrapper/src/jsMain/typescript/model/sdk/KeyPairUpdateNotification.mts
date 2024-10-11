@@ -1,6 +1,7 @@
-// auto-generated file
+// TODO need to auto generate companion
 import {SpkiHexString} from '../specializations/SpkiHexString.mjs';
-
+import {DecryptedMaintenanceTask} from "../MaintenanceTask.mjs";
+import {InternalKeyPairUpdateNotificationJs_COMPANION} from "../../cardinal-sdk-ts.mjs";
 
 export class KeyPairUpdateNotification {
 
@@ -13,4 +14,11 @@ export class KeyPairUpdateNotification {
 		this.concernedDataOwnerId = partial.concernedDataOwnerId;
 	}
 
+	static get TASK_TYPE(): string {
+		return InternalKeyPairUpdateNotificationJs_COMPANION.getInstance().TASK_TYPE
+	}
+
+	static parseFromMaintenanceTask(task: DecryptedMaintenanceTask): KeyPairUpdateNotification {
+		return InternalKeyPairUpdateNotificationJs_COMPANION.getInstance().parseFromMaintenanceTask(task)
+	}
 }

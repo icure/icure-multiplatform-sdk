@@ -10,6 +10,9 @@ import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../model/embed/AccessLevel.mjs';
 import {HexString} from '../model/specializations/HexString.mjs';
+import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
 import {CalendarItemFlavouredApi} from './CalendarItemFlavouredApi.mjs';
 
 
@@ -41,9 +44,9 @@ export interface CalendarItemApi {
 
 	matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): Promise<Array<string>>;
 
-	deleteCalendarItem(entityId: string): Promise<DocIdentifier>;
+	deleteCalendarItemUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteCalendarItems(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItemsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteCalendarItemById(entityId: string, rev: string): Promise<DocIdentifier>;
 
@@ -92,5 +95,8 @@ export interface CalendarItemApi {
 	findCalendarItemsByRecurrenceId(recurrenceId: string, startKey: string | undefined,
 			startDocumentId: string | undefined,
 			limit: number): Promise<PaginatedList<DecryptedCalendarItem>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<CalendarItem>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedCalendarItem>>;
 
 }

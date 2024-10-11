@@ -35,11 +35,9 @@ public external interface PatientBasicApiJs {
 	public fun filterPatientsBySorted(filter: BaseSortableFilterOptionsJs<PatientJs>):
 			Promise<PaginatedListIteratorJs<EncryptedPatientJs>>
 
-	@JsName("deletePatientUnsafe")
-	public fun deletePatient(entityId: String): Promise<DocIdentifierJs>
+	public fun deletePatientUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deletePatientsUnsafe")
-	public fun deletePatients(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deletePatientsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deletePatientById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

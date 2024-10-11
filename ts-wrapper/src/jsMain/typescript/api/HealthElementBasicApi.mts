@@ -19,9 +19,9 @@ export interface HealthElementBasicApi {
 
 	filterHealthElementsBySorted(filter: BaseSortableFilterOptions<HealthElement>): Promise<PaginatedListIterator<EncryptedHealthElement>>;
 
-	deleteHealthElement(entityId: string): Promise<DocIdentifier>;
+	deleteHealthElementUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteHealthElements(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteHealthElementsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deleteHealthElementById(entityId: string, rev: string | undefined): Promise<DocIdentifier>;
 

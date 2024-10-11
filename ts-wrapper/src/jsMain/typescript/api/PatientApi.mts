@@ -59,9 +59,9 @@ export interface PatientApi {
 
 	ensureEncryptionMetadataForSelfIsInitialized(options?: { sharingWith?: { [ key: string ]: AccessLevel } }): Promise<EncryptedPatient>;
 
-	deletePatient(entityId: string): Promise<DocIdentifier>;
+	deletePatientUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deletePatients(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deletePatientsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	deletePatientById(entityId: string, rev: string): Promise<DocIdentifier>;
 

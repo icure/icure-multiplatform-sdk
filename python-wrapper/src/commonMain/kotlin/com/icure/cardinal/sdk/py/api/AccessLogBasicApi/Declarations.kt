@@ -198,7 +198,7 @@ public fun deleteAccessLogUnsafeBlocking(sdk: CardinalBaseApis, params: String):
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAccessLogUnsafeParams>(params)
 	runBlocking {
-		sdk.accessLog.deleteAccessLog(
+		sdk.accessLog.deleteAccessLogUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -217,7 +217,7 @@ public fun deleteAccessLogUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAccessLogUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.accessLog.deleteAccessLog(
+			sdk.accessLog.deleteAccessLogUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -234,7 +234,7 @@ public fun deleteAccessLogsUnsafeBlocking(sdk: CardinalBaseApis, params: String)
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAccessLogsUnsafeParams>(params)
 	runBlocking {
-		sdk.accessLog.deleteAccessLogs(
+		sdk.accessLog.deleteAccessLogsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -253,7 +253,7 @@ public fun deleteAccessLogsUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteAccessLogsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.accessLog.deleteAccessLogs(
+			sdk.accessLog.deleteAccessLogsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

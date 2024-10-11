@@ -202,7 +202,7 @@ public fun deleteHealthElementUnsafeBlocking(sdk: CardinalBaseApis, params: Stri
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthElementUnsafeParams>(params)
 	runBlocking {
-		sdk.healthElement.deleteHealthElement(
+		sdk.healthElement.deleteHealthElementUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -222,7 +222,7 @@ public fun deleteHealthElementUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteHealthElementUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthElement.deleteHealthElement(
+			sdk.healthElement.deleteHealthElementUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -240,7 +240,7 @@ public fun deleteHealthElementsUnsafeBlocking(sdk: CardinalBaseApis, params: Str
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthElementsUnsafeParams>(params)
 	runBlocking {
-		sdk.healthElement.deleteHealthElements(
+		sdk.healthElement.deleteHealthElementsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -260,7 +260,7 @@ public fun deleteHealthElementsUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteHealthElementsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.healthElement.deleteHealthElements(
+			sdk.healthElement.deleteHealthElementsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

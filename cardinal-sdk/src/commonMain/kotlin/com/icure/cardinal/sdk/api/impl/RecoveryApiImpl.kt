@@ -1,13 +1,12 @@
 package com.icure.cardinal.sdk.api.impl
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.cardinal.sdk.api.RecoveryApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.map
@@ -15,11 +14,13 @@ import com.icure.cardinal.sdk.crypto.entities.toPublicKeyInfo
 import com.icure.cardinal.sdk.model.RecoveryData
 import com.icure.cardinal.sdk.model.embed.EncryptedContent
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.decode
 import com.icure.cardinal.sdk.utils.getLogger
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.utils.InternalIcureApi
 import io.ktor.http.isSuccess
 
 @InternalIcureApi
@@ -32,7 +33,8 @@ internal class RecoveryApiImpl(
 
 	override suspend fun createRecoveryInfoForAvailableKeyPairs(
 		includeParentsKeys: Boolean,
-		lifetimeSeconds: Int?
+		lifetimeSeconds: Int?,
+		recoveryKeySize: RecoveryKeySize
 	): RecoveryDataKey {
 		val selfId = crypto.dataOwnerApi.getCurrentDataOwnerId()
 		val allAvailableKeys = crypto.userEncryptionKeysManager.getCurrentUserHierarchyAvailableKeypairs()
@@ -48,7 +50,7 @@ internal class RecoveryApiImpl(
 				} else null
 			}
 		}
-		return crypto.recoveryDataEncryption.createAndSaveKeyPairsRecoveryDataFor(selfId, keyPairsToSave, lifetimeSeconds)
+		return crypto.recoveryDataEncryption.createAndSaveKeyPairsRecoveryDataFor(selfId, keyPairsToSave, lifetimeSeconds, recoveryKeySize)
 	}
 
 	override suspend fun recoverKeyPairs(
@@ -57,7 +59,11 @@ internal class RecoveryApiImpl(
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>> =
 		crypto.recoveryDataEncryption.getAndDecryptKeyPairsRecoveryData(recoveryKey, autoDelete)
 
-	override suspend fun createExchangeDataRecoveryInfo(delegateId: String, lifetimeSeconds: Int?): RecoveryDataKey {
+	override suspend fun createExchangeDataRecoveryInfo(
+		delegateId: String,
+		lifetimeSeconds: Int?,
+		recoveryKeySize: RecoveryKeySize
+	): RecoveryDataKey {
 		val exchangeDataToDelegate = crypto.exchangeDataManager.base.getExchangeDataByDelegatorDelegatePair(
 			crypto.dataOwnerApi.getCurrentDataOwnerId(),
 			delegateId
@@ -73,7 +79,7 @@ internal class RecoveryApiImpl(
 				)
 			}
 		}
-		return crypto.recoveryDataEncryption.createAndSaveExchangeDataRecoveryData(delegateId, decryptedInformation, lifetimeSeconds)
+		return crypto.recoveryDataEncryption.createAndSaveExchangeDataRecoveryData(delegateId, decryptedInformation, lifetimeSeconds, recoveryKeySize)
 	}
 
 	override suspend fun recoverExchangeData(recoveryKey: RecoveryDataKey): RecoveryDataUseFailureReason? =
@@ -114,16 +120,16 @@ internal class RecoveryApiImpl(
 		).successBody()
 	}
 
-	override suspend fun deleteAllRecoveryInfoFor(dataOwnerId: String): Int =
+	override suspend fun purgeAllRecoveryInfoFor(dataOwnerId: String): Int =
 		crypto.recoveryDataEncryption.raw.deleteAllRecoveryDataForRecipient(dataOwnerId).getCount()
 
-	override suspend fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int =
+	override suspend fun purgeAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int =
 		crypto.recoveryDataEncryption.raw.deleteAllRecoveryDataOfTypeForRecipient(
 			RecoveryData.Type.KeypairRecovery,
 			dataOwnerId
 		).getCount()
 
-	override suspend fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int =
+	override suspend fun purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int =
 		crypto.recoveryDataEncryption.raw.deleteAllRecoveryDataOfTypeForRecipient(
 			RecoveryData.Type.ExchangeKeyRecovery,
 			dataOwnerId

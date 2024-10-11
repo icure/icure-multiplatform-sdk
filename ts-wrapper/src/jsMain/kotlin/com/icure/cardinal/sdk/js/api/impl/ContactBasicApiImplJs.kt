@@ -210,15 +210,16 @@ internal class ContactBasicApiImplJs(
 		}
 	}
 
-	override fun deleteContact(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteContactUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = contactBasicApi.deleteContact(
+		val result = contactBasicApi.deleteContactUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteContacts(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteContactsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -227,7 +228,7 @@ internal class ContactBasicApiImplJs(
 				x1
 			},
 		)
-		val result = contactBasicApi.deleteContacts(
+		val result = contactBasicApi.deleteContactsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(

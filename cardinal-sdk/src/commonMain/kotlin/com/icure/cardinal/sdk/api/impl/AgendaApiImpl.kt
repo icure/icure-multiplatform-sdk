@@ -21,11 +21,11 @@ internal class AgendaApiImpl (
 	private val rawApi: RawAgendaApi,
 ) : AgendaApi {
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteAgenda(entityId: String): DocIdentifier =
+	override suspend fun deleteAgendaUnsafe(entityId: String): DocIdentifier =
 		rawApi.deleteAgenda(entityId).successBodyOrThrowRevisionConflict()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteAgendas(entityIds: List<String>): List<DocIdentifier> =
+	override suspend fun deleteAgendasUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteAgendas(ListOfIds(entityIds)).successBody()
 	
 	@Deprecated("Use filter instead")

@@ -4,13 +4,18 @@ package com.icure.cardinal.sdk.js.api.`impl`
 import com.icure.cardinal.sdk.api.CalendarItemBasicApi
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.js.api.CalendarItemBasicApiJs
+import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.baseFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
+import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CalendarItemJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
@@ -24,12 +29,18 @@ import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.cardinal.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
+import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.Double
 import kotlin.Int
@@ -38,6 +49,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import kotlin.collections.Set
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -105,15 +117,16 @@ internal class CalendarItemBasicApiImplJs(
 		)
 	}
 
-	override fun deleteCalendarItem(entityId: String): Promise<DocIdentifierJs> = GlobalScope.promise {
+	override fun deleteCalendarItemUnsafe(entityId: String): Promise<DocIdentifierJs> =
+			GlobalScope.promise {
 		val entityIdConverted: String = entityId
-		val result = calendarItemBasicApi.deleteCalendarItem(
+		val result = calendarItemBasicApi.deleteCalendarItemUnsafe(
 			entityIdConverted,
 		)
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteCalendarItems(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
+	override fun deleteCalendarItemsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>> =
 			GlobalScope.promise {
 		val entityIdsConverted: List<String> = arrayToList(
 			entityIds,
@@ -122,7 +135,7 @@ internal class CalendarItemBasicApiImplJs(
 				x1
 			},
 		)
-		val result = calendarItemBasicApi.deleteCalendarItems(
+		val result = calendarItemBasicApi.deleteCalendarItemsUnsafe(
 			entityIdsConverted,
 		)
 		listToArray(
@@ -333,5 +346,44 @@ internal class CalendarItemBasicApiImplJs(
 				calendarItem_toJs(x1)
 			},
 		)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<CalendarItemJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedCalendarItemJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: FilterOptions<CalendarItem> = filterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = calendarItemBasicApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: EncryptedCalendarItem ->
+					calendarItem_toJs(x1)
+				},
+			)
+		}
 	}
 }

@@ -33,7 +33,7 @@ internal class UserApiImpl(
 	private val config: BasicApiConfiguration,
 ) : UserApi {
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteUser(entityId: String): DocIdentifier =
+	override suspend fun deleteUserUnsafe(entityId: String): DocIdentifier =
 		raw.deleteUser(entityId).successBodyOrThrowRevisionConflict()
 
 	override suspend fun getCurrentUser(): User =

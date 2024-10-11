@@ -1,12 +1,14 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
+import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 import kotlinx.serialization.Serializable
 
 /**
@@ -38,7 +40,19 @@ interface CryptoStrategies {
 		 * All public keys (in hex-encoded spki format) of `dataOwner` for which the sdk could not recover a private key. May overlap
 		 * (partially or completely) with `unknownKeys`.
 		 */
-		val unavailableKeys: List<SpkiHexString>
+		val unavailableKeys: List<UnavailableKeyInfo>
+	)
+
+	@Serializable
+	data class UnavailableKeyInfo(
+		/**
+		 * The public key
+		 */
+		val publicKey: SpkiHexString,
+		/**
+		 * The algorithm of the keypair
+		 */
+		val keyAlgorithm: RsaEncryptionAlgorithm
 	)
 
 	/**
@@ -102,7 +116,8 @@ interface CryptoStrategies {
 		keysData: List<KeyDataRecoveryRequest>,
 		cryptoPrimitives: CryptoService,
 		keyPairRecoverer: KeyPairRecoverer
-	): Map<String, RecoveredKeyData>
+	): Map<String, RecoveredKeyData> =
+		keysData.associate { it.dataOwnerDetails.dataOwner.id to RecoveredKeyData(emptyMap(), emptyMap()) }
 
 	/**
 	 * The correct initialisation of the crypto API requires that at least 1 verified (or device) key pair is available for each data owner part of the
@@ -116,7 +131,8 @@ interface CryptoStrategies {
 	suspend fun generateNewKeyForDataOwner(
 		self: DataOwnerWithType,
 		cryptoPrimitives: CryptoService
-	): KeyGenerationRequestResult
+	): KeyGenerationRequestResult =
+		KeyGenerationRequestResult.Allow
 
 	/**
 	 * Verifies if the public keys of a data owner which will be the delegate of a new exchange key do actually belong to the person the data owner
@@ -135,8 +151,9 @@ interface CryptoStrategies {
 	suspend fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithType,
 		publicKeys: List<SpkiHexString>,
-		cryptoPrimitives: CryptoService
-	): List<SpkiHexString>
+		cryptoPrimitives: CryptoService,
+	): List<SpkiHexString> =
+		publicKeys
 
 	/**
 	 * Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure delegations. This should always
@@ -144,5 +161,19 @@ interface CryptoStrategies {
 	 * @param dataOwner a data owner.
 	 * @return true if the delegations for the provided data owner should be anonymous.
 	 */
-	suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean
+	suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean =
+		dataOwner.type != DataOwnerType.Hcp
+
+	/**
+	 * Notifies that a new key for the current data owner was created.
+	 * This method is called after the initialization of the other SDK apis.
+	 * @param apis the initialized cardinal apis.
+	 * @param key the newly created key.
+	 * @param cryptoPrimitives cryptographic primitives you can use to support the process.
+	 */
+	suspend fun notifyNewKeyCreated(
+		apis: CardinalApis,
+		key: RsaKeypair<RsaEncryptionAlgorithm.OaepWithSha256>,
+		cryptoPrimitives: CryptoService,
+	) {}
 }

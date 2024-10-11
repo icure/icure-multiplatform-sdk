@@ -4,10 +4,12 @@ package com.icure.cardinal.sdk.py.api.DeviceApi
 import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -16,6 +18,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Byte
@@ -23,6 +27,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.COpaquePointer
@@ -46,7 +51,7 @@ public fun deleteDeviceUnsafeBlocking(sdk: CardinalNonCryptoApis, params: String
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDeviceUnsafeParams>(params)
 	runBlocking {
-		sdk.device.deleteDevice(
+		sdk.device.deleteDeviceUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -65,7 +70,7 @@ public fun deleteDeviceUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDeviceUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.device.deleteDevice(
+			sdk.device.deleteDeviceUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -82,7 +87,7 @@ public fun deleteDevicesUnsafeBlocking(sdk: CardinalNonCryptoApis, params: Strin
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDevicesUnsafeParams>(params)
 	runBlocking {
-		sdk.device.deleteDevices(
+		sdk.device.deleteDevicesUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -101,7 +106,7 @@ public fun deleteDevicesUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDevicesUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.device.deleteDevices(
+			sdk.device.deleteDevicesUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
@@ -922,3 +927,46 @@ public fun deleteDevicesInGroupAsync(
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SubscribeToEventsParams(
+	public val events: Set<SubscriptionEventType>,
+	public val filter: FilterOptions<Device>,
+	public val subscriptionConfig: EntitySubscriptionConfiguration? = null,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun subscribeToEventsBlocking(sdk: CardinalNonCryptoApis, params: String): PyResult =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SubscribeToEventsParams>(params)
+	runBlocking {
+		sdk.device.subscribeToEvents(
+			decodedParams.events,
+			decodedParams.filter,
+			decodedParams.subscriptionConfig,
+		)
+	}
+}.toPyResult {
+	EntitySubscriptionWithSerializer(it, Device.serializer())}
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun subscribeToEventsAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): Unit = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SubscribeToEventsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.device.subscribeToEvents(
+				decodedParams.events,
+				decodedParams.filter,
+				decodedParams.subscriptionConfig,
+			)
+		}.toPyResultAsyncCallback(resultCallback) {
+			EntitySubscriptionWithSerializer(it, Device.serializer())}
+	}
+}.failureToPyResultAsyncCallback(resultCallback)

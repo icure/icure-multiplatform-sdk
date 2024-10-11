@@ -354,8 +354,7 @@ class SmartAuthProviderTest : StringSpec({
 						processId,
 						AuthenticationProcessTelecomType.Email,
 						hcpDetails.testEmail,
-						AuthenticationProcessCaptchaType.Recaptcha,
-						"onmock"
+						CaptchaOptions.Recaptcha("onmock")
 					)
 					return AuthSecretDetails.ShortLivedTokenDetails(
 						secret = MockMessageGatewayUtils.getLatestEmailTo(hcpDetails.testEmail).subject,

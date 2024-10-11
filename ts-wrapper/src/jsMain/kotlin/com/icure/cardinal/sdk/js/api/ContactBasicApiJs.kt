@@ -51,11 +51,9 @@ public external interface ContactBasicApiJs {
 	public fun subscribeToServiceCreateOrUpdateEvents(filter: BaseFilterOptionsJs<ServiceJs>,
 			options: dynamic): Promise<EntitySubscriptionJs<EncryptedServiceJs>>
 
-	@JsName("deleteContactUnsafe")
-	public fun deleteContact(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteContactUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteContactsUnsafe")
-	public fun deleteContacts(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteContactsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteContactById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

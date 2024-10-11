@@ -430,7 +430,7 @@ public fun deleteMaintenanceTaskUnsafeBlocking(sdk: CardinalApis, params: String
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTaskUnsafeParams>(params)
 	runBlocking {
-		sdk.maintenanceTask.deleteMaintenanceTask(
+		sdk.maintenanceTask.deleteMaintenanceTaskUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -450,7 +450,7 @@ public fun deleteMaintenanceTaskUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTaskUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.maintenanceTask.deleteMaintenanceTask(
+			sdk.maintenanceTask.deleteMaintenanceTaskUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -468,7 +468,7 @@ public fun deleteMaintenanceTasksUnsafeBlocking(sdk: CardinalApis, params: Strin
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTasksUnsafeParams>(params)
 	runBlocking {
-		sdk.maintenanceTask.deleteMaintenanceTasks(
+		sdk.maintenanceTask.deleteMaintenanceTasksUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -488,7 +488,7 @@ public fun deleteMaintenanceTasksUnsafeAsync(
 			fullLanguageInteropJson.decodeFromString<DeleteMaintenanceTasksUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.maintenanceTask.deleteMaintenanceTasks(
+			sdk.maintenanceTask.deleteMaintenanceTasksUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

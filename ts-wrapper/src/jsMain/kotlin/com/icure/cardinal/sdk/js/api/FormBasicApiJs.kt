@@ -32,11 +32,9 @@ public external interface FormBasicApiJs {
 	public fun filterFormsBySorted(filter: BaseSortableFilterOptionsJs<FormJs>):
 			Promise<PaginatedListIteratorJs<EncryptedFormJs>>
 
-	@JsName("deleteFormUnsafe")
-	public fun deleteForm(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteFormUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteFormsUnsafe")
-	public fun deleteForms(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteFormsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteFormById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

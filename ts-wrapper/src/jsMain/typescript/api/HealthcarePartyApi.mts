@@ -1,18 +1,21 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {DataOwnerRegistrationSuccess} from '../model/DataOwnerRegistrationSuccess.mjs';
 import {HealthcareParty} from '../model/HealthcareParty.mjs';
 import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {PublicKey} from '../model/PublicKey.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
 
 
 export interface HealthcarePartyApi {
 
-	deleteHealthcareParty(entityId: string): Promise<DocIdentifier>;
+	deleteHealthcarePartyUnsafe(entityId: string): Promise<DocIdentifier>;
 
-	deleteHealthcareParties(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteHealthcarePartiesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
 	getHealthcareParty(healthcarePartyId: string): Promise<HealthcareParty>;
 
@@ -91,5 +94,8 @@ export interface HealthcarePartyApi {
 
 	deleteHealthcarePartiesInGroup(groupId: string,
 			healthcareParties: Array<HealthcareParty>): Promise<Array<DocIdentifier>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<HealthcareParty>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<HealthcareParty>>;
 
 }

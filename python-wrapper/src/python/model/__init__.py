@@ -1,5 +1,6 @@
 import json
 import base64
+from cardinal_sdk.model.RecoveryDataKey import RecoveryDataKey
 from typing import Optional
 from typing import List
 from dataclasses import field
@@ -9,12 +10,12 @@ from dataclasses import dataclass
 from cardinal_sdk.model.specializations import HexString
 from cardinal_sdk.model.specializations import SpkiHexString
 from cardinal_sdk.model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
-from cardinal_sdk.model.specializations import Base64String
 from enum import Enum
-from cardinal_sdk.model.SingletonMeta import SingletonMeta
 from datetime import timedelta
 from cardinal_sdk.model.serialization import serialize_timedelta
 from cardinal_sdk.model.serialization import deserialize_timedelta
+from cardinal_sdk.model.specializations import Base64String
+from cardinal_sdk.model.SingletonMeta import SingletonMeta
 from cardinal_sdk.model.specializations import SecureDelegationKeyString
 from cardinal_sdk.model.specializations import Sha256HexString
 
@@ -265,6 +266,73 @@ class IdWithMandatoryRev:
 		return cls(
 			id=deserialized_dict["id"],
 			rev=deserialized_dict["rev"],
+		)
+
+class SubscriptionEventType(Enum):
+	Create = "Create"
+	Update = "Update"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
+		if data == "Create":
+			return SubscriptionEventType.Create
+		elif data == "Update":
+			return SubscriptionEventType.Update
+		else:
+			raise Exception(f"{data} is not a valid value for SubscriptionEventType enum.")
+
+@dataclass
+class EntitySubscriptionConfiguration:
+	channel_buffer_capacity: int = 100
+	on_buffer_full: 'EntitySubscriptionConfiguration.FullBufferBehaviour' = field(default_factory=lambda: EntitySubscriptionConfiguration.FullBufferBehaviour.Close)
+	reconnection_delay: timedelta = timedelta(seconds=2)
+	retry_delay_exponent_factor: float = 2.0
+	connection_max_retries: int = 5
+
+	class FullBufferBehaviour(Enum):
+		Close = "Close"
+		DropOldest = "DropOldest"
+		Ignore = "Ignore"
+
+		def __serialize__(self) -> object:
+			return self.value
+
+		@classmethod
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration.FullBufferBehaviour':
+			if data == "Close":
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.Close
+			elif data == "DropOldest":
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.DropOldest
+			elif data == "Ignore":
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.Ignore
+			else:
+				raise Exception(f"{data} is not a valid value for FullBufferBehaviour enum.")
+
+	def __serialize__(self) -> object:
+		return {
+			"channelBufferCapacity": self.channel_buffer_capacity,
+			"onBufferFull": self.on_buffer_full.__serialize__(),
+			"reconnectionDelay": serialize_timedelta(self.reconnection_delay),
+			"retryDelayExponentFactor": self.retry_delay_exponent_factor,
+			"connectionMaxRetries": self.connection_max_retries,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			channel_buffer_capacity=deserialized_dict["channelBufferCapacity"],
+			on_buffer_full=EntitySubscriptionConfiguration.FullBufferBehaviour._deserialize(deserialized_dict["onBufferFull"]),
+			reconnection_delay=deserialize_timedelta(deserialized_dict["reconnectionDelay"]),
+			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
+			connection_max_retries=deserialized_dict["connectionMaxRetries"],
 		)
 
 @dataclass
@@ -1879,73 +1947,6 @@ class SortDirection(Enum):
 		else:
 			raise Exception(f"{data} is not a valid value for SortDirection enum.")
 
-class SubscriptionEventType(Enum):
-	Create = "Create"
-	Update = "Update"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
-		if data == "Create":
-			return SubscriptionEventType.Create
-		elif data == "Update":
-			return SubscriptionEventType.Update
-		else:
-			raise Exception(f"{data} is not a valid value for SubscriptionEventType enum.")
-
-@dataclass
-class EntitySubscriptionConfiguration:
-	channel_buffer_capacity: int = 100
-	on_buffer_full: 'EntitySubscriptionConfiguration.FullBufferBehaviour' = field(default_factory=lambda: EntitySubscriptionConfiguration.FullBufferBehaviour.Close)
-	reconnection_delay: timedelta = timedelta(seconds=2)
-	retry_delay_exponent_factor: float = 2.0
-	connection_max_retries: int = 5
-
-	class FullBufferBehaviour(Enum):
-		Close = "Close"
-		DropOldest = "DropOldest"
-		Ignore = "Ignore"
-
-		def __serialize__(self) -> object:
-			return self.value
-
-		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration.FullBufferBehaviour':
-			if data == "Close":
-				return EntitySubscriptionConfiguration.FullBufferBehaviour.Close
-			elif data == "DropOldest":
-				return EntitySubscriptionConfiguration.FullBufferBehaviour.DropOldest
-			elif data == "Ignore":
-				return EntitySubscriptionConfiguration.FullBufferBehaviour.Ignore
-			else:
-				raise Exception(f"{data} is not a valid value for FullBufferBehaviour enum.")
-
-	def __serialize__(self) -> object:
-		return {
-			"channelBufferCapacity": self.channel_buffer_capacity,
-			"onBufferFull": self.on_buffer_full.__serialize__(),
-			"reconnectionDelay": serialize_timedelta(self.reconnection_delay),
-			"retryDelayExponentFactor": self.retry_delay_exponent_factor,
-			"connectionMaxRetries": self.connection_max_retries,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			channel_buffer_capacity=deserialized_dict["channelBufferCapacity"],
-			on_buffer_full=EntitySubscriptionConfiguration.FullBufferBehaviour._deserialize(deserialized_dict["onBufferFull"]),
-			reconnection_delay=deserialize_timedelta(deserialized_dict["reconnectionDelay"]),
-			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
-			connection_max_retries=deserialized_dict["connectionMaxRetries"],
-		)
-
 @dataclass
 class EncryptedClassification:
 	id: str
@@ -2996,100 +2997,6 @@ class FormTemplate:
 			layout_attachment_id=deserialized_dict.get("layoutAttachmentId"),
 			template_layout_attachment_id=deserialized_dict.get("templateLayoutAttachmentId"),
 		)
-
-RecoveryDataKey = 'HexString'
-
-@dataclass
-class RecoveryResultSuccess:
-	data: object
-
-	def __serialize__(self) -> object:
-		return {
-			"data": self.data.__serialize__(),
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RecoveryResultSuccess':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			data=deserialized_dict["data"],
-		)
-
-@dataclass
-class RecoveryResultFailure:
-	reason: 'RecoveryDataUseFailureReason'
-
-	def __serialize__(self) -> object:
-		return {
-			"reason": self.reason.__serialize__(),
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RecoveryResultFailure':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			reason=RecoveryDataUseFailureReason._deserialize(deserialized_dict["reason"]),
-		)
-
-RecoveryResult = Union['RecoveryResultSuccess', 'RecoveryResultFailure']
-
-def serialize_recovery_result(recovery_result: RecoveryResult) -> object:
-	if isinstance(recovery_result, RecoveryResultSuccess):
-		serialized_entity = recovery_result.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success"})
-		return serialized_entity
-	elif isinstance(recovery_result, RecoveryResultFailure):
-		serialized_entity = recovery_result.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(recovery_result)} is not a known subclass of RecoveryResult")
-
-def deserialize_recovery_result(data: Union[str, Dict[str, object]]) -> 'RecoveryResult':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("kotlinType")
-	if qualifier is None:
-		raise Exception("Missing qualifier: kotlinType")
-	if qualifier == "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success":
-		return RecoveryResultSuccess._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure":
-		return RecoveryResultFailure._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of RecoveryResult")
-
-class RecoveryDataUseFailureReason(Enum):
-	Missing = "Missing"
-	Unauthorized = "Unauthorized"
-	InvalidType = "InvalidType"
-	InvalidContent = "InvalidContent"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RecoveryDataUseFailureReason':
-		if data == "Missing":
-			return RecoveryDataUseFailureReason.Missing
-		elif data == "Unauthorized":
-			return RecoveryDataUseFailureReason.Unauthorized
-		elif data == "InvalidType":
-			return RecoveryDataUseFailureReason.InvalidType
-		elif data == "InvalidContent":
-			return RecoveryDataUseFailureReason.InvalidContent
-		else:
-			raise Exception(f"{data} is not a valid value for RecoveryDataUseFailureReason enum.")
 
 class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 
@@ -6426,29 +6333,6 @@ class FormShareOptions:
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
 			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
-		)
-
-@dataclass
-class KeyPairUpdateNotification:
-	new_public_key: 'SpkiHexString'
-	concerned_data_owner_id: str
-
-	def __serialize__(self) -> object:
-		return {
-			"newPublicKey": self.new_public_key,
-			"concernedDataOwnerId": self.concerned_data_owner_id,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'KeyPairUpdateNotification':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			new_public_key=deserialized_dict["newPublicKey"],
-			concerned_data_owner_id=deserialized_dict["concernedDataOwnerId"],
 		)
 
 @dataclass

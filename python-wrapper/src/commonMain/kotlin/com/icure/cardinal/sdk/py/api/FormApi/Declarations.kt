@@ -470,7 +470,7 @@ public fun deleteFormUnsafeBlocking(sdk: CardinalApis, params: String): String =
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormUnsafeParams>(params)
 	runBlocking {
-		sdk.form.deleteForm(
+		sdk.form.deleteFormUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -489,7 +489,7 @@ public fun deleteFormUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.form.deleteForm(
+			sdk.form.deleteFormUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -506,7 +506,7 @@ public fun deleteFormsUnsafeBlocking(sdk: CardinalApis, params: String): String 
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormsUnsafeParams>(params)
 	runBlocking {
-		sdk.form.deleteForms(
+		sdk.form.deleteFormsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -525,7 +525,7 @@ public fun deleteFormsUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.form.deleteForms(
+			sdk.form.deleteFormsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)

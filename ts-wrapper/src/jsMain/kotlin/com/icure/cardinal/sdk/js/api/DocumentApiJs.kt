@@ -93,11 +93,9 @@ public external interface DocumentApiJs {
 	public fun matchDocumentsBySorted(filter: SortableFilterOptionsJs<DocumentJs>):
 			Promise<Array<String>>
 
-	@JsName("deleteDocumentUnsafe")
-	public fun deleteDocument(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteDocumentUnsafe(entityId: String): Promise<DocIdentifierJs>
 
-	@JsName("deleteDocumentsUnsafe")
-	public fun deleteDocuments(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteDocumentsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
 	public fun deleteDocumentById(entityId: String, rev: String): Promise<DocIdentifierJs>
 

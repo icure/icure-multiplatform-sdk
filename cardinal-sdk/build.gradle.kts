@@ -45,7 +45,7 @@ kotlin {
 			dependencies {
 				implementation(libs.kotestAssertions)
 				implementation(libs.kotestEngine)
-				implementation(libs.kotestDatatest)
+//				implementation(libs.kotestDatatest)
 				implementation(libs.kotp)
 				implementation(kotlin("test-common"))
 				implementation(kotlin("test-annotations-common"))

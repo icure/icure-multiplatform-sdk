@@ -10,7 +10,6 @@ import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.RecoveryData
 import com.icure.cardinal.sdk.model.specializations.Base64String
-import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
@@ -162,7 +161,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 		val hcp = createHcpUser()
 		val api = hcp.api()
 		val newKey = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding, AesService.KeySize.Aes256)
-		val newRecoveryKey = RecoveryDataKey(HexString(defaultCryptoService.aes.exportKey(newKey).toHexString()))
+		val newRecoveryKey = RecoveryDataKey.fromRawBytes(defaultCryptoService.aes.exportKey(newKey))
 		api.crypto.internal.recoveryDataEncryption.raw.createRecoveryData(
 			RecoveryData(
 				id = api.crypto.internal.recoveryDataEncryption.recoveryKeyToId(newRecoveryKey),
@@ -197,7 +196,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 
 	"Existing exchange data recovery info should be decrypted correctly" {
 		val key = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding, AesService.KeySize.Aes256)
-		val recoveryKey = RecoveryDataKey(HexString(defaultCryptoService.aes.exportKey(key).toHexString()))
+		val recoveryKey = RecoveryDataKey.fromRawBytes(defaultCryptoService.aes.exportKey(key))
 		val exchangeDataId = defaultCryptoService.strongRandom.randomUUID()
 		val rawAccessControlSecret = "EisFflVfFfAXj3sWoGuhhg=="
 		val rawSharedSignatureKey = "gXS+x+PYscFM2G7UX/wzrpv64X6G1rKh1vK93Z9YxGB8dA+zFRgVTB59Xz2yp6WYnfPzxjIP/4ICGQLb" +

@@ -198,7 +198,7 @@ public fun deleteTopicUnsafeBlocking(sdk: CardinalBaseApis, params: String): Str
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTopicUnsafeParams>(params)
 	runBlocking {
-		sdk.topic.deleteTopic(
+		sdk.topic.deleteTopicUnsafe(
 			decodedParams.entityId,
 		)
 	}
@@ -217,7 +217,7 @@ public fun deleteTopicUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTopicUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.topic.deleteTopic(
+			sdk.topic.deleteTopicUnsafe(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
@@ -234,7 +234,7 @@ public fun deleteTopicsUnsafeBlocking(sdk: CardinalBaseApis, params: String): St
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTopicsUnsafeParams>(params)
 	runBlocking {
-		sdk.topic.deleteTopics(
+		sdk.topic.deleteTopicsUnsafe(
 			decodedParams.entityIds,
 		)
 	}
@@ -253,7 +253,7 @@ public fun deleteTopicsUnsafeAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteTopicsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.topic.deleteTopics(
+			sdk.topic.deleteTopicsUnsafe(
 				decodedParams.entityIds,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
