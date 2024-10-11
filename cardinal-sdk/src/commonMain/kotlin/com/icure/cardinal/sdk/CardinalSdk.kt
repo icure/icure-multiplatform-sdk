@@ -119,7 +119,7 @@ import com.icure.cardinal.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTemplateParameters
-import com.icure.cardinal.sdk.auth.Captcha
+import com.icure.cardinal.sdk.auth.CaptchaOptions
 import com.icure.cardinal.sdk.auth.JwtBearer
 import com.icure.cardinal.sdk.auth.JwtCredentials
 import com.icure.cardinal.sdk.auth.JwtRefresh
@@ -302,8 +302,7 @@ interface CardinalSdk : CardinalApis {
 		 * @param userTelecomType the type of telecom number used for the user.
 		 * @param userTelecom the telecom number of the user for which you want to execute the process. This should be an
 		 * email address or phone number depending on the type of process you are executing.
-		 * @param captchaType the type of captcha you use with your processes.
-		 * @param captchaKey the key obtained by resolving the captcha. Used to prevent abuse of the message gateway and
+		 * @param captcha Captcha options for authentication. This is used to prevent abuse of the message gateway and
 		 * connected external services.
 		 * @param baseStorage an implementation of the [StorageFacade], used for persistent storage of various
 		 * information including the user keys if [SdkOptions.keyStorage] is not provided.
@@ -319,7 +318,7 @@ interface CardinalSdk : CardinalApis {
 			processId: String,
 			userTelecomType: AuthenticationProcessTelecomType,
 			userTelecom: String,
-			captcha: Captcha,
+			captcha: CaptchaOptions,
 			baseStorage: StorageFacade,
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
 			options: SdkOptions = SdkOptions()

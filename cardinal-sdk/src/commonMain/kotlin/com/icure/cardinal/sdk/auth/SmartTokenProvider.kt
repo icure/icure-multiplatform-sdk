@@ -52,7 +52,7 @@ private class AuthProcessApiImpl(
 		processId: String,
 		userTelecomType: AuthenticationProcessTelecomType,
 		userTelecom: String,
-		captcha: Captcha,
+		captcha: CaptchaOptions,
 		processTemplateParameters: AuthenticationProcessTemplateParameters
 	): AuthenticationProcessRequest {
 		val requestId = messageGatewayApi.startProcess(

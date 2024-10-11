@@ -35,7 +35,7 @@ kotlin {
 				api(libs.kotlinDateTime)
 				implementation(libs.kermit)
 				api(libs.kryptom)
-				implementation(libs.kerberus)
+				api(libs.kerberus)
 				implementation(libs.coroutinesCore)
 				implementation(libs.okio)
 				implementation(kotlin("reflect"))
