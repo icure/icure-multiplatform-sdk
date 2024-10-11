@@ -41,7 +41,7 @@ class CryptoApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 
-	async def current_data_owner_keys_async(self, filter_trusted_keys: bool) -> Dict[str, Dict[KeypairFingerprintV1String, bytearray]]:
+	async def current_data_owner_keys_async(self, filter_trusted_keys: bool = True) -> Dict[str, Dict[KeypairFingerprintV1String, bytearray]]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -64,7 +64,7 @@ class CryptoApi:
 		)
 		return await future
 
-	def current_data_owner_keys_blocking(self, filter_trusted_keys: bool) -> Dict[str, Dict[KeypairFingerprintV1String, bytearray]]:
+	def current_data_owner_keys_blocking(self, filter_trusted_keys: bool = True) -> Dict[str, Dict[KeypairFingerprintV1String, bytearray]]:
 		payload = {
 			"filterTrustedKeys": filter_trusted_keys,
 		}

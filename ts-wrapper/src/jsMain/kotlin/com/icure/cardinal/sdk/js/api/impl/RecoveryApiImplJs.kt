@@ -154,27 +154,27 @@ internal class RecoveryApiImplJs(
 
 	}
 
-	override fun deleteAllRecoveryInfoFor(dataOwnerId: String): Promise<Double> = GlobalScope.promise {
+	override fun purgeAllRecoveryInfoFor(dataOwnerId: String): Promise<Double> = GlobalScope.promise {
 		val dataOwnerIdConverted: String = dataOwnerId
-		val result = recoveryApi.deleteAllRecoveryInfoFor(
+		val result = recoveryApi.purgeAllRecoveryInfoFor(
 			dataOwnerIdConverted,
 		)
 		intToNumber(result)
 	}
 
-	override fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
+	override fun purgeAllKeyPairRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
 			GlobalScope.promise {
 		val dataOwnerIdConverted: String = dataOwnerId
-		val result = recoveryApi.deleteAllKeyPairRecoveryInfoFor(
+		val result = recoveryApi.purgeAllKeyPairRecoveryInfoFor(
 			dataOwnerIdConverted,
 		)
 		intToNumber(result)
 	}
 
-	override fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
+	override fun purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Promise<Double> =
 			GlobalScope.promise {
 		val dataOwnerIdConverted: String = dataOwnerId
-		val result = recoveryApi.deleteAllExchangeDataRecoveryInfoFor(
+		val result = recoveryApi.purgeAllExchangeDataRecoveryInfoFor(
 			dataOwnerIdConverted,
 		)
 		intToNumber(result)

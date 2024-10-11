@@ -45,7 +45,7 @@ public fun forceReloadAsync(sdk: CardinalApis,
 
 @Serializable
 private class CurrentDataOwnerKeysParams(
-	public val filterTrustedKeys: Boolean,
+	public val filterTrustedKeys: Boolean = true,
 )
 
 @OptIn(InternalIcureApi::class)

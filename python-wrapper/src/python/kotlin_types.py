@@ -444,16 +444,6 @@ class CalendarItemBasicApi(Structure):
 		("undeleteCalendarItemByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
-class CardinalMaintenanceTaskApi(Structure):
-	_fields_ = [
-		("applyKeyPairUpdateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("applyKeyPairUpdateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createKeyPairUpdateNotificationToAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createKeyPairUpdateNotificationToBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createKeyPairUpdateNotificationsToAllDelegationCounterpartsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-	]
-
 class encrypted(Structure):
 	_fields_ = [
 		("filterClassificationsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -2992,22 +2982,14 @@ class ReceiptBasicApi(Structure):
 
 class RecoveryApi(Structure):
 	_fields_ = [
-		("createExchangeDataRecoveryInfoAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createExchangeDataRecoveryInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("createRecoveryInfoForAvailableKeyPairsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createRecoveryInfoForAvailableKeyPairsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteAllExchangeDataRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteAllExchangeDataRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteAllKeyPairRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteAllKeyPairRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteAllRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteAllRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("purgeAllExchangeDataRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("purgeAllExchangeDataRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("purgeAllKeyPairRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("purgeAllKeyPairRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("purgeAllRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("purgeAllRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("purgeRecoveryInfoAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("purgeRecoveryInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("recoverExchangeDataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("recoverExchangeDataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("recoverKeyPairsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("recoverKeyPairsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
 class RoleApi(Structure):
@@ -3496,7 +3478,6 @@ class api(Structure):
 		("ApplicationSettingsApi", ApplicationSettingsApi),
 		("CalendarItemApi", CalendarItemApi),
 		("CalendarItemBasicApi", CalendarItemBasicApi),
-		("CardinalMaintenanceTaskApi", CardinalMaintenanceTaskApi),
 		("ClassificationApi", ClassificationApi),
 		("ClassificationBasicApi", ClassificationBasicApi),
 		("CodeApi", CodeApi),

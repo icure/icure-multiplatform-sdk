@@ -41,7 +41,6 @@ from cardinal_sdk.api.UserApi import UserApi
 from cardinal_sdk.api.RoleApi import RoleApi
 from cardinal_sdk.api.MessageBasicApi import MessageBasicApi
 from cardinal_sdk.api.FormApi import FormApi
-from cardinal_sdk.api.CardinalMaintenanceTaskApi import CardinalMaintenanceTaskApi
 from cardinal_sdk.api.InvoiceApi import InvoiceApi
 from cardinal_sdk.api.MessageApi import MessageApi
 from cardinal_sdk.api.HealthElementApi import HealthElementApi

@@ -2,9 +2,9 @@
 
 HexString = str
 
-SpkiHexString = str
-
 KeypairFingerprintV1String = str
+
+SpkiHexString = str
 
 AesExchangeKeyEncryptionKeypairIdentifier = str
 

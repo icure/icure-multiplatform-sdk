@@ -20,10 +20,10 @@ export interface RecoveryApi {
 
 	purgeRecoveryInfo(recoveryKey: RecoveryDataKey): Promise<void>;
 
-	deleteAllRecoveryInfoFor(dataOwnerId: string): Promise<number>;
+	purgeAllRecoveryInfoFor(dataOwnerId: string): Promise<number>;
 
-	deleteAllKeyPairRecoveryInfoFor(dataOwnerId: string): Promise<number>;
+	purgeAllKeyPairRecoveryInfoFor(dataOwnerId: string): Promise<number>;
 
-	deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: string): Promise<number>;
+	purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: string): Promise<number>;
 
 }
