@@ -5,10 +5,12 @@ package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DeviceJs
 import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
@@ -71,4 +73,10 @@ public external interface DeviceApiJs {
 
 	public fun deleteDevicesInGroup(groupId: String, deviceIds: Array<IdWithRevJs>):
 			Promise<Array<DocIdentifierJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<DeviceJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<DeviceJs>>
 }

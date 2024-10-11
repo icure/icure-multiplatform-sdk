@@ -10,12 +10,12 @@ from dataclasses import dataclass
 from cardinal_sdk.model.specializations import HexString
 from cardinal_sdk.model.specializations import SpkiHexString
 from cardinal_sdk.model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
-from cardinal_sdk.model.specializations import Base64String
 from enum import Enum
-from cardinal_sdk.model.SingletonMeta import SingletonMeta
 from datetime import timedelta
 from cardinal_sdk.model.serialization import serialize_timedelta
 from cardinal_sdk.model.serialization import deserialize_timedelta
+from cardinal_sdk.model.specializations import Base64String
+from cardinal_sdk.model.SingletonMeta import SingletonMeta
 from cardinal_sdk.model.specializations import SecureDelegationKeyString
 from cardinal_sdk.model.specializations import Sha256HexString
 
@@ -266,6 +266,73 @@ class IdWithMandatoryRev:
 		return cls(
 			id=deserialized_dict["id"],
 			rev=deserialized_dict["rev"],
+		)
+
+class SubscriptionEventType(Enum):
+	Create = "Create"
+	Update = "Update"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
+		if data == "Create":
+			return SubscriptionEventType.Create
+		elif data == "Update":
+			return SubscriptionEventType.Update
+		else:
+			raise Exception(f"{data} is not a valid value for SubscriptionEventType enum.")
+
+@dataclass
+class EntitySubscriptionConfiguration:
+	channel_buffer_capacity: int = 100
+	on_buffer_full: 'EntitySubscriptionConfiguration.FullBufferBehaviour' = field(default_factory=lambda: EntitySubscriptionConfiguration.FullBufferBehaviour.Close)
+	reconnection_delay: timedelta = timedelta(seconds=2)
+	retry_delay_exponent_factor: float = 2.0
+	connection_max_retries: int = 5
+
+	class FullBufferBehaviour(Enum):
+		Close = "Close"
+		DropOldest = "DropOldest"
+		Ignore = "Ignore"
+
+		def __serialize__(self) -> object:
+			return self.value
+
+		@classmethod
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration.FullBufferBehaviour':
+			if data == "Close":
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.Close
+			elif data == "DropOldest":
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.DropOldest
+			elif data == "Ignore":
+				return EntitySubscriptionConfiguration.FullBufferBehaviour.Ignore
+			else:
+				raise Exception(f"{data} is not a valid value for FullBufferBehaviour enum.")
+
+	def __serialize__(self) -> object:
+		return {
+			"channelBufferCapacity": self.channel_buffer_capacity,
+			"onBufferFull": self.on_buffer_full.__serialize__(),
+			"reconnectionDelay": serialize_timedelta(self.reconnection_delay),
+			"retryDelayExponentFactor": self.retry_delay_exponent_factor,
+			"connectionMaxRetries": self.connection_max_retries,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			channel_buffer_capacity=deserialized_dict["channelBufferCapacity"],
+			on_buffer_full=EntitySubscriptionConfiguration.FullBufferBehaviour._deserialize(deserialized_dict["onBufferFull"]),
+			reconnection_delay=deserialize_timedelta(deserialized_dict["reconnectionDelay"]),
+			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
+			connection_max_retries=deserialized_dict["connectionMaxRetries"],
 		)
 
 @dataclass
@@ -1879,73 +1946,6 @@ class SortDirection(Enum):
 			return SortDirection.Desc
 		else:
 			raise Exception(f"{data} is not a valid value for SortDirection enum.")
-
-class SubscriptionEventType(Enum):
-	Create = "Create"
-	Update = "Update"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
-		if data == "Create":
-			return SubscriptionEventType.Create
-		elif data == "Update":
-			return SubscriptionEventType.Update
-		else:
-			raise Exception(f"{data} is not a valid value for SubscriptionEventType enum.")
-
-@dataclass
-class EntitySubscriptionConfiguration:
-	channel_buffer_capacity: int = 100
-	on_buffer_full: 'EntitySubscriptionConfiguration.FullBufferBehaviour' = field(default_factory=lambda: EntitySubscriptionConfiguration.FullBufferBehaviour.Close)
-	reconnection_delay: timedelta = timedelta(seconds=2)
-	retry_delay_exponent_factor: float = 2.0
-	connection_max_retries: int = 5
-
-	class FullBufferBehaviour(Enum):
-		Close = "Close"
-		DropOldest = "DropOldest"
-		Ignore = "Ignore"
-
-		def __serialize__(self) -> object:
-			return self.value
-
-		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration.FullBufferBehaviour':
-			if data == "Close":
-				return EntitySubscriptionConfiguration.FullBufferBehaviour.Close
-			elif data == "DropOldest":
-				return EntitySubscriptionConfiguration.FullBufferBehaviour.DropOldest
-			elif data == "Ignore":
-				return EntitySubscriptionConfiguration.FullBufferBehaviour.Ignore
-			else:
-				raise Exception(f"{data} is not a valid value for FullBufferBehaviour enum.")
-
-	def __serialize__(self) -> object:
-		return {
-			"channelBufferCapacity": self.channel_buffer_capacity,
-			"onBufferFull": self.on_buffer_full.__serialize__(),
-			"reconnectionDelay": serialize_timedelta(self.reconnection_delay),
-			"retryDelayExponentFactor": self.retry_delay_exponent_factor,
-			"connectionMaxRetries": self.connection_max_retries,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			channel_buffer_capacity=deserialized_dict["channelBufferCapacity"],
-			on_buffer_full=EntitySubscriptionConfiguration.FullBufferBehaviour._deserialize(deserialized_dict["onBufferFull"]),
-			reconnection_delay=deserialize_timedelta(deserialized_dict["reconnectionDelay"]),
-			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
-			connection_max_retries=deserialized_dict["connectionMaxRetries"],
-		)
 
 @dataclass
 class EncryptedClassification:

@@ -5,6 +5,7 @@ package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedPropertyStubJs
 import com.icure.cardinal.sdk.js.model.ListOfIdsJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
@@ -13,6 +14,7 @@ import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.security.Enable2faRequestJs
 import com.icure.cardinal.sdk.js.model.security.TokenWithGroupJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.String
@@ -150,4 +152,10 @@ public external interface UserApiJs {
 	public fun purgeUser(user: UserJs): Promise<Unit>
 
 	public fun undeleteUser(user: UserJs): Promise<UserJs>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<UserJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<UserJs>>
 }

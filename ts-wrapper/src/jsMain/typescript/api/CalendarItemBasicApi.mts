@@ -1,9 +1,12 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {CalendarItem, EncryptedCalendarItem} from '../model/CalendarItem.mjs';
 import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
 
 
 export interface CalendarItemBasicApi {
@@ -51,5 +54,8 @@ export interface CalendarItemBasicApi {
 	findCalendarItemsByRecurrenceId(recurrenceId: string, startKey: string | undefined,
 			startDocumentId: string | undefined,
 			limit: number): Promise<PaginatedList<EncryptedCalendarItem>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<CalendarItem>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedCalendarItem>>;
 
 }

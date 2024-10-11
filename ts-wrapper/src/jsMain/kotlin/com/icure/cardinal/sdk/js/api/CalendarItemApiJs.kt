@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -129,4 +130,10 @@ public external interface CalendarItemApiJs {
 		startDocumentId: String?,
 		limit: Double,
 	): Promise<PaginatedListJs<DecryptedCalendarItemJs>>
+
+	public fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<CalendarItemJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<EncryptedCalendarItemJs>>
 }

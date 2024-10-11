@@ -4,14 +4,18 @@ package com.icure.cardinal.sdk.js.api.`impl`
 import com.icure.cardinal.sdk.api.HealthcarePartyApi
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNonNull
 import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.api.HealthcarePartyApiJs
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
+import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.baseFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
+import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
@@ -28,11 +32,17 @@ import com.icure.cardinal.sdk.js.model.healthcareParty_toJs
 import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.publicKey_toJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
+import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
+import com.icure.cardinal.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
+import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
@@ -41,6 +51,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlin.collections.List
+import kotlin.collections.Set
 import kotlin.js.Promise
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -694,5 +705,44 @@ internal class HealthcarePartyApiImplJs(
 				docIdentifier_toJs(x1)
 			},
 		)
+	}
+
+	override fun subscribeToEvents(
+		events: Array<String>,
+		filter: FilterOptionsJs<HealthcarePartyJs>,
+		options: dynamic,
+	): Promise<EntitySubscriptionJs<HealthcarePartyJs>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val eventsConverted: Set<SubscriptionEventType> = arrayToSet(
+				events,
+				"events",
+				{ x1: String ->
+					SubscriptionEventType.valueOf(x1)
+				},
+			)
+			val filterConverted: FilterOptions<HealthcareParty> = filterOptions_fromJs(filter)
+			val subscriptionConfigConverted: EntitySubscriptionConfiguration? =
+					convertingOptionOrDefaultNullable(
+				_options,
+				"subscriptionConfig",
+				null
+			) { subscriptionConfig: EntitySubscriptionConfigurationJs? ->
+				subscriptionConfig?.let { nonNull1 ->
+					entitySubscriptionConfiguration_fromJs(nonNull1)
+				}
+			}
+			val result = healthcarePartyApi.subscribeToEvents(
+				eventsConverted,
+				filterConverted,
+				subscriptionConfigConverted,
+			)
+			entitySubscription_toJs(
+				result,
+				{ x1: HealthcareParty ->
+					healthcareParty_toJs(x1)
+				},
+			)
+		}
 	}
 }

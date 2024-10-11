@@ -1,9 +1,12 @@
 // auto-generated file
-import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
+import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Device} from '../model/Device.mjs';
 import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
+import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
+import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
 
 
 export interface DeviceApi {
@@ -56,5 +59,8 @@ export interface DeviceApi {
 	createDeviceInGroup(groupId: string, device: Device): Promise<Device>;
 
 	deleteDevicesInGroup(groupId: string, deviceIds: Array<IdWithRev>): Promise<Array<DocIdentifier>>;
+
+	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<Device>,
+			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<Device>>;
 
 }
