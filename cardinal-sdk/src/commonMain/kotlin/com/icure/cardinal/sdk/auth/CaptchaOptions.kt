@@ -1,7 +1,7 @@
 
 package com.icure.cardinal.sdk.auth
 
-import com.icure.keberus.Solution
+import com.icure.kerberus.Solution
 import io.ktor.utils.io.InternalAPI
 
 /**

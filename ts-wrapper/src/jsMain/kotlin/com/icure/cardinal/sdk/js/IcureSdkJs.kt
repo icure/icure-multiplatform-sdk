@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.CardinalBaseSdk
 import com.icure.cardinal.sdk.CardinalSdk
-import com.icure.cardinal.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTemplateParameters
 import com.icure.cardinal.sdk.js.api.AccessLogApiJs
@@ -109,6 +108,8 @@ import com.icure.cardinal.sdk.js.api.impl.TimeTableBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TopicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TopicBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.UserApiImplJs
+import com.icure.cardinal.sdk.js.auth.CaptchaOptionsJs
+import com.icure.cardinal.sdk.js.auth.captchaOptions_fromJs
 import com.icure.cardinal.sdk.js.externalsdk.AuthenticationWithProcessStepJs
 import com.icure.cardinal.sdk.js.externalsdk.CardinalApisJs
 import com.icure.cardinal.sdk.js.externalsdk.CardinalBaseApisJs
@@ -153,8 +154,7 @@ object InternalSdkInitializers {
 		processId: String,
 		userTelecomType: String,
 		userTelecom: String,
-		captchaType: String,
-		captchaKey: String,
+		captchaOptions: CaptchaOptionsJs,
 		baseStorage: dynamic,
 		authenticationProcessTemplateParameters: AuthenticationProcessTemplateParametersJs?,
 		options: SdkOptionsJs?
@@ -167,8 +167,7 @@ object InternalSdkInitializers {
 			processId,
 			AuthenticationProcessTelecomType.valueOf(userTelecomType),
 			userTelecom,
-			AuthenticationProcessCaptchaType.valueOf(captchaType),
-			captchaKey,
+			captchaOptions_fromJs(captchaOptions),
 			loadStorageOptions(baseStorage),
 			authenticationProcessTemplateParameters?.toKt() ?: AuthenticationProcessTemplateParameters(),
 			options?.toKt() ?: SdkOptions()

@@ -11,7 +11,7 @@ kermit = "2.0.3"
 okio = "3.9.0"
 bouncyCastle = "1.70"
 kotp = "1.0.1"
-kerberus = "1.1.2"
+kerberus = "1.1.3"
 
 [libraries]
 

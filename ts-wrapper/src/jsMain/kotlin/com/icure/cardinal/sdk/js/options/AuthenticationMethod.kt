@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.js.options
 import com.icure.cardinal.sdk.auth.AuthSecretDetails
 import com.icure.cardinal.sdk.auth.AuthSecretProvider
 import com.icure.cardinal.sdk.auth.AuthenticationProcessApi
-import com.icure.cardinal.sdk.auth.AuthenticationProcessCaptchaType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessRequest
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTemplateParameters
@@ -14,6 +13,8 @@ import com.icure.cardinal.sdk.auth.ThirdPartyAuthentication
 import com.icure.cardinal.sdk.auth.ThirdPartyProvider
 import com.icure.cardinal.sdk.auth.UsernameLongToken
 import com.icure.cardinal.sdk.auth.UsernamePassword
+import com.icure.cardinal.sdk.js.auth.CaptchaOptionsJs
+import com.icure.cardinal.sdk.js.auth.captchaOptions_fromJs
 import com.icure.cardinal.sdk.js.options.external.AuthSecretDetailsJs
 import com.icure.cardinal.sdk.js.options.external.AuthSecretProviderJs
 import com.icure.cardinal.sdk.js.options.external.AuthenticationMethodJs
@@ -157,8 +158,7 @@ private class AuthenticationProcessApiBridge(
 		processId: String,
 		userTelecomType: String,
 		userTelecom: String,
-		captchaType: String,
-		captchaKey: String,
+		captchaOptions: CaptchaOptionsJs,
 		processTemplateParameters: AuthenticationProcessTemplateParametersJs?
 	): Promise<AuthenticationProcessRequestJs> = GlobalScope.promise {
 		ktApi.executeProcess(
@@ -167,8 +167,7 @@ private class AuthenticationProcessApiBridge(
 			processId,
 			AuthenticationProcessTelecomType.valueOf(userTelecomType),
 			userTelecom,
-			AuthenticationProcessCaptchaType.valueOf(captchaType),
-			captchaKey,
+			captchaOptions_fromJs(captchaOptions),
 			processTemplateParameters?.toKt() ?: AuthenticationProcessTemplateParameters()
 		).toJs()
 	}
