@@ -7,7 +7,7 @@ from cardinal_sdk.authentication.AuthenticationMethod import AuthenticationMetho
 from cardinal_sdk.storage.StorageFacadeOptions import StorageOptions, _serialize_storage_options, CustomStorageFacade, _CustomStorageFacadeBridge
 from cardinal_sdk.options.SdkOptions import SdkOptions, _serialize_encrypted_fields
 from cardinal_sdk.options.JsonPatcher import _JsonPatcherBridge
-from cardinal_sdk.api import DataOwnerApi, CardinalMaintenanceTaskApi, AccessLogApi, CalendarItemApi, ClassificationApi, ContactApi, \
+from cardinal_sdk.api import DataOwnerApi, AccessLogApi, CalendarItemApi, ClassificationApi, ContactApi, \
     DocumentApi, FormApi, HealthElementApi, InvoiceApi, MaintenanceTaskApi, MessageApi, PatientApi, ReceiptApi, \
     TimeTableApi, TopicApi, ApplicationSettingsApi, CodeApi, CryptoApi, DeviceApi, DocumentTemplateApi, \
     EntityReferenceApi, EntityTemplateApi, FrontEndMigrationApi, GroupApi, HealthcarePartyApi, SystemApi, InsuranceApi, \
@@ -17,7 +17,6 @@ from cardinal_sdk.CryptoStrategies import _CryptoStrategiesBridge
 class CardinalSdk:
     __health_element: Optional[HealthElementApi] = None
     __dataOwner: Optional[DataOwnerApi] = None
-    __cardinalMaintenanceTask: Optional[CardinalMaintenanceTaskApi] = None
     __accessLog: Optional[AccessLogApi] = None
     __calendarItem: Optional[CalendarItemApi] = None
     __classification: Optional[ClassificationApi] = None
@@ -119,12 +118,6 @@ class CardinalSdk:
         if self.__dataOwner is None:
             self.__dataOwner = DataOwnerApi(self)
         return self.__dataOwner
-
-    @property
-    def cardinal_maintenance_task(self):
-        if self.__cardinalMaintenanceTask is None:
-            self.__cardinalMaintenanceTask = CardinalMaintenanceTaskApi(self)
-        return self.__cardinalMaintenanceTask
 
     @property
     def access_log(self):
