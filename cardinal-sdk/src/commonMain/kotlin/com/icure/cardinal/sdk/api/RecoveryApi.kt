@@ -115,20 +115,20 @@ interface RecoveryApi {
 	 * @param dataOwnerId the data owner for which to delete the recovery data.
 	 * @return the number of deleted recovery information.
 	 */
-	suspend fun deleteAllRecoveryInfoFor(dataOwnerId: String): Int
+	suspend fun purgeAllRecoveryInfoFor(dataOwnerId: String): Int
 
 	/**
 	 * Deletes all key pair recovery information for a certain data owner.
 	 * @param dataOwnerId the data owner for which to delete the key pair recovery information.
 	 * @return the number of deleted key pair recovery information.
 	 */
-	suspend fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int
+	suspend fun purgeAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int
 
 	/**
 	 * Deletes all exchange data recovery information for a certain data owner.
 	 * @param dataOwnerId the data owner for which to delete the exchange data recovery information.
 	 * @return the number of deleted exchange data recovery information.
 	 */
-	suspend fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int
+	suspend fun purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int
 }
 

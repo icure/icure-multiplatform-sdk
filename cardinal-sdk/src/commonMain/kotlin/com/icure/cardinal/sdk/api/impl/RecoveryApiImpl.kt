@@ -120,16 +120,16 @@ internal class RecoveryApiImpl(
 		).successBody()
 	}
 
-	override suspend fun deleteAllRecoveryInfoFor(dataOwnerId: String): Int =
+	override suspend fun purgeAllRecoveryInfoFor(dataOwnerId: String): Int =
 		crypto.recoveryDataEncryption.raw.deleteAllRecoveryDataForRecipient(dataOwnerId).getCount()
 
-	override suspend fun deleteAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int =
+	override suspend fun purgeAllKeyPairRecoveryInfoFor(dataOwnerId: String): Int =
 		crypto.recoveryDataEncryption.raw.deleteAllRecoveryDataOfTypeForRecipient(
 			RecoveryData.Type.KeypairRecovery,
 			dataOwnerId
 		).getCount()
 
-	override suspend fun deleteAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int =
+	override suspend fun purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int =
 		crypto.recoveryDataEncryption.raw.deleteAllRecoveryDataOfTypeForRecipient(
 			RecoveryData.Type.ExchangeKeyRecovery,
 			dataOwnerId
