@@ -3,22 +3,24 @@ package com.icure.cardinal.sdk.api
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlin.js.JsName
 
-interface HealthcarePartyApi {
+interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, FilterOptions<HealthcareParty>> {
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteHealthcarePartyUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteHealthcarePartiesUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty
 	suspend fun createHealthcareParty(p: HealthcareParty): HealthcareParty
 
@@ -124,7 +126,7 @@ interface HealthcarePartyApi {
 		@DefaultValue("null")
 		healthcarePartyIds: List<String>? = null,
 	): List<HealthcareParty>
-	
+
 	suspend fun registerPatient(
 		groupId: String,
 		@DefaultValue("null")

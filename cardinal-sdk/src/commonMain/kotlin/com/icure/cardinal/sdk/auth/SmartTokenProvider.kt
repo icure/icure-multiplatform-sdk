@@ -52,8 +52,7 @@ private class AuthProcessApiImpl(
 		processId: String,
 		userTelecomType: AuthenticationProcessTelecomType,
 		userTelecom: String,
-		captchaType: AuthenticationProcessCaptchaType,
-		captchaKey: String,
+		captcha: CaptchaOptions,
 		processTemplateParameters: AuthenticationProcessTemplateParameters
 	): AuthenticationProcessRequest {
 		val requestId = messageGatewayApi.startProcess(
@@ -62,8 +61,7 @@ private class AuthProcessApiImpl(
 			processId = processId,
 			userTelecomType = userTelecomType,
 			userTelecom = userTelecom,
-			captchaType = captchaType,
-			captchaKey = captchaKey,
+			captcha = captcha,
 			firstName = processTemplateParameters.firstName,
 			lastName = processTemplateParameters.lastName
 		)

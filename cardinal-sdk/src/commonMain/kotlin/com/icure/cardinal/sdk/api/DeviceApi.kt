@@ -3,15 +3,17 @@ package com.icure.cardinal.sdk.api
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlin.js.JsName
 
-interface DeviceApi {
+interface DeviceApi: Subscribable<Device, Device, FilterOptions<Device>> {
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteDeviceUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
@@ -33,7 +35,7 @@ interface DeviceApi {
 
 	suspend fun matchDevicesBy(filter: BaseFilterOptions<Device>): List<String>
 	suspend fun matchDevicesBySorted(filter: BaseSortableFilterOptions<Device>): List<String>
-	
+
 	/**
 	 * Deletes a device. If you don't have write access to the device the method will fail.
 	 * @param entityId id of the device.

@@ -119,6 +119,8 @@ data class HealthcareParty(
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 ) : StoredDocument, Named, Person, CryptoActor, DataOwner, HasCodes, HasTags {
 	// region HealthcareParty-HealthcareParty
-
+	companion object {
+		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.HealthcareParty"
+	}
 	// endregion
 }

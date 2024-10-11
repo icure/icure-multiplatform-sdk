@@ -18,7 +18,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC1"
+val version = "1.0.0-RC.1"
 project.version = version ?: "0.0.0-snapshot"
 
 kotlin {
@@ -35,6 +35,7 @@ kotlin {
 				api(libs.kotlinDateTime)
 				implementation(libs.kermit)
 				api(libs.kryptom)
+				api(libs.kerberus)
 				implementation(libs.coroutinesCore)
 				implementation(libs.okio)
 				implementation(kotlin("reflect"))
@@ -169,6 +170,9 @@ mavenPublishing {
 	pom {
 		name.set("CardinalSDK")
 		url.set("https://github.com/icure/icure-multiplatform-sdk")
+		description.set("""
+			Cardinal SDK is a multiplatform SDK for the iCure platform.
+		""".trimIndent())
 
 		licenses {
 			license {

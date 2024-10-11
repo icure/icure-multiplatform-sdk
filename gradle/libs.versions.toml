@@ -11,6 +11,7 @@ kermit = "2.0.3"
 okio = "3.9.0"
 bouncyCastle = "1.70"
 kotp = "1.0.1"
+kerberus = "1.1.2"
 
 [libraries]
 
@@ -60,6 +61,7 @@ kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 # Kryptom
 kryptom = { group = "com.icure.kryptom", name = "kryptom", version.ref = "kryptom" }
 kotp = { group = "com.icure.kotp", name = "kotp", version.ref = "kotp" }
+kerberus = { group = "com.icure", name = "kerberus", version.ref = "kerberus" }
 
 # Okio
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
