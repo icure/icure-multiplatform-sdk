@@ -626,7 +626,8 @@ private class CardinalApiImpl(
 	override val user: UserApi by lazy {
 		UserApiImpl(
 			RawUserApiImpl(apiUrl, authProvider, client, json = httpClientJson),
-			RawPermissionApiImpl(apiUrl, authProvider, client, json = httpClientJson)
+			RawPermissionApiImpl(apiUrl, authProvider, client, json = httpClientJson),
+			config
 		)
 	}
 	override val crypto: CryptoApi by lazy {
@@ -750,7 +751,7 @@ private class CardinalApiImpl(
 	}
 
 	override val device: DeviceApi by lazy {
-		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, client, json = httpClientJson), config)
 	}
 
 	override val permission: PermissionApi by lazy {
@@ -779,7 +780,7 @@ private class CardinalApiImpl(
 		GroupApiImpl(RawGroupApiImpl(apiUrl, authProvider, client, json = httpClientJson))
 	}
 	override val healthcareParty: HealthcarePartyApi by lazy {
-		HealthcarePartyApiImpl(RawHealthcarePartyApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		HealthcarePartyApiImpl(RawHealthcarePartyApiImpl(apiUrl, authProvider, client, json = httpClientJson), config)
 	}
 	override val system: SystemApi by lazy {
 		SystemApiImpl(RawICureApiImpl(apiUrl, authProvider, client, json = httpClientJson))

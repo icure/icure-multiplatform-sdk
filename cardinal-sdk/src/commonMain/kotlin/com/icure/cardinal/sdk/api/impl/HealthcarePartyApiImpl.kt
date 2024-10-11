@@ -5,10 +5,19 @@ import com.icure.cardinal.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
+import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapHealthcarePartyFilterOptions
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
+import com.icure.cardinal.sdk.options.BasicApiConfiguration
+import com.icure.cardinal.sdk.serialization.HealthcarePartyAbstractFilterSerializer
+import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
+import com.icure.cardinal.sdk.subscription.EntitySubscription
+import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
+import com.icure.cardinal.sdk.subscription.SubscriptionEventType
+import com.icure.cardinal.sdk.subscription.WebSocketSubscription
+import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
@@ -18,6 +27,7 @@ import com.icure.utils.InternalIcureApi
 @InternalIcureApi
 internal class HealthcarePartyApiImpl(
 	private val rawApi: RawHealthcarePartyApi,
+	private val config: BasicApiConfiguration,
 ) : HealthcarePartyApi {
 
 	@Deprecated("Deletion without rev is unsafe")
@@ -27,7 +37,7 @@ internal class HealthcarePartyApiImpl(
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deleteHealthcareParties(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteHealthcareParties(ListOfIds(entityIds)).successBody()
-	
+
 	override suspend fun getHealthcareParty(healthcarePartyId: String) = rawApi.getHealthcareParty(healthcarePartyId).successBody()
 
 	override suspend fun createHealthcareParty(p: HealthcareParty) = rawApi.createHealthcareParty(p).successBody()
@@ -151,4 +161,25 @@ internal class HealthcarePartyApiImpl(
 		hcp: HealthcareParty,
 	) = rawApi.registerPatient(groupId, parentHcPartyId, token, useShortToken, hcp).successBody()
 
+	override suspend fun subscribeToEvents(
+		events: Set<SubscriptionEventType>,
+		filter: FilterOptions<HealthcareParty>,
+		subscriptionConfig: EntitySubscriptionConfiguration?,
+	): EntitySubscription<HealthcareParty> {
+		return WebSocketSubscription.initialize(
+			client = config.httpClient,
+			hostname = config.apiUrl,
+			path = "/ws/v2/notification/subscribe",
+			clientJson = config.clientJson,
+			entitySerializer = HealthcareParty.serializer(),
+			events = events,
+			filter = mapHealthcarePartyFilterOptions(filter),
+			qualifiedName = HealthcareParty.KRAKEN_QUALIFIED_NAME,
+			subscriptionRequestSerializer = {
+				Serialization.json.encodeToString(SubscriptionSerializer(HealthcarePartyAbstractFilterSerializer), it)
+			},
+			webSocketAuthProvider = config.requireWebSocketAuthProvider(),
+			config = subscriptionConfig
+		)
+	}
 }
