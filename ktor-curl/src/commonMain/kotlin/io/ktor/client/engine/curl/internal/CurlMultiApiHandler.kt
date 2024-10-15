@@ -26,11 +26,6 @@ private class RequestHolder @OptIn(ExperimentalForeignApi::class) constructor(
     }
 }
 
-/**
- * Handles requests using libcurl with multi interface.
- *
- * @see <a href="https://curl.se/libcurl/c/libcurl-multi.html">Multi interface overview</a>
- */
 @OptIn(InternalAPI::class)
 internal class CurlMultiApiHandler : Closeable {
     @OptIn(ExperimentalForeignApi::class)

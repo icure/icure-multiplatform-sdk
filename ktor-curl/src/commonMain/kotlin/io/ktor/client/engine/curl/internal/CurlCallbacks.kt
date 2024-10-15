@@ -6,6 +6,7 @@ package io.ktor.client.engine.curl.internal
 
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.*
+import kotlinx.atomicfu.*
 import kotlinx.cinterop.*
 import kotlinx.coroutines.*
 import kotlinx.io.Buffer
