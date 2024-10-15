@@ -4,17 +4,30 @@
 
 package io.ktor.client.engine.curl
 
-import io.ktor.client.engine.*
-import io.ktor.client.engine.curl.internal.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.sse.*
-import io.ktor.client.plugins.websocket.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.http.cio.*
-import io.ktor.util.date.*
-import io.ktor.utils.io.*
-import kotlinx.coroutines.*
+import io.ktor.client.engine.HttpClientEngineBase
+import io.ktor.client.engine.callContext
+import io.ktor.client.engine.curl.internal.CurlHttpResponseBody
+import io.ktor.client.engine.curl.internal.CurlWebSocketResponseBody
+import io.ktor.client.engine.curl.internal.CurlWebSocketSession
+import io.ktor.client.engine.curl.internal.fromCurl
+import io.ktor.client.engine.curl.internal.toCurlRequest
+import io.ktor.client.plugins.HttpTimeoutCapability
+import io.ktor.client.plugins.sse.DefaultClientSSESession
+import io.ktor.client.plugins.sse.SSECapability
+import io.ktor.client.plugins.sse.SSEClientContent
+import io.ktor.client.plugins.websocket.WebSocketCapability
+import io.ktor.client.request.HttpRequestData
+import io.ktor.client.request.HttpResponseData
+import io.ktor.client.request.isUpgradeRequest
+import io.ktor.client.request.needToProcessSSE
+import io.ktor.http.HeadersImpl
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.cio.parseHeaders
+import io.ktor.util.date.GMTDate
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.InternalAPI
+import io.ktor.utils.io.readUTF8Line
+import kotlinx.coroutines.Dispatchers
 
 internal class CurlClientEngine(
     override val config: CurlClientEngineConfig
@@ -74,10 +87,8 @@ internal class CurlClientEngine(
     }
 }
 
-@Suppress("KDocMissingDocumentation")
 @Deprecated("This exception will be removed in a future release in favor of a better error handling.")
 public class CurlIllegalStateException(cause: String) : IllegalStateException(cause)
 
-@Suppress("KDocMissingDocumentation")
 @Deprecated("This exception will be removed in a future release in favor of a better error handling.")
 public class CurlRuntimeException(cause: String) : RuntimeException(cause)

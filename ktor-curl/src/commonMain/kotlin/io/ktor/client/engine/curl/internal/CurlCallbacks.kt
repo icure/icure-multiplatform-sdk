@@ -8,6 +8,7 @@ import io.ktor.utils.io.*
 import io.ktor.utils.io.core.*
 import kotlinx.cinterop.*
 import kotlinx.coroutines.*
+import kotlinx.io.Buffer
 import libcurl.*
 import platform.posix.*
 import kotlin.coroutines.*
@@ -68,7 +69,6 @@ internal fun onBodyChunkRequested(
     if (body.isClosedForRead) {
         return if (body.closedCause != null) -1 else 0
     }
-    @Suppress("DEPRECATION")
     val readCount = try {
         body.readAvailable(1) { source: Buffer ->
             source.readAvailable(buffer, 0, requested)
