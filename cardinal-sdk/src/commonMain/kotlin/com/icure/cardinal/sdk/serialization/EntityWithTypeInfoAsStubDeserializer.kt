@@ -1,4 +1,4 @@
-package com.icure.cardinal.sdk.py.serialization
+package com.icure.cardinal.sdk.serialization
 
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -23,8 +23,8 @@ import kotlinx.serialization.json.jsonObject
 /**
  * A deserializer that always deserializes an EntityWithTypeInfo<*> always using stubs for the entity.
  */
-@OptIn(InternalIcureApi::class)
-internal object EntityWithTypeInfoAsStubDeserializer : KSerializer<EntityWithTypeInfo<*>> {
+@InternalIcureApi
+object EntityWithTypeInfoAsStubDeserializer : KSerializer<EntityWithTypeInfo<*>> {
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("EntityWithTypeInfo") {
 		element("entity", EntityWithEncryptionMetadataStubSerializer.descriptor)
 		element<EntityWithEncryptionMetadataTypeName>("type")
@@ -77,25 +77,25 @@ private object EntityWithEncryptionMetadataStubSerializer : KSerializer<EntityWi
 			?: throw SerializationException("This serializer only supports json decoding")
 		val jsonObject = jsonDecoder.decodeJsonElement().jsonObject
 		return EntityWithEncryptionMetadataStub(
-			jsonObject["id"]?.let {
+			id = jsonObject["id"]?.let {
 				jsonDecoder.json.decodeFromJsonElement(it)
 			} ?: throw SerializationException("Missing value for id"),
-			jsonObject["rev"]?.let {
+			rev = jsonObject["rev"]?.let {
 				jsonDecoder.json.decodeFromJsonElement(it)
 			},
-			jsonObject["secretForeignKeys"]?.let {
+			secretForeignKeys = jsonObject["secretForeignKeys"]?.let {
 				jsonDecoder.json.decodeFromJsonElement(it)
 			} ?: throw SerializationException("Missing value for secretForeignKeys"),
-			jsonObject["cryptedForeignKeys"]?.let {
+			cryptedForeignKeys = jsonObject["cryptedForeignKeys"]?.let {
 				jsonDecoder.json.decodeFromJsonElement(it)
 			} ?: throw SerializationException("Missing value for cryptedForeignKeys"),
-			jsonObject["delegations"]?.let {
+			delegations = jsonObject["delegations"]?.let {
 				jsonDecoder.json.decodeFromJsonElement(it)
 			} ?: throw SerializationException("Missing value for delegations"),
-			jsonObject["encryptionKeys"]?.let {
+			encryptionKeys = jsonObject["encryptionKeys"]?.let {
 				jsonDecoder.json.decodeFromJsonElement(it)
 			} ?: throw SerializationException("Missing value for encryptionKeys"),
-			jsonObject["securityMetadata"]?.let {
+			securityMetadata = jsonObject["securityMetadata"]?.let {
 				jsonDecoder.json.decodeFromJsonElement(it)
 			}
 		)

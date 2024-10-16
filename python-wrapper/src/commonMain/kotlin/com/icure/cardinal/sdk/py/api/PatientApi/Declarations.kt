@@ -19,7 +19,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.SortDirection
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.serialization.EntityWithTypeInfoAsStubDeserializer
+import com.icure.cardinal.sdk.serialization.EntityWithTypeInfoAsStubDeserializer
 import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult

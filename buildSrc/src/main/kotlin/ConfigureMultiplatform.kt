@@ -53,54 +53,77 @@ fun Project.configureKotlinLinux(
  * Configures targets and source sets for multiplatform modules.
  */
 fun Project.configureMultiplatform(
-	kotlinMultiplatformExtension: KotlinMultiplatformExtension
+	kotlinMultiplatformExtension: KotlinMultiplatformExtension,
+	jvm: Boolean = true,
+	android: Boolean = true,
+	ios: Boolean = true,
+	macos: Boolean = true,
+	mingw: Boolean = true,
+	linux: Boolean = true,
+	js: Boolean = true
 ) = with(kotlinMultiplatformExtension) {
 	val localProperties = getLocalProperties()
 	val frameworkName = project.name.replaceFirstChar { it.uppercase() }
 	val xcf = XCFramework(frameworkName)
-	jvm {
-		compilations.all {
-			kotlinOptions.jvmTarget = "1.8"
+	if (jvm) {
+		jvm {
+			compilations.all {
+				kotlinOptions.jvmTarget = "1.8"
+			}
 		}
 	}
-	configureKotlinJs(this)
-	androidTarget {
-		compilations.all {
-			kotlinOptions.jvmTarget = "1.8"
-		}
-		// Important: otherwise android will use the jvm library and it will not work...
-		publishLibraryVariants("release", "debug")
+	if (js) {
+		configureKotlinJs(this)
 	}
-	val iosSimulators = listOf(
-		iosX64(),
-		iosSimulatorArm64()
-	)
-	val iosAll = iosSimulators + iosArm64()
-	iosAll.forEach { target ->
-		target.binaries.framework {
-			baseName = frameworkName
-			xcf.add(this)
+	if (android) {
+		androidTarget {
+			compilations.all {
+				kotlinOptions.jvmTarget = "1.8"
+			}
+			// Important: otherwise android will use the jvm library and it will not work...
+			publishLibraryVariants("release", "debug")
 		}
 	}
-	iosSimulators.forEach { target ->
-		target.testRuns.forEach { testRun ->
-			(localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
+	if (ios) {
+		val iosSimulators = listOf(
+			iosX64(),
+			iosSimulatorArm64()
+		)
+		val iosAll = iosSimulators + iosArm64()
+		iosAll.forEach { target ->
+			target.binaries.framework {
+				baseName = frameworkName
+				xcf.add(this)
+			}
+		}
+		iosSimulators.forEach { target ->
+			target.testRuns.forEach { testRun ->
+				(localProperties["ios.simulator"] as? String)?.let { testRun.deviceId = it }
+			}
 		}
 	}
-	macosX64()
-	macosArm64()
-	configureKotlinLinux(kotlinMultiplatformExtension)
-	mingwX64()
+	if (macos) {
+		macosX64()
+		macosArm64()
+	}
+	if (linux) {
+		configureKotlinLinux(kotlinMultiplatformExtension)
+	}
+	if (mingw) {
+		mingwX64()
+	}
 
 	applyDefaultHierarchyTemplate()
 
-	with(sourceSets) {
-		val commonMain = get("commonMain")
-		val jvmAndAndroidMain = create("jvmAndAndroidMain").apply {
-			dependsOn(commonMain)
+	if (jvm && android) {
+		with(sourceSets) {
+			val commonMain = get("commonMain")
+			val jvmAndAndroidMain = create("jvmAndAndroidMain").apply {
+				dependsOn(commonMain)
+			}
+			get("jvmMain").dependsOn(jvmAndAndroidMain)
+			get("androidMain").dependsOn(jvmAndAndroidMain)
 		}
-		get("jvmMain").dependsOn(jvmAndAndroidMain)
-		get("androidMain").dependsOn(jvmAndAndroidMain)
 	}
 }
 
