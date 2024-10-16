@@ -19,7 +19,7 @@ val mavenReleasesRepository: String by project
 group = "com.icure"
 
 val version = "1.0.0-RC.2"
-project.version = version ?: "0.0.0-snapshot"
+project.version = version
 
 kotlin {
 	configureMultiplatform(this)
@@ -45,7 +45,6 @@ kotlin {
 			dependencies {
 				implementation(libs.kotestAssertions)
 				implementation(libs.kotestEngine)
-//				implementation(libs.kotestDatatest)
 				implementation(libs.kotp)
 				implementation(kotlin("test-common"))
 				implementation(kotlin("test-annotations-common"))
