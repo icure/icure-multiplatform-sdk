@@ -9,7 +9,7 @@ plugins {
 	id("maven-publish")
 	signing
 	id("com.vanniktech.maven.publish") version "0.28.0"
-	id("com.google.devtools.ksp") version "2.0.21-RC-1.0.25"
+	id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 
 val repoUsername: String by project
@@ -18,8 +18,8 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC.1"
-project.version = version ?: "0.0.0-snapshot"
+val version = "1.0.0-RC.2"
+project.version = version
 
 kotlin {
 	configureMultiplatform(this)
@@ -45,7 +45,6 @@ kotlin {
 			dependencies {
 				implementation(libs.kotestAssertions)
 				implementation(libs.kotestEngine)
-//				implementation(libs.kotestDatatest)
 				implementation(libs.kotp)
 				implementation(kotlin("test-common"))
 				implementation(kotlin("test-annotations-common"))

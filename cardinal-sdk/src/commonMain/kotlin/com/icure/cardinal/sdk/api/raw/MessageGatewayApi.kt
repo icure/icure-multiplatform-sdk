@@ -10,9 +10,7 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.request.get
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
+import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.utils.io.InternalAPI
@@ -30,7 +28,9 @@ class RawMessageGatewayApi(
 		messageGatewayUrl: String,
 		externalServicesSpecId: String,
 	): Challenge {
-		return client.get("${messageGatewayUrl}/${externalServicesSpecId}/challenge").body()
+		return client.get("${messageGatewayUrl}/${externalServicesSpecId}/challenge"){
+			accept(ContentType.Application.Json)
+		}.body()
 	}
 
 	@OptIn(InternalAPI::class)

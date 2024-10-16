@@ -8,10 +8,11 @@ import io.ktor.client.engine.*
 import io.ktor.client.engine.curl.internal.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.sse.*
-import io.ktor.client.plugins.websocket.*
+import io.ktor.client.plugins.websocket.WebSocketCapability
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.cio.*
+import io.ktor.util.*
 import io.ktor.util.date.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.*
@@ -45,16 +46,14 @@ internal class CurlClientEngine(
             val headers = HeadersImpl(rawHeaders.toMap())
             rawHeaders.release()
 
-            val responseBody: Any = if (needToProcessSSE(data, status, headers)) {
-                val content = data.body as SSEClientContent
-                val body = responseBody as CurlHttpResponseBody
-                DefaultClientSSESession(content, body.bodyChannel, callContext)
-            } else if (data.isUpgradeRequest()) {
+            val responseBody: Any = if (data.isUpgradeRequest()) {
                 val websocket = responseBody as CurlWebSocketResponseBody
                 CurlWebSocketSession(websocket, callContext)
             } else {
-                val body = responseBody as CurlHttpResponseBody
-                body.bodyChannel
+                val bodyChannel = (responseBody as CurlHttpResponseBody).bodyChannel
+                data.attributes.getOrNull(ResponseAdapterAttributeKey)
+                    ?.adapt(data, status, headers, bodyChannel, data.body, callContext)
+                    ?: bodyChannel
             }
 
             HttpResponseData(
@@ -74,10 +73,8 @@ internal class CurlClientEngine(
     }
 }
 
-@Suppress("KDocMissingDocumentation")
 @Deprecated("This exception will be removed in a future release in favor of a better error handling.")
 public class CurlIllegalStateException(cause: String) : IllegalStateException(cause)
 
-@Suppress("KDocMissingDocumentation")
 @Deprecated("This exception will be removed in a future release in favor of a better error handling.")
 public class CurlRuntimeException(cause: String) : RuntimeException(cause)

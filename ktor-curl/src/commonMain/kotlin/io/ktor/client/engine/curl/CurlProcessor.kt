@@ -4,26 +4,14 @@
 
 package io.ktor.client.engine.curl
 
-import io.ktor.client.engine.curl.internal.CurlMultiApiHandler
-import io.ktor.client.engine.curl.internal.CurlRequestData
-import io.ktor.client.engine.curl.internal.CurlSuccess
-import io.ktor.client.engine.curl.internal.EasyHandle
-import io.ktor.client.engine.curl.internal.getCurlProtocols
-import io.ktor.util.createFixedThreadDispatcher
-import io.ktor.utils.io.InternalAPI
-import kotlinx.atomicfu.atomic
-import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.coroutines.CloseableCoroutineDispatcher
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlin.coroutines.CoroutineContext
+import io.ktor.client.engine.curl.internal.*
+import io.ktor.util.*
+import io.ktor.utils.io.*
+import kotlinx.atomicfu.*
+import kotlinx.cinterop.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.*
+import kotlin.coroutines.*
 
 internal class RequestContainer(
     val requestData: CurlRequestData,
