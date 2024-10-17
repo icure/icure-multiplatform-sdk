@@ -18,10 +18,14 @@ class CardinalSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   @Suppress("UNCHECKED_CAST")
   override fun onMethodCall(call: MethodCall, result: Result) {
+    val methodNameSplit = call.method.split(".")
+    val methodName = methodNameSplit.drop(1).joinToString(".")
+    val apiName = methodNameSplit.first()
     if (
-      dispatchApi(
-        call.method,
-        (call.arguments as Map<String, String>?).orEmpty()
+      !dispatchApi(
+        apiName = apiName,
+        methodName = methodName,
+        parameters = (call.arguments as Map<String, String>?).orEmpty()
       ) { success, errorCode, errorMessage ->
         if (errorCode != null)
           result.error(errorCode, errorMessage, null)
