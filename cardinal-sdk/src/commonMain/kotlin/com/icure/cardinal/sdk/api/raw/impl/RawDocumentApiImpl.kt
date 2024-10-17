@@ -244,23 +244,6 @@ class RawDocumentApiImpl(
 			setBody(documentDtos)
 		}.wrap()
 
-	override suspend fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String?,
-		secretMessageKeys: ListOfIds,
-	): HttpResponse<List<EncryptedDocument>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "document", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("documentTypeCode", documentTypeCode)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(secretMessageKeys)
-		}.wrap()
-
 	override suspend fun listDocumentIdsByDataOwnerPatientCreated(
 		dataOwnerId: String,
 		startDate: Long?,

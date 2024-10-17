@@ -173,21 +173,6 @@ class RawContactApiImpl(
 			setBody(formIds)
 		}.wrap()
 
-	override suspend fun listContactsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		patientForeignKeys: ListOfIds,
-	): HttpResponse<List<EncryptedContact>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "contact", "byHcPartyPatientForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(patientForeignKeys)
-		}.wrap()
-
 	override suspend fun listContactIdsByDataOwnerPatientOpeningDate(
 		dataOwnerId: String,
 		startDate: Long?,
@@ -209,87 +194,15 @@ class RawContactApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	override suspend fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		planOfActionsIds: String?,
-		skipClosedContacts: Boolean?,
-	): HttpResponse<List<EncryptedContact>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("planOfActionsIds", planOfActionsIds)
-				parameter("skipClosedContacts", skipClosedContacts)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-		planOfActionsIds: String?,
-		skipClosedContacts: Boolean?,
-	): HttpResponse<List<EncryptedContact>> =
+	override suspend fun findContactsDelegationsStubsByIds(contactIds: ListOfIds): HttpResponse<List<IcureStub>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("planOfActionsIds", planOfActionsIds)
-				parameter("skipClosedContacts", skipClosedContacts)
+				appendPathSegments("rest", "v2", "contact", "delegations")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(secretPatientKeys)
-		}.wrap()
-
-	override suspend fun listContactsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun findContactsDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(secretPatientKeys)
-		}.wrap()
-
-	override suspend fun closeForHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedContact>> =
-		put(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "contact", "byHcPartySecretForeignKeys", "close")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
+			setBody(contactIds)
 		}.wrap()
 
 	override suspend fun deleteContacts(contactIds: ListOfIds): HttpResponse<List<DocIdentifier>> =
