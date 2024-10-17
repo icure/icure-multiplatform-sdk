@@ -207,7 +207,13 @@ tasks.register("prepareDistributionPackage") {
 			from = ktJsCompiledPackage.resolve("$moduleName.d.ts"),
 			into = tsPackage.resolve("$moduleName.d.mts"),
 			importing = tsSourcePackagesImport,
-			exporting = tsSourcePackageExports
+			exporting = tsSourcePackageExports,
+			replacing = listOf(
+				Replacement(
+					of = "cryptoService?: Nullable<XCryptoService>",
+					with = "cryptoService?: Nullable<crypto.XCryptoService>"
+				)
+			)
 		)
 		copyJsPatching(
 			from = ktJsCompiledPackage.resolve("$moduleName.mjs"),
