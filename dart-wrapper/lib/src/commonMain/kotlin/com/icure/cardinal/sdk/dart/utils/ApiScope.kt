@@ -35,7 +35,7 @@ object ApiScope {
 				resultCallback(
 					null,
 					e::class.simpleName ?: "UnknownException",
-					e.message
+					e.stackTraceToString()
 				)
 			}
 		}

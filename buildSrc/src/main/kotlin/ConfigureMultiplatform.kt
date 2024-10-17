@@ -60,10 +60,11 @@ fun Project.configureMultiplatform(
 	macos: Boolean = true,
 	mingw: Boolean = true,
 	linux: Boolean = true,
-	js: Boolean = true
+	js: Boolean = true,
+	xcFrameworkName: String? = null
 ) = with(kotlinMultiplatformExtension) {
 	val localProperties = getLocalProperties()
-	val frameworkName = project.name.replaceFirstChar { it.uppercase() }
+	val frameworkName = xcFrameworkName ?: project.name.replaceFirstChar { it.uppercase() }
 	val xcf = XCFramework(frameworkName)
 	if (jvm) {
 		jvm {

@@ -28,6 +28,7 @@ kotlin {
 		mingw = false,
 		linux = false,
 		js = false,
+		xcFrameworkName = "CardinalDartSdkSupportLib"
 	)
 
 	sourceSets {
@@ -63,4 +64,13 @@ kotlin {
 android {
 	namespace = "com.icure.cardinal.sdk.dart"
 	configureAndroidLibrary()
+}
+
+mavenPublishing {
+	coordinates("com.icure", "cardinal-dart-sdk-support-lib", project.version as String)
+
+	pom {
+		name = "CardinalDartSdkSupportLib"
+		description = "Internal use library for the dart sdk on android"
+	}
 }
