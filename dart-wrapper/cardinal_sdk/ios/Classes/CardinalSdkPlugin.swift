@@ -1,28 +1,35 @@
 import Flutter
 import UIKit
-import Lib
+import CardinalDartSdkSupportLib
 
 public class CardinalSdkPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    ApiDemo.shared.setupScope()
-    let channel = FlutterMethodChannel(name: "cardinal_sdk", binaryMessenger: registrar.messenger())
-    let instance = CardinalSdkPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
+      ApiScope.shared.setup()
+      let channel = FlutterMethodChannel(name: "cardinal_sdk", binaryMessenger: registrar.messenger())
+      let instance = CardinalSdkPlugin()
+      registrar.addMethodCallDelegate(instance, channel: channel)
   }
     
     public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
-        ApiDemo.shared.teardownScope()
+        ApiScope.shared.teardown()
     }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    let  args = call.arguments as! [String: String]
-    switch call.method {
-    case "usePlatformMethod":
-        ApiDemo.shared.useApi(data: args["data"]!, callbackResult: { res in
-            result(res)
-        })
-    default:
-      result(FlutterMethodNotImplemented)
-    }
+      let  args = call.arguments as! [String: String]
+      let apiName = String(call.method.split(separator: ".").first!)
+      let methodName = call.method.split(separator: ".").dropFirst().joined(separator: ".")
+      
+      let completed = dispatchApi(apiName: apiName, methodName: methodName, parameters: args) { success, errorCode, errorMessage in
+          if (errorCode != nil){
+              result(FlutterError(code: errorCode!, message: errorMessage, details: nil))
+          }
+          else {
+              result(success)
+          }
+      }
+      
+      if !completed {
+          result(FlutterMethodNotImplemented)
+      }
   }
 }
