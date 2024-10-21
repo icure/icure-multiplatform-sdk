@@ -1,0 +1,20 @@
+// This file is auto-generated
+
+
+class DocumentGroup {
+	String? guid;
+	String? name;
+
+	DocumentGroup({
+		this.guid,
+		this.name
+	});
+
+	static Map<String, dynamic> encode(DocumentGroup value) {
+		Map<String, dynamic> entityAsMap = {
+			"guid" : value.guid,
+			"name" : value.name
+		};
+		return entityAsMap;
+	}
+}

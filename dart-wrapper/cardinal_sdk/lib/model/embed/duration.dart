@@ -1,0 +1,21 @@
+// This file is auto-generated
+import 'package:cardinal_sdk/model/base/code_stub.dart';
+
+
+class Duration {
+	double? value;
+	CodeStub? unit;
+
+	Duration({
+		this.value,
+		this.unit
+	});
+
+	static Map<String, dynamic> encode(Duration value) {
+		Map<String, dynamic> entityAsMap = {
+			"value" : value.value,
+			"unit" : value.unit == null ? null : CodeStub.encode(value.unit!)
+		};
+		return entityAsMap;
+	}
+}
