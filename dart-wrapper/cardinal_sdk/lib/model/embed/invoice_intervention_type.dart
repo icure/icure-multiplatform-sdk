@@ -8,9 +8,21 @@ enum InvoiceInterventionType {
 	static String encode(InvoiceInterventionType value) {
 		switch (value) {
 			case InvoiceInterventionType.total:
-				return '"Total"';
+				return '"total"';
 			case InvoiceInterventionType.userfees:
-				return '"Userfees"';
+				return '"userfees"';
+			}
+	}
+
+
+	static InvoiceInterventionType fromJSON(String data) {
+		switch (data) {
+			case "total":
+				return InvoiceInterventionType.total;
+			case "userfees":
+				return InvoiceInterventionType.userfees;
+			default:
+				throw ArgumentError('Invalid InvoiceInterventionType entry value $data');
 			}
 	}
 

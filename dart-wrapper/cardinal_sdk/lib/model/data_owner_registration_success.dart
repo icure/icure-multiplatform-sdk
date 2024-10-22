@@ -5,12 +5,19 @@ class DataOwnerRegistrationSuccess {
 	String userLogin;
 	String userId;
 	String token;
+	DataOwnerRegistrationSuccess(
+		this.userLogin,
+		this.userId,
+		this.token
+		);
 
-	DataOwnerRegistrationSuccess({
-		required this.userLogin,
-		required this.userId,
-		required this.token
-	});
+	factory DataOwnerRegistrationSuccess.fromJSON(Map<String, dynamic> data) {
+		return DataOwnerRegistrationSuccess(
+			data["userLogin"],
+			data["userId"],
+			data["token"]
+		);
+	}
 
 	static Map<String, dynamic> encode(DataOwnerRegistrationSuccess value) {
 		Map<String, dynamic> entityAsMap = {

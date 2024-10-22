@@ -23,8 +23,8 @@ class TimeTableItem {
 		_notAfterInMinutes = value;
 	}
 	String? zoneId;
-	@Deprecated('Will be replaced by rrule')  List<String> days = [];
-	@Deprecated('Will be replaced by rrule')  List<String> recurrenceTypes = [];
+	@Deprecated('Will be replaced by rrule') List<String> days = [];
+	@Deprecated('Will be replaced by rrule') List<String> recurrenceTypes = [];
 	List<TimeTableHour> hours = [];
 	String? calendarItemTypeId;
 	bool homeVisit = false;
@@ -32,23 +32,22 @@ class TimeTableItem {
 	bool publicTimeTableItem = false;
 	bool acceptsNewPatient = true;
 	bool unavailable = false;
-
 	TimeTableItem({
-		int? notBeforeInMinutes,
-		int? notAfterInMinutes,
-		this.rruleStartDate,
-		this.rrule,
-		this.zoneId,
-		this.calendarItemTypeId,
-		this.placeId,
-		List<String>? days,
-		List<String>? recurrenceTypes,
-		List<TimeTableHour>? hours,
-		bool? homeVisit,
-		bool? publicTimeTableItem,
-		bool? acceptsNewPatient,
-		bool? unavailable
-	}) : days = days ?? [],
+			int? notBeforeInMinutes,
+			int? notAfterInMinutes,
+			this.rruleStartDate,
+			this.rrule,
+			this.zoneId,
+			this.calendarItemTypeId,
+			this.placeId,
+			List<String>? days,
+			List<String>? recurrenceTypes,
+			List<TimeTableHour>? hours,
+			bool? homeVisit,
+			bool? publicTimeTableItem,
+			bool? acceptsNewPatient,
+			bool? unavailable
+		}) : days = days ?? [],
 		recurrenceTypes = recurrenceTypes ?? [],
 		hours = hours ?? [],
 		homeVisit = homeVisit ?? false,
@@ -57,6 +56,25 @@ class TimeTableItem {
 		unavailable = unavailable ?? false,
 		_notBeforeInMinutes = notBeforeInMinutes,
 		_notAfterInMinutes = notAfterInMinutes;
+
+	factory TimeTableItem.fromJSON(Map<String, dynamic> data) {
+		return TimeTableItem(
+			notBeforeInMinutes: data["notBeforeInMinutes"],
+			notAfterInMinutes: data["notAfterInMinutes"],
+			rruleStartDate: data["rruleStartDate"],
+			rrule: data["rrule"],
+			zoneId: data["zoneId"],
+			days: data["days"].map((x0) => x0 ),
+			recurrenceTypes: data["recurrenceTypes"].map((x0) => x0 ),
+			hours: data["hours"].map((x0) => TimeTableHour.fromJSON(x0) ),
+			calendarItemTypeId: data["calendarItemTypeId"],
+			homeVisit: data["homeVisit"],
+			placeId: data["placeId"],
+			publicTimeTableItem: data["publicTimeTableItem"],
+			acceptsNewPatient: data["acceptsNewPatient"],
+			unavailable: data["unavailable"]
+		);
+	}
 
 	static Map<String, dynamic> encode(TimeTableItem value) {
 		Map<String, dynamic> entityAsMap = {

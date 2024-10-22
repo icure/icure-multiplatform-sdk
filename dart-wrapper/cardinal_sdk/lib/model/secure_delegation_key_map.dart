@@ -22,7 +22,6 @@ sealed class SecureDelegationKeyMap implements StoredDocument, HasEncryptionMeta
 	@override abstract SecurityMetadata? securityMetadata;
 	@override abstract int? deletionDate;
 
-
 	static Map<String, dynamic> encode(SecureDelegationKeyMap value) {
 		switch (value) {
 			case EncryptedSecureDelegationKeyMap entity:
@@ -35,39 +34,71 @@ sealed class SecureDelegationKeyMap implements StoredDocument, HasEncryptionMeta
 				return entityJson;
 		}
 	}
+
+	static SecureDelegationKeyMap fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.EncryptedSecureDelegationKeyMap":
+				return EncryptedSecureDelegationKeyMap.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedSecureDelegationKeyMap":
+				return DecryptedSecureDelegationKeyMap.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
-	@override  String id;
-	@override  String? rev;
-	@override  String delegationKey;
-	@override  String? delegator;
-	@override  String? delegate;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-	@override  int? deletionDate;
-
-	EncryptedSecureDelegationKeyMap({
-		required this.id,
-		required this.delegationKey,
-		this.rev,
-		this.delegator,
-		this.delegate,
-		this.encryptedSelf,
-		this.securityMetadata,
-		this.deletionDate,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : secretForeignKeys = secretForeignKeys ?? {},
+	@override String id;
+	@override String? rev;
+	@override String delegationKey;
+	@override String? delegator;
+	@override String? delegate;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	@override int? deletionDate;
+	EncryptedSecureDelegationKeyMap(
+		this.id,
+		this.delegationKey,
+		{
+			this.rev,
+			this.delegator,
+			this.delegate,
+			this.encryptedSelf,
+			this.securityMetadata,
+			this.deletionDate,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory EncryptedSecureDelegationKeyMap.fromJSON(Map<String, dynamic> data) {
+		return EncryptedSecureDelegationKeyMap(
+			data["id"],
+			data["delegationKey"],
+			rev: data["rev"],
+			delegator: data["delegator"],
+			delegate: data["delegate"],
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			deletionDate: data["deletionDate"],
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedSecureDelegationKeyMap value) {
 		Map<String, dynamic> entityAsMap = {
@@ -89,36 +120,53 @@ class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 }
 
 class DecryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
-	@override  String id;
-	@override  String? rev;
-	@override  String delegationKey;
-	@override  String? delegator;
-	@override  String? delegate;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-	@override  int? deletionDate;
-
-	DecryptedSecureDelegationKeyMap({
-		required this.id,
-		required this.delegationKey,
-		this.rev,
-		this.delegator,
-		this.delegate,
-		this.encryptedSelf,
-		this.securityMetadata,
-		this.deletionDate,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : secretForeignKeys = secretForeignKeys ?? {},
+	@override String id;
+	@override String? rev;
+	@override String delegationKey;
+	@override String? delegator;
+	@override String? delegate;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	@override int? deletionDate;
+	DecryptedSecureDelegationKeyMap(
+		this.id,
+		this.delegationKey,
+		{
+			this.rev,
+			this.delegator,
+			this.delegate,
+			this.encryptedSelf,
+			this.securityMetadata,
+			this.deletionDate,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory DecryptedSecureDelegationKeyMap.fromJSON(Map<String, dynamic> data) {
+		return DecryptedSecureDelegationKeyMap(
+			data["id"],
+			data["delegationKey"],
+			rev: data["rev"],
+			delegator: data["delegator"],
+			delegate: data["delegate"],
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			deletionDate: data["deletionDate"],
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedSecureDelegationKeyMap value) {
 		Map<String, dynamic> entityAsMap = {

@@ -13,11 +13,17 @@ class Weekday {
 		}
 		_weekNumber = value;
 	}
-
 	Weekday({
-		int? weekNumber,
-		this.weekday
-	}) : _weekNumber = weekNumber;
+			int? weekNumber,
+			this.weekday
+		}) : _weekNumber = weekNumber;
+
+	factory Weekday.fromJSON(Map<String, dynamic> data) {
+		return Weekday(
+			weekNumber: data["weekNumber"],
+			weekday: data["weekday"] == null ? null : CodeStub.fromJSON(data["weekday"])
+		);
+	}
 
 	static Map<String, dynamic> encode(Weekday value) {
 		Map<String, dynamic> entityAsMap = {

@@ -8,17 +8,25 @@ class DocumentShareOptions {
 	RequestedPermission requestedPermissions = RequestedPermission.maxWrite;
 	ShareMetadataBehaviour shareEncryptionKey = ShareMetadataBehaviour.ifAvailable;
 	ShareMetadataBehaviour shareMessageId = ShareMetadataBehaviour.ifAvailable;
-	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(requireAtLeastOne: false);
-
+	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(false);
 	DocumentShareOptions({
-		RequestedPermission? requestedPermissions,
-		ShareMetadataBehaviour? shareEncryptionKey,
-		ShareMetadataBehaviour? shareMessageId,
-		SecretIdShareOptions? shareSecretIds
-	}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
+			RequestedPermission? requestedPermissions,
+			ShareMetadataBehaviour? shareEncryptionKey,
+			ShareMetadataBehaviour? shareMessageId,
+			SecretIdShareOptions? shareSecretIds
+		}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
 		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
 		shareMessageId = shareMessageId ?? ShareMetadataBehaviour.ifAvailable,
-		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(requireAtLeastOne: false);
+		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
+
+	factory DocumentShareOptions.fromJSON(Map<String, dynamic> data) {
+		return DocumentShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			shareMessageId: ShareMetadataBehaviour.fromJSON(data["shareMessageId"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
+	}
 
 	static Map<String, dynamic> encode(DocumentShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

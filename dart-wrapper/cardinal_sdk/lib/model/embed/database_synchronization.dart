@@ -6,13 +6,21 @@ class DatabaseSynchronization {
 	String? target;
 	String? filter;
 	DatabaseSynchronizationTarget? localTarget;
-
 	DatabaseSynchronization({
-		this.source,
-		this.target,
-		this.filter,
-		this.localTarget
-	});
+			this.source,
+			this.target,
+			this.filter,
+			this.localTarget
+		});
+
+	factory DatabaseSynchronization.fromJSON(Map<String, dynamic> data) {
+		return DatabaseSynchronization(
+			source: data["source"],
+			target: data["target"],
+			filter: data["filter"],
+			localTarget: data["localTarget"] == null ? null : DatabaseSynchronizationTarget.fromJSON(data["localTarget"])
+		);
+	}
 
 	static Map<String, dynamic> encode(DatabaseSynchronization value) {
 		Map<String, dynamic> entityAsMap = {
@@ -33,11 +41,25 @@ enum DatabaseSynchronizationTarget {
 	static String encode(DatabaseSynchronizationTarget value) {
 		switch (value) {
 			case DatabaseSynchronizationTarget.base:
-				return '"Base"';
+				return '"base"';
 			case DatabaseSynchronizationTarget.healthdata:
-				return '"Healthdata"';
+				return '"healthdata"';
 			case DatabaseSynchronizationTarget.patient:
-				return '"Patient"';
+				return '"patient"';
+			}
+	}
+
+
+	static DatabaseSynchronizationTarget fromJSON(String data) {
+		switch (data) {
+			case "base":
+				return DatabaseSynchronizationTarget.base;
+			case "healthdata":
+				return DatabaseSynchronizationTarget.healthdata;
+			case "patient":
+				return DatabaseSynchronizationTarget.patient;
+			default:
+				throw ArgumentError('Invalid DatabaseSynchronizationTarget entry value $data');
 			}
 	}
 

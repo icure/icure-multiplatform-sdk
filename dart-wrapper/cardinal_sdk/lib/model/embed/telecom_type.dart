@@ -20,33 +20,69 @@ enum TelecomType {
 	static String encode(TelecomType value) {
 		switch (value) {
 			case TelecomType.mobile:
-				return '"Mobile"';
+				return '"mobile"';
 			case TelecomType.phone:
-				return '"Phone"';
+				return '"phone"';
 			case TelecomType.email:
-				return '"Email"';
+				return '"email"';
 			case TelecomType.fax:
-				return '"Fax"';
+				return '"fax"';
 			case TelecomType.skype:
-				return '"Skype"';
+				return '"skype"';
 			case TelecomType.im:
-				return '"Im"';
+				return '"im"';
 			case TelecomType.medibridge:
-				return '"Medibridge"';
+				return '"medibridge"';
 			case TelecomType.ehealthbox:
-				return '"Ehealthbox"';
+				return '"ehealthbox"';
 			case TelecomType.apicrypt:
-				return '"Apicrypt"';
+				return '"apicrypt"';
 			case TelecomType.web:
-				return '"Web"';
+				return '"web"';
 			case TelecomType.print:
-				return '"Print"';
+				return '"print"';
 			case TelecomType.disk:
-				return '"Disk"';
+				return '"disk"';
 			case TelecomType.other:
-				return '"Other"';
+				return '"other"';
 			case TelecomType.pager:
-				return '"Pager"';
+				return '"pager"';
+			}
+	}
+
+
+	static TelecomType fromJSON(String data) {
+		switch (data) {
+			case "mobile":
+				return TelecomType.mobile;
+			case "phone":
+				return TelecomType.phone;
+			case "email":
+				return TelecomType.email;
+			case "fax":
+				return TelecomType.fax;
+			case "skype":
+				return TelecomType.skype;
+			case "im":
+				return TelecomType.im;
+			case "medibridge":
+				return TelecomType.medibridge;
+			case "ehealthbox":
+				return TelecomType.ehealthbox;
+			case "apicrypt":
+				return TelecomType.apicrypt;
+			case "web":
+				return TelecomType.web;
+			case "print":
+				return TelecomType.print;
+			case "disk":
+				return TelecomType.disk;
+			case "other":
+				return TelecomType.other;
+			case "pager":
+				return TelecomType.pager;
+			default:
+				throw ArgumentError('Invalid TelecomType entry value $data');
 			}
 	}
 

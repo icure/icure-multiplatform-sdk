@@ -41,22 +41,37 @@ class DatabaseInfo {
 		}
 		_r = value;
 	}
-
-	DatabaseInfo({
-		required this.id,
-		int? q,
-		int? n,
-		int? w,
-		int? r,
-		this.updateSeq,
-		this.fileSize,
-		this.externalSize,
-		this.activeSize,
-		this.docs
-	}) : _q = q,
+	DatabaseInfo(
+		this.id,
+		{
+			int? q,
+			int? n,
+			int? w,
+			int? r,
+			this.updateSeq,
+			this.fileSize,
+			this.externalSize,
+			this.activeSize,
+			this.docs
+		}) : _q = q,
 		_n = n,
 		_w = w,
 		_r = r;
+
+	factory DatabaseInfo.fromJSON(Map<String, dynamic> data) {
+		return DatabaseInfo(
+			data["id"],
+			q: data["q"],
+			n: data["n"],
+			w: data["w"],
+			r: data["r"],
+			updateSeq: data["updateSeq"],
+			fileSize: data["fileSize"],
+			externalSize: data["externalSize"],
+			activeSize: data["activeSize"],
+			docs: data["docs"],
+		);
+	}
 
 	static Map<String, dynamic> encode(DatabaseInfo value) {
 		Map<String, dynamic> entityAsMap = {

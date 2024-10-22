@@ -8,9 +8,21 @@ enum DocumentLocation {
 	static String encode(DocumentLocation value) {
 		switch (value) {
 			case DocumentLocation.annex:
-				return '"Annex"';
+				return '"annex"';
 			case DocumentLocation.body:
-				return '"Body"';
+				return '"body"';
+			}
+	}
+
+
+	static DocumentLocation fromJSON(String data) {
+		switch (data) {
+			case "annex":
+				return DocumentLocation.annex;
+			case "body":
+				return DocumentLocation.body;
+			default:
+				throw ArgumentError('Invalid DocumentLocation entry value $data');
 			}
 	}
 

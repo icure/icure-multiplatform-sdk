@@ -5,11 +5,17 @@ import 'package:cardinal_sdk/model/embed/document_location.dart';
 class MessageAttachment {
 	DocumentLocation? type;
 	List<String> ids = [];
-
 	MessageAttachment({
-		this.type,
-		List<String>? ids
-	}) : ids = ids ?? [];
+			this.type,
+			List<String>? ids
+		}) : ids = ids ?? [];
+
+	factory MessageAttachment.fromJSON(Map<String, dynamic> data) {
+		return MessageAttachment(
+			type: data["type"] == null ? null : DocumentLocation.fromJSON(data["type"]),
+			ids: data["ids"].map((x0) => x0 )
+		);
+	}
 
 	static Map<String, dynamic> encode(MessageAttachment value) {
 		Map<String, dynamic> entityAsMap = {

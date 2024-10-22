@@ -5,11 +5,17 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 class Duration {
 	double? value;
 	CodeStub? unit;
-
 	Duration({
-		this.value,
-		this.unit
-	});
+			this.value,
+			this.unit
+		});
+
+	factory Duration.fromJSON(Map<String, dynamic> data) {
+		return Duration(
+			value: data["value"],
+			unit: data["unit"] == null ? null : CodeStub.fromJSON(data["unit"])
+		);
+	}
 
 	static Map<String, dynamic> encode(Duration value) {
 		Map<String, dynamic> entityAsMap = {

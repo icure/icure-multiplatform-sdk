@@ -26,45 +26,93 @@ enum DelegationTag {
 	static String encode(DelegationTag value) {
 		switch (value) {
 			case DelegationTag.all:
-				return '"All"';
+				return '"all"';
 			case DelegationTag.administrativeData:
-				return '"AdministrativeData"';
+				return '"administrativeData"';
 			case DelegationTag.anonymousMedicalInformation:
-				return '"AnonymousMedicalInformation"';
+				return '"anonymousMedicalInformation"';
 			case DelegationTag.generalInformation:
-				return '"GeneralInformation"';
+				return '"generalInformation"';
 			case DelegationTag.financialInformation:
-				return '"FinancialInformation"';
+				return '"financialInformation"';
 			case DelegationTag.medicalInformation:
-				return '"MedicalInformation"';
+				return '"medicalInformation"';
 			case DelegationTag.sensitiveInformation:
-				return '"SensitiveInformation"';
+				return '"sensitiveInformation"';
 			case DelegationTag.confidentialInformation:
-				return '"ConfidentialInformation"';
+				return '"confidentialInformation"';
 			case DelegationTag.cdItemRisk:
-				return '"CdItemRisk"';
+				return '"cdItemRisk"';
 			case DelegationTag.cdItemFamilyRisk:
-				return '"CdItemFamilyRisk"';
+				return '"cdItemFamilyRisk"';
 			case DelegationTag.cdItemHealthcareelement:
-				return '"CdItemHealthcareelement"';
+				return '"cdItemHealthcareelement"';
 			case DelegationTag.cdItemHealthcareapproach:
-				return '"CdItemHealthcareapproach"';
+				return '"cdItemHealthcareapproach"';
 			case DelegationTag.cdItemAllergy:
-				return '"CdItemAllergy"';
+				return '"cdItemAllergy"';
 			case DelegationTag.cdItemDiagnosis:
-				return '"CdItemDiagnosis"';
+				return '"cdItemDiagnosis"';
 			case DelegationTag.cdItemLab:
-				return '"CdItemLab"';
+				return '"cdItemLab"';
 			case DelegationTag.cdItemResult:
-				return '"CdItemResult"';
+				return '"cdItemResult"';
 			case DelegationTag.cdItemParameter:
-				return '"CdItemParameter"';
+				return '"cdItemParameter"';
 			case DelegationTag.cdItemMedication:
-				return '"CdItemMedication"';
+				return '"cdItemMedication"';
 			case DelegationTag.cdItemTreatment:
-				return '"CdItemTreatment"';
+				return '"cdItemTreatment"';
 			case DelegationTag.cdItemVaccine:
-				return '"CdItemVaccine"';
+				return '"cdItemVaccine"';
+			}
+	}
+
+
+	static DelegationTag fromJSON(String data) {
+		switch (data) {
+			case "all":
+				return DelegationTag.all;
+			case "administrativeData":
+				return DelegationTag.administrativeData;
+			case "anonymousMedicalInformation":
+				return DelegationTag.anonymousMedicalInformation;
+			case "generalInformation":
+				return DelegationTag.generalInformation;
+			case "financialInformation":
+				return DelegationTag.financialInformation;
+			case "medicalInformation":
+				return DelegationTag.medicalInformation;
+			case "sensitiveInformation":
+				return DelegationTag.sensitiveInformation;
+			case "confidentialInformation":
+				return DelegationTag.confidentialInformation;
+			case "cdItemRisk":
+				return DelegationTag.cdItemRisk;
+			case "cdItemFamilyRisk":
+				return DelegationTag.cdItemFamilyRisk;
+			case "cdItemHealthcareelement":
+				return DelegationTag.cdItemHealthcareelement;
+			case "cdItemHealthcareapproach":
+				return DelegationTag.cdItemHealthcareapproach;
+			case "cdItemAllergy":
+				return DelegationTag.cdItemAllergy;
+			case "cdItemDiagnosis":
+				return DelegationTag.cdItemDiagnosis;
+			case "cdItemLab":
+				return DelegationTag.cdItemLab;
+			case "cdItemResult":
+				return DelegationTag.cdItemResult;
+			case "cdItemParameter":
+				return DelegationTag.cdItemParameter;
+			case "cdItemMedication":
+				return DelegationTag.cdItemMedication;
+			case "cdItemTreatment":
+				return DelegationTag.cdItemTreatment;
+			case "cdItemVaccine":
+				return DelegationTag.cdItemVaccine;
+			default:
+				throw ArgumentError('Invalid DelegationTag entry value $data');
 			}
 	}
 

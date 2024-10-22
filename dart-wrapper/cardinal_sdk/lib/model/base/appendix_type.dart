@@ -9,11 +9,25 @@ enum AppendixType {
 	static String encode(AppendixType value) {
 		switch (value) {
 			case AppendixType.externalLink:
-				return '"ExternalLink"';
+				return '"externalLink"';
 			case AppendixType.video:
-				return '"Video"';
+				return '"video"';
 			case AppendixType.description:
-				return '"Description"';
+				return '"description"';
+			}
+	}
+
+
+	static AppendixType fromJSON(String data) {
+		switch (data) {
+			case "externalLink":
+				return AppendixType.externalLink;
+			case "video":
+				return AppendixType.video;
+			case "description":
+				return AppendixType.description;
+			default:
+				throw ArgumentError('Invalid AppendixType entry value $data');
 			}
 	}
 

@@ -9,11 +9,25 @@ enum DataOwnerType {
 	static String encode(DataOwnerType value) {
 		switch (value) {
 			case DataOwnerType.hcp:
-				return '"Hcp"';
+				return '"hcp"';
 			case DataOwnerType.device:
-				return '"Device"';
+				return '"device"';
 			case DataOwnerType.patient:
-				return '"Patient"';
+				return '"patient"';
+			}
+	}
+
+
+	static DataOwnerType fromJSON(String data) {
+		switch (data) {
+			case "hcp":
+				return DataOwnerType.hcp;
+			case "device":
+				return DataOwnerType.device;
+			case "patient":
+				return DataOwnerType.patient;
+			default:
+				throw ArgumentError('Invalid DataOwnerType entry value $data');
 			}
 	}
 

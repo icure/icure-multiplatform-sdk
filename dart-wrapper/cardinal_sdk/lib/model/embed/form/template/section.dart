@@ -7,13 +7,22 @@ class Section {
 	List<StructureElement> fields;
 	String? description;
 	List<String>? keywords;
+	Section(
+		this.section,
+		this.fields,
+		{
+			this.description,
+			this.keywords
+		});
 
-	Section({
-		required this.section,
-		required this.fields,
-		this.description,
-		this.keywords
-	});
+	factory Section.fromJSON(Map<String, dynamic> data) {
+		return Section(
+			data["section"],
+			data["fields"].map((x0) => StructureElement.fromJSON(x0) ),
+			description: data["description"],
+			keywords: data["keywords"]?.map((x0) => x0 ),
+		);
+	}
 
 	static Map<String, dynamic> encode(Section value) {
 		Map<String, dynamic> entityAsMap = {

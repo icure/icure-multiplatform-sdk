@@ -12,22 +12,36 @@ class DesignDocument {
 	Map<String, String> shows = {};
 	Map<String, String>? updateHandlers;
 	Map<String, String> filters = {};
-
-	DesignDocument({
-		required this.id,
-		this.rev,
-		this.language,
-		this.updateHandlers,
-		Map<String, String>? revHistory,
-		Map<String, View>? views,
-		Map<String, String>? lists,
-		Map<String, String>? shows,
-		Map<String, String>? filters
-	}) : revHistory = revHistory ?? {},
+	DesignDocument(
+		this.id,
+		{
+			this.rev,
+			this.language,
+			this.updateHandlers,
+			Map<String, String>? revHistory,
+			Map<String, View>? views,
+			Map<String, String>? lists,
+			Map<String, String>? shows,
+			Map<String, String>? filters
+		}) : revHistory = revHistory ?? {},
 		views = views ?? {},
 		lists = lists ?? {},
 		shows = shows ?? {},
 		filters = filters ?? {};
+
+	factory DesignDocument.fromJSON(Map<String, dynamic> data) {
+		return DesignDocument(
+			data["id"],
+			rev: data["rev"],
+			revHistory: data["revHistory"].map((k0, v0) => MapEntry(k0, v0)),
+			language: data["language"],
+			views: data["views"].map((k0, v0) => MapEntry(k0, View.fromJSON(v0))),
+			lists: data["lists"].map((k0, v0) => MapEntry(k0, v0)),
+			shows: data["shows"].map((k0, v0) => MapEntry(k0, v0)),
+			updateHandlers: data["updateHandlers"]?.map((k0, v0) => MapEntry(k0, v0)),
+			filters: data["filters"].map((k0, v0) => MapEntry(k0, v0)),
+		);
+	}
 
 	static Map<String, dynamic> encode(DesignDocument value) {
 		Map<String, dynamic> entityAsMap = {

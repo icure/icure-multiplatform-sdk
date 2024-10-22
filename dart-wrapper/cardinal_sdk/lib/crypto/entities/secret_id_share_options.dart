@@ -15,14 +15,32 @@ sealed class SecretIdShareOptions {
 				return entityJson;
 		}
 	}
+
+	static SecretIdShareOptions fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable":
+				return SecretIdShareOptionsAllAvailable.fromJSON(data);
+			case "com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.UseExactly":
+				return SecretIdShareOptionsUseExactly.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class SecretIdShareOptionsAllAvailable implements SecretIdShareOptions {
 	bool requireAtLeastOne;
+	SecretIdShareOptionsAllAvailable(this.requireAtLeastOne);
 
-	SecretIdShareOptionsAllAvailable({
-		required this.requireAtLeastOne
-	});
+	factory SecretIdShareOptionsAllAvailable.fromJSON(Map<String, dynamic> data) {
+		return SecretIdShareOptionsAllAvailable(
+			data["requireAtLeastOne"]
+		);
+	}
 
 	static Map<String, dynamic> encode(SecretIdShareOptionsAllAvailable value) {
 		Map<String, dynamic> entityAsMap = {
@@ -35,11 +53,17 @@ class SecretIdShareOptionsAllAvailable implements SecretIdShareOptions {
 class SecretIdShareOptionsUseExactly implements SecretIdShareOptions {
 	Set<String> secretIds;
 	bool createUnknownSecretIds;
+	SecretIdShareOptionsUseExactly(
+		this.secretIds,
+		this.createUnknownSecretIds
+		);
 
-	SecretIdShareOptionsUseExactly({
-		required this.secretIds,
-		required this.createUnknownSecretIds
-	});
+	factory SecretIdShareOptionsUseExactly.fromJSON(Map<String, dynamic> data) {
+		return SecretIdShareOptionsUseExactly(
+			data["secretIds"].map((x0) => x0 ),
+			data["createUnknownSecretIds"]
+		);
+	}
 
 	static Map<String, dynamic> encode(SecretIdShareOptionsUseExactly value) {
 		Map<String, dynamic> entityAsMap = {

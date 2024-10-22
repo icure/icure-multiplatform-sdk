@@ -4,8 +4,8 @@ import 'package:cardinal_sdk/model/embed/form/template/field.dart';
 
 
 class CheckBox implements Field {
-	@override  String field;
-	@override  String? shortLabel;
+	@override String field;
+	@override String? shortLabel;
 	int? _rows;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get rows => _rows;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set rows(int? value) {
@@ -22,40 +22,62 @@ class CheckBox implements Field {
 		}
 		_columns = value;
 	}
-	@override  bool? grows;
-	@override  bool? multiline;
-	@override  String? schema;
-	@override  List<String>? tags;
-	@override  List<String>? codifications;
-	@override  Map<String, String>? options;
-	@override  Map<String, String>? labels;
-	@override  String? value;
-	@override  String? unit;
-	@override  bool? required;
-	@override  String? hideCondition;
-	@override  bool? now;
-	@override  bool? translate;
-
-	CheckBox({
-		required this.field,
-		int? rows,
-		int? columns,
-		this.shortLabel,
-		this.grows,
-		this.multiline,
-		this.schema,
-		this.tags,
-		this.codifications,
-		this.options,
-		this.labels,
-		this.value,
-		this.unit,
-		this.required,
-		this.hideCondition,
-		this.now,
-		this.translate
-	}) : _rows = rows,
+	@override bool? grows;
+	@override bool? multiline;
+	@override String? schema;
+	@override List<String>? tags;
+	@override List<String>? codifications;
+	@override Map<String, String>? options;
+	@override Map<String, String>? labels;
+	@override String? value;
+	@override String? unit;
+	@override bool? required;
+	@override String? hideCondition;
+	@override bool? now;
+	@override bool? translate;
+	CheckBox(
+		this.field,
+		{
+			int? rows,
+			int? columns,
+			this.shortLabel,
+			this.grows,
+			this.multiline,
+			this.schema,
+			this.tags,
+			this.codifications,
+			this.options,
+			this.labels,
+			this.value,
+			this.unit,
+			this.required,
+			this.hideCondition,
+			this.now,
+			this.translate
+		}) : _rows = rows,
 		_columns = columns;
+
+	factory CheckBox.fromJSON(Map<String, dynamic> data) {
+		return CheckBox(
+			data["field"],
+			rows: data["rows"],
+			columns: data["columns"],
+			shortLabel: data["shortLabel"],
+			grows: data["grows"],
+			multiline: data["multiline"],
+			schema: data["schema"],
+			tags: data["tags"]?.map((x0) => x0 ),
+			codifications: data["codifications"]?.map((x0) => x0 ),
+			options: data["options"]?.map((k0, v0) => MapEntry(k0, v0)),
+			labels: data["labels"]?.map((k0, v0) => MapEntry(k0, v0)),
+			value: data["value"],
+			unit: data["unit"],
+			required: data["required"],
+			hideCondition: data["hideCondition"],
+			now: data["now"],
+			translate: data["translate"],
+		);
+	}
 
 	static Map<String, dynamic> encode(CheckBox value) {
 		Map<String, dynamic> entityAsMap = {

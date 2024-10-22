@@ -5,12 +5,19 @@ class ReferralPeriod {
 	DateTime? startDate;
 	DateTime? endDate;
 	String? comment;
-
 	ReferralPeriod({
-		this.startDate,
-		this.endDate,
-		this.comment
-	});
+			this.startDate,
+			this.endDate,
+			this.comment
+		});
+
+	factory ReferralPeriod.fromJSON(Map<String, dynamic> data) {
+		return ReferralPeriod(
+			startDate: data["startDate"] == null ? null : DateTime.parse(data["startDate"] as String),
+			endDate: data["endDate"] == null ? null : DateTime.parse(data["endDate"] as String),
+			comment: data["comment"]
+		);
+	}
 
 	static Map<String, dynamic> encode(ReferralPeriod value) {
 		Map<String, dynamic> entityAsMap = {

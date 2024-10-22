@@ -7,13 +7,20 @@ class Action {
 	List<Launcher>? launchers = [];
 	String? expression;
 	List<State>? states = [];
-
 	Action({
-		this.expression,
-		List<Launcher>? launchers,
-		List<State>? states
-	}) : launchers = launchers ?? [],
+			this.expression,
+			List<Launcher>? launchers,
+			List<State>? states
+		}) : launchers = launchers ?? [],
 		states = states ?? [];
+
+	factory Action.fromJSON(Map<String, dynamic> data) {
+		return Action(
+			launchers: data["launchers"]?.map((x0) => Launcher.fromJSON(x0) ),
+			expression: data["expression"],
+			states: data["states"]?.map((x0) => State.fromJSON(x0) )
+		);
+	}
 
 	static Map<String, dynamic> encode(Action value) {
 		Map<String, dynamic> entityAsMap = {

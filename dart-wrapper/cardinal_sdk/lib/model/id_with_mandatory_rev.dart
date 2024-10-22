@@ -4,11 +4,17 @@
 class IdWithMandatoryRev {
 	String id;
 	String rev;
+	IdWithMandatoryRev(
+		this.id,
+		this.rev
+		);
 
-	IdWithMandatoryRev({
-		required this.id,
-		required this.rev
-	});
+	factory IdWithMandatoryRev.fromJSON(Map<String, dynamic> data) {
+		return IdWithMandatoryRev(
+			data["id"],
+			data["rev"]
+		);
+	}
 
 	static Map<String, dynamic> encode(IdWithMandatoryRev value) {
 		Map<String, dynamic> entityAsMap = {

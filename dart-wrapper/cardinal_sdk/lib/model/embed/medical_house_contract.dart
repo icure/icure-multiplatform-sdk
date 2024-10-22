@@ -43,7 +43,6 @@ sealed class MedicalHouseContract implements Encryptable {
 	abstract Map<String, String> receipts;
 	@override abstract Base64String? encryptedSelf;
 
-
 	static Map<String, dynamic> encode(MedicalHouseContract value) {
 		switch (value) {
 			case DecryptedMedicalHouseContract entity:
@@ -56,28 +55,43 @@ sealed class MedicalHouseContract implements Encryptable {
 				return entityJson;
 		}
 	}
+
+	static MedicalHouseContract fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract":
+				return DecryptedMedicalHouseContract.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract":
+				return EncryptedMedicalHouseContract.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class DecryptedMedicalHouseContract implements MedicalHouseContract {
-	@override  String? contractId;
-	@override  int? validFrom;
-	@override  int? validTo;
-	@override  String? mmNihii;
-	@override  String? hcpId;
-	@override  ContractChangeType? changeType;
-	@override  String? parentContractId;
-	@override  String? changedBy;
-	@override  int? startOfContract;
-	@override  int? startOfCoverage;
-	@override  int? endOfContract;
-	@override  int? endOfCoverage;
-	@override  bool kine = false;
-	@override  bool gp = false;
-	@override  bool ptd = false;
-	@override  bool nurse = false;
-	@override  bool noKine = false;
-	@override  bool noGp = false;
-	@override  bool noNurse = false;
+	@override String? contractId;
+	@override int? validFrom;
+	@override int? validTo;
+	@override String? mmNihii;
+	@override String? hcpId;
+	@override ContractChangeType? changeType;
+	@override String? parentContractId;
+	@override String? changedBy;
+	@override int? startOfContract;
+	@override int? startOfCoverage;
+	@override int? endOfContract;
+	@override int? endOfCoverage;
+	@override bool kine = false;
+	@override bool gp = false;
+	@override bool ptd = false;
+	@override bool nurse = false;
+	@override bool noKine = false;
+	@override bool noGp = false;
+	@override bool noNurse = false;
 	int? _unsubscriptionReasonId;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get unsubscriptionReasonId => _unsubscriptionReasonId;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set unsubscriptionReasonId(int? value) {
@@ -86,15 +100,15 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 		}
 		_unsubscriptionReasonId = value;
 	}
-	@override  int? ptdStart;
-	@override  int? ptdEnd;
-	@override  int? ptdLastInvoiced;
-	@override  int? startOfSuspension;
-	@override  int? endOfSuspension;
-	@override  SuspensionReason? suspensionReason;
-	@override  String? suspensionSource;
-	@override  bool forcedSuspension = false;
-	@override  MhcSignatureType? signatureType;
+	@override int? ptdStart;
+	@override int? ptdEnd;
+	@override int? ptdLastInvoiced;
+	@override int? startOfSuspension;
+	@override int? endOfSuspension;
+	@override SuspensionReason? suspensionReason;
+	@override String? suspensionSource;
+	@override bool forcedSuspension = false;
+	@override MhcSignatureType? signatureType;
 	int? _status;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
@@ -103,45 +117,44 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 		}
 		_status = value;
 	}
-	@override  Map<String, String> options = {};
-	@override  Map<String, String> receipts = {};
-	@override  Base64String? encryptedSelf;
-
+	@override Map<String, String> options = {};
+	@override Map<String, String> receipts = {};
+	@override Base64String? encryptedSelf;
 	DecryptedMedicalHouseContract({
-		int? unsubscriptionReasonId,
-		int? status,
-		this.contractId,
-		this.validFrom,
-		this.validTo,
-		this.mmNihii,
-		this.hcpId,
-		this.changeType,
-		this.parentContractId,
-		this.changedBy,
-		this.startOfContract,
-		this.startOfCoverage,
-		this.endOfContract,
-		this.endOfCoverage,
-		this.ptdStart,
-		this.ptdEnd,
-		this.ptdLastInvoiced,
-		this.startOfSuspension,
-		this.endOfSuspension,
-		this.suspensionReason,
-		this.suspensionSource,
-		this.signatureType,
-		this.encryptedSelf,
-		bool? kine,
-		bool? gp,
-		bool? ptd,
-		bool? nurse,
-		bool? noKine,
-		bool? noGp,
-		bool? noNurse,
-		bool? forcedSuspension,
-		Map<String, String>? options,
-		Map<String, String>? receipts
-	}) : kine = kine ?? false,
+			int? unsubscriptionReasonId,
+			int? status,
+			this.contractId,
+			this.validFrom,
+			this.validTo,
+			this.mmNihii,
+			this.hcpId,
+			this.changeType,
+			this.parentContractId,
+			this.changedBy,
+			this.startOfContract,
+			this.startOfCoverage,
+			this.endOfContract,
+			this.endOfCoverage,
+			this.ptdStart,
+			this.ptdEnd,
+			this.ptdLastInvoiced,
+			this.startOfSuspension,
+			this.endOfSuspension,
+			this.suspensionReason,
+			this.suspensionSource,
+			this.signatureType,
+			this.encryptedSelf,
+			bool? kine,
+			bool? gp,
+			bool? ptd,
+			bool? nurse,
+			bool? noKine,
+			bool? noGp,
+			bool? noNurse,
+			bool? forcedSuspension,
+			Map<String, String>? options,
+			Map<String, String>? receipts
+		}) : kine = kine ?? false,
 		gp = gp ?? false,
 		ptd = ptd ?? false,
 		nurse = nurse ?? false,
@@ -153,6 +166,44 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 		receipts = receipts ?? {},
 		_unsubscriptionReasonId = unsubscriptionReasonId,
 		_status = status;
+
+	factory DecryptedMedicalHouseContract.fromJSON(Map<String, dynamic> data) {
+		return DecryptedMedicalHouseContract(
+			unsubscriptionReasonId: data["unsubscriptionReasonId"],
+			status: data["status"],
+			contractId: data["contractId"],
+			validFrom: data["validFrom"],
+			validTo: data["validTo"],
+			mmNihii: data["mmNihii"],
+			hcpId: data["hcpId"],
+			changeType: data["changeType"] == null ? null : ContractChangeType.fromJSON(data["changeType"]),
+			parentContractId: data["parentContractId"],
+			changedBy: data["changedBy"],
+			startOfContract: data["startOfContract"],
+			startOfCoverage: data["startOfCoverage"],
+			endOfContract: data["endOfContract"],
+			endOfCoverage: data["endOfCoverage"],
+			kine: data["kine"],
+			gp: data["gp"],
+			ptd: data["ptd"],
+			nurse: data["nurse"],
+			noKine: data["noKine"],
+			noGp: data["noGp"],
+			noNurse: data["noNurse"],
+			ptdStart: data["ptdStart"],
+			ptdEnd: data["ptdEnd"],
+			ptdLastInvoiced: data["ptdLastInvoiced"],
+			startOfSuspension: data["startOfSuspension"],
+			endOfSuspension: data["endOfSuspension"],
+			suspensionReason: data["suspensionReason"] == null ? null : SuspensionReason.fromJSON(data["suspensionReason"]),
+			suspensionSource: data["suspensionSource"],
+			forcedSuspension: data["forcedSuspension"],
+			signatureType: data["signatureType"] == null ? null : MhcSignatureType.fromJSON(data["signatureType"]),
+			options: data["options"].map((k0, v0) => MapEntry(k0, v0)),
+			receipts: data["receipts"].map((k0, v0) => MapEntry(k0, v0)),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedMedicalHouseContract value) {
 		Map<String, dynamic> entityAsMap = {
@@ -195,25 +246,25 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 }
 
 class EncryptedMedicalHouseContract implements MedicalHouseContract {
-	@override  String? contractId;
-	@override  int? validFrom;
-	@override  int? validTo;
-	@override  String? mmNihii;
-	@override  String? hcpId;
-	@override  ContractChangeType? changeType;
-	@override  String? parentContractId;
-	@override  String? changedBy;
-	@override  int? startOfContract;
-	@override  int? startOfCoverage;
-	@override  int? endOfContract;
-	@override  int? endOfCoverage;
-	@override  bool kine = false;
-	@override  bool gp = false;
-	@override  bool ptd = false;
-	@override  bool nurse = false;
-	@override  bool noKine = false;
-	@override  bool noGp = false;
-	@override  bool noNurse = false;
+	@override String? contractId;
+	@override int? validFrom;
+	@override int? validTo;
+	@override String? mmNihii;
+	@override String? hcpId;
+	@override ContractChangeType? changeType;
+	@override String? parentContractId;
+	@override String? changedBy;
+	@override int? startOfContract;
+	@override int? startOfCoverage;
+	@override int? endOfContract;
+	@override int? endOfCoverage;
+	@override bool kine = false;
+	@override bool gp = false;
+	@override bool ptd = false;
+	@override bool nurse = false;
+	@override bool noKine = false;
+	@override bool noGp = false;
+	@override bool noNurse = false;
 	int? _unsubscriptionReasonId;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get unsubscriptionReasonId => _unsubscriptionReasonId;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set unsubscriptionReasonId(int? value) {
@@ -222,15 +273,15 @@ class EncryptedMedicalHouseContract implements MedicalHouseContract {
 		}
 		_unsubscriptionReasonId = value;
 	}
-	@override  int? ptdStart;
-	@override  int? ptdEnd;
-	@override  int? ptdLastInvoiced;
-	@override  int? startOfSuspension;
-	@override  int? endOfSuspension;
-	@override  SuspensionReason? suspensionReason;
-	@override  String? suspensionSource;
-	@override  bool forcedSuspension = false;
-	@override  MhcSignatureType? signatureType;
+	@override int? ptdStart;
+	@override int? ptdEnd;
+	@override int? ptdLastInvoiced;
+	@override int? startOfSuspension;
+	@override int? endOfSuspension;
+	@override SuspensionReason? suspensionReason;
+	@override String? suspensionSource;
+	@override bool forcedSuspension = false;
+	@override MhcSignatureType? signatureType;
 	int? _status;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
@@ -239,45 +290,44 @@ class EncryptedMedicalHouseContract implements MedicalHouseContract {
 		}
 		_status = value;
 	}
-	@override  Map<String, String> options = {};
-	@override  Map<String, String> receipts = {};
-	@override  Base64String? encryptedSelf;
-
+	@override Map<String, String> options = {};
+	@override Map<String, String> receipts = {};
+	@override Base64String? encryptedSelf;
 	EncryptedMedicalHouseContract({
-		int? unsubscriptionReasonId,
-		int? status,
-		this.contractId,
-		this.validFrom,
-		this.validTo,
-		this.mmNihii,
-		this.hcpId,
-		this.changeType,
-		this.parentContractId,
-		this.changedBy,
-		this.startOfContract,
-		this.startOfCoverage,
-		this.endOfContract,
-		this.endOfCoverage,
-		this.ptdStart,
-		this.ptdEnd,
-		this.ptdLastInvoiced,
-		this.startOfSuspension,
-		this.endOfSuspension,
-		this.suspensionReason,
-		this.suspensionSource,
-		this.signatureType,
-		this.encryptedSelf,
-		bool? kine,
-		bool? gp,
-		bool? ptd,
-		bool? nurse,
-		bool? noKine,
-		bool? noGp,
-		bool? noNurse,
-		bool? forcedSuspension,
-		Map<String, String>? options,
-		Map<String, String>? receipts
-	}) : kine = kine ?? false,
+			int? unsubscriptionReasonId,
+			int? status,
+			this.contractId,
+			this.validFrom,
+			this.validTo,
+			this.mmNihii,
+			this.hcpId,
+			this.changeType,
+			this.parentContractId,
+			this.changedBy,
+			this.startOfContract,
+			this.startOfCoverage,
+			this.endOfContract,
+			this.endOfCoverage,
+			this.ptdStart,
+			this.ptdEnd,
+			this.ptdLastInvoiced,
+			this.startOfSuspension,
+			this.endOfSuspension,
+			this.suspensionReason,
+			this.suspensionSource,
+			this.signatureType,
+			this.encryptedSelf,
+			bool? kine,
+			bool? gp,
+			bool? ptd,
+			bool? nurse,
+			bool? noKine,
+			bool? noGp,
+			bool? noNurse,
+			bool? forcedSuspension,
+			Map<String, String>? options,
+			Map<String, String>? receipts
+		}) : kine = kine ?? false,
 		gp = gp ?? false,
 		ptd = ptd ?? false,
 		nurse = nurse ?? false,
@@ -289,6 +339,44 @@ class EncryptedMedicalHouseContract implements MedicalHouseContract {
 		receipts = receipts ?? {},
 		_unsubscriptionReasonId = unsubscriptionReasonId,
 		_status = status;
+
+	factory EncryptedMedicalHouseContract.fromJSON(Map<String, dynamic> data) {
+		return EncryptedMedicalHouseContract(
+			unsubscriptionReasonId: data["unsubscriptionReasonId"],
+			status: data["status"],
+			contractId: data["contractId"],
+			validFrom: data["validFrom"],
+			validTo: data["validTo"],
+			mmNihii: data["mmNihii"],
+			hcpId: data["hcpId"],
+			changeType: data["changeType"] == null ? null : ContractChangeType.fromJSON(data["changeType"]),
+			parentContractId: data["parentContractId"],
+			changedBy: data["changedBy"],
+			startOfContract: data["startOfContract"],
+			startOfCoverage: data["startOfCoverage"],
+			endOfContract: data["endOfContract"],
+			endOfCoverage: data["endOfCoverage"],
+			kine: data["kine"],
+			gp: data["gp"],
+			ptd: data["ptd"],
+			nurse: data["nurse"],
+			noKine: data["noKine"],
+			noGp: data["noGp"],
+			noNurse: data["noNurse"],
+			ptdStart: data["ptdStart"],
+			ptdEnd: data["ptdEnd"],
+			ptdLastInvoiced: data["ptdLastInvoiced"],
+			startOfSuspension: data["startOfSuspension"],
+			endOfSuspension: data["endOfSuspension"],
+			suspensionReason: data["suspensionReason"] == null ? null : SuspensionReason.fromJSON(data["suspensionReason"]),
+			suspensionSource: data["suspensionSource"],
+			forcedSuspension: data["forcedSuspension"],
+			signatureType: data["signatureType"] == null ? null : MhcSignatureType.fromJSON(data["signatureType"]),
+			options: data["options"].map((k0, v0) => MapEntry(k0, v0)),
+			receipts: data["receipts"].map((k0, v0) => MapEntry(k0, v0)),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedMedicalHouseContract value) {
 		Map<String, dynamic> entityAsMap = {

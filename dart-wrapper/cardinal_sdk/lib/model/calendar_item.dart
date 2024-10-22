@@ -56,7 +56,6 @@ sealed class CalendarItem implements StoredDocument, ICureDocument<String>, HasE
 	@override abstract Base64String? encryptedSelf;
 	@override abstract SecurityMetadata? securityMetadata;
 
-
 	static Map<String, dynamic> encode(CalendarItem value) {
 		switch (value) {
 			case DecryptedCalendarItem entity:
@@ -69,100 +68,161 @@ sealed class CalendarItem implements StoredDocument, ICureDocument<String>, HasE
 				return entityJson;
 		}
 	}
+
+	static CalendarItem fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.DecryptedCalendarItem":
+				return DecryptedCalendarItem.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedCalendarItem":
+				return EncryptedCalendarItem.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class DecryptedCalendarItem implements CalendarItem {
-	@override  String id;
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? title;
-	@override  String? calendarItemTypeId;
-	@override  String? masterCalendarItemId;
-	@override  String? patientId;
-	@override  bool? important;
-	@override  bool? homeVisit;
-	@override  String? phoneNumber;
-	@override  String? placeId;
-	@override  DecryptedAddress? address;
-	@override  String? addressText;
-	@override  int? startTime;
-	@override  int? endTime;
-	@override  int? confirmationTime;
-	@override  int? cancellationTimestamp;
-	@override  String? confirmationId;
-	@override  int? duration;
-	@override  bool? allDay;
-	@override  String? details;
-	@override  bool? wasMigrated;
-	@override  String? agendaId;
-	@override  String? hcpId;
-	@override  String? recurrenceId;
-	@override  Set<CalendarItemTag> meetingTags = {};
-	@override  FlowItem? flowItem;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	DecryptedCalendarItem({
-		required this.id,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.title,
-		this.calendarItemTypeId,
-		this.masterCalendarItemId,
-		this.patientId,
-		this.important,
-		this.homeVisit,
-		this.phoneNumber,
-		this.placeId,
-		this.address,
-		this.addressText,
-		this.startTime,
-		this.endTime,
-		this.confirmationTime,
-		this.cancellationTimestamp,
-		this.confirmationId,
-		this.duration,
-		this.allDay,
-		this.details,
-		this.wasMigrated,
-		this.agendaId,
-		this.hcpId,
-		this.recurrenceId,
-		this.flowItem,
-		this.encryptedSelf,
-		this.securityMetadata,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<CalendarItemTag>? meetingTags,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : tags = tags ?? {},
+	@override String id;
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? title;
+	@override String? calendarItemTypeId;
+	@override String? masterCalendarItemId;
+	@override String? patientId;
+	@override bool? important;
+	@override bool? homeVisit;
+	@override String? phoneNumber;
+	@override String? placeId;
+	@override DecryptedAddress? address;
+	@override String? addressText;
+	@override int? startTime;
+	@override int? endTime;
+	@override int? confirmationTime;
+	@override int? cancellationTimestamp;
+	@override String? confirmationId;
+	@override int? duration;
+	@override bool? allDay;
+	@override String? details;
+	@override bool? wasMigrated;
+	@override String? agendaId;
+	@override String? hcpId;
+	@override String? recurrenceId;
+	@override Set<CalendarItemTag> meetingTags = {};
+	@override FlowItem? flowItem;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	DecryptedCalendarItem(
+		this.id,
+		{
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.title,
+			this.calendarItemTypeId,
+			this.masterCalendarItemId,
+			this.patientId,
+			this.important,
+			this.homeVisit,
+			this.phoneNumber,
+			this.placeId,
+			this.address,
+			this.addressText,
+			this.startTime,
+			this.endTime,
+			this.confirmationTime,
+			this.cancellationTimestamp,
+			this.confirmationId,
+			this.duration,
+			this.allDay,
+			this.details,
+			this.wasMigrated,
+			this.agendaId,
+			this.hcpId,
+			this.recurrenceId,
+			this.flowItem,
+			this.encryptedSelf,
+			this.securityMetadata,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<CalendarItemTag>? meetingTags,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : tags = tags ?? {},
 		codes = codes ?? {},
 		meetingTags = meetingTags ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory DecryptedCalendarItem.fromJSON(Map<String, dynamic> data) {
+		return DecryptedCalendarItem(
+			data["id"],
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			title: data["title"],
+			calendarItemTypeId: data["calendarItemTypeId"],
+			masterCalendarItemId: data["masterCalendarItemId"],
+			patientId: data["patientId"],
+			important: data["important"],
+			homeVisit: data["homeVisit"],
+			phoneNumber: data["phoneNumber"],
+			placeId: data["placeId"],
+			address: data["address"] == null ? null : DecryptedAddress.fromJSON(data["address"]),
+			addressText: data["addressText"],
+			startTime: data["startTime"],
+			endTime: data["endTime"],
+			confirmationTime: data["confirmationTime"],
+			cancellationTimestamp: data["cancellationTimestamp"],
+			confirmationId: data["confirmationId"],
+			duration: data["duration"],
+			allDay: data["allDay"],
+			details: data["details"],
+			wasMigrated: data["wasMigrated"],
+			agendaId: data["agendaId"],
+			hcpId: data["hcpId"],
+			recurrenceId: data["recurrenceId"],
+			meetingTags: data["meetingTags"].map((x0) => CalendarItemTag.fromJSON(x0) ),
+			flowItem: data["flowItem"] == null ? null : FlowItem.fromJSON(data["flowItem"]),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedCalendarItem value) {
 		Map<String, dynamic> entityAsMap = {
@@ -213,97 +273,143 @@ class DecryptedCalendarItem implements CalendarItem {
 }
 
 class EncryptedCalendarItem implements CalendarItem {
-	@override  String id;
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? title;
-	@override  String? calendarItemTypeId;
-	@override  String? masterCalendarItemId;
-	@override  String? patientId;
-	@override  bool? important;
-	@override  bool? homeVisit;
-	@override  String? phoneNumber;
-	@override  String? placeId;
-	@override  EncryptedAddress? address;
-	@override  String? addressText;
-	@override  int? startTime;
-	@override  int? endTime;
-	@override  int? confirmationTime;
-	@override  int? cancellationTimestamp;
-	@override  String? confirmationId;
-	@override  int? duration;
-	@override  bool? allDay;
-	@override  String? details;
-	@override  bool? wasMigrated;
-	@override  String? agendaId;
-	@override  String? hcpId;
-	@override  String? recurrenceId;
-	@override  Set<CalendarItemTag> meetingTags = {};
-	@override  FlowItem? flowItem;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	EncryptedCalendarItem({
-		required this.id,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.title,
-		this.calendarItemTypeId,
-		this.masterCalendarItemId,
-		this.patientId,
-		this.important,
-		this.homeVisit,
-		this.phoneNumber,
-		this.placeId,
-		this.address,
-		this.addressText,
-		this.startTime,
-		this.endTime,
-		this.confirmationTime,
-		this.cancellationTimestamp,
-		this.confirmationId,
-		this.duration,
-		this.allDay,
-		this.details,
-		this.wasMigrated,
-		this.agendaId,
-		this.hcpId,
-		this.recurrenceId,
-		this.flowItem,
-		this.encryptedSelf,
-		this.securityMetadata,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<CalendarItemTag>? meetingTags,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : tags = tags ?? {},
+	@override String id;
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? title;
+	@override String? calendarItemTypeId;
+	@override String? masterCalendarItemId;
+	@override String? patientId;
+	@override bool? important;
+	@override bool? homeVisit;
+	@override String? phoneNumber;
+	@override String? placeId;
+	@override EncryptedAddress? address;
+	@override String? addressText;
+	@override int? startTime;
+	@override int? endTime;
+	@override int? confirmationTime;
+	@override int? cancellationTimestamp;
+	@override String? confirmationId;
+	@override int? duration;
+	@override bool? allDay;
+	@override String? details;
+	@override bool? wasMigrated;
+	@override String? agendaId;
+	@override String? hcpId;
+	@override String? recurrenceId;
+	@override Set<CalendarItemTag> meetingTags = {};
+	@override FlowItem? flowItem;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	EncryptedCalendarItem(
+		this.id,
+		{
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.title,
+			this.calendarItemTypeId,
+			this.masterCalendarItemId,
+			this.patientId,
+			this.important,
+			this.homeVisit,
+			this.phoneNumber,
+			this.placeId,
+			this.address,
+			this.addressText,
+			this.startTime,
+			this.endTime,
+			this.confirmationTime,
+			this.cancellationTimestamp,
+			this.confirmationId,
+			this.duration,
+			this.allDay,
+			this.details,
+			this.wasMigrated,
+			this.agendaId,
+			this.hcpId,
+			this.recurrenceId,
+			this.flowItem,
+			this.encryptedSelf,
+			this.securityMetadata,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<CalendarItemTag>? meetingTags,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : tags = tags ?? {},
 		codes = codes ?? {},
 		meetingTags = meetingTags ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory EncryptedCalendarItem.fromJSON(Map<String, dynamic> data) {
+		return EncryptedCalendarItem(
+			data["id"],
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			title: data["title"],
+			calendarItemTypeId: data["calendarItemTypeId"],
+			masterCalendarItemId: data["masterCalendarItemId"],
+			patientId: data["patientId"],
+			important: data["important"],
+			homeVisit: data["homeVisit"],
+			phoneNumber: data["phoneNumber"],
+			placeId: data["placeId"],
+			address: data["address"] == null ? null : EncryptedAddress.fromJSON(data["address"]),
+			addressText: data["addressText"],
+			startTime: data["startTime"],
+			endTime: data["endTime"],
+			confirmationTime: data["confirmationTime"],
+			cancellationTimestamp: data["cancellationTimestamp"],
+			confirmationId: data["confirmationId"],
+			duration: data["duration"],
+			allDay: data["allDay"],
+			details: data["details"],
+			wasMigrated: data["wasMigrated"],
+			agendaId: data["agendaId"],
+			hcpId: data["hcpId"],
+			recurrenceId: data["recurrenceId"],
+			meetingTags: data["meetingTags"].map((x0) => CalendarItemTag.fromJSON(x0) ),
+			flowItem: data["flowItem"] == null ? null : FlowItem.fromJSON(data["flowItem"]),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedCalendarItem value) {
 		Map<String, dynamic> entityAsMap = {

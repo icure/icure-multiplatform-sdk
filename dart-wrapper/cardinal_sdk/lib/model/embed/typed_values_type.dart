@@ -13,19 +13,41 @@ enum TypedValuesType {
 	static String encode(TypedValuesType value) {
 		switch (value) {
 			case TypedValuesType.boolean:
-				return '"Boolean"';
+				return '"BOOLEAN"';
 			case TypedValuesType.integer:
-				return '"Integer"';
+				return '"INTEGER"';
 			case TypedValuesType.double:
-				return '"Double"';
+				return '"DOUBLE"';
 			case TypedValuesType.string:
-				return '"String"';
+				return '"STRING"';
 			case TypedValuesType.date:
-				return '"Date"';
+				return '"DATE"';
 			case TypedValuesType.clob:
-				return '"Clob"';
+				return '"CLOB"';
 			case TypedValuesType.json:
-				return '"Json"';
+				return '"JSON"';
+			}
+	}
+
+
+	static TypedValuesType fromJSON(String data) {
+		switch (data) {
+			case "BOOLEAN":
+				return TypedValuesType.boolean;
+			case "INTEGER":
+				return TypedValuesType.integer;
+			case "DOUBLE":
+				return TypedValuesType.double;
+			case "STRING":
+				return TypedValuesType.string;
+			case "DATE":
+				return TypedValuesType.date;
+			case "CLOB":
+				return TypedValuesType.clob;
+			case "JSON":
+				return TypedValuesType.json;
+			default:
+				throw ArgumentError('Invalid TypedValuesType entry value $data');
 			}
 	}
 

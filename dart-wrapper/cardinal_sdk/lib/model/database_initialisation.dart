@@ -9,14 +9,22 @@ class DatabaseInitialisation {
 	List<HealthcareParty>? healthcareParties = [];
 	Replication? replication;
 	String? minimumKrakenVersion;
-
 	DatabaseInitialisation({
-		this.replication,
-		this.minimumKrakenVersion,
-		List<User>? users,
-		List<HealthcareParty>? healthcareParties
-	}) : users = users ?? [],
+			this.replication,
+			this.minimumKrakenVersion,
+			List<User>? users,
+			List<HealthcareParty>? healthcareParties
+		}) : users = users ?? [],
 		healthcareParties = healthcareParties ?? [];
+
+	factory DatabaseInitialisation.fromJSON(Map<String, dynamic> data) {
+		return DatabaseInitialisation(
+			users: data["users"]?.map((x0) => User.fromJSON(x0) ),
+			healthcareParties: data["healthcareParties"]?.map((x0) => HealthcareParty.fromJSON(x0) ),
+			replication: data["replication"] == null ? null : Replication.fromJSON(data["replication"]),
+			minimumKrakenVersion: data["minimumKrakenVersion"]
+		);
+	}
 
 	static Map<String, dynamic> encode(DatabaseInitialisation value) {
 		Map<String, dynamic> entityAsMap = {

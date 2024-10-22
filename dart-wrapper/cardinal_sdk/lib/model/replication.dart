@@ -6,21 +6,32 @@ import 'package:cardinal_sdk/model/base/named.dart';
 
 
 class Replication implements StoredDocument, Identifiable<String>, Named {
-	@override  String id;
-	@override  String? rev;
-	@override  int? deletionDate;
-	@override  String? name;
+	@override String id;
+	@override String? rev;
+	@override int? deletionDate;
+	@override String? name;
 	String? context;
 	List<DatabaseSynchronization> databaseSynchronizations = [];
+	Replication(
+		this.id,
+		{
+			this.rev,
+			this.deletionDate,
+			this.name,
+			this.context,
+			List<DatabaseSynchronization>? databaseSynchronizations
+		}) : databaseSynchronizations = databaseSynchronizations ?? [];
 
-	Replication({
-		required this.id,
-		this.rev,
-		this.deletionDate,
-		this.name,
-		this.context,
-		List<DatabaseSynchronization>? databaseSynchronizations
-	}) : databaseSynchronizations = databaseSynchronizations ?? [];
+	factory Replication.fromJSON(Map<String, dynamic> data) {
+		return Replication(
+			data["id"],
+			rev: data["rev"],
+			deletionDate: data["deletionDate"],
+			name: data["name"],
+			context: data["context"],
+			databaseSynchronizations: data["databaseSynchronizations"].map((x0) => DatabaseSynchronization.fromJSON(x0) ),
+		);
+	}
 
 	static Map<String, dynamic> encode(Replication value) {
 		Map<String, dynamic> entityAsMap = {

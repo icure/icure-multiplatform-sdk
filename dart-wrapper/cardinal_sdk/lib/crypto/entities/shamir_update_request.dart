@@ -12,11 +12,17 @@ class ShamirUpdateRequest {
 		}
 		_minShares = value;
 	}
+	ShamirUpdateRequest(
+		this.notariesIds,
+		int minShares
+		) : _minShares = minShares;
 
-	ShamirUpdateRequest({
-		required this.notariesIds,
-		required int minShares
-	}) : _minShares = minShares;
+	factory ShamirUpdateRequest.fromJSON(Map<String, dynamic> data) {
+		return ShamirUpdateRequest(
+			data["notariesIds"].map((x0) => x0 ),
+			data["minShares"]
+		);
+	}
 
 	static Map<String, dynamic> encode(ShamirUpdateRequest value) {
 		Map<String, dynamic> entityAsMap = {

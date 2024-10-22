@@ -29,7 +29,28 @@ abstract interface class Predicate {
 				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.filter.predicate.KeyValuePredicate";
 				return entityJson;
 			default:
-				throw ArgumentError('Invalid subclass ${value}');
+				throw ArgumentError('Invalid subclass $value');
+		}
+	}
+
+	static Predicate fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.filter.predicate.NotPredicate":
+				return NotPredicate.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.filter.predicate.AndPredicate":
+				return AndPredicate.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.filter.predicate.AlwaysPredicate":
+				return AlwaysPredicate.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.filter.predicate.OrPredicate":
+				return OrPredicate.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.filter.predicate.KeyValuePredicate":
+				return KeyValuePredicate.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
 		}
 	}
 }

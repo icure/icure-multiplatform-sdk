@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/base/identifiable.dart';
 
 
 class Annotation implements Identifiable<String> {
-	@override  String id;
+	@override String id;
 	String? author;
 	int? created;
 	int? modified;
@@ -14,20 +14,35 @@ class Annotation implements Identifiable<String> {
 	bool? confidential;
 	Set<CodeStub> tags = {};
 	String? encryptedSelf;
-
-	Annotation({
-		required this.id,
-		this.author,
-		this.created,
-		this.modified,
-		this.text,
-		this.location,
-		this.confidential,
-		this.encryptedSelf,
-		Map<String, String>? markdown,
-		Set<CodeStub>? tags
-	}) : markdown = markdown ?? {},
+	Annotation(
+		this.id,
+		{
+			this.author,
+			this.created,
+			this.modified,
+			this.text,
+			this.location,
+			this.confidential,
+			this.encryptedSelf,
+			Map<String, String>? markdown,
+			Set<CodeStub>? tags
+		}) : markdown = markdown ?? {},
 		tags = tags ?? {};
+
+	factory Annotation.fromJSON(Map<String, dynamic> data) {
+		return Annotation(
+			data["id"],
+			author: data["author"],
+			created: data["created"],
+			modified: data["modified"],
+			text: data["text"],
+			markdown: data["markdown"].map((k0, v0) => MapEntry(k0, v0)),
+			location: data["location"],
+			confidential: data["confidential"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			encryptedSelf: data["encryptedSelf"],
+		);
+	}
 
 	static Map<String, dynamic> encode(Annotation value) {
 		Map<String, dynamic> entityAsMap = {

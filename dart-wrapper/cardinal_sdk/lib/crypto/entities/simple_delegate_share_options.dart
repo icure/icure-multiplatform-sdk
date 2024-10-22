@@ -9,5 +9,4 @@ abstract interface class SimpleDelegateShareOptions {
 	abstract ShareMetadataBehaviour shareEncryptionKey;
 	abstract ShareMetadataBehaviour shareOwningEntityIds;
 	abstract RequestedPermission requestedPermissions;
-
 }

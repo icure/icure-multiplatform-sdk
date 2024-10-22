@@ -14,21 +14,45 @@ enum PatientHealthCarePartyType {
 	static String encode(PatientHealthCarePartyType value) {
 		switch (value) {
 			case PatientHealthCarePartyType.doctor:
-				return '"Doctor"';
+				return '"doctor"';
 			case PatientHealthCarePartyType.referral:
-				return '"Referral"';
+				return '"referral"';
 			case PatientHealthCarePartyType.medicalhouse:
-				return '"Medicalhouse"';
+				return '"medicalhouse"';
 			case PatientHealthCarePartyType.retirementhome:
-				return '"Retirementhome"';
+				return '"retirementhome"';
 			case PatientHealthCarePartyType.hospital:
-				return '"Hospital"';
+				return '"hospital"';
 			case PatientHealthCarePartyType.other:
-				return '"Other"';
+				return '"other"';
 			case PatientHealthCarePartyType.referringphysician:
-				return '"Referringphysician"';
+				return '"referringphysician"';
 			case PatientHealthCarePartyType.managingorganization:
-				return '"Managingorganization"';
+				return '"managingorganization"';
+			}
+	}
+
+
+	static PatientHealthCarePartyType fromJSON(String data) {
+		switch (data) {
+			case "doctor":
+				return PatientHealthCarePartyType.doctor;
+			case "referral":
+				return PatientHealthCarePartyType.referral;
+			case "medicalhouse":
+				return PatientHealthCarePartyType.medicalhouse;
+			case "retirementhome":
+				return PatientHealthCarePartyType.retirementhome;
+			case "hospital":
+				return PatientHealthCarePartyType.hospital;
+			case "other":
+				return PatientHealthCarePartyType.other;
+			case "referringphysician":
+				return PatientHealthCarePartyType.referringphysician;
+			case "managingorganization":
+				return PatientHealthCarePartyType.managingorganization;
+			default:
+				throw ArgumentError('Invalid PatientHealthCarePartyType entry value $data');
 			}
 	}
 

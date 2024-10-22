@@ -15,23 +15,49 @@ enum DocumentStatus {
 	static String encode(DocumentStatus value) {
 		switch (value) {
 			case DocumentStatus.draft:
-				return '"Draft"';
+				return '"draft"';
 			case DocumentStatus.finalized:
-				return '"Finalized"';
+				return '"finalized"';
 			case DocumentStatus.pendingReview:
-				return '"PendingReview"';
+				return '"pending_review"';
 			case DocumentStatus.reviewed:
-				return '"Reviewed"';
+				return '"reviewed"';
 			case DocumentStatus.pendingSignature:
-				return '"PendingSignature"';
+				return '"pending_signature"';
 			case DocumentStatus.signed:
-				return '"Signed"';
+				return '"signed"';
 			case DocumentStatus.canceled:
-				return '"Canceled"';
+				return '"canceled"';
 			case DocumentStatus.sent:
-				return '"Sent"';
+				return '"sent"';
 			case DocumentStatus.delivered:
-				return '"Delivered"';
+				return '"delivered"';
+			}
+	}
+
+
+	static DocumentStatus fromJSON(String data) {
+		switch (data) {
+			case "draft":
+				return DocumentStatus.draft;
+			case "finalized":
+				return DocumentStatus.finalized;
+			case "pending_review":
+				return DocumentStatus.pendingReview;
+			case "reviewed":
+				return DocumentStatus.reviewed;
+			case "pending_signature":
+				return DocumentStatus.pendingSignature;
+			case "signed":
+				return DocumentStatus.signed;
+			case "canceled":
+				return DocumentStatus.canceled;
+			case "sent":
+				return DocumentStatus.sent;
+			case "delivered":
+				return DocumentStatus.delivered;
+			default:
+				throw ArgumentError('Invalid DocumentStatus entry value $data');
 			}
 	}
 

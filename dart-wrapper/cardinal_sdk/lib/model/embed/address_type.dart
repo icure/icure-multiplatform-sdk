@@ -18,29 +18,61 @@ enum AddressType {
 	static String encode(AddressType value) {
 		switch (value) {
 			case AddressType.home:
-				return '"Home"';
+				return '"home"';
 			case AddressType.work:
-				return '"Work"';
+				return '"work"';
 			case AddressType.vacation:
-				return '"Vacation"';
+				return '"vacation"';
 			case AddressType.hospital:
-				return '"Hospital"';
+				return '"hospital"';
 			case AddressType.clinic:
-				return '"Clinic"';
+				return '"clinic"';
 			case AddressType.hq:
-				return '"Hq"';
+				return '"hq"';
 			case AddressType.other:
-				return '"Other"';
+				return '"other"';
 			case AddressType.temporary:
-				return '"Temporary"';
+				return '"temporary"';
 			case AddressType.postal:
-				return '"Postal"';
+				return '"postal"';
 			case AddressType.diplomatic:
-				return '"Diplomatic"';
+				return '"diplomatic"';
 			case AddressType.reference:
-				return '"Reference"';
+				return '"reference"';
 			case AddressType.careaddress:
-				return '"Careaddress"';
+				return '"careaddress"';
+			}
+	}
+
+
+	static AddressType fromJSON(String data) {
+		switch (data) {
+			case "home":
+				return AddressType.home;
+			case "work":
+				return AddressType.work;
+			case "vacation":
+				return AddressType.vacation;
+			case "hospital":
+				return AddressType.hospital;
+			case "clinic":
+				return AddressType.clinic;
+			case "hq":
+				return AddressType.hq;
+			case "other":
+				return AddressType.other;
+			case "temporary":
+				return AddressType.temporary;
+			case "postal":
+				return AddressType.postal;
+			case "diplomatic":
+				return AddressType.diplomatic;
+			case "reference":
+				return AddressType.reference;
+			case "careaddress":
+				return AddressType.careaddress;
+			default:
+				throw ArgumentError('Invalid AddressType entry value $data');
 			}
 	}
 

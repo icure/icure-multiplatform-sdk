@@ -13,20 +13,33 @@ class SecureDelegation {
 	Set<SecureDelegationKeyString> parentDelegations = {};
 	String? exchangeDataId;
 	AccessLevel permissions;
-
-	SecureDelegation({
-		required this.permissions,
-		this.delegator,
-		this.delegate,
-		this.exchangeDataId,
-		Set<Base64String>? secretIds,
-		Set<Base64String>? encryptionKeys,
-		Set<Base64String>? owningEntityIds,
-		Set<SecureDelegationKeyString>? parentDelegations
-	}) : secretIds = secretIds ?? {},
+	SecureDelegation(
+		this.permissions,
+		{
+			this.delegator,
+			this.delegate,
+			this.exchangeDataId,
+			Set<Base64String>? secretIds,
+			Set<Base64String>? encryptionKeys,
+			Set<Base64String>? owningEntityIds,
+			Set<SecureDelegationKeyString>? parentDelegations
+		}) : secretIds = secretIds ?? {},
 		encryptionKeys = encryptionKeys ?? {},
 		owningEntityIds = owningEntityIds ?? {},
 		parentDelegations = parentDelegations ?? {};
+
+	factory SecureDelegation.fromJSON(Map<String, dynamic> data) {
+		return SecureDelegation(
+			AccessLevel.fromJSON(data["permissions"]),
+			delegator: data["delegator"],
+			delegate: data["delegate"],
+			secretIds: data["secretIds"].map((x0) => x0 ),
+			encryptionKeys: data["encryptionKeys"].map((x0) => x0 ),
+			owningEntityIds: data["owningEntityIds"].map((x0) => x0 ),
+			parentDelegations: data["parentDelegations"].map((x0) => x0 ),
+			exchangeDataId: data["exchangeDataId"],
+		);
+	}
 
 	static Map<String, dynamic> encode(SecureDelegation value) {
 		Map<String, dynamic> entityAsMap = {

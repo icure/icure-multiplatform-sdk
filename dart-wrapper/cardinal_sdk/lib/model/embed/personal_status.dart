@@ -20,33 +20,69 @@ enum PersonalStatus {
 	static String encode(PersonalStatus value) {
 		switch (value) {
 			case PersonalStatus.single:
-				return '"Single"';
+				return '"single"';
 			case PersonalStatus.inCouple:
-				return '"InCouple"';
+				return '"in_couple"';
 			case PersonalStatus.married:
-				return '"Married"';
+				return '"married"';
 			case PersonalStatus.separated:
-				return '"Separated"';
+				return '"separated"';
 			case PersonalStatus.divorced:
-				return '"Divorced"';
+				return '"divorced"';
 			case PersonalStatus.divorcing:
-				return '"Divorcing"';
+				return '"divorcing"';
 			case PersonalStatus.widowed:
-				return '"Widowed"';
+				return '"widowed"';
 			case PersonalStatus.widower:
-				return '"Widower"';
+				return '"widower"';
 			case PersonalStatus.complicated:
-				return '"Complicated"';
+				return '"complicated"';
 			case PersonalStatus.unknown:
-				return '"Unknown"';
+				return '"unknown"';
 			case PersonalStatus.contract:
-				return '"Contract"';
+				return '"contract"';
 			case PersonalStatus.other:
-				return '"Other"';
+				return '"other"';
 			case PersonalStatus.annulled:
-				return '"Annulled"';
+				return '"annulled"';
 			case PersonalStatus.polygamous:
-				return '"Polygamous"';
+				return '"polygamous"';
+			}
+	}
+
+
+	static PersonalStatus fromJSON(String data) {
+		switch (data) {
+			case "single":
+				return PersonalStatus.single;
+			case "in_couple":
+				return PersonalStatus.inCouple;
+			case "married":
+				return PersonalStatus.married;
+			case "separated":
+				return PersonalStatus.separated;
+			case "divorced":
+				return PersonalStatus.divorced;
+			case "divorcing":
+				return PersonalStatus.divorcing;
+			case "widowed":
+				return PersonalStatus.widowed;
+			case "widower":
+				return PersonalStatus.widower;
+			case "complicated":
+				return PersonalStatus.complicated;
+			case "unknown":
+				return PersonalStatus.unknown;
+			case "contract":
+				return PersonalStatus.contract;
+			case "other":
+				return PersonalStatus.other;
+			case "annulled":
+				return PersonalStatus.annulled;
+			case "polygamous":
+				return PersonalStatus.polygamous;
+			default:
+				throw ArgumentError('Invalid PersonalStatus entry value $data');
 			}
 	}
 

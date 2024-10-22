@@ -11,14 +11,14 @@ import 'package:cardinal_sdk/model/base/code_identification.dart';
 
 
 class Tarification implements StoredDocument, CodeIdentification<String> {
-	@override  String id;
-	@override  String? rev;
-	@override  int? deletionDate;
-	@override  Map<String, String>? label;
-	@override  String? context;
-	@override  String? type;
-	@override  String? code;
-	@override  String? version;
+	@override String id;
+	@override String? rev;
+	@override int? deletionDate;
+	@override Map<String, String>? label;
+	@override String? context;
+	@override String? type;
+	@override String? code;
+	@override String? version;
 	String? author;
 	Set<String> regions = {};
 	List<Periodicity> periodicity = [];
@@ -45,36 +45,36 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 	Set<String> relatedCodes = {};
 	String? ngroup;
 	List<LetterValue> letterValues = [];
-
-	Tarification({
-		required this.id,
-		int? level,
-		this.rev,
-		this.deletionDate,
-		this.label,
-		this.context,
-		this.type,
-		this.code,
-		this.version,
-		this.author,
-		this.data,
-		this.consultationCode,
-		this.hasRelatedCode,
-		this.needsPrescriber,
-		this.ngroup,
-		Set<String>? regions,
-		List<Periodicity>? periodicity,
-		List<String>? links,
-		Map<LinkQualification, List<String>>? qualifiedLinks,
-		Set<CodeFlag>? flags,
-		Map<String, Set<String>>? searchTerms,
-		Map<AppendixType, String>? appendices,
-		bool? disabled,
-		Set<DecryptedValorisation>? valorisations,
-		Map<String, String>? category,
-		Set<String>? relatedCodes,
-		List<LetterValue>? letterValues
-	}) : regions = regions ?? {},
+	Tarification(
+		this.id,
+		{
+			int? level,
+			this.rev,
+			this.deletionDate,
+			this.label,
+			this.context,
+			this.type,
+			this.code,
+			this.version,
+			this.author,
+			this.data,
+			this.consultationCode,
+			this.hasRelatedCode,
+			this.needsPrescriber,
+			this.ngroup,
+			Set<String>? regions,
+			List<Periodicity>? periodicity,
+			List<String>? links,
+			Map<LinkQualification, List<String>>? qualifiedLinks,
+			Set<CodeFlag>? flags,
+			Map<String, Set<String>>? searchTerms,
+			Map<AppendixType, String>? appendices,
+			bool? disabled,
+			Set<DecryptedValorisation>? valorisations,
+			Map<String, String>? category,
+			Set<String>? relatedCodes,
+			List<LetterValue>? letterValues
+		}) : regions = regions ?? {},
 		periodicity = periodicity ?? [],
 		links = links ?? [],
 		qualifiedLinks = qualifiedLinks ?? {},
@@ -87,6 +87,38 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 		relatedCodes = relatedCodes ?? {},
 		letterValues = letterValues ?? [],
 		_level = level;
+
+	factory Tarification.fromJSON(Map<String, dynamic> data) {
+		return Tarification(
+			data["id"],
+			level: data["level"],
+			rev: data["rev"],
+			deletionDate: data["deletionDate"],
+			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
+			context: data["context"],
+			type: data["type"],
+			code: data["code"],
+			version: data["version"],
+			author: data["author"],
+			regions: data["regions"].map((x0) => x0 ),
+			periodicity: data["periodicity"].map((x0) => Periodicity.fromJSON(x0) ),
+			links: data["links"].map((x0) => x0 ),
+			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(LinkQualification.fromJSON(k0), v0.map((x1) => x1 ))),
+			flags: data["flags"].map((x0) => CodeFlag.fromJSON(x0) ),
+			searchTerms: data["searchTerms"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			data: data["data"],
+			appendices: data["appendices"].map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), v0)),
+			disabled: data["disabled"],
+			valorisations: data["valorisations"].map((x0) => DecryptedValorisation.fromJSON(x0) ),
+			category: data["category"].map((k0, v0) => MapEntry(k0, v0)),
+			consultationCode: data["consultationCode"],
+			hasRelatedCode: data["hasRelatedCode"],
+			needsPrescriber: data["needsPrescriber"],
+			relatedCodes: data["relatedCodes"].map((x0) => x0 ),
+			ngroup: data["nGroup"],
+			letterValues: data["letterValues"].map((x0) => LetterValue.fromJSON(x0) ),
+		);
+	}
 
 	static Map<String, dynamic> encode(Tarification value) {
 		Map<String, dynamic> entityAsMap = {
@@ -115,7 +147,7 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 			"hasRelatedCode" : value.hasRelatedCode,
 			"needsPrescriber" : value.needsPrescriber,
 			"relatedCodes" : value.relatedCodes.map((x0) => x0),
-			"ngroup" : value.ngroup,
+			"nGroup" : value.ngroup,
 			"letterValues" : value.letterValues.map((x0) => LetterValue.encode(x0))
 		};
 		return entityAsMap;

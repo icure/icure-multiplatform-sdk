@@ -17,7 +17,6 @@ sealed class Valorisation implements Encryptable {
 	abstract Map<String, String>? label;
 	@override abstract Base64String? encryptedSelf;
 
-
 	static Map<String, dynamic> encode(Valorisation value) {
 		switch (value) {
 			case EncryptedValorisation entity:
@@ -30,34 +29,64 @@ sealed class Valorisation implements Encryptable {
 				return entityJson;
 		}
 	}
+
+	static Valorisation fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.EncryptedValorisation":
+				return EncryptedValorisation.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.DecryptedValorisation":
+				return DecryptedValorisation.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedValorisation implements Valorisation {
-	@override  int? startOfValidity;
-	@override  int? endOfValidity;
-	@override  String? predicate;
-	@override  List<int>? reference;
-	@override  double? totalAmount;
-	@override  double? reimbursement;
-	@override  double? patientIntervention;
-	@override  double? doctorSupplement;
-	@override  double? vat;
-	@override  Map<String, String>? label = {};
-	@override  Base64String? encryptedSelf;
-
+	@override int? startOfValidity;
+	@override int? endOfValidity;
+	@override String? predicate;
+	@override List<int>? reference;
+	@override double? totalAmount;
+	@override double? reimbursement;
+	@override double? patientIntervention;
+	@override double? doctorSupplement;
+	@override double? vat;
+	@override Map<String, String>? label = {};
+	@override Base64String? encryptedSelf;
 	EncryptedValorisation({
-		this.startOfValidity,
-		this.endOfValidity,
-		this.predicate,
-		this.reference,
-		this.totalAmount,
-		this.reimbursement,
-		this.patientIntervention,
-		this.doctorSupplement,
-		this.vat,
-		this.encryptedSelf,
-		Map<String, String>? label
-	}) : label = label ?? {};
+			this.startOfValidity,
+			this.endOfValidity,
+			this.predicate,
+			this.reference,
+			this.totalAmount,
+			this.reimbursement,
+			this.patientIntervention,
+			this.doctorSupplement,
+			this.vat,
+			this.encryptedSelf,
+			Map<String, String>? label
+		}) : label = label ?? {};
+
+	factory EncryptedValorisation.fromJSON(Map<String, dynamic> data) {
+		return EncryptedValorisation(
+			startOfValidity: data["startOfValidity"],
+			endOfValidity: data["endOfValidity"],
+			predicate: data["predicate"],
+			reference: data["reference"]?.map((x0) => x0 ),
+			totalAmount: data["totalAmount"],
+			reimbursement: data["reimbursement"],
+			patientIntervention: data["patientIntervention"],
+			doctorSupplement: data["doctorSupplement"],
+			vat: data["vat"],
+			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedValorisation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -78,31 +107,46 @@ class EncryptedValorisation implements Valorisation {
 }
 
 class DecryptedValorisation implements Valorisation {
-	@override  int? startOfValidity;
-	@override  int? endOfValidity;
-	@override  String? predicate;
-	@override  List<int>? reference;
-	@override  double? totalAmount;
-	@override  double? reimbursement;
-	@override  double? patientIntervention;
-	@override  double? doctorSupplement;
-	@override  double? vat;
-	@override  Map<String, String>? label = {};
-	@override  Base64String? encryptedSelf;
-
+	@override int? startOfValidity;
+	@override int? endOfValidity;
+	@override String? predicate;
+	@override List<int>? reference;
+	@override double? totalAmount;
+	@override double? reimbursement;
+	@override double? patientIntervention;
+	@override double? doctorSupplement;
+	@override double? vat;
+	@override Map<String, String>? label = {};
+	@override Base64String? encryptedSelf;
 	DecryptedValorisation({
-		this.startOfValidity,
-		this.endOfValidity,
-		this.predicate,
-		this.reference,
-		this.totalAmount,
-		this.reimbursement,
-		this.patientIntervention,
-		this.doctorSupplement,
-		this.vat,
-		this.encryptedSelf,
-		Map<String, String>? label
-	}) : label = label ?? {};
+			this.startOfValidity,
+			this.endOfValidity,
+			this.predicate,
+			this.reference,
+			this.totalAmount,
+			this.reimbursement,
+			this.patientIntervention,
+			this.doctorSupplement,
+			this.vat,
+			this.encryptedSelf,
+			Map<String, String>? label
+		}) : label = label ?? {};
+
+	factory DecryptedValorisation.fromJSON(Map<String, dynamic> data) {
+		return DecryptedValorisation(
+			startOfValidity: data["startOfValidity"],
+			endOfValidity: data["endOfValidity"],
+			predicate: data["predicate"],
+			reference: data["reference"]?.map((x0) => x0 ),
+			totalAmount: data["totalAmount"],
+			reimbursement: data["reimbursement"],
+			patientIntervention: data["patientIntervention"],
+			doctorSupplement: data["doctorSupplement"],
+			vat: data["vat"],
+			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedValorisation value) {
 		Map<String, dynamic> entityAsMap = {

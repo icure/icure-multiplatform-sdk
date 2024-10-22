@@ -6,8 +6,13 @@ import 'package:cardinal_sdk/crypto/entities/failed_request_details.dart';
 
 class ShareAllPatientDataOptions {
 	static final ShareAllPatientDataOptions _singleton = ShareAllPatientDataOptions._internal();
+	factory ShareAllPatientDataOptions.fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptions(
+		);
+	}
 
 	ShareAllPatientDataOptions._internal();
+
 	factory ShareAllPatientDataOptions() {
 		return _singleton;
 	}
@@ -32,6 +37,20 @@ enum ShareAllPatientDataOptionsTag {
 				return '"MedicalInformation"';
 			case ShareAllPatientDataOptionsTag.financialInformation:
 				return '"FinancialInformation"';
+			}
+	}
+
+
+	static ShareAllPatientDataOptionsTag fromJSON(String data) {
+		switch (data) {
+			case "All":
+				return ShareAllPatientDataOptionsTag.all;
+			case "MedicalInformation":
+				return ShareAllPatientDataOptionsTag.medicalInformation;
+			case "FinancialInformation":
+				return ShareAllPatientDataOptionsTag.financialInformation;
+			default:
+				throw ArgumentError('Invalid ShareAllPatientDataOptionsTag entry value $data');
 			}
 	}
 
@@ -68,6 +87,30 @@ enum ShareAllPatientDataOptionsShareableEntity {
 			}
 	}
 
+
+	static ShareAllPatientDataOptionsShareableEntity fromJSON(String data) {
+		switch (data) {
+			case "CalendarItem":
+				return ShareAllPatientDataOptionsShareableEntity.calendarItem;
+			case "Contact":
+				return ShareAllPatientDataOptionsShareableEntity.contact;
+			case "Classification":
+				return ShareAllPatientDataOptionsShareableEntity.classification;
+			case "Document":
+				return ShareAllPatientDataOptionsShareableEntity.document;
+			case "Form":
+				return ShareAllPatientDataOptionsShareableEntity.form;
+			case "HealthElement":
+				return ShareAllPatientDataOptionsShareableEntity.healthElement;
+			case "Invoice":
+				return ShareAllPatientDataOptionsShareableEntity.invoice;
+			case "Patient":
+				return ShareAllPatientDataOptionsShareableEntity.patient;
+			default:
+				throw ArgumentError('Invalid ShareAllPatientDataOptionsShareableEntity entry value $data');
+			}
+	}
+
 }
 
 class ShareAllPatientDataOptionsEntityResult {
@@ -81,12 +124,20 @@ class ShareAllPatientDataOptionsEntityResult {
 		}
 		_modified = value;
 	}
+	ShareAllPatientDataOptionsEntityResult(
+		int modified,
+		{
+			this.success,
+			this.error
+		}) : _modified = modified;
 
-	ShareAllPatientDataOptionsEntityResult({
-		required int modified,
-		this.success,
-		this.error
-	}) : _modified = modified;
+	factory ShareAllPatientDataOptionsEntityResult.fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsEntityResult(
+			data["modified"],
+			success: data["success"],
+			error: data["error"] == null ? null : ShareAllPatientDataOptionsSharePatientDataError.fromJSON(data["error"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsEntityResult value) {
 		Map<String, dynamic> entityAsMap = {
@@ -101,11 +152,17 @@ class ShareAllPatientDataOptionsEntityResult {
 class ShareAllPatientDataOptionsResult {
 	EncryptedPatient patient;
 	Map<ShareAllPatientDataOptionsShareableEntity, ShareAllPatientDataOptionsEntityResult> statuses;
+	ShareAllPatientDataOptionsResult(
+		this.patient,
+		this.statuses
+		);
 
-	ShareAllPatientDataOptionsResult({
-		required this.patient,
-		required this.statuses
-	});
+	factory ShareAllPatientDataOptionsResult.fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsResult(
+			EncryptedPatient.fromJSON(data["patient"]),
+			data["statuses"].map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.fromJSON(k0), ShareAllPatientDataOptionsEntityResult.fromJSON(v0)))
+		);
+	}
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsResult value) {
 		Map<String, dynamic> entityAsMap = {
@@ -130,16 +187,37 @@ sealed class ShareAllPatientDataOptionsSharePatientDataError {
 				return entityJson;
 		}
 	}
+
+	static ShareAllPatientDataOptionsSharePatientDataError fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.BulkShareFailure":
+				return ShareAllPatientDataOptionsBulkShareFailure.fromJSON(data);
+			case "com.icure.cardinal.sdk.crypto.entities.ShareAllPatientDataOptions.FailedRequest":
+				return ShareAllPatientDataOptionsFailedRequest.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataOptionsSharePatientDataError {
 	List<FailedRequestDetails> errors;
 	String message;
+	ShareAllPatientDataOptionsBulkShareFailure(
+		this.errors,
+		this.message
+		);
 
-	ShareAllPatientDataOptionsBulkShareFailure({
-		required this.errors,
-		required this.message
-	});
+	factory ShareAllPatientDataOptionsBulkShareFailure.fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsBulkShareFailure(
+			data["errors"].map((x0) => FailedRequestDetails.fromJSON(x0) ),
+			data["message"]
+		);
+	}
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsBulkShareFailure value) {
 		Map<String, dynamic> entityAsMap = {
@@ -152,10 +230,13 @@ class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataO
 
 class ShareAllPatientDataOptionsFailedRequest implements ShareAllPatientDataOptionsSharePatientDataError {
 	String description;
+	ShareAllPatientDataOptionsFailedRequest(this.description);
 
-	ShareAllPatientDataOptionsFailedRequest({
-		required this.description
-	});
+	factory ShareAllPatientDataOptionsFailedRequest.fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsFailedRequest(
+			data["description"]
+		);
+	}
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsFailedRequest value) {
 		Map<String, dynamic> entityAsMap = {

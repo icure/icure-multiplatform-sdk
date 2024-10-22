@@ -14,21 +14,45 @@ enum PersonNameUse {
 	static String encode(PersonNameUse value) {
 		switch (value) {
 			case PersonNameUse.usual:
-				return '"Usual"';
+				return '"usual"';
 			case PersonNameUse.official:
-				return '"Official"';
+				return '"official"';
 			case PersonNameUse.temp:
-				return '"Temp"';
+				return '"temp"';
 			case PersonNameUse.nickname:
-				return '"Nickname"';
+				return '"nickname"';
 			case PersonNameUse.anonymous:
-				return '"Anonymous"';
+				return '"anonymous"';
 			case PersonNameUse.maiden:
-				return '"Maiden"';
+				return '"maiden"';
 			case PersonNameUse.old:
-				return '"Old"';
+				return '"old"';
 			case PersonNameUse.other:
-				return '"Other"';
+				return '"other"';
+			}
+	}
+
+
+	static PersonNameUse fromJSON(String data) {
+		switch (data) {
+			case "usual":
+				return PersonNameUse.usual;
+			case "official":
+				return PersonNameUse.official;
+			case "temp":
+				return PersonNameUse.temp;
+			case "nickname":
+				return PersonNameUse.nickname;
+			case "anonymous":
+				return PersonNameUse.anonymous;
+			case "maiden":
+				return PersonNameUse.maiden;
+			case "old":
+				return PersonNameUse.old;
+			case "other":
+				return PersonNameUse.other;
+			default:
+				throw ArgumentError('Invalid PersonNameUse entry value $data');
 			}
 	}
 

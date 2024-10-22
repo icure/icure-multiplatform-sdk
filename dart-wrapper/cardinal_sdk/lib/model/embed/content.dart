@@ -23,7 +23,6 @@ sealed class Content {
 	abstract List<Measure>? ratio;
 	abstract List<Measure>? range;
 
-
 	static Map<String, dynamic> encode(Content value) {
 		switch (value) {
 			case EncryptedContent entity:
@@ -36,38 +35,70 @@ sealed class Content {
 				return entityJson;
 		}
 	}
+
+	static Content fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.EncryptedContent":
+				return EncryptedContent.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.DecryptedContent":
+				return DecryptedContent.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedContent implements Content {
-	@override  String? stringValue;
-	@override  double? numberValue;
-	@override  bool? booleanValue;
-	@override  DateTime? instantValue;
-	@override  int? fuzzyDateValue;
-	@override  Uint8List? binaryValue;
-	@override  String? documentId;
-	@override  Measure? measureValue;
-	@override  Medication? medicationValue;
-	@override  TimeSeries? timeSeries;
-	@override  List<EncryptedService>? compoundValue;
-	@override  List<Measure>? ratio;
-	@override  List<Measure>? range;
-
+	@override String? stringValue;
+	@override double? numberValue;
+	@override bool? booleanValue;
+	@override DateTime? instantValue;
+	@override int? fuzzyDateValue;
+	@override Uint8List? binaryValue;
+	@override String? documentId;
+	@override Measure? measureValue;
+	@override Medication? medicationValue;
+	@override TimeSeries? timeSeries;
+	@override List<EncryptedService>? compoundValue;
+	@override List<Measure>? ratio;
+	@override List<Measure>? range;
 	EncryptedContent({
-		this.stringValue,
-		this.numberValue,
-		this.booleanValue,
-		this.instantValue,
-		this.fuzzyDateValue,
-		this.binaryValue,
-		this.documentId,
-		this.measureValue,
-		this.medicationValue,
-		this.timeSeries,
-		this.compoundValue,
-		this.ratio,
-		this.range
-	});
+			this.stringValue,
+			this.numberValue,
+			this.booleanValue,
+			this.instantValue,
+			this.fuzzyDateValue,
+			this.binaryValue,
+			this.documentId,
+			this.measureValue,
+			this.medicationValue,
+			this.timeSeries,
+			this.compoundValue,
+			this.ratio,
+			this.range
+		});
+
+	factory EncryptedContent.fromJSON(Map<String, dynamic> data) {
+		return EncryptedContent(
+			stringValue: data["stringValue"],
+			numberValue: data["numberValue"],
+			booleanValue: data["booleanValue"],
+			instantValue: data["instantValue"] == null ? null : DateTime.parse(data["instantValue"] as String),
+			fuzzyDateValue: data["fuzzyDateValue"],
+			binaryValue: data["binaryValue"] == null ? null : base64Decode(data["binaryValue"] as String),
+			documentId: data["documentId"],
+			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
+			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
+			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
+			compoundValue: data["compoundValue"]?.map((x0) => EncryptedService.fromJSON(x0) ),
+			ratio: data["ratio"]?.map((x0) => Measure.fromJSON(x0) ),
+			range: data["range"]?.map((x0) => Measure.fromJSON(x0) )
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedContent value) {
 		Map<String, dynamic> entityAsMap = {
@@ -90,35 +121,52 @@ class EncryptedContent implements Content {
 }
 
 class DecryptedContent implements Content {
-	@override  String? stringValue;
-	@override  double? numberValue;
-	@override  bool? booleanValue;
-	@override  DateTime? instantValue;
-	@override  int? fuzzyDateValue;
-	@override  Uint8List? binaryValue;
-	@override  String? documentId;
-	@override  Measure? measureValue;
-	@override  Medication? medicationValue;
-	@override  TimeSeries? timeSeries;
-	@override  List<DecryptedService>? compoundValue;
-	@override  List<Measure>? ratio;
-	@override  List<Measure>? range;
-
+	@override String? stringValue;
+	@override double? numberValue;
+	@override bool? booleanValue;
+	@override DateTime? instantValue;
+	@override int? fuzzyDateValue;
+	@override Uint8List? binaryValue;
+	@override String? documentId;
+	@override Measure? measureValue;
+	@override Medication? medicationValue;
+	@override TimeSeries? timeSeries;
+	@override List<DecryptedService>? compoundValue;
+	@override List<Measure>? ratio;
+	@override List<Measure>? range;
 	DecryptedContent({
-		this.stringValue,
-		this.numberValue,
-		this.booleanValue,
-		this.instantValue,
-		this.fuzzyDateValue,
-		this.binaryValue,
-		this.documentId,
-		this.measureValue,
-		this.medicationValue,
-		this.timeSeries,
-		this.compoundValue,
-		this.ratio,
-		this.range
-	});
+			this.stringValue,
+			this.numberValue,
+			this.booleanValue,
+			this.instantValue,
+			this.fuzzyDateValue,
+			this.binaryValue,
+			this.documentId,
+			this.measureValue,
+			this.medicationValue,
+			this.timeSeries,
+			this.compoundValue,
+			this.ratio,
+			this.range
+		});
+
+	factory DecryptedContent.fromJSON(Map<String, dynamic> data) {
+		return DecryptedContent(
+			stringValue: data["stringValue"],
+			numberValue: data["numberValue"],
+			booleanValue: data["booleanValue"],
+			instantValue: data["instantValue"] == null ? null : DateTime.parse(data["instantValue"] as String),
+			fuzzyDateValue: data["fuzzyDateValue"],
+			binaryValue: data["binaryValue"] == null ? null : base64Decode(data["binaryValue"] as String),
+			documentId: data["documentId"],
+			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
+			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
+			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
+			compoundValue: data["compoundValue"]?.map((x0) => DecryptedService.fromJSON(x0) ),
+			ratio: data["ratio"]?.map((x0) => Measure.fromJSON(x0) ),
+			range: data["range"]?.map((x0) => Measure.fromJSON(x0) )
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedContent value) {
 		Map<String, dynamic> entityAsMap = {

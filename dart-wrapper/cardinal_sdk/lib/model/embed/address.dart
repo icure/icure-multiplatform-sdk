@@ -22,7 +22,6 @@ sealed class Address implements Encryptable {
 	List<Telecom> get telecoms;
 	@override abstract Base64String? encryptedSelf;
 
-
 	static Map<String, dynamic> encode(Address value) {
 		switch (value) {
 			case EncryptedAddress entity:
@@ -35,39 +34,71 @@ sealed class Address implements Encryptable {
 				return entityJson;
 		}
 	}
+
+	static Address fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.EncryptedAddress":
+				return EncryptedAddress.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.DecryptedAddress":
+				return DecryptedAddress.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedAddress implements Address {
-	@override  AddressType? addressType;
-	@override  String? descr;
-	@override  String? street;
-	@override  String? houseNumber;
-	@override  String? postboxNumber;
-	@override  String? postalCode;
-	@override  String? city;
-	@override  String? state;
-	@override  String? country;
-	@override  String? note;
-	@override  List<Annotation> notes = [];
-	@override  List<EncryptedTelecom> telecoms = [];
-	@override  Base64String? encryptedSelf;
-
+	@override AddressType? addressType;
+	@override String? descr;
+	@override String? street;
+	@override String? houseNumber;
+	@override String? postboxNumber;
+	@override String? postalCode;
+	@override String? city;
+	@override String? state;
+	@override String? country;
+	@override String? note;
+	@override List<Annotation> notes = [];
+	@override List<EncryptedTelecom> telecoms = [];
+	@override Base64String? encryptedSelf;
 	EncryptedAddress({
-		this.addressType,
-		this.descr,
-		this.street,
-		this.houseNumber,
-		this.postboxNumber,
-		this.postalCode,
-		this.city,
-		this.state,
-		this.country,
-		this.note,
-		this.encryptedSelf,
-		List<Annotation>? notes,
-		List<EncryptedTelecom>? telecoms
-	}) : notes = notes ?? [],
+			this.addressType,
+			this.descr,
+			this.street,
+			this.houseNumber,
+			this.postboxNumber,
+			this.postalCode,
+			this.city,
+			this.state,
+			this.country,
+			this.note,
+			this.encryptedSelf,
+			List<Annotation>? notes,
+			List<EncryptedTelecom>? telecoms
+		}) : notes = notes ?? [],
 		telecoms = telecoms ?? [];
+
+	factory EncryptedAddress.fromJSON(Map<String, dynamic> data) {
+		return EncryptedAddress(
+			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
+			descr: data["descr"],
+			street: data["street"],
+			houseNumber: data["houseNumber"],
+			postboxNumber: data["postboxNumber"],
+			postalCode: data["postalCode"],
+			city: data["city"],
+			state: data["state"],
+			country: data["country"],
+			note: data["note"],
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			telecoms: data["telecoms"].map((x0) => EncryptedTelecom.fromJSON(x0) ),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {
@@ -90,36 +121,53 @@ class EncryptedAddress implements Address {
 }
 
 class DecryptedAddress implements Address {
-	@override  AddressType? addressType;
-	@override  String? descr;
-	@override  String? street;
-	@override  String? houseNumber;
-	@override  String? postboxNumber;
-	@override  String? postalCode;
-	@override  String? city;
-	@override  String? state;
-	@override  String? country;
-	@override  String? note;
-	@override  List<Annotation> notes = [];
-	@override  List<DecryptedTelecom> telecoms = [];
-	@override  Base64String? encryptedSelf;
-
+	@override AddressType? addressType;
+	@override String? descr;
+	@override String? street;
+	@override String? houseNumber;
+	@override String? postboxNumber;
+	@override String? postalCode;
+	@override String? city;
+	@override String? state;
+	@override String? country;
+	@override String? note;
+	@override List<Annotation> notes = [];
+	@override List<DecryptedTelecom> telecoms = [];
+	@override Base64String? encryptedSelf;
 	DecryptedAddress({
-		this.addressType,
-		this.descr,
-		this.street,
-		this.houseNumber,
-		this.postboxNumber,
-		this.postalCode,
-		this.city,
-		this.state,
-		this.country,
-		this.note,
-		this.encryptedSelf,
-		List<Annotation>? notes,
-		List<DecryptedTelecom>? telecoms
-	}) : notes = notes ?? [],
+			this.addressType,
+			this.descr,
+			this.street,
+			this.houseNumber,
+			this.postboxNumber,
+			this.postalCode,
+			this.city,
+			this.state,
+			this.country,
+			this.note,
+			this.encryptedSelf,
+			List<Annotation>? notes,
+			List<DecryptedTelecom>? telecoms
+		}) : notes = notes ?? [],
 		telecoms = telecoms ?? [];
+
+	factory DecryptedAddress.fromJSON(Map<String, dynamic> data) {
+		return DecryptedAddress(
+			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
+			descr: data["descr"],
+			street: data["street"],
+			houseNumber: data["houseNumber"],
+			postboxNumber: data["postboxNumber"],
+			postalCode: data["postalCode"],
+			city: data["city"],
+			state: data["state"],
+			country: data["country"],
+			note: data["note"],
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			telecoms: data["telecoms"].map((x0) => DecryptedTelecom.fromJSON(x0) ),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {

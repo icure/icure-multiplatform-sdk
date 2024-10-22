@@ -60,7 +60,6 @@ sealed class InvoicingCode implements Encryptable {
 	abstract int? status;
 	@override abstract Base64String? encryptedSelf;
 
-
 	static Map<String, dynamic> encode(InvoicingCode value) {
 		switch (value) {
 			case DecryptedInvoicingCode entity:
@@ -73,29 +72,44 @@ sealed class InvoicingCode implements Encryptable {
 				return entityJson;
 		}
 	}
+
+	static InvoicingCode fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode":
+				return DecryptedInvoicingCode.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode":
+				return EncryptedInvoicingCode.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class DecryptedInvoicingCode implements InvoicingCode {
-	@override  String? id;
-	@override  int? dateCode;
-	@override  String? logicalId;
-	@override  String? label;
-	@override  String? userId;
-	@override  String? contactId;
-	@override  String? serviceId;
-	@override  String? tarificationId;
-	@override  String? code;
-	@override  PaymentType? paymentType;
-	@override  double? paid;
-	@override  double? totalAmount;
-	@override  double? reimbursement;
-	@override  double? patientIntervention;
-	@override  double? doctorSupplement;
-	@override  double? conventionAmount;
-	@override  double? vat;
-	@override  String? error;
-	@override  String? contract;
-	@override  int? contractDate;
+	@override String? id;
+	@override int? dateCode;
+	@override String? logicalId;
+	@override String? label;
+	@override String? userId;
+	@override String? contactId;
+	@override String? serviceId;
+	@override String? tarificationId;
+	@override String? code;
+	@override PaymentType? paymentType;
+	@override double? paid;
+	@override double? totalAmount;
+	@override double? reimbursement;
+	@override double? patientIntervention;
+	@override double? doctorSupplement;
+	@override double? conventionAmount;
+	@override double? vat;
+	@override String? error;
+	@override String? contract;
+	@override int? contractDate;
 	int? _units;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get units => _units;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set units(int? value) {
@@ -128,7 +142,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_eidReadingHour = value;
 	}
-	@override  String? eidReadingValue;
+	@override String? eidReadingValue;
 	int? _override3rdPayerCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get override3rdPayerCode => _override3rdPayerCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set override3rdPayerCode(int? value) {
@@ -137,7 +151,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_override3rdPayerCode = value;
 	}
-	@override  String? override3rdPayerReason;
+	@override String? override3rdPayerReason;
 	int? _transplantationCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get transplantationCode => _transplantationCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set transplantationCode(int? value) {
@@ -162,9 +176,9 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_percentNorm = value;
 	}
-	@override  String? prescriberNihii;
-	@override  String? relatedCode;
-	@override  int? prescriptionDate;
+	@override String? prescriberNihii;
+	@override String? relatedCode;
+	@override int? prescriptionDate;
 	int? _derogationMaxNumber;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get derogationMaxNumber => _derogationMaxNumber;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set derogationMaxNumber(int? value) {
@@ -173,12 +187,12 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_derogationMaxNumber = value;
 	}
-	@override  String? prescriberSsin;
-	@override  String? prescriberLastName;
-	@override  String? prescriberFirstName;
-	@override  String? prescriberCdHcParty;
-	@override  String? locationNihii;
-	@override  String? locationCdHcParty;
+	@override String? prescriberSsin;
+	@override String? prescriberLastName;
+	@override String? prescriberFirstName;
+	@override String? prescriberCdHcParty;
+	@override String? locationNihii;
+	@override String? locationCdHcParty;
 	int? _locationService;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get locationService => _locationService;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set locationService(int? value) {
@@ -187,13 +201,13 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_locationService = value;
 	}
-	@override  int? admissionDate;
-	@override  bool? canceled;
-	@override  bool? accepted;
-	@override  bool? pending;
-	@override  bool? resent;
-	@override  bool? archived;
-	@override  bool? lost;
+	@override int? admissionDate;
+	@override bool? canceled;
+	@override bool? accepted;
+	@override bool? pending;
+	@override bool? resent;
+	@override bool? archived;
+	@override bool? lost;
 	int? _insuranceJustification;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get insuranceJustification => _insuranceJustification;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set insuranceJustification(int? value) {
@@ -210,63 +224,62 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_cancelPatientInterventionReason = value;
 	}
-	@override  int? status;
-	@override  Base64String? encryptedSelf;
-
+	@override int? status;
+	@override Base64String? encryptedSelf;
 	DecryptedInvoicingCode({
-		int? units,
-		int? side,
-		int? timeOfDay,
-		int? eidReadingHour,
-		int? override3rdPayerCode,
-		int? transplantationCode,
-		int? prescriberNorm,
-		int? percentNorm,
-		int? derogationMaxNumber,
-		int? locationService,
-		int? insuranceJustification,
-		int? cancelPatientInterventionReason,
-		this.id,
-		this.dateCode,
-		this.logicalId,
-		this.label,
-		this.userId,
-		this.contactId,
-		this.serviceId,
-		this.tarificationId,
-		this.code,
-		this.paymentType,
-		this.paid,
-		this.totalAmount,
-		this.reimbursement,
-		this.patientIntervention,
-		this.doctorSupplement,
-		this.conventionAmount,
-		this.vat,
-		this.error,
-		this.contract,
-		this.contractDate,
-		this.eidReadingValue,
-		this.override3rdPayerReason,
-		this.prescriberNihii,
-		this.relatedCode,
-		this.prescriptionDate,
-		this.prescriberSsin,
-		this.prescriberLastName,
-		this.prescriberFirstName,
-		this.prescriberCdHcParty,
-		this.locationNihii,
-		this.locationCdHcParty,
-		this.admissionDate,
-		this.canceled,
-		this.accepted,
-		this.pending,
-		this.resent,
-		this.archived,
-		this.lost,
-		this.status,
-		this.encryptedSelf
-	}) : _units = units,
+			int? units,
+			int? side,
+			int? timeOfDay,
+			int? eidReadingHour,
+			int? override3rdPayerCode,
+			int? transplantationCode,
+			int? prescriberNorm,
+			int? percentNorm,
+			int? derogationMaxNumber,
+			int? locationService,
+			int? insuranceJustification,
+			int? cancelPatientInterventionReason,
+			this.id,
+			this.dateCode,
+			this.logicalId,
+			this.label,
+			this.userId,
+			this.contactId,
+			this.serviceId,
+			this.tarificationId,
+			this.code,
+			this.paymentType,
+			this.paid,
+			this.totalAmount,
+			this.reimbursement,
+			this.patientIntervention,
+			this.doctorSupplement,
+			this.conventionAmount,
+			this.vat,
+			this.error,
+			this.contract,
+			this.contractDate,
+			this.eidReadingValue,
+			this.override3rdPayerReason,
+			this.prescriberNihii,
+			this.relatedCode,
+			this.prescriptionDate,
+			this.prescriberSsin,
+			this.prescriberLastName,
+			this.prescriberFirstName,
+			this.prescriberCdHcParty,
+			this.locationNihii,
+			this.locationCdHcParty,
+			this.admissionDate,
+			this.canceled,
+			this.accepted,
+			this.pending,
+			this.resent,
+			this.archived,
+			this.lost,
+			this.status,
+			this.encryptedSelf
+		}) : _units = units,
 		_side = side,
 		_timeOfDay = timeOfDay,
 		_eidReadingHour = eidReadingHour,
@@ -278,6 +291,63 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		_locationService = locationService,
 		_insuranceJustification = insuranceJustification,
 		_cancelPatientInterventionReason = cancelPatientInterventionReason;
+
+	factory DecryptedInvoicingCode.fromJSON(Map<String, dynamic> data) {
+		return DecryptedInvoicingCode(
+			units: data["units"],
+			side: data["side"],
+			timeOfDay: data["timeOfDay"],
+			eidReadingHour: data["eidReadingHour"],
+			override3rdPayerCode: data["override3rdPayerCode"],
+			transplantationCode: data["transplantationCode"],
+			prescriberNorm: data["prescriberNorm"],
+			percentNorm: data["percentNorm"],
+			derogationMaxNumber: data["derogationMaxNumber"],
+			locationService: data["locationService"],
+			insuranceJustification: data["insuranceJustification"],
+			cancelPatientInterventionReason: data["cancelPatientInterventionReason"],
+			id: data["id"],
+			dateCode: data["dateCode"],
+			logicalId: data["logicalId"],
+			label: data["label"],
+			userId: data["userId"],
+			contactId: data["contactId"],
+			serviceId: data["serviceId"],
+			tarificationId: data["tarificationId"],
+			code: data["code"],
+			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
+			paid: data["paid"],
+			totalAmount: data["totalAmount"],
+			reimbursement: data["reimbursement"],
+			patientIntervention: data["patientIntervention"],
+			doctorSupplement: data["doctorSupplement"],
+			conventionAmount: data["conventionAmount"],
+			vat: data["vat"],
+			error: data["error"],
+			contract: data["contract"],
+			contractDate: data["contractDate"],
+			eidReadingValue: data["eidReadingValue"],
+			override3rdPayerReason: data["override3rdPayerReason"],
+			prescriberNihii: data["prescriberNihii"],
+			relatedCode: data["relatedCode"],
+			prescriptionDate: data["prescriptionDate"],
+			prescriberSsin: data["prescriberSsin"],
+			prescriberLastName: data["prescriberLastName"],
+			prescriberFirstName: data["prescriberFirstName"],
+			prescriberCdHcParty: data["prescriberCdHcParty"],
+			locationNihii: data["locationNihii"],
+			locationCdHcParty: data["locationCdHcParty"],
+			admissionDate: data["admissionDate"],
+			canceled: data["canceled"],
+			accepted: data["accepted"],
+			pending: data["pending"],
+			resent: data["resent"],
+			archived: data["archived"],
+			lost: data["lost"],
+			status: data["status"],
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedInvoicingCode value) {
 		Map<String, dynamic> entityAsMap = {
@@ -339,26 +409,26 @@ class DecryptedInvoicingCode implements InvoicingCode {
 }
 
 class EncryptedInvoicingCode implements InvoicingCode {
-	@override  String? id;
-	@override  int? dateCode;
-	@override  String? logicalId;
-	@override  String? label;
-	@override  String? userId;
-	@override  String? contactId;
-	@override  String? serviceId;
-	@override  String? tarificationId;
-	@override  String? code;
-	@override  PaymentType? paymentType;
-	@override  double? paid;
-	@override  double? totalAmount;
-	@override  double? reimbursement;
-	@override  double? patientIntervention;
-	@override  double? doctorSupplement;
-	@override  double? conventionAmount;
-	@override  double? vat;
-	@override  String? error;
-	@override  String? contract;
-	@override  int? contractDate;
+	@override String? id;
+	@override int? dateCode;
+	@override String? logicalId;
+	@override String? label;
+	@override String? userId;
+	@override String? contactId;
+	@override String? serviceId;
+	@override String? tarificationId;
+	@override String? code;
+	@override PaymentType? paymentType;
+	@override double? paid;
+	@override double? totalAmount;
+	@override double? reimbursement;
+	@override double? patientIntervention;
+	@override double? doctorSupplement;
+	@override double? conventionAmount;
+	@override double? vat;
+	@override String? error;
+	@override String? contract;
+	@override int? contractDate;
 	int? _units;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get units => _units;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set units(int? value) {
@@ -391,7 +461,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_eidReadingHour = value;
 	}
-	@override  String? eidReadingValue;
+	@override String? eidReadingValue;
 	int? _override3rdPayerCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get override3rdPayerCode => _override3rdPayerCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set override3rdPayerCode(int? value) {
@@ -400,7 +470,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_override3rdPayerCode = value;
 	}
-	@override  String? override3rdPayerReason;
+	@override String? override3rdPayerReason;
 	int? _transplantationCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get transplantationCode => _transplantationCode;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set transplantationCode(int? value) {
@@ -425,9 +495,9 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_percentNorm = value;
 	}
-	@override  String? prescriberNihii;
-	@override  String? relatedCode;
-	@override  int? prescriptionDate;
+	@override String? prescriberNihii;
+	@override String? relatedCode;
+	@override int? prescriptionDate;
 	int? _derogationMaxNumber;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get derogationMaxNumber => _derogationMaxNumber;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set derogationMaxNumber(int? value) {
@@ -436,12 +506,12 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_derogationMaxNumber = value;
 	}
-	@override  String? prescriberSsin;
-	@override  String? prescriberLastName;
-	@override  String? prescriberFirstName;
-	@override  String? prescriberCdHcParty;
-	@override  String? locationNihii;
-	@override  String? locationCdHcParty;
+	@override String? prescriberSsin;
+	@override String? prescriberLastName;
+	@override String? prescriberFirstName;
+	@override String? prescriberCdHcParty;
+	@override String? locationNihii;
+	@override String? locationCdHcParty;
 	int? _locationService;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get locationService => _locationService;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set locationService(int? value) {
@@ -450,13 +520,13 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_locationService = value;
 	}
-	@override  int? admissionDate;
-	@override  bool? canceled;
-	@override  bool? accepted;
-	@override  bool? pending;
-	@override  bool? resent;
-	@override  bool? archived;
-	@override  bool? lost;
+	@override int? admissionDate;
+	@override bool? canceled;
+	@override bool? accepted;
+	@override bool? pending;
+	@override bool? resent;
+	@override bool? archived;
+	@override bool? lost;
 	int? _insuranceJustification;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get insuranceJustification => _insuranceJustification;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set insuranceJustification(int? value) {
@@ -473,63 +543,62 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_cancelPatientInterventionReason = value;
 	}
-	@override  int? status;
-	@override  Base64String? encryptedSelf;
-
+	@override int? status;
+	@override Base64String? encryptedSelf;
 	EncryptedInvoicingCode({
-		int? units,
-		int? side,
-		int? timeOfDay,
-		int? eidReadingHour,
-		int? override3rdPayerCode,
-		int? transplantationCode,
-		int? prescriberNorm,
-		int? percentNorm,
-		int? derogationMaxNumber,
-		int? locationService,
-		int? insuranceJustification,
-		int? cancelPatientInterventionReason,
-		this.id,
-		this.dateCode,
-		this.logicalId,
-		this.label,
-		this.userId,
-		this.contactId,
-		this.serviceId,
-		this.tarificationId,
-		this.code,
-		this.paymentType,
-		this.paid,
-		this.totalAmount,
-		this.reimbursement,
-		this.patientIntervention,
-		this.doctorSupplement,
-		this.conventionAmount,
-		this.vat,
-		this.error,
-		this.contract,
-		this.contractDate,
-		this.eidReadingValue,
-		this.override3rdPayerReason,
-		this.prescriberNihii,
-		this.relatedCode,
-		this.prescriptionDate,
-		this.prescriberSsin,
-		this.prescriberLastName,
-		this.prescriberFirstName,
-		this.prescriberCdHcParty,
-		this.locationNihii,
-		this.locationCdHcParty,
-		this.admissionDate,
-		this.canceled,
-		this.accepted,
-		this.pending,
-		this.resent,
-		this.archived,
-		this.lost,
-		this.status,
-		this.encryptedSelf
-	}) : _units = units,
+			int? units,
+			int? side,
+			int? timeOfDay,
+			int? eidReadingHour,
+			int? override3rdPayerCode,
+			int? transplantationCode,
+			int? prescriberNorm,
+			int? percentNorm,
+			int? derogationMaxNumber,
+			int? locationService,
+			int? insuranceJustification,
+			int? cancelPatientInterventionReason,
+			this.id,
+			this.dateCode,
+			this.logicalId,
+			this.label,
+			this.userId,
+			this.contactId,
+			this.serviceId,
+			this.tarificationId,
+			this.code,
+			this.paymentType,
+			this.paid,
+			this.totalAmount,
+			this.reimbursement,
+			this.patientIntervention,
+			this.doctorSupplement,
+			this.conventionAmount,
+			this.vat,
+			this.error,
+			this.contract,
+			this.contractDate,
+			this.eidReadingValue,
+			this.override3rdPayerReason,
+			this.prescriberNihii,
+			this.relatedCode,
+			this.prescriptionDate,
+			this.prescriberSsin,
+			this.prescriberLastName,
+			this.prescriberFirstName,
+			this.prescriberCdHcParty,
+			this.locationNihii,
+			this.locationCdHcParty,
+			this.admissionDate,
+			this.canceled,
+			this.accepted,
+			this.pending,
+			this.resent,
+			this.archived,
+			this.lost,
+			this.status,
+			this.encryptedSelf
+		}) : _units = units,
 		_side = side,
 		_timeOfDay = timeOfDay,
 		_eidReadingHour = eidReadingHour,
@@ -541,6 +610,63 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		_locationService = locationService,
 		_insuranceJustification = insuranceJustification,
 		_cancelPatientInterventionReason = cancelPatientInterventionReason;
+
+	factory EncryptedInvoicingCode.fromJSON(Map<String, dynamic> data) {
+		return EncryptedInvoicingCode(
+			units: data["units"],
+			side: data["side"],
+			timeOfDay: data["timeOfDay"],
+			eidReadingHour: data["eidReadingHour"],
+			override3rdPayerCode: data["override3rdPayerCode"],
+			transplantationCode: data["transplantationCode"],
+			prescriberNorm: data["prescriberNorm"],
+			percentNorm: data["percentNorm"],
+			derogationMaxNumber: data["derogationMaxNumber"],
+			locationService: data["locationService"],
+			insuranceJustification: data["insuranceJustification"],
+			cancelPatientInterventionReason: data["cancelPatientInterventionReason"],
+			id: data["id"],
+			dateCode: data["dateCode"],
+			logicalId: data["logicalId"],
+			label: data["label"],
+			userId: data["userId"],
+			contactId: data["contactId"],
+			serviceId: data["serviceId"],
+			tarificationId: data["tarificationId"],
+			code: data["code"],
+			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
+			paid: data["paid"],
+			totalAmount: data["totalAmount"],
+			reimbursement: data["reimbursement"],
+			patientIntervention: data["patientIntervention"],
+			doctorSupplement: data["doctorSupplement"],
+			conventionAmount: data["conventionAmount"],
+			vat: data["vat"],
+			error: data["error"],
+			contract: data["contract"],
+			contractDate: data["contractDate"],
+			eidReadingValue: data["eidReadingValue"],
+			override3rdPayerReason: data["override3rdPayerReason"],
+			prescriberNihii: data["prescriberNihii"],
+			relatedCode: data["relatedCode"],
+			prescriptionDate: data["prescriptionDate"],
+			prescriberSsin: data["prescriberSsin"],
+			prescriberLastName: data["prescriberLastName"],
+			prescriberFirstName: data["prescriberFirstName"],
+			prescriberCdHcParty: data["prescriberCdHcParty"],
+			locationNihii: data["locationNihii"],
+			locationCdHcParty: data["locationCdHcParty"],
+			admissionDate: data["admissionDate"],
+			canceled: data["canceled"],
+			accepted: data["accepted"],
+			pending: data["pending"],
+			resent: data["resent"],
+			archived: data["archived"],
+			lost: data["lost"],
+			status: data["status"],
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedInvoicingCode value) {
 		Map<String, dynamic> entityAsMap = {

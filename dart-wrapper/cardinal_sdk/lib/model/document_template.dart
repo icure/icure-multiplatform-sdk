@@ -10,17 +10,17 @@ import 'package:cardinal_sdk/model/base/icure_document.dart';
 
 
 class DocumentTemplate implements StoredDocument, ICureDocument<String> {
-	@override  String id;
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
+	@override String id;
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
 	Uint8List? attachment;
 	DocumentType? documentType;
 	String? mainUti;
@@ -34,35 +34,64 @@ class DocumentTemplate implements StoredDocument, ICureDocument<String> {
 	String? descr;
 	String? disabled;
 	CodeStub? specialty;
-
-	DocumentTemplate({
-		required this.id,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.attachment,
-		this.documentType,
-		this.mainUti,
-		this.name,
-		this.attachmentId,
-		this.version,
-		this.owner,
-		this.guid,
-		this.group,
-		this.descr,
-		this.disabled,
-		this.specialty,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<String>? otherUtis
-	}) : tags = tags ?? {},
+	DocumentTemplate(
+		this.id,
+		{
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.attachment,
+			this.documentType,
+			this.mainUti,
+			this.name,
+			this.attachmentId,
+			this.version,
+			this.owner,
+			this.guid,
+			this.group,
+			this.descr,
+			this.disabled,
+			this.specialty,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<String>? otherUtis
+		}) : tags = tags ?? {},
 		codes = codes ?? {},
 		otherUtis = otherUtis ?? {};
+
+	factory DocumentTemplate.fromJSON(Map<String, dynamic> data) {
+		return DocumentTemplate(
+			data["id"],
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			attachment: data["attachment"] == null ? null : base64Decode(data["attachment"] as String),
+			documentType: data["documentType"] == null ? null : DocumentType.fromJSON(data["documentType"]),
+			mainUti: data["mainUti"],
+			name: data["name"],
+			otherUtis: data["otherUtis"].map((x0) => x0 ),
+			attachmentId: data["attachmentId"],
+			version: data["version"] == null ? null : ReportVersion.fromJSON(data["version"]),
+			owner: data["owner"],
+			guid: data["guid"],
+			group: data["group"] == null ? null : DocumentGroup.fromJSON(data["group"]),
+			descr: data["descr"],
+			disabled: data["disabled"],
+			specialty: data["specialty"] == null ? null : CodeStub.fromJSON(data["specialty"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(DocumentTemplate value) {
 		Map<String, dynamic> entityAsMap = {

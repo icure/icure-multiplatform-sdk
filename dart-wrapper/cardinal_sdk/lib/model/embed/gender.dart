@@ -13,19 +13,41 @@ enum Gender {
 	static String encode(Gender value) {
 		switch (value) {
 			case Gender.male:
-				return '"Male"';
+				return '"male"';
 			case Gender.female:
-				return '"Female"';
+				return '"female"';
 			case Gender.indeterminate:
-				return '"Indeterminate"';
+				return '"indeterminate"';
 			case Gender.changed:
-				return '"Changed"';
+				return '"changed"';
 			case Gender.changedToMale:
-				return '"ChangedToMale"';
+				return '"changedToMale"';
 			case Gender.changedToFemale:
-				return '"ChangedToFemale"';
+				return '"changedToFemale"';
 			case Gender.unknown:
-				return '"Unknown"';
+				return '"unknown"';
+			}
+	}
+
+
+	static Gender fromJSON(String data) {
+		switch (data) {
+			case "male":
+				return Gender.male;
+			case "female":
+				return Gender.female;
+			case "indeterminate":
+				return Gender.indeterminate;
+			case "changed":
+				return Gender.changed;
+			case "changedToMale":
+				return Gender.changedToMale;
+			case "changedToFemale":
+				return Gender.changedToFemale;
+			case "unknown":
+				return Gender.unknown;
+			default:
+				throw ArgumentError('Invalid Gender entry value $data');
 			}
 	}
 

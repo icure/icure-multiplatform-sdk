@@ -1,7 +1,6 @@
 // This file is auto-generated
 import 'package:cardinal_sdk/model/embed/delegation.dart';
 import 'package:cardinal_sdk/model/embed/security_metadata.dart';
-import 'package:cardinal_sdk/crypto/entities/entity_with_type_info.dart';
 import 'package:cardinal_sdk/crypto/entities/entity_with_encryption_metadata_stub.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/secure_delegation_key_map.dart';
@@ -30,13 +29,8 @@ abstract interface class HasEncryptionMetadata implements Versionable<String> {
 	abstract Map<String, Set<Delegation>> encryptionKeys;
 	abstract SecurityMetadata? securityMetadata;
 
-
 	static Map<String, dynamic> encode(HasEncryptionMetadata value) {
 		switch (value) {
-			case EntityWithTypeInfo entity:
-				Map<String, dynamic> entityJson = EntityWithTypeInfo.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo";
-				return entityJson;
 			case EntityWithEncryptionMetadataStub entity:
 				Map<String, dynamic> entityJson = EntityWithEncryptionMetadataStub.encode(entity);
 				entityJson["kotlinType"] = "com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub";
@@ -174,7 +168,86 @@ abstract interface class HasEncryptionMetadata implements Versionable<String> {
 				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.EncryptedReceipt";
 				return entityJson;
 			default:
-				throw ArgumentError('Invalid subclass ${value}');
+				throw ArgumentError('Invalid subclass $value');
+		}
+	}
+
+	static HasEncryptionMetadata fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub":
+				return EntityWithEncryptionMetadataStub.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedPatient":
+				return EncryptedPatient.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedPatient":
+				return DecryptedPatient.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedSecureDelegationKeyMap":
+				return EncryptedSecureDelegationKeyMap.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedSecureDelegationKeyMap":
+				return DecryptedSecureDelegationKeyMap.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedTopic":
+				return DecryptedTopic.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedTopic":
+				return EncryptedTopic.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedTimeTable":
+				return EncryptedTimeTable.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedTimeTable":
+				return DecryptedTimeTable.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedDocument":
+				return EncryptedDocument.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedDocument":
+				return DecryptedDocument.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedMaintenanceTask":
+				return DecryptedMaintenanceTask.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedMaintenanceTask":
+				return EncryptedMaintenanceTask.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedArticle":
+				return EncryptedArticle.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedArticle":
+				return DecryptedArticle.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.IcureStub":
+				return IcureStub.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedInvoice":
+				return DecryptedInvoice.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedInvoice":
+				return EncryptedInvoice.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedContact":
+				return DecryptedContact.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedContact":
+				return EncryptedContact.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedCalendarItem":
+				return DecryptedCalendarItem.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedCalendarItem":
+				return EncryptedCalendarItem.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedClassification":
+				return EncryptedClassification.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedClassification":
+				return DecryptedClassification.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedHealthElement":
+				return EncryptedHealthElement.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedHealthElement":
+				return DecryptedHealthElement.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedForm":
+				return EncryptedForm.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedForm":
+				return DecryptedForm.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedAccessLog":
+				return DecryptedAccessLog.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedAccessLog":
+				return EncryptedAccessLog.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedMessage":
+				return DecryptedMessage.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedMessage":
+				return EncryptedMessage.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedReceipt":
+				return DecryptedReceipt.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedReceipt":
+				return EncryptedReceipt.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
 		}
 	}
 }

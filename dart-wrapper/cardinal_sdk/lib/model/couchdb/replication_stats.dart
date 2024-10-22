@@ -54,23 +54,36 @@ class ReplicationStats {
 	String? checkpointedSourceSeq;
 	String? startTime;
 	String? error;
-
 	ReplicationStats({
-		int? revisionsChecked,
-		int? missingRevisionsFound,
-		int? docsRead,
-		int? docsWritten,
-		int? changesPending,
-		int? docWriteFailures,
-		this.checkpointedSourceSeq,
-		this.startTime,
-		this.error
-	}) : _revisionsChecked = revisionsChecked,
+			int? revisionsChecked,
+			int? missingRevisionsFound,
+			int? docsRead,
+			int? docsWritten,
+			int? changesPending,
+			int? docWriteFailures,
+			this.checkpointedSourceSeq,
+			this.startTime,
+			this.error
+		}) : _revisionsChecked = revisionsChecked,
 		_missingRevisionsFound = missingRevisionsFound,
 		_docsRead = docsRead,
 		_docsWritten = docsWritten,
 		_changesPending = changesPending,
 		_docWriteFailures = docWriteFailures;
+
+	factory ReplicationStats.fromJSON(Map<String, dynamic> data) {
+		return ReplicationStats(
+			revisionsChecked: data["revisionsChecked"],
+			missingRevisionsFound: data["missingRevisionsFound"],
+			docsRead: data["docsRead"],
+			docsWritten: data["docsWritten"],
+			changesPending: data["changesPending"],
+			docWriteFailures: data["docWriteFailures"],
+			checkpointedSourceSeq: data["checkpointedSourceSeq"],
+			startTime: data["startTime"],
+			error: data["error"]
+		);
+	}
 
 	static Map<String, dynamic> encode(ReplicationStats value) {
 		Map<String, dynamic> entityAsMap = {

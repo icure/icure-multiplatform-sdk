@@ -31,7 +31,6 @@ sealed class Article implements StoredDocument, ICureDocument<String>, HasEncryp
 	@override abstract Base64String? encryptedSelf;
 	@override abstract SecurityMetadata? securityMetadata;
 
-
 	static Map<String, dynamic> encode(Article value) {
 		switch (value) {
 			case EncryptedArticle entity:
@@ -44,55 +43,94 @@ sealed class Article implements StoredDocument, ICureDocument<String>, HasEncryp
 				return entityJson;
 		}
 	}
+
+	static Article fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.EncryptedArticle":
+				return EncryptedArticle.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedArticle":
+				return DecryptedArticle.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedArticle implements Article {
-	@override  String id;
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? name;
-	@override  String? classification;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	EncryptedArticle({
-		required this.id,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.name,
-		this.classification,
-		this.encryptedSelf,
-		this.securityMetadata,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : tags = tags ?? {},
+	@override String id;
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? name;
+	@override String? classification;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	EncryptedArticle(
+		this.id,
+		{
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.name,
+			this.classification,
+			this.encryptedSelf,
+			this.securityMetadata,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : tags = tags ?? {},
 		codes = codes ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory EncryptedArticle.fromJSON(Map<String, dynamic> data) {
+		return EncryptedArticle(
+			data["id"],
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			name: data["name"],
+			classification: data["classification"],
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedArticle value) {
 		Map<String, dynamic> entityAsMap = {
@@ -121,52 +159,76 @@ class EncryptedArticle implements Article {
 }
 
 class DecryptedArticle implements Article {
-	@override  String id;
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? name;
-	@override  String? classification;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	DecryptedArticle({
-		required this.id,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.name,
-		this.classification,
-		this.encryptedSelf,
-		this.securityMetadata,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : tags = tags ?? {},
+	@override String id;
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? name;
+	@override String? classification;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	DecryptedArticle(
+		this.id,
+		{
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.name,
+			this.classification,
+			this.encryptedSelf,
+			this.securityMetadata,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : tags = tags ?? {},
 		codes = codes ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory DecryptedArticle.fromJSON(Map<String, dynamic> data) {
+		return DecryptedArticle(
+			data["id"],
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			name: data["name"],
+			classification: data["classification"],
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedArticle value) {
 		Map<String, dynamic> entityAsMap = {

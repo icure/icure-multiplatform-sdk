@@ -9,15 +9,25 @@ class FormTemplateLayout {
 	List<Section> sections = [];
 	String? description;
 	List<String>? keywords;
-
-	FormTemplateLayout({
-		required this.form,
-		this.description,
-		this.keywords,
-		List<Action>? actions,
-		List<Section>? sections
-	}) : actions = actions ?? [],
+	FormTemplateLayout(
+		this.form,
+		{
+			this.description,
+			this.keywords,
+			List<Action>? actions,
+			List<Section>? sections
+		}) : actions = actions ?? [],
 		sections = sections ?? [];
+
+	factory FormTemplateLayout.fromJSON(Map<String, dynamic> data) {
+		return FormTemplateLayout(
+			data["form"],
+			actions: data["actions"].map((x0) => Action.fromJSON(x0) ),
+			sections: data["sections"].map((x0) => Section.fromJSON(x0) ),
+			description: data["description"],
+			keywords: data["keywords"]?.map((x0) => x0 ),
+		);
+	}
 
 	static Map<String, dynamic> encode(FormTemplateLayout value) {
 		Map<String, dynamic> entityAsMap = {

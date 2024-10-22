@@ -6,13 +6,22 @@ class AuthenticationToken {
 	int creationTime;
 	int validity;
 	int? deletionDate;
+	AuthenticationToken(
+		this.creationTime,
+		this.validity,
+		{
+			this.token,
+			this.deletionDate
+		});
 
-	AuthenticationToken({
-		required this.creationTime,
-		required this.validity,
-		this.token,
-		this.deletionDate
-	});
+	factory AuthenticationToken.fromJSON(Map<String, dynamic> data) {
+		return AuthenticationToken(
+			data["creationTime"],
+			data["validity"],
+			token: data["token"],
+			deletionDate: data["deletionDate"],
+		);
+	}
 
 	static Map<String, dynamic> encode(AuthenticationToken value) {
 		Map<String, dynamic> entityAsMap = {

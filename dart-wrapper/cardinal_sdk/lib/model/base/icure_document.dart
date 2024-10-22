@@ -11,5 +11,4 @@ abstract interface class ICureDocument<T> implements Identifiable<T>, HasTags, H
 	abstract String? responsible;
 	abstract String? medicalLocationId;
 	abstract int? endOfLife;
-
 }

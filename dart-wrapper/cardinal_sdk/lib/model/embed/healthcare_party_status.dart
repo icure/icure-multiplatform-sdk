@@ -9,11 +9,25 @@ enum HealthcarePartyStatus {
 	static String encode(HealthcarePartyStatus value) {
 		switch (value) {
 			case HealthcarePartyStatus.trainee:
-				return '"Trainee"';
+				return '"trainee"';
 			case HealthcarePartyStatus.withconvention:
-				return '"Withconvention"';
+				return '"withconvention"';
 			case HealthcarePartyStatus.accreditated:
-				return '"Accreditated"';
+				return '"accreditated"';
+			}
+	}
+
+
+	static HealthcarePartyStatus fromJSON(String data) {
+		switch (data) {
+			case "trainee":
+				return HealthcarePartyStatus.trainee;
+			case "withconvention":
+				return HealthcarePartyStatus.withconvention;
+			case "accreditated":
+				return HealthcarePartyStatus.accreditated;
+			default:
+				throw ArgumentError('Invalid HealthcarePartyStatus entry value $data');
 			}
 	}
 

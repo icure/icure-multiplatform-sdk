@@ -53,7 +53,6 @@ sealed class HealthElement implements StoredDocument, ICureDocument<String>, Has
 	@override abstract Base64String? encryptedSelf;
 	@override abstract SecurityMetadata? securityMetadata;
 
-
 	static Map<String, dynamic> encode(HealthElement value) {
 		switch (value) {
 			case EncryptedHealthElement entity:
@@ -66,32 +65,47 @@ sealed class HealthElement implements StoredDocument, ICureDocument<String>, Has
 				return entityJson;
 		}
 	}
+
+	static HealthElement fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.EncryptedHealthElement":
+				return EncryptedHealthElement.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedHealthElement":
+				return DecryptedHealthElement.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedHealthElement implements HealthElement {
-	@override  String id;
-	@override  List<Identifier> identifiers = [];
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? healthElementId;
-	@override  int? valueDate;
-	@override  int? openingDate;
-	@override  int? closingDate;
-	@override  String? descr;
-	@override  String? note;
-	@override  List<Annotation> notes = [];
-	@override  bool relevant = true;
-	@override  String? idOpeningContact;
-	@override  String? idClosingContact;
-	@override  String? idService;
+	@override String id;
+	@override List<Identifier> identifiers = [];
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? healthElementId;
+	@override int? valueDate;
+	@override int? openingDate;
+	@override int? closingDate;
+	@override String? descr;
+	@override String? note;
+	@override List<Annotation> notes = [];
+	@override bool relevant = true;
+	@override String? idOpeningContact;
+	@override String? idClosingContact;
+	@override String? idService;
 	int _status = 0;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int get status => _status;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int value) {
@@ -100,53 +114,53 @@ class EncryptedHealthElement implements HealthElement {
 		}
 		_status = value;
 	}
-	@override  Laterality? laterality;
-	@override  List<EncryptedPlanOfAction> plansOfAction = [];
-	@override  List<EncryptedEpisode> episodes = [];
-	@override  List<EncryptedCareTeamMember> careTeam = [];
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	EncryptedHealthElement({
-		required this.id,
-		int? status,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.healthElementId,
-		this.valueDate,
-		this.openingDate,
-		this.closingDate,
-		this.descr,
-		this.note,
-		this.idOpeningContact,
-		this.idClosingContact,
-		this.idService,
-		this.laterality,
-		this.encryptedSelf,
-		this.securityMetadata,
-		List<Identifier>? identifiers,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		List<Annotation>? notes,
-		bool? relevant,
-		List<EncryptedPlanOfAction>? plansOfAction,
-		List<EncryptedEpisode>? episodes,
-		List<EncryptedCareTeamMember>? careTeam,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : identifiers = identifiers ?? [],
+	@override Laterality? laterality;
+	@override List<EncryptedPlanOfAction> plansOfAction = [];
+	@override List<EncryptedEpisode> episodes = [];
+	@override List<EncryptedCareTeamMember> careTeam = [];
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	EncryptedHealthElement(
+		this.id,
+		{
+			int? status,
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.healthElementId,
+			this.valueDate,
+			this.openingDate,
+			this.closingDate,
+			this.descr,
+			this.note,
+			this.idOpeningContact,
+			this.idClosingContact,
+			this.idService,
+			this.laterality,
+			this.encryptedSelf,
+			this.securityMetadata,
+			List<Identifier>? identifiers,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			List<Annotation>? notes,
+			bool? relevant,
+			List<EncryptedPlanOfAction>? plansOfAction,
+			List<EncryptedEpisode>? episodes,
+			List<EncryptedCareTeamMember>? careTeam,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : identifiers = identifiers ?? [],
 		tags = tags ?? {},
 		codes = codes ?? {},
 		notes = notes ?? [],
@@ -159,6 +173,45 @@ class EncryptedHealthElement implements HealthElement {
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
 		_status = status ?? 0;
+
+	factory EncryptedHealthElement.fromJSON(Map<String, dynamic> data) {
+		return EncryptedHealthElement(
+			data["id"],
+			status: data["status"],
+			identifiers: data["identifiers"].map((x0) => Identifier.fromJSON(x0) ),
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			healthElementId: data["healthElementId"],
+			valueDate: data["valueDate"],
+			openingDate: data["openingDate"],
+			closingDate: data["closingDate"],
+			descr: data["descr"],
+			note: data["note"],
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			relevant: data["relevant"],
+			idOpeningContact: data["idOpeningContact"],
+			idClosingContact: data["idClosingContact"],
+			idService: data["idService"],
+			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
+			plansOfAction: data["plansOfAction"].map((x0) => EncryptedPlanOfAction.fromJSON(x0) ),
+			episodes: data["episodes"].map((x0) => EncryptedEpisode.fromJSON(x0) ),
+			careTeam: data["careTeam"].map((x0) => EncryptedCareTeamMember.fromJSON(x0) ),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedHealthElement value) {
 		Map<String, dynamic> entityAsMap = {
@@ -202,29 +255,29 @@ class EncryptedHealthElement implements HealthElement {
 }
 
 class DecryptedHealthElement implements HealthElement {
-	@override  String id;
-	@override  List<Identifier> identifiers = [];
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? healthElementId;
-	@override  int? valueDate;
-	@override  int? openingDate;
-	@override  int? closingDate;
-	@override  String? descr;
-	@override  String? note;
-	@override  List<Annotation> notes = [];
-	@override  bool relevant = true;
-	@override  String? idOpeningContact;
-	@override  String? idClosingContact;
-	@override  String? idService;
+	@override String id;
+	@override List<Identifier> identifiers = [];
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? healthElementId;
+	@override int? valueDate;
+	@override int? openingDate;
+	@override int? closingDate;
+	@override String? descr;
+	@override String? note;
+	@override List<Annotation> notes = [];
+	@override bool relevant = true;
+	@override String? idOpeningContact;
+	@override String? idClosingContact;
+	@override String? idService;
 	int _status = 0;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int get status => _status;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int value) {
@@ -233,53 +286,53 @@ class DecryptedHealthElement implements HealthElement {
 		}
 		_status = value;
 	}
-	@override  Laterality? laterality;
-	@override  List<DecryptedPlanOfAction> plansOfAction = [];
-	@override  List<DecryptedEpisode> episodes = [];
-	@override  List<DecryptedCareTeamMember> careTeam = [];
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	DecryptedHealthElement({
-		required this.id,
-		int? status,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.healthElementId,
-		this.valueDate,
-		this.openingDate,
-		this.closingDate,
-		this.descr,
-		this.note,
-		this.idOpeningContact,
-		this.idClosingContact,
-		this.idService,
-		this.laterality,
-		this.encryptedSelf,
-		this.securityMetadata,
-		List<Identifier>? identifiers,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		List<Annotation>? notes,
-		bool? relevant,
-		List<DecryptedPlanOfAction>? plansOfAction,
-		List<DecryptedEpisode>? episodes,
-		List<DecryptedCareTeamMember>? careTeam,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : identifiers = identifiers ?? [],
+	@override Laterality? laterality;
+	@override List<DecryptedPlanOfAction> plansOfAction = [];
+	@override List<DecryptedEpisode> episodes = [];
+	@override List<DecryptedCareTeamMember> careTeam = [];
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	DecryptedHealthElement(
+		this.id,
+		{
+			int? status,
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.healthElementId,
+			this.valueDate,
+			this.openingDate,
+			this.closingDate,
+			this.descr,
+			this.note,
+			this.idOpeningContact,
+			this.idClosingContact,
+			this.idService,
+			this.laterality,
+			this.encryptedSelf,
+			this.securityMetadata,
+			List<Identifier>? identifiers,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			List<Annotation>? notes,
+			bool? relevant,
+			List<DecryptedPlanOfAction>? plansOfAction,
+			List<DecryptedEpisode>? episodes,
+			List<DecryptedCareTeamMember>? careTeam,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : identifiers = identifiers ?? [],
 		tags = tags ?? {},
 		codes = codes ?? {},
 		notes = notes ?? [],
@@ -292,6 +345,45 @@ class DecryptedHealthElement implements HealthElement {
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
 		_status = status ?? 0;
+
+	factory DecryptedHealthElement.fromJSON(Map<String, dynamic> data) {
+		return DecryptedHealthElement(
+			data["id"],
+			status: data["status"],
+			identifiers: data["identifiers"].map((x0) => Identifier.fromJSON(x0) ),
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			healthElementId: data["healthElementId"],
+			valueDate: data["valueDate"],
+			openingDate: data["openingDate"],
+			closingDate: data["closingDate"],
+			descr: data["descr"],
+			note: data["note"],
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			relevant: data["relevant"],
+			idOpeningContact: data["idOpeningContact"],
+			idClosingContact: data["idClosingContact"],
+			idService: data["idService"],
+			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
+			plansOfAction: data["plansOfAction"].map((x0) => DecryptedPlanOfAction.fromJSON(x0) ),
+			episodes: data["episodes"].map((x0) => DecryptedEpisode.fromJSON(x0) ),
+			careTeam: data["careTeam"].map((x0) => DecryptedCareTeamMember.fromJSON(x0) ),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedHealthElement value) {
 		Map<String, dynamic> entityAsMap = {

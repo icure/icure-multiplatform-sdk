@@ -14,21 +14,45 @@ enum Operator {
 	static String encode(Operator value) {
 		switch (value) {
 			case Operator.equal:
-				return '"Equal"';
+				return '"EQUAL"';
 			case Operator.notequal:
-				return '"Notequal"';
+				return '"NOTEQUAL"';
 			case Operator.greaterthan:
-				return '"Greaterthan"';
+				return '"GREATERTHAN"';
 			case Operator.smallerthan:
-				return '"Smallerthan"';
+				return '"SMALLERTHAN"';
 			case Operator.greaterthanorequal:
-				return '"Greaterthanorequal"';
+				return '"GREATERTHANOREQUAL"';
 			case Operator.smallerthanorequal:
-				return '"Smallerthanorequal"';
+				return '"SMALLERTHANOREQUAL"';
 			case Operator.like:
-				return '"Like"';
+				return '"LIKE"';
 			case Operator.ilike:
-				return '"Ilike"';
+				return '"ILIKE"';
+			}
+	}
+
+
+	static Operator fromJSON(String data) {
+		switch (data) {
+			case "EQUAL":
+				return Operator.equal;
+			case "NOTEQUAL":
+				return Operator.notequal;
+			case "GREATERTHAN":
+				return Operator.greaterthan;
+			case "SMALLERTHAN":
+				return Operator.smallerthan;
+			case "GREATERTHANOREQUAL":
+				return Operator.greaterthanorequal;
+			case "SMALLERTHANOREQUAL":
+				return Operator.smallerthanorequal;
+			case "LIKE":
+				return Operator.like;
+			case "ILIKE":
+				return Operator.ilike;
+			default:
+				throw ArgumentError('Invalid Operator entry value $data');
 			}
 	}
 

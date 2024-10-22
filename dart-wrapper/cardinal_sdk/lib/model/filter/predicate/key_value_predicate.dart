@@ -8,12 +8,19 @@ class KeyValuePredicate implements Predicate {
 	String? key;
 	Operator? operator;
 	AnyPrimitive? value;
-
 	KeyValuePredicate({
-		this.key,
-		this.operator,
-		this.value
-	});
+			this.key,
+			this.operator,
+			this.value
+		});
+
+	factory KeyValuePredicate.fromJSON(Map<String, dynamic> data) {
+		return KeyValuePredicate(
+			key: data["key"],
+			operator: data["operator"] == null ? null : Operator.fromJSON(data["operator"]),
+			value: data["value"]
+		);
+	}
 
 	static Map<String, dynamic> encode(KeyValuePredicate value) {
 		Map<String, dynamic> entityAsMap = {

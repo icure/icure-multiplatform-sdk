@@ -18,16 +18,28 @@ class FailedRequestDetails {
 	String? reason;
 	DelegateShareOptions? request;
 	bool shouldRetry;
+	FailedRequestDetails(
+		this.entityId,
+		this.delegateId,
+		this.updatedForMigration,
+		this.shouldRetry,
+		{
+			int? code,
+			this.reason,
+			this.request
+		}) : _code = code;
 
-	FailedRequestDetails({
-		required this.entityId,
-		required this.delegateId,
-		required this.updatedForMigration,
-		required this.shouldRetry,
-		int? code,
-		this.reason,
-		this.request
-	}) : _code = code;
+	factory FailedRequestDetails.fromJSON(Map<String, dynamic> data) {
+		return FailedRequestDetails(
+			data["entityId"],
+			data["delegateId"],
+			data["updatedForMigration"],
+			data["shouldRetry"],
+			code: data["code"],
+			reason: data["reason"],
+			request: data["request"] == null ? null : DelegateShareOptions.fromJSON(data["request"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(FailedRequestDetails value) {
 		Map<String, dynamic> entityAsMap = {

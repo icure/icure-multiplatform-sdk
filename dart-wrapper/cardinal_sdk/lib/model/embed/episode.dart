@@ -14,7 +14,6 @@ sealed class Episode implements Encryptable, Identifiable<String>, Named {
 	abstract int? endDate;
 	@override abstract Base64String? encryptedSelf;
 
-
 	static Map<String, dynamic> encode(Episode value) {
 		switch (value) {
 			case DecryptedEpisode entity:
@@ -27,24 +26,50 @@ sealed class Episode implements Encryptable, Identifiable<String>, Named {
 				return entityJson;
 		}
 	}
+
+	static Episode fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.DecryptedEpisode":
+				return DecryptedEpisode.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.EncryptedEpisode":
+				return EncryptedEpisode.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class DecryptedEpisode implements Episode {
-	@override  String id;
-	@override  String? name;
-	@override  String? comment;
-	@override  int? startDate;
-	@override  int? endDate;
-	@override  Base64String? encryptedSelf;
+	@override String id;
+	@override String? name;
+	@override String? comment;
+	@override int? startDate;
+	@override int? endDate;
+	@override Base64String? encryptedSelf;
+	DecryptedEpisode(
+		this.id,
+		{
+			this.name,
+			this.comment,
+			this.startDate,
+			this.endDate,
+			this.encryptedSelf
+		});
 
-	DecryptedEpisode({
-		required this.id,
-		this.name,
-		this.comment,
-		this.startDate,
-		this.endDate,
-		this.encryptedSelf
-	});
+	factory DecryptedEpisode.fromJSON(Map<String, dynamic> data) {
+		return DecryptedEpisode(
+			data["id"],
+			name: data["name"],
+			comment: data["comment"],
+			startDate: data["startDate"],
+			endDate: data["endDate"],
+			encryptedSelf: data["encryptedSelf"],
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedEpisode value) {
 		Map<String, dynamic> entityAsMap = {
@@ -60,21 +85,32 @@ class DecryptedEpisode implements Episode {
 }
 
 class EncryptedEpisode implements Episode {
-	@override  String id;
-	@override  String? name;
-	@override  String? comment;
-	@override  int? startDate;
-	@override  int? endDate;
-	@override  Base64String? encryptedSelf;
+	@override String id;
+	@override String? name;
+	@override String? comment;
+	@override int? startDate;
+	@override int? endDate;
+	@override Base64String? encryptedSelf;
+	EncryptedEpisode(
+		this.id,
+		{
+			this.name,
+			this.comment,
+			this.startDate,
+			this.endDate,
+			this.encryptedSelf
+		});
 
-	EncryptedEpisode({
-		required this.id,
-		this.name,
-		this.comment,
-		this.startDate,
-		this.endDate,
-		this.encryptedSelf
-	});
+	factory EncryptedEpisode.fromJSON(Map<String, dynamic> data) {
+		return EncryptedEpisode(
+			data["id"],
+			name: data["name"],
+			comment: data["comment"],
+			startDate: data["startDate"],
+			endDate: data["endDate"],
+			encryptedSelf: data["encryptedSelf"],
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedEpisode value) {
 		Map<String, dynamic> entityAsMap = {

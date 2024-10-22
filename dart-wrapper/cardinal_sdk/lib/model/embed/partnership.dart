@@ -9,14 +9,23 @@ class Partnership {
 	String? partnerId;
 	String? meToOtherRelationshipDescription;
 	String? otherToMeRelationshipDescription;
-
 	Partnership({
-		this.type,
-		this.status,
-		this.partnerId,
-		this.meToOtherRelationshipDescription,
-		this.otherToMeRelationshipDescription
-	});
+			this.type,
+			this.status,
+			this.partnerId,
+			this.meToOtherRelationshipDescription,
+			this.otherToMeRelationshipDescription
+		});
+
+	factory Partnership.fromJSON(Map<String, dynamic> data) {
+		return Partnership(
+			type: data["type"] == null ? null : PartnershipType.fromJSON(data["type"]),
+			status: data["status"] == null ? null : PartnershipStatus.fromJSON(data["status"]),
+			partnerId: data["partnerId"],
+			meToOtherRelationshipDescription: data["meToOtherRelationshipDescription"],
+			otherToMeRelationshipDescription: data["otherToMeRelationshipDescription"]
+		);
+	}
 
 	static Map<String, dynamic> encode(Partnership value) {
 		Map<String, dynamic> entityAsMap = {

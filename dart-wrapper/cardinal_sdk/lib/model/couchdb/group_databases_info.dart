@@ -6,12 +6,19 @@ class GroupDatabasesInfo {
 	String groupId;
 	List<DatabaseInfo> databasesInfo;
 	int gcpStorageSize;
+	GroupDatabasesInfo(
+		this.groupId,
+		this.databasesInfo,
+		this.gcpStorageSize
+		);
 
-	GroupDatabasesInfo({
-		required this.groupId,
-		required this.databasesInfo,
-		required this.gcpStorageSize
-	});
+	factory GroupDatabasesInfo.fromJSON(Map<String, dynamic> data) {
+		return GroupDatabasesInfo(
+			data["groupId"],
+			data["databasesInfo"].map((x0) => DatabaseInfo.fromJSON(x0) ),
+			data["gcpStorageSize"]
+		);
+	}
 
 	static Map<String, dynamic> encode(GroupDatabasesInfo value) {
 		Map<String, dynamic> entityAsMap = {

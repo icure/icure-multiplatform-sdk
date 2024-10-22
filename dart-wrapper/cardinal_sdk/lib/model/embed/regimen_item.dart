@@ -19,15 +19,25 @@ class RegimenItem {
 	CodeStub? dayPeriod;
 	int? timeOfDay;
 	AdministrationQuantity? administratedQuantity;
-
 	RegimenItem({
-		int? dayNumber,
-		this.date,
-		this.weekday,
-		this.dayPeriod,
-		this.timeOfDay,
-		this.administratedQuantity
-	}) : _dayNumber = dayNumber;
+			int? dayNumber,
+			this.date,
+			this.weekday,
+			this.dayPeriod,
+			this.timeOfDay,
+			this.administratedQuantity
+		}) : _dayNumber = dayNumber;
+
+	factory RegimenItem.fromJSON(Map<String, dynamic> data) {
+		return RegimenItem(
+			dayNumber: data["dayNumber"],
+			date: data["date"],
+			weekday: data["weekday"] == null ? null : Weekday.fromJSON(data["weekday"]),
+			dayPeriod: data["dayPeriod"] == null ? null : CodeStub.fromJSON(data["dayPeriod"]),
+			timeOfDay: data["timeOfDay"],
+			administratedQuantity: data["administratedQuantity"] == null ? null : AdministrationQuantity.fromJSON(data["administratedQuantity"])
+		);
+	}
 
 	static Map<String, dynamic> encode(RegimenItem value) {
 		Map<String, dynamic> entityAsMap = {

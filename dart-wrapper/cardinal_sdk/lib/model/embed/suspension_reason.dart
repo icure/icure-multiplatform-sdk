@@ -11,15 +11,33 @@ enum SuspensionReason {
 	static String encode(SuspensionReason value) {
 		switch (value) {
 			case SuspensionReason.notInsured:
-				return '"NotInsured"';
+				return '"notInsured"';
 			case SuspensionReason.noReasonGiven:
-				return '"NoReasonGiven"';
+				return '"noReasonGiven"';
 			case SuspensionReason.isHospitalized:
-				return '"IsHospitalized"';
+				return '"isHospitalized"';
 			case SuspensionReason.outsideOfCountry:
-				return '"OutsideOfCountry"';
+				return '"outsideOfCountry"';
 			case SuspensionReason.changeOfMutuality:
-				return '"ChangeOfMutuality"';
+				return '"changeOfMutuality"';
+			}
+	}
+
+
+	static SuspensionReason fromJSON(String data) {
+		switch (data) {
+			case "notInsured":
+				return SuspensionReason.notInsured;
+			case "noReasonGiven":
+				return SuspensionReason.noReasonGiven;
+			case "isHospitalized":
+				return SuspensionReason.isHospitalized;
+			case "outsideOfCountry":
+				return SuspensionReason.outsideOfCountry;
+			case "changeOfMutuality":
+				return SuspensionReason.changeOfMutuality;
+			default:
+				throw ArgumentError('Invalid SuspensionReason entry value $data');
 			}
 	}
 

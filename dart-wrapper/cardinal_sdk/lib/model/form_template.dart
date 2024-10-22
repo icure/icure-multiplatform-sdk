@@ -8,9 +8,9 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 
 class FormTemplate implements StoredDocument {
-	@override  String id;
-	@override  String? rev;
-	@override  int? deletionDate;
+	@override String id;
+	@override String? rev;
+	@override int? deletionDate;
 	FormTemplateLayout? templateLayout;
 	Uint8List? rawTemplateLayout;
 	String? name;
@@ -29,31 +29,57 @@ class FormTemplate implements StoredDocument {
 	Set<CodeStub> tags = {};
 	String? layoutAttachmentId;
 	String? templateLayoutAttachmentId;
-
-	FormTemplate({
-		required this.id,
-		this.rev,
-		this.deletionDate,
-		this.templateLayout,
-		this.rawTemplateLayout,
-		this.name,
-		this.guid,
-		this.group,
-		this.descr,
-		this.disabled,
-		this.specialty,
-		this.author,
-		this.formInstancePreferredLocation,
-		this.keyboardShortcut,
-		this.shortReport,
-		this.mediumReport,
-		this.longReport,
-		this.layoutAttachmentId,
-		this.templateLayoutAttachmentId,
-		Set<String>? reports,
-		Set<CodeStub>? tags
-	}) : reports = reports ?? {},
+	FormTemplate(
+		this.id,
+		{
+			this.rev,
+			this.deletionDate,
+			this.templateLayout,
+			this.rawTemplateLayout,
+			this.name,
+			this.guid,
+			this.group,
+			this.descr,
+			this.disabled,
+			this.specialty,
+			this.author,
+			this.formInstancePreferredLocation,
+			this.keyboardShortcut,
+			this.shortReport,
+			this.mediumReport,
+			this.longReport,
+			this.layoutAttachmentId,
+			this.templateLayoutAttachmentId,
+			Set<String>? reports,
+			Set<CodeStub>? tags
+		}) : reports = reports ?? {},
 		tags = tags ?? {};
+
+	factory FormTemplate.fromJSON(Map<String, dynamic> data) {
+		return FormTemplate(
+			data["id"],
+			rev: data["rev"],
+			deletionDate: data["deletionDate"],
+			templateLayout: data["templateLayout"] == null ? null : FormTemplateLayout.fromJSON(data["templateLayout"]),
+			rawTemplateLayout: data["rawTemplateLayout"] == null ? null : base64Decode(data["rawTemplateLayout"] as String),
+			name: data["name"],
+			guid: data["guid"],
+			group: data["group"] == null ? null : DocumentGroup.fromJSON(data["group"]),
+			descr: data["descr"],
+			disabled: data["disabled"],
+			specialty: data["specialty"] == null ? null : CodeStub.fromJSON(data["specialty"]),
+			author: data["author"],
+			formInstancePreferredLocation: data["formInstancePreferredLocation"],
+			keyboardShortcut: data["keyboardShortcut"],
+			shortReport: data["shortReport"],
+			mediumReport: data["mediumReport"],
+			longReport: data["longReport"],
+			reports: data["reports"].map((x0) => x0 ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			layoutAttachmentId: data["layoutAttachmentId"],
+			templateLayoutAttachmentId: data["templateLayoutAttachmentId"],
+		);
+	}
 
 	static Map<String, dynamic> encode(FormTemplate value) {
 		Map<String, dynamic> entityAsMap = {

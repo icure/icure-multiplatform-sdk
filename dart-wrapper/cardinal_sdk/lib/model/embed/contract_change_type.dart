@@ -10,13 +10,29 @@ enum ContractChangeType {
 	static String encode(ContractChangeType value) {
 		switch (value) {
 			case ContractChangeType.inscriptionStart:
-				return '"InscriptionStart"';
+				return '"inscriptionStart"';
 			case ContractChangeType.inscriptionEnd:
-				return '"InscriptionEnd"';
+				return '"inscriptionEnd"';
 			case ContractChangeType.suspension:
-				return '"Suspension"';
+				return '"suspension"';
 			case ContractChangeType.coverageChange:
-				return '"CoverageChange"';
+				return '"coverageChange"';
+			}
+	}
+
+
+	static ContractChangeType fromJSON(String data) {
+		switch (data) {
+			case "inscriptionStart":
+				return ContractChangeType.inscriptionStart;
+			case "inscriptionEnd":
+				return ContractChangeType.inscriptionEnd;
+			case "suspension":
+				return ContractChangeType.suspension;
+			case "coverageChange":
+				return ContractChangeType.coverageChange;
+			default:
+				throw ArgumentError('Invalid ContractChangeType entry value $data');
 			}
 	}
 

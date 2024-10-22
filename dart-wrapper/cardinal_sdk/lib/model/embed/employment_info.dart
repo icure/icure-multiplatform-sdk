@@ -8,13 +8,21 @@ class EmploymentInfo {
 	int? endDate;
 	CodeStub? professionType;
 	Employer? employer;
-
 	EmploymentInfo({
-		this.startDate,
-		this.endDate,
-		this.professionType,
-		this.employer
-	});
+			this.startDate,
+			this.endDate,
+			this.professionType,
+			this.employer
+		});
+
+	factory EmploymentInfo.fromJSON(Map<String, dynamic> data) {
+		return EmploymentInfo(
+			startDate: data["startDate"],
+			endDate: data["endDate"],
+			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
+			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"])
+		);
+	}
 
 	static Map<String, dynamic> encode(EmploymentInfo value) {
 		Map<String, dynamic> entityAsMap = {

@@ -10,13 +10,29 @@ enum FlatRateType {
 	static String encode(FlatRateType value) {
 		switch (value) {
 			case FlatRateType.physician:
-				return '"Physician"';
+				return '"physician"';
 			case FlatRateType.physiotherapist:
-				return '"Physiotherapist"';
+				return '"physiotherapist"';
 			case FlatRateType.nurse:
-				return '"Nurse"';
+				return '"nurse"';
 			case FlatRateType.ptd:
-				return '"Ptd"';
+				return '"ptd"';
+			}
+	}
+
+
+	static FlatRateType fromJSON(String data) {
+		switch (data) {
+			case "physician":
+				return FlatRateType.physician;
+			case "physiotherapist":
+				return FlatRateType.physiotherapist;
+			case "nurse":
+				return FlatRateType.nurse;
+			case "ptd":
+				return FlatRateType.ptd;
+			default:
+				throw ArgumentError('Invalid FlatRateType entry value $data');
 			}
 	}
 

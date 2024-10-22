@@ -9,11 +9,25 @@ enum GroupType {
 	static String encode(GroupType value) {
 		switch (value) {
 			case GroupType.root:
-				return '"Root"';
+				return '"root"';
 			case GroupType.app:
-				return '"App"';
+				return '"app"';
 			case GroupType.database:
-				return '"Database"';
+				return '"database"';
+			}
+	}
+
+
+	static GroupType fromJSON(String data) {
+		switch (data) {
+			case "root":
+				return GroupType.root;
+			case "app":
+				return GroupType.app;
+			case "database":
+				return GroupType.database;
+			default:
+				throw ArgumentError('Invalid GroupType entry value $data');
 			}
 	}
 

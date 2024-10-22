@@ -10,13 +10,29 @@ enum FrontEndMigrationStatus {
 	static String encode(FrontEndMigrationStatus value) {
 		switch (value) {
 			case FrontEndMigrationStatus.started:
-				return '"Started"';
+				return '"STARTED"';
 			case FrontEndMigrationStatus.paused:
-				return '"Paused"';
+				return '"PAUSED"';
 			case FrontEndMigrationStatus.error:
-				return '"Error"';
+				return '"ERROR"';
 			case FrontEndMigrationStatus.success:
-				return '"Success"';
+				return '"SUCCESS"';
+			}
+	}
+
+
+	static FrontEndMigrationStatus fromJSON(String data) {
+		switch (data) {
+			case "STARTED":
+				return FrontEndMigrationStatus.started;
+			case "PAUSED":
+				return FrontEndMigrationStatus.paused;
+			case "ERROR":
+				return FrontEndMigrationStatus.error;
+			case "SUCCESS":
+				return FrontEndMigrationStatus.success;
+			default:
+				throw ArgumentError('Invalid FrontEndMigrationStatus entry value $data');
 			}
 	}
 

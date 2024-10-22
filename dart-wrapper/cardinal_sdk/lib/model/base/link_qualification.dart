@@ -30,53 +30,109 @@ enum LinkQualification {
 	static String encode(LinkQualification value) {
 		switch (value) {
 			case LinkQualification.exact:
-				return '"Exact"';
+				return '"exact"';
 			case LinkQualification.narrower:
-				return '"Narrower"';
+				return '"narrower"';
 			case LinkQualification.broader:
-				return '"Broader"';
+				return '"broader"';
 			case LinkQualification.approximate:
-				return '"Approximate"';
+				return '"approximate"';
 			case LinkQualification.sequence:
-				return '"Sequence"';
+				return '"sequence"';
 			case LinkQualification.parent:
-				return '"Parent"';
+				return '"parent"';
 			case LinkQualification.child:
-				return '"Child"';
+				return '"child"';
 			case LinkQualification.relatedCode:
-				return '"RelatedCode"';
+				return '"relatedCode"';
 			case LinkQualification.linkedPackage:
-				return '"LinkedPackage"';
+				return '"linkedPackage"';
 			case LinkQualification.relatedService:
-				return '"RelatedService"';
+				return '"relatedService"';
 			case LinkQualification.inResponseTo:
-				return '"InResponseTo"';
+				return '"inResponseTo"';
 			case LinkQualification.replaces:
-				return '"Replaces"';
+				return '"replaces"';
 			case LinkQualification.transforms:
-				return '"Transforms"';
+				return '"transforms"';
 			case LinkQualification.transformsAndReplaces:
-				return '"TransformsAndReplaces"';
+				return '"transformsAndReplaces"';
 			case LinkQualification.appendsTo:
-				return '"AppendsTo"';
+				return '"appendsTo"';
 			case LinkQualification.basedOn:
-				return '"BasedOn"';
+				return '"basedOn"';
 			case LinkQualification.derivedFrom:
-				return '"DerivedFrom"';
+				return '"derivedFrom"';
 			case LinkQualification.device:
-				return '"Device"';
+				return '"device"';
 			case LinkQualification.focus:
-				return '"Focus"';
+				return '"focus"';
 			case LinkQualification.hasMember:
-				return '"HasMember"';
+				return '"hasMember"';
 			case LinkQualification.performer:
-				return '"Performer"';
+				return '"performer"';
 			case LinkQualification.specimen:
-				return '"Specimen"';
+				return '"specimen"';
 			case LinkQualification.resultInterpreter:
-				return '"ResultInterpreter"';
+				return '"resultInterpreter"';
 			case LinkQualification.request:
-				return '"Request"';
+				return '"request"';
+			}
+	}
+
+
+	static LinkQualification fromJSON(String data) {
+		switch (data) {
+			case "exact":
+				return LinkQualification.exact;
+			case "narrower":
+				return LinkQualification.narrower;
+			case "broader":
+				return LinkQualification.broader;
+			case "approximate":
+				return LinkQualification.approximate;
+			case "sequence":
+				return LinkQualification.sequence;
+			case "parent":
+				return LinkQualification.parent;
+			case "child":
+				return LinkQualification.child;
+			case "relatedCode":
+				return LinkQualification.relatedCode;
+			case "linkedPackage":
+				return LinkQualification.linkedPackage;
+			case "relatedService":
+				return LinkQualification.relatedService;
+			case "inResponseTo":
+				return LinkQualification.inResponseTo;
+			case "replaces":
+				return LinkQualification.replaces;
+			case "transforms":
+				return LinkQualification.transforms;
+			case "transformsAndReplaces":
+				return LinkQualification.transformsAndReplaces;
+			case "appendsTo":
+				return LinkQualification.appendsTo;
+			case "basedOn":
+				return LinkQualification.basedOn;
+			case "derivedFrom":
+				return LinkQualification.derivedFrom;
+			case "device":
+				return LinkQualification.device;
+			case "focus":
+				return LinkQualification.focus;
+			case "hasMember":
+				return LinkQualification.hasMember;
+			case "performer":
+				return LinkQualification.performer;
+			case "specimen":
+				return LinkQualification.specimen;
+			case "resultInterpreter":
+				return LinkQualification.resultInterpreter;
+			case "request":
+				return LinkQualification.request;
+			default:
+				throw ArgumentError('Invalid LinkQualification entry value $data');
 			}
 	}
 

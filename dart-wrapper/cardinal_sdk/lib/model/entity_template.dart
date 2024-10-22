@@ -3,9 +3,9 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 
 class EntityTemplate implements StoredDocument {
-	@override  String id;
-	@override  String? rev;
-	@override  int? deletionDate;
+	@override String id;
+	@override String? rev;
+	@override int? deletionDate;
 	String? userId;
 	String? descr;
 	Set<String>? keywords;
@@ -13,19 +13,34 @@ class EntityTemplate implements StoredDocument {
 	String? subType;
 	bool? defaultTemplate;
 	List<Map<String, dynamic>> entity = [];
+	EntityTemplate(
+		this.id,
+		{
+			this.rev,
+			this.deletionDate,
+			this.userId,
+			this.descr,
+			this.keywords,
+			this.entityType,
+			this.subType,
+			this.defaultTemplate,
+			List<Map<String, dynamic>>? entity
+		}) : entity = entity ?? [];
 
-	EntityTemplate({
-		required this.id,
-		this.rev,
-		this.deletionDate,
-		this.userId,
-		this.descr,
-		this.keywords,
-		this.entityType,
-		this.subType,
-		this.defaultTemplate,
-		List<Map<String, dynamic>>? entity
-	}) : entity = entity ?? [];
+	factory EntityTemplate.fromJSON(Map<String, dynamic> data) {
+		return EntityTemplate(
+			data["id"],
+			rev: data["rev"],
+			deletionDate: data["deletionDate"],
+			userId: data["userId"],
+			descr: data["descr"],
+			keywords: data["keywords"]?.map((x0) => x0 ),
+			entityType: data["entityType"],
+			subType: data["subType"],
+			defaultTemplate: data["defaultTemplate"],
+			entity: data["entity"].map((x0) => x0 ),
+		);
+	}
 
 	static Map<String, dynamic> encode(EntityTemplate value) {
 		Map<String, dynamic> entityAsMap = {

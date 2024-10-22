@@ -5,12 +5,17 @@ import 'package:cardinal_sdk/model/security/permission_item.dart';
 
 
 class AlwaysPermissionItem implements PermissionItem {
-	@override  PermissionType type;
-	@override  AlwaysPredicate predicate;
+	@override PermissionType type;
+	@override AlwaysPredicate predicate;
+	AlwaysPermissionItem(
+		this.type
+		) : predicate = AlwaysPredicate();
 
-	AlwaysPermissionItem({
-		required this.type
-	}) : predicate = AlwaysPredicate();
+	factory AlwaysPermissionItem.fromJSON(Map<String, dynamic> data) {
+		return AlwaysPermissionItem(
+			PermissionType.fromJSON(data["type"])
+		);
+	}
 
 	static Map<String, dynamic> encode(AlwaysPermissionItem value) {
 		Map<String, dynamic> entityAsMap = {

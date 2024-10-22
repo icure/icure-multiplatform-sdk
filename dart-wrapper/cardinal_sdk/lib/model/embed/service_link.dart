@@ -3,10 +3,14 @@
 
 class ServiceLink {
 	String? serviceId;
-
 	ServiceLink({
-		this.serviceId
-	});
+			this.serviceId});
+
+	factory ServiceLink.fromJSON(Map<String, dynamic> data) {
+		return ServiceLink(
+			serviceId: data["serviceId"]
+		);
+	}
 
 	static Map<String, dynamic> encode(ServiceLink value) {
 		Map<String, dynamic> entityAsMap = {

@@ -10,13 +10,29 @@ enum TaskStatus {
 	static String encode(TaskStatus value) {
 		switch (value) {
 			case TaskStatus.pending:
-				return '"Pending"';
+				return '"pending"';
 			case TaskStatus.ongoing:
-				return '"Ongoing"';
+				return '"ongoing"';
 			case TaskStatus.cancelled:
-				return '"Cancelled"';
+				return '"cancelled"';
 			case TaskStatus.completed:
-				return '"Completed"';
+				return '"completed"';
+			}
+	}
+
+
+	static TaskStatus fromJSON(String data) {
+		switch (data) {
+			case "pending":
+				return TaskStatus.pending;
+			case "ongoing":
+				return TaskStatus.ongoing;
+			case "cancelled":
+				return TaskStatus.cancelled;
+			case "completed":
+				return TaskStatus.completed;
+			default:
+				throw ArgumentError('Invalid TaskStatus entry value $data');
 			}
 	}
 

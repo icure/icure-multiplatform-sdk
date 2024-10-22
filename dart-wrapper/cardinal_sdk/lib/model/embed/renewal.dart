@@ -13,11 +13,17 @@ class Renewal {
 		_decimal = value;
 	}
 	Duration? duration;
-
 	Renewal({
-		int? decimal,
-		this.duration
-	}) : _decimal = decimal;
+			int? decimal,
+			this.duration
+		}) : _decimal = decimal;
+
+	factory Renewal.fromJSON(Map<String, dynamic> data) {
+		return Renewal(
+			decimal: data["decimal"],
+			duration: data["duration"] == null ? null : Duration.fromJSON(data["duration"])
+		);
+	}
 
 	static Map<String, dynamic> encode(Renewal value) {
 		Map<String, dynamic> entityAsMap = {

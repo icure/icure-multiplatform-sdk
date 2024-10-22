@@ -8,14 +8,24 @@ class OperationToken {
 	int validity;
 	Operation operation;
 	String? description;
+	OperationToken(
+		this.tokenHash,
+		this.creationTime,
+		this.validity,
+		this.operation,
+		{
+			this.description
+		});
 
-	OperationToken({
-		required this.tokenHash,
-		required this.creationTime,
-		required this.validity,
-		required this.operation,
-		this.description
-	});
+	factory OperationToken.fromJSON(Map<String, dynamic> data) {
+		return OperationToken(
+			data["tokenHash"],
+			data["creationTime"],
+			data["validity"],
+			Operation.fromJSON(data["operation"]),
+			description: data["description"],
+		);
+	}
 
 	static Map<String, dynamic> encode(OperationToken value) {
 		Map<String, dynamic> entityAsMap = {

@@ -13,19 +13,41 @@ enum MediumType {
 	static String encode(MediumType value) {
 		switch (value) {
 			case MediumType.cdrom:
-				return '"Cdrom"';
+				return '"cdrom"';
 			case MediumType.eattest:
-				return '"Eattest"';
+				return '"eattest"';
 			case MediumType.efact:
-				return '"Efact"';
+				return '"efact"';
 			case MediumType.email:
-				return '"Email"';
+				return '"email"';
 			case MediumType.mediprima:
-				return '"Mediprima"';
+				return '"mediprima"';
 			case MediumType.paper:
-				return '"Paper"';
+				return '"paper"';
 			case MediumType.stat:
-				return '"Stat"';
+				return '"stat"';
+			}
+	}
+
+
+	static MediumType fromJSON(String data) {
+		switch (data) {
+			case "cdrom":
+				return MediumType.cdrom;
+			case "eattest":
+				return MediumType.eattest;
+			case "efact":
+				return MediumType.efact;
+			case "email":
+				return MediumType.email;
+			case "mediprima":
+				return MediumType.mediprima;
+			case "paper":
+				return MediumType.paper;
+			case "stat":
+				return MediumType.stat;
+			default:
+				throw ArgumentError('Invalid MediumType entry value $data');
 			}
 	}
 

@@ -6,8 +6,8 @@ import 'package:cardinal_sdk/model/base/versionable.dart';
 
 
 class ReplicatorDocument implements Versionable<String> {
-	@override  String id;
-	@override  String? rev;
+	@override String id;
+	@override String? rev;
 	Remote? source;
 	Remote? target;
 	String? owner;
@@ -27,23 +27,42 @@ class ReplicatorDocument implements Versionable<String> {
 	}
 	List<Map<String, String>>? revsInfo;
 	Map<String, String>? revHistory;
+	ReplicatorDocument(
+		this.id,
+		{
+			int? errorCount,
+			this.rev,
+			this.source,
+			this.target,
+			this.owner,
+			this.create_target,
+			this.continuous,
+			this.doc_ids,
+			this.replicationState,
+			this.replicationStateTime,
+			this.replicationStats,
+			this.revsInfo,
+			this.revHistory
+		}) : _errorCount = errorCount;
 
-	ReplicatorDocument({
-		required this.id,
-		int? errorCount,
-		this.rev,
-		this.source,
-		this.target,
-		this.owner,
-		this.create_target,
-		this.continuous,
-		this.doc_ids,
-		this.replicationState,
-		this.replicationStateTime,
-		this.replicationStats,
-		this.revsInfo,
-		this.revHistory
-	}) : _errorCount = errorCount;
+	factory ReplicatorDocument.fromJSON(Map<String, dynamic> data) {
+		return ReplicatorDocument(
+			data["id"],
+			errorCount: data["errorCount"],
+			rev: data["rev"],
+			source: data["source"] == null ? null : Remote.fromJSON(data["source"]),
+			target: data["target"] == null ? null : Remote.fromJSON(data["target"]),
+			owner: data["owner"],
+			create_target: data["create_target"],
+			continuous: data["continuous"],
+			doc_ids: data["doc_ids"]?.map((x0) => x0 ),
+			replicationState: data["replicationState"],
+			replicationStateTime: data["replicationStateTime"],
+			replicationStats: data["replicationStats"] == null ? null : ReplicationStats.fromJSON(data["replicationStats"]),
+			revsInfo: data["revsInfo"]?.map((x0) => x0.map((k1, v1) => MapEntry(k1, v1)) ),
+			revHistory: data["revHistory"]?.map((k0, v0) => MapEntry(k0, v0)),
+		);
+	}
 
 	static Map<String, dynamic> encode(ReplicatorDocument value) {
 		Map<String, dynamic> entityAsMap = {

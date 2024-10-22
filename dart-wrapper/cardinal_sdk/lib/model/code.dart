@@ -8,14 +8,14 @@ import 'package:cardinal_sdk/model/base/code_identification.dart';
 
 
 class Code implements StoredDocument, CodeIdentification<String> {
-	@override  String id;
-	@override  String? rev;
-	@override  int? deletionDate;
-	@override  String? context;
-	@override  String? type;
-	@override  String? code;
-	@override  String? version;
-	@override  Map<String, String>? label;
+	@override String id;
+	@override String? rev;
+	@override int? deletionDate;
+	@override String? context;
+	@override String? type;
+	@override String? code;
+	@override String? version;
+	@override Map<String, String>? label;
 	String? author;
 	Set<String> regions = {};
 	Set<Periodicity> periodicity = {};
@@ -34,28 +34,28 @@ class Code implements StoredDocument, CodeIdentification<String> {
 	String? data;
 	Map<AppendixType, String> appendices = {};
 	bool disabled = false;
-
-	Code({
-		required this.id,
-		int? level,
-		this.rev,
-		this.deletionDate,
-		this.context,
-		this.type,
-		this.code,
-		this.version,
-		this.label,
-		this.author,
-		this.data,
-		Set<String>? regions,
-		Set<Periodicity>? periodicity,
-		Set<String>? links,
-		Map<String, List<String>>? qualifiedLinks,
-		Set<CodeFlag>? flags,
-		Map<String, Set<String>>? searchTerms,
-		Map<AppendixType, String>? appendices,
-		bool? disabled
-	}) : regions = regions ?? {},
+	Code(
+		this.id,
+		{
+			int? level,
+			this.rev,
+			this.deletionDate,
+			this.context,
+			this.type,
+			this.code,
+			this.version,
+			this.label,
+			this.author,
+			this.data,
+			Set<String>? regions,
+			Set<Periodicity>? periodicity,
+			Set<String>? links,
+			Map<String, List<String>>? qualifiedLinks,
+			Set<CodeFlag>? flags,
+			Map<String, Set<String>>? searchTerms,
+			Map<AppendixType, String>? appendices,
+			bool? disabled
+		}) : regions = regions ?? {},
 		periodicity = periodicity ?? {},
 		links = links ?? {},
 		qualifiedLinks = qualifiedLinks ?? {},
@@ -64,6 +64,30 @@ class Code implements StoredDocument, CodeIdentification<String> {
 		appendices = appendices ?? {},
 		disabled = disabled ?? false,
 		_level = level;
+
+	factory Code.fromJSON(Map<String, dynamic> data) {
+		return Code(
+			data["id"],
+			level: data["level"],
+			rev: data["rev"],
+			deletionDate: data["deletionDate"],
+			context: data["context"],
+			type: data["type"],
+			code: data["code"],
+			version: data["version"],
+			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
+			author: data["author"],
+			regions: data["regions"].map((x0) => x0 ),
+			periodicity: data["periodicity"].map((x0) => Periodicity.fromJSON(x0) ),
+			links: data["links"].map((x0) => x0 ),
+			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			flags: data["flags"].map((x0) => CodeFlag.fromJSON(x0) ),
+			searchTerms: data["searchTerms"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			data: data["data"],
+			appendices: data["appendices"].map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), v0)),
+			disabled: data["disabled"],
+		);
+	}
 
 	static Map<String, dynamic> encode(Code value) {
 		Map<String, dynamic> entityAsMap = {

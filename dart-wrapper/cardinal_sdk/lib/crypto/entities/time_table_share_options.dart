@@ -7,15 +7,22 @@ import 'package:cardinal_sdk/crypto/entities/secret_id_share_options.dart';
 class TimeTableShareOptions {
 	RequestedPermission requestedPermissions = RequestedPermission.maxWrite;
 	ShareMetadataBehaviour shareEncryptionKey = ShareMetadataBehaviour.ifAvailable;
-	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(requireAtLeastOne: false);
-
+	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(false);
 	TimeTableShareOptions({
-		RequestedPermission? requestedPermissions,
-		ShareMetadataBehaviour? shareEncryptionKey,
-		SecretIdShareOptions? shareSecretIds
-	}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
+			RequestedPermission? requestedPermissions,
+			ShareMetadataBehaviour? shareEncryptionKey,
+			SecretIdShareOptions? shareSecretIds
+		}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
 		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
-		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(requireAtLeastOne: false);
+		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
+
+	factory TimeTableShareOptions.fromJSON(Map<String, dynamic> data) {
+		return TimeTableShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
+	}
 
 	static Map<String, dynamic> encode(TimeTableShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

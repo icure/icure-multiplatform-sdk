@@ -36,7 +36,6 @@ sealed class MaintenanceTask implements StoredDocument, ICureDocument<String>, H
 	@override abstract Base64String? encryptedSelf;
 	@override abstract SecurityMetadata? securityMetadata;
 
-
 	static Map<String, dynamic> encode(MaintenanceTask value) {
 		switch (value) {
 			case DecryptedMaintenanceTask entity:
@@ -49,54 +48,69 @@ sealed class MaintenanceTask implements StoredDocument, ICureDocument<String>, H
 				return entityJson;
 		}
 	}
+
+	static MaintenanceTask fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.DecryptedMaintenanceTask":
+				return DecryptedMaintenanceTask.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.EncryptedMaintenanceTask":
+				return EncryptedMaintenanceTask.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class DecryptedMaintenanceTask implements MaintenanceTask {
-	@override  String id;
-	@override  String? rev;
-	@override  List<Identifier> identifier = [];
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? taskType;
-	@override  Set<DecryptedPropertyStub> properties = {};
-	@override  TaskStatus status = TaskStatus.pending;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	DecryptedMaintenanceTask({
-		required this.id,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.taskType,
-		this.encryptedSelf,
-		this.securityMetadata,
-		List<Identifier>? identifier,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<DecryptedPropertyStub>? properties,
-		TaskStatus? status,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : identifier = identifier ?? [],
+	@override String id;
+	@override String? rev;
+	@override List<Identifier> identifier = [];
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? taskType;
+	@override Set<DecryptedPropertyStub> properties = {};
+	@override TaskStatus status = TaskStatus.pending;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	DecryptedMaintenanceTask(
+		this.id,
+		{
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.taskType,
+			this.encryptedSelf,
+			this.securityMetadata,
+			List<Identifier>? identifier,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<DecryptedPropertyStub>? properties,
+			TaskStatus? status,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : identifier = identifier ?? [],
 		tags = tags ?? {},
 		codes = codes ?? {},
 		properties = properties ?? {},
@@ -105,6 +119,32 @@ class DecryptedMaintenanceTask implements MaintenanceTask {
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory DecryptedMaintenanceTask.fromJSON(Map<String, dynamic> data) {
+		return DecryptedMaintenanceTask(
+			data["id"],
+			rev: data["rev"],
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			taskType: data["taskType"],
+			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ),
+			status: TaskStatus.fromJSON(data["status"]),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedMaintenanceTask value) {
 		Map<String, dynamic> entityAsMap = {
@@ -135,51 +175,51 @@ class DecryptedMaintenanceTask implements MaintenanceTask {
 }
 
 class EncryptedMaintenanceTask implements MaintenanceTask {
-	@override  String id;
-	@override  String? rev;
-	@override  List<Identifier> identifier = [];
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? taskType;
-	@override  Set<EncryptedPropertyStub> properties = {};
-	@override  TaskStatus status = TaskStatus.pending;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	EncryptedMaintenanceTask({
-		required this.id,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.taskType,
-		this.encryptedSelf,
-		this.securityMetadata,
-		List<Identifier>? identifier,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<EncryptedPropertyStub>? properties,
-		TaskStatus? status,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : identifier = identifier ?? [],
+	@override String id;
+	@override String? rev;
+	@override List<Identifier> identifier = [];
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? taskType;
+	@override Set<EncryptedPropertyStub> properties = {};
+	@override TaskStatus status = TaskStatus.pending;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	EncryptedMaintenanceTask(
+		this.id,
+		{
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.taskType,
+			this.encryptedSelf,
+			this.securityMetadata,
+			List<Identifier>? identifier,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<EncryptedPropertyStub>? properties,
+			TaskStatus? status,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : identifier = identifier ?? [],
 		tags = tags ?? {},
 		codes = codes ?? {},
 		properties = properties ?? {},
@@ -188,6 +228,32 @@ class EncryptedMaintenanceTask implements MaintenanceTask {
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {};
+
+	factory EncryptedMaintenanceTask.fromJSON(Map<String, dynamic> data) {
+		return EncryptedMaintenanceTask(
+			data["id"],
+			rev: data["rev"],
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			taskType: data["taskType"],
+			properties: data["properties"].map((x0) => EncryptedPropertyStub.fromJSON(x0) ),
+			status: TaskStatus.fromJSON(data["status"]),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedMaintenanceTask value) {
 		Map<String, dynamic> entityAsMap = {

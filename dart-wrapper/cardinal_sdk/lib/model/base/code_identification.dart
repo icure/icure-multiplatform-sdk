@@ -8,5 +8,4 @@ abstract interface class CodeIdentification<K> {
 	abstract String? type;
 	abstract String? version;
 	abstract Map<String, String>? label;
-
 }

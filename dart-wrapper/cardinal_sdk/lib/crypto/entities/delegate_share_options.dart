@@ -8,13 +8,21 @@ class DelegateShareOptions {
 	Set<HexString> shareEncryptionKeys;
 	Set<String> shareOwningEntityIds;
 	RequestedPermission requestedPermissions;
+	DelegateShareOptions(
+		this.shareSecretIds,
+		this.shareEncryptionKeys,
+		this.shareOwningEntityIds,
+		this.requestedPermissions
+		);
 
-	DelegateShareOptions({
-		required this.shareSecretIds,
-		required this.shareEncryptionKeys,
-		required this.shareOwningEntityIds,
-		required this.requestedPermissions
-	});
+	factory DelegateShareOptions.fromJSON(Map<String, dynamic> data) {
+		return DelegateShareOptions(
+			data["shareSecretIds"].map((x0) => x0 ),
+			data["shareEncryptionKeys"].map((x0) => x0 ),
+			data["shareOwningEntityIds"].map((x0) => x0 ),
+			RequestedPermission.fromJSON(data["requestedPermissions"])
+		);
+	}
 
 	static Map<String, dynamic> encode(DelegateShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

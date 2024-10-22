@@ -12,11 +12,17 @@ class Enable2faRequest {
 		}
 		_otpLength = value;
 	}
+	Enable2faRequest(
+		this.secret,
+		int otpLength
+		) : _otpLength = otpLength;
 
-	Enable2faRequest({
-		required this.secret,
-		required int otpLength
-	}) : _otpLength = otpLength;
+	factory Enable2faRequest.fromJSON(Map<String, dynamic> data) {
+		return Enable2faRequest(
+			data["secret"],
+			data["otpLength"]
+		);
+	}
 
 	static Map<String, dynamic> encode(Enable2faRequest value) {
 		Map<String, dynamic> entityAsMap = {

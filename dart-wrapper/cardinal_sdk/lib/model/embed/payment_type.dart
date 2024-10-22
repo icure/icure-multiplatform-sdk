@@ -14,21 +14,45 @@ enum PaymentType {
 	static String encode(PaymentType value) {
 		switch (value) {
 			case PaymentType.cash:
-				return '"Cash"';
+				return '"cash"';
 			case PaymentType.wired:
-				return '"Wired"';
+				return '"wired"';
 			case PaymentType.insurance:
-				return '"Insurance"';
+				return '"insurance"';
 			case PaymentType.creditcard:
-				return '"Creditcard"';
+				return '"creditcard"';
 			case PaymentType.debitcard:
-				return '"Debitcard"';
+				return '"debitcard"';
 			case PaymentType.paypal:
-				return '"Paypal"';
+				return '"paypal"';
 			case PaymentType.bitcoin:
-				return '"Bitcoin"';
+				return '"bitcoin"';
 			case PaymentType.other:
-				return '"Other"';
+				return '"other"';
+			}
+	}
+
+
+	static PaymentType fromJSON(String data) {
+		switch (data) {
+			case "cash":
+				return PaymentType.cash;
+			case "wired":
+				return PaymentType.wired;
+			case "insurance":
+				return PaymentType.insurance;
+			case "creditcard":
+				return PaymentType.creditcard;
+			case "debitcard":
+				return PaymentType.debitcard;
+			case "paypal":
+				return PaymentType.paypal;
+			case "bitcoin":
+				return PaymentType.bitcoin;
+			case "other":
+				return PaymentType.other;
+			default:
+				throw ArgumentError('Invalid PaymentType entry value $data');
 			}
 	}
 

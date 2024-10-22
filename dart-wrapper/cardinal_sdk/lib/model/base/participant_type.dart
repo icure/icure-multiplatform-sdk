@@ -19,31 +19,65 @@ enum ParticipantType {
 	static String encode(ParticipantType value) {
 		switch (value) {
 			case ParticipantType.admitter:
-				return '"Admitter"';
+				return '"admitter"';
 			case ParticipantType.attender:
-				return '"Attender"';
+				return '"attender"';
 			case ParticipantType.callbackContact:
-				return '"CallbackContact"';
+				return '"callback"';
 			case ParticipantType.consultant:
-				return '"Consultant"';
+				return '"consultant"';
 			case ParticipantType.discharger:
-				return '"Discharger"';
+				return '"discharger"';
 			case ParticipantType.escort:
-				return '"Escort"';
+				return '"escort"';
 			case ParticipantType.referrer:
-				return '"Referrer"';
+				return '"referrer"';
 			case ParticipantType.secondaryPerformer:
-				return '"SecondaryPerformer"';
+				return '"secondaryPerformer"';
 			case ParticipantType.primaryPerformer:
-				return '"PrimaryPerformer"';
+				return '"primaryPerformer"';
 			case ParticipantType.participation:
-				return '"Participation"';
+				return '"participation"';
 			case ParticipantType.translator:
-				return '"Translator"';
+				return '"translator"';
 			case ParticipantType.emergency:
-				return '"Emergency"';
+				return '"emergency"';
 			case ParticipantType.location:
-				return '"Location"';
+				return '"location"';
+			}
+	}
+
+
+	static ParticipantType fromJSON(String data) {
+		switch (data) {
+			case "admitter":
+				return ParticipantType.admitter;
+			case "attender":
+				return ParticipantType.attender;
+			case "callback":
+				return ParticipantType.callbackContact;
+			case "consultant":
+				return ParticipantType.consultant;
+			case "discharger":
+				return ParticipantType.discharger;
+			case "escort":
+				return ParticipantType.escort;
+			case "referrer":
+				return ParticipantType.referrer;
+			case "secondaryPerformer":
+				return ParticipantType.secondaryPerformer;
+			case "primaryPerformer":
+				return ParticipantType.primaryPerformer;
+			case "participation":
+				return ParticipantType.participation;
+			case "translator":
+				return ParticipantType.translator;
+			case "emergency":
+				return ParticipantType.emergency;
+			case "location":
+				return ParticipantType.location;
+			default:
+				throw ArgumentError('Invalid ParticipantType entry value $data');
 			}
 	}
 

@@ -3,5 +3,4 @@
 
 abstract interface class Named {
 	abstract String? name;
-
 }

@@ -21,14 +21,22 @@ class AgreementAppendix {
 	}
 	String? documentId;
 	String? path;
-
 	AgreementAppendix({
-		int? docSeq,
-		int? verseSeq,
-		this.documentId,
-		this.path
-	}) : _docSeq = docSeq,
+			int? docSeq,
+			int? verseSeq,
+			this.documentId,
+			this.path
+		}) : _docSeq = docSeq,
 		_verseSeq = verseSeq;
+
+	factory AgreementAppendix.fromJSON(Map<String, dynamic> data) {
+		return AgreementAppendix(
+			docSeq: data["docSeq"],
+			verseSeq: data["verseSeq"],
+			documentId: data["documentId"],
+			path: data["path"]
+		);
+	}
 
 	static Map<String, dynamic> encode(AgreementAppendix value) {
 		Map<String, dynamic> entityAsMap = {

@@ -4,11 +4,18 @@
 class RoleConfiguration {
 	RoleConfigurationSource source;
 	Set<String> roles = {};
+	RoleConfiguration(
+		this.source,
+		{
+			Set<String>? roles
+		}) : roles = roles ?? {};
 
-	RoleConfiguration({
-		required this.source,
-		Set<String>? roles
-	}) : roles = roles ?? {};
+	factory RoleConfiguration.fromJSON(Map<String, dynamic> data) {
+		return RoleConfiguration(
+			RoleConfigurationSource.fromJSON(data["source"]),
+			roles: data["roles"].map((x0) => x0 ),
+		);
+	}
 
 	static Map<String, dynamic> encode(RoleConfiguration value) {
 		Map<String, dynamic> entityAsMap = {
@@ -27,11 +34,25 @@ enum RoleConfigurationSource {
 	static String encode(RoleConfigurationSource value) {
 		switch (value) {
 			case RoleConfigurationSource.configuration:
-				return '"Configuration"';
+				return '"CONFIGURATION"';
 			case RoleConfigurationSource.inherited:
-				return '"Inherited"';
+				return '"INHERITED"';
 			case RoleConfigurationSource.predefined:
-				return '"Default"';
+				return '"DEFAULT"';
+			}
+	}
+
+
+	static RoleConfigurationSource fromJSON(String data) {
+		switch (data) {
+			case "CONFIGURATION":
+				return RoleConfigurationSource.configuration;
+			case "INHERITED":
+				return RoleConfigurationSource.inherited;
+			case "DEFAULT":
+				return RoleConfigurationSource.predefined;
+			default:
+				throw ArgumentError('Invalid RoleConfigurationSource entry value $data');
 			}
 	}
 

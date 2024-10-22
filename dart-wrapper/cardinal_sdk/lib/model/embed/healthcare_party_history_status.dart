@@ -7,13 +7,21 @@ class HealthcarePartyHistoryStatus {
 	String specialisationCode;
 	int startDate;
 	bool active;
+	HealthcarePartyHistoryStatus(
+		this.status,
+		this.specialisationCode,
+		this.startDate,
+		this.active
+		);
 
-	HealthcarePartyHistoryStatus({
-		required this.status,
-		required this.specialisationCode,
-		required this.startDate,
-		required this.active
-	});
+	factory HealthcarePartyHistoryStatus.fromJSON(Map<String, dynamic> data) {
+		return HealthcarePartyHistoryStatus(
+			HealthcarePartyStatus.fromJSON(data["status"]),
+			data["specialisationCode"],
+			data["startDate"],
+			data["active"]
+		);
+	}
 
 	static Map<String, dynamic> encode(HealthcarePartyHistoryStatus value) {
 		Map<String, dynamic> entityAsMap = {

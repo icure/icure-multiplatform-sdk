@@ -9,11 +9,25 @@ enum UsersType {
 	static String encode(UsersType value) {
 		switch (value) {
 			case UsersType.database:
-				return '"Database"';
+				return '"database"';
 			case UsersType.ldap:
-				return '"Ldap"';
+				return '"ldap"';
 			case UsersType.token:
-				return '"Token"';
+				return '"token"';
+			}
+	}
+
+
+	static UsersType fromJSON(String data) {
+		switch (data) {
+			case "database":
+				return UsersType.database;
+			case "ldap":
+				return UsersType.ldap;
+			case "token":
+				return UsersType.token;
+			default:
+				throw ArgumentError('Invalid UsersType entry value $data');
 			}
 	}
 

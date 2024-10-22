@@ -30,22 +30,37 @@ class Measure {
 	String? comparator;
 	String? sign;
 	List<ReferenceRange> referenceRanges = [];
-
 	Measure({
-		int? severity,
-		int? evolution,
-		this.value,
-		this.ref,
-		this.severityCode,
-		this.unit,
-		this.unitCodes,
-		this.comment,
-		this.comparator,
-		this.sign,
-		List<ReferenceRange>? referenceRanges
-	}) : referenceRanges = referenceRanges ?? [],
+			int? severity,
+			int? evolution,
+			this.value,
+			this.ref,
+			this.severityCode,
+			this.unit,
+			this.unitCodes,
+			this.comment,
+			this.comparator,
+			this.sign,
+			List<ReferenceRange>? referenceRanges
+		}) : referenceRanges = referenceRanges ?? [],
 		_severity = severity,
 		_evolution = evolution;
+
+	factory Measure.fromJSON(Map<String, dynamic> data) {
+		return Measure(
+			severity: data["severity"],
+			evolution: data["evolution"],
+			value: data["value"],
+			ref: data["ref"],
+			severityCode: data["severityCode"],
+			unit: data["unit"],
+			unitCodes: data["unitCodes"]?.map((x0) => CodeStub.fromJSON(x0) ),
+			comment: data["comment"],
+			comparator: data["comparator"],
+			sign: data["sign"],
+			referenceRanges: data["referenceRanges"].map((x0) => ReferenceRange.fromJSON(x0) )
+		);
+	}
 
 	static Map<String, dynamic> encode(Measure value) {
 		Map<String, dynamic> entityAsMap = {

@@ -8,17 +8,25 @@ class FormShareOptions {
 	RequestedPermission requestedPermissions = RequestedPermission.maxWrite;
 	ShareMetadataBehaviour shareEncryptionKey = ShareMetadataBehaviour.ifAvailable;
 	ShareMetadataBehaviour sharePatientId = ShareMetadataBehaviour.ifAvailable;
-	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(requireAtLeastOne: false);
-
+	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(false);
 	FormShareOptions({
-		RequestedPermission? requestedPermissions,
-		ShareMetadataBehaviour? shareEncryptionKey,
-		ShareMetadataBehaviour? sharePatientId,
-		SecretIdShareOptions? shareSecretIds
-	}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
+			RequestedPermission? requestedPermissions,
+			ShareMetadataBehaviour? shareEncryptionKey,
+			ShareMetadataBehaviour? sharePatientId,
+			SecretIdShareOptions? shareSecretIds
+		}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
 		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
 		sharePatientId = sharePatientId ?? ShareMetadataBehaviour.ifAvailable,
-		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(requireAtLeastOne: false);
+		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
+
+	factory FormShareOptions.fromJSON(Map<String, dynamic> data) {
+		return FormShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			sharePatientId: ShareMetadataBehaviour.fromJSON(data["sharePatientId"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
+	}
 
 	static Map<String, dynamic> encode(FormShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

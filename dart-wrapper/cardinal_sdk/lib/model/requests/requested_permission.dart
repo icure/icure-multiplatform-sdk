@@ -11,15 +11,33 @@ enum RequestedPermission {
 	static String encode(RequestedPermission value) {
 		switch (value) {
 			case RequestedPermission.maxRead:
-				return '"MaxRead"';
+				return '"MAX_READ"';
 			case RequestedPermission.fullRead:
-				return '"FullRead"';
+				return '"FULL_READ"';
 			case RequestedPermission.maxWrite:
-				return '"MaxWrite"';
+				return '"MAX_WRITE"';
 			case RequestedPermission.fullWrite:
-				return '"FullWrite"';
+				return '"FULL_WRITE"';
 			case RequestedPermission.root:
-				return '"Root"';
+				return '"ROOT"';
+			}
+	}
+
+
+	static RequestedPermission fromJSON(String data) {
+		switch (data) {
+			case "MAX_READ":
+				return RequestedPermission.maxRead;
+			case "FULL_READ":
+				return RequestedPermission.fullRead;
+			case "MAX_WRITE":
+				return RequestedPermission.maxWrite;
+			case "FULL_WRITE":
+				return RequestedPermission.fullWrite;
+			case "ROOT":
+				return RequestedPermission.root;
+			default:
+				throw ArgumentError('Invalid RequestedPermission entry value $data');
 			}
 	}
 

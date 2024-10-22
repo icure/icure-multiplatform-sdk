@@ -14,7 +14,6 @@ sealed class CareTeamMember implements Encryptable, Identifiable<String> {
 	abstract CodeStub? quality;
 	@override abstract Base64String? encryptedSelf;
 
-
 	static Map<String, dynamic> encode(CareTeamMember value) {
 		switch (value) {
 			case EncryptedCareTeamMember entity:
@@ -27,22 +26,47 @@ sealed class CareTeamMember implements Encryptable, Identifiable<String> {
 				return entityJson;
 		}
 	}
+
+	static CareTeamMember fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember":
+				return EncryptedCareTeamMember.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember":
+				return DecryptedCareTeamMember.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedCareTeamMember implements CareTeamMember {
-	@override  String id;
-	@override  CareTeamMemberType? careTeamMemberType;
-	@override  String? healthcarePartyId;
-	@override  CodeStub? quality;
-	@override  Base64String? encryptedSelf;
+	@override String id;
+	@override CareTeamMemberType? careTeamMemberType;
+	@override String? healthcarePartyId;
+	@override CodeStub? quality;
+	@override Base64String? encryptedSelf;
+	EncryptedCareTeamMember(
+		this.id,
+		{
+			this.careTeamMemberType,
+			this.healthcarePartyId,
+			this.quality,
+			this.encryptedSelf
+		});
 
-	EncryptedCareTeamMember({
-		required this.id,
-		this.careTeamMemberType,
-		this.healthcarePartyId,
-		this.quality,
-		this.encryptedSelf
-	});
+	factory EncryptedCareTeamMember.fromJSON(Map<String, dynamic> data) {
+		return EncryptedCareTeamMember(
+			data["id"],
+			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
+			healthcarePartyId: data["healthcarePartyId"],
+			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
+			encryptedSelf: data["encryptedSelf"],
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedCareTeamMember value) {
 		Map<String, dynamic> entityAsMap = {
@@ -57,19 +81,29 @@ class EncryptedCareTeamMember implements CareTeamMember {
 }
 
 class DecryptedCareTeamMember implements CareTeamMember {
-	@override  String id;
-	@override  CareTeamMemberType? careTeamMemberType;
-	@override  String? healthcarePartyId;
-	@override  CodeStub? quality;
-	@override  Base64String? encryptedSelf;
+	@override String id;
+	@override CareTeamMemberType? careTeamMemberType;
+	@override String? healthcarePartyId;
+	@override CodeStub? quality;
+	@override Base64String? encryptedSelf;
+	DecryptedCareTeamMember(
+		this.id,
+		{
+			this.careTeamMemberType,
+			this.healthcarePartyId,
+			this.quality,
+			this.encryptedSelf
+		});
 
-	DecryptedCareTeamMember({
-		required this.id,
-		this.careTeamMemberType,
-		this.healthcarePartyId,
-		this.quality,
-		this.encryptedSelf
-	});
+	factory DecryptedCareTeamMember.fromJSON(Map<String, dynamic> data) {
+		return DecryptedCareTeamMember(
+			data["id"],
+			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
+			healthcarePartyId: data["healthcarePartyId"],
+			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
+			encryptedSelf: data["encryptedSelf"],
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedCareTeamMember value) {
 		Map<String, dynamic> entityAsMap = {

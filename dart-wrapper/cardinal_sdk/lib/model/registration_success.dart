@@ -5,12 +5,19 @@ class RegistrationSuccess {
 	String groupId;
 	String userId;
 	String token;
+	RegistrationSuccess(
+		this.groupId,
+		this.userId,
+		this.token
+		);
 
-	RegistrationSuccess({
-		required this.groupId,
-		required this.userId,
-		required this.token
-	});
+	factory RegistrationSuccess.fromJSON(Map<String, dynamic> data) {
+		return RegistrationSuccess(
+			data["groupId"],
+			data["userId"],
+			data["token"]
+		);
+	}
 
 	static Map<String, dynamic> encode(RegistrationSuccess value) {
 		Map<String, dynamic> entityAsMap = {

@@ -5,19 +5,29 @@ import 'package:cardinal_sdk/model/base/named.dart';
 
 
 class Place implements StoredDocument, Named {
-	@override  String id;
-	@override  String? rev;
-	@override  int? deletionDate;
-	@override  String? name;
+	@override String id;
+	@override String? rev;
+	@override int? deletionDate;
+	@override String? name;
 	DecryptedAddress? address;
+	Place(
+		this.id,
+		{
+			this.rev,
+			this.deletionDate,
+			this.name,
+			this.address
+		});
 
-	Place({
-		required this.id,
-		this.rev,
-		this.deletionDate,
-		this.name,
-		this.address
-	});
+	factory Place.fromJSON(Map<String, dynamic> data) {
+		return Place(
+			data["id"],
+			rev: data["rev"],
+			deletionDate: data["deletionDate"],
+			name: data["name"],
+			address: data["address"] == null ? null : DecryptedAddress.fromJSON(data["address"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(Place value) {
 		Map<String, dynamic> entityAsMap = {

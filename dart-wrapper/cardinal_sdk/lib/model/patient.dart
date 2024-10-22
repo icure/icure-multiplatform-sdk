@@ -115,7 +115,6 @@ sealed class Patient implements StoredDocument, ICureDocument<String>, Person, H
 	abstract List<SchoolingInfo> schoolingInfos;
 	abstract List<EmploymentInfo> employementInfos;
 
-
 	static Map<String, dynamic> encode(Patient value) {
 		switch (value) {
 			case EncryptedPatient entity:
@@ -128,34 +127,49 @@ sealed class Patient implements StoredDocument, ICureDocument<String>, Person, H
 				return entityJson;
 		}
 	}
+
+	static Patient fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.EncryptedPatient":
+				return EncryptedPatient.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedPatient":
+				return DecryptedPatient.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedPatient implements Patient {
-	@override  String id;
-	@override  List<Identifier> identifier = [];
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? firstName;
-	@override  String? lastName;
-	@override  List<PersonName> names = [];
-	@override  String? companyName;
-	@override  List<String> languages = [];
-	@override  List<EncryptedAddress> addresses = [];
-	@override  String? civility;
-	@override  Gender? gender = Gender.unknown;
-	@override  Gender? birthSex = Gender.unknown;
-	@override  String? mergeToPatientId;
-	@override  Set<String> mergedIds = {};
-	@override  String? alias;
-	@override  bool active = true;
-	@override  DeactivationReason deactivationReason = DeactivationReason.none;
+	@override String id;
+	@override List<Identifier> identifier = [];
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? firstName;
+	@override String? lastName;
+	@override List<PersonName> names = [];
+	@override String? companyName;
+	@override List<String> languages = [];
+	@override List<EncryptedAddress> addresses = [];
+	@override String? civility;
+	@override Gender? gender = Gender.unknown;
+	@override Gender? birthSex = Gender.unknown;
+	@override String? mergeToPatientId;
+	@override Set<String> mergedIds = {};
+	@override String? alias;
+	@override bool active = true;
+	@override DeactivationReason deactivationReason = DeactivationReason.none;
 	int? _deactivationDate;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get deactivationDate => _deactivationDate;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set deactivationDate(int? value) {
@@ -164,11 +178,11 @@ class EncryptedPatient implements Patient {
 		}
 		_deactivationDate = value;
 	}
-	@override  String? ssin;
-	@override  String? maidenName;
-	@override  String? spouseName;
-	@override  String? partnerName;
-	@override  PersonalStatus? personalStatus = PersonalStatus.unknown;
+	@override String? ssin;
+	@override String? maidenName;
+	@override String? spouseName;
+	@override String? partnerName;
+	@override PersonalStatus? personalStatus = PersonalStatus.unknown;
 	int? _dateOfBirth;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get dateOfBirth => _dateOfBirth;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set dateOfBirth(int? value) {
@@ -185,136 +199,136 @@ class EncryptedPatient implements Patient {
 		}
 		_dateOfDeath = value;
 	}
-	@override  int? timestampOfLatestEidReading;
-	@override  String? placeOfBirth;
-	@override  String? placeOfDeath;
-	@override  bool? deceased;
-	@override  String? education;
-	@override  String? profession;
-	@override  List<Annotation> notes = [];
-	@override  String? note;
-	@override  String? administrativeNote;
-	@override  String? nationality;
-	@override  String? race;
-	@override  String? ethnicity;
-	@override  String? preferredUserId;
-	@override  Uint8List? picture;
-	@override  String? externalId;
-	@override  List<EncryptedInsurability> insurabilities = [];
-	@override  List<Partnership> partnerships = [];
-	@override  List<EncryptedPatientHealthCareParty> patientHealthCareParties = [];
-	@override  List<EncryptedFinancialInstitutionInformation> financialInstitutionInformation = [];
-	@override  List<EncryptedMedicalHouseContract> medicalHouseContracts = [];
-	@override  List<CodeStub> patientProfessions = [];
-	@override  Map<String, List<String>> parameters = {};
-	@override  Set<EncryptedPropertyStub> properties = {};
-	@override  Map<String, List<HexString>> hcPartyKeys = {};
-	@override  Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
-	@override  Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
-	@override  Map<String, HexString> privateKeyShamirPartitions = {};
-	@override  SpkiHexString? publicKey;
-	@override  Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-	@override  String? medicalLocationId;
-	@override  Set<String> nonDuplicateIds = {};
-	@override  Set<String> encryptedAdministrativesDocuments = {};
-	@override  String? comment;
-	@override  String? warning;
-	@override  CodeStub? fatherBirthCountry;
-	@override  CodeStub? birthCountry;
-	@override  CodeStub? nativeCountry;
-	@override  CodeStub? socialStatus;
-	@override  CodeStub? mainSourceOfIncome;
-	@override  List<SchoolingInfo> schoolingInfos = [];
-	@override  List<EmploymentInfo> employementInfos = [];
-
-	EncryptedPatient({
-		required this.id,
-		int? deactivationDate,
-		int? dateOfBirth,
-		int? dateOfDeath,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.endOfLife,
-		this.deletionDate,
-		this.firstName,
-		this.lastName,
-		this.companyName,
-		this.civility,
-		this.mergeToPatientId,
-		this.alias,
-		this.ssin,
-		this.maidenName,
-		this.spouseName,
-		this.partnerName,
-		this.timestampOfLatestEidReading,
-		this.placeOfBirth,
-		this.placeOfDeath,
-		this.deceased,
-		this.education,
-		this.profession,
-		this.note,
-		this.administrativeNote,
-		this.nationality,
-		this.race,
-		this.ethnicity,
-		this.preferredUserId,
-		this.picture,
-		this.externalId,
-		this.publicKey,
-		this.encryptedSelf,
-		this.securityMetadata,
-		this.medicalLocationId,
-		this.comment,
-		this.warning,
-		this.fatherBirthCountry,
-		this.birthCountry,
-		this.nativeCountry,
-		this.socialStatus,
-		this.mainSourceOfIncome,
-		List<Identifier>? identifier,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		List<PersonName>? names,
-		List<String>? languages,
-		List<EncryptedAddress>? addresses,
-		Gender? gender,
-		Gender? birthSex,
-		Set<String>? mergedIds,
-		bool? active,
-		DeactivationReason? deactivationReason,
-		PersonalStatus? personalStatus,
-		List<Annotation>? notes,
-		List<EncryptedInsurability>? insurabilities,
-		List<Partnership>? partnerships,
-		List<EncryptedPatientHealthCareParty>? patientHealthCareParties,
-		List<EncryptedFinancialInstitutionInformation>? financialInstitutionInformation,
-		List<EncryptedMedicalHouseContract>? medicalHouseContracts,
-		List<CodeStub>? patientProfessions,
-		Map<String, List<String>>? parameters,
-		Set<EncryptedPropertyStub>? properties,
-		Map<String, List<HexString>>? hcPartyKeys,
-		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
-		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
-		Map<String, HexString>? privateKeyShamirPartitions,
-		Set<SpkiHexString>? publicKeysForOaepWithSha256,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys,
-		Set<String>? nonDuplicateIds,
-		Set<String>? encryptedAdministrativesDocuments,
-		List<SchoolingInfo>? schoolingInfos,
-		List<EmploymentInfo>? employementInfos
-	}) : identifier = identifier ?? [],
+	@override int? timestampOfLatestEidReading;
+	@override String? placeOfBirth;
+	@override String? placeOfDeath;
+	@override bool? deceased;
+	@override String? education;
+	@override String? profession;
+	@override List<Annotation> notes = [];
+	@override String? note;
+	@override String? administrativeNote;
+	@override String? nationality;
+	@override String? race;
+	@override String? ethnicity;
+	@override String? preferredUserId;
+	@override Uint8List? picture;
+	@override String? externalId;
+	@override List<EncryptedInsurability> insurabilities = [];
+	@override List<Partnership> partnerships = [];
+	@override List<EncryptedPatientHealthCareParty> patientHealthCareParties = [];
+	@override List<EncryptedFinancialInstitutionInformation> financialInstitutionInformation = [];
+	@override List<EncryptedMedicalHouseContract> medicalHouseContracts = [];
+	@override List<CodeStub> patientProfessions = [];
+	@override Map<String, List<String>> parameters = {};
+	@override Set<EncryptedPropertyStub> properties = {};
+	@override Map<String, List<HexString>> hcPartyKeys = {};
+	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
+	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
+	@override Map<String, HexString> privateKeyShamirPartitions = {};
+	@override SpkiHexString? publicKey;
+	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	@override String? medicalLocationId;
+	@override Set<String> nonDuplicateIds = {};
+	@override Set<String> encryptedAdministrativesDocuments = {};
+	@override String? comment;
+	@override String? warning;
+	@override CodeStub? fatherBirthCountry;
+	@override CodeStub? birthCountry;
+	@override CodeStub? nativeCountry;
+	@override CodeStub? socialStatus;
+	@override CodeStub? mainSourceOfIncome;
+	@override List<SchoolingInfo> schoolingInfos = [];
+	@override List<EmploymentInfo> employementInfos = [];
+	EncryptedPatient(
+		this.id,
+		{
+			int? deactivationDate,
+			int? dateOfBirth,
+			int? dateOfDeath,
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.endOfLife,
+			this.deletionDate,
+			this.firstName,
+			this.lastName,
+			this.companyName,
+			this.civility,
+			this.mergeToPatientId,
+			this.alias,
+			this.ssin,
+			this.maidenName,
+			this.spouseName,
+			this.partnerName,
+			this.timestampOfLatestEidReading,
+			this.placeOfBirth,
+			this.placeOfDeath,
+			this.deceased,
+			this.education,
+			this.profession,
+			this.note,
+			this.administrativeNote,
+			this.nationality,
+			this.race,
+			this.ethnicity,
+			this.preferredUserId,
+			this.picture,
+			this.externalId,
+			this.publicKey,
+			this.encryptedSelf,
+			this.securityMetadata,
+			this.medicalLocationId,
+			this.comment,
+			this.warning,
+			this.fatherBirthCountry,
+			this.birthCountry,
+			this.nativeCountry,
+			this.socialStatus,
+			this.mainSourceOfIncome,
+			List<Identifier>? identifier,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			List<PersonName>? names,
+			List<String>? languages,
+			List<EncryptedAddress>? addresses,
+			Gender? gender,
+			Gender? birthSex,
+			Set<String>? mergedIds,
+			bool? active,
+			DeactivationReason? deactivationReason,
+			PersonalStatus? personalStatus,
+			List<Annotation>? notes,
+			List<EncryptedInsurability>? insurabilities,
+			List<Partnership>? partnerships,
+			List<EncryptedPatientHealthCareParty>? patientHealthCareParties,
+			List<EncryptedFinancialInstitutionInformation>? financialInstitutionInformation,
+			List<EncryptedMedicalHouseContract>? medicalHouseContracts,
+			List<CodeStub>? patientProfessions,
+			Map<String, List<String>>? parameters,
+			Set<EncryptedPropertyStub>? properties,
+			Map<String, List<HexString>>? hcPartyKeys,
+			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
+			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
+			Map<String, HexString>? privateKeyShamirPartitions,
+			Set<SpkiHexString>? publicKeysForOaepWithSha256,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Set<String>? nonDuplicateIds,
+			Set<String>? encryptedAdministrativesDocuments,
+			List<SchoolingInfo>? schoolingInfos,
+			List<EmploymentInfo>? employementInfos
+		}) : identifier = identifier ?? [],
 		tags = tags ?? {},
 		codes = codes ?? {},
 		names = names ?? [],
@@ -351,6 +365,91 @@ class EncryptedPatient implements Patient {
 		_deactivationDate = deactivationDate,
 		_dateOfBirth = dateOfBirth,
 		_dateOfDeath = dateOfDeath;
+
+	factory EncryptedPatient.fromJSON(Map<String, dynamic> data) {
+		return EncryptedPatient(
+			data["id"],
+			deactivationDate: data["deactivationDate"],
+			dateOfBirth: data["dateOfBirth"],
+			dateOfDeath: data["dateOfDeath"],
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			firstName: data["firstName"],
+			lastName: data["lastName"],
+			names: data["names"].map((x0) => PersonName.fromJSON(x0) ),
+			companyName: data["companyName"],
+			languages: data["languages"].map((x0) => x0 ),
+			addresses: data["addresses"].map((x0) => EncryptedAddress.fromJSON(x0) ),
+			civility: data["civility"],
+			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
+			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
+			mergeToPatientId: data["mergeToPatientId"],
+			mergedIds: data["mergedIds"].map((x0) => x0 ),
+			alias: data["alias"],
+			active: data["active"],
+			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
+			ssin: data["ssin"],
+			maidenName: data["maidenName"],
+			spouseName: data["spouseName"],
+			partnerName: data["partnerName"],
+			personalStatus: data["personalStatus"] == null ? null : PersonalStatus.fromJSON(data["personalStatus"]),
+			timestampOfLatestEidReading: data["timestampOfLatestEidReading"],
+			placeOfBirth: data["placeOfBirth"],
+			placeOfDeath: data["placeOfDeath"],
+			deceased: data["deceased"],
+			education: data["education"],
+			profession: data["profession"],
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			note: data["note"],
+			administrativeNote: data["administrativeNote"],
+			nationality: data["nationality"],
+			race: data["race"],
+			ethnicity: data["ethnicity"],
+			preferredUserId: data["preferredUserId"],
+			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
+			externalId: data["externalId"],
+			insurabilities: data["insurabilities"].map((x0) => EncryptedInsurability.fromJSON(x0) ),
+			partnerships: data["partnerships"].map((x0) => Partnership.fromJSON(x0) ),
+			patientHealthCareParties: data["patientHealthCareParties"].map((x0) => EncryptedPatientHealthCareParty.fromJSON(x0) ),
+			financialInstitutionInformation: data["financialInstitutionInformation"].map((x0) => EncryptedFinancialInstitutionInformation.fromJSON(x0) ),
+			medicalHouseContracts: data["medicalHouseContracts"].map((x0) => EncryptedMedicalHouseContract.fromJSON(x0) ),
+			patientProfessions: data["patientProfessions"].map((x0) => CodeStub.fromJSON(x0) ),
+			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			properties: data["properties"].map((x0) => EncryptedPropertyStub.fromJSON(x0) ),
+			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			aesExchangeKeys: data["aesExchangeKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
+			transferKeys: data["transferKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
+			privateKeyShamirPartitions: data["privateKeyShamirPartitions"].map((k0, v0) => MapEntry(k0, v0)),
+			publicKey: data["publicKey"],
+			publicKeysForOaepWithSha256: data["publicKeysForOaepWithSha256"].map((x0) => x0 ),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			medicalLocationId: data["medicalLocationId"],
+			nonDuplicateIds: data["nonDuplicateIds"].map((x0) => x0 ),
+			encryptedAdministrativesDocuments: data["encryptedAdministrativesDocuments"].map((x0) => x0 ),
+			comment: data["comment"],
+			warning: data["warning"],
+			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
+			birthCountry: data["birthCountry"] == null ? null : CodeStub.fromJSON(data["birthCountry"]),
+			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
+			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
+			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
+			schoolingInfos: data["schoolingInfos"].map((x0) => SchoolingInfo.fromJSON(x0) ),
+			employementInfos: data["employementInfos"].map((x0) => EmploymentInfo.fromJSON(x0) ),
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedPatient value) {
 		Map<String, dynamic> entityAsMap = {
@@ -440,31 +539,31 @@ class EncryptedPatient implements Patient {
 }
 
 class DecryptedPatient implements Patient {
-	@override  String id;
-	@override  List<Identifier> identifier = [];
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  String? firstName;
-	@override  String? lastName;
-	@override  List<PersonName> names = [];
-	@override  String? companyName;
-	@override  List<String> languages = [];
-	@override  List<DecryptedAddress> addresses = [];
-	@override  String? civility;
-	@override  Gender? gender = Gender.unknown;
-	@override  Gender? birthSex = Gender.unknown;
-	@override  String? mergeToPatientId;
-	@override  Set<String> mergedIds = {};
-	@override  String? alias;
-	@override  bool active = true;
-	@override  DeactivationReason deactivationReason = DeactivationReason.none;
+	@override String id;
+	@override List<Identifier> identifier = [];
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override String? firstName;
+	@override String? lastName;
+	@override List<PersonName> names = [];
+	@override String? companyName;
+	@override List<String> languages = [];
+	@override List<DecryptedAddress> addresses = [];
+	@override String? civility;
+	@override Gender? gender = Gender.unknown;
+	@override Gender? birthSex = Gender.unknown;
+	@override String? mergeToPatientId;
+	@override Set<String> mergedIds = {};
+	@override String? alias;
+	@override bool active = true;
+	@override DeactivationReason deactivationReason = DeactivationReason.none;
 	int? _deactivationDate;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get deactivationDate => _deactivationDate;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set deactivationDate(int? value) {
@@ -473,11 +572,11 @@ class DecryptedPatient implements Patient {
 		}
 		_deactivationDate = value;
 	}
-	@override  String? ssin;
-	@override  String? maidenName;
-	@override  String? spouseName;
-	@override  String? partnerName;
-	@override  PersonalStatus? personalStatus = PersonalStatus.unknown;
+	@override String? ssin;
+	@override String? maidenName;
+	@override String? spouseName;
+	@override String? partnerName;
+	@override PersonalStatus? personalStatus = PersonalStatus.unknown;
 	int? _dateOfBirth;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get dateOfBirth => _dateOfBirth;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set dateOfBirth(int? value) {
@@ -494,136 +593,136 @@ class DecryptedPatient implements Patient {
 		}
 		_dateOfDeath = value;
 	}
-	@override  int? timestampOfLatestEidReading;
-	@override  String? placeOfBirth;
-	@override  String? placeOfDeath;
-	@override  bool? deceased;
-	@override  String? education;
-	@override  String? profession;
-	@override  List<Annotation> notes = [];
-	@override  String? note;
-	@override  String? administrativeNote;
-	@override  String? nationality;
-	@override  String? race;
-	@override  String? ethnicity;
-	@override  String? preferredUserId;
-	@override  Uint8List? picture;
-	@override  String? externalId;
-	@override  List<DecryptedInsurability> insurabilities = [];
-	@override  List<Partnership> partnerships = [];
-	@override  List<DecryptedPatientHealthCareParty> patientHealthCareParties = [];
-	@override  List<DecryptedFinancialInstitutionInformation> financialInstitutionInformation = [];
-	@override  List<DecryptedMedicalHouseContract> medicalHouseContracts = [];
-	@override  List<CodeStub> patientProfessions = [];
-	@override  Map<String, List<String>> parameters = {};
-	@override  Set<DecryptedPropertyStub> properties = {};
-	@override  Map<String, List<HexString>> hcPartyKeys = {};
-	@override  Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
-	@override  Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
-	@override  Map<String, HexString> privateKeyShamirPartitions = {};
-	@override  SpkiHexString? publicKey;
-	@override  Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-	@override  String? medicalLocationId;
-	@override  Set<String> nonDuplicateIds = {};
-	@override  Set<String> encryptedAdministrativesDocuments = {};
-	@override  String? comment;
-	@override  String? warning;
-	@override  CodeStub? fatherBirthCountry;
-	@override  CodeStub? birthCountry;
-	@override  CodeStub? nativeCountry;
-	@override  CodeStub? socialStatus;
-	@override  CodeStub? mainSourceOfIncome;
-	@override  List<SchoolingInfo> schoolingInfos = [];
-	@override  List<EmploymentInfo> employementInfos = [];
-
-	DecryptedPatient({
-		required this.id,
-		int? deactivationDate,
-		int? dateOfBirth,
-		int? dateOfDeath,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.endOfLife,
-		this.deletionDate,
-		this.firstName,
-		this.lastName,
-		this.companyName,
-		this.civility,
-		this.mergeToPatientId,
-		this.alias,
-		this.ssin,
-		this.maidenName,
-		this.spouseName,
-		this.partnerName,
-		this.timestampOfLatestEidReading,
-		this.placeOfBirth,
-		this.placeOfDeath,
-		this.deceased,
-		this.education,
-		this.profession,
-		this.note,
-		this.administrativeNote,
-		this.nationality,
-		this.race,
-		this.ethnicity,
-		this.preferredUserId,
-		this.picture,
-		this.externalId,
-		this.publicKey,
-		this.encryptedSelf,
-		this.securityMetadata,
-		this.medicalLocationId,
-		this.comment,
-		this.warning,
-		this.fatherBirthCountry,
-		this.birthCountry,
-		this.nativeCountry,
-		this.socialStatus,
-		this.mainSourceOfIncome,
-		List<Identifier>? identifier,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		List<PersonName>? names,
-		List<String>? languages,
-		List<DecryptedAddress>? addresses,
-		Gender? gender,
-		Gender? birthSex,
-		Set<String>? mergedIds,
-		bool? active,
-		DeactivationReason? deactivationReason,
-		PersonalStatus? personalStatus,
-		List<Annotation>? notes,
-		List<DecryptedInsurability>? insurabilities,
-		List<Partnership>? partnerships,
-		List<DecryptedPatientHealthCareParty>? patientHealthCareParties,
-		List<DecryptedFinancialInstitutionInformation>? financialInstitutionInformation,
-		List<DecryptedMedicalHouseContract>? medicalHouseContracts,
-		List<CodeStub>? patientProfessions,
-		Map<String, List<String>>? parameters,
-		Set<DecryptedPropertyStub>? properties,
-		Map<String, List<HexString>>? hcPartyKeys,
-		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
-		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
-		Map<String, HexString>? privateKeyShamirPartitions,
-		Set<SpkiHexString>? publicKeysForOaepWithSha256,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys,
-		Set<String>? nonDuplicateIds,
-		Set<String>? encryptedAdministrativesDocuments,
-		List<SchoolingInfo>? schoolingInfos,
-		List<EmploymentInfo>? employementInfos
-	}) : identifier = identifier ?? [],
+	@override int? timestampOfLatestEidReading;
+	@override String? placeOfBirth;
+	@override String? placeOfDeath;
+	@override bool? deceased;
+	@override String? education;
+	@override String? profession;
+	@override List<Annotation> notes = [];
+	@override String? note;
+	@override String? administrativeNote;
+	@override String? nationality;
+	@override String? race;
+	@override String? ethnicity;
+	@override String? preferredUserId;
+	@override Uint8List? picture;
+	@override String? externalId;
+	@override List<DecryptedInsurability> insurabilities = [];
+	@override List<Partnership> partnerships = [];
+	@override List<DecryptedPatientHealthCareParty> patientHealthCareParties = [];
+	@override List<DecryptedFinancialInstitutionInformation> financialInstitutionInformation = [];
+	@override List<DecryptedMedicalHouseContract> medicalHouseContracts = [];
+	@override List<CodeStub> patientProfessions = [];
+	@override Map<String, List<String>> parameters = {};
+	@override Set<DecryptedPropertyStub> properties = {};
+	@override Map<String, List<HexString>> hcPartyKeys = {};
+	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
+	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
+	@override Map<String, HexString> privateKeyShamirPartitions = {};
+	@override SpkiHexString? publicKey;
+	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	@override String? medicalLocationId;
+	@override Set<String> nonDuplicateIds = {};
+	@override Set<String> encryptedAdministrativesDocuments = {};
+	@override String? comment;
+	@override String? warning;
+	@override CodeStub? fatherBirthCountry;
+	@override CodeStub? birthCountry;
+	@override CodeStub? nativeCountry;
+	@override CodeStub? socialStatus;
+	@override CodeStub? mainSourceOfIncome;
+	@override List<SchoolingInfo> schoolingInfos = [];
+	@override List<EmploymentInfo> employementInfos = [];
+	DecryptedPatient(
+		this.id,
+		{
+			int? deactivationDate,
+			int? dateOfBirth,
+			int? dateOfDeath,
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.endOfLife,
+			this.deletionDate,
+			this.firstName,
+			this.lastName,
+			this.companyName,
+			this.civility,
+			this.mergeToPatientId,
+			this.alias,
+			this.ssin,
+			this.maidenName,
+			this.spouseName,
+			this.partnerName,
+			this.timestampOfLatestEidReading,
+			this.placeOfBirth,
+			this.placeOfDeath,
+			this.deceased,
+			this.education,
+			this.profession,
+			this.note,
+			this.administrativeNote,
+			this.nationality,
+			this.race,
+			this.ethnicity,
+			this.preferredUserId,
+			this.picture,
+			this.externalId,
+			this.publicKey,
+			this.encryptedSelf,
+			this.securityMetadata,
+			this.medicalLocationId,
+			this.comment,
+			this.warning,
+			this.fatherBirthCountry,
+			this.birthCountry,
+			this.nativeCountry,
+			this.socialStatus,
+			this.mainSourceOfIncome,
+			List<Identifier>? identifier,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			List<PersonName>? names,
+			List<String>? languages,
+			List<DecryptedAddress>? addresses,
+			Gender? gender,
+			Gender? birthSex,
+			Set<String>? mergedIds,
+			bool? active,
+			DeactivationReason? deactivationReason,
+			PersonalStatus? personalStatus,
+			List<Annotation>? notes,
+			List<DecryptedInsurability>? insurabilities,
+			List<Partnership>? partnerships,
+			List<DecryptedPatientHealthCareParty>? patientHealthCareParties,
+			List<DecryptedFinancialInstitutionInformation>? financialInstitutionInformation,
+			List<DecryptedMedicalHouseContract>? medicalHouseContracts,
+			List<CodeStub>? patientProfessions,
+			Map<String, List<String>>? parameters,
+			Set<DecryptedPropertyStub>? properties,
+			Map<String, List<HexString>>? hcPartyKeys,
+			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
+			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
+			Map<String, HexString>? privateKeyShamirPartitions,
+			Set<SpkiHexString>? publicKeysForOaepWithSha256,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Set<String>? nonDuplicateIds,
+			Set<String>? encryptedAdministrativesDocuments,
+			List<SchoolingInfo>? schoolingInfos,
+			List<EmploymentInfo>? employementInfos
+		}) : identifier = identifier ?? [],
 		tags = tags ?? {},
 		codes = codes ?? {},
 		names = names ?? [],
@@ -660,6 +759,91 @@ class DecryptedPatient implements Patient {
 		_deactivationDate = deactivationDate,
 		_dateOfBirth = dateOfBirth,
 		_dateOfDeath = dateOfDeath;
+
+	factory DecryptedPatient.fromJSON(Map<String, dynamic> data) {
+		return DecryptedPatient(
+			data["id"],
+			deactivationDate: data["deactivationDate"],
+			dateOfBirth: data["dateOfBirth"],
+			dateOfDeath: data["dateOfDeath"],
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			firstName: data["firstName"],
+			lastName: data["lastName"],
+			names: data["names"].map((x0) => PersonName.fromJSON(x0) ),
+			companyName: data["companyName"],
+			languages: data["languages"].map((x0) => x0 ),
+			addresses: data["addresses"].map((x0) => DecryptedAddress.fromJSON(x0) ),
+			civility: data["civility"],
+			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
+			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
+			mergeToPatientId: data["mergeToPatientId"],
+			mergedIds: data["mergedIds"].map((x0) => x0 ),
+			alias: data["alias"],
+			active: data["active"],
+			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
+			ssin: data["ssin"],
+			maidenName: data["maidenName"],
+			spouseName: data["spouseName"],
+			partnerName: data["partnerName"],
+			personalStatus: data["personalStatus"] == null ? null : PersonalStatus.fromJSON(data["personalStatus"]),
+			timestampOfLatestEidReading: data["timestampOfLatestEidReading"],
+			placeOfBirth: data["placeOfBirth"],
+			placeOfDeath: data["placeOfDeath"],
+			deceased: data["deceased"],
+			education: data["education"],
+			profession: data["profession"],
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			note: data["note"],
+			administrativeNote: data["administrativeNote"],
+			nationality: data["nationality"],
+			race: data["race"],
+			ethnicity: data["ethnicity"],
+			preferredUserId: data["preferredUserId"],
+			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
+			externalId: data["externalId"],
+			insurabilities: data["insurabilities"].map((x0) => DecryptedInsurability.fromJSON(x0) ),
+			partnerships: data["partnerships"].map((x0) => Partnership.fromJSON(x0) ),
+			patientHealthCareParties: data["patientHealthCareParties"].map((x0) => DecryptedPatientHealthCareParty.fromJSON(x0) ),
+			financialInstitutionInformation: data["financialInstitutionInformation"].map((x0) => DecryptedFinancialInstitutionInformation.fromJSON(x0) ),
+			medicalHouseContracts: data["medicalHouseContracts"].map((x0) => DecryptedMedicalHouseContract.fromJSON(x0) ),
+			patientProfessions: data["patientProfessions"].map((x0) => CodeStub.fromJSON(x0) ),
+			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ),
+			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			aesExchangeKeys: data["aesExchangeKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
+			transferKeys: data["transferKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
+			privateKeyShamirPartitions: data["privateKeyShamirPartitions"].map((k0, v0) => MapEntry(k0, v0)),
+			publicKey: data["publicKey"],
+			publicKeysForOaepWithSha256: data["publicKeysForOaepWithSha256"].map((x0) => x0 ),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			medicalLocationId: data["medicalLocationId"],
+			nonDuplicateIds: data["nonDuplicateIds"].map((x0) => x0 ),
+			encryptedAdministrativesDocuments: data["encryptedAdministrativesDocuments"].map((x0) => x0 ),
+			comment: data["comment"],
+			warning: data["warning"],
+			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
+			birthCountry: data["birthCountry"] == null ? null : CodeStub.fromJSON(data["birthCountry"]),
+			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
+			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
+			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
+			schoolingInfos: data["schoolingInfos"].map((x0) => SchoolingInfo.fromJSON(x0) ),
+			employementInfos: data["employementInfos"].map((x0) => EmploymentInfo.fromJSON(x0) ),
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedPatient value) {
 		Map<String, dynamic> entityAsMap = {

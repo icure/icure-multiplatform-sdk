@@ -11,17 +11,29 @@ class Identifier {
 	CodeStub? type;
 	String? use;
 	String? value;
-
 	Identifier({
-		this.id,
-		this.assigner,
-		this.start,
-		this.end,
-		this.system,
-		this.type,
-		this.use,
-		this.value
-	});
+			this.id,
+			this.assigner,
+			this.start,
+			this.end,
+			this.system,
+			this.type,
+			this.use,
+			this.value
+		});
+
+	factory Identifier.fromJSON(Map<String, dynamic> data) {
+		return Identifier(
+			id: data["id"],
+			assigner: data["assigner"],
+			start: data["start"],
+			end: data["end"],
+			system: data["system"],
+			type: data["type"] == null ? null : CodeStub.fromJSON(data["type"]),
+			use: data["use"],
+			value: data["value"]
+		);
+	}
 
 	static Map<String, dynamic> encode(Identifier value) {
 		Map<String, dynamic> entityAsMap = {

@@ -5,12 +5,19 @@ class GroupDeletionReport {
 	String type;
 	String id;
 	String server;
+	GroupDeletionReport(
+		this.type,
+		this.id,
+		this.server
+		);
 
-	GroupDeletionReport({
-		required this.type,
-		required this.id,
-		required this.server
-	});
+	factory GroupDeletionReport.fromJSON(Map<String, dynamic> data) {
+		return GroupDeletionReport(
+			data["type"],
+			data["id"],
+			data["server"]
+		);
+	}
 
 	static Map<String, dynamic> encode(GroupDeletionReport value) {
 		Map<String, dynamic> entityAsMap = {

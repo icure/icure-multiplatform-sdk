@@ -14,7 +14,6 @@ sealed class FinancialInstitutionInformation implements Encryptable {
 	abstract Set<String> preferredFiiForPartners;
 	@override abstract Base64String? encryptedSelf;
 
-
 	static Map<String, dynamic> encode(FinancialInstitutionInformation value) {
 		switch (value) {
 			case EncryptedFinancialInstitutionInformation entity:
@@ -27,28 +26,55 @@ sealed class FinancialInstitutionInformation implements Encryptable {
 				return entityJson;
 		}
 	}
+
+	static FinancialInstitutionInformation fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation":
+				return EncryptedFinancialInstitutionInformation.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation":
+				return DecryptedFinancialInstitutionInformation.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
-	@override  String? name;
-	@override  String? key;
-	@override  String? bankAccount;
-	@override  String? bic;
-	@override  String? proxyBankAccount;
-	@override  String? proxyBic;
-	@override  Set<String> preferredFiiForPartners = {};
-	@override  Base64String? encryptedSelf;
-
+	@override String? name;
+	@override String? key;
+	@override String? bankAccount;
+	@override String? bic;
+	@override String? proxyBankAccount;
+	@override String? proxyBic;
+	@override Set<String> preferredFiiForPartners = {};
+	@override Base64String? encryptedSelf;
 	EncryptedFinancialInstitutionInformation({
-		this.name,
-		this.key,
-		this.bankAccount,
-		this.bic,
-		this.proxyBankAccount,
-		this.proxyBic,
-		this.encryptedSelf,
-		Set<String>? preferredFiiForPartners
-	}) : preferredFiiForPartners = preferredFiiForPartners ?? {};
+			this.name,
+			this.key,
+			this.bankAccount,
+			this.bic,
+			this.proxyBankAccount,
+			this.proxyBic,
+			this.encryptedSelf,
+			Set<String>? preferredFiiForPartners
+		}) : preferredFiiForPartners = preferredFiiForPartners ?? {};
+
+	factory EncryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
+		return EncryptedFinancialInstitutionInformation(
+			name: data["name"],
+			key: data["key"],
+			bankAccount: data["bankAccount"],
+			bic: data["bic"],
+			proxyBankAccount: data["proxyBankAccount"],
+			proxyBic: data["proxyBic"],
+			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedFinancialInstitutionInformation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -66,25 +92,37 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 }
 
 class DecryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
-	@override  String? name;
-	@override  String? key;
-	@override  String? bankAccount;
-	@override  String? bic;
-	@override  String? proxyBankAccount;
-	@override  String? proxyBic;
-	@override  Set<String> preferredFiiForPartners = {};
-	@override  Base64String? encryptedSelf;
-
+	@override String? name;
+	@override String? key;
+	@override String? bankAccount;
+	@override String? bic;
+	@override String? proxyBankAccount;
+	@override String? proxyBic;
+	@override Set<String> preferredFiiForPartners = {};
+	@override Base64String? encryptedSelf;
 	DecryptedFinancialInstitutionInformation({
-		this.name,
-		this.key,
-		this.bankAccount,
-		this.bic,
-		this.proxyBankAccount,
-		this.proxyBic,
-		this.encryptedSelf,
-		Set<String>? preferredFiiForPartners
-	}) : preferredFiiForPartners = preferredFiiForPartners ?? {};
+			this.name,
+			this.key,
+			this.bankAccount,
+			this.bic,
+			this.proxyBankAccount,
+			this.proxyBic,
+			this.encryptedSelf,
+			Set<String>? preferredFiiForPartners
+		}) : preferredFiiForPartners = preferredFiiForPartners ?? {};
+
+	factory DecryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
+		return DecryptedFinancialInstitutionInformation(
+			name: data["name"],
+			key: data["key"],
+			bankAccount: data["bankAccount"],
+			bic: data["bic"],
+			proxyBankAccount: data["proxyBankAccount"],
+			proxyBic: data["proxyBic"],
+			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ),
+			encryptedSelf: data["encryptedSelf"]
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedFinancialInstitutionInformation value) {
 		Map<String, dynamic> entityAsMap = {

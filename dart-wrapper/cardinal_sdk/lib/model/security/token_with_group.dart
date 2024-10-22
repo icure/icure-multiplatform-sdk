@@ -5,12 +5,20 @@ class TokenWithGroup {
 	String token;
 	String groupId;
 	String? groupName;
+	TokenWithGroup(
+		this.token,
+		this.groupId,
+		{
+			this.groupName
+		});
 
-	TokenWithGroup({
-		required this.token,
-		required this.groupId,
-		this.groupName
-	});
+	factory TokenWithGroup.fromJSON(Map<String, dynamic> data) {
+		return TokenWithGroup(
+			data["token"],
+			data["groupId"],
+			groupName: data["groupName"],
+		);
+	}
 
 	static Map<String, dynamic> encode(TokenWithGroup value) {
 		Map<String, dynamic> entityAsMap = {

@@ -32,51 +32,81 @@ abstract interface class Field implements StructureElement {
 	abstract bool? now;
 	abstract bool? translate;
 
-
 	static Map<String, dynamic> encode(Field value) {
 		switch (value) {
 			case DropdownField entity:
 				Map<String, dynamic> entityJson = DropdownField.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.DropdownField";
+				entityJson["kotlinType"] = "dropdown";
 				return entityJson;
 			case RadioButton entity:
 				Map<String, dynamic> entityJson = RadioButton.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.RadioButton";
+				entityJson["kotlinType"] = "radio-button";
 				return entityJson;
 			case DatePicker entity:
 				Map<String, dynamic> entityJson = DatePicker.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.DatePicker";
+				entityJson["kotlinType"] = "date-picker";
 				return entityJson;
 			case TimePicker entity:
 				Map<String, dynamic> entityJson = TimePicker.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.TimePicker";
+				entityJson["kotlinType"] = "time-picker";
 				return entityJson;
 			case DateTimePicker entity:
 				Map<String, dynamic> entityJson = DateTimePicker.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.DateTimePicker";
+				entityJson["kotlinType"] = "date-time-picker";
 				return entityJson;
 			case NumberField entity:
 				Map<String, dynamic> entityJson = NumberField.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.NumberField";
+				entityJson["kotlinType"] = "number-field";
 				return entityJson;
 			case TextField entity:
 				Map<String, dynamic> entityJson = TextField.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.TextField";
+				entityJson["kotlinType"] = "textfield";
 				return entityJson;
 			case CheckBox entity:
 				Map<String, dynamic> entityJson = CheckBox.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.CheckBox";
+				entityJson["kotlinType"] = "checkbox";
 				return entityJson;
 			case MultipleChoice entity:
 				Map<String, dynamic> entityJson = MultipleChoice.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.MultipleChoice";
+				entityJson["kotlinType"] = "multiple-choice";
 				return entityJson;
 			case MeasureField entity:
 				Map<String, dynamic> entityJson = MeasureField.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.embed.form.template.MeasureField";
+				entityJson["kotlinType"] = "measure-field";
 				return entityJson;
 			default:
-				throw ArgumentError('Invalid subclass ${value}');
+				throw ArgumentError('Invalid subclass $value');
+		}
+	}
+
+	static Field fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "dropdown":
+				return DropdownField.fromJSON(data);
+			case "radio-button":
+				return RadioButton.fromJSON(data);
+			case "date-picker":
+				return DatePicker.fromJSON(data);
+			case "time-picker":
+				return TimePicker.fromJSON(data);
+			case "date-time-picker":
+				return DateTimePicker.fromJSON(data);
+			case "number-field":
+				return NumberField.fromJSON(data);
+			case "textfield":
+				return TextField.fromJSON(data);
+			case "checkbox":
+				return CheckBox.fromJSON(data);
+			case "multiple-choice":
+				return MultipleChoice.fromJSON(data);
+			case "measure-field":
+				return MeasureField.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
 		}
 	}
 }

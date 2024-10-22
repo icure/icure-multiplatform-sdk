@@ -13,19 +13,41 @@ enum Trigger {
 	static String encode(Trigger value) {
 		switch (value) {
 			case Trigger.init:
-				return '"Init"';
+				return '"INIT"';
 			case Trigger.change:
-				return '"Change"';
+				return '"CHANGE"';
 			case Trigger.click:
-				return '"Click"';
+				return '"CLICK"';
 			case Trigger.visible:
-				return '"Visible"';
+				return '"VISIBLE"';
 			case Trigger.error:
-				return '"Error"';
+				return '"ERROR"';
 			case Trigger.valid:
-				return '"Valid"';
+				return '"VALID"';
 			case Trigger.event:
-				return '"Event"';
+				return '"EVENT"';
+			}
+	}
+
+
+	static Trigger fromJSON(String data) {
+		switch (data) {
+			case "INIT":
+				return Trigger.init;
+			case "CHANGE":
+				return Trigger.change;
+			case "CLICK":
+				return Trigger.click;
+			case "VISIBLE":
+				return Trigger.visible;
+			case "ERROR":
+				return Trigger.error;
+			case "VALID":
+				return Trigger.valid;
+			case "EVENT":
+				return Trigger.event;
+			default:
+				throw ArgumentError('Invalid Trigger entry value $data');
 			}
 	}
 

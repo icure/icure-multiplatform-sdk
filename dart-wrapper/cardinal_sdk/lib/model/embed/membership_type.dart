@@ -11,15 +11,33 @@ enum MembershipType {
 	static String encode(MembershipType value) {
 		switch (value) {
 			case MembershipType.doctor:
-				return '"Doctor"';
+				return '"doctor"';
 			case MembershipType.mutuality:
-				return '"Mutuality"';
+				return '"mutuality"';
 			case MembershipType.patient:
-				return '"Patient"';
+				return '"patient"';
 			case MembershipType.specialist:
-				return '"Specialist"';
+				return '"specialist"';
 			case MembershipType.other:
-				return '"Other"';
+				return '"other"';
+			}
+	}
+
+
+	static MembershipType fromJSON(String data) {
+		switch (data) {
+			case "doctor":
+				return MembershipType.doctor;
+			case "mutuality":
+				return MembershipType.mutuality;
+			case "patient":
+				return MembershipType.patient;
+			case "specialist":
+				return MembershipType.specialist;
+			case "other":
+				return MembershipType.other;
+			default:
+				throw ArgumentError('Invalid MembershipType entry value $data');
 			}
 	}
 

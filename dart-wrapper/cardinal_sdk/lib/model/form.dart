@@ -41,7 +41,6 @@ sealed class Form implements StoredDocument, ICureDocument<String>, HasEncryptio
 	@override abstract Base64String? encryptedSelf;
 	@override abstract SecurityMetadata? securityMetadata;
 
-
 	static Map<String, dynamic> encode(Form value) {
 		switch (value) {
 			case EncryptedForm entity:
@@ -54,22 +53,37 @@ sealed class Form implements StoredDocument, ICureDocument<String>, HasEncryptio
 				return entityJson;
 		}
 	}
+
+	static Form fromJSON(Map<String, dynamic> data) {
+		if (data["kotlinType"] == null) {
+			throw ArgumentError('Missing discriminator: kotlinType');
+		}
+		String discriminator = data["kotlinType"];
+		switch (discriminator) {
+			case "com.icure.cardinal.sdk.model.EncryptedForm":
+				return EncryptedForm.fromJSON(data);
+			case "com.icure.cardinal.sdk.model.DecryptedForm":
+				return DecryptedForm.fromJSON(data);
+			default:
+				throw ArgumentError('Invalid subclass $discriminator');
+		}
+	}
 }
 
 class EncryptedForm implements Form {
-	@override  String id;
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  int? openingDate;
-	@override  String? status;
+	@override String id;
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override int? openingDate;
+	@override String? status;
 	int? _version;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get version => _version;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set version(int? value) {
@@ -78,57 +92,90 @@ class EncryptedForm implements Form {
 		}
 		_version = value;
 	}
-	@override  String? logicalUuid;
-	@override  String? descr;
-	@override  String? uniqueId;
-	@override  String? formTemplateId;
-	@override  String? contactId;
-	@override  String? healthElementId;
-	@override  String? planOfActionId;
-	@override  String? parent;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	EncryptedForm({
-		required this.id,
-		int? version,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.openingDate,
-		this.status,
-		this.logicalUuid,
-		this.descr,
-		this.uniqueId,
-		this.formTemplateId,
-		this.contactId,
-		this.healthElementId,
-		this.planOfActionId,
-		this.parent,
-		this.encryptedSelf,
-		this.securityMetadata,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : tags = tags ?? {},
+	@override String? logicalUuid;
+	@override String? descr;
+	@override String? uniqueId;
+	@override String? formTemplateId;
+	@override String? contactId;
+	@override String? healthElementId;
+	@override String? planOfActionId;
+	@override String? parent;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	EncryptedForm(
+		this.id,
+		{
+			int? version,
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.openingDate,
+			this.status,
+			this.logicalUuid,
+			this.descr,
+			this.uniqueId,
+			this.formTemplateId,
+			this.contactId,
+			this.healthElementId,
+			this.planOfActionId,
+			this.parent,
+			this.encryptedSelf,
+			this.securityMetadata,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : tags = tags ?? {},
 		codes = codes ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
 		_version = version;
+
+	factory EncryptedForm.fromJSON(Map<String, dynamic> data) {
+		return EncryptedForm(
+			data["id"],
+			version: data["version"],
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			openingDate: data["openingDate"],
+			status: data["status"],
+			logicalUuid: data["logicalUuid"],
+			descr: data["descr"],
+			uniqueId: data["uniqueId"],
+			formTemplateId: data["formTemplateId"],
+			contactId: data["contactId"],
+			healthElementId: data["healthElementId"],
+			planOfActionId: data["planOfActionId"],
+			parent: data["parent"],
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(EncryptedForm value) {
 		Map<String, dynamic> entityAsMap = {
@@ -166,19 +213,19 @@ class EncryptedForm implements Form {
 }
 
 class DecryptedForm implements Form {
-	@override  String id;
-	@override  String? rev;
-	@override  int? created;
-	@override  int? modified;
-	@override  String? author;
-	@override  String? responsible;
-	@override  String? medicalLocationId;
-	@override  Set<CodeStub> tags = {};
-	@override  Set<CodeStub> codes = {};
-	@override  int? endOfLife;
-	@override  int? deletionDate;
-	@override  int? openingDate;
-	@override  String? status;
+	@override String id;
+	@override String? rev;
+	@override int? created;
+	@override int? modified;
+	@override String? author;
+	@override String? responsible;
+	@override String? medicalLocationId;
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override int? endOfLife;
+	@override int? deletionDate;
+	@override int? openingDate;
+	@override String? status;
 	int? _version;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get version => _version;
 	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set version(int? value) {
@@ -187,57 +234,90 @@ class DecryptedForm implements Form {
 		}
 		_version = value;
 	}
-	@override  String? logicalUuid;
-	@override  String? descr;
-	@override  String? uniqueId;
-	@override  String? formTemplateId;
-	@override  String? contactId;
-	@override  String? healthElementId;
-	@override  String? planOfActionId;
-	@override  String? parent;
-	@override  Set<String> secretForeignKeys = {};
-	@override  Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override  Map<String, Set<Delegation>> delegations = {};
-	@override  Map<String, Set<Delegation>> encryptionKeys = {};
-	@override  Base64String? encryptedSelf;
-	@override  SecurityMetadata? securityMetadata;
-
-	DecryptedForm({
-		required this.id,
-		int? version,
-		this.rev,
-		this.created,
-		this.modified,
-		this.author,
-		this.responsible,
-		this.medicalLocationId,
-		this.endOfLife,
-		this.deletionDate,
-		this.openingDate,
-		this.status,
-		this.logicalUuid,
-		this.descr,
-		this.uniqueId,
-		this.formTemplateId,
-		this.contactId,
-		this.healthElementId,
-		this.planOfActionId,
-		this.parent,
-		this.encryptedSelf,
-		this.securityMetadata,
-		Set<CodeStub>? tags,
-		Set<CodeStub>? codes,
-		Set<String>? secretForeignKeys,
-		Map<String, Set<Delegation>>? cryptedForeignKeys,
-		Map<String, Set<Delegation>>? delegations,
-		Map<String, Set<Delegation>>? encryptionKeys
-	}) : tags = tags ?? {},
+	@override String? logicalUuid;
+	@override String? descr;
+	@override String? uniqueId;
+	@override String? formTemplateId;
+	@override String? contactId;
+	@override String? healthElementId;
+	@override String? planOfActionId;
+	@override String? parent;
+	@override Set<String> secretForeignKeys = {};
+	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
+	@override Map<String, Set<Delegation>> delegations = {};
+	@override Map<String, Set<Delegation>> encryptionKeys = {};
+	@override Base64String? encryptedSelf;
+	@override SecurityMetadata? securityMetadata;
+	DecryptedForm(
+		this.id,
+		{
+			int? version,
+			this.rev,
+			this.created,
+			this.modified,
+			this.author,
+			this.responsible,
+			this.medicalLocationId,
+			this.endOfLife,
+			this.deletionDate,
+			this.openingDate,
+			this.status,
+			this.logicalUuid,
+			this.descr,
+			this.uniqueId,
+			this.formTemplateId,
+			this.contactId,
+			this.healthElementId,
+			this.planOfActionId,
+			this.parent,
+			this.encryptedSelf,
+			this.securityMetadata,
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			Set<String>? secretForeignKeys,
+			Map<String, Set<Delegation>>? cryptedForeignKeys,
+			Map<String, Set<Delegation>>? delegations,
+			Map<String, Set<Delegation>>? encryptionKeys
+		}) : tags = tags ?? {},
 		codes = codes ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
 		_version = version;
+
+	factory DecryptedForm.fromJSON(Map<String, dynamic> data) {
+		return DecryptedForm(
+			data["id"],
+			version: data["version"],
+			rev: data["rev"],
+			created: data["created"],
+			modified: data["modified"],
+			author: data["author"],
+			responsible: data["responsible"],
+			medicalLocationId: data["medicalLocationId"],
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			endOfLife: data["endOfLife"],
+			deletionDate: data["deletionDate"],
+			openingDate: data["openingDate"],
+			status: data["status"],
+			logicalUuid: data["logicalUuid"],
+			descr: data["descr"],
+			uniqueId: data["uniqueId"],
+			formTemplateId: data["formTemplateId"],
+			contactId: data["contactId"],
+			healthElementId: data["healthElementId"],
+			planOfActionId: data["planOfActionId"],
+			parent: data["parent"],
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			encryptedSelf: data["encryptedSelf"],
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
+	}
 
 	static Map<String, dynamic> encode(DecryptedForm value) {
 		Map<String, dynamic> entityAsMap = {

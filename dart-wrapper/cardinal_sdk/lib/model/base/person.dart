@@ -14,5 +14,4 @@ abstract interface class Person implements Identifiable<String> {
 	abstract List<PersonName> names;
 	List<Address> get addresses;
 	abstract List<String> languages;
-
 }

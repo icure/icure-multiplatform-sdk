@@ -45,83 +45,169 @@ enum DocumentType {
 	static String encode(DocumentType value) {
 		switch (value) {
 			case DocumentType.admission:
-				return '"Admission"';
+				return '"admission"';
 			case DocumentType.alert:
-				return '"Alert"';
+				return '"alert"';
 			case DocumentType.bvtSample:
-				return '"BvtSample"';
+				return '"bvt_sample"';
 			case DocumentType.clinicalpath:
-				return '"Clinicalpath"';
+				return '"clinicalpath"';
 			case DocumentType.clinicalsummary:
-				return '"Clinicalsummary"';
+				return '"clinicalsummary"';
 			case DocumentType.contactreport:
-				return '"Contactreport"';
+				return '"contactreport"';
 			case DocumentType.quote:
-				return '"Quote"';
+				return '"quote"';
 			case DocumentType.invoice:
-				return '"Invoice"';
+				return '"invoice"';
 			case DocumentType.death:
-				return '"Death"';
+				return '"death"';
 			case DocumentType.discharge:
-				return '"Discharge"';
+				return '"discharge"';
 			case DocumentType.dischargereport:
-				return '"Dischargereport"';
+				return '"dischargereport"';
 			case DocumentType.ebirthBabyMedicalform:
-				return '"EbirthBabyMedicalform"';
+				return '"ebirth_baby_medicalform"';
 			case DocumentType.ebirthBabyNotification:
-				return '"EbirthBabyNotification"';
+				return '"ebirth_baby_notification"';
 			case DocumentType.ebirthMotherMedicalform:
-				return '"EbirthMotherMedicalform"';
+				return '"ebirth_mother_medicalform"';
 			case DocumentType.ebirthMotherNotification:
-				return '"EbirthMotherNotification"';
+				return '"ebirth_mother_notification"';
 			case DocumentType.ecareSafeConsultation:
-				return '"EcareSafeConsultation"';
+				return '"ecare_safe_consultation"';
 			case DocumentType.epidemiology:
-				return '"Epidemiology"';
+				return '"epidemiology"';
 			case DocumentType.intervention:
-				return '"Intervention"';
+				return '"intervention"';
 			case DocumentType.labrequest:
-				return '"Labrequest"';
+				return '"labrequest"';
 			case DocumentType.labresult:
-				return '"Labresult"';
+				return '"labresult"';
 			case DocumentType.medicaladvisoragreement:
-				return '"Medicaladvisoragreement"';
+				return '"medicaladvisoragreement"';
 			case DocumentType.medicationschemeelement:
-				return '"Medicationschemeelement"';
+				return '"medicationschemeelement"';
 			case DocumentType.note:
-				return '"Note"';
+				return '"note"';
 			case DocumentType.notification:
-				return '"Notification"';
+				return '"notification"';
 			case DocumentType.pharmaceuticalprescription:
-				return '"Pharmaceuticalprescription"';
+				return '"pharmaceuticalprescription"';
 			case DocumentType.prescription:
-				return '"Prescription"';
+				return '"prescription"';
 			case DocumentType.productdelivery:
-				return '"Productdelivery"';
+				return '"productdelivery"';
 			case DocumentType.quickdischargereport:
-				return '"Quickdischargereport"';
+				return '"quickdischargereport"';
 			case DocumentType.radiationexposuremonitoring:
-				return '"Radiationexposuremonitoring"';
+				return '"radiationexposuremonitoring"';
 			case DocumentType.referral:
-				return '"Referral"';
+				return '"referral"';
 			case DocumentType.report:
-				return '"Report"';
+				return '"report"';
 			case DocumentType.request:
-				return '"Request"';
+				return '"request"';
 			case DocumentType.result:
-				return '"Result"';
+				return '"result"';
 			case DocumentType.sumehr:
-				return '"Sumehr"';
+				return '"sumehr"';
 			case DocumentType.telemonitoring:
-				return '"Telemonitoring"';
+				return '"telemonitoring"';
 			case DocumentType.template:
-				return '"Template"';
+				return '"template"';
 			case DocumentType.templateAdmin:
-				return '"TemplateAdmin"';
+				return '"template_admin"';
 			case DocumentType.treatmentsuspension:
-				return '"Treatmentsuspension"';
+				return '"treatmentsuspension"';
 			case DocumentType.vaccination:
-				return '"Vaccination"';
+				return '"vaccination"';
+			}
+	}
+
+
+	static DocumentType fromJSON(String data) {
+		switch (data) {
+			case "admission":
+				return DocumentType.admission;
+			case "alert":
+				return DocumentType.alert;
+			case "bvt_sample":
+				return DocumentType.bvtSample;
+			case "clinicalpath":
+				return DocumentType.clinicalpath;
+			case "clinicalsummary":
+				return DocumentType.clinicalsummary;
+			case "contactreport":
+				return DocumentType.contactreport;
+			case "quote":
+				return DocumentType.quote;
+			case "invoice":
+				return DocumentType.invoice;
+			case "death":
+				return DocumentType.death;
+			case "discharge":
+				return DocumentType.discharge;
+			case "dischargereport":
+				return DocumentType.dischargereport;
+			case "ebirth_baby_medicalform":
+				return DocumentType.ebirthBabyMedicalform;
+			case "ebirth_baby_notification":
+				return DocumentType.ebirthBabyNotification;
+			case "ebirth_mother_medicalform":
+				return DocumentType.ebirthMotherMedicalform;
+			case "ebirth_mother_notification":
+				return DocumentType.ebirthMotherNotification;
+			case "ecare_safe_consultation":
+				return DocumentType.ecareSafeConsultation;
+			case "epidemiology":
+				return DocumentType.epidemiology;
+			case "intervention":
+				return DocumentType.intervention;
+			case "labrequest":
+				return DocumentType.labrequest;
+			case "labresult":
+				return DocumentType.labresult;
+			case "medicaladvisoragreement":
+				return DocumentType.medicaladvisoragreement;
+			case "medicationschemeelement":
+				return DocumentType.medicationschemeelement;
+			case "note":
+				return DocumentType.note;
+			case "notification":
+				return DocumentType.notification;
+			case "pharmaceuticalprescription":
+				return DocumentType.pharmaceuticalprescription;
+			case "prescription":
+				return DocumentType.prescription;
+			case "productdelivery":
+				return DocumentType.productdelivery;
+			case "quickdischargereport":
+				return DocumentType.quickdischargereport;
+			case "radiationexposuremonitoring":
+				return DocumentType.radiationexposuremonitoring;
+			case "referral":
+				return DocumentType.referral;
+			case "report":
+				return DocumentType.report;
+			case "request":
+				return DocumentType.request;
+			case "result":
+				return DocumentType.result;
+			case "sumehr":
+				return DocumentType.sumehr;
+			case "telemonitoring":
+				return DocumentType.telemonitoring;
+			case "template":
+				return DocumentType.template;
+			case "template_admin":
+				return DocumentType.templateAdmin;
+			case "treatmentsuspension":
+				return DocumentType.treatmentsuspension;
+			case "vaccination":
+				return DocumentType.vaccination;
+			default:
+				throw ArgumentError('Invalid DocumentType entry value $data');
 			}
 	}
 

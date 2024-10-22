@@ -6,12 +6,20 @@ class State {
 	String name;
 	StateToUpdate stateToUpdate;
 	bool canLaunchLauncher = false;
+	State(
+		this.name,
+		this.stateToUpdate,
+		{
+			bool? canLaunchLauncher
+		}) : canLaunchLauncher = canLaunchLauncher ?? false;
 
-	State({
-		required this.name,
-		required this.stateToUpdate,
-		bool? canLaunchLauncher
-	}) : canLaunchLauncher = canLaunchLauncher ?? false;
+	factory State.fromJSON(Map<String, dynamic> data) {
+		return State(
+			data["name"],
+			StateToUpdate.fromJSON(data["stateToUpdate"]),
+			canLaunchLauncher: data["canLaunchLauncher"],
+		);
+	}
 
 	static Map<String, dynamic> encode(State value) {
 		Map<String, dynamic> entityAsMap = {

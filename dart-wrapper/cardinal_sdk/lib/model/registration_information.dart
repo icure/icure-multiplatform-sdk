@@ -8,15 +8,26 @@ class RegistrationInformation {
 	String? userOptions;
 	Set<String> userRoles = {};
 	String? minimumKrakenVersion;
+	RegistrationInformation(
+		this.firstName,
+		this.lastName,
+		this.emailAddress,
+		{
+			this.userOptions,
+			this.minimumKrakenVersion,
+			Set<String>? userRoles
+		}) : userRoles = userRoles ?? {};
 
-	RegistrationInformation({
-		required this.firstName,
-		required this.lastName,
-		required this.emailAddress,
-		this.userOptions,
-		this.minimumKrakenVersion,
-		Set<String>? userRoles
-	}) : userRoles = userRoles ?? {};
+	factory RegistrationInformation.fromJSON(Map<String, dynamic> data) {
+		return RegistrationInformation(
+			data["firstName"],
+			data["lastName"],
+			data["emailAddress"],
+			userOptions: data["userOptions"],
+			userRoles: data["userRoles"].map((x0) => x0 ),
+			minimumKrakenVersion: data["minimumKrakenVersion"],
+		);
+	}
 
 	static Map<String, dynamic> encode(RegistrationInformation value) {
 		Map<String, dynamic> entityAsMap = {

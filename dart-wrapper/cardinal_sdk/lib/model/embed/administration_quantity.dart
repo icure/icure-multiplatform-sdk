@@ -6,12 +6,19 @@ class AdministrationQuantity {
 	double? quantity;
 	CodeStub? administrationUnit;
 	String? unit;
-
 	AdministrationQuantity({
-		this.quantity,
-		this.administrationUnit,
-		this.unit
-	});
+			this.quantity,
+			this.administrationUnit,
+			this.unit
+		});
+
+	factory AdministrationQuantity.fromJSON(Map<String, dynamic> data) {
+		return AdministrationQuantity(
+			quantity: data["quantity"],
+			administrationUnit: data["administrationUnit"] == null ? null : CodeStub.fromJSON(data["administrationUnit"]),
+			unit: data["unit"]
+		);
+	}
 
 	static Map<String, dynamic> encode(AdministrationQuantity value) {
 		Map<String, dynamic> entityAsMap = {

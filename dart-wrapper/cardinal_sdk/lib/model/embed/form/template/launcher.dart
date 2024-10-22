@@ -6,12 +6,20 @@ class Launcher {
 	String name;
 	Trigger triggerer;
 	bool shouldPassValue = false;
+	Launcher(
+		this.name,
+		this.triggerer,
+		{
+			bool? shouldPassValue
+		}) : shouldPassValue = shouldPassValue ?? false;
 
-	Launcher({
-		required this.name,
-		required this.triggerer,
-		bool? shouldPassValue
-	}) : shouldPassValue = shouldPassValue ?? false;
+	factory Launcher.fromJSON(Map<String, dynamic> data) {
+		return Launcher(
+			data["name"],
+			Trigger.fromJSON(data["triggerer"]),
+			shouldPassValue: data["shouldPassValue"],
+		);
+	}
 
 	static Map<String, dynamic> encode(Launcher value) {
 		Map<String, dynamic> entityAsMap = {
