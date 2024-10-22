@@ -31,7 +31,7 @@ class LegacyDelegationsDecryptor(
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<HexString>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
-		typedEntity.encryptionKeys,
+		typedEntity.entity.encryptionKeys,
 	) {
 		val fixedKey = it.replace("-", "")
 		kotlin.runCatching {
@@ -47,7 +47,7 @@ class LegacyDelegationsDecryptor(
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
-		typedEntity.delegations,
+		typedEntity.entity.delegations,
 	) { decrypted -> decrypted.takeIf { it.isNotBlank() } }
 
 	override fun decryptOwningEntityIdsOf(
@@ -55,14 +55,14 @@ class LegacyDelegationsDecryptor(
 		dataOwnersHierarchySubset: Set<String>
 	): Flow<DecryptedMetadataDetails<String>> = extractFromDelegations(
 		dataOwnersHierarchySubset,
-		typedEntity.cryptedForeignKeys,
+		typedEntity.entity.cryptedForeignKeys,
 	) { decrypted -> decrypted.takeIf { it.isNotBlank() } }
 
 	override suspend fun getEntityAccessLevel(
 		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? =
-		if (dataOwnersHierarchySubset.any { typedEntity.delegations.containsKey(it) }) {
+		if (dataOwnersHierarchySubset.any { typedEntity.entity.delegations.containsKey(it) }) {
 			AccessLevel.Write
 		} else {
 			null

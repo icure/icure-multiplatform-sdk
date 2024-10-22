@@ -23,7 +23,7 @@ class EntityValidationServiceImpl(
 	): E where E : Encryptable, E : HasEncryptionMetadata {
 		val encryptedJson = Serialization.json.encodeToJsonElement(encryptedEntitySerializer, encryptedEntity.entity).jsonObject
 		if (jsonEncryptionService.requiresEncryption(encryptedJson, fieldsToEncrypt)) throw EntityEncryptionException(
-			"${encryptedEntity.type.id} ${encryptedEntity.id} has some fields which should be encrypted according to the manifest but are not encrypted; you should not modify encrypted fields when working directly with encrypted entities."
+			"${encryptedEntity.type.id} ${encryptedEntity.entity.id} has some fields which should be encrypted according to the manifest but are not encrypted; you should not modify encrypted fields when working directly with encrypted entities."
 		)
 		return encryptedEntity.entity
 	}

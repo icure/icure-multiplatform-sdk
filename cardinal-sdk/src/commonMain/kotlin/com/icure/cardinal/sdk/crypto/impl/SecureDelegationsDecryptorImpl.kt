@@ -89,9 +89,9 @@ class SecureDelegationsDecryptorImpl(
 	): Collection<SecureDelegation> {
 		// If the data owner is explicit all delegations he can access has his id. If the delegator is anonymous all delegations he can access are
 		// accessible by hash. No mixed scenario possible.
-		return entity.securityMetadata?.secureDelegations?.values?.filter { delegation ->
+		return entity.entity.securityMetadata?.secureDelegations?.values?.filter { delegation ->
 			dataOwnerId == delegation.delegator || dataOwnerId == delegation.delegate
-		}?.takeIf { it.isNotEmpty() } ?: entity.securityMetadata?.secureDelegations?.let { secureDelegations ->
+		}?.takeIf { it.isNotEmpty() } ?: entity.entity.securityMetadata?.secureDelegations?.let { secureDelegations ->
 			val accessibleKeys = exchangeData.getCachedDecryptionDataKeyByAccessControlHash(secureDelegations.keys, entity.type).keys
 			secureDelegations.filter { it.key in accessibleKeys }.values
 		} ?: emptyList()
@@ -123,7 +123,7 @@ class SecureDelegationsDecryptorImpl(
 
 	override suspend fun getDelegationMemberDetails(
 		entity: EntityWithTypeInfo<*>
-	): Map<SecureDelegationKeyString, SecureDelegationMembersDetails> = entity.securityMetadata?.let { securityMetadata ->
+	): Map<SecureDelegationKeyString, SecureDelegationMembersDetails> = entity.entity.securityMetadata?.let { securityMetadata ->
 		// 1. Add all information from fully explicit delegations.
 		val fullyExplicitInfo = securityMetadata.secureDelegations.mapNotNull { (key, delegation) ->
 			if (delegation.delegate != null && delegation.delegator != null) {
@@ -141,7 +141,7 @@ class SecureDelegationsDecryptorImpl(
 			// 2. Attempt to identify the anonymous data owner of remaining delegations by checking if we have the exchange data cached by hash
 			// Note: we can find exchange data by hash only if we could successfully decrypt it
 			processDelegationsWithCachedKeyAndEmit(
-				entity.securityMetadata?.secureDelegations?.toList()?.filter {
+				entity.entity.securityMetadata?.secureDelegations?.toList()?.filter {
 					it.second.delegate == null || it.second.delegator == null
 				} ?: emptyList(),
 				entity,
@@ -217,7 +217,7 @@ class SecureDelegationsDecryptorImpl(
 
 		// Step 1) Secure delegations with cached exchange data by hash
 		processDelegationsWithCachedKeyAndEmit(
-			typedEntity.securityMetadata?.secureDelegations?.toList() ?: emptyList(),
+			typedEntity.entity.securityMetadata?.secureDelegations?.toList() ?: emptyList(),
 			typedEntity,
 			decryptExchangeData
 		).filter { (_ , delegation) ->
