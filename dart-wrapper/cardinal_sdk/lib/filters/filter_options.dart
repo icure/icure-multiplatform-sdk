@@ -1,7 +1,7 @@
 
 class FilterOptions<E> {
-  Map<String, dynamic> _json;
-  FilterOptions(this._json);
+  Map<String, dynamic> json;
+  FilterOptions(this.json);
 }
 
 class SortableFilterOptions<E> extends FilterOptions<E> {
