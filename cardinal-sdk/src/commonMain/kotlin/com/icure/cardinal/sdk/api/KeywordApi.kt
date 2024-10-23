@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 interface KeywordApi {
 	suspend fun getKeyword(frontEndMigrationId: String): Keyword
 	suspend fun createKeyword(frontEndMigration: Keyword): Keyword
+	@Deprecated("Will be replaced by filters")
 	suspend fun getKeywords(
 		@DefaultValue("null")
 		startDocumentId: String? = null,

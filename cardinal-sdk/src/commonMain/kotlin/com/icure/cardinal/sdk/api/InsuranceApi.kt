@@ -10,7 +10,7 @@ interface InsuranceApi {
 	suspend fun getInsurances(insuranceIds: List<String>): List<Insurance>
 	suspend fun createInsurance(insurance: Insurance): Insurance
 	suspend fun deleteInsurance(insuranceId: String): DocIdentifier
-
+	@Deprecated("Will be replaced by filters")
 	suspend fun getAllInsurances(
 		@DefaultValue("null")
 		startDocumentId: String? = null,

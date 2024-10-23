@@ -9,6 +9,7 @@ interface TarificationApi {
 	suspend fun createTarification(tarification: Tarification): Tarification
 	suspend fun getTarifications(tarificationIds: List<String>): List<Tarification>
 	suspend fun modifyTarification(tarification: Tarification): Tarification
+	@Deprecated("Will be replaced by filters")
 	suspend fun findTarificationsByLabel(
 		@DefaultValue("null")
 		region: String? = null,
@@ -25,7 +26,7 @@ interface TarificationApi {
 		@DefaultValue("null")
 		limit: Int? = null
 	): PaginatedList<Tarification>
-
+	@Deprecated("Will be replaced by filters")
 	suspend fun findTarificationsBy(
 		@DefaultValue("null")
 		region: String? = null,
@@ -42,7 +43,6 @@ interface TarificationApi {
 		@DefaultValue("null")
 		limit: Int? = null
 	): PaginatedList<Tarification>
-
 	suspend fun getTarificationWithParts(type: String, tarification: String, version: String): Tarification
 }
 

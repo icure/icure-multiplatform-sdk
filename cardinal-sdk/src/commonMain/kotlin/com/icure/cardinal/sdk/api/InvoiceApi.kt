@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.IcureStub
@@ -107,7 +106,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	): List<E>
 
 	suspend fun removeCodes(userId: String, serviceId: String, secretFKeys: String, tarificationIds: List<String>): List<E>
-
+	@Deprecated("Will be replaced by filters")
 	suspend fun findInvoicesByAuthor(
 		hcPartyId: String,
 		@DefaultValue("null")

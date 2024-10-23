@@ -14,6 +14,7 @@ interface DocumentTemplateApi {
 	suspend fun listDocumentTemplatesByDocumentType(documentTypeCode: String): List<DocumentTemplate>
 	suspend fun listDocumentTemplatesByDocumentTypeForCurrentUser(documentTypeCode: String): List<DocumentTemplate>
 	suspend fun listDocumentTemplates(): List<DocumentTemplate>
+	@Deprecated("Will be replaced by filters")
 	suspend fun findAllDocumentTemplates(
 		@DefaultValue("null")
 		startKey: String? = null,
@@ -22,7 +23,6 @@ interface DocumentTemplateApi {
 		@DefaultValue("null")
 		limit: Int? = null
 	): PaginatedList<DocumentTemplate>
-
 	suspend fun getDocumentTemplateAttachment(documentTemplateId: String, attachmentId: String): ByteArray
 	suspend fun getAttachmentText(documentTemplateId: String, attachmentId: String): ByteArray
 	suspend fun setDocumentTemplateAttachment(documentTemplateId: String, payload: ByteArray): DocumentTemplate
