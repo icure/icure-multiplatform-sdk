@@ -149,7 +149,7 @@ class FormPlatformApi {
 			'FormApi.matchFormsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBy");
@@ -162,7 +162,7 @@ class FormPlatformApi {
 			'FormApi.matchFormsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBySorted");
@@ -345,7 +345,7 @@ class FormPlatformApi {
 			'FormApi.filterFormsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBy");
@@ -358,7 +358,7 @@ class FormPlatformApi {
 			'FormApi.filterFormsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBySorted");
@@ -510,7 +510,7 @@ class TryAndRecoverFormPlatformApi {
 			'FormApi.tryAndRecover.filterFormsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBy");
@@ -523,7 +523,7 @@ class TryAndRecoverFormPlatformApi {
 			'FormApi.tryAndRecover.filterFormsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBySorted");
@@ -675,7 +675,7 @@ class EncryptedFormPlatformApi {
 			'FormApi.encrypted.filterFormsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBy");
@@ -688,7 +688,7 @@ class EncryptedFormPlatformApi {
 			'FormApi.encrypted.filterFormsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBySorted");

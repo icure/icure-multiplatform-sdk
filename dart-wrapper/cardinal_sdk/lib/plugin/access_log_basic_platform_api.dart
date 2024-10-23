@@ -17,7 +17,7 @@ class AccessLogBasicPlatformApi {
 			'AccessLogBasicApi.matchAccessLogsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
@@ -30,7 +30,7 @@ class AccessLogBasicPlatformApi {
 			'AccessLogBasicApi.matchAccessLogsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBySorted");
@@ -43,7 +43,7 @@ class AccessLogBasicPlatformApi {
 			'AccessLogBasicApi.filterAccessLogsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBy");
@@ -56,7 +56,7 @@ class AccessLogBasicPlatformApi {
 			'AccessLogBasicApi.filterAccessLogsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBySorted");

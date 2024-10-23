@@ -150,7 +150,7 @@ class MessagePlatformApi {
 			'MessageApi.matchMessagesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMessagesBy");
@@ -163,7 +163,7 @@ class MessagePlatformApi {
 			'MessageApi.matchMessagesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMessagesBySorted");
@@ -279,7 +279,7 @@ class MessagePlatformApi {
 			'MessageApi.filterMessagesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBy");
@@ -292,7 +292,7 @@ class MessagePlatformApi {
 			'MessageApi.filterMessagesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBySorted");
@@ -388,7 +388,7 @@ class MessagePlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);
@@ -436,7 +436,7 @@ class TryAndRecoverMessagePlatformApi {
 			'MessageApi.tryAndRecover.filterMessagesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBy");
@@ -449,7 +449,7 @@ class TryAndRecoverMessagePlatformApi {
 			'MessageApi.tryAndRecover.filterMessagesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBySorted");
@@ -578,7 +578,7 @@ class EncryptedMessagePlatformApi {
 			'MessageApi.encrypted.filterMessagesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBy");
@@ -591,7 +591,7 @@ class EncryptedMessagePlatformApi {
 			'MessageApi.encrypted.filterMessagesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBySorted");

@@ -19,7 +19,7 @@ class FormBasicPlatformApi {
 			'FormBasicApi.matchFormsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBy");
@@ -32,7 +32,7 @@ class FormBasicPlatformApi {
 			'FormBasicApi.matchFormsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBySorted");
@@ -45,7 +45,7 @@ class FormBasicPlatformApi {
 			'FormBasicApi.filterFormsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBy");
@@ -58,7 +58,7 @@ class FormBasicPlatformApi {
 			'FormBasicApi.filterFormsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBySorted");

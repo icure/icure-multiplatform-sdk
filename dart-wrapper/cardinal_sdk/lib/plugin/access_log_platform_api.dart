@@ -134,7 +134,7 @@ class AccessLogPlatformApi {
 			'AccessLogApi.matchAccessLogsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
@@ -147,7 +147,7 @@ class AccessLogPlatformApi {
 			'AccessLogApi.matchAccessLogsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBySorted");
@@ -263,7 +263,7 @@ class AccessLogPlatformApi {
 			'AccessLogApi.filterAccessLogsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBy");
@@ -276,7 +276,7 @@ class AccessLogPlatformApi {
 			'AccessLogApi.filterAccessLogsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBySorted");
@@ -389,7 +389,7 @@ class TryAndRecoverAccessLogPlatformApi {
 			'AccessLogApi.tryAndRecover.filterAccessLogsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBy");
@@ -402,7 +402,7 @@ class TryAndRecoverAccessLogPlatformApi {
 			'AccessLogApi.tryAndRecover.filterAccessLogsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBySorted");
@@ -515,7 +515,7 @@ class EncryptedAccessLogPlatformApi {
 			'AccessLogApi.encrypted.filterAccessLogsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBy");
@@ -528,7 +528,7 @@ class EncryptedAccessLogPlatformApi {
 			'AccessLogApi.encrypted.filterAccessLogsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBySorted");

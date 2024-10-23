@@ -20,7 +20,7 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.matchCalendarItemsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBy");
@@ -33,7 +33,7 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.matchCalendarItemsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBySorted");
@@ -46,7 +46,7 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.filterCalendarItemsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBy");
@@ -59,7 +59,7 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.filterCalendarItemsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBySorted");
@@ -213,7 +213,7 @@ class CalendarItemBasicPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);

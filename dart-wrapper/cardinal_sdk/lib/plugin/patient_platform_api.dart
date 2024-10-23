@@ -191,7 +191,7 @@ class PatientPlatformApi {
 			'PatientApi.matchPatientsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBy");
@@ -204,7 +204,7 @@ class PatientPlatformApi {
 			'PatientApi.matchPatientsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBySorted");
@@ -359,7 +359,7 @@ class PatientPlatformApi {
 			'PatientApi.filterPatientsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBy");
@@ -372,7 +372,7 @@ class PatientPlatformApi {
 			'PatientApi.filterPatientsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBySorted");
@@ -506,7 +506,7 @@ class PatientPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);
@@ -567,7 +567,7 @@ class TryAndRecoverPatientPlatformApi {
 			'PatientApi.tryAndRecover.filterPatientsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBy");
@@ -580,7 +580,7 @@ class TryAndRecoverPatientPlatformApi {
 			'PatientApi.tryAndRecover.filterPatientsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBySorted");
@@ -760,7 +760,7 @@ class EncryptedPatientPlatformApi {
 			'PatientApi.encrypted.filterPatientsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBy");
@@ -773,7 +773,7 @@ class EncryptedPatientPlatformApi {
 			'PatientApi.encrypted.filterPatientsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBySorted");

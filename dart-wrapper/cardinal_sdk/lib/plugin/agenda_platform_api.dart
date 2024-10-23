@@ -170,7 +170,7 @@ class AgendaPlatformApi {
 			'AgendaApi.matchAgendasBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAgendasBy");
@@ -183,7 +183,7 @@ class AgendaPlatformApi {
 			'AgendaApi.matchAgendasBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAgendasBySorted");
@@ -196,7 +196,7 @@ class AgendaPlatformApi {
 			'AgendaApi.filterAgendasBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAgendasBy");
@@ -209,7 +209,7 @@ class AgendaPlatformApi {
 			'AgendaApi.filterAgendasBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterAgendasBySorted");

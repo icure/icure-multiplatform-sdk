@@ -133,7 +133,7 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.matchMaintenanceTasksBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBy");
@@ -146,7 +146,7 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.matchMaintenanceTasksBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBySorted");
@@ -262,7 +262,7 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.filterMaintenanceTasksBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMaintenanceTasksBy");
@@ -275,7 +275,7 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.filterMaintenanceTasksBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMaintenanceTasksBySorted");
@@ -355,7 +355,7 @@ class MaintenanceTaskPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);
@@ -403,7 +403,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.tryAndRecover.filterMaintenanceTasksBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMaintenanceTasksBy");
@@ -416,7 +416,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.tryAndRecover.filterMaintenanceTasksBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMaintenanceTasksBySorted");
@@ -529,7 +529,7 @@ class EncryptedMaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.encrypted.filterMaintenanceTasksBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMaintenanceTasksBy");
@@ -542,7 +542,7 @@ class EncryptedMaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.encrypted.filterMaintenanceTasksBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMaintenanceTasksBySorted");

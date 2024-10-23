@@ -220,7 +220,7 @@ class DocumentPlatformApi {
 			'DocumentApi.matchDocumentsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBy");
@@ -233,7 +233,7 @@ class DocumentPlatformApi {
 			'DocumentApi.matchDocumentsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBySorted");
@@ -440,7 +440,7 @@ class DocumentPlatformApi {
 			'DocumentApi.filterDocumentsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBy");
@@ -453,7 +453,7 @@ class DocumentPlatformApi {
 			'DocumentApi.filterDocumentsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBySorted");
@@ -579,7 +579,7 @@ class TryAndRecoverDocumentPlatformApi {
 			'DocumentApi.tryAndRecover.filterDocumentsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBy");
@@ -592,7 +592,7 @@ class TryAndRecoverDocumentPlatformApi {
 			'DocumentApi.tryAndRecover.filterDocumentsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBySorted");
@@ -718,7 +718,7 @@ class EncryptedDocumentPlatformApi {
 			'DocumentApi.encrypted.filterDocumentsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBy");
@@ -731,7 +731,7 @@ class EncryptedDocumentPlatformApi {
 			'DocumentApi.encrypted.filterDocumentsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBySorted");

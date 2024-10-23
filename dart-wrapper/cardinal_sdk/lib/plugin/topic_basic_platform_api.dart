@@ -21,7 +21,7 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.matchTopicsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBy");
@@ -34,7 +34,7 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.matchTopicsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBySorted");
@@ -47,7 +47,7 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.filterTopicsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTopicsBy");
@@ -60,7 +60,7 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.filterTopicsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTopicsBySorted");
@@ -243,7 +243,7 @@ class TopicBasicPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);

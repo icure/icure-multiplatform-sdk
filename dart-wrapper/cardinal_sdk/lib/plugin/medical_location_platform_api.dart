@@ -82,7 +82,7 @@ class MedicalLocationPlatformApi {
 			'MedicalLocationApi.matchMedicalLocationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMedicalLocationsBy");
@@ -95,7 +95,7 @@ class MedicalLocationPlatformApi {
 			'MedicalLocationApi.matchMedicalLocationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMedicalLocationsBySorted");
@@ -108,7 +108,7 @@ class MedicalLocationPlatformApi {
 			'MedicalLocationApi.filterMedicalLocationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMedicalLocationsBy");
@@ -121,7 +121,7 @@ class MedicalLocationPlatformApi {
 			'MedicalLocationApi.filterMedicalLocationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterMedicalLocationsBySorted");

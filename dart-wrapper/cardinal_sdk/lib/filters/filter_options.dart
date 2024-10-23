@@ -15,6 +15,10 @@ class FilterOptions<E> {
 class SortableFilterOptions<E> extends FilterOptions<E> {
   SortableFilterOptions(Map<String, dynamic> json) : super(json);
 
+  static Map<String, dynamic> encode(SortableFilterOptions value) {
+    return Map.unmodifiable(value._json);
+  }
+
   factory SortableFilterOptions.fromJSON(Map<String, dynamic> data) {
     return SortableFilterOptions(data);
   }
@@ -23,6 +27,10 @@ class SortableFilterOptions<E> extends FilterOptions<E> {
 class BaseFilterOptions<E> extends FilterOptions<E> {
   BaseFilterOptions(Map<String, dynamic> json) : super(json);
 
+  static Map<String, dynamic> encode(BaseFilterOptions value) {
+    return Map.unmodifiable(value._json);
+  }
+
   factory BaseFilterOptions.fromJSON(Map<String, dynamic> data) {
     return BaseFilterOptions(data);
   }
@@ -30,6 +38,10 @@ class BaseFilterOptions<E> extends FilterOptions<E> {
 
 class BaseSortableFilterOptions<E> extends BaseFilterOptions<E> implements SortableFilterOptions<E> {
   BaseSortableFilterOptions(Map<String, dynamic> json) : super(json);
+
+  static Map<String, dynamic> encode(BaseSortableFilterOptions value) {
+    return Map.unmodifiable(value._json);
+  }
 
   factory BaseSortableFilterOptions.fromJSON(Map<String, dynamic> data) {
     return BaseSortableFilterOptions(data);

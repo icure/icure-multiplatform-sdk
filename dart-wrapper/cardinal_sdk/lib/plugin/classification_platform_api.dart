@@ -133,7 +133,7 @@ class ClassificationPlatformApi {
 			'ClassificationApi.matchClassificationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBy");
@@ -146,7 +146,7 @@ class ClassificationPlatformApi {
 			'ClassificationApi.matchClassificationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBySorted");
@@ -214,7 +214,7 @@ class ClassificationPlatformApi {
 			'ClassificationApi.filterClassificationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBy");
@@ -227,7 +227,7 @@ class ClassificationPlatformApi {
 			'ClassificationApi.filterClassificationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBySorted");
@@ -313,7 +313,7 @@ class TryAndRecoverClassificationPlatformApi {
 			'ClassificationApi.tryAndRecover.filterClassificationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBy");
@@ -326,7 +326,7 @@ class TryAndRecoverClassificationPlatformApi {
 			'ClassificationApi.tryAndRecover.filterClassificationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBySorted");
@@ -412,7 +412,7 @@ class EncryptedClassificationPlatformApi {
 			'ClassificationApi.encrypted.filterClassificationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBy");
@@ -425,7 +425,7 @@ class EncryptedClassificationPlatformApi {
 			'ClassificationApi.encrypted.filterClassificationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBySorted");

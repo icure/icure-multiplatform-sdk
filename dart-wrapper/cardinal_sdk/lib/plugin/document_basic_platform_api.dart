@@ -18,7 +18,7 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.matchDocumentsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBy");
@@ -31,7 +31,7 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.matchDocumentsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBySorted");
@@ -44,7 +44,7 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.filterDocumentsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBy");
@@ -57,7 +57,7 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.filterDocumentsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBySorted");

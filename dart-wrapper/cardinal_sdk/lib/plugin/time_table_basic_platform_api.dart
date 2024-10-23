@@ -17,7 +17,7 @@ class TimeTableBasicPlatformApi {
 			'TimeTableBasicApi.matchTimeTablesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBy");
@@ -30,7 +30,7 @@ class TimeTableBasicPlatformApi {
 			'TimeTableBasicApi.matchTimeTablesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBySorted");
@@ -43,7 +43,7 @@ class TimeTableBasicPlatformApi {
 			'TimeTableBasicApi.filterTimeTablesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBy");
@@ -56,7 +56,7 @@ class TimeTableBasicPlatformApi {
 			'TimeTableBasicApi.filterTimeTablesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBySorted");

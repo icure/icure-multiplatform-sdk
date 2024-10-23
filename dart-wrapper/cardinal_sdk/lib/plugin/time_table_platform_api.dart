@@ -134,7 +134,7 @@ class TimeTablePlatformApi {
 			'TimeTableApi.matchTimeTablesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBy");
@@ -147,7 +147,7 @@ class TimeTablePlatformApi {
 			'TimeTableApi.matchTimeTablesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBySorted");
@@ -263,7 +263,7 @@ class TimeTablePlatformApi {
 			'TimeTableApi.filterTimeTablesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBy");
@@ -276,7 +276,7 @@ class TimeTablePlatformApi {
 			'TimeTableApi.filterTimeTablesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBySorted");
@@ -389,7 +389,7 @@ class TryAndRecoverTimeTablePlatformApi {
 			'TimeTableApi.tryAndRecover.filterTimeTablesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBy");
@@ -402,7 +402,7 @@ class TryAndRecoverTimeTablePlatformApi {
 			'TimeTableApi.tryAndRecover.filterTimeTablesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBySorted");
@@ -515,7 +515,7 @@ class EncryptedTimeTablePlatformApi {
 			'TimeTableApi.encrypted.filterTimeTablesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBy");
@@ -528,7 +528,7 @@ class EncryptedTimeTablePlatformApi {
 			'TimeTableApi.encrypted.filterTimeTablesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBySorted");

@@ -20,7 +20,7 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.matchHealthElementsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBy");
@@ -33,7 +33,7 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.matchHealthElementsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBySorted");
@@ -46,7 +46,7 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.filterHealthElementsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBy");
@@ -59,7 +59,7 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.filterHealthElementsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBySorted");
@@ -226,7 +226,7 @@ class HealthElementBasicPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);

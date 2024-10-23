@@ -226,7 +226,7 @@ class CodePlatformApi {
 			'CodeApi.filterCodesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterCodesBy");
@@ -239,7 +239,7 @@ class CodePlatformApi {
 			'CodeApi.filterCodesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterCodesBySorted");
@@ -252,7 +252,7 @@ class CodePlatformApi {
 			'CodeApi.matchCodesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCodesBy");
@@ -265,7 +265,7 @@ class CodePlatformApi {
 			'CodeApi.matchCodesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCodesBySorted");

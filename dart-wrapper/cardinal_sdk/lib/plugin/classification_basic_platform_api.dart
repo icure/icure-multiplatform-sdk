@@ -16,7 +16,7 @@ class ClassificationBasicPlatformApi {
 			'ClassificationBasicApi.matchClassificationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBy");
@@ -29,7 +29,7 @@ class ClassificationBasicPlatformApi {
 			'ClassificationBasicApi.matchClassificationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBySorted");
@@ -42,7 +42,7 @@ class ClassificationBasicPlatformApi {
 			'ClassificationBasicApi.filterClassificationsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBy");
@@ -55,7 +55,7 @@ class ClassificationBasicPlatformApi {
 			'ClassificationBasicApi.filterClassificationsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBySorted");

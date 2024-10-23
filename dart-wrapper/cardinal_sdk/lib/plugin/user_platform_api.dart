@@ -183,7 +183,7 @@ class UserPlatformApi {
 			'UserApi.filterUsersBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersBy");
@@ -196,7 +196,7 @@ class UserPlatformApi {
 			'UserApi.matchUsersBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersBy");
@@ -209,7 +209,7 @@ class UserPlatformApi {
 			'UserApi.filterUsersBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersBySorted");
@@ -222,7 +222,7 @@ class UserPlatformApi {
 			'UserApi.matchUsersBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersBySorted");
@@ -379,7 +379,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersInGroupBy");
@@ -393,7 +393,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersInGroupBy");
@@ -407,7 +407,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersInGroupBySorted");
@@ -421,7 +421,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersInGroupBySorted");
@@ -610,7 +610,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);

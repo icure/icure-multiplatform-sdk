@@ -33,7 +33,7 @@ class ContactPlatformApi {
 			'ContactApi.matchContactsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchContactsBy");
@@ -46,7 +46,7 @@ class ContactPlatformApi {
 			'ContactApi.matchServicesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchServicesBy");
@@ -59,7 +59,7 @@ class ContactPlatformApi {
 			'ContactApi.matchContactsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchContactsBySorted");
@@ -72,7 +72,7 @@ class ContactPlatformApi {
 			'ContactApi.matchServicesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchServicesBySorted");
@@ -230,7 +230,7 @@ class ContactPlatformApi {
 			'ContactApi.subscribeToServiceCreateOrUpdateEvents',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);
@@ -361,7 +361,7 @@ class ContactPlatformApi {
 			'ContactApi.filterContactsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBy");
@@ -374,7 +374,7 @@ class ContactPlatformApi {
 			'ContactApi.filterServicesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBy");
@@ -387,7 +387,7 @@ class ContactPlatformApi {
 			'ContactApi.filterContactsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBySorted");
@@ -400,7 +400,7 @@ class ContactPlatformApi {
 			'ContactApi.filterServicesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBySorted");
@@ -519,7 +519,7 @@ class ContactPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);
@@ -567,7 +567,7 @@ class TryAndRecoverContactPlatformApi {
 			'ContactApi.tryAndRecover.filterContactsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBy");
@@ -580,7 +580,7 @@ class TryAndRecoverContactPlatformApi {
 			'ContactApi.tryAndRecover.filterServicesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBy");
@@ -593,7 +593,7 @@ class TryAndRecoverContactPlatformApi {
 			'ContactApi.tryAndRecover.filterContactsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBySorted");
@@ -606,7 +606,7 @@ class TryAndRecoverContactPlatformApi {
 			'ContactApi.tryAndRecover.filterServicesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBySorted");
@@ -758,7 +758,7 @@ class EncryptedContactPlatformApi {
 			'ContactApi.encrypted.filterContactsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBy");
@@ -771,7 +771,7 @@ class EncryptedContactPlatformApi {
 			'ContactApi.encrypted.filterServicesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBy");
@@ -784,7 +784,7 @@ class EncryptedContactPlatformApi {
 			'ContactApi.encrypted.filterContactsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBySorted");
@@ -797,7 +797,7 @@ class EncryptedContactPlatformApi {
 			'ContactApi.encrypted.filterServicesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBySorted");

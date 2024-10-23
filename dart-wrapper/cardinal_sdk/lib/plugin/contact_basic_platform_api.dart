@@ -22,7 +22,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.matchContactsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchContactsBy");
@@ -35,7 +35,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.matchServicesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchServicesBy");
@@ -48,7 +48,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.matchContactsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchContactsBySorted");
@@ -61,7 +61,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.matchServicesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchServicesBySorted");
@@ -74,7 +74,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.filterContactsBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBy");
@@ -87,7 +87,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.filterServicesBy',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBy");
@@ -100,7 +100,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.filterContactsBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBySorted");
@@ -113,7 +113,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.filterServicesBySorted',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBySorted");
@@ -126,7 +126,7 @@ class ContactBasicPlatformApi {
 			'ContactBasicApi.subscribeToServiceCreateOrUpdateEvents',
 			{
 				"sdkId": sdkId,
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);
@@ -334,7 +334,7 @@ class ContactBasicPlatformApi {
 			{
 				"sdkId": sdkId,
 				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
-				"filter": jsonEncode(filter.json),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
 		);
