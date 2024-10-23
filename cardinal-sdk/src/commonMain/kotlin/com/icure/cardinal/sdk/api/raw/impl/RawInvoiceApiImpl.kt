@@ -270,51 +270,6 @@ class RawInvoiceApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun listInvoicesByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedInvoice>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun findInvoicesByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<EncryptedInvoice>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(secretPatientKeys)
-		}.wrap()
-
-	override suspend fun listInvoicesDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun listInvoiceIdsByDataOwnerPatientInvoiceDate(
 		dataOwnerId: String,
 		startDate: Long?,
@@ -336,19 +291,15 @@ class RawInvoiceApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	override suspend fun findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>> =
+	override suspend fun listInvoicesDelegationsStubsByIds(invoiceIds: ListOfIds): HttpResponse<List<IcureStub>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "invoice", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
+				appendPathSegments("rest", "v2", "invoice", "delegations")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(secretPatientKeys)
+			setBody(invoiceIds)
 		}.wrap()
 
 	override suspend fun listInvoicesByHcPartyAndGroupId(

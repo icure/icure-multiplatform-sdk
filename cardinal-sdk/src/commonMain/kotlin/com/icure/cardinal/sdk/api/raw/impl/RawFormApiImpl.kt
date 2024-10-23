@@ -236,48 +236,6 @@ class RawFormApiImpl(
 			setBody(formDtos)
 		}.wrap()
 
-	override suspend fun listFormsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		healthElementId: String?,
-		planOfActionId: String?,
-		formTemplateId: String?,
-	): HttpResponse<List<EncryptedForm>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("healthElementId", healthElementId)
-				parameter("planOfActionId", planOfActionId)
-				parameter("formTemplateId", formTemplateId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun findFormsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-		healthElementId: String?,
-		planOfActionId: String?,
-		formTemplateId: String?,
-	): HttpResponse<List<EncryptedForm>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("healthElementId", healthElementId)
-				parameter("planOfActionId", planOfActionId)
-				parameter("formTemplateId", formTemplateId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(secretPatientKeys)
-		}.wrap()
-
 	override suspend fun listFormIdsByDataOwnerPatientOpeningDate(
 		dataOwnerId: String,
 		startDate: Long?,
@@ -299,34 +257,15 @@ class RawFormApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	override suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>> =
+	override suspend fun findFormsDelegationsStubsByIds(formIds: ListOfIds): HttpResponse<List<IcureStub>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "form", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
+				appendPathSegments("rest", "v2", "form", "delegations")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(secretPatientKeys)
+			setBody(formIds)
 		}.wrap()
 
 	override suspend fun getFormTemplate(

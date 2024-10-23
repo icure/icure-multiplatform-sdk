@@ -54,8 +54,6 @@ public interface RawMessageApi {
 		transportGuids: ListOfIds,
 	): HttpResponse<List<EncryptedMessage>>
 
-	suspend fun findMessagesByHCPartyPatientForeignKeys(secretFKeys: String): HttpResponse<List<EncryptedMessage>>
-
 	suspend fun listMessageIdsByDataOwnerPatientSentDate(
 		dataOwnerId: String,
 		startDate: Long? = null,
@@ -63,8 +61,6 @@ public interface RawMessageApi {
 		descending: Boolean? = null,
 		secretPatientKeys: ListOfIds,
 	): HttpResponse<List<String>>
-
-	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): HttpResponse<List<EncryptedMessage>>
 
 	suspend fun findMessages(
 		startKey: String? = null,
