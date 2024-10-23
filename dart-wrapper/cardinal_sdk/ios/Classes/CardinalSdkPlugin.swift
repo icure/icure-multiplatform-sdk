@@ -5,7 +5,7 @@ import CardinalDartSdkSupportLib
 public class CardinalSdkPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
       ApiScope.shared.setup()
-      let channel = FlutterMethodChannel(name: "cardinal_sdk", binaryMessenger: registrar.messenger())
+      let channel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/api", binaryMessenger: registrar.messenger())
       let instance = CardinalSdkPlugin()
       registrar.addMethodCallDelegate(instance, channel: channel)
   }

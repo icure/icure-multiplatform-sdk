@@ -12,7 +12,7 @@ class CardinalSdkPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     ApiScope.setup()
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/api")
     channel.setMethodCallHandler(this)
   }
 
