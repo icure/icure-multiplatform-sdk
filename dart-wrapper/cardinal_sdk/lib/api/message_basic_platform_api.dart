@@ -132,7 +132,7 @@ class MessageBasicPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.messageBasic.subscribeToEvents(
 			_sdkId,
 			events,

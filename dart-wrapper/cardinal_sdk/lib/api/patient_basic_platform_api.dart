@@ -161,7 +161,7 @@ class PatientBasicPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.patientBasic.subscribeToEvents(
 			_sdkId,
 			events,

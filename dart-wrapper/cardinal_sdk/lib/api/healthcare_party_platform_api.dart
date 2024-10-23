@@ -115,7 +115,7 @@ class HealthcarePartyPlatformApi {
 		);
 	}
 
-	Future<List<HealthcareParty>> getHealthcarePartiesInGroup(String groupId, { List<String>? healthcarePartyIds }) async {
+	Future<List<HealthcareParty>> getHealthcarePartiesInGroup(String groupId, List<String>? healthcarePartyIds) async {
 		return await CardinalSdkPlatformInterface.instance.healthcareParty.getHealthcarePartiesInGroup(
 			_sdkId,
 			groupId,
@@ -123,7 +123,7 @@ class HealthcarePartyPlatformApi {
 		);
 	}
 
-	Future<DataOwnerRegistrationSuccess> registerPatient(String groupId, HealthcareParty hcp, { String? parentHcPartyId, String? token, bool? useShortToken }) async {
+	Future<DataOwnerRegistrationSuccess> registerPatient(String groupId, String? parentHcPartyId, String? token, bool? useShortToken, HealthcareParty hcp) async {
 		return await CardinalSdkPlatformInterface.instance.healthcareParty.registerPatient(
 			_sdkId,
 			groupId,
@@ -226,7 +226,7 @@ class HealthcarePartyPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.healthcareParty.subscribeToEvents(
 			_sdkId,
 			events,

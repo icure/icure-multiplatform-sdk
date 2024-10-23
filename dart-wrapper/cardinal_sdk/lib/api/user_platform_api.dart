@@ -95,7 +95,7 @@ class UserPlatformApi {
 		);
 	}
 
-	Future<String> getToken(String userId, String key, { int? tokenValidity, String? token }) async {
+	Future<String> getToken(String userId, String key, int? tokenValidity, String? token) async {
 		return await CardinalSdkPlatformInterface.instance.user.getToken(
 			_sdkId,
 			userId,
@@ -195,7 +195,7 @@ class UserPlatformApi {
 		);
 	}
 
-	Future<String> getTokenInGroup(String groupId, String userId, String key, { String? token, int? tokenValidity }) async {
+	Future<String> getTokenInGroup(String groupId, String userId, String key, String? token, int? tokenValidity) async {
 		return await CardinalSdkPlatformInterface.instance.user.getTokenInGroup(
 			_sdkId,
 			groupId,
@@ -206,7 +206,7 @@ class UserPlatformApi {
 		);
 	}
 
-	Future<List<TokenWithGroup>> getTokenInAllGroups(String userIdentifier, String key, { String? token, int? tokenValidity }) async {
+	Future<List<TokenWithGroup>> getTokenInAllGroups(String userIdentifier, String key, String? token, int? tokenValidity) async {
 		return await CardinalSdkPlatformInterface.instance.user.getTokenInAllGroups(
 			_sdkId,
 			userIdentifier,
@@ -357,7 +357,7 @@ class UserPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<User>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<User>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.user.subscribeToEvents(
 			_sdkId,
 			events,

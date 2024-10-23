@@ -32,7 +32,7 @@ class CalendarItemPlatformApi {
 		);
 	}
 
-	Future<DecryptedCalendarItem> withEncryptionMetadata(DecryptedCalendarItem? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedCalendarItem> withEncryptionMetadata(DecryptedCalendarItem? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.calendarItem.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -144,7 +144,7 @@ class CalendarItemPlatformApi {
 		);
 	}
 
-	Future<DecryptedCalendarItem> shareWith(String delegateId, DecryptedCalendarItem calendarItem, { CalendarItemShareOptions? options }) async {
+	Future<DecryptedCalendarItem> shareWith(String delegateId, DecryptedCalendarItem calendarItem, CalendarItemShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.calendarItem.shareWith(
 			_sdkId,
 			delegateId,
@@ -220,7 +220,7 @@ class CalendarItemPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.calendarItem.subscribeToEvents(
 			_sdkId,
 			events,
@@ -234,7 +234,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 	String _sdkId;
 	TryAndRecoverCalendarItemPlatformApi(this._sdkId);
 
-	Future<CalendarItem> shareWith(String delegateId, CalendarItem calendarItem, { CalendarItemShareOptions? options }) async {
+	Future<CalendarItem> shareWith(String delegateId, CalendarItem calendarItem, CalendarItemShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.calendarItem.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -315,7 +315,7 @@ class EncryptedCalendarItemPlatformApi {
 	String _sdkId;
 	EncryptedCalendarItemPlatformApi(this._sdkId);
 
-	Future<EncryptedCalendarItem> shareWith(String delegateId, EncryptedCalendarItem calendarItem, { CalendarItemShareOptions? options }) async {
+	Future<EncryptedCalendarItem> shareWith(String delegateId, EncryptedCalendarItem calendarItem, CalendarItemShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.calendarItem.encrypted.shareWith(
 			_sdkId,
 			delegateId,

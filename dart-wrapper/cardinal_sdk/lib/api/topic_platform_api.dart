@@ -33,7 +33,7 @@ class TopicPlatformApi {
 		);
 	}
 
-	Future<DecryptedTopic> withEncryptionMetadata(DecryptedTopic? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedTopic> withEncryptionMetadata(DecryptedTopic? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.topic.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -145,7 +145,7 @@ class TopicPlatformApi {
 		);
 	}
 
-	Future<DecryptedTopic> shareWith(String delegateId, DecryptedTopic topic, { TopicShareOptions? options }) async {
+	Future<DecryptedTopic> shareWith(String delegateId, DecryptedTopic topic, TopicShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.topic.shareWith(
 			_sdkId,
 			delegateId,
@@ -229,7 +229,7 @@ class TopicPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.topic.subscribeToEvents(
 			_sdkId,
 			events,
@@ -243,7 +243,7 @@ class TryAndRecoverTopicPlatformApi {
 	String _sdkId;
 	TryAndRecoverTopicPlatformApi(this._sdkId);
 
-	Future<Topic> shareWith(String delegateId, Topic topic, { TopicShareOptions? options }) async {
+	Future<Topic> shareWith(String delegateId, Topic topic, TopicShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -332,7 +332,7 @@ class EncryptedTopicPlatformApi {
 	String _sdkId;
 	EncryptedTopicPlatformApi(this._sdkId);
 
-	Future<EncryptedTopic> shareWith(String delegateId, EncryptedTopic topic, { TopicShareOptions? options }) async {
+	Future<EncryptedTopic> shareWith(String delegateId, EncryptedTopic topic, TopicShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.topic.encrypted.shareWith(
 			_sdkId,
 			delegateId,

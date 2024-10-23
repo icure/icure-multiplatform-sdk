@@ -144,7 +144,7 @@ class DevicePlatformApi {
 		);
 	}
 
-	Future<List<Device>> getDevicesInGroup(String groupId, { List<String>? deviceIds }) async {
+	Future<List<Device>> getDevicesInGroup(String groupId, List<String>? deviceIds) async {
 		return await CardinalSdkPlatformInterface.instance.device.getDevicesInGroup(
 			_sdkId,
 			groupId,
@@ -176,7 +176,7 @@ class DevicePlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<Device>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<Device>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.device.subscribeToEvents(
 			_sdkId,
 			events,

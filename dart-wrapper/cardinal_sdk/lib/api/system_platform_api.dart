@@ -40,7 +40,7 @@ class SystemPlatformApi {
 		);
 	}
 
-	Future<bool> updateDesignDoc(String entityName, { bool? warmup }) async {
+	Future<bool> updateDesignDoc(String entityName, bool? warmup) async {
 		return await CardinalSdkPlatformInterface.instance.system.updateDesignDoc(
 			_sdkId,
 			entityName,
@@ -48,49 +48,49 @@ class SystemPlatformApi {
 		);
 	}
 
-	Future<List<IdWithRev>> resolvePatientsConflicts({ int? limit }) async {
+	Future<List<IdWithRev>> resolvePatientsConflicts(int? limit) async {
 		return await CardinalSdkPlatformInterface.instance.system.resolvePatientsConflicts(
 			_sdkId,
 			limit,
 		);
 	}
 
-	Future<List<IdWithRev>> resolveContactsConflicts({ int? limit }) async {
+	Future<List<IdWithRev>> resolveContactsConflicts(int? limit) async {
 		return await CardinalSdkPlatformInterface.instance.system.resolveContactsConflicts(
 			_sdkId,
 			limit,
 		);
 	}
 
-	Future<List<IdWithRev>> resolveFormsConflicts({ int? limit }) async {
+	Future<List<IdWithRev>> resolveFormsConflicts(int? limit) async {
 		return await CardinalSdkPlatformInterface.instance.system.resolveFormsConflicts(
 			_sdkId,
 			limit,
 		);
 	}
 
-	Future<List<IdWithRev>> resolveHealthElementsConflicts({ int? limit }) async {
+	Future<List<IdWithRev>> resolveHealthElementsConflicts(int? limit) async {
 		return await CardinalSdkPlatformInterface.instance.system.resolveHealthElementsConflicts(
 			_sdkId,
 			limit,
 		);
 	}
 
-	Future<List<IdWithRev>> resolveInvoicesConflicts({ int? limit }) async {
+	Future<List<IdWithRev>> resolveInvoicesConflicts(int? limit) async {
 		return await CardinalSdkPlatformInterface.instance.system.resolveInvoicesConflicts(
 			_sdkId,
 			limit,
 		);
 	}
 
-	Future<List<IdWithRev>> resolveMessagesConflicts({ int? limit }) async {
+	Future<List<IdWithRev>> resolveMessagesConflicts(int? limit) async {
 		return await CardinalSdkPlatformInterface.instance.system.resolveMessagesConflicts(
 			_sdkId,
 			limit,
 		);
 	}
 
-	Future<List<IdWithRev>> resolveDocumentsConflicts({ String? ids, int? limit }) async {
+	Future<List<IdWithRev>> resolveDocumentsConflicts(String? ids, int? limit) async {
 		return await CardinalSdkPlatformInterface.instance.system.resolveDocumentsConflicts(
 			_sdkId,
 			ids,

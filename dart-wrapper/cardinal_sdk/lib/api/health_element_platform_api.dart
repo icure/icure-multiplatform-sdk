@@ -39,7 +39,7 @@ class HealthElementPlatformApi {
 		);
 	}
 
-	Future<DecryptedHealthElement> withEncryptionMetadata(DecryptedHealthElement? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedHealthElement> withEncryptionMetadata(DecryptedHealthElement? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.healthElement.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -151,7 +151,7 @@ class HealthElementPlatformApi {
 		);
 	}
 
-	Future<DecryptedHealthElement> shareWith(String delegateId, DecryptedHealthElement healthElement, { HealthElementShareOptions? options }) async {
+	Future<DecryptedHealthElement> shareWith(String delegateId, DecryptedHealthElement healthElement, HealthElementShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.healthElement.shareWith(
 			_sdkId,
 			delegateId,
@@ -225,7 +225,7 @@ class HealthElementPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.healthElement.subscribeToEvents(
 			_sdkId,
 			events,
@@ -239,7 +239,7 @@ class TryAndRecoverHealthElementPlatformApi {
 	String _sdkId;
 	TryAndRecoverHealthElementPlatformApi(this._sdkId);
 
-	Future<HealthElement> shareWith(String delegateId, HealthElement healthElement, { HealthElementShareOptions? options }) async {
+	Future<HealthElement> shareWith(String delegateId, HealthElement healthElement, HealthElementShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.healthElement.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -318,7 +318,7 @@ class EncryptedHealthElementPlatformApi {
 	String _sdkId;
 	EncryptedHealthElementPlatformApi(this._sdkId);
 
-	Future<EncryptedHealthElement> shareWith(String delegateId, EncryptedHealthElement healthElement, { HealthElementShareOptions? options }) async {
+	Future<EncryptedHealthElement> shareWith(String delegateId, EncryptedHealthElement healthElement, HealthElementShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.healthElement.encrypted.shareWith(
 			_sdkId,
 			delegateId,

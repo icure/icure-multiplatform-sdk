@@ -95,7 +95,7 @@ class InvoiceBasicPlatformApi {
 		);
 	}
 
-	Future<List<EncryptedInvoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, List<EncryptedInvoicingCode> invoicingCodes, { String? insuranceId, String? invoiceId, int? gracePeriod }) async {
+	Future<List<EncryptedInvoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, String? insuranceId, String? invoiceId, int? gracePeriod, List<EncryptedInvoicingCode> invoicingCodes) async {
 		return await CardinalSdkPlatformInterface.instance.invoiceBasic.appendCodes(
 			_sdkId,
 			userId,
@@ -135,7 +135,7 @@ class InvoiceBasicPlatformApi {
 		);
 	}
 
-	Future<List<EncryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, { int? from, int? to }) async {
+	Future<List<EncryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, int? from, int? to) async {
 		return await CardinalSdkPlatformInterface.instance.invoiceBasic.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
 			_sdkId,
 			hcPartyId,

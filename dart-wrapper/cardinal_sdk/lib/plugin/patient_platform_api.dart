@@ -7,8 +7,6 @@ import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/model/id_with_rev.dart';
 import 'package:cardinal_sdk/crypto/entities/share_all_patient_data_options.dart';
-import 'package:cardinal_sdk/crypto/entities/share_all_patient_data_options_result.dart';
-import 'package:cardinal_sdk/crypto/entities/share_all_patient_data_options_tag.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';

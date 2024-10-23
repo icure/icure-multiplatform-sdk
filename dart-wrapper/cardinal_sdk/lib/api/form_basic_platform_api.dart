@@ -85,7 +85,7 @@ class FormBasicPlatformApi {
 		);
 	}
 
-	Future<FormTemplate> getFormTemplate(String formTemplateId, { bool? raw }) async {
+	Future<FormTemplate> getFormTemplate(String formTemplateId, bool? raw) async {
 		return await CardinalSdkPlatformInterface.instance.formBasic.getFormTemplate(
 			_sdkId,
 			formTemplateId,

@@ -30,7 +30,7 @@ class MaintenanceTaskPlatformApi {
 		);
 	}
 
-	Future<DecryptedMaintenanceTask> withEncryptionMetadata(DecryptedMaintenanceTask? maintenanceTask, { User? user, Map<String, AccessLevel> delegates = const {} }) async {
+	Future<DecryptedMaintenanceTask> withEncryptionMetadata(DecryptedMaintenanceTask? maintenanceTask, User? user, { Map<String, AccessLevel> delegates = const {} }) async {
 		return await CardinalSdkPlatformInterface.instance.maintenanceTask.withEncryptionMetadata(
 			_sdkId,
 			maintenanceTask,
@@ -140,7 +140,7 @@ class MaintenanceTaskPlatformApi {
 		);
 	}
 
-	Future<DecryptedMaintenanceTask> shareWith(String delegateId, DecryptedMaintenanceTask maintenanceTask, { MaintenanceTaskShareOptions? options }) async {
+	Future<DecryptedMaintenanceTask> shareWith(String delegateId, DecryptedMaintenanceTask maintenanceTask, MaintenanceTaskShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.maintenanceTask.shareWith(
 			_sdkId,
 			delegateId,
@@ -207,7 +207,7 @@ class MaintenanceTaskPlatformApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
+	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.maintenanceTask.subscribeToEvents(
 			_sdkId,
 			events,
@@ -221,7 +221,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 	String _sdkId;
 	TryAndRecoverMaintenanceTaskPlatformApi(this._sdkId);
 
-	Future<MaintenanceTask> shareWith(String delegateId, MaintenanceTask maintenanceTask, { MaintenanceTaskShareOptions? options }) async {
+	Future<MaintenanceTask> shareWith(String delegateId, MaintenanceTask maintenanceTask, MaintenanceTaskShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -293,7 +293,7 @@ class EncryptedMaintenanceTaskPlatformApi {
 	String _sdkId;
 	EncryptedMaintenanceTaskPlatformApi(this._sdkId);
 
-	Future<EncryptedMaintenanceTask> shareWith(String delegateId, EncryptedMaintenanceTask maintenanceTask, { MaintenanceTaskShareOptions? options }) async {
+	Future<EncryptedMaintenanceTask> shareWith(String delegateId, EncryptedMaintenanceTask maintenanceTask, MaintenanceTaskShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.shareWith(
 			_sdkId,
 			delegateId,

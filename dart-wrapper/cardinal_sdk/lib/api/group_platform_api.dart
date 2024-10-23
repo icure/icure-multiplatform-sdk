@@ -35,7 +35,7 @@ class GroupPlatformApi {
 		);
 	}
 
-	Future<Group> createGroup(String id, String name, String password, DatabaseInitialisation initialisationData, { GroupType? type = GroupType.null, String? server, int? q, int? n, String? superGroup, String? applicationId }) async {
+	Future<Group> createGroup(String id, String name, GroupType? type, String password, String? server, int? q, int? n, String? superGroup, String? applicationId, DatabaseInitialisation initialisationData) async {
 		return await CardinalSdkPlatformInterface.instance.group.createGroup(
 			_sdkId,
 			id,
@@ -51,7 +51,7 @@ class GroupPlatformApi {
 		);
 	}
 
-	Future<RegistrationSuccess> registerNewGroupAdministrator(RegistrationInformation registrationInformation, { GroupType? type = GroupType.null, PermissionType? role = PermissionType.null }) async {
+	Future<RegistrationSuccess> registerNewGroupAdministrator(GroupType? type, PermissionType? role, RegistrationInformation registrationInformation) async {
 		return await CardinalSdkPlatformInterface.instance.group.registerNewGroupAdministrator(
 			_sdkId,
 			type,
@@ -81,7 +81,7 @@ class GroupPlatformApi {
 		);
 	}
 
-	Future<String> getOperationToken(Operation operation, int? duration, { String? description }) async {
+	Future<String> getOperationToken(Operation operation, int? duration, String? description) async {
 		return await CardinalSdkPlatformInterface.instance.group.getOperationToken(
 			_sdkId,
 			operation,
@@ -151,7 +151,7 @@ class GroupPlatformApi {
 		);
 	}
 
-	Future<List<DesignDocument>> initDesignDocs(String id, bool? warmup, bool? dryRun, { String? clazz }) async {
+	Future<List<DesignDocument>> initDesignDocs(String id, String? clazz, bool? warmup, bool? dryRun) async {
 		return await CardinalSdkPlatformInterface.instance.group.initDesignDocs(
 			_sdkId,
 			id,
@@ -170,7 +170,7 @@ class GroupPlatformApi {
 		);
 	}
 
-	Future<void> resetStorage(String id, List<String> databases, { int? q, int? n }) async {
+	Future<void> resetStorage(String id, int? q, int? n, List<String> databases) async {
 		return await CardinalSdkPlatformInterface.instance.group.resetStorage(
 			_sdkId,
 			id,

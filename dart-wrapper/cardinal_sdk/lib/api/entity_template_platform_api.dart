@@ -30,7 +30,7 @@ class EntityTemplatePlatformApi {
 		);
 	}
 
-	Future<List<EntityTemplate>> listEntityTemplatesBy(String userId, String type, { String? searchString, bool? includeEntities }) async {
+	Future<List<EntityTemplate>> listEntityTemplatesBy(String userId, String type, String? searchString, bool? includeEntities) async {
 		return await CardinalSdkPlatformInterface.instance.entityTemplate.listEntityTemplatesBy(
 			_sdkId,
 			userId,
@@ -40,7 +40,7 @@ class EntityTemplatePlatformApi {
 		);
 	}
 
-	Future<List<EntityTemplate>> listAllEntityTemplatesBy(String type, { String? searchString, bool? includeEntities }) async {
+	Future<List<EntityTemplate>> listAllEntityTemplatesBy(String type, String? searchString, bool? includeEntities) async {
 		return await CardinalSdkPlatformInterface.instance.entityTemplate.listAllEntityTemplatesBy(
 			_sdkId,
 			type,
@@ -49,7 +49,7 @@ class EntityTemplatePlatformApi {
 		);
 	}
 
-	Future<List<EntityTemplate>> listEntityTemplatesByKeyword(String userId, String type, String keyword, { bool? includeEntities }) async {
+	Future<List<EntityTemplate>> listEntityTemplatesByKeyword(String userId, String type, String keyword, bool? includeEntities) async {
 		return await CardinalSdkPlatformInterface.instance.entityTemplate.listEntityTemplatesByKeyword(
 			_sdkId,
 			userId,

@@ -30,7 +30,7 @@ class DocumentPlatformApi {
 		);
 	}
 
-	Future<DecryptedDocument> withEncryptionMetadata(DecryptedDocument? base, Message? message, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedDocument> withEncryptionMetadata(DecryptedDocument? base, Message? message, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.document.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -246,7 +246,7 @@ class DocumentPlatformApi {
 		);
 	}
 
-	Future<DecryptedDocument> shareWith(String delegateId, DecryptedDocument document, { DocumentShareOptions? options }) async {
+	Future<DecryptedDocument> shareWith(String delegateId, DecryptedDocument document, DocumentShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.document.shareWith(
 			_sdkId,
 			delegateId,
@@ -325,7 +325,7 @@ class TryAndRecoverDocumentPlatformApi {
 	String _sdkId;
 	TryAndRecoverDocumentPlatformApi(this._sdkId);
 
-	Future<Document> shareWith(String delegateId, Document document, { DocumentShareOptions? options }) async {
+	Future<Document> shareWith(String delegateId, Document document, DocumentShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -404,7 +404,7 @@ class EncryptedDocumentPlatformApi {
 	String _sdkId;
 	EncryptedDocumentPlatformApi(this._sdkId);
 
-	Future<EncryptedDocument> shareWith(String delegateId, EncryptedDocument document, { DocumentShareOptions? options }) async {
+	Future<EncryptedDocument> shareWith(String delegateId, EncryptedDocument document, DocumentShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.document.encrypted.shareWith(
 			_sdkId,
 			delegateId,

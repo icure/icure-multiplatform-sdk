@@ -27,7 +27,7 @@ class ReceiptPlatformApi {
 		);
 	}
 
-	Future<DecryptedReceipt> withEncryptionMetadata(DecryptedReceipt? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedReceipt> withEncryptionMetadata(DecryptedReceipt? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.receipt.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -141,7 +141,7 @@ class ReceiptPlatformApi {
 		);
 	}
 
-	Future<DecryptedReceipt> shareWith(String delegateId, DecryptedReceipt receipt, { ReceiptShareOptions? options }) async {
+	Future<DecryptedReceipt> shareWith(String delegateId, DecryptedReceipt receipt, ReceiptShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.receipt.shareWith(
 			_sdkId,
 			delegateId,
@@ -184,7 +184,7 @@ class TryAndRecoverReceiptPlatformApi {
 	String _sdkId;
 	TryAndRecoverReceiptPlatformApi(this._sdkId);
 
-	Future<Receipt> shareWith(String delegateId, Receipt receipt, { ReceiptShareOptions? options }) async {
+	Future<Receipt> shareWith(String delegateId, Receipt receipt, ReceiptShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.receipt.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -227,7 +227,7 @@ class EncryptedReceiptPlatformApi {
 	String _sdkId;
 	EncryptedReceiptPlatformApi(this._sdkId);
 
-	Future<EncryptedReceipt> shareWith(String delegateId, EncryptedReceipt receipt, { ReceiptShareOptions? options }) async {
+	Future<EncryptedReceipt> shareWith(String delegateId, EncryptedReceipt receipt, ReceiptShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.receipt.encrypted.shareWith(
 			_sdkId,
 			delegateId,

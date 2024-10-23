@@ -39,7 +39,7 @@ class InvoicePlatformApi {
 		);
 	}
 
-	Future<DecryptedInvoice> withEncryptionMetadata(DecryptedInvoice? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedInvoice> withEncryptionMetadata(DecryptedInvoice? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -115,7 +115,7 @@ class InvoicePlatformApi {
 		);
 	}
 
-	Future<DecryptedInvoice> shareWith(String delegateId, DecryptedInvoice invoice, { InvoiceShareOptions? options }) async {
+	Future<DecryptedInvoice> shareWith(String delegateId, DecryptedInvoice invoice, InvoiceShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.shareWith(
 			_sdkId,
 			delegateId,
@@ -192,7 +192,7 @@ class InvoicePlatformApi {
 		);
 	}
 
-	Future<List<DecryptedInvoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, List<EncryptedInvoicingCode> invoicingCodes, { String? insuranceId, String? invoiceId, int? gracePeriod }) async {
+	Future<List<DecryptedInvoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, String? insuranceId, String? invoiceId, int? gracePeriod, List<EncryptedInvoicingCode> invoicingCodes) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.appendCodes(
 			_sdkId,
 			userId,
@@ -232,7 +232,7 @@ class InvoicePlatformApi {
 		);
 	}
 
-	Future<List<DecryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, { int? from, int? to }) async {
+	Future<List<DecryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, int? from, int? to) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
 			_sdkId,
 			hcPartyId,
@@ -309,7 +309,7 @@ class TryAndRecoverInvoicePlatformApi {
 	String _sdkId;
 	TryAndRecoverInvoicePlatformApi(this._sdkId);
 
-	Future<Invoice> shareWith(String delegateId, Invoice invoice, { InvoiceShareOptions? options }) async {
+	Future<Invoice> shareWith(String delegateId, Invoice invoice, InvoiceShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -386,7 +386,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 	}
 
-	Future<List<Invoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, List<EncryptedInvoicingCode> invoicingCodes, { String? insuranceId, String? invoiceId, int? gracePeriod }) async {
+	Future<List<Invoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, String? insuranceId, String? invoiceId, int? gracePeriod, List<EncryptedInvoicingCode> invoicingCodes) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.tryAndRecover.appendCodes(
 			_sdkId,
 			userId,
@@ -426,7 +426,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 	}
 
-	Future<List<Invoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, { int? from, int? to }) async {
+	Future<List<Invoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, int? from, int? to) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
 			_sdkId,
 			hcPartyId,
@@ -503,7 +503,7 @@ class EncryptedInvoicePlatformApi {
 	String _sdkId;
 	EncryptedInvoicePlatformApi(this._sdkId);
 
-	Future<EncryptedInvoice> shareWith(String delegateId, EncryptedInvoice invoice, { InvoiceShareOptions? options }) async {
+	Future<EncryptedInvoice> shareWith(String delegateId, EncryptedInvoice invoice, InvoiceShareOptions? options) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.encrypted.shareWith(
 			_sdkId,
 			delegateId,
@@ -580,7 +580,7 @@ class EncryptedInvoicePlatformApi {
 		);
 	}
 
-	Future<List<EncryptedInvoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, List<EncryptedInvoicingCode> invoicingCodes, { String? insuranceId, String? invoiceId, int? gracePeriod }) async {
+	Future<List<EncryptedInvoice>> appendCodes(String userId, String type, String sentMediumType, String secretFKeys, String? insuranceId, String? invoiceId, int? gracePeriod, List<EncryptedInvoicingCode> invoicingCodes) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.encrypted.appendCodes(
 			_sdkId,
 			userId,
@@ -620,7 +620,7 @@ class EncryptedInvoicePlatformApi {
 		);
 	}
 
-	Future<List<EncryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, { int? from, int? to }) async {
+	Future<List<EncryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, int? from, int? to) async {
 		return await CardinalSdkPlatformInterface.instance.invoice.encrypted.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
 			_sdkId,
 			hcPartyId,
