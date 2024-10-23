@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/insurance.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/paginated_list.dart';
 
 
 class InsurancePlatformApi {
@@ -60,20 +59,6 @@ class InsurancePlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method deleteInsurance");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
-	}
-
-	Future<PaginatedList<Insurance>> getAllInsurances(String sdkId, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InsuranceApi.getAllInsurances',
-			{
-				"sdkId": sdkId,
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method getAllInsurances");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
 	}
 
 	Future<List<Insurance>> listInsurancesByCode(String sdkId, String insuranceCode) async {

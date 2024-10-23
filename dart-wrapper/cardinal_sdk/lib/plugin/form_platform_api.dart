@@ -14,7 +14,6 @@ import 'package:cardinal_sdk/model/form_template.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/crypto/entities/form_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 
 class FormPlatformApi {

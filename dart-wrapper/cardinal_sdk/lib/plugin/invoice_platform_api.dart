@@ -12,7 +12,6 @@ import 'package:cardinal_sdk/model/icure_stub.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/crypto/entities/invoice_share_options.dart';
 import 'package:cardinal_sdk/model/embed/invoicing_code.dart';
-import 'package:cardinal_sdk/model/paginated_list.dart';
 import 'package:cardinal_sdk/model/embed/medium_type.dart';
 import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 
@@ -359,24 +358,6 @@ class InvoicePlatformApi {
 		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) );
 	}
 
-	Future<PaginatedList<DecryptedInvoice>> findInvoicesByAuthor(String sdkId, String hcPartyId, int? fromDate, int? toDate, Map<String, dynamic>? startKey, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InvoiceApi.findInvoicesByAuthor',
-			{
-				"sdkId": sdkId,
-				"hcPartyId": jsonEncode(hcPartyId),
-				"fromDate": jsonEncode(fromDate),
-				"toDate": jsonEncode(toDate),
-				"startKey": jsonEncode(startKey),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findInvoicesByAuthor");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
-	}
-
 	Future<List<DecryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'InvoiceApi.listInvoicesByHCPartyAndPatientForeignKeys',
@@ -709,24 +690,6 @@ class TryAndRecoverInvoicePlatformApi {
 		return parsedResJson.map((x1) => Invoice.fromJSON(x1) );
 	}
 
-	Future<PaginatedList<Invoice>> findInvoicesByAuthor(String sdkId, String hcPartyId, int? fromDate, int? toDate, Map<String, dynamic>? startKey, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InvoiceApi.tryAndRecover.findInvoicesByAuthor',
-			{
-				"sdkId": sdkId,
-				"hcPartyId": jsonEncode(hcPartyId),
-				"fromDate": jsonEncode(fromDate),
-				"toDate": jsonEncode(toDate),
-				"startKey": jsonEncode(startKey),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findInvoicesByAuthor");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
-	}
-
 	Future<List<Invoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'InvoiceApi.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys',
@@ -1057,24 +1020,6 @@ class EncryptedInvoicePlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
 		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) );
-	}
-
-	Future<PaginatedList<EncryptedInvoice>> findInvoicesByAuthor(String sdkId, String hcPartyId, int? fromDate, int? toDate, Map<String, dynamic>? startKey, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InvoiceApi.encrypted.findInvoicesByAuthor',
-			{
-				"sdkId": sdkId,
-				"hcPartyId": jsonEncode(hcPartyId),
-				"fromDate": jsonEncode(fromDate),
-				"toDate": jsonEncode(toDate),
-				"startKey": jsonEncode(startKey),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findInvoicesByAuthor");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {

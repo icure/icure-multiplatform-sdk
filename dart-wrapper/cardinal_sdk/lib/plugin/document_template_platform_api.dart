@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/document_template.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/paginated_list.dart';
 import 'dart:typed_data';
 
 
@@ -114,21 +113,6 @@ class DocumentTemplatePlatformApi {
 		return parsedResJson.map((x1) => DocumentTemplate.fromJSON(x1) );
 	}
 
-	Future<PaginatedList<DocumentTemplate>> findAllDocumentTemplates(String sdkId, String? startKey, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'DocumentTemplateApi.findAllDocumentTemplates',
-			{
-				"sdkId": sdkId,
-				"startKey": jsonEncode(startKey),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findAllDocumentTemplates");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
-	}
-
 	Future<Uint8List> getDocumentTemplateAttachment(String sdkId, String documentTemplateId, String attachmentId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentTemplateApi.getDocumentTemplateAttachment',
@@ -140,7 +124,7 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getDocumentTemplateAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<Uint8List> getAttachmentText(String sdkId, String documentTemplateId, String attachmentId) async {
@@ -154,7 +138,7 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getAttachmentText");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<DocumentTemplate> setDocumentTemplateAttachment(String sdkId, String documentTemplateId, Uint8List payload) async {

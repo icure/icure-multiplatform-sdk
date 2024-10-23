@@ -2,7 +2,6 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/keyword.dart';
 import 'dart:convert';
-import 'package:cardinal_sdk/model/paginated_list.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 
@@ -34,20 +33,6 @@ class KeywordPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method createKeyword");
 		final parsedResJson = jsonDecode(res);
 		return Keyword.fromJSON(parsedResJson);
-	}
-
-	Future<PaginatedList<Keyword>> getKeywords(String sdkId, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'KeywordApi.getKeywords',
-			{
-				"sdkId": sdkId,
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method getKeywords");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
 	}
 
 	Future<Keyword> modifyKeyword(String sdkId, Keyword keyword) async {

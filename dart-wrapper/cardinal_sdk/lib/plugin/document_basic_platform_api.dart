@@ -4,7 +4,6 @@ import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/document.dart';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'dart:typed_data';
@@ -150,7 +149,7 @@ class DocumentBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getRawMainAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<Uint8List> getRawSecondaryAttachment(String sdkId, String documentId, String key) async {
@@ -164,7 +163,7 @@ class DocumentBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getRawSecondaryAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<EncryptedDocument> setRawMainAttachment(String sdkId, String documentId, String rev, List<String>? utis, Uint8List attachment, bool encrypted) async {

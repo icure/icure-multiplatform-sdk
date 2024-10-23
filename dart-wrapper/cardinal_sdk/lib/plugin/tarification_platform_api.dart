@@ -2,7 +2,6 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/tarification.dart';
 import 'dart:convert';
-import 'package:cardinal_sdk/model/paginated_list.dart';
 
 
 class TarificationPlatformApi {
@@ -59,44 +58,6 @@ class TarificationPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method modifyTarification");
 		final parsedResJson = jsonDecode(res);
 		return Tarification.fromJSON(parsedResJson);
-	}
-
-	Future<PaginatedList<Tarification>> findTarificationsByLabel(String sdkId, String? region, String? types, String? language, String? label, String? startKey, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'TarificationApi.findTarificationsByLabel',
-			{
-				"sdkId": sdkId,
-				"region": jsonEncode(region),
-				"types": jsonEncode(types),
-				"language": jsonEncode(language),
-				"label": jsonEncode(label),
-				"startKey": jsonEncode(startKey),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findTarificationsByLabel");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
-	}
-
-	Future<PaginatedList<Tarification>> findTarificationsBy(String sdkId, String? region, String? type, String? tarification, String? version, String? startDocumentId, String? startKey, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'TarificationApi.findTarificationsBy',
-			{
-				"sdkId": sdkId,
-				"region": jsonEncode(region),
-				"type": jsonEncode(type),
-				"tarification": jsonEncode(tarification),
-				"version": jsonEncode(version),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"startKey": jsonEncode(startKey),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findTarificationsBy");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
 	}
 
 	Future<Tarification> getTarificationWithParts(String sdkId, String type, String tarification, String version) async {

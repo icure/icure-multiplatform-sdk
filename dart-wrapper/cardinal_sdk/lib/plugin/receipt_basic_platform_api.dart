@@ -47,7 +47,7 @@ class ReceiptBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getRawReceiptAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<EncryptedReceipt> setRawReceiptAttachment(String sdkId, String receiptId, String rev, String blobType, Uint8List attachment) async {

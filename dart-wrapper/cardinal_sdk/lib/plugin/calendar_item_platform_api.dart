@@ -12,10 +12,8 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/crypto/entities/calendar_item_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
-import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 

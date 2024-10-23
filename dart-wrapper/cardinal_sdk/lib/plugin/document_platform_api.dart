@@ -13,7 +13,6 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/crypto/entities/document_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 
 class DocumentPlatformApi {
@@ -78,7 +77,7 @@ class DocumentPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getAndDecryptMainAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<EncryptedDocument> encryptAndSetMainAttachment(String sdkId, Document document, List<String>? utis, Uint8List attachment) async {
@@ -107,7 +106,7 @@ class DocumentPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getAndDecryptSecondaryAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<EncryptedDocument> encryptAndSetSecondaryAttachment(String sdkId, Document document, String key, List<String>? utis, Uint8List attachment) async {
@@ -326,7 +325,7 @@ class DocumentPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getRawMainAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<Uint8List> getRawSecondaryAttachment(String sdkId, String documentId, String key) async {
@@ -340,7 +339,7 @@ class DocumentPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getRawSecondaryAttachment");
 		final parsedResJson = jsonDecode(res);
-		return base64Encode(parsedResJson as String);
+		return base64Decode(parsedResJson as String);
 	}
 
 	Future<EncryptedDocument> setRawMainAttachment(String sdkId, String documentId, String rev, List<String>? utis, Uint8List attachment, bool encrypted) async {

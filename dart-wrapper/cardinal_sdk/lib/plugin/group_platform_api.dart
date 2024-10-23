@@ -7,7 +7,6 @@ import 'package:cardinal_sdk/model/database_initialisation.dart';
 import 'package:cardinal_sdk/model/security/permission_type.dart';
 import 'package:cardinal_sdk/model/registration_information.dart';
 import 'package:cardinal_sdk/model/registration_success.dart';
-import 'package:cardinal_sdk/model/paginated_list.dart';
 import 'package:cardinal_sdk/model/security/operation.dart';
 import 'package:cardinal_sdk/model/embed/user_type.dart';
 import 'package:cardinal_sdk/model/embed/role_configuration.dart';
@@ -96,38 +95,6 @@ class GroupPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method listApps");
 		final parsedResJson = jsonDecode(res);
 		return parsedResJson.map((x1) => Group.fromJSON(x1) );
-	}
-
-	Future<PaginatedList<Group>> findGroups(String sdkId, String id, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'GroupApi.findGroups',
-			{
-				"sdkId": sdkId,
-				"id": jsonEncode(id),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findGroups");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
-	}
-
-	Future<PaginatedList<Group>> findGroupsWithContent(String sdkId, String id, String searchString, Map<String, dynamic>? startKey, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'GroupApi.findGroupsWithContent',
-			{
-				"sdkId": sdkId,
-				"id": jsonEncode(id),
-				"searchString": jsonEncode(searchString),
-				"startKey": jsonEncode(startKey),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findGroupsWithContent");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
 	}
 
 	Future<String> getNameOfGroupParent(String sdkId, String id) async {

@@ -6,7 +6,6 @@ import 'package:cardinal_sdk/model/icure_stub.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/model/invoice.dart';
 import 'package:cardinal_sdk/model/embed/invoicing_code.dart';
-import 'package:cardinal_sdk/model/paginated_list.dart';
 import 'package:cardinal_sdk/model/embed/medium_type.dart';
 import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 
@@ -197,24 +196,6 @@ class InvoiceBasicPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
 		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) );
-	}
-
-	Future<PaginatedList<EncryptedInvoice>> findInvoicesByAuthor(String sdkId, String hcPartyId, int? fromDate, int? toDate, Map<String, dynamic>? startKey, String? startDocumentId, int? limit) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InvoiceBasicApi.findInvoicesByAuthor',
-			{
-				"sdkId": sdkId,
-				"hcPartyId": jsonEncode(hcPartyId),
-				"fromDate": jsonEncode(fromDate),
-				"toDate": jsonEncode(toDate),
-				"startKey": jsonEncode(startKey),
-				"startDocumentId": jsonEncode(startDocumentId),
-				"limit": jsonEncode(limit),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findInvoicesByAuthor");
-		final parsedResJson = jsonDecode(res);
-		return PaginatedList.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {

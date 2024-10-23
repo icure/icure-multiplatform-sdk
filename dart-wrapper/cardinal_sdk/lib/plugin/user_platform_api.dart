@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/user_group.dart';
 import 'package:cardinal_sdk/model/list_of_ids.dart';
 import 'package:cardinal_sdk/model/security/token_with_group.dart';
@@ -13,7 +12,6 @@ import 'package:cardinal_sdk/model/security/enable2fa_request.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
-import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 

@@ -12,7 +12,6 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/crypto/entities/access_log_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 
 class AccessLogPlatformApi {

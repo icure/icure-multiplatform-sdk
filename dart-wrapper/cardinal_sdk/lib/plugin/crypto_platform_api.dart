@@ -28,6 +28,6 @@ class CryptoPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method currentDataOwnerKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, base64Encode(v2 as String)))));
+		return parsedResJson.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, base64Decode(v2 as String)))));
 	}
 }
