@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/crypto/entities/entity_with_encryption_metadata_type_name.dart';
 import 'package:cardinal_sdk/model/base/has_encryption_metadata.dart';
 

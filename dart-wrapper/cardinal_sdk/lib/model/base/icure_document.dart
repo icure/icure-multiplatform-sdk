@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/base/identifiable.dart';
 import 'package:cardinal_sdk/model/base/has_tags.dart';
 import 'package:cardinal_sdk/model/base/has_codes.dart';

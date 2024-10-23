@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/base/identifier.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/security/permission.dart';

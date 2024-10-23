@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'dart:typed_data';
 import 'package:cardinal_sdk/model/embed/measure.dart';
 import 'package:cardinal_sdk/model/embed/medication.dart';

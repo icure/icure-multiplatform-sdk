@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 
 
 enum InvoiceInterventionType {

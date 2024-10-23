@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/embed/patient_health_care_party_type.dart';
 import 'package:cardinal_sdk/model/embed/telecom_type.dart';
 import 'package:cardinal_sdk/model/embed/referral_period.dart';

@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/filter/predicate/operator.dart';
 import 'package:cardinal_sdk/model/specializations/any_primitive.dart';
 import 'package:cardinal_sdk/model/filter/predicate/predicate.dart';

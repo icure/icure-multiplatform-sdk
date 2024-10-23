@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/security/permission_type.dart';
 import 'package:cardinal_sdk/model/filter/predicate/predicate.dart';
 import 'package:cardinal_sdk/model/security/always_permission_item.dart';

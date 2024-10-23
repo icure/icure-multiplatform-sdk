@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/dropdown_field.dart';
 import 'package:cardinal_sdk/model/embed/form/template/radio_button.dart';
 import 'package:cardinal_sdk/model/embed/form/template/date_picker.dart';

@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/embed/delegation.dart';
 import 'package:cardinal_sdk/model/embed/security_metadata.dart';
 import 'package:cardinal_sdk/crypto/entities/entity_with_encryption_metadata_stub.dart';

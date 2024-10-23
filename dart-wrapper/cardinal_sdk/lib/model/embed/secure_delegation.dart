@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/specializations/secure_delegation_key_string.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';

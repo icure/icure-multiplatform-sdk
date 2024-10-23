@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/data_owner_type.dart';
 import 'package:cardinal_sdk/model/crypto_actor_stub.dart';
 

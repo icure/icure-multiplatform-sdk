@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/annotations/actual_int32.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/crypto/entities/failed_request_details.dart';

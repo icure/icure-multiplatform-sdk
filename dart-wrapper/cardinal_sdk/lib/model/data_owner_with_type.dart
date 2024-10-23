@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/base/crypto_actor.dart';
 import 'package:cardinal_sdk/model/healthcare_party.dart';
 import 'package:cardinal_sdk/model/patient.dart';

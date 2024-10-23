@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/embed/address.dart';
 import 'package:cardinal_sdk/model/base/named.dart';
 

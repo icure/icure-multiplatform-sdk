@@ -1,4 +1,4 @@
-// This file is auto-generated
+// auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/form_template_layout.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/model/embed/document_group.dart';
