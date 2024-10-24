@@ -13,7 +13,7 @@ class MessageAttachment {
 	factory MessageAttachment.fromJSON(Map<String, dynamic> data) {
 		return MessageAttachment(
 			type: data["type"] == null ? null : DocumentLocation.fromJSON(data["type"]),
-			ids: data["ids"].map((x0) => x0 ).toList()
+			ids: (data["ids"] as List<dynamic>).map((x0) => (x0 as String) ).toList()
 		);
 	}
 

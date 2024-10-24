@@ -32,7 +32,7 @@ class InsurancePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getInsurances");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Insurance.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Insurance.fromJSON(x1) ).toList();
 	}
 
 	Future<Insurance> createInsurance(String sdkId, Insurance insurance) async {
@@ -71,7 +71,7 @@ class InsurancePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInsurancesByCode");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Insurance.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Insurance.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Insurance>> listInsurancesByName(String sdkId, String insuranceName) async {
@@ -84,7 +84,7 @@ class InsurancePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInsurancesByName");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Insurance.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Insurance.fromJSON(x1) ).toList();
 	}
 
 	Future<Insurance> modifyInsurance(String sdkId, Insurance insurance) async {

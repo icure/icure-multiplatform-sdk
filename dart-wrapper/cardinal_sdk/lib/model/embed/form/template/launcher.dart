@@ -15,9 +15,9 @@ class Launcher {
 
 	factory Launcher.fromJSON(Map<String, dynamic> data) {
 		return Launcher(
-			data["name"],
+			(data["name"] as String),
 			Trigger.fromJSON(data["triggerer"]),
-			shouldPassValue: data["shouldPassValue"],
+			shouldPassValue: (data["shouldPassValue"] as bool),
 		);
 	}
 

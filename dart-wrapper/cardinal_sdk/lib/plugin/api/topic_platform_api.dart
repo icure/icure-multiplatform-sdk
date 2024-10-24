@@ -67,7 +67,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, Topic topic) async {
@@ -80,7 +80,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, Topic topic) async {
@@ -93,7 +93,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, Topic entity, Set<String> delegates) async {
@@ -143,7 +143,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchTopicsBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -156,7 +156,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteTopicById(String sdkId, String entityId, String rev) async {
@@ -183,7 +183,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopicsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTopicById(String sdkId, String id, String rev) async {
@@ -220,7 +220,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopics");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTopic(String sdkId, Topic topic) async {
@@ -351,7 +351,7 @@ class TopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTopics");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedTopic.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedTopic.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedTopic> addParticipant(String sdkId, String entityId, String dataOwnerId, TopicRole topicRole) async {
@@ -521,7 +521,7 @@ class TryAndRecoverTopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTopics");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Topic.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Topic.fromJSON(x1) ).toList();
 	}
 
 	Future<Topic> addParticipant(String sdkId, String entityId, String dataOwnerId, TopicRole topicRole) async {
@@ -676,7 +676,7 @@ class EncryptedTopicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTopics");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedTopic.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedTopic.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedTopic> addParticipant(String sdkId, String entityId, String dataOwnerId, TopicRole topicRole) async {

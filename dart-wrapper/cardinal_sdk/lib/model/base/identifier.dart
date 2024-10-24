@@ -24,14 +24,14 @@ class Identifier {
 
 	factory Identifier.fromJSON(Map<String, dynamic> data) {
 		return Identifier(
-			id: data["id"],
-			assigner: data["assigner"],
-			start: data["start"],
-			end: data["end"],
-			system: data["system"],
+			id: (data["id"] as String?),
+			assigner: (data["assigner"] as String?),
+			start: (data["start"] as String?),
+			end: (data["end"] as String?),
+			system: (data["system"] as String?),
 			type: data["type"] == null ? null : CodeStub.fromJSON(data["type"]),
-			use: data["use"],
-			value: data["value"]
+			use: (data["use"] as String?),
+			value: (data["value"] as String?)
 		);
 	}
 

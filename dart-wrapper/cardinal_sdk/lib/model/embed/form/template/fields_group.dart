@@ -13,8 +13,8 @@ class FieldsGroup implements StructureElement {
 
 	factory FieldsGroup.fromJSON(Map<String, dynamic> data) {
 		return FieldsGroup(
-			data["group"],
-			fields: data["fields"]?.map((x0) => StructureElement.fromJSON(x0) ).toList(),
+			(data["group"] as String),
+			fields: (data["fields"] as List<dynamic>?)?.map((x0) => StructureElement.fromJSON(x0) ).toList(),
 		);
 	}
 

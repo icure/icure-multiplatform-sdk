@@ -72,30 +72,30 @@ class User implements StoredDocument {
 
 	factory User.fromJSON(Map<String, dynamic> data) {
 		return User(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			created: data["created"],
-			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ).toList(),
-			name: data["name"],
-			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toList(),
-			permissions: data["permissions"].map((x0) => Permission.fromJSON(x0) ).toList(),
-			roles: data["roles"].map((x0) => x0 ).toList(),
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			created: (data["created"] as int?),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			name: (data["name"] as String?),
+			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
+			permissions: (data["permissions"] as List<dynamic>).map((x0) => Permission.fromJSON(x0) ).toSet(),
+			roles: (data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 			type: data["type"] == null ? null : UsersType.fromJSON(data["type"]),
 			status: data["status"] == null ? null : UsersStatus.fromJSON(data["status"]),
-			login: data["login"],
-			passwordHash: data["passwordHash"],
-			groupId: data["groupId"],
-			healthcarePartyId: data["healthcarePartyId"],
-			patientId: data["patientId"],
-			deviceId: data["deviceId"],
-			autoDelegations: data["autoDelegations"].map((k0, v0) => MapEntry(DelegationTag.fromJSON(k0), v0.map((x1) => x1 ).toList())),
+			login: (data["login"] as String?),
+			passwordHash: (data["passwordHash"] as String?),
+			groupId: (data["groupId"] as String?),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			patientId: (data["patientId"] as String?),
+			deviceId: (data["deviceId"] as String?),
+			autoDelegations: (data["autoDelegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry(DelegationTag.fromJSON(k0), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toSet())),
 			createdDate: data["createdDate"] == null ? null : DateTime.parse(data["createdDate"] as String),
 			termsOfUseDate: data["termsOfUseDate"] == null ? null : DateTime.parse(data["termsOfUseDate"] as String),
-			email: data["email"],
-			mobilePhone: data["mobilePhone"],
-			applicationTokens: data["applicationTokens"].map((k0, v0) => MapEntry(k0, v0)),
-			authenticationTokens: data["authenticationTokens"].map((k0, v0) => MapEntry(k0, AuthenticationToken.fromJSON(v0))),
+			email: (data["email"] as String?),
+			mobilePhone: (data["mobilePhone"] as String?),
+			applicationTokens: (data["applicationTokens"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			authenticationTokens: (data["authenticationTokens"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), AuthenticationToken.fromJSON(v0))),
 			systemMetadata: data["systemMetadata"] == null ? null : UserSystemMetadata.fromJSON(data["systemMetadata"]),
 		);
 	}
@@ -144,9 +144,9 @@ class UserSystemMetadata {
 
 	factory UserSystemMetadata.fromJSON(Map<String, dynamic> data) {
 		return UserSystemMetadata(
-			data["roles"].map((x0) => x0 ).toList(),
-			data["isAdmin"],
-			data["inheritsRoles"]
+			(data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["isAdmin"] as bool),
+			(data["inheritsRoles"] as bool)
 		);
 	}
 

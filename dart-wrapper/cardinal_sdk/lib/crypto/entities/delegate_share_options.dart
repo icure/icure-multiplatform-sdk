@@ -17,9 +17,9 @@ class DelegateShareOptions {
 
 	factory DelegateShareOptions.fromJSON(Map<String, dynamic> data) {
 		return DelegateShareOptions(
-			data["shareSecretIds"].map((x0) => x0 ).toList(),
-			data["shareEncryptionKeys"].map((x0) => x0 ).toList(),
-			data["shareOwningEntityIds"].map((x0) => x0 ).toList(),
+			(data["shareSecretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["shareEncryptionKeys"] as List<dynamic>).map((x0) => (x0 as HexString) ).toSet(),
+			(data["shareOwningEntityIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 			RequestedPermission.fromJSON(data["requestedPermissions"])
 		);
 	}

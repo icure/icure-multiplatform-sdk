@@ -17,10 +17,10 @@ class Right {
 
 	factory Right.fromJSON(Map<String, dynamic> data) {
 		return Right(
-			userId: data["userId"],
-			read: data["read"],
-			write: data["write"],
-			administration: data["administration"]
+			userId: (data["userId"] as String?),
+			read: (data["read"] as bool),
+			write: (data["write"] as bool),
+			administration: (data["administration"] as bool)
 		);
 	}
 

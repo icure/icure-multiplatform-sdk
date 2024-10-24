@@ -73,15 +73,15 @@ class ReplicationStats {
 
 	factory ReplicationStats.fromJSON(Map<String, dynamic> data) {
 		return ReplicationStats(
-			revisionsChecked: data["revisionsChecked"],
-			missingRevisionsFound: data["missingRevisionsFound"],
-			docsRead: data["docsRead"],
-			docsWritten: data["docsWritten"],
-			changesPending: data["changesPending"],
-			docWriteFailures: data["docWriteFailures"],
-			checkpointedSourceSeq: data["checkpointedSourceSeq"],
-			startTime: data["startTime"],
-			error: data["error"]
+			revisionsChecked: (data["revisionsChecked"] as int?),
+			missingRevisionsFound: (data["missingRevisionsFound"] as int?),
+			docsRead: (data["docsRead"] as int?),
+			docsWritten: (data["docsWritten"] as int?),
+			changesPending: (data["changesPending"] as int?),
+			docWriteFailures: (data["docWriteFailures"] as int?),
+			checkpointedSourceSeq: (data["checkpointedSourceSeq"] as String?),
+			startTime: (data["startTime"] as String?),
+			error: (data["error"] as String?)
 		);
 	}
 

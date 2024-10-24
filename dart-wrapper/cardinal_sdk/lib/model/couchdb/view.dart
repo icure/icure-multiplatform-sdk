@@ -12,8 +12,8 @@ class View {
 
 	factory View.fromJSON(Map<String, dynamic> data) {
 		return View(
-			data["map"],
-			reduce: data["reduce"],
+			(data["map"] as String),
+			reduce: (data["reduce"] as String?),
 		);
 	}
 

@@ -79,7 +79,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, Message message) async {
@@ -92,7 +92,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, Message message) async {
@@ -105,7 +105,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, Message entity, Set<String> delegates) async {
@@ -155,7 +155,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMessagesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchMessagesBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -168,7 +168,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMessagesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteMessageById(String sdkId, String entityId, String rev) async {
@@ -195,7 +195,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessagesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMessageById(String sdkId, String id, String rev) async {
@@ -232,7 +232,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessages");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMessage(String sdkId, Message message) async {
@@ -363,7 +363,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMessages");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedMessage.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedMessage.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedMessage>> setMessagesReadStatus(String sdkId, List<String> entityIds, int? time, bool readStatus, String? userId) async {
@@ -379,7 +379,7 @@ class MessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method setMessagesReadStatus");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedMessage.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedMessage.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -520,7 +520,7 @@ class TryAndRecoverMessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMessages");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Message.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Message.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Message>> setMessagesReadStatus(String sdkId, List<String> entityIds, int? time, bool readStatus, String? userId) async {
@@ -536,7 +536,7 @@ class TryAndRecoverMessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method setMessagesReadStatus");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Message.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Message.fromJSON(x1) ).toList();
 	}
 }
 
@@ -662,7 +662,7 @@ class EncryptedMessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMessages");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedMessage.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMessage.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedMessage>> setMessagesReadStatus(String sdkId, List<String> entityIds, int? time, bool readStatus, String? userId) async {
@@ -678,6 +678,6 @@ class EncryptedMessagePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method setMessagesReadStatus");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedMessage.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMessage.fromJSON(x1) ).toList();
 	}
 }

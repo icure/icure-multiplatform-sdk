@@ -81,9 +81,9 @@ class _MyAppState extends State<MyApp> {
     print("Created patient");
     print(patient);
     print("Retrieved patient");
-    print(await sdk.patient.getPatient(patient.id));
+    print(DecryptedPatient.encode(await sdk.patient.getPatient(patient.id)));
     print("Retrieved encrypted patient");
-    print(await sdk.patient.encrypted.getPatient(patient.id));
+    print(EncryptedPatient.encode(await sdk.patient.encrypted.getPatient(patient.id)));
   }
 
   @override

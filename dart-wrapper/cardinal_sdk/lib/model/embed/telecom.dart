@@ -55,9 +55,9 @@ class EncryptedTelecom implements Telecom {
 	factory EncryptedTelecom.fromJSON(Map<String, dynamic> data) {
 		return EncryptedTelecom(
 			telecomType: data["telecomType"] == null ? null : TelecomType.fromJSON(data["telecomType"]),
-			telecomNumber: data["telecomNumber"],
-			telecomDescription: data["telecomDescription"],
-			encryptedSelf: data["encryptedSelf"]
+			telecomNumber: (data["telecomNumber"] as String?),
+			telecomDescription: (data["telecomDescription"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -87,9 +87,9 @@ class DecryptedTelecom implements Telecom {
 	factory DecryptedTelecom.fromJSON(Map<String, dynamic> data) {
 		return DecryptedTelecom(
 			telecomType: data["telecomType"] == null ? null : TelecomType.fromJSON(data["telecomType"]),
-			telecomNumber: data["telecomNumber"],
-			telecomDescription: data["telecomDescription"],
-			encryptedSelf: data["encryptedSelf"]
+			telecomNumber: (data["telecomNumber"] as String?),
+			telecomDescription: (data["telecomDescription"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

@@ -22,7 +22,7 @@ class AccessLogBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchAccessLogsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -35,7 +35,7 @@ class AccessLogBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(String sdkId, BaseFilterOptions filter) async {
@@ -88,7 +88,7 @@ class AccessLogBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeAccessLogById(String sdkId, String id, String rev) async {
@@ -125,7 +125,7 @@ class AccessLogBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogs");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeAccessLog(String sdkId, AccessLog accessLog) async {
@@ -201,6 +201,6 @@ class AccessLogBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getAccessLogs");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedAccessLog.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedAccessLog.fromJSON(x1) ).toList();
 	}
 }

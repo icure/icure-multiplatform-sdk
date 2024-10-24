@@ -31,13 +31,13 @@ class SecureDelegation {
 	factory SecureDelegation.fromJSON(Map<String, dynamic> data) {
 		return SecureDelegation(
 			AccessLevel.fromJSON(data["permissions"]),
-			delegator: data["delegator"],
-			delegate: data["delegate"],
-			secretIds: data["secretIds"].map((x0) => x0 ).toList(),
-			encryptionKeys: data["encryptionKeys"].map((x0) => x0 ).toList(),
-			owningEntityIds: data["owningEntityIds"].map((x0) => x0 ).toList(),
-			parentDelegations: data["parentDelegations"].map((x0) => x0 ).toList(),
-			exchangeDataId: data["exchangeDataId"],
+			delegator: (data["delegator"] as String?),
+			delegate: (data["delegate"] as String?),
+			secretIds: (data["secretIds"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
+			encryptionKeys: (data["encryptionKeys"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
+			owningEntityIds: (data["owningEntityIds"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
+			parentDelegations: (data["parentDelegations"] as List<dynamic>).map((x0) => (x0 as SecureDelegationKeyString) ).toSet(),
+			exchangeDataId: (data["exchangeDataId"] as String?),
 		);
 	}
 

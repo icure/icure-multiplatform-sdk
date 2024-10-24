@@ -74,17 +74,17 @@ class EncryptedValorisation implements Valorisation {
 
 	factory EncryptedValorisation.fromJSON(Map<String, dynamic> data) {
 		return EncryptedValorisation(
-			startOfValidity: data["startOfValidity"],
-			endOfValidity: data["endOfValidity"],
-			predicate: data["predicate"],
-			reference: data["reference"]?.map((x0) => x0 ).toList(),
-			totalAmount: data["totalAmount"].toDouble(),
-			reimbursement: data["reimbursement"].toDouble(),
-			patientIntervention: data["patientIntervention"].toDouble(),
-			doctorSupplement: data["doctorSupplement"].toDouble(),
-			vat: data["vat"].toDouble(),
-			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
-			encryptedSelf: data["encryptedSelf"]
+			startOfValidity: (data["startOfValidity"] as int?),
+			endOfValidity: (data["endOfValidity"] as int?),
+			predicate: (data["predicate"] as String?),
+			reference: (data["reference"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toList(),
+			totalAmount: (data["totalAmount"] as num?)?.toDouble(),
+			reimbursement: (data["reimbursement"] as num?)?.toDouble(),
+			patientIntervention: (data["patientIntervention"] as num?)?.toDouble(),
+			doctorSupplement: (data["doctorSupplement"] as num?)?.toDouble(),
+			vat: (data["vat"] as num?)?.toDouble(),
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -134,17 +134,17 @@ class DecryptedValorisation implements Valorisation {
 
 	factory DecryptedValorisation.fromJSON(Map<String, dynamic> data) {
 		return DecryptedValorisation(
-			startOfValidity: data["startOfValidity"],
-			endOfValidity: data["endOfValidity"],
-			predicate: data["predicate"],
-			reference: data["reference"]?.map((x0) => x0 ).toList(),
-			totalAmount: data["totalAmount"].toDouble(),
-			reimbursement: data["reimbursement"].toDouble(),
-			patientIntervention: data["patientIntervention"].toDouble(),
-			doctorSupplement: data["doctorSupplement"].toDouble(),
-			vat: data["vat"].toDouble(),
-			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
-			encryptedSelf: data["encryptedSelf"]
+			startOfValidity: (data["startOfValidity"] as int?),
+			endOfValidity: (data["endOfValidity"] as int?),
+			predicate: (data["predicate"] as String?),
+			reference: (data["reference"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toList(),
+			totalAmount: (data["totalAmount"] as num?)?.toDouble(),
+			reimbursement: (data["reimbursement"] as num?)?.toDouble(),
+			patientIntervention: (data["patientIntervention"] as num?)?.toDouble(),
+			doctorSupplement: (data["doctorSupplement"] as num?)?.toDouble(),
+			vat: (data["vat"] as num?)?.toDouble(),
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

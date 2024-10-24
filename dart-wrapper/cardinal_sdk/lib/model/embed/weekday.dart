@@ -20,7 +20,7 @@ class Weekday {
 
 	factory Weekday.fromJSON(Map<String, dynamic> data) {
 		return Weekday(
-			weekNumber: data["weekNumber"],
+			weekNumber: (data["weekNumber"] as int?),
 			weekday: data["weekday"] == null ? null : CodeStub.fromJSON(data["weekday"])
 		);
 	}

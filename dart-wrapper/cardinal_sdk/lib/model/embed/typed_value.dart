@@ -64,12 +64,12 @@ class DecryptedTypedValue implements TypedValue {
 	factory DecryptedTypedValue.fromJSON(Map<String, dynamic> data) {
 		return DecryptedTypedValue(
 			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
-			booleanValue: data["booleanValue"],
-			integerValue: data["integerValue"],
-			doubleValue: data["doubleValue"].toDouble(),
-			stringValue: data["stringValue"],
+			booleanValue: (data["booleanValue"] as bool?),
+			integerValue: (data["integerValue"] as int?),
+			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
+			stringValue: (data["stringValue"] as String?),
 			dateValue: data["dateValue"] == null ? null : DateTime.parse(data["dateValue"] as String),
-			encryptedSelf: data["encryptedSelf"]
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -108,12 +108,12 @@ class EncryptedTypedValue implements TypedValue {
 	factory EncryptedTypedValue.fromJSON(Map<String, dynamic> data) {
 		return EncryptedTypedValue(
 			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
-			booleanValue: data["booleanValue"],
-			integerValue: data["integerValue"],
-			doubleValue: data["doubleValue"].toDouble(),
-			stringValue: data["stringValue"],
+			booleanValue: (data["booleanValue"] as bool?),
+			integerValue: (data["integerValue"] as int?),
+			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
+			stringValue: (data["stringValue"] as String?),
 			dateValue: data["dateValue"] == null ? null : DateTime.parse(data["dateValue"] as String),
-			encryptedSelf: data["encryptedSelf"]
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

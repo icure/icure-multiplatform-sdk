@@ -48,17 +48,17 @@ class Measure {
 
 	factory Measure.fromJSON(Map<String, dynamic> data) {
 		return Measure(
-			severity: data["severity"],
-			evolution: data["evolution"],
-			value: data["value"].toDouble(),
-			ref: data["ref"].toDouble(),
-			severityCode: data["severityCode"],
-			unit: data["unit"],
-			unitCodes: data["unitCodes"]?.map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			comment: data["comment"],
-			comparator: data["comparator"],
-			sign: data["sign"],
-			referenceRanges: data["referenceRanges"].map((x0) => ReferenceRange.fromJSON(x0) ).toList()
+			severity: (data["severity"] as int?),
+			evolution: (data["evolution"] as int?),
+			value: (data["value"] as num?)?.toDouble(),
+			ref: (data["ref"] as num?)?.toDouble(),
+			severityCode: (data["severityCode"] as String?),
+			unit: (data["unit"] as String?),
+			unitCodes: (data["unitCodes"] as List<dynamic>?)?.map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			comment: (data["comment"] as String?),
+			comparator: (data["comparator"] as String?),
+			sign: (data["sign"] as String?),
+			referenceRanges: (data["referenceRanges"] as List<dynamic>).map((x0) => ReferenceRange.fromJSON(x0) ).toList()
 		);
 	}
 

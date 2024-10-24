@@ -16,9 +16,9 @@ class KeyValuePredicate implements Predicate {
 
 	factory KeyValuePredicate.fromJSON(Map<String, dynamic> data) {
 		return KeyValuePredicate(
-			key: data["key"],
+			key: (data["key"] as String?),
 			operator: data["operator"] == null ? null : Operator.fromJSON(data["operator"]),
-			value: data["value"]
+			value: (data["value"] as AnyPrimitive?)
 		);
 	}
 

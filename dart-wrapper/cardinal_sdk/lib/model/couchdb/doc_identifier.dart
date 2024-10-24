@@ -11,8 +11,8 @@ class DocIdentifier {
 
 	factory DocIdentifier.fromJSON(Map<String, dynamic> data) {
 		return DocIdentifier(
-			id: data["id"],
-			rev: data["rev"]
+			id: (data["id"] as String?),
+			rev: (data["rev"] as String?)
 		);
 	}
 

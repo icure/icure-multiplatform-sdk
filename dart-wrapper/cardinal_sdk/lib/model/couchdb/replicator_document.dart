@@ -47,20 +47,20 @@ class ReplicatorDocument implements Versionable<String> {
 
 	factory ReplicatorDocument.fromJSON(Map<String, dynamic> data) {
 		return ReplicatorDocument(
-			data["id"],
-			errorCount: data["errorCount"],
-			rev: data["rev"],
+			(data["id"] as String),
+			errorCount: (data["errorCount"] as int?),
+			rev: (data["rev"] as String?),
 			source: data["source"] == null ? null : Remote.fromJSON(data["source"]),
 			target: data["target"] == null ? null : Remote.fromJSON(data["target"]),
-			owner: data["owner"],
-			create_target: data["create_target"],
-			continuous: data["continuous"],
-			doc_ids: data["doc_ids"]?.map((x0) => x0 ).toList(),
-			replicationState: data["replicationState"],
-			replicationStateTime: data["replicationStateTime"],
+			owner: (data["owner"] as String?),
+			create_target: (data["create_target"] as bool?),
+			continuous: (data["continuous"] as bool?),
+			doc_ids: (data["doc_ids"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
+			replicationState: (data["replicationState"] as String?),
+			replicationStateTime: (data["replicationStateTime"] as String?),
 			replicationStats: data["replicationStats"] == null ? null : ReplicationStats.fromJSON(data["replicationStats"]),
-			revsInfo: data["revsInfo"]?.map((x0) => x0.map((k1, v1) => MapEntry(k1, v1)) ).toList(),
-			revHistory: data["revHistory"]?.map((k0, v0) => MapEntry(k0, v0)),
+			revsInfo: (data["revsInfo"] as List<dynamic>?)?.map((x0) => (x0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as String))) ).toList(),
+			revHistory: (data["revHistory"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
 		);
 	}
 

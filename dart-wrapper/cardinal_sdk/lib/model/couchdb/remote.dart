@@ -13,7 +13,7 @@ class Remote {
 
 	factory Remote.fromJSON(Map<String, dynamic> data) {
 		return Remote(
-			data["url"],
+			(data["url"] as String),
 			auth: data["auth"] == null ? null : RemoteAuthentication.fromJSON(data["auth"]),
 		);
 	}

@@ -21,11 +21,11 @@ class FormTemplateLayout {
 
 	factory FormTemplateLayout.fromJSON(Map<String, dynamic> data) {
 		return FormTemplateLayout(
-			data["form"],
-			actions: data["actions"].map((x0) => Action.fromJSON(x0) ).toList(),
-			sections: data["sections"].map((x0) => Section.fromJSON(x0) ).toList(),
-			description: data["description"],
-			keywords: data["keywords"]?.map((x0) => x0 ).toList(),
+			(data["form"] as String),
+			actions: (data["actions"] as List<dynamic>).map((x0) => Action.fromJSON(x0) ).toList(),
+			sections: (data["sections"] as List<dynamic>).map((x0) => Section.fromJSON(x0) ).toList(),
+			description: (data["description"] as String?),
+			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
 		);
 	}
 

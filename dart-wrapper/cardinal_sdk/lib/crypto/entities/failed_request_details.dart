@@ -31,12 +31,12 @@ class FailedRequestDetails {
 
 	factory FailedRequestDetails.fromJSON(Map<String, dynamic> data) {
 		return FailedRequestDetails(
-			data["entityId"],
-			data["delegateId"],
-			data["updatedForMigration"],
-			data["shouldRetry"],
-			code: data["code"],
-			reason: data["reason"],
+			(data["entityId"] as String),
+			(data["delegateId"] as String),
+			(data["updatedForMigration"] as bool),
+			(data["shouldRetry"] as bool),
+			code: (data["code"] as int?),
+			reason: (data["reason"] as String?),
 			request: data["request"] == null ? null : DelegateShareOptions.fromJSON(data["request"]),
 		);
 	}

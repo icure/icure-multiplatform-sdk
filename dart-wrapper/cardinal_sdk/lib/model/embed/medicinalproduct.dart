@@ -19,11 +19,11 @@ class Medicinalproduct {
 
 	factory Medicinalproduct.fromJSON(Map<String, dynamic> data) {
 		return Medicinalproduct(
-			intendedcds: data["intendedcds"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			deliveredcds: data["deliveredcds"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			intendedname: data["intendedname"],
-			deliveredname: data["deliveredname"],
-			productId: data["productId"]
+			intendedcds: (data["intendedcds"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			deliveredcds: (data["deliveredcds"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			intendedname: (data["intendedname"] as String?),
+			deliveredname: (data["deliveredname"] as String?),
+			productId: (data["productId"] as String?)
 		);
 	}
 

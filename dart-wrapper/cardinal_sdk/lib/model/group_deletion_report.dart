@@ -13,9 +13,9 @@ class GroupDeletionReport {
 
 	factory GroupDeletionReport.fromJSON(Map<String, dynamic> data) {
 		return GroupDeletionReport(
-			data["type"],
-			data["id"],
-			data["server"]
+			(data["type"] as String),
+			(data["id"] as String),
+			(data["server"] as String)
 		);
 	}
 

@@ -11,8 +11,8 @@ class MessageReadStatus {
 
 	factory MessageReadStatus.fromJSON(Map<String, dynamic> data) {
 		return MessageReadStatus(
-			time: data["time"],
-			read: data["read"]
+			time: (data["time"] as int?),
+			read: (data["read"] as bool)
 		);
 	}
 

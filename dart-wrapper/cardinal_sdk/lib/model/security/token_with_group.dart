@@ -14,9 +14,9 @@ class TokenWithGroup {
 
 	factory TokenWithGroup.fromJSON(Map<String, dynamic> data) {
 		return TokenWithGroup(
-			data["token"],
-			data["groupId"],
-			groupName: data["groupName"],
+			(data["token"] as String),
+			(data["groupId"] as String),
+			groupName: (data["groupName"] as String?),
 		);
 	}
 

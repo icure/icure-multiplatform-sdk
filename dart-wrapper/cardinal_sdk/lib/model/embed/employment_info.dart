@@ -17,8 +17,8 @@ class EmploymentInfo {
 
 	factory EmploymentInfo.fromJSON(Map<String, dynamic> data) {
 		return EmploymentInfo(
-			startDate: data["startDate"],
-			endDate: data["endDate"],
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
 			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
 			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"])
 		);

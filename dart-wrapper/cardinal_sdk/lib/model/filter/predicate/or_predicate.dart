@@ -9,7 +9,7 @@ class OrPredicate implements Predicate {
 
 	factory OrPredicate.fromJSON(Map<String, dynamic> data) {
 		return OrPredicate(
-			predicates: data["predicates"].map((x0) => Predicate.fromJSON(x0) ).toList()
+			predicates: (data["predicates"] as List<dynamic>).map((x0) => Predicate.fromJSON(x0) ).toList()
 		);
 	}
 

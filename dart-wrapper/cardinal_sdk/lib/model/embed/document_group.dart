@@ -11,8 +11,8 @@ class DocumentGroup {
 
 	factory DocumentGroup.fromJSON(Map<String, dynamic> data) {
 		return DocumentGroup(
-			guid: data["guid"],
-			name: data["name"]
+			guid: (data["guid"] as String?),
+			name: (data["name"] as String?)
 		);
 	}
 

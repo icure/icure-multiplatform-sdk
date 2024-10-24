@@ -8,7 +8,7 @@ class ListOfIds {
 
 	factory ListOfIds.fromJSON(Map<String, dynamic> data) {
 		return ListOfIds(
-			ids: data["ids"].map((x0) => x0 ).toList()
+			ids: (data["ids"] as List<dynamic>).map((x0) => (x0 as String) ).toList()
 		);
 	}
 

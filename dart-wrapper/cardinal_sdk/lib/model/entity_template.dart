@@ -29,16 +29,16 @@ class EntityTemplate implements StoredDocument {
 
 	factory EntityTemplate.fromJSON(Map<String, dynamic> data) {
 		return EntityTemplate(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			userId: data["userId"],
-			descr: data["descr"],
-			keywords: data["keywords"]?.map((x0) => x0 ).toList(),
-			entityType: data["entityType"],
-			subType: data["subType"],
-			defaultTemplate: data["defaultTemplate"],
-			entity: data["entity"].map((x0) => x0 ).toList(),
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			userId: (data["userId"] as String?),
+			descr: (data["descr"] as String?),
+			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toSet(),
+			entityType: (data["entityType"] as String?),
+			subType: (data["subType"] as String?),
+			defaultTemplate: (data["defaultTemplate"] as bool?),
+			entity: (data["entity"] as List<dynamic>).map((x0) => (x0 as Map<String, dynamic>) ).toList(),
 		);
 	}
 

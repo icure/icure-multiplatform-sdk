@@ -63,7 +63,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, TimeTable timeTable) async {
@@ -76,7 +76,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, TimeTable timeTable) async {
@@ -89,7 +89,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, TimeTable entity, Set<String> delegates) async {
@@ -139,7 +139,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchTimeTablesBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -152,7 +152,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteTimeTableById(String sdkId, String entityId, String rev) async {
@@ -179,7 +179,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTablesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTimeTableById(String sdkId, String id, String rev) async {
@@ -216,7 +216,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTimeTable(String sdkId, TimeTable timeTable) async {
@@ -347,7 +347,7 @@ class TimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedTimeTable.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedTimeTable.fromJSON(x1) ).toList();
 	}
 }
 
@@ -473,7 +473,7 @@ class TryAndRecoverTimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => TimeTable.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => TimeTable.fromJSON(x1) ).toList();
 	}
 }
 
@@ -599,6 +599,6 @@ class EncryptedTimeTablePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedTimeTable.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedTimeTable.fromJSON(x1) ).toList();
 	}
 }

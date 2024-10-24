@@ -11,8 +11,8 @@ class LabelledOccurence {
 
 	factory LabelledOccurence.fromJSON(Map<String, dynamic> data) {
 		return LabelledOccurence(
-			data["label"],
-			data["occurence"]
+			(data["label"] as String),
+			(data["occurence"] as int)
 		);
 	}
 

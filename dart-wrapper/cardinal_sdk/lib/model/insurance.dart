@@ -35,17 +35,17 @@ class Insurance implements StoredDocument {
 
 	factory Insurance.fromJSON(Map<String, dynamic> data) {
 		return Insurance(
-			data["id"],
+			(data["id"] as String),
 			DecryptedAddress.fromJSON(data["address"]),
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			name: data["name"].map((k0, v0) => MapEntry(k0, v0)),
-			privateInsurance: data["privateInsurance"],
-			hospitalisationInsurance: data["hospitalisationInsurance"],
-			ambulatoryInsurance: data["ambulatoryInsurance"],
-			code: data["code"],
-			agreementNumber: data["agreementNumber"],
-			parent: data["parent"],
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			privateInsurance: (data["privateInsurance"] as bool),
+			hospitalisationInsurance: (data["hospitalisationInsurance"] as bool),
+			ambulatoryInsurance: (data["ambulatoryInsurance"] as bool),
+			code: (data["code"] as String?),
+			agreementNumber: (data["agreementNumber"] as String?),
+			parent: (data["parent"] as String?),
 		);
 	}
 

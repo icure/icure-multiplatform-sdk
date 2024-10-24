@@ -12,8 +12,8 @@ class EntityAccessInformation {
 
 	factory EntityAccessInformation.fromJSON(Map<String, dynamic> data) {
 		return EntityAccessInformation(
-			data["permissionsByDataOwnerId"].map((k0, v0) => MapEntry(k0, AccessLevel.fromJSON(v0))),
-			data["hasUnknownAnonymousDataOwners"]
+			(data["permissionsByDataOwnerId"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), AccessLevel.fromJSON(v0))),
+			(data["hasUnknownAnonymousDataOwners"] as bool)
 		);
 	}
 

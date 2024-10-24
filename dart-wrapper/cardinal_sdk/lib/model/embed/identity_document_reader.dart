@@ -43,12 +43,12 @@ class IdentityDocumentReader {
 
 	factory IdentityDocumentReader.fromJSON(Map<String, dynamic> data) {
 		return IdentityDocumentReader(
-			eidDocumentSupportType: data["eidDocumentSupportType"],
-			reasonManualEncoding: data["reasonManualEncoding"],
-			reasonUsingVignette: data["reasonUsingVignette"],
-			justificatifDocumentNumber: data["justificatifDocumentNumber"],
-			supportSerialNumber: data["supportSerialNumber"],
-			timeReadingEIdDocument: data["timeReadingEIdDocument"]
+			eidDocumentSupportType: (data["eidDocumentSupportType"] as int),
+			reasonManualEncoding: (data["reasonManualEncoding"] as int),
+			reasonUsingVignette: (data["reasonUsingVignette"] as int),
+			justificatifDocumentNumber: (data["justificatifDocumentNumber"] as String?),
+			supportSerialNumber: (data["supportSerialNumber"] as String?),
+			timeReadingEIdDocument: (data["timeReadingEIdDocument"] as int?)
 		);
 	}
 

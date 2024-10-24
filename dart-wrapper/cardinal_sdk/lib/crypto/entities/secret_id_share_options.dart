@@ -38,7 +38,7 @@ class SecretIdShareOptionsAllAvailable implements SecretIdShareOptions {
 
 	factory SecretIdShareOptionsAllAvailable.fromJSON(Map<String, dynamic> data) {
 		return SecretIdShareOptionsAllAvailable(
-			data["requireAtLeastOne"]
+			(data["requireAtLeastOne"] as bool)
 		);
 	}
 
@@ -60,8 +60,8 @@ class SecretIdShareOptionsUseExactly implements SecretIdShareOptions {
 
 	factory SecretIdShareOptionsUseExactly.fromJSON(Map<String, dynamic> data) {
 		return SecretIdShareOptionsUseExactly(
-			data["secretIds"].map((x0) => x0 ).toList(),
-			data["createUnknownSecretIds"]
+			(data["secretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["createUnknownSecretIds"] as bool)
 		);
 	}
 

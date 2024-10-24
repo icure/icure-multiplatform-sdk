@@ -24,12 +24,12 @@ class Replication implements StoredDocument, Identifiable<String>, Named {
 
 	factory Replication.fromJSON(Map<String, dynamic> data) {
 		return Replication(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			name: data["name"],
-			context: data["context"],
-			databaseSynchronizations: data["databaseSynchronizations"].map((x0) => DatabaseSynchronization.fromJSON(x0) ).toList(),
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			context: (data["context"] as String?),
+			databaseSynchronizations: (data["databaseSynchronizations"] as List<dynamic>).map((x0) => DatabaseSynchronization.fromJSON(x0) ).toList(),
 		);
 	}
 

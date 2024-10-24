@@ -62,7 +62,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, MaintenanceTask maintenanceTask) async {
@@ -75,7 +75,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, MaintenanceTask maintenanceTask) async {
@@ -88,7 +88,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, MaintenanceTask entity, Set<String> delegates) async {
@@ -138,7 +138,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -151,7 +151,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteMaintenanceTaskById(String sdkId, String entityId, String rev) async {
@@ -178,7 +178,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasksByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTaskById(String sdkId, String id, String rev) async {
@@ -215,7 +215,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTask(String sdkId, MaintenanceTask maintenanceTask) async {
@@ -346,7 +346,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedMaintenanceTask.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -487,7 +487,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => MaintenanceTask.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => MaintenanceTask.fromJSON(x1) ).toList();
 	}
 }
 
@@ -613,6 +613,6 @@ class EncryptedMaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedMaintenanceTask.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 }

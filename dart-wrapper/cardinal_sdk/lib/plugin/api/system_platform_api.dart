@@ -20,7 +20,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getVersion");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as String);
 	}
 
 	Future<String> isReady(String sdkId) async {
@@ -32,7 +32,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method isReady");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as String);
 	}
 
 	Future<String> getProcessInfo(String sdkId) async {
@@ -44,7 +44,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getProcessInfo");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as String);
 	}
 
 	Future<IndexingInfo> getIndexingInfo(String sdkId) async {
@@ -82,7 +82,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method updateDesignDoc");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<List<IdWithRev>> resolvePatientsConflicts(String sdkId, int? limit) async {
@@ -95,7 +95,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method resolvePatientsConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> resolveContactsConflicts(String sdkId, int? limit) async {
@@ -108,7 +108,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method resolveContactsConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> resolveFormsConflicts(String sdkId, int? limit) async {
@@ -121,7 +121,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method resolveFormsConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> resolveHealthElementsConflicts(String sdkId, int? limit) async {
@@ -134,7 +134,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method resolveHealthElementsConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> resolveInvoicesConflicts(String sdkId, int? limit) async {
@@ -147,7 +147,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method resolveInvoicesConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> resolveMessagesConflicts(String sdkId, int? limit) async {
@@ -160,7 +160,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method resolveMessagesConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> resolveDocumentsConflicts(String sdkId, String? ids, int? limit) async {
@@ -174,7 +174,7 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method resolveDocumentsConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<IndexingInfo> getIndexingInfoByGroup(String sdkId, String groupId) async {
@@ -213,6 +213,6 @@ class SystemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method evictAllFromMap");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as String);
 	}
 }

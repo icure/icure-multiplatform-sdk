@@ -44,7 +44,7 @@ class TarificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTarifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Tarification.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Tarification.fromJSON(x1) ).toList();
 	}
 
 	Future<Tarification> modifyTarification(String sdkId, Tarification tarification) async {

@@ -11,8 +11,8 @@ class Basic {
 
 	factory Basic.fromJSON(Map<String, dynamic> data) {
 		return Basic(
-			data["username"],
-			data["password"]
+			(data["username"] as String),
+			(data["password"] as String)
 		);
 	}
 

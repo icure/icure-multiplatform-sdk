@@ -42,20 +42,20 @@ class Agenda implements StoredDocument, ICureDocument<String> {
 
 	factory Agenda.fromJSON(Map<String, dynamic> data) {
 		return Agenda(
-			data["id"],
-			rev: data["rev"],
-			created: data["created"],
-			modified: data["modified"],
-			author: data["author"],
-			responsible: data["responsible"],
-			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			endOfLife: data["endOfLife"],
-			deletionDate: data["deletionDate"],
-			name: data["name"],
-			userId: data["userId"],
-			rights: data["rights"].map((x0) => Right.fromJSON(x0) ).toList(),
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			userId: (data["userId"] as String?),
+			rights: (data["rights"] as List<dynamic>).map((x0) => Right.fromJSON(x0) ).toList(),
 		);
 	}
 

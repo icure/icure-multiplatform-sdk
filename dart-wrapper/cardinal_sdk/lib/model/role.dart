@@ -19,11 +19,11 @@ class Role implements StoredDocument {
 
 	factory Role.fromJSON(Map<String, dynamic> data) {
 		return Role(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			name: data["name"],
-			permissions: data["permissions"].map((x0) => x0 ).toList(),
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			permissions: (data["permissions"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 		);
 	}
 

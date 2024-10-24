@@ -60,11 +60,11 @@ class EncryptedCareTeamMember implements CareTeamMember {
 
 	factory EncryptedCareTeamMember.fromJSON(Map<String, dynamic> data) {
 		return EncryptedCareTeamMember(
-			data["id"],
+			(data["id"] as String),
 			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
-			healthcarePartyId: data["healthcarePartyId"],
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
 			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
-			encryptedSelf: data["encryptedSelf"],
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
 		);
 	}
 
@@ -97,11 +97,11 @@ class DecryptedCareTeamMember implements CareTeamMember {
 
 	factory DecryptedCareTeamMember.fromJSON(Map<String, dynamic> data) {
 		return DecryptedCareTeamMember(
-			data["id"],
+			(data["id"] as String),
 			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
-			healthcarePartyId: data["healthcarePartyId"],
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
 			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
-			encryptedSelf: data["encryptedSelf"],
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
 		);
 	}
 

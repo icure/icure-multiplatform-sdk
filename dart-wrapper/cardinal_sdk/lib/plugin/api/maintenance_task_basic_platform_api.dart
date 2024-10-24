@@ -25,7 +25,7 @@ class MaintenanceTaskBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -38,7 +38,7 @@ class MaintenanceTaskBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, BaseFilterOptions filter) async {
@@ -91,7 +91,7 @@ class MaintenanceTaskBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasksByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTaskById(String sdkId, String id, String rev) async {
@@ -128,7 +128,7 @@ class MaintenanceTaskBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTask(String sdkId, MaintenanceTask maintenanceTask) async {
@@ -204,7 +204,7 @@ class MaintenanceTaskBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedMaintenanceTask.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {

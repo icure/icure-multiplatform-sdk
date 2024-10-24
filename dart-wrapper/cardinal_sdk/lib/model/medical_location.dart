@@ -45,22 +45,22 @@ class MedicalLocation implements StoredDocument, Named {
 
 	factory MedicalLocation.fromJSON(Map<String, dynamic> data) {
 		return MedicalLocation(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			name: data["name"],
-			description: data["description"],
-			responsible: data["responsible"],
-			guardPost: data["guardPost"],
-			cbe: data["cbe"],
-			bic: data["bic"],
-			bankAccount: data["bankAccount"],
-			nihii: data["nihii"],
-			ssin: data["ssin"],
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			description: (data["description"] as String?),
+			responsible: (data["responsible"] as String?),
+			guardPost: (data["guardPost"] as bool?),
+			cbe: (data["cbe"] as String?),
+			bic: (data["bic"] as String?),
+			bankAccount: (data["bankAccount"] as String?),
+			nihii: (data["nihii"] as String?),
+			ssin: (data["ssin"] as String?),
 			address: data["address"] == null ? null : DecryptedAddress.fromJSON(data["address"]),
-			agendaIds: data["agendaIds"].map((x0) => x0 ).toList(),
-			options: data["options"].map((k0, v0) => MapEntry(k0, v0)),
-			publicInformations: data["publicInformations"].map((k0, v0) => MapEntry(k0, v0)),
+			agendaIds: (data["agendaIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			options: (data["options"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			publicInformations: (data["publicInformations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
 		);
 	}
 

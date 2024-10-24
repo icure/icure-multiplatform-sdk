@@ -11,8 +11,8 @@ class TimeTableHour {
 
 	factory TimeTableHour.fromJSON(Map<String, dynamic> data) {
 		return TimeTableHour(
-			startHour: data["startHour"],
-			endHour: data["endHour"]
+			startHour: (data["startHour"] as int?),
+			endHour: (data["endHour"] as int?)
 		);
 	}
 

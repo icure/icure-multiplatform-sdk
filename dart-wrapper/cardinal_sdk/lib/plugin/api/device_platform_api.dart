@@ -39,7 +39,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Device.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Device.fromJSON(x1) ).toList();
 	}
 
 	Future<Device> createDevice(String sdkId, Device p) async {
@@ -78,7 +78,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method createDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> modifyDevices(String sdkId, List<Device> devices) async {
@@ -91,7 +91,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<PaginatedListIterator<Device>> filterDevicesBy(String sdkId, BaseFilterOptions filter) async {
@@ -130,7 +130,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDevicesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchDevicesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -143,7 +143,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDevicesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteDeviceById(String sdkId, String entityId, String rev) async {
@@ -170,7 +170,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevicesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeDeviceById(String sdkId, String id, String rev) async {
@@ -221,7 +221,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeDevice(String sdkId, Device device) async {
@@ -258,7 +258,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getDevicesInGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Device.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Device.fromJSON(x1) ).toList();
 	}
 
 	Future<Device> modifyDeviceInGroup(String sdkId, String groupId, Device device) async {
@@ -300,7 +300,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevicesInGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<Device>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {

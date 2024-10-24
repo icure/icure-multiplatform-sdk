@@ -17,9 +17,9 @@ class HealthcarePartyHistoryStatus {
 	factory HealthcarePartyHistoryStatus.fromJSON(Map<String, dynamic> data) {
 		return HealthcarePartyHistoryStatus(
 			HealthcarePartyStatus.fromJSON(data["status"]),
-			data["specialisationCode"],
-			data["startDate"],
-			data["active"]
+			(data["specialisationCode"] as String),
+			(data["startDate"] as int),
+			(data["active"] as bool)
 		);
 	}
 

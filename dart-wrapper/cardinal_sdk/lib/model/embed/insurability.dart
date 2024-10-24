@@ -71,16 +71,16 @@ class DecryptedInsurability implements Insurability {
 
 	factory DecryptedInsurability.fromJSON(Map<String, dynamic> data) {
 		return DecryptedInsurability(
-			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0)),
-			hospitalisation: data["hospitalisation"],
-			ambulatory: data["ambulatory"],
-			dental: data["dental"],
-			identificationNumber: data["identificationNumber"],
-			insuranceId: data["insuranceId"],
-			startDate: data["startDate"],
-			endDate: data["endDate"],
-			titularyId: data["titularyId"],
-			encryptedSelf: data["encryptedSelf"]
+			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			hospitalisation: (data["hospitalisation"] as bool?),
+			ambulatory: (data["ambulatory"] as bool?),
+			dental: (data["dental"] as bool?),
+			identificationNumber: (data["identificationNumber"] as String?),
+			insuranceId: (data["insuranceId"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			titularyId: (data["titularyId"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -127,16 +127,16 @@ class EncryptedInsurability implements Insurability {
 
 	factory EncryptedInsurability.fromJSON(Map<String, dynamic> data) {
 		return EncryptedInsurability(
-			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0)),
-			hospitalisation: data["hospitalisation"],
-			ambulatory: data["ambulatory"],
-			dental: data["dental"],
-			identificationNumber: data["identificationNumber"],
-			insuranceId: data["insuranceId"],
-			startDate: data["startDate"],
-			endDate: data["endDate"],
-			titularyId: data["titularyId"],
-			encryptedSelf: data["encryptedSelf"]
+			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			hospitalisation: (data["hospitalisation"] as bool?),
+			ambulatory: (data["ambulatory"] as bool?),
+			dental: (data["dental"] as bool?),
+			identificationNumber: (data["identificationNumber"] as String?),
+			insuranceId: (data["insuranceId"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			titularyId: (data["titularyId"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

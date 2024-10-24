@@ -13,7 +13,7 @@ class Employer implements Named {
 
 	factory Employer.fromJSON(Map<String, dynamic> data) {
 		return Employer(
-			name: data["name"],
+			name: (data["name"] as String?),
 			addresse: data["addresse"] == null ? null : DecryptedAddress.fromJSON(data["addresse"])
 		);
 	}

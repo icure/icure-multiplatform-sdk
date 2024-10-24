@@ -59,7 +59,7 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocumentTemplates");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplatesBySpeciality(String sdkId, String specialityCode) async {
@@ -72,7 +72,7 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listDocumentTemplatesBySpeciality");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplatesByDocumentType(String sdkId, String documentTypeCode) async {
@@ -85,7 +85,7 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listDocumentTemplatesByDocumentType");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplatesByDocumentTypeForCurrentUser(String sdkId, String documentTypeCode) async {
@@ -98,7 +98,7 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listDocumentTemplatesByDocumentTypeForCurrentUser");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplates(String sdkId) async {
@@ -110,7 +110,7 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listDocumentTemplates");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocumentTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<Uint8List> getDocumentTemplateAttachment(String sdkId, String documentTemplateId, String attachmentId) async {
@@ -166,6 +166,6 @@ class DocumentTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getAttachmentUrl");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as String);
 	}
 }

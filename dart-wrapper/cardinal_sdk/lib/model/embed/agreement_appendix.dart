@@ -31,10 +31,10 @@ class AgreementAppendix {
 
 	factory AgreementAppendix.fromJSON(Map<String, dynamic> data) {
 		return AgreementAppendix(
-			docSeq: data["docSeq"],
-			verseSeq: data["verseSeq"],
-			documentId: data["documentId"],
-			path: data["path"]
+			docSeq: (data["docSeq"] as int?),
+			verseSeq: (data["verseSeq"] as int?),
+			documentId: (data["documentId"] as String?),
+			path: (data["path"] as String?)
 		);
 	}
 

@@ -21,10 +21,10 @@ class Place implements StoredDocument, Named {
 
 	factory Place.fromJSON(Map<String, dynamic> data) {
 		return Place(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			name: data["name"],
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
 			address: data["address"] == null ? null : DecryptedAddress.fromJSON(data["address"]),
 		);
 	}

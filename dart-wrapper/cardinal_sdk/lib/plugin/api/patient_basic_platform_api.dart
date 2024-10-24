@@ -27,7 +27,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchPatientsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -40,7 +40,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(String sdkId, BaseFilterOptions filter) async {
@@ -93,7 +93,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deletePatientsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgePatientById(String sdkId, String id, String rev) async {
@@ -130,7 +130,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deletePatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgePatient(String sdkId, Patient patient) async {
@@ -206,7 +206,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedPatient> getPatient(String sdkId, String entityId) async {
@@ -246,7 +246,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getPatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> modifyPatients(String sdkId, List<EncryptedPatient> patientDtos) async {
@@ -259,7 +259,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedPatient> mergePatients(String sdkId, Patient from, EncryptedPatient mergedInto) async {

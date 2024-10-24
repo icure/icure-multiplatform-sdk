@@ -30,11 +30,11 @@ class RegimenItem {
 
 	factory RegimenItem.fromJSON(Map<String, dynamic> data) {
 		return RegimenItem(
-			dayNumber: data["dayNumber"],
-			date: data["date"],
+			dayNumber: (data["dayNumber"] as int?),
+			date: (data["date"] as int?),
 			weekday: data["weekday"] == null ? null : Weekday.fromJSON(data["weekday"]),
 			dayPeriod: data["dayPeriod"] == null ? null : CodeStub.fromJSON(data["dayPeriod"]),
-			timeOfDay: data["timeOfDay"],
+			timeOfDay: (data["timeOfDay"] as int?),
 			administratedQuantity: data["administratedQuantity"] == null ? null : AdministrationQuantity.fromJSON(data["administratedQuantity"])
 		);
 	}

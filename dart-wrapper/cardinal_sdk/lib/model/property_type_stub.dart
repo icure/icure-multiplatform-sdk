@@ -12,7 +12,7 @@ class PropertyTypeStub {
 
 	factory PropertyTypeStub.fromJSON(Map<String, dynamic> data) {
 		return PropertyTypeStub(
-			identifier: data["identifier"],
+			identifier: (data["identifier"] as String?),
 			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"])
 		);
 	}

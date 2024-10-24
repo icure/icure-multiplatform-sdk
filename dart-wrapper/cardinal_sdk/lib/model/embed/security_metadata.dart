@@ -15,8 +15,8 @@ class SecurityMetadata {
 
 	factory SecurityMetadata.fromJSON(Map<String, dynamic> data) {
 		return SecurityMetadata(
-			data["secureDelegations"].map((k0, v0) => MapEntry(k0, SecureDelegation.fromJSON(v0))),
-			keysEquivalences: data["keysEquivalences"].map((k0, v0) => MapEntry(k0, v0)),
+			(data["secureDelegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as SecureDelegationKeyString), SecureDelegation.fromJSON(v0))),
+			keysEquivalences: (data["keysEquivalences"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as Sha256HexString), (v0 as Sha256HexString))),
 		);
 	}
 

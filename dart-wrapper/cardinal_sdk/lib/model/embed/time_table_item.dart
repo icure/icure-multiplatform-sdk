@@ -59,20 +59,20 @@ class TimeTableItem {
 
 	factory TimeTableItem.fromJSON(Map<String, dynamic> data) {
 		return TimeTableItem(
-			notBeforeInMinutes: data["notBeforeInMinutes"],
-			notAfterInMinutes: data["notAfterInMinutes"],
-			rruleStartDate: data["rruleStartDate"],
-			rrule: data["rrule"],
-			zoneId: data["zoneId"],
-			days: data["days"].map((x0) => x0 ).toList(),
-			recurrenceTypes: data["recurrenceTypes"].map((x0) => x0 ).toList(),
-			hours: data["hours"].map((x0) => TimeTableHour.fromJSON(x0) ).toList(),
-			calendarItemTypeId: data["calendarItemTypeId"],
-			homeVisit: data["homeVisit"],
-			placeId: data["placeId"],
-			publicTimeTableItem: data["publicTimeTableItem"],
-			acceptsNewPatient: data["acceptsNewPatient"],
-			unavailable: data["unavailable"]
+			notBeforeInMinutes: (data["notBeforeInMinutes"] as int?),
+			notAfterInMinutes: (data["notAfterInMinutes"] as int?),
+			rruleStartDate: (data["rruleStartDate"] as int?),
+			rrule: (data["rrule"] as String?),
+			zoneId: (data["zoneId"] as String?),
+			days: (data["days"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			recurrenceTypes: (data["recurrenceTypes"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			hours: (data["hours"] as List<dynamic>).map((x0) => TimeTableHour.fromJSON(x0) ).toList(),
+			calendarItemTypeId: (data["calendarItemTypeId"] as String?),
+			homeVisit: (data["homeVisit"] as bool),
+			placeId: (data["placeId"] as String?),
+			publicTimeTableItem: (data["publicTimeTableItem"] as bool),
+			acceptsNewPatient: (data["acceptsNewPatient"] as bool),
+			unavailable: (data["unavailable"] as bool)
 		);
 	}
 

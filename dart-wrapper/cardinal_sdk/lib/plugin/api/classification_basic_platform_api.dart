@@ -21,7 +21,7 @@ class ClassificationBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchClassificationsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -34,7 +34,7 @@ class ClassificationBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(String sdkId, BaseFilterOptions filter) async {
@@ -86,7 +86,7 @@ class ClassificationBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedClassification> modifyClassification(String sdkId, EncryptedClassification entity) async {
@@ -125,6 +125,6 @@ class ClassificationBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedClassification.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedClassification.fromJSON(x1) ).toList();
 	}
 }

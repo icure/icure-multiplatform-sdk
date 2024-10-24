@@ -62,7 +62,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, Classification classification) async {
@@ -75,7 +75,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, Classification classification) async {
@@ -88,7 +88,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, Classification entity, Set<String> delegates) async {
@@ -138,7 +138,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchClassificationsBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -151,7 +151,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteClassification(String sdkId, String entityId) async {
@@ -177,7 +177,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedClassification> shareWith(String sdkId, String delegateId, DecryptedClassification classification, ClassificationShareOptions? options) async {
@@ -271,7 +271,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedClassification.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedClassification.fromJSON(x1) ).toList();
 	}
 }
 
@@ -370,7 +370,7 @@ class TryAndRecoverClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Classification.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Classification.fromJSON(x1) ).toList();
 	}
 }
 
@@ -469,6 +469,6 @@ class EncryptedClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedClassification.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedClassification.fromJSON(x1) ).toList();
 	}
 }

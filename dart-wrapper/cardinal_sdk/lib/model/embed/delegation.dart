@@ -16,10 +16,10 @@ class Delegation {
 
 	factory Delegation.fromJSON(Map<String, dynamic> data) {
 		return Delegation(
-			owner: data["owner"],
-			delegatedTo: data["delegatedTo"],
-			key: data["key"],
-			tags: data["tags"].map((x0) => x0 ).toList()
+			owner: (data["owner"] as String?),
+			delegatedTo: (data["delegatedTo"] as String?),
+			key: (data["key"] as HexString?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => (x0 as String) ).toList()
 		);
 	}
 

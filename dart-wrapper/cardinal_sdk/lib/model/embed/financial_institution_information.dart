@@ -65,14 +65,14 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 
 	factory EncryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
 		return EncryptedFinancialInstitutionInformation(
-			name: data["name"],
-			key: data["key"],
-			bankAccount: data["bankAccount"],
-			bic: data["bic"],
-			proxyBankAccount: data["proxyBankAccount"],
-			proxyBic: data["proxyBic"],
-			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			name: (data["name"] as String?),
+			key: (data["key"] as String?),
+			bankAccount: (data["bankAccount"] as String?),
+			bic: (data["bic"] as String?),
+			proxyBankAccount: (data["proxyBankAccount"] as String?),
+			proxyBic: (data["proxyBic"] as String?),
+			preferredFiiForPartners: (data["preferredFiiForPartners"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -113,14 +113,14 @@ class DecryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 
 	factory DecryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
 		return DecryptedFinancialInstitutionInformation(
-			name: data["name"],
-			key: data["key"],
-			bankAccount: data["bankAccount"],
-			bic: data["bic"],
-			proxyBankAccount: data["proxyBankAccount"],
-			proxyBic: data["proxyBic"],
-			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			name: (data["name"] as String?),
+			key: (data["key"] as String?),
+			bankAccount: (data["bankAccount"] as String?),
+			bic: (data["bic"] as String?),
+			proxyBankAccount: (data["proxyBankAccount"] as String?),
+			proxyBic: (data["proxyBic"] as String?),
+			preferredFiiForPartners: (data["preferredFiiForPartners"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

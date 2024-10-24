@@ -31,15 +31,15 @@ class DesignDocument {
 
 	factory DesignDocument.fromJSON(Map<String, dynamic> data) {
 		return DesignDocument(
-			data["id"],
-			rev: data["rev"],
-			revHistory: data["revHistory"].map((k0, v0) => MapEntry(k0, v0)),
-			language: data["language"],
-			views: data["views"].map((k0, v0) => MapEntry(k0, View.fromJSON(v0))),
-			lists: data["lists"].map((k0, v0) => MapEntry(k0, v0)),
-			shows: data["shows"].map((k0, v0) => MapEntry(k0, v0)),
-			updateHandlers: data["updateHandlers"]?.map((k0, v0) => MapEntry(k0, v0)),
-			filters: data["filters"].map((k0, v0) => MapEntry(k0, v0)),
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			revHistory: (data["revHistory"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			language: (data["language"] as String?),
+			views: (data["views"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), View.fromJSON(v0))),
+			lists: (data["lists"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			shows: (data["shows"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			updateHandlers: (data["updateHandlers"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			filters: (data["filters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
 		);
 	}
 

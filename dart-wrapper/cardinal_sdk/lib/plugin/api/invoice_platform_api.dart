@@ -49,7 +49,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method createInvoices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedInvoice> withEncryptionMetadata(String sdkId, DecryptedInvoice? base, Patient? patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
@@ -79,7 +79,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, Invoice invoice) async {
@@ -92,7 +92,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, Invoice invoice) async {
@@ -105,7 +105,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, Invoice entity, Set<String> delegates) async {
@@ -169,7 +169,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method findInvoicesDelegationsStubsByHcPartyPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IcureStub.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => IcureStub.fromJSON(x1) ).toList();
 	}
 
 	Future<List<LabelledOccurence>> getTarificationsCodesOccurrences(String sdkId, int minOccurrence) async {
@@ -182,7 +182,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTarificationsCodesOccurrences");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => LabelledOccurence.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => LabelledOccurence.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedInvoice> shareWith(String sdkId, String delegateId, DecryptedInvoice invoice, InvoiceShareOptions? options) async {
@@ -237,7 +237,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedInvoice> getInvoice(String sdkId, String entityId) async {
@@ -263,7 +263,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getInvoices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> findInvoicesByHcPartyPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
@@ -277,7 +277,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method findInvoicesByHcPartyPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedInvoice> reassignInvoice(String sdkId, DecryptedInvoice invoice) async {
@@ -339,7 +339,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method appendCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> removeCodes(String sdkId, String userId, String serviceId, String secretFKeys, List<String> tarificationIds) async {
@@ -355,7 +355,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
@@ -369,7 +369,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHCPartyAndPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listInvoicesByHcPartyAndGroupId(String sdkId, String hcPartyId, String groupId) async {
@@ -383,7 +383,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartyAndGroupId");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String sdkId, String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, int? from, int? to) async {
@@ -401,7 +401,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listInvoicesByContactIds(String sdkId, List<String> contactIds) async {
@@ -414,7 +414,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByContactIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listInvoicesByRecipientsIds(String sdkId, List<String> recipientsIds) async {
@@ -427,7 +427,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByRecipientsIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listToInsurances(String sdkId, List<String> userIds) async {
@@ -440,7 +440,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurances");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listToInsurancesUnsent(String sdkId, List<String> userIds) async {
@@ -453,7 +453,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurancesUnsent");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listToPatients(String sdkId, String hcPartyId) async {
@@ -466,7 +466,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToPatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listToPatientsUnsent(String sdkId, String? hcPartyId) async {
@@ -479,7 +479,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToPatientsUnsent");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listInvoicesByIds(String sdkId, List<String> ids) async {
@@ -492,7 +492,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DecryptedInvoice>> listInvoicesByHcpartySendingModeStatusDate(String sdkId, String hcPartyId, String sendingMode, String status, int from, int to) async {
@@ -509,7 +509,7 @@ class InvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcpartySendingModeStatusDate");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 }
 
@@ -569,7 +569,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<Invoice> getInvoice(String sdkId, String entityId) async {
@@ -595,7 +595,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getInvoices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> findInvoicesByHcPartyPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
@@ -609,7 +609,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method findInvoicesByHcPartyPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<Invoice> reassignInvoice(String sdkId, Invoice invoice) async {
@@ -671,7 +671,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method appendCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> removeCodes(String sdkId, String userId, String serviceId, String secretFKeys, List<String> tarificationIds) async {
@@ -687,7 +687,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
@@ -701,7 +701,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHCPartyAndPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listInvoicesByHcPartyAndGroupId(String sdkId, String hcPartyId, String groupId) async {
@@ -715,7 +715,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartyAndGroupId");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String sdkId, String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, int? from, int? to) async {
@@ -733,7 +733,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listInvoicesByContactIds(String sdkId, List<String> contactIds) async {
@@ -746,7 +746,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByContactIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listInvoicesByRecipientsIds(String sdkId, List<String> recipientsIds) async {
@@ -759,7 +759,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByRecipientsIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listToInsurances(String sdkId, List<String> userIds) async {
@@ -772,7 +772,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurances");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listToInsurancesUnsent(String sdkId, List<String> userIds) async {
@@ -785,7 +785,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurancesUnsent");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listToPatients(String sdkId, String hcPartyId) async {
@@ -798,7 +798,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToPatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listToPatientsUnsent(String sdkId, String? hcPartyId) async {
@@ -811,7 +811,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToPatientsUnsent");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listInvoicesByIds(String sdkId, List<String> ids) async {
@@ -824,7 +824,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Invoice>> listInvoicesByHcpartySendingModeStatusDate(String sdkId, String hcPartyId, String sendingMode, String status, int from, int to) async {
@@ -841,7 +841,7 @@ class TryAndRecoverInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcpartySendingModeStatusDate");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Invoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 }
 
@@ -901,7 +901,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedInvoice> getInvoice(String sdkId, String entityId) async {
@@ -927,7 +927,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getInvoices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> findInvoicesByHcPartyPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
@@ -941,7 +941,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method findInvoicesByHcPartyPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedInvoice> reassignInvoice(String sdkId, EncryptedInvoice invoice) async {
@@ -1003,7 +1003,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method appendCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> removeCodes(String sdkId, String userId, String serviceId, String secretFKeys, List<String> tarificationIds) async {
@@ -1019,7 +1019,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
@@ -1033,7 +1033,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHCPartyAndPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByHcPartyAndGroupId(String sdkId, String hcPartyId, String groupId) async {
@@ -1047,7 +1047,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartyAndGroupId");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(String sdkId, String hcPartyId, MediumType sentMediumType, InvoiceType invoiceType, bool sent, int? from, int? to) async {
@@ -1065,7 +1065,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByContactIds(String sdkId, List<String> contactIds) async {
@@ -1078,7 +1078,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByContactIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByRecipientsIds(String sdkId, List<String> recipientsIds) async {
@@ -1091,7 +1091,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByRecipientsIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listToInsurances(String sdkId, List<String> userIds) async {
@@ -1104,7 +1104,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurances");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listToInsurancesUnsent(String sdkId, List<String> userIds) async {
@@ -1117,7 +1117,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurancesUnsent");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listToPatients(String sdkId, String hcPartyId) async {
@@ -1130,7 +1130,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToPatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listToPatientsUnsent(String sdkId, String? hcPartyId) async {
@@ -1143,7 +1143,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listToPatientsUnsent");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByIds(String sdkId, List<String> ids) async {
@@ -1156,7 +1156,7 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedInvoice>> listInvoicesByHcpartySendingModeStatusDate(String sdkId, String hcPartyId, String sendingMode, String status, int from, int to) async {
@@ -1173,6 +1173,6 @@ class EncryptedInvoicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcpartySendingModeStatusDate");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 }
