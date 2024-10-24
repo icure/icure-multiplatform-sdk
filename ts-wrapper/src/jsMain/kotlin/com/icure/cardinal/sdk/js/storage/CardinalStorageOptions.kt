@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.js.storage
 
 import com.icure.cardinal.sdk.storage.KeyStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
+import com.icure.cardinal.sdk.storage.impl.ApplicationStorageFacade
 import com.icure.cardinal.sdk.storage.impl.FileStorageFacade
 import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.cardinal.sdk.storage.impl.JwkKeyStorage
@@ -15,6 +16,8 @@ internal data class FileSystemStorageOptions(val directory: String): CardinalSto
 
 internal data object BrowserLocalStorageOptions : CardinalStorageOptions
 
+internal data object ApplicationStorageOptions : CardinalStorageOptions
+
 @JsExport
 sealed interface CardinalKeyStorageOptions
 
@@ -27,6 +30,8 @@ object InternalCardinalStorageOptionsFactory {
 	fun fileSystem(directory: String): CardinalStorageOptions = FileSystemStorageOptions(directory)
 
 	fun browserLocalStorage(): CardinalStorageOptions = BrowserLocalStorageOptions
+
+	fun applicationStorage(): CardinalStorageOptions = ApplicationStorageOptions
 }
 
 @JsExport
@@ -39,8 +44,9 @@ object InternalCardinalKeyStorageOptionsFactory {
 internal suspend fun loadStorageOptions(
 	options: dynamic
 ): StorageFacade = if (options is CardinalStorageOptions) when (options) {
-	BrowserLocalStorageOptions -> LocalStorageStorageFacade()
+	is BrowserLocalStorageOptions -> LocalStorageStorageFacade()
 	is FileSystemStorageOptions -> FileStorageFacade(options.directory)
+	is ApplicationStorageOptions -> ApplicationStorageFacade()
 } else {
 	require(
 		jsTypeOf(options.getItem) == "function" &&
