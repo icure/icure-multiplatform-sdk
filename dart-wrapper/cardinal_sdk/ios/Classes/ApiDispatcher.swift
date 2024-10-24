@@ -61,6 +61,7 @@ func dispatchApi(
   case "InsuranceApi": return InsuranceApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "AgendaApi": return AgendaApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "GroupApi": return GroupApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
+  case "PaginatedListIterator": return PaginatedListIteratorDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   default: return false
   }
 }
