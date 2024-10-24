@@ -13,9 +13,9 @@ class DataOwnerRegistrationSuccess {
 
 	factory DataOwnerRegistrationSuccess.fromJSON(Map<String, dynamic> data) {
 		return DataOwnerRegistrationSuccess(
-			data["userLogin"],
-			data["userId"],
-			data["token"]
+			(data["userLogin"] as String),
+			(data["userId"] as String),
+			(data["token"] as String)
 		);
 	}
 

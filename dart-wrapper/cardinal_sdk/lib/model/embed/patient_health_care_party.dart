@@ -65,11 +65,11 @@ class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
 	factory EncryptedPatientHealthCareParty.fromJSON(Map<String, dynamic> data) {
 		return EncryptedPatientHealthCareParty(
 			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
-			healthcarePartyId: data["healthcarePartyId"],
-			sendFormats: data["sendFormats"].map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), v0)),
-			referralPeriods: data["referralPeriods"].map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
-			referral: data["referral"],
-			encryptedSelf: data["encryptedSelf"]
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			sendFormats: (data["sendFormats"] as Map<String, dynamic>).map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), (v0 as String))),
+			referralPeriods: (data["referralPeriods"] as List<dynamic>).map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
+			referral: (data["referral"] as bool),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -107,11 +107,11 @@ class DecryptedPatientHealthCareParty implements PatientHealthCareParty {
 	factory DecryptedPatientHealthCareParty.fromJSON(Map<String, dynamic> data) {
 		return DecryptedPatientHealthCareParty(
 			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
-			healthcarePartyId: data["healthcarePartyId"],
-			sendFormats: data["sendFormats"].map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), v0)),
-			referralPeriods: data["referralPeriods"].map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
-			referral: data["referral"],
-			encryptedSelf: data["encryptedSelf"]
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			sendFormats: (data["sendFormats"] as Map<String, dynamic>).map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), (v0 as String))),
+			referralPeriods: (data["referralPeriods"] as List<dynamic>).map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
+			referral: (data["referral"] as bool),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

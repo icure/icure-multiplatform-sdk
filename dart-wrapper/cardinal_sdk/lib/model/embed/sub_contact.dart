@@ -109,24 +109,24 @@ class EncryptedSubContact implements SubContact {
 
 	factory EncryptedSubContact.fromJSON(Map<String, dynamic> data) {
 		return EncryptedSubContact(
-			status: data["status"],
-			id: data["id"],
-			created: data["created"],
-			modified: data["modified"],
-			author: data["author"],
-			responsible: data["responsible"],
-			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			endOfLife: data["endOfLife"],
-			descr: data["descr"],
-			protocol: data["protocol"],
-			formId: data["formId"],
-			planOfActionId: data["planOfActionId"],
-			healthElementId: data["healthElementId"],
-			classificationId: data["classificationId"],
-			services: data["services"].map((x0) => ServiceLink.fromJSON(x0) ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			status: (data["status"] as int?),
+			id: (data["id"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			descr: (data["descr"] as String?),
+			protocol: (data["protocol"] as String?),
+			formId: (data["formId"] as String?),
+			planOfActionId: (data["planOfActionId"] as String?),
+			healthElementId: (data["healthElementId"] as String?),
+			classificationId: (data["classificationId"] as String?),
+			services: (data["services"] as List<dynamic>).map((x0) => ServiceLink.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -207,24 +207,24 @@ class DecryptedSubContact implements SubContact {
 
 	factory DecryptedSubContact.fromJSON(Map<String, dynamic> data) {
 		return DecryptedSubContact(
-			status: data["status"],
-			id: data["id"],
-			created: data["created"],
-			modified: data["modified"],
-			author: data["author"],
-			responsible: data["responsible"],
-			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			endOfLife: data["endOfLife"],
-			descr: data["descr"],
-			protocol: data["protocol"],
-			formId: data["formId"],
-			planOfActionId: data["planOfActionId"],
-			healthElementId: data["healthElementId"],
-			classificationId: data["classificationId"],
-			services: data["services"].map((x0) => ServiceLink.fromJSON(x0) ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			status: (data["status"] as int?),
+			id: (data["id"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			descr: (data["descr"] as String?),
+			protocol: (data["protocol"] as String?),
+			formId: (data["formId"] as String?),
+			planOfActionId: (data["planOfActionId"] as String?),
+			healthElementId: (data["healthElementId"] as String?),
+			classificationId: (data["classificationId"] as String?),
+			services: (data["services"] as List<dynamic>).map((x0) => ServiceLink.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

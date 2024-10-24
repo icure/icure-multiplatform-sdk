@@ -16,9 +16,9 @@ class SchoolingInfo {
 
 	factory SchoolingInfo.fromJSON(Map<String, dynamic> data) {
 		return SchoolingInfo(
-			startDate: data["startDate"],
-			endDate: data["endDate"],
-			school: data["school"],
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			school: (data["school"] as String?),
 			typeOfEducation: data["typeOfEducation"] == null ? null : CodeStub.fromJSON(data["typeOfEducation"])
 		);
 	}

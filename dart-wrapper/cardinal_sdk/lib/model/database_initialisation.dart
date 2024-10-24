@@ -19,10 +19,10 @@ class DatabaseInitialisation {
 
 	factory DatabaseInitialisation.fromJSON(Map<String, dynamic> data) {
 		return DatabaseInitialisation(
-			users: data["users"]?.map((x0) => User.fromJSON(x0) ).toList(),
-			healthcareParties: data["healthcareParties"]?.map((x0) => HealthcareParty.fromJSON(x0) ).toList(),
+			users: (data["users"] as List<dynamic>?)?.map((x0) => User.fromJSON(x0) ).toList(),
+			healthcareParties: (data["healthcareParties"] as List<dynamic>?)?.map((x0) => HealthcareParty.fromJSON(x0) ).toList(),
 			replication: data["replication"] == null ? null : Replication.fromJSON(data["replication"]),
-			minimumKrakenVersion: data["minimumKrakenVersion"]
+			minimumKrakenVersion: (data["minimumKrakenVersion"] as String?)
 		);
 	}
 

@@ -17,10 +17,10 @@ class Section {
 
 	factory Section.fromJSON(Map<String, dynamic> data) {
 		return Section(
-			data["section"],
-			data["fields"].map((x0) => StructureElement.fromJSON(x0) ).toList(),
-			description: data["description"],
-			keywords: data["keywords"]?.map((x0) => x0 ).toList(),
+			(data["section"] as String),
+			(data["fields"] as List<dynamic>).map((x0) => StructureElement.fromJSON(x0) ).toList(),
+			description: (data["description"] as String?),
+			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
 		);
 	}
 

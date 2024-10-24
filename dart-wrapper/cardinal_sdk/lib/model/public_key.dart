@@ -11,8 +11,8 @@ class PublicKey {
 
 	factory PublicKey.fromJSON(Map<String, dynamic> data) {
 		return PublicKey(
-			hcPartyId: data["hcPartyId"],
-			hexString: data["hexString"]
+			hcPartyId: (data["hcPartyId"] as String?),
+			hexString: (data["hexString"] as String?)
 		);
 	}
 

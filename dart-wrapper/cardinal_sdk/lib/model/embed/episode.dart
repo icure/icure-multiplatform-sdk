@@ -62,12 +62,12 @@ class DecryptedEpisode implements Episode {
 
 	factory DecryptedEpisode.fromJSON(Map<String, dynamic> data) {
 		return DecryptedEpisode(
-			data["id"],
-			name: data["name"],
-			comment: data["comment"],
-			startDate: data["startDate"],
-			endDate: data["endDate"],
-			encryptedSelf: data["encryptedSelf"],
+			(data["id"] as String),
+			name: (data["name"] as String?),
+			comment: (data["comment"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
 		);
 	}
 
@@ -103,12 +103,12 @@ class EncryptedEpisode implements Episode {
 
 	factory EncryptedEpisode.fromJSON(Map<String, dynamic> data) {
 		return EncryptedEpisode(
-			data["id"],
-			name: data["name"],
-			comment: data["comment"],
-			startDate: data["startDate"],
-			endDate: data["endDate"],
-			encryptedSelf: data["encryptedSelf"],
+			(data["id"] as String),
+			name: (data["name"] as String?),
+			comment: (data["comment"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
 		);
 	}
 

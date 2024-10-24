@@ -15,9 +15,9 @@ class State {
 
 	factory State.fromJSON(Map<String, dynamic> data) {
 		return State(
-			data["name"],
+			(data["name"] as String),
 			StateToUpdate.fromJSON(data["stateToUpdate"]),
-			canLaunchLauncher: data["canLaunchLauncher"],
+			canLaunchLauncher: (data["canLaunchLauncher"] as bool),
 		);
 	}
 

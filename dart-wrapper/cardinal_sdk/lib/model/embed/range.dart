@@ -11,8 +11,8 @@ class Range {
 
 	factory Range.fromJSON(Map<String, dynamic> data) {
 		return Range(
-			low: data["low"].toDouble(),
-			high: data["high"].toDouble()
+			low: (data["low"] as num?)?.toDouble(),
+			high: (data["high"] as num?)?.toDouble()
 		);
 	}
 

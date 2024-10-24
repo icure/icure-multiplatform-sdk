@@ -16,9 +16,9 @@ class Action {
 
 	factory Action.fromJSON(Map<String, dynamic> data) {
 		return Action(
-			launchers: data["launchers"]?.map((x0) => Launcher.fromJSON(x0) ).toList(),
-			expression: data["expression"],
-			states: data["states"]?.map((x0) => State.fromJSON(x0) ).toList()
+			launchers: (data["launchers"] as List<dynamic>?)?.map((x0) => Launcher.fromJSON(x0) ).toList(),
+			expression: (data["expression"] as String?),
+			states: (data["states"] as List<dynamic>?)?.map((x0) => State.fromJSON(x0) ).toList()
 		);
 	}
 

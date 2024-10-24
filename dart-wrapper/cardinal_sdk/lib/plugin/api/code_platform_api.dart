@@ -24,7 +24,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listCodesByRegionTypeCodeVersion");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Code.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
 	Future<List<String>> listCodeTypesBy(String sdkId, String? region, String? type) async {
@@ -38,7 +38,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listCodeTypesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> listTagTypesBy(String sdkId, String? region, String? type) async {
@@ -52,7 +52,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listTagTypesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<Code> createCode(String sdkId, Code c) async {
@@ -78,7 +78,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method createCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Code.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Code>> createCodesInGroup(String sdkId, String groupId, List<Code> codeBatch) async {
@@ -92,7 +92,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method createCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Code.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
 	Future<BooleanResponse> isCodeValid(String sdkId, String type, String code, String? version) async {
@@ -136,7 +136,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Code.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Code>> getCodesInGroup(String sdkId, String groupId, List<String> codeIds) async {
@@ -150,7 +150,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Code.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
 	Future<Code> getCode(String sdkId, String codeId) async {
@@ -204,7 +204,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Code.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
 	Future<List<Code>> modifyCodesInGroup(String sdkId, String groupId, List<Code> codeBatch) async {
@@ -218,7 +218,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyCodes");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Code.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
 	Future<PaginatedListIterator<Code>> filterCodesBy(String sdkId, BaseFilterOptions filter) async {
@@ -257,7 +257,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCodesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchCodesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -270,7 +270,7 @@ class CodePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCodesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<void> importCodes(String sdkId, String codeType) async {

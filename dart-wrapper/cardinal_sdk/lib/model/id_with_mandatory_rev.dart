@@ -11,8 +11,8 @@ class IdWithMandatoryRev {
 
 	factory IdWithMandatoryRev.fromJSON(Map<String, dynamic> data) {
 		return IdWithMandatoryRev(
-			data["id"],
-			data["rev"]
+			(data["id"] as String),
+			(data["rev"] as String)
 		);
 	}
 

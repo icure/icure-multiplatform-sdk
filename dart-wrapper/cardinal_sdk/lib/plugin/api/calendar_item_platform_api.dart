@@ -66,7 +66,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, CalendarItem calendarItem) async {
@@ -79,7 +79,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, CalendarItem calendarItem) async {
@@ -92,7 +92,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, CalendarItem entity, Set<String> delegates) async {
@@ -142,7 +142,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchCalendarItemsBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -155,7 +155,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteCalendarItemById(String sdkId, String entityId, String rev) async {
@@ -182,7 +182,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItemsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeCalendarItemById(String sdkId, String id, String rev) async {
@@ -219,7 +219,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeCalendarItem(String sdkId, CalendarItem calendarItem) async {
@@ -365,7 +365,7 @@ class CalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedCalendarItem.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedCalendarItem.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -521,7 +521,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => CalendarItem.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => CalendarItem.fromJSON(x1) ).toList();
 	}
 }
 
@@ -662,6 +662,6 @@ class EncryptedCalendarItemPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedCalendarItem.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedCalendarItem.fromJSON(x1) ).toList();
 	}
 }

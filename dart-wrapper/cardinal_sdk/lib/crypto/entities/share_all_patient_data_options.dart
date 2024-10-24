@@ -133,8 +133,8 @@ class ShareAllPatientDataOptionsEntityResult {
 
 	factory ShareAllPatientDataOptionsEntityResult.fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsEntityResult(
-			data["modified"],
-			success: data["success"],
+			(data["modified"] as int),
+			success: (data["success"] as bool?),
 			error: data["error"] == null ? null : ShareAllPatientDataOptionsSharePatientDataError.fromJSON(data["error"]),
 		);
 	}
@@ -160,7 +160,7 @@ class ShareAllPatientDataOptionsResult {
 	factory ShareAllPatientDataOptionsResult.fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsResult(
 			EncryptedPatient.fromJSON(data["patient"]),
-			data["statuses"].map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.fromJSON(k0), ShareAllPatientDataOptionsEntityResult.fromJSON(v0)))
+			(data["statuses"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.fromJSON(k0), ShareAllPatientDataOptionsEntityResult.fromJSON(v0)))
 		);
 	}
 
@@ -214,8 +214,8 @@ class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataO
 
 	factory ShareAllPatientDataOptionsBulkShareFailure.fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsBulkShareFailure(
-			data["errors"].map((x0) => FailedRequestDetails.fromJSON(x0) ).toList(),
-			data["message"]
+			(data["errors"] as List<dynamic>).map((x0) => FailedRequestDetails.fromJSON(x0) ).toList(),
+			(data["message"] as String)
 		);
 	}
 
@@ -234,7 +234,7 @@ class ShareAllPatientDataOptionsFailedRequest implements ShareAllPatientDataOpti
 
 	factory ShareAllPatientDataOptionsFailedRequest.fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsFailedRequest(
-			data["description"]
+			(data["description"] as String)
 		);
 	}
 

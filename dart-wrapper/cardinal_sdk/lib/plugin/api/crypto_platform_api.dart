@@ -28,6 +28,6 @@ class CryptoPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method currentDataOwnerKeys");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, base64Decode(v2 as String)))));
+		return (parsedResJson as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as KeypairFingerprintV1String), base64Decode(v2 as String)))));
 	}
 }

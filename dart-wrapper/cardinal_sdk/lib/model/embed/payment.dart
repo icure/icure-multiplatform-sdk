@@ -14,9 +14,9 @@ class Payment {
 
 	factory Payment.fromJSON(Map<String, dynamic> data) {
 		return Payment(
-			paymentDate: data["paymentDate"],
+			paymentDate: (data["paymentDate"] as int),
 			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
-			paid: data["paid"].toDouble()
+			paid: (data["paid"] as num?)?.toDouble()
 		);
 	}
 

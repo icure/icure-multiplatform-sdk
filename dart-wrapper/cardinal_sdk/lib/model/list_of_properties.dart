@@ -9,7 +9,7 @@ class ListOfProperties {
 
 	factory ListOfProperties.fromJSON(Map<String, dynamic> data) {
 		return ListOfProperties(
-			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toList()
+			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet()
 		);
 	}
 

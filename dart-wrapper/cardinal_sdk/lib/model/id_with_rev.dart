@@ -12,8 +12,8 @@ class IdWithRev {
 
 	factory IdWithRev.fromJSON(Map<String, dynamic> data) {
 		return IdWithRev(
-			data["id"],
-			rev: data["rev"],
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
 		);
 	}
 

@@ -27,13 +27,13 @@ class TimeSeries {
 
 	factory TimeSeries.fromJSON(Map<String, dynamic> data) {
 		return TimeSeries(
-			fields: data["fields"].map((x0) => x0 ).toList(),
-			samples: data["samples"].map((x0) => x0.map((x1) => x1.toDouble() ).toList() ).toList(),
-			min: data["min"].map((x0) => x0.toDouble() ).toList(),
-			max: data["max"].map((x0) => x0.toDouble() ).toList(),
-			mean: data["mean"].map((x0) => x0.toDouble() ).toList(),
-			median: data["median"].map((x0) => x0.toDouble() ).toList(),
-			variance: data["variance"].map((x0) => x0.toDouble() ).toList()
+			fields: (data["fields"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			samples: (data["samples"] as List<dynamic>).map((x0) => (x0 as List<dynamic>).map((x1) => (x1 as num).toDouble() ).toList() ).toList(),
+			min: (data["min"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			max: (data["max"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			mean: (data["mean"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			median: (data["median"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			variance: (data["variance"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList()
 		);
 	}
 

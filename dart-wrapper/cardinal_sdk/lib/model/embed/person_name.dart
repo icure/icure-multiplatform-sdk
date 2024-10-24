@@ -26,13 +26,13 @@ class PersonName {
 
 	factory PersonName.fromJSON(Map<String, dynamic> data) {
 		return PersonName(
-			lastName: data["lastName"],
-			firstNames: data["firstNames"].map((x0) => x0 ).toList(),
-			start: data["start"],
-			end: data["end"],
-			prefix: data["prefix"].map((x0) => x0 ).toList(),
-			suffix: data["suffix"].map((x0) => x0 ).toList(),
-			text: data["text"],
+			lastName: (data["lastName"] as String?),
+			firstNames: (data["firstNames"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			start: (data["start"] as int?),
+			end: (data["end"] as int?),
+			prefix: (data["prefix"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			suffix: (data["suffix"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			text: (data["text"] as String?),
 			use: data["use"] == null ? null : PersonNameUse.fromJSON(data["use"])
 		);
 	}

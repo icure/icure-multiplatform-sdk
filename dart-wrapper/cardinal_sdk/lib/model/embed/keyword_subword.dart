@@ -12,8 +12,8 @@ class KeywordSubword {
 
 	factory KeywordSubword.fromJSON(Map<String, dynamic> data) {
 		return KeywordSubword(
-			value: data["value"],
-			subWords: data["subWords"]?.map((x0) => KeywordSubword.fromJSON(x0) ).toList()
+			value: (data["value"] as String?),
+			subWords: (data["subWords"] as List<dynamic>?)?.map((x0) => KeywordSubword.fromJSON(x0) ).toList()
 		);
 	}
 

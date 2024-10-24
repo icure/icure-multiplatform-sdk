@@ -20,12 +20,12 @@ class RegistrationInformation {
 
 	factory RegistrationInformation.fromJSON(Map<String, dynamic> data) {
 		return RegistrationInformation(
-			data["firstName"],
-			data["lastName"],
-			data["emailAddress"],
-			userOptions: data["userOptions"],
-			userRoles: data["userRoles"].map((x0) => x0 ).toList(),
-			minimumKrakenVersion: data["minimumKrakenVersion"],
+			(data["firstName"] as String),
+			(data["lastName"] as String),
+			(data["emailAddress"] as String),
+			userOptions: (data["userOptions"] as String?),
+			userRoles: (data["userRoles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			minimumKrakenVersion: (data["minimumKrakenVersion"] as String?),
 		);
 	}
 

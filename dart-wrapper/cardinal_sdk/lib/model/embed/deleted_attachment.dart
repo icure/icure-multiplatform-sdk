@@ -15,10 +15,10 @@ class DeletedAttachment {
 
 	factory DeletedAttachment.fromJSON(Map<String, dynamic> data) {
 		return DeletedAttachment(
-			couchDbAttachmentId: data["couchDbAttachmentId"],
-			objectStoreAttachmentId: data["objectStoreAttachmentId"],
-			key: data["key"],
-			deletionTime: data["deletionTime"]
+			couchDbAttachmentId: (data["couchDbAttachmentId"] as String?),
+			objectStoreAttachmentId: (data["objectStoreAttachmentId"] as String?),
+			key: (data["key"] as String?),
+			deletionTime: (data["deletionTime"] as int?)
 		);
 	}
 

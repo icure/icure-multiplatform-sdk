@@ -21,9 +21,9 @@ class Partnership {
 		return Partnership(
 			type: data["type"] == null ? null : PartnershipType.fromJSON(data["type"]),
 			status: data["status"] == null ? null : PartnershipStatus.fromJSON(data["status"]),
-			partnerId: data["partnerId"],
-			meToOtherRelationshipDescription: data["meToOtherRelationshipDescription"],
-			otherToMeRelationshipDescription: data["otherToMeRelationshipDescription"]
+			partnerId: (data["partnerId"] as String?),
+			meToOtherRelationshipDescription: (data["meToOtherRelationshipDescription"] as String?),
+			otherToMeRelationshipDescription: (data["otherToMeRelationshipDescription"] as String?)
 		);
 	}
 

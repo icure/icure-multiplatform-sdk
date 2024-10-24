@@ -9,7 +9,7 @@ class AndPredicate implements Predicate {
 
 	factory AndPredicate.fromJSON(Map<String, dynamic> data) {
 		return AndPredicate(
-			predicates: data["predicates"].map((x0) => Predicate.fromJSON(x0) ).toList()
+			predicates: (data["predicates"] as List<dynamic>).map((x0) => Predicate.fromJSON(x0) ).toList()
 		);
 	}
 

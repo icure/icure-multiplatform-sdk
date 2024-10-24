@@ -33,10 +33,10 @@ class ReplicationInfo {
 
 	factory ReplicationInfo.fromJSON(Map<String, dynamic> data) {
 		return ReplicationInfo(
-			pendingFrom: data["pendingFrom"],
-			pendingTo: data["pendingTo"],
-			active: data["active"],
-			running: data["running"]
+			pendingFrom: (data["pendingFrom"] as int?),
+			pendingTo: (data["pendingTo"] as int?),
+			active: (data["active"] as bool),
+			running: (data["running"] as bool)
 		);
 	}
 

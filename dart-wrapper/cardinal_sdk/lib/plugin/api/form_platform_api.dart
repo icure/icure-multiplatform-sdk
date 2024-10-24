@@ -48,7 +48,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method createForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedForm.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedForm> withEncryptionMetadata(String sdkId, DecryptedForm? base, Patient patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
@@ -78,7 +78,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, Form form) async {
@@ -91,7 +91,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, Form form) async {
@@ -104,7 +104,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, Form entity, Set<String> delegates) async {
@@ -154,7 +154,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchFormsBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -167,7 +167,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteFormById(String sdkId, String entityId, String rev) async {
@@ -194,7 +194,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteFormsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeFormById(String sdkId, String id, String rev) async {
@@ -231,7 +231,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeForm(String sdkId, Form form) async {
@@ -308,7 +308,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method setTemplateAttachment");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as String);
 	}
 
 	Future<DecryptedForm> shareWith(String sdkId, String delegateId, DecryptedForm form, FormShareOptions? options) async {
@@ -416,7 +416,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedForm.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedForm> getForm(String sdkId, String entityId) async {
@@ -442,7 +442,7 @@ class FormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedForm.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedForm> getLatestFormByLogicalUuid(String sdkId, String logicalUuid) async {
@@ -581,7 +581,7 @@ class TryAndRecoverFormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Form.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Form.fromJSON(x1) ).toList();
 	}
 
 	Future<Form> getForm(String sdkId, String entityId) async {
@@ -607,7 +607,7 @@ class TryAndRecoverFormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Form.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Form.fromJSON(x1) ).toList();
 	}
 
 	Future<Form> getLatestFormByLogicalUuid(String sdkId, String logicalUuid) async {
@@ -746,7 +746,7 @@ class EncryptedFormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedForm.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedForm.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedForm> getForm(String sdkId, String entityId) async {
@@ -772,7 +772,7 @@ class EncryptedFormPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedForm.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedForm.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedForm> getLatestFormByLogicalUuid(String sdkId, String logicalUuid) async {

@@ -20,7 +20,7 @@ class Renewal {
 
 	factory Renewal.fromJSON(Map<String, dynamic> data) {
 		return Renewal(
-			decimal: data["decimal"],
+			decimal: (data["decimal"] as int?),
 			duration: data["duration"] == null ? null : Duration.fromJSON(data["duration"])
 		);
 	}

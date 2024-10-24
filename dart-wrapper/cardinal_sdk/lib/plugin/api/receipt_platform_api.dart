@@ -90,7 +90,7 @@ class ReceiptPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, Receipt receipt) async {
@@ -103,7 +103,7 @@ class ReceiptPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, Receipt receipt) async {
@@ -116,7 +116,7 @@ class ReceiptPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, Receipt entity, Set<String> delegates) async {
@@ -196,7 +196,7 @@ class ReceiptPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteReceipts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<Uint8List> getRawReceiptAttachment(String sdkId, String receiptId, String attachmentId) async {
@@ -294,7 +294,7 @@ class ReceiptPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedReceipt.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedReceipt.fromJSON(x1) ).toList();
 	}
 }
 
@@ -367,7 +367,7 @@ class TryAndRecoverReceiptPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Receipt.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => Receipt.fromJSON(x1) ).toList();
 	}
 }
 
@@ -440,6 +440,6 @@ class EncryptedReceiptPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedReceipt.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedReceipt.fromJSON(x1) ).toList();
 	}
 }

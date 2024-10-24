@@ -13,7 +13,7 @@ class RoleConfiguration {
 	factory RoleConfiguration.fromJSON(Map<String, dynamic> data) {
 		return RoleConfiguration(
 			RoleConfigurationSource.fromJSON(data["source"]),
-			roles: data["roles"].map((x0) => x0 ).toList(),
+			roles: (data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 		);
 	}
 

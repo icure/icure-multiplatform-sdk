@@ -42,20 +42,20 @@ class Keyword implements StoredDocument, ICureDocument<String> {
 
 	factory Keyword.fromJSON(Map<String, dynamic> data) {
 		return Keyword(
-			data["id"],
-			rev: data["rev"],
-			created: data["created"],
-			modified: data["modified"],
-			author: data["author"],
-			responsible: data["responsible"],
-			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			endOfLife: data["endOfLife"],
-			deletionDate: data["deletionDate"],
-			value: data["value"],
-			subWords: data["subWords"].map((x0) => KeywordSubword.fromJSON(x0) ).toList(),
-			userId: data["userId"],
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			value: (data["value"] as String?),
+			subWords: (data["subWords"] as List<dynamic>).map((x0) => KeywordSubword.fromJSON(x0) ).toSet(),
+			userId: (data["userId"] as String?),
 		);
 	}
 

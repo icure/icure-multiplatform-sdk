@@ -15,10 +15,10 @@ class Suspension {
 
 	factory Suspension.fromJSON(Map<String, dynamic> data) {
 		return Suspension(
-			beginMoment: data["beginMoment"],
-			endMoment: data["endMoment"],
-			suspensionReason: data["suspensionReason"],
-			lifecycle: data["lifecycle"]
+			beginMoment: (data["beginMoment"] as int?),
+			endMoment: (data["endMoment"] as int?),
+			suspensionReason: (data["suspensionReason"] as String?),
+			lifecycle: (data["lifecycle"] as String?)
 		);
 	}
 

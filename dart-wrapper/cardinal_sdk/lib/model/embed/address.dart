@@ -85,18 +85,18 @@ class EncryptedAddress implements Address {
 	factory EncryptedAddress.fromJSON(Map<String, dynamic> data) {
 		return EncryptedAddress(
 			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
-			descr: data["descr"],
-			street: data["street"],
-			houseNumber: data["houseNumber"],
-			postboxNumber: data["postboxNumber"],
-			postalCode: data["postalCode"],
-			city: data["city"],
-			state: data["state"],
-			country: data["country"],
-			note: data["note"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
-			telecoms: data["telecoms"].map((x0) => EncryptedTelecom.fromJSON(x0) ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			descr: (data["descr"] as String?),
+			street: (data["street"] as String?),
+			houseNumber: (data["houseNumber"] as String?),
+			postboxNumber: (data["postboxNumber"] as String?),
+			postalCode: (data["postalCode"] as String?),
+			city: (data["city"] as String?),
+			state: (data["state"] as String?),
+			country: (data["country"] as String?),
+			note: (data["note"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			telecoms: (data["telecoms"] as List<dynamic>).map((x0) => EncryptedTelecom.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -154,18 +154,18 @@ class DecryptedAddress implements Address {
 	factory DecryptedAddress.fromJSON(Map<String, dynamic> data) {
 		return DecryptedAddress(
 			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
-			descr: data["descr"],
-			street: data["street"],
-			houseNumber: data["houseNumber"],
-			postboxNumber: data["postboxNumber"],
-			postalCode: data["postalCode"],
-			city: data["city"],
-			state: data["state"],
-			country: data["country"],
-			note: data["note"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
-			telecoms: data["telecoms"].map((x0) => DecryptedTelecom.fromJSON(x0) ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			descr: (data["descr"] as String?),
+			street: (data["street"] as String?),
+			houseNumber: (data["houseNumber"] as String?),
+			postboxNumber: (data["postboxNumber"] as String?),
+			postalCode: (data["postalCode"] as String?),
+			city: (data["city"] as String?),
+			state: (data["state"] as String?),
+			country: (data["country"] as String?),
+			note: (data["note"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			telecoms: (data["telecoms"] as List<dynamic>).map((x0) => DecryptedTelecom.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

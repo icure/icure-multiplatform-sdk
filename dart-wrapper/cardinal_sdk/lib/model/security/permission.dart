@@ -13,8 +13,8 @@ class Permission {
 
 	factory Permission.fromJSON(Map<String, dynamic> data) {
 		return Permission(
-			grants: data["grants"].map((x0) => PermissionItem.fromJSON(x0) ).toList(),
-			revokes: data["revokes"].map((x0) => PermissionItem.fromJSON(x0) ).toList()
+			grants: (data["grants"] as List<dynamic>).map((x0) => PermissionItem.fromJSON(x0) ).toSet(),
+			revokes: (data["revokes"] as List<dynamic>).map((x0) => PermissionItem.fromJSON(x0) ).toSet()
 		);
 	}
 

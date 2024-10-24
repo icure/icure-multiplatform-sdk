@@ -31,16 +31,16 @@ class Annotation implements Identifiable<String> {
 
 	factory Annotation.fromJSON(Map<String, dynamic> data) {
 		return Annotation(
-			data["id"],
-			author: data["author"],
-			created: data["created"],
-			modified: data["modified"],
-			text: data["text"],
-			markdown: data["markdown"].map((k0, v0) => MapEntry(k0, v0)),
-			location: data["location"],
-			confidential: data["confidential"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			encryptedSelf: data["encryptedSelf"],
+			(data["id"] as String),
+			author: (data["author"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			text: (data["text"] as String?),
+			markdown: (data["markdown"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			location: (data["location"] as String?),
+			confidential: (data["confidential"] as bool?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			encryptedSelf: (data["encryptedSelf"] as String?),
 		);
 	}
 

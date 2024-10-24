@@ -49,7 +49,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method createHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedHealthElement> withEncryptionMetadata(String sdkId, DecryptedHealthElement? base, Patient patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
@@ -79,7 +79,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, HealthElement healthElement) async {
@@ -92,7 +92,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as bool);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(String sdkId, HealthElement healthElement) async {
@@ -105,7 +105,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, HealthElement entity, Set<String> delegates) async {
@@ -155,7 +155,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchHealthElementsBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -168,7 +168,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DocIdentifier> deleteHealthElementById(String sdkId, String entityId, String? rev) async {
@@ -195,7 +195,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElementsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthElementById(String sdkId, String id, String rev) async {
@@ -232,7 +232,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthElement(String sdkId, HealthElement healthElement) async {
@@ -350,7 +350,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedHealthElement> getHealthElement(String sdkId, String entityId) async {
@@ -376,7 +376,7 @@ class HealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -504,7 +504,7 @@ class TryAndRecoverHealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => HealthElement.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => HealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<HealthElement> getHealthElement(String sdkId, String entityId) async {
@@ -530,7 +530,7 @@ class TryAndRecoverHealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => HealthElement.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => HealthElement.fromJSON(x1) ).toList();
 	}
 }
 
@@ -643,7 +643,7 @@ class EncryptedHealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedHealthElement> getHealthElement(String sdkId, String entityId) async {
@@ -669,6 +669,6 @@ class EncryptedHealthElementPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
 	}
 }

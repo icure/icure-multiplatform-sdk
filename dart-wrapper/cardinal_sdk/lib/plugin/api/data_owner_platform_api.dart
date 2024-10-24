@@ -43,7 +43,7 @@ class DataOwnerPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerId");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson;
+		return (parsedResJson as String);
 	}
 
 	Future<List<String>> getCurrentDataOwnerHierarchyIds(String sdkId) async {
@@ -55,7 +55,7 @@ class DataOwnerPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchyIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<DataOwnerWithType> getDataOwner(String sdkId, String ownerId) async {
@@ -94,7 +94,7 @@ class DataOwnerPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchyIdsFrom");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<DataOwnerWithType>> getCurrentDataOwnerHierarchy(String sdkId) async {
@@ -106,7 +106,7 @@ class DataOwnerPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DataOwnerWithType.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DataOwnerWithType.fromJSON(x1) ).toList();
 	}
 
 	Future<CryptoActorStubWithType> modifyDataOwnerStub(String sdkId, CryptoActorStubWithType cryptoActorStubWithTypeDto) async {

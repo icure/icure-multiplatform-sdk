@@ -26,12 +26,12 @@ class ReferenceRange {
 
 	factory ReferenceRange.fromJSON(Map<String, dynamic> data) {
 		return ReferenceRange(
-			low: data["low"].toDouble(),
-			high: data["high"].toDouble(),
-			stringValue: data["stringValue"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
+			low: (data["low"] as num?)?.toDouble(),
+			high: (data["high"] as num?)?.toDouble(),
+			stringValue: (data["stringValue"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
 			age: data["age"] == null ? null : Range.fromJSON(data["age"])
 		);
 	}

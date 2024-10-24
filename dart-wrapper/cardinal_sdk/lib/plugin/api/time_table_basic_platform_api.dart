@@ -22,7 +22,7 @@ class TimeTableBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchTimeTablesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -35,7 +35,7 @@ class TimeTableBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(String sdkId, BaseFilterOptions filter) async {
@@ -88,7 +88,7 @@ class TimeTableBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTablesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTimeTableById(String sdkId, String id, String rev) async {
@@ -125,7 +125,7 @@ class TimeTableBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTimeTable(String sdkId, TimeTable timeTable) async {
@@ -201,6 +201,6 @@ class TimeTableBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedTimeTable.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedTimeTable.fromJSON(x1) ).toList();
 	}
 }

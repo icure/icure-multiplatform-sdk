@@ -58,11 +58,11 @@ class EncryptedPropertyStub implements PropertyStub {
 
 	factory EncryptedPropertyStub.fromJSON(Map<String, dynamic> data) {
 		return EncryptedPropertyStub(
-			id: data["id"],
+			id: (data["id"] as String?),
 			type: data["type"] == null ? null : PropertyTypeStub.fromJSON(data["type"]),
 			typedValue: data["typedValue"] == null ? null : EncryptedTypedValue.fromJSON(data["typedValue"]),
-			deletionDate: data["deletionDate"],
-			encryptedSelf: data["encryptedSelf"]
+			deletionDate: (data["deletionDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -94,11 +94,11 @@ class DecryptedPropertyStub implements PropertyStub {
 
 	factory DecryptedPropertyStub.fromJSON(Map<String, dynamic> data) {
 		return DecryptedPropertyStub(
-			id: data["id"],
+			id: (data["id"] as String?),
 			type: data["type"] == null ? null : PropertyTypeStub.fromJSON(data["type"]),
 			typedValue: data["typedValue"] == null ? null : DecryptedTypedValue.fromJSON(data["typedValue"]),
-			deletionDate: data["deletionDate"],
-			encryptedSelf: data["encryptedSelf"]
+			deletionDate: (data["deletionDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

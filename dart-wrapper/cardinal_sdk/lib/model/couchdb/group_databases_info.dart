@@ -14,9 +14,9 @@ class GroupDatabasesInfo {
 
 	factory GroupDatabasesInfo.fromJSON(Map<String, dynamic> data) {
 		return GroupDatabasesInfo(
-			data["groupId"],
-			data["databasesInfo"].map((x0) => DatabaseInfo.fromJSON(x0) ).toList(),
-			data["gcpStorageSize"]
+			(data["groupId"] as String),
+			(data["databasesInfo"] as List<dynamic>).map((x0) => DatabaseInfo.fromJSON(x0) ).toList(),
+			(data["gcpStorageSize"] as int)
 		);
 	}
 

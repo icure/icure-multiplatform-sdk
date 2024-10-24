@@ -15,10 +15,10 @@ class CalendarItemTag {
 
 	factory CalendarItemTag.fromJSON(Map<String, dynamic> data) {
 		return CalendarItemTag(
-			code: data["code"],
-			date: data["date"],
-			userId: data["userId"],
-			userName: data["userName"]
+			code: (data["code"] as String?),
+			date: (data["date"] as int?),
+			userId: (data["userId"] as String?),
+			userName: (data["userName"] as String?)
 		);
 	}
 

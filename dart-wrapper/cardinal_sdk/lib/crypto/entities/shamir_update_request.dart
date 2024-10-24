@@ -19,8 +19,8 @@ class ShamirUpdateRequest {
 
 	factory ShamirUpdateRequest.fromJSON(Map<String, dynamic> data) {
 		return ShamirUpdateRequest(
-			data["notariesIds"].map((x0) => x0 ).toList(),
-			data["minShares"]
+			(data["notariesIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["minShares"] as int)
 		);
 	}
 

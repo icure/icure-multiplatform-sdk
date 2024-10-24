@@ -17,7 +17,8 @@ class EntitySubscriptionEvent<E extends Identifiable<String>> {
 	}
 
 	factory EntitySubscriptionEvent.EntityNotification(E entity) {
-		return EntitySubscriptionEvent._internal({"entity": Identifiable<String>.encode(entity), "kotlinType": "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.EntityNotification"});
+		throw UnimplementedError("TODO");
+		// return EntitySubscriptionEvent._internal({"entity": Identifiable<String>.encode(entity), "kotlinType": "com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.EntityNotification"});
 	}
 
 	factory EntitySubscriptionEvent.EntityError() {

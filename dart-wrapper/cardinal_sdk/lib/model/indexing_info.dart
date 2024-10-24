@@ -8,7 +8,7 @@ class IndexingInfo {
 
 	factory IndexingInfo.fromJSON(Map<String, dynamic> data) {
 		return IndexingInfo(
-			statuses: data["statuses"]?.map((k0, v0) => MapEntry(k0, v0))
+			statuses: (data["statuses"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as int)))
 		);
 	}
 

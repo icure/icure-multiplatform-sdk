@@ -17,10 +17,10 @@ class EntityReference implements StoredDocument {
 
 	factory EntityReference.fromJSON(Map<String, dynamic> data) {
 		return EntityReference(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			docId: data["docId"],
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			docId: (data["docId"] as String?),
 		);
 	}
 

@@ -19,8 +19,8 @@ class Enable2faRequest {
 
 	factory Enable2faRequest.fromJSON(Map<String, dynamic> data) {
 		return Enable2faRequest(
-			data["secret"],
-			data["otpLength"]
+			(data["secret"] as String),
+			(data["otpLength"] as int)
 		);
 	}
 

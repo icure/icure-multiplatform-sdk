@@ -21,7 +21,7 @@ class ShamirKeysManagerPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getExistingSplitsInfo");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((k1, v1) => MapEntry(k1, v1.map((x2) => x2 ).toList()));
+		return (parsedResJson as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as KeypairFingerprintV1String), (v1 as List<dynamic>).map((x2) => (x2 as String) ).toSet()));
 	}
 
 	Future<CryptoActorStubWithType> updateSelfSplits(String sdkId, Map<KeypairFingerprintV1String, ShamirUpdateRequest> keySplitsToUpdate, Set<KeypairFingerprintV1String> keySplitsToDelete) async {

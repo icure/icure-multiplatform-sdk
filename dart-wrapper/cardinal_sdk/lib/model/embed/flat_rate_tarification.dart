@@ -58,11 +58,11 @@ class EncryptedFlatRateTarification implements FlatRateTarification {
 
 	factory EncryptedFlatRateTarification.fromJSON(Map<String, dynamic> data) {
 		return EncryptedFlatRateTarification(
-			code: data["code"],
+			code: (data["code"] as String?),
 			flatRateType: data["flatRateType"] == null ? null : FlatRateType.fromJSON(data["flatRateType"]),
-			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
-			valorisations: data["valorisations"].map((x0) => EncryptedValorisation.fromJSON(x0) ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			valorisations: (data["valorisations"] as List<dynamic>).map((x0) => EncryptedValorisation.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -94,11 +94,11 @@ class DecryptedFlatRateTarification implements FlatRateTarification {
 
 	factory DecryptedFlatRateTarification.fromJSON(Map<String, dynamic> data) {
 		return DecryptedFlatRateTarification(
-			code: data["code"],
+			code: (data["code"] as String?),
 			flatRateType: data["flatRateType"] == null ? null : FlatRateType.fromJSON(data["flatRateType"]),
-			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
-			valorisations: data["valorisations"].map((x0) => DecryptedValorisation.fromJSON(x0) ).toList(),
-			encryptedSelf: data["encryptedSelf"]
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			valorisations: (data["valorisations"] as List<dynamic>).map((x0) => DecryptedValorisation.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

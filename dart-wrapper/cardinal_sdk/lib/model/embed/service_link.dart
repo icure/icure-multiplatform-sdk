@@ -8,7 +8,7 @@ class ServiceLink {
 
 	factory ServiceLink.fromJSON(Map<String, dynamic> data) {
 		return ServiceLink(
-			serviceId: data["serviceId"]
+			serviceId: (data["serviceId"] as String?)
 		);
 	}
 

@@ -60,16 +60,16 @@ class DatabaseInfo {
 
 	factory DatabaseInfo.fromJSON(Map<String, dynamic> data) {
 		return DatabaseInfo(
-			data["id"],
-			q: data["q"],
-			n: data["n"],
-			w: data["w"],
-			r: data["r"],
-			updateSeq: data["updateSeq"],
-			fileSize: data["fileSize"],
-			externalSize: data["externalSize"],
-			activeSize: data["activeSize"],
-			docs: data["docs"],
+			(data["id"] as String),
+			q: (data["q"] as int?),
+			n: (data["n"] as int?),
+			w: (data["w"] as int?),
+			r: (data["r"] as int?),
+			updateSeq: (data["updateSeq"] as String?),
+			fileSize: (data["fileSize"] as int?),
+			externalSize: (data["externalSize"] as int?),
+			activeSize: (data["activeSize"] as int?),
+			docs: (data["docs"] as int?),
 		);
 	}
 

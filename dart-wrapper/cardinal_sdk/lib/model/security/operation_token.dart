@@ -19,11 +19,11 @@ class OperationToken {
 
 	factory OperationToken.fromJSON(Map<String, dynamic> data) {
 		return OperationToken(
-			data["tokenHash"],
-			data["creationTime"],
-			data["validity"],
+			(data["tokenHash"] as String),
+			(data["creationTime"] as int),
+			(data["validity"] as int),
 			Operation.fromJSON(data["operation"]),
-			description: data["description"],
+			description: (data["description"] as String?),
 		);
 	}
 

@@ -13,9 +13,9 @@ class DataAttachment {
 
 	factory DataAttachment.fromJSON(Map<String, dynamic> data) {
 		return DataAttachment(
-			couchDbAttachmentId: data["couchDbAttachmentId"],
-			objectStoreAttachmentId: data["objectStoreAttachmentId"],
-			utis: data["utis"].map((x0) => x0 ).toList()
+			couchDbAttachmentId: (data["couchDbAttachmentId"] as String?),
+			objectStoreAttachmentId: (data["objectStoreAttachmentId"] as String?),
+			utis: (data["utis"] as List<dynamic>).map((x0) => (x0 as String) ).toList()
 		);
 	}
 

@@ -13,9 +13,9 @@ class RegistrationSuccess {
 
 	factory RegistrationSuccess.fromJSON(Map<String, dynamic> data) {
 		return RegistrationSuccess(
-			data["groupId"],
-			data["userId"],
-			data["token"]
+			(data["groupId"] as String),
+			(data["userId"] as String),
+			(data["token"] as String)
 		);
 	}
 

@@ -36,11 +36,11 @@ class EntitySubscriptionConfiguration {
 
 	factory EntitySubscriptionConfiguration.fromJSON(Map<String, dynamic> data) {
 		return EntitySubscriptionConfiguration(
-			channelBufferCapacity: data["channelBufferCapacity"],
-			connectionMaxRetries: data["connectionMaxRetries"],
+			channelBufferCapacity: (data["channelBufferCapacity"] as int),
+			connectionMaxRetries: (data["connectionMaxRetries"] as int),
 			onBufferFull: EntitySubscriptionConfigurationFullBufferBehaviour.fromJSON(data["onBufferFull"]),
 			reconnectionDelay: Duration(milliseconds: data["reconnectionDelay"]),
-			retryDelayExponentFactor: data["retryDelayExponentFactor"].toDouble()
+			retryDelayExponentFactor: (data["retryDelayExponentFactor"] as num).toDouble()
 		);
 	}
 

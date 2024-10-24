@@ -12,8 +12,8 @@ class KeyPairUpdateNotification {
 
 	factory KeyPairUpdateNotification.fromJSON(Map<String, dynamic> data) {
 		return KeyPairUpdateNotification(
-			data["newPublicKey"],
-			data["concernedDataOwnerId"]
+			(data["newPublicKey"] as SpkiHexString),
+			(data["concernedDataOwnerId"] as String)
 		);
 	}
 

@@ -7,7 +7,7 @@ class BooleanResponse {
 
 	factory BooleanResponse.fromJSON(Map<String, dynamic> data) {
 		return BooleanResponse(
-			data["response"]
+			(data["response"] as bool)
 		);
 	}
 

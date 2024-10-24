@@ -33,7 +33,7 @@ class ReceiptBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteReceipts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<Uint8List> getRawReceiptAttachment(String sdkId, String receiptId, String attachmentId) async {
@@ -102,6 +102,6 @@ class ReceiptBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedReceipt.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedReceipt.fromJSON(x1) ).toList();
 	}
 }

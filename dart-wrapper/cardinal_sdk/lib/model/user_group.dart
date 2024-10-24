@@ -32,18 +32,18 @@ class UserGroup {
 
 	factory UserGroup.fromJSON(Map<String, dynamic> data) {
 		return UserGroup(
-			groupId: data["groupId"],
-			groupName: data["groupName"],
-			groupsHierarchy: data["groupsHierarchy"].map((x0) => Group.fromJSON(x0) ).toList(),
-			userId: data["userId"],
-			login: data["login"],
-			name: data["name"],
-			email: data["email"],
-			phone: data["phone"],
-			patientId: data["patientId"],
-			healthcarePartyId: data["healthcarePartyId"],
-			deviceId: data["deviceId"],
-			nameOfParentOfTopmostGroupInHierarchy: data["nameOfParentOfTopmostGroupInHierarchy"]
+			groupId: (data["groupId"] as String?),
+			groupName: (data["groupName"] as String?),
+			groupsHierarchy: (data["groupsHierarchy"] as List<dynamic>).map((x0) => Group.fromJSON(x0) ).toList(),
+			userId: (data["userId"] as String?),
+			login: (data["login"] as String?),
+			name: (data["name"] as String?),
+			email: (data["email"] as String?),
+			phone: (data["phone"] as String?),
+			patientId: (data["patientId"] as String?),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			deviceId: (data["deviceId"] as String?),
+			nameOfParentOfTopmostGroupInHierarchy: (data["nameOfParentOfTopmostGroupInHierarchy"] as String?)
 		);
 	}
 

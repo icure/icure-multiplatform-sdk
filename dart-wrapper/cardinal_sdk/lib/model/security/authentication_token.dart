@@ -16,10 +16,10 @@ class AuthenticationToken {
 
 	factory AuthenticationToken.fromJSON(Map<String, dynamic> data) {
 		return AuthenticationToken(
-			data["creationTime"],
-			data["validity"],
-			token: data["token"],
-			deletionDate: data["deletionDate"],
+			(data["creationTime"] as int),
+			(data["validity"] as int),
+			token: (data["token"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
 		);
 	}
 

@@ -25,7 +25,7 @@ class CalendarItemBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<List<String>> matchCalendarItemsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -38,7 +38,7 @@ class CalendarItemBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(String sdkId, BaseFilterOptions filter) async {
@@ -91,7 +91,7 @@ class CalendarItemBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItemsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeCalendarItemById(String sdkId, String id, String rev) async {
@@ -128,7 +128,7 @@ class CalendarItemBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeCalendarItem(String sdkId, CalendarItem calendarItem) async {
@@ -204,7 +204,7 @@ class CalendarItemBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedCalendarItem.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedCalendarItem.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {

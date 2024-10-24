@@ -37,15 +37,15 @@ class CryptoActorStub implements Versionable<String>, CryptoActor, HasTags {
 
 	factory CryptoActorStub.fromJSON(Map<String, dynamic> data) {
 		return CryptoActorStub(
-			data["id"],
-			data["rev"],
-			data["publicKeysForOaepWithSha256"].map((x0) => x0 ).toList(),
-			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
-			aesExchangeKeys: data["aesExchangeKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
-			transferKeys: data["transferKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
-			privateKeyShamirPartitions: data["privateKeyShamirPartitions"].map((k0, v0) => MapEntry(k0, v0)),
-			publicKey: data["publicKey"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			(data["id"] as String),
+			(data["rev"] as String),
+			(data["publicKeysForOaepWithSha256"] as List<dynamic>).map((x0) => (x0 as SpkiHexString) ).toSet(),
+			hcPartyKeys: (data["hcPartyKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as HexString) ).toList())),
+			aesExchangeKeys: (data["aesExchangeKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as SpkiHexString), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as AesExchangeKeyEncryptionKeypairIdentifier), (v2 as HexString))))))),
+			transferKeys: (data["transferKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as AesExchangeKeyEncryptionKeypairIdentifier), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as AesExchangeKeyEncryptionKeypairIdentifier), (v1 as HexString))))),
+			privateKeyShamirPartitions: (data["privateKeyShamirPartitions"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as HexString))),
+			publicKey: (data["publicKey"] as SpkiHexString?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
 		);
 	}
 

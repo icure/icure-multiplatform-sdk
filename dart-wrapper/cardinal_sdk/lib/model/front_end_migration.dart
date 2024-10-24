@@ -37,19 +37,19 @@ class FrontEndMigration implements StoredDocument {
 
 	factory FrontEndMigration.fromJSON(Map<String, dynamic> data) {
 		return FrontEndMigration(
-			data["id"],
-			rev: data["rev"],
-			deletionDate: data["deletionDate"],
-			name: data["name"],
-			startDate: data["startDate"],
-			endDate: data["endDate"],
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
 			status: data["status"] == null ? null : FrontEndMigrationStatus.fromJSON(data["status"]),
-			logs: data["logs"],
-			userId: data["userId"],
-			startKey: data["startKey"],
-			startKeyDocId: data["startKeyDocId"],
-			processCount: data["processCount"],
-			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toList(),
+			logs: (data["logs"] as String?),
+			userId: (data["userId"] as String?),
+			startKey: (data["startKey"] as String?),
+			startKeyDocId: (data["startKeyDocId"] as String?),
+			processCount: (data["processCount"] as int?),
+			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
 		);
 	}
 

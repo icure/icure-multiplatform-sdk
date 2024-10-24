@@ -15,7 +15,7 @@ class ReferralPeriod {
 		return ReferralPeriod(
 			startDate: data["startDate"] == null ? null : DateTime.parse(data["startDate"] as String),
 			endDate: data["endDate"] == null ? null : DateTime.parse(data["endDate"] as String),
-			comment: data["comment"]
+			comment: (data["comment"] as String?)
 		);
 	}
 

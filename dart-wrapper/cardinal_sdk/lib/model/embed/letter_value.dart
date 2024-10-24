@@ -15,10 +15,10 @@ class LetterValue {
 
 	factory LetterValue.fromJSON(Map<String, dynamic> data) {
 		return LetterValue(
-			letter: data["letter"],
-			index: data["index"],
-			coefficient: data["coefficient"].toDouble(),
-			value: data["value"].toDouble()
+			letter: (data["letter"] as String?),
+			index: (data["index"] as String?),
+			coefficient: (data["coefficient"] as num?)?.toDouble(),
+			value: (data["value"] as num?)?.toDouble()
 		);
 	}
 
