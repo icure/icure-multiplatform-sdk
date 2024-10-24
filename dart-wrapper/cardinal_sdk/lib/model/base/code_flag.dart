@@ -84,161 +84,161 @@ enum CodeFlag {
 	static String encode(CodeFlag value) {
 		switch (value) {
 			case CodeFlag.maleOnly:
-				return '"male_only"';
+				return 'male_only';
 			case CodeFlag.femaleOnly:
-				return '"female_only"';
+				return 'female_only';
 			case CodeFlag.deptkinesitherapy:
-				return '"deptkinesitherapy"';
+				return 'deptkinesitherapy';
 			case CodeFlag.deptnursing:
-				return '"deptnursing"';
+				return 'deptnursing';
 			case CodeFlag.deptgeneralpractice:
-				return '"deptgeneralpractice"';
+				return 'deptgeneralpractice';
 			case CodeFlag.deptsocialworker:
-				return '"deptsocialworker"';
+				return 'deptsocialworker';
 			case CodeFlag.deptpsychology:
-				return '"deptpsychology"';
+				return 'deptpsychology';
 			case CodeFlag.deptadministrative:
-				return '"deptadministrative"';
+				return 'deptadministrative';
 			case CodeFlag.deptdietetics:
-				return '"deptdietetics"';
+				return 'deptdietetics';
 			case CodeFlag.deptspeechtherapy:
-				return '"deptspeechtherapy"';
+				return 'deptspeechtherapy';
 			case CodeFlag.deptdentistry:
-				return '"deptdentistry"';
+				return 'deptdentistry';
 			case CodeFlag.deptoccupationaltherapy:
-				return '"deptoccupationaltherapy"';
+				return 'deptoccupationaltherapy';
 			case CodeFlag.depthealthcare:
-				return '"depthealthcare"';
+				return 'depthealthcare';
 			case CodeFlag.deptgynecology:
-				return '"deptgynecology"';
+				return 'deptgynecology';
 			case CodeFlag.deptpediatry:
-				return '"deptpediatry"';
+				return 'deptpediatry';
 			case CodeFlag.deptalgology:
-				return '"deptalgology"';
+				return 'deptalgology';
 			case CodeFlag.deptanatomopathology:
-				return '"deptanatomopathology"';
+				return 'deptanatomopathology';
 			case CodeFlag.deptanesthesiology:
-				return '"deptanesthesiology"';
+				return 'deptanesthesiology';
 			case CodeFlag.deptbacteriology:
-				return '"deptbacteriology"';
+				return 'deptbacteriology';
 			case CodeFlag.deptcardiacsurgery:
-				return '"deptcardiacsurgery"';
+				return 'deptcardiacsurgery';
 			case CodeFlag.deptcardiology:
-				return '"deptcardiology"';
+				return 'deptcardiology';
 			case CodeFlag.deptchildandadolescentpsychiatry:
-				return '"deptchildandadolescentpsychiatry"';
+				return 'deptchildandadolescentpsychiatry';
 			case CodeFlag.deptdermatology:
-				return '"deptdermatology"';
+				return 'deptdermatology';
 			case CodeFlag.deptdiabetology:
-				return '"deptdiabetology"';
+				return 'deptdiabetology';
 			case CodeFlag.deptemergency:
-				return '"deptemergency"';
+				return 'deptemergency';
 			case CodeFlag.deptendocrinology:
-				return '"deptendocrinology"';
+				return 'deptendocrinology';
 			case CodeFlag.deptgastroenterology:
-				return '"deptgastroenterology"';
+				return 'deptgastroenterology';
 			case CodeFlag.deptgenetics:
-				return '"deptgenetics"';
+				return 'deptgenetics';
 			case CodeFlag.deptgeriatry:
-				return '"deptgeriatry"';
+				return 'deptgeriatry';
 			case CodeFlag.depthandsurgery:
-				return '"depthandsurgery"';
+				return 'depthandsurgery';
 			case CodeFlag.depthematology:
-				return '"depthematology"';
+				return 'depthematology';
 			case CodeFlag.deptinfectiousdisease:
-				return '"deptinfectiousdisease"';
+				return 'deptinfectiousdisease';
 			case CodeFlag.deptintensivecare:
-				return '"deptintensivecare"';
+				return 'deptintensivecare';
 			case CodeFlag.deptlaboratory:
-				return '"deptlaboratory"';
+				return 'deptlaboratory';
 			case CodeFlag.deptmajorburns:
-				return '"deptmajorburns"';
+				return 'deptmajorburns';
 			case CodeFlag.deptmaxillofacialsurgery:
-				return '"deptmaxillofacialsurgery"';
+				return 'deptmaxillofacialsurgery';
 			case CodeFlag.deptmedicine:
-				return '"deptmedicine"';
+				return 'deptmedicine';
 			case CodeFlag.deptmolecularbiology:
-				return '"deptmolecularbiology"';
+				return 'deptmolecularbiology';
 			case CodeFlag.deptneonatalogy:
-				return '"deptneonatalogy"';
+				return 'deptneonatalogy';
 			case CodeFlag.deptnephrology:
-				return '"deptnephrology"';
+				return 'deptnephrology';
 			case CodeFlag.deptneurology:
-				return '"deptneurology"';
+				return 'deptneurology';
 			case CodeFlag.deptneurosurgery:
-				return '"deptneurosurgery"';
+				return 'deptneurosurgery';
 			case CodeFlag.deptnte:
-				return '"deptnte"';
+				return 'deptnte';
 			case CodeFlag.deptnuclear:
-				return '"deptnuclear"';
+				return 'deptnuclear';
 			case CodeFlag.deptnutritiondietetics:
-				return '"deptnutritiondietetics"';
+				return 'deptnutritiondietetics';
 			case CodeFlag.deptobstetrics:
-				return '"deptobstetrics"';
+				return 'deptobstetrics';
 			case CodeFlag.deptoncology:
-				return '"deptoncology"';
+				return 'deptoncology';
 			case CodeFlag.deptophtalmology:
-				return '"deptophtalmology"';
+				return 'deptophtalmology';
 			case CodeFlag.deptorthopedy:
-				return '"deptorthopedy"';
+				return 'deptorthopedy';
 			case CodeFlag.deptpalliativecare:
-				return '"deptpalliativecare"';
+				return 'deptpalliativecare';
 			case CodeFlag.deptpediatricintensivecare:
-				return '"deptpediatricintensivecare"';
+				return 'deptpediatricintensivecare';
 			case CodeFlag.deptpediatricsurgery:
-				return '"deptpediatricsurgery"';
+				return 'deptpediatricsurgery';
 			case CodeFlag.deptpharmacy:
-				return '"deptpharmacy"';
+				return 'deptpharmacy';
 			case CodeFlag.deptphysicalmedecine:
-				return '"deptphysicalmedecine"';
+				return 'deptphysicalmedecine';
 			case CodeFlag.deptphysiotherapy:
-				return '"deptphysiotherapy"';
+				return 'deptphysiotherapy';
 			case CodeFlag.deptplasticandreparatorysurgery:
-				return '"deptplasticandreparatorysurgery"';
+				return 'deptplasticandreparatorysurgery';
 			case CodeFlag.deptpneumology:
-				return '"deptpneumology"';
+				return 'deptpneumology';
 			case CodeFlag.deptpodiatry:
-				return '"deptpodiatry"';
+				return 'deptpodiatry';
 			case CodeFlag.deptpsychiatry:
-				return '"deptpsychiatry"';
+				return 'deptpsychiatry';
 			case CodeFlag.deptradiology:
-				return '"deptradiology"';
+				return 'deptradiology';
 			case CodeFlag.deptradiotherapy:
-				return '"deptradiotherapy"';
+				return 'deptradiotherapy';
 			case CodeFlag.deptrevalidation:
-				return '"deptrevalidation"';
+				return 'deptrevalidation';
 			case CodeFlag.deptrheumatology:
-				return '"deptrheumatology"';
+				return 'deptrheumatology';
 			case CodeFlag.deptrhumatology:
-				return '"deptrhumatology"';
+				return 'deptrhumatology';
 			case CodeFlag.deptsenology:
-				return '"deptsenology"';
+				return 'deptsenology';
 			case CodeFlag.deptsocialservice:
-				return '"deptsocialservice"';
+				return 'deptsocialservice';
 			case CodeFlag.deptsportsmedecine:
-				return '"deptsportsmedecine"';
+				return 'deptsportsmedecine';
 			case CodeFlag.deptstomatology:
-				return '"deptstomatology"';
+				return 'deptstomatology';
 			case CodeFlag.deptsurgery:
-				return '"deptsurgery"';
+				return 'deptsurgery';
 			case CodeFlag.deptthoracicsurgery:
-				return '"deptthoracicsurgery"';
+				return 'deptthoracicsurgery';
 			case CodeFlag.depttoxicology:
-				return '"depttoxicology"';
+				return 'depttoxicology';
 			case CodeFlag.depttropicalmedecine:
-				return '"depttropicalmedecine"';
+				return 'depttropicalmedecine';
 			case CodeFlag.depturology:
-				return '"depturology"';
+				return 'depturology';
 			case CodeFlag.deptvascularsurgery:
-				return '"deptvascularsurgery"';
+				return 'deptvascularsurgery';
 			case CodeFlag.deptvisceraldigestiveabdominalsurgery:
-				return '"deptvisceraldigestiveabdominalsurgery"';
+				return 'deptvisceraldigestiveabdominalsurgery';
 			case CodeFlag.depttransplantsurgery:
-				return '"depttransplantsurgery"';
+				return 'depttransplantsurgery';
 			case CodeFlag.deptpercutaneous:
-				return '"deptpercutaneous"';
+				return 'deptpercutaneous';
 			case CodeFlag.deptchildbirth:
-				return '"deptchildbirth"';
+				return 'deptchildbirth';
 			}
 	}
 

@@ -10,13 +10,13 @@ enum MhcSignatureType {
 	static String encode(MhcSignatureType value) {
 		switch (value) {
 			case MhcSignatureType.holderEid:
-				return '"holderEid"';
+				return 'holderEid';
 			case MhcSignatureType.holderPaper:
-				return '"holderPaper"';
+				return 'holderPaper';
 			case MhcSignatureType.legalrepresentativeEid:
-				return '"legalrepresentativeEid"';
+				return 'legalrepresentativeEid';
 			case MhcSignatureType.legalrepresentativePaper:
-				return '"legalrepresentativePaper"';
+				return 'legalrepresentativePaper';
 			}
 	}
 

@@ -9,11 +9,11 @@ enum DataOwnerType {
 	static String encode(DataOwnerType value) {
 		switch (value) {
 			case DataOwnerType.hcp:
-				return '"hcp"';
+				return 'hcp';
 			case DataOwnerType.device:
-				return '"device"';
+				return 'device';
 			case DataOwnerType.patient:
-				return '"patient"';
+				return 'patient';
 			}
 	}
 

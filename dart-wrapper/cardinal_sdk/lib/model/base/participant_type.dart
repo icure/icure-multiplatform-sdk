@@ -19,31 +19,31 @@ enum ParticipantType {
 	static String encode(ParticipantType value) {
 		switch (value) {
 			case ParticipantType.admitter:
-				return '"admitter"';
+				return 'admitter';
 			case ParticipantType.attender:
-				return '"attender"';
+				return 'attender';
 			case ParticipantType.callbackContact:
-				return '"callback"';
+				return 'callback';
 			case ParticipantType.consultant:
-				return '"consultant"';
+				return 'consultant';
 			case ParticipantType.discharger:
-				return '"discharger"';
+				return 'discharger';
 			case ParticipantType.escort:
-				return '"escort"';
+				return 'escort';
 			case ParticipantType.referrer:
-				return '"referrer"';
+				return 'referrer';
 			case ParticipantType.secondaryPerformer:
-				return '"secondaryPerformer"';
+				return 'secondaryPerformer';
 			case ParticipantType.primaryPerformer:
-				return '"primaryPerformer"';
+				return 'primaryPerformer';
 			case ParticipantType.participation:
-				return '"participation"';
+				return 'participation';
 			case ParticipantType.translator:
-				return '"translator"';
+				return 'translator';
 			case ParticipantType.emergency:
-				return '"emergency"';
+				return 'emergency';
 			case ParticipantType.location:
-				return '"location"';
+				return 'location';
 			}
 	}
 

@@ -9,11 +9,11 @@ enum PartnershipStatus {
 	static String encode(PartnershipStatus value) {
 		switch (value) {
 			case PartnershipStatus.active:
-				return '"active"';
+				return 'active';
 			case PartnershipStatus.complicated:
-				return '"complicated"';
+				return 'complicated';
 			case PartnershipStatus.past:
-				return '"past"';
+				return 'past';
 			}
 	}
 

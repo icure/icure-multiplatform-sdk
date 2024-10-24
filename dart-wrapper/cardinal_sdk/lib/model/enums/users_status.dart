@@ -9,11 +9,11 @@ enum UsersStatus {
 	static String encode(UsersStatus value) {
 		switch (value) {
 			case UsersStatus.active:
-				return '"ACTIVE"';
+				return 'ACTIVE';
 			case UsersStatus.disabled:
-				return '"DISABLED"';
+				return 'DISABLED';
 			case UsersStatus.registering:
-				return '"REGISTERING"';
+				return 'REGISTERING';
 			}
 	}
 

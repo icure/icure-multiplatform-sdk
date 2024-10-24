@@ -30,53 +30,53 @@ enum LinkQualification {
 	static String encode(LinkQualification value) {
 		switch (value) {
 			case LinkQualification.exact:
-				return '"exact"';
+				return 'exact';
 			case LinkQualification.narrower:
-				return '"narrower"';
+				return 'narrower';
 			case LinkQualification.broader:
-				return '"broader"';
+				return 'broader';
 			case LinkQualification.approximate:
-				return '"approximate"';
+				return 'approximate';
 			case LinkQualification.sequence:
-				return '"sequence"';
+				return 'sequence';
 			case LinkQualification.parent:
-				return '"parent"';
+				return 'parent';
 			case LinkQualification.child:
-				return '"child"';
+				return 'child';
 			case LinkQualification.relatedCode:
-				return '"relatedCode"';
+				return 'relatedCode';
 			case LinkQualification.linkedPackage:
-				return '"linkedPackage"';
+				return 'linkedPackage';
 			case LinkQualification.relatedService:
-				return '"relatedService"';
+				return 'relatedService';
 			case LinkQualification.inResponseTo:
-				return '"inResponseTo"';
+				return 'inResponseTo';
 			case LinkQualification.replaces:
-				return '"replaces"';
+				return 'replaces';
 			case LinkQualification.transforms:
-				return '"transforms"';
+				return 'transforms';
 			case LinkQualification.transformsAndReplaces:
-				return '"transformsAndReplaces"';
+				return 'transformsAndReplaces';
 			case LinkQualification.appendsTo:
-				return '"appendsTo"';
+				return 'appendsTo';
 			case LinkQualification.basedOn:
-				return '"basedOn"';
+				return 'basedOn';
 			case LinkQualification.derivedFrom:
-				return '"derivedFrom"';
+				return 'derivedFrom';
 			case LinkQualification.device:
-				return '"device"';
+				return 'device';
 			case LinkQualification.focus:
-				return '"focus"';
+				return 'focus';
 			case LinkQualification.hasMember:
-				return '"hasMember"';
+				return 'hasMember';
 			case LinkQualification.performer:
-				return '"performer"';
+				return 'performer';
 			case LinkQualification.specimen:
-				return '"specimen"';
+				return 'specimen';
 			case LinkQualification.resultInterpreter:
-				return '"resultInterpreter"';
+				return 'resultInterpreter';
 			case LinkQualification.request:
-				return '"request"';
+				return 'request';
 			}
 	}
 

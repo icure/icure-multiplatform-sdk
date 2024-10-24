@@ -15,23 +15,23 @@ enum DocumentStatus {
 	static String encode(DocumentStatus value) {
 		switch (value) {
 			case DocumentStatus.draft:
-				return '"draft"';
+				return 'draft';
 			case DocumentStatus.finalized:
-				return '"finalized"';
+				return 'finalized';
 			case DocumentStatus.pendingReview:
-				return '"pending_review"';
+				return 'pending_review';
 			case DocumentStatus.reviewed:
-				return '"reviewed"';
+				return 'reviewed';
 			case DocumentStatus.pendingSignature:
-				return '"pending_signature"';
+				return 'pending_signature';
 			case DocumentStatus.signed:
-				return '"signed"';
+				return 'signed';
 			case DocumentStatus.canceled:
-				return '"canceled"';
+				return 'canceled';
 			case DocumentStatus.sent:
-				return '"sent"';
+				return 'sent';
 			case DocumentStatus.delivered:
-				return '"delivered"';
+				return 'delivered';
 			}
 	}
 

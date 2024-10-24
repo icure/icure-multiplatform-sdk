@@ -23,39 +23,39 @@ enum EntityWithEncryptionMetadataTypeName {
 	static String encode(EntityWithEncryptionMetadataTypeName value) {
 		switch (value) {
 			case EntityWithEncryptionMetadataTypeName.article:
-				return '"Article"';
+				return 'Article';
 			case EntityWithEncryptionMetadataTypeName.accessLog:
-				return '"AccessLog"';
+				return 'AccessLog';
 			case EntityWithEncryptionMetadataTypeName.calendarItem:
-				return '"CalendarItem"';
+				return 'CalendarItem';
 			case EntityWithEncryptionMetadataTypeName.classification:
-				return '"Classification"';
+				return 'Classification';
 			case EntityWithEncryptionMetadataTypeName.classificationTemplate:
-				return '"ClassificationTemplate"';
+				return 'ClassificationTemplate';
 			case EntityWithEncryptionMetadataTypeName.contact:
-				return '"Contact"';
+				return 'Contact';
 			case EntityWithEncryptionMetadataTypeName.service:
-				return '"Service"';
+				return 'Service';
 			case EntityWithEncryptionMetadataTypeName.document:
-				return '"Document"';
+				return 'Document';
 			case EntityWithEncryptionMetadataTypeName.form:
-				return '"Form"';
+				return 'Form';
 			case EntityWithEncryptionMetadataTypeName.healthElement:
-				return '"HealthElement"';
+				return 'HealthElement';
 			case EntityWithEncryptionMetadataTypeName.invoice:
-				return '"Invoice"';
+				return 'Invoice';
 			case EntityWithEncryptionMetadataTypeName.maintenanceTask:
-				return '"MaintenanceTask"';
+				return 'MaintenanceTask';
 			case EntityWithEncryptionMetadataTypeName.message:
-				return '"Message"';
+				return 'Message';
 			case EntityWithEncryptionMetadataTypeName.patient:
-				return '"Patient"';
+				return 'Patient';
 			case EntityWithEncryptionMetadataTypeName.receipt:
-				return '"Receipt"';
+				return 'Receipt';
 			case EntityWithEncryptionMetadataTypeName.timeTable:
-				return '"TimeTable"';
+				return 'TimeTable';
 			case EntityWithEncryptionMetadataTypeName.topic:
-				return '"Topic"';
+				return 'Topic';
 			}
 	}
 

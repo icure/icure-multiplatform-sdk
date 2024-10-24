@@ -8,9 +8,9 @@ enum AccessLevel {
 	static String encode(AccessLevel value) {
 		switch (value) {
 			case AccessLevel.read:
-				return '"READ"';
+				return 'READ';
 			case AccessLevel.write:
-				return '"WRITE"';
+				return 'WRITE';
 			}
 	}
 

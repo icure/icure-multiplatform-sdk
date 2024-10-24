@@ -8,9 +8,9 @@ enum Laterality {
 	static String encode(Laterality value) {
 		switch (value) {
 			case Laterality.left:
-				return '"left"';
+				return 'left';
 			case Laterality.right:
-				return '"right"';
+				return 'right';
 			}
 	}
 

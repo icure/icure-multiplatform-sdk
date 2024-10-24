@@ -41,11 +41,11 @@ enum DatabaseSynchronizationTarget {
 	static String encode(DatabaseSynchronizationTarget value) {
 		switch (value) {
 			case DatabaseSynchronizationTarget.base:
-				return '"base"';
+				return 'base';
 			case DatabaseSynchronizationTarget.healthdata:
-				return '"healthdata"';
+				return 'healthdata';
 			case DatabaseSynchronizationTarget.patient:
-				return '"patient"';
+				return 'patient';
 			}
 	}
 

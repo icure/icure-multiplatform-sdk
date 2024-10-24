@@ -9,11 +9,11 @@ enum TopicRole {
 	static String encode(TopicRole value) {
 		switch (value) {
 			case TopicRole.participant:
-				return '"PARTICIPANT"';
+				return 'PARTICIPANT';
 			case TopicRole.admin:
-				return '"ADMIN"';
+				return 'ADMIN';
 			case TopicRole.owner:
-				return '"OWNER"';
+				return 'OWNER';
 			}
 	}
 

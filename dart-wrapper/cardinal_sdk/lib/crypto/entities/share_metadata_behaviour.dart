@@ -9,11 +9,11 @@ enum ShareMetadataBehaviour {
 	static String encode(ShareMetadataBehaviour value) {
 		switch (value) {
 			case ShareMetadataBehaviour.required:
-				return '"REQUIRED"';
+				return 'REQUIRED';
 			case ShareMetadataBehaviour.ifAvailable:
-				return '"IF_AVAILABLE"';
+				return 'IF_AVAILABLE';
 			case ShareMetadataBehaviour.never:
-				return '"NEVER"';
+				return 'NEVER';
 			}
 	}
 

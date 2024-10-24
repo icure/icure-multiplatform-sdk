@@ -14,21 +14,21 @@ enum Operator {
 	static String encode(Operator value) {
 		switch (value) {
 			case Operator.equal:
-				return '"EQUAL"';
+				return 'EQUAL';
 			case Operator.notequal:
-				return '"NOTEQUAL"';
+				return 'NOTEQUAL';
 			case Operator.greaterthan:
-				return '"GREATERTHAN"';
+				return 'GREATERTHAN';
 			case Operator.smallerthan:
-				return '"SMALLERTHAN"';
+				return 'SMALLERTHAN';
 			case Operator.greaterthanorequal:
-				return '"GREATERTHANOREQUAL"';
+				return 'GREATERTHANOREQUAL';
 			case Operator.smallerthanorequal:
-				return '"SMALLERTHANOREQUAL"';
+				return 'SMALLERTHANOREQUAL';
 			case Operator.like:
-				return '"LIKE"';
+				return 'LIKE';
 			case Operator.ilike:
-				return '"ILIKE"';
+				return 'ILIKE';
 			}
 	}
 

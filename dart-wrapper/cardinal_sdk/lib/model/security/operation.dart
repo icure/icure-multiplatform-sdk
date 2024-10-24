@@ -7,7 +7,7 @@ enum Operation {
 	static String encode(Operation value) {
 		switch (value) {
 			case Operation.transferGroup:
-				return '"TRANSFER_GROUP"';
+				return 'TRANSFER_GROUP';
 			}
 	}
 

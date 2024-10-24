@@ -44,81 +44,81 @@ enum PartnershipType {
 	static String encode(PartnershipType value) {
 		switch (value) {
 			case PartnershipType.primaryContact:
-				return '"primary_contact"';
+				return 'primary_contact';
 			case PartnershipType.primaryContactFor:
-				return '"primary_contact_for"';
+				return 'primary_contact_for';
 			case PartnershipType.family:
-				return '"family"';
+				return 'family';
 			case PartnershipType.friend:
-				return '"friend"';
+				return 'friend';
 			case PartnershipType.counselor:
-				return '"counselor"';
+				return 'counselor';
 			case PartnershipType.contact:
-				return '"contact"';
+				return 'contact';
 			case PartnershipType.brother:
-				return '"brother"';
+				return 'brother';
 			case PartnershipType.brotherinlaw:
-				return '"brotherinlaw"';
+				return 'brotherinlaw';
 			case PartnershipType.child:
-				return '"child"';
+				return 'child';
 			case PartnershipType.daughter:
-				return '"daughter"';
+				return 'daughter';
 			case PartnershipType.employer:
-				return '"employer"';
+				return 'employer';
 			case PartnershipType.father:
-				return '"father"';
+				return 'father';
 			case PartnershipType.grandchild:
-				return '"grandchild"';
+				return 'grandchild';
 			case PartnershipType.grandparent:
-				return '"grandparent"';
+				return 'grandparent';
 			case PartnershipType.husband:
-				return '"husband"';
+				return 'husband';
 			case PartnershipType.lawyer:
-				return '"lawyer"';
+				return 'lawyer';
 			case PartnershipType.mother:
-				return '"mother"';
+				return 'mother';
 			case PartnershipType.neighbour:
-				return '"neighbour"';
+				return 'neighbour';
 			case PartnershipType.notary:
-				return '"notary"';
+				return 'notary';
 			case PartnershipType.partner:
-				return '"partner"';
+				return 'partner';
 			case PartnershipType.sister:
-				return '"sister"';
+				return 'sister';
 			case PartnershipType.sisterinlaw:
-				return '"sisterinlaw"';
+				return 'sisterinlaw';
 			case PartnershipType.son:
-				return '"son"';
+				return 'son';
 			case PartnershipType.spouse:
-				return '"spouse"';
+				return 'spouse';
 			case PartnershipType.stepdaughter:
-				return '"stepdaughter"';
+				return 'stepdaughter';
 			case PartnershipType.stepfather:
-				return '"stepfather"';
+				return 'stepfather';
 			case PartnershipType.stepmother:
-				return '"stepmother"';
+				return 'stepmother';
 			case PartnershipType.stepson:
-				return '"stepson"';
+				return 'stepson';
 			case PartnershipType.tutor:
-				return '"tutor"';
+				return 'tutor';
 			case PartnershipType.cohabiting:
-				return '"cohabiting"';
+				return 'cohabiting';
 			case PartnershipType.registeredPartner:
-				return '"registered_partner"';
+				return 'registered_partner';
 			case PartnershipType.nextOfKin:
-				return '"next_of_kin"';
+				return 'next_of_kin';
 			case PartnershipType.federalAgency:
-				return '"federal_agency"';
+				return 'federal_agency';
 			case PartnershipType.insuranceCompany:
-				return '"insurance_company"';
+				return 'insurance_company';
 			case PartnershipType.stateAgency:
-				return '"state_agency"';
+				return 'state_agency';
 			case PartnershipType.unknown:
-				return '"unknown"';
+				return 'unknown';
 			case PartnershipType.seealso:
-				return '"seealso"';
+				return 'seealso';
 			case PartnershipType.refer:
-				return '"refer"';
+				return 'refer';
 			}
 	}
 

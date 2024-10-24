@@ -14,21 +14,21 @@ enum PersonNameUse {
 	static String encode(PersonNameUse value) {
 		switch (value) {
 			case PersonNameUse.usual:
-				return '"usual"';
+				return 'usual';
 			case PersonNameUse.official:
-				return '"official"';
+				return 'official';
 			case PersonNameUse.temp:
-				return '"temp"';
+				return 'temp';
 			case PersonNameUse.nickname:
-				return '"nickname"';
+				return 'nickname';
 			case PersonNameUse.anonymous:
-				return '"anonymous"';
+				return 'anonymous';
 			case PersonNameUse.maiden:
-				return '"maiden"';
+				return 'maiden';
 			case PersonNameUse.old:
-				return '"old"';
+				return 'old';
 			case PersonNameUse.other:
-				return '"other"';
+				return 'other';
 			}
 	}
 

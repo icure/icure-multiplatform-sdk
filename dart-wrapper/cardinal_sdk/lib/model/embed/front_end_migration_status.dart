@@ -10,13 +10,13 @@ enum FrontEndMigrationStatus {
 	static String encode(FrontEndMigrationStatus value) {
 		switch (value) {
 			case FrontEndMigrationStatus.started:
-				return '"STARTED"';
+				return 'STARTED';
 			case FrontEndMigrationStatus.paused:
-				return '"PAUSED"';
+				return 'PAUSED';
 			case FrontEndMigrationStatus.error:
-				return '"ERROR"';
+				return 'ERROR';
 			case FrontEndMigrationStatus.success:
-				return '"SUCCESS"';
+				return 'SUCCESS';
 			}
 	}
 

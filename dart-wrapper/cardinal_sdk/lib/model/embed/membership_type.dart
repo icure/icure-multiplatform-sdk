@@ -11,15 +11,15 @@ enum MembershipType {
 	static String encode(MembershipType value) {
 		switch (value) {
 			case MembershipType.doctor:
-				return '"doctor"';
+				return 'doctor';
 			case MembershipType.mutuality:
-				return '"mutuality"';
+				return 'mutuality';
 			case MembershipType.patient:
-				return '"patient"';
+				return 'patient';
 			case MembershipType.specialist:
-				return '"specialist"';
+				return 'specialist';
 			case MembershipType.other:
-				return '"other"';
+				return 'other';
 			}
 	}
 

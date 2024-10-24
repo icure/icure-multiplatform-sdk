@@ -20,33 +20,33 @@ enum PersonalStatus {
 	static String encode(PersonalStatus value) {
 		switch (value) {
 			case PersonalStatus.single:
-				return '"single"';
+				return 'single';
 			case PersonalStatus.inCouple:
-				return '"in_couple"';
+				return 'in_couple';
 			case PersonalStatus.married:
-				return '"married"';
+				return 'married';
 			case PersonalStatus.separated:
-				return '"separated"';
+				return 'separated';
 			case PersonalStatus.divorced:
-				return '"divorced"';
+				return 'divorced';
 			case PersonalStatus.divorcing:
-				return '"divorcing"';
+				return 'divorcing';
 			case PersonalStatus.widowed:
-				return '"widowed"';
+				return 'widowed';
 			case PersonalStatus.widower:
-				return '"widower"';
+				return 'widower';
 			case PersonalStatus.complicated:
-				return '"complicated"';
+				return 'complicated';
 			case PersonalStatus.unknown:
-				return '"unknown"';
+				return 'unknown';
 			case PersonalStatus.contract:
-				return '"contract"';
+				return 'contract';
 			case PersonalStatus.other:
-				return '"other"';
+				return 'other';
 			case PersonalStatus.annulled:
-				return '"annulled"';
+				return 'annulled';
 			case PersonalStatus.polygamous:
-				return '"polygamous"';
+				return 'polygamous';
 			}
 	}
 

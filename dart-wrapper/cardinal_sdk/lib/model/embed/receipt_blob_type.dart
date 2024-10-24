@@ -13,19 +13,19 @@ enum ReceiptBlobType {
 	static String encode(ReceiptBlobType value) {
 		switch (value) {
 			case ReceiptBlobType.xades:
-				return '"xades"';
+				return 'xades';
 			case ReceiptBlobType.kmehrRequest:
-				return '"kmehrRequest"';
+				return 'kmehrRequest';
 			case ReceiptBlobType.kmehrResponse:
-				return '"kmehrResponse"';
+				return 'kmehrResponse';
 			case ReceiptBlobType.soapRequest:
-				return '"soapRequest"';
+				return 'soapRequest';
 			case ReceiptBlobType.soapResponse:
-				return '"soapResponse"';
+				return 'soapResponse';
 			case ReceiptBlobType.soapConversation:
-				return '"soapConversation"';
+				return 'soapConversation';
 			case ReceiptBlobType.tack:
-				return '"tack"';
+				return 'tack';
 			}
 	}
 

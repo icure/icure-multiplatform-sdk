@@ -9,11 +9,11 @@ enum EntitySubscriptionCloseReason {
 	static String encode(EntitySubscriptionCloseReason value) {
 		switch (value) {
 			case EntitySubscriptionCloseReason.channelFull:
-				return '"ChannelFull"';
+				return 'ChannelFull';
 			case EntitySubscriptionCloseReason.connectionLost:
-				return '"ConnectionLost"';
+				return 'ConnectionLost';
 			case EntitySubscriptionCloseReason.intentionallyClosed:
-				return '"IntentionallyClosed"';
+				return 'IntentionallyClosed';
 			}
 	}
 

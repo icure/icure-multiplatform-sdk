@@ -20,33 +20,33 @@ enum PermissionType {
 	static String encode(PermissionType value) {
 		switch (value) {
 			case PermissionType.authenticate:
-				return '"AUTHENTICATE"';
+				return 'AUTHENTICATE';
 			case PermissionType.hcp:
-				return '"HCP"';
+				return 'HCP';
 			case PermissionType.physician:
-				return '"PHYSICIAN"';
+				return 'PHYSICIAN';
 			case PermissionType.admin:
-				return '"ADMIN"';
+				return 'ADMIN';
 			case PermissionType.patientView:
-				return '"PATIENT_VIEW"';
+				return 'PATIENT_VIEW';
 			case PermissionType.patientCreate:
-				return '"PATIENT_CREATE"';
+				return 'PATIENT_CREATE';
 			case PermissionType.patientChangeDelete:
-				return '"PATIENT_CHANGE_DELETE"';
+				return 'PATIENT_CHANGE_DELETE';
 			case PermissionType.medicalDataView:
-				return '"MEDICAL_DATA_VIEW"';
+				return 'MEDICAL_DATA_VIEW';
 			case PermissionType.medicalDataCreate:
-				return '"MEDICAL_DATA_CREATE"';
+				return 'MEDICAL_DATA_CREATE';
 			case PermissionType.medicalChangeDelete:
-				return '"MEDICAL_CHANGE_DELETE"';
+				return 'MEDICAL_CHANGE_DELETE';
 			case PermissionType.financialDataView:
-				return '"FINANCIAL_DATA_VIEW"';
+				return 'FINANCIAL_DATA_VIEW';
 			case PermissionType.financialDataCreate:
-				return '"FINANCIAL_DATA_CREATE"';
+				return 'FINANCIAL_DATA_CREATE';
 			case PermissionType.financialChangeDelete:
-				return '"FINANCIAL_CHANGE_DELETE"';
+				return 'FINANCIAL_CHANGE_DELETE';
 			case PermissionType.legacyDataView:
-				return '"LEGACY_DATA_VIEW"';
+				return 'LEGACY_DATA_VIEW';
 			}
 	}
 
