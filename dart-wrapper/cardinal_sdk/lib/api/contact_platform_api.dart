@@ -28,49 +28,49 @@ class ContactPlatformApi {
 		encrypted = EncryptedContactPlatformApi(_sdkId);
 
 	Future<List<String>> matchContactsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.matchContactsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.matchContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchServicesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.matchServicesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.matchServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchContactsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.matchContactsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.matchContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchServicesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.matchServicesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.matchServicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DecryptedContact> createContact(DecryptedContact entity) async {
-		return await CardinalSdkPlatformInterface.instance.contact.createContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.createContact(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<List<DecryptedContact>> createContacts(List<DecryptedContact> entities) async {
-		return await CardinalSdkPlatformInterface.instance.contact.createContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.createContacts(
 			_sdkId,
 			entities,
 		);
 	}
 
 	Future<DecryptedContact> withEncryptionMetadata(DecryptedContact? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
-		return await CardinalSdkPlatformInterface.instance.contact.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.withEncryptionMetadata(
 			_sdkId,
 			base,
 			patient,
@@ -81,28 +81,28 @@ class ContactPlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.getEncryptionKeysOf(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<bool> hasWriteAccess(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.hasWriteAccess(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.decryptPatientIdOf(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(Contact entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.contact.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -110,35 +110,35 @@ class ContactPlatformApi {
 	}
 
 	Future<DecryptedContact> decrypt(EncryptedContact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.decrypt(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<Contact> tryDecrypt(EncryptedContact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryDecrypt(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<DecryptedService> decryptService(EncryptedService service) async {
-		return await CardinalSdkPlatformInterface.instance.contact.decryptService(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.decryptService(
 			_sdkId,
 			service,
 		);
 	}
 
 	Future<Service> tryDecryptService(EncryptedService service) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryDecryptService(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryDecryptService(
 			_sdkId,
 			service,
 		);
 	}
 
 	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.contact.subscribeToServiceCreateOrUpdateEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.subscribeToServiceCreateOrUpdateEvents(
 			_sdkId,
 			filter,
 			subscriptionConfig,
@@ -146,7 +146,7 @@ class ContactPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteContactById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.contact.deleteContactById(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.deleteContactById(
 			_sdkId,
 			entityId,
 			rev,
@@ -154,14 +154,14 @@ class ContactPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteContactsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.contact.deleteContactsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.deleteContactsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeContactById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.contact.purgeContactById(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.purgeContactById(
 			_sdkId,
 			id,
 			rev,
@@ -169,28 +169,28 @@ class ContactPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteContact(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.deleteContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.deleteContact(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteContacts(List<Contact> contacts) async {
-		return await CardinalSdkPlatformInterface.instance.contact.deleteContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.deleteContacts(
 			_sdkId,
 			contacts,
 		);
 	}
 
 	Future<void> purgeContact(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.purgeContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.purgeContact(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<List<LabelledOccurence>> getServiceCodesOccurrences(String codeType, int minOccurrences) async {
-		return await CardinalSdkPlatformInterface.instance.contact.getServiceCodesOccurrences(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.getServiceCodesOccurrences(
 			_sdkId,
 			codeType,
 			minOccurrences,
@@ -198,7 +198,7 @@ class ContactPlatformApi {
 	}
 
 	Future<DecryptedContact> shareWith(String delegateId, DecryptedContact contact, ContactShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.contact.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.shareWith(
 			_sdkId,
 			delegateId,
 			contact,
@@ -207,7 +207,7 @@ class ContactPlatformApi {
 	}
 
 	Future<DecryptedContact> shareWithMany(DecryptedContact contact, Map<String, ContactShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.contact.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.shareWithMany(
 			_sdkId,
 			contact,
 			delegates,
@@ -215,35 +215,35 @@ class ContactPlatformApi {
 	}
 
 	Future<PaginatedListIterator<DecryptedContact>> filterContactsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.filterContactsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.filterContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedService>> filterServicesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.filterServicesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.filterServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedContact>> filterContactsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.filterContactsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.filterContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedService>> filterServicesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.filterServicesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.filterServicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DecryptedContact> undeleteContactById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.contact.undeleteContactById(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.undeleteContactById(
 			_sdkId,
 			id,
 			rev,
@@ -251,56 +251,56 @@ class ContactPlatformApi {
 	}
 
 	Future<DecryptedContact> undeleteContact(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.undeleteContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.undeleteContact(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<DecryptedContact> modifyContact(DecryptedContact entity) async {
-		return await CardinalSdkPlatformInterface.instance.contact.modifyContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.modifyContact(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<List<DecryptedContact>> modifyContacts(List<DecryptedContact> entities) async {
-		return await CardinalSdkPlatformInterface.instance.contact.modifyContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.modifyContacts(
 			_sdkId,
 			entities,
 		);
 	}
 
 	Future<DecryptedContact> getContact(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.contact.getContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.getContact(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedContact>> getContacts(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.contact.getContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.getContacts(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<DecryptedService> getService(String serviceId) async {
-		return await CardinalSdkPlatformInterface.instance.contact.getService(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.getService(
 			_sdkId,
 			serviceId,
 		);
 	}
 
 	Future<List<DecryptedService>> getServices(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.contact.getServices(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.getServices(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.contact.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,
@@ -314,7 +314,7 @@ class TryAndRecoverContactPlatformApi {
 	TryAndRecoverContactPlatformApi(this._sdkId);
 
 	Future<Contact> shareWith(String delegateId, Contact contact, ContactShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			contact,
@@ -323,7 +323,7 @@ class TryAndRecoverContactPlatformApi {
 	}
 
 	Future<Contact> shareWithMany(Contact contact, Map<String, ContactShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.shareWithMany(
 			_sdkId,
 			contact,
 			delegates,
@@ -331,35 +331,35 @@ class TryAndRecoverContactPlatformApi {
 	}
 
 	Future<PaginatedListIterator<Contact>> filterContactsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.filterContactsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Service>> filterServicesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.filterServicesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Contact>> filterContactsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.filterContactsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Service>> filterServicesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.filterServicesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterServicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Contact> undeleteContactById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.undeleteContactById(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.undeleteContactById(
 			_sdkId,
 			id,
 			rev,
@@ -367,49 +367,49 @@ class TryAndRecoverContactPlatformApi {
 	}
 
 	Future<Contact> undeleteContact(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.undeleteContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.undeleteContact(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<Contact> modifyContact(Contact entity) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.modifyContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.modifyContact(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<List<Contact>> modifyContacts(List<Contact> entities) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.modifyContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.modifyContacts(
 			_sdkId,
 			entities,
 		);
 	}
 
 	Future<Contact> getContact(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.getContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.getContact(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<Contact>> getContacts(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.getContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.getContacts(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<Service> getService(String serviceId) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.getService(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.getService(
 			_sdkId,
 			serviceId,
 		);
 	}
 
 	Future<List<Service>> getServices(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.contact.tryAndRecover.getServices(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.getServices(
 			_sdkId,
 			entityIds,
 		);
@@ -421,7 +421,7 @@ class EncryptedContactPlatformApi {
 	EncryptedContactPlatformApi(this._sdkId);
 
 	Future<EncryptedContact> shareWith(String delegateId, EncryptedContact contact, ContactShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			contact,
@@ -430,7 +430,7 @@ class EncryptedContactPlatformApi {
 	}
 
 	Future<EncryptedContact> shareWithMany(EncryptedContact contact, Map<String, ContactShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.shareWithMany(
 			_sdkId,
 			contact,
 			delegates,
@@ -438,35 +438,35 @@ class EncryptedContactPlatformApi {
 	}
 
 	Future<PaginatedListIterator<EncryptedContact>> filterContactsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.filterContactsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedService>> filterServicesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.filterServicesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedContact>> filterContactsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.filterContactsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedService>> filterServicesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.filterServicesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterServicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<EncryptedContact> undeleteContactById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.undeleteContactById(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.undeleteContactById(
 			_sdkId,
 			id,
 			rev,
@@ -474,49 +474,49 @@ class EncryptedContactPlatformApi {
 	}
 
 	Future<EncryptedContact> undeleteContact(Contact contact) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.undeleteContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.undeleteContact(
 			_sdkId,
 			contact,
 		);
 	}
 
 	Future<EncryptedContact> modifyContact(EncryptedContact entity) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.modifyContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.modifyContact(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<List<EncryptedContact>> modifyContacts(List<EncryptedContact> entities) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.modifyContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.modifyContacts(
 			_sdkId,
 			entities,
 		);
 	}
 
 	Future<EncryptedContact> getContact(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.getContact(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.getContact(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedContact>> getContacts(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.getContacts(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.getContacts(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EncryptedService> getService(String serviceId) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.getService(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.getService(
 			_sdkId,
 			serviceId,
 		);
 	}
 
 	Future<List<EncryptedService>> getServices(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.contact.encrypted.getServices(
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.getServices(
 			_sdkId,
 			entityIds,
 		);

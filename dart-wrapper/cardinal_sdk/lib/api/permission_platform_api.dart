@@ -8,7 +8,7 @@ class PermissionPlatformApi {
 	PermissionPlatformApi(this._sdkId);
 
 	Future<List<Permission>> modifyUserPermissions(String userId, Permission permissions) async {
-		return await CardinalSdkPlatformInterface.instance.permission.modifyUserPermissions(
+		return await CardinalSdkPlatformInterface.instance.apis.permission.modifyUserPermissions(
 			_sdkId,
 			userId,
 			permissions,

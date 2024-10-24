@@ -23,14 +23,14 @@ class TimeTablePlatformApi {
 		encrypted = EncryptedTimeTablePlatformApi(_sdkId);
 
 	Future<DecryptedTimeTable> createTimeTable(DecryptedTimeTable entity) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.createTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.createTimeTable(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedTimeTable> withEncryptionMetadata(DecryptedTimeTable? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.withEncryptionMetadata(
 			_sdkId,
 			base,
 			patient,
@@ -41,28 +41,28 @@ class TimeTablePlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.getEncryptionKeysOf(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<bool> hasWriteAccess(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.hasWriteAccess(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.decryptPatientIdOf(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(TimeTable entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -70,35 +70,35 @@ class TimeTablePlatformApi {
 	}
 
 	Future<DecryptedTimeTable> decrypt(EncryptedTimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.decrypt(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<TimeTable> tryDecrypt(EncryptedTimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryDecrypt(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<List<String>> matchTimeTablesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.matchTimeTablesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.matchTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchTimeTablesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.matchTimeTablesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.matchTimeTablesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteTimeTableById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.deleteTimeTableById(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.deleteTimeTableById(
 			_sdkId,
 			entityId,
 			rev,
@@ -106,14 +106,14 @@ class TimeTablePlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteTimeTablesByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.deleteTimeTablesByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.deleteTimeTablesByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeTimeTableById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.purgeTimeTableById(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.purgeTimeTableById(
 			_sdkId,
 			id,
 			rev,
@@ -121,28 +121,28 @@ class TimeTablePlatformApi {
 	}
 
 	Future<DocIdentifier> deleteTimeTable(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.deleteTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.deleteTimeTable(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteTimeTables(List<TimeTable> timeTables) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.deleteTimeTables(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.deleteTimeTables(
 			_sdkId,
 			timeTables,
 		);
 	}
 
 	Future<void> purgeTimeTable(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.purgeTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.purgeTimeTable(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<DecryptedTimeTable> shareWith(String delegateId, DecryptedTimeTable timeTable, TimeTableShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.shareWith(
 			_sdkId,
 			delegateId,
 			timeTable,
@@ -151,7 +151,7 @@ class TimeTablePlatformApi {
 	}
 
 	Future<DecryptedTimeTable> shareWithMany(DecryptedTimeTable timeTable, Map<String, TimeTableShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.shareWithMany(
 			_sdkId,
 			timeTable,
 			delegates,
@@ -159,35 +159,35 @@ class TimeTablePlatformApi {
 	}
 
 	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.filterTimeTablesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.filterTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.filterTimeTablesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.filterTimeTablesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<TimeTable> undeleteTimeTable(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.undeleteTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.undeleteTimeTable(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<DecryptedTimeTable> modifyTimeTable(DecryptedTimeTable entity) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.modifyTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.modifyTimeTable(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedTimeTable> undeleteTimeTableById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.undeleteTimeTableById(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.undeleteTimeTableById(
 			_sdkId,
 			id,
 			rev,
@@ -195,14 +195,14 @@ class TimeTablePlatformApi {
 	}
 
 	Future<DecryptedTimeTable> getTimeTable(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.getTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.getTimeTable(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedTimeTable>> getTimeTables(List<String> timeTableIds) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.getTimeTables(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.getTimeTables(
 			_sdkId,
 			timeTableIds,
 		);
@@ -214,7 +214,7 @@ class TryAndRecoverTimeTablePlatformApi {
 	TryAndRecoverTimeTablePlatformApi(this._sdkId);
 
 	Future<TimeTable> shareWith(String delegateId, TimeTable timeTable, TimeTableShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			timeTable,
@@ -223,7 +223,7 @@ class TryAndRecoverTimeTablePlatformApi {
 	}
 
 	Future<TimeTable> shareWithMany(TimeTable timeTable, Map<String, TimeTableShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.shareWithMany(
 			_sdkId,
 			timeTable,
 			delegates,
@@ -231,35 +231,35 @@ class TryAndRecoverTimeTablePlatformApi {
 	}
 
 	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.filterTimeTablesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.filterTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.filterTimeTablesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.filterTimeTablesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<TimeTable> undeleteTimeTable(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.undeleteTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.undeleteTimeTable(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<TimeTable> modifyTimeTable(TimeTable entity) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.modifyTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.modifyTimeTable(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<TimeTable> undeleteTimeTableById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.undeleteTimeTableById(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.undeleteTimeTableById(
 			_sdkId,
 			id,
 			rev,
@@ -267,14 +267,14 @@ class TryAndRecoverTimeTablePlatformApi {
 	}
 
 	Future<TimeTable> getTimeTable(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.getTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.getTimeTable(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<TimeTable>> getTimeTables(List<String> timeTableIds) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.tryAndRecover.getTimeTables(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.getTimeTables(
 			_sdkId,
 			timeTableIds,
 		);
@@ -286,7 +286,7 @@ class EncryptedTimeTablePlatformApi {
 	EncryptedTimeTablePlatformApi(this._sdkId);
 
 	Future<EncryptedTimeTable> shareWith(String delegateId, EncryptedTimeTable timeTable, TimeTableShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			timeTable,
@@ -295,7 +295,7 @@ class EncryptedTimeTablePlatformApi {
 	}
 
 	Future<EncryptedTimeTable> shareWithMany(EncryptedTimeTable timeTable, Map<String, TimeTableShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.shareWithMany(
 			_sdkId,
 			timeTable,
 			delegates,
@@ -303,35 +303,35 @@ class EncryptedTimeTablePlatformApi {
 	}
 
 	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.filterTimeTablesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.filterTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.filterTimeTablesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.filterTimeTablesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<TimeTable> undeleteTimeTable(TimeTable timeTable) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.undeleteTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.undeleteTimeTable(
 			_sdkId,
 			timeTable,
 		);
 	}
 
 	Future<EncryptedTimeTable> modifyTimeTable(EncryptedTimeTable entity) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.modifyTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.modifyTimeTable(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedTimeTable> undeleteTimeTableById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.undeleteTimeTableById(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.undeleteTimeTableById(
 			_sdkId,
 			id,
 			rev,
@@ -339,14 +339,14 @@ class EncryptedTimeTablePlatformApi {
 	}
 
 	Future<EncryptedTimeTable> getTimeTable(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.getTimeTable(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.getTimeTable(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedTimeTable>> getTimeTables(List<String> timeTableIds) async {
-		return await CardinalSdkPlatformInterface.instance.timeTable.encrypted.getTimeTables(
+		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.getTimeTables(
 			_sdkId,
 			timeTableIds,
 		);

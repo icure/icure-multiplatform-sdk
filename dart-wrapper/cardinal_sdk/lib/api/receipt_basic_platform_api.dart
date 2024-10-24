@@ -10,21 +10,21 @@ class ReceiptBasicPlatformApi {
 	ReceiptBasicPlatformApi(this._sdkId);
 
 	Future<DocIdentifier> deleteReceipt(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.receiptBasic.deleteReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.deleteReceipt(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteReceipts(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.receiptBasic.deleteReceipts(
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.deleteReceipts(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<Uint8List> getRawReceiptAttachment(String receiptId, String attachmentId) async {
-		return await CardinalSdkPlatformInterface.instance.receiptBasic.getRawReceiptAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.getRawReceiptAttachment(
 			_sdkId,
 			receiptId,
 			attachmentId,
@@ -32,7 +32,7 @@ class ReceiptBasicPlatformApi {
 	}
 
 	Future<EncryptedReceipt> setRawReceiptAttachment(String receiptId, String rev, String blobType, Uint8List attachment) async {
-		return await CardinalSdkPlatformInterface.instance.receiptBasic.setRawReceiptAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.setRawReceiptAttachment(
 			_sdkId,
 			receiptId,
 			rev,
@@ -42,21 +42,21 @@ class ReceiptBasicPlatformApi {
 	}
 
 	Future<EncryptedReceipt> modifyReceipt(EncryptedReceipt entity) async {
-		return await CardinalSdkPlatformInterface.instance.receiptBasic.modifyReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.modifyReceipt(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedReceipt> getReceipt(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.receiptBasic.getReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.getReceipt(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedReceipt>> listByReference(String reference) async {
-		return await CardinalSdkPlatformInterface.instance.receiptBasic.listByReference(
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.listByReference(
 			_sdkId,
 			reference,
 		);

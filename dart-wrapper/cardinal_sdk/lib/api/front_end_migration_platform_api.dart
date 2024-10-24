@@ -9,41 +9,41 @@ class FrontEndMigrationPlatformApi {
 	FrontEndMigrationPlatformApi(this._sdkId);
 
 	Future<FrontEndMigration> getFrontEndMigration(String frontEndMigrationId) async {
-		return await CardinalSdkPlatformInterface.instance.frontEndMigration.getFrontEndMigration(
+		return await CardinalSdkPlatformInterface.instance.apis.frontEndMigration.getFrontEndMigration(
 			_sdkId,
 			frontEndMigrationId,
 		);
 	}
 
 	Future<FrontEndMigration> createFrontEndMigration(FrontEndMigration frontEndMigration) async {
-		return await CardinalSdkPlatformInterface.instance.frontEndMigration.createFrontEndMigration(
+		return await CardinalSdkPlatformInterface.instance.apis.frontEndMigration.createFrontEndMigration(
 			_sdkId,
 			frontEndMigration,
 		);
 	}
 
 	Future<List<FrontEndMigration>> getFrontEndMigrations() async {
-		return await CardinalSdkPlatformInterface.instance.frontEndMigration.getFrontEndMigrations(
+		return await CardinalSdkPlatformInterface.instance.apis.frontEndMigration.getFrontEndMigrations(
 			_sdkId,
 		);
 	}
 
 	Future<DocIdentifier> deleteFrontEndMigration(String frontEndMigrationId) async {
-		return await CardinalSdkPlatformInterface.instance.frontEndMigration.deleteFrontEndMigration(
+		return await CardinalSdkPlatformInterface.instance.apis.frontEndMigration.deleteFrontEndMigration(
 			_sdkId,
 			frontEndMigrationId,
 		);
 	}
 
 	Future<List<FrontEndMigration>> getFrontEndMigrationByName(String frontEndMigrationName) async {
-		return await CardinalSdkPlatformInterface.instance.frontEndMigration.getFrontEndMigrationByName(
+		return await CardinalSdkPlatformInterface.instance.apis.frontEndMigration.getFrontEndMigrationByName(
 			_sdkId,
 			frontEndMigrationName,
 		);
 	}
 
 	Future<FrontEndMigration> modifyFrontEndMigration(FrontEndMigration frontEndMigration) async {
-		return await CardinalSdkPlatformInterface.instance.frontEndMigration.modifyFrontEndMigration(
+		return await CardinalSdkPlatformInterface.instance.apis.frontEndMigration.modifyFrontEndMigration(
 			_sdkId,
 			frontEndMigration,
 		);

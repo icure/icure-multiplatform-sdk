@@ -19,76 +19,76 @@ class UserPlatformApi {
 	UserPlatformApi(this._sdkId);
 
 	Future<User> getCurrentUser() async {
-		return await CardinalSdkPlatformInterface.instance.user.getCurrentUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getCurrentUser(
 			_sdkId,
 		);
 	}
 
 	Future<User> createUser(User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.createUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.createUser(
 			_sdkId,
 			user,
 		);
 	}
 
 	Future<User> getUser(String userId) async {
-		return await CardinalSdkPlatformInterface.instance.user.getUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getUser(
 			_sdkId,
 			userId,
 		);
 	}
 
 	Future<List<User>> getUsers(List<String> userIds) async {
-		return await CardinalSdkPlatformInterface.instance.user.getUsers(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getUsers(
 			_sdkId,
 			userIds,
 		);
 	}
 
 	Future<User> getUserByEmail(String email) async {
-		return await CardinalSdkPlatformInterface.instance.user.getUserByEmail(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getUserByEmail(
 			_sdkId,
 			email,
 		);
 	}
 
 	Future<User> getUserByPhoneNumber(String phoneNumber) async {
-		return await CardinalSdkPlatformInterface.instance.user.getUserByPhoneNumber(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getUserByPhoneNumber(
 			_sdkId,
 			phoneNumber,
 		);
 	}
 
 	Future<List<String>> findByHcpartyId(String id) async {
-		return await CardinalSdkPlatformInterface.instance.user.findByHcpartyId(
+		return await CardinalSdkPlatformInterface.instance.apis.user.findByHcpartyId(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<List<String>> findByPatientId(String id) async {
-		return await CardinalSdkPlatformInterface.instance.user.findByPatientId(
+		return await CardinalSdkPlatformInterface.instance.apis.user.findByPatientId(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<User> modifyUser(User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.modifyUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.modifyUser(
 			_sdkId,
 			user,
 		);
 	}
 
 	Future<User> assignHealthcareParty(String healthcarePartyId) async {
-		return await CardinalSdkPlatformInterface.instance.user.assignHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.user.assignHealthcareParty(
 			_sdkId,
 			healthcarePartyId,
 		);
 	}
 
 	Future<User> modifyProperties(String userId, List<EncryptedPropertyStub>? properties) async {
-		return await CardinalSdkPlatformInterface.instance.user.modifyProperties(
+		return await CardinalSdkPlatformInterface.instance.apis.user.modifyProperties(
 			_sdkId,
 			userId,
 			properties,
@@ -96,7 +96,7 @@ class UserPlatformApi {
 	}
 
 	Future<String> getToken(String userId, String key, int? tokenValidity, String? token) async {
-		return await CardinalSdkPlatformInterface.instance.user.getToken(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getToken(
 			_sdkId,
 			userId,
 			key,
@@ -106,41 +106,41 @@ class UserPlatformApi {
 	}
 
 	Future<PaginatedListIterator<User>> filterUsersBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.filterUsersBy(
+		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchUsersBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.matchUsersBy(
+		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<User>> filterUsersBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.filterUsersBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchUsersBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.matchUsersBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<UserGroup>> getMatchingUsers() async {
-		return await CardinalSdkPlatformInterface.instance.user.getMatchingUsers(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getMatchingUsers(
 			_sdkId,
 		);
 	}
 
 	Future<List<User>> getUsersInGroup(String groupId, List<String> userIds) async {
-		return await CardinalSdkPlatformInterface.instance.user.getUsersInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getUsersInGroup(
 			_sdkId,
 			groupId,
 			userIds,
@@ -148,7 +148,7 @@ class UserPlatformApi {
 	}
 
 	Future<User> createUserInGroup(String groupId, User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.createUserInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.createUserInGroup(
 			_sdkId,
 			groupId,
 			user,
@@ -156,7 +156,7 @@ class UserPlatformApi {
 	}
 
 	Future<User> modifyUserInGroup(String groupId, User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.modifyUserInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.modifyUserInGroup(
 			_sdkId,
 			groupId,
 			user,
@@ -164,7 +164,7 @@ class UserPlatformApi {
 	}
 
 	Future<User> setUserRoles(String userId, ListOfIds rolesId) async {
-		return await CardinalSdkPlatformInterface.instance.user.setUserRoles(
+		return await CardinalSdkPlatformInterface.instance.apis.user.setUserRoles(
 			_sdkId,
 			userId,
 			rolesId,
@@ -172,7 +172,7 @@ class UserPlatformApi {
 	}
 
 	Future<User> setUserRolesInGroup(String userId, String groupId, ListOfIds rolesId) async {
-		return await CardinalSdkPlatformInterface.instance.user.setUserRolesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.setUserRolesInGroup(
 			_sdkId,
 			userId,
 			groupId,
@@ -181,14 +181,14 @@ class UserPlatformApi {
 	}
 
 	Future<User> resetUserRoles(String userId) async {
-		return await CardinalSdkPlatformInterface.instance.user.resetUserRoles(
+		return await CardinalSdkPlatformInterface.instance.apis.user.resetUserRoles(
 			_sdkId,
 			userId,
 		);
 	}
 
 	Future<User> resetUserRolesInGroup(String userId, String groupId) async {
-		return await CardinalSdkPlatformInterface.instance.user.resetUserRolesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.resetUserRolesInGroup(
 			_sdkId,
 			userId,
 			groupId,
@@ -196,7 +196,7 @@ class UserPlatformApi {
 	}
 
 	Future<String> getTokenInGroup(String groupId, String userId, String key, String? token, int? tokenValidity) async {
-		return await CardinalSdkPlatformInterface.instance.user.getTokenInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getTokenInGroup(
 			_sdkId,
 			groupId,
 			userId,
@@ -207,7 +207,7 @@ class UserPlatformApi {
 	}
 
 	Future<List<TokenWithGroup>> getTokenInAllGroups(String userIdentifier, String key, String? token, int? tokenValidity) async {
-		return await CardinalSdkPlatformInterface.instance.user.getTokenInAllGroups(
+		return await CardinalSdkPlatformInterface.instance.apis.user.getTokenInAllGroups(
 			_sdkId,
 			userIdentifier,
 			key,
@@ -217,7 +217,7 @@ class UserPlatformApi {
 	}
 
 	Future<PaginatedListIterator<User>> filterUsersInGroupBy(String groupId, BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.filterUsersInGroupBy(
+		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersInGroupBy(
 			_sdkId,
 			groupId,
 			filter,
@@ -225,7 +225,7 @@ class UserPlatformApi {
 	}
 
 	Future<List<String>> matchUsersInGroupBy(String groupId, BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.matchUsersInGroupBy(
+		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersInGroupBy(
 			_sdkId,
 			groupId,
 			filter,
@@ -233,7 +233,7 @@ class UserPlatformApi {
 	}
 
 	Future<PaginatedListIterator<User>> filterUsersInGroupBySorted(String groupId, BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.filterUsersInGroupBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersInGroupBySorted(
 			_sdkId,
 			groupId,
 			filter,
@@ -241,7 +241,7 @@ class UserPlatformApi {
 	}
 
 	Future<List<String>> matchUsersInGroupBySorted(String groupId, BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.user.matchUsersInGroupBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersInGroupBySorted(
 			_sdkId,
 			groupId,
 			filter,
@@ -249,7 +249,7 @@ class UserPlatformApi {
 	}
 
 	Future<void> enable2faForUserWithGroup(String userId, String groupId, Enable2faRequest request) async {
-		return await CardinalSdkPlatformInterface.instance.user.enable2faForUserWithGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.enable2faForUserWithGroup(
 			_sdkId,
 			userId,
 			groupId,
@@ -258,7 +258,7 @@ class UserPlatformApi {
 	}
 
 	Future<void> enable2faForUser(String userId, Enable2faRequest request) async {
-		return await CardinalSdkPlatformInterface.instance.user.enable2faForUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.enable2faForUser(
 			_sdkId,
 			userId,
 			request,
@@ -266,7 +266,7 @@ class UserPlatformApi {
 	}
 
 	Future<void> disable2faForUserWithGroup(String userId, String groupId) async {
-		return await CardinalSdkPlatformInterface.instance.user.disable2faForUserWithGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.disable2faForUserWithGroup(
 			_sdkId,
 			userId,
 			groupId,
@@ -274,21 +274,21 @@ class UserPlatformApi {
 	}
 
 	Future<void> disable2faForUser(String userId) async {
-		return await CardinalSdkPlatformInterface.instance.user.disable2faForUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.disable2faForUser(
 			_sdkId,
 			userId,
 		);
 	}
 
 	Future<User> createAdminUser(User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.createAdminUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.createAdminUser(
 			_sdkId,
 			user,
 		);
 	}
 
 	Future<User> createAdminUserInGroup(String groupId, User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.createAdminUserInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.createAdminUserInGroup(
 			_sdkId,
 			groupId,
 			user,
@@ -296,7 +296,7 @@ class UserPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteUserById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.user.deleteUserById(
+		return await CardinalSdkPlatformInterface.instance.apis.user.deleteUserById(
 			_sdkId,
 			entityId,
 			rev,
@@ -304,7 +304,7 @@ class UserPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteUserInGroupById(String groupId, String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.user.deleteUserInGroupById(
+		return await CardinalSdkPlatformInterface.instance.apis.user.deleteUserInGroupById(
 			_sdkId,
 			groupId,
 			entityId,
@@ -313,7 +313,7 @@ class UserPlatformApi {
 	}
 
 	Future<void> purgeUserById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.user.purgeUserById(
+		return await CardinalSdkPlatformInterface.instance.apis.user.purgeUserById(
 			_sdkId,
 			id,
 			rev,
@@ -321,7 +321,7 @@ class UserPlatformApi {
 	}
 
 	Future<User> undeleteUserById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.user.undeleteUserById(
+		return await CardinalSdkPlatformInterface.instance.apis.user.undeleteUserById(
 			_sdkId,
 			id,
 			rev,
@@ -329,14 +329,14 @@ class UserPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteUser(User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.deleteUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.deleteUser(
 			_sdkId,
 			user,
 		);
 	}
 
 	Future<DocIdentifier> deleteUserInGroup(String groupId, User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.deleteUserInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.user.deleteUserInGroup(
 			_sdkId,
 			groupId,
 			user,
@@ -344,21 +344,21 @@ class UserPlatformApi {
 	}
 
 	Future<void> purgeUser(User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.purgeUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.purgeUser(
 			_sdkId,
 			user,
 		);
 	}
 
 	Future<User> undeleteUser(User user) async {
-		return await CardinalSdkPlatformInterface.instance.user.undeleteUser(
+		return await CardinalSdkPlatformInterface.instance.apis.user.undeleteUser(
 			_sdkId,
 			user,
 		);
 	}
 
 	Future<EntitySubscription<User>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.user.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.user.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,

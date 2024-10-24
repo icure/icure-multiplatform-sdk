@@ -15,35 +15,35 @@ class MessageBasicPlatformApi {
 	MessageBasicPlatformApi(this._sdkId);
 
 	Future<List<String>> matchMessagesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.matchMessagesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.matchMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchMessagesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.matchMessagesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.matchMessagesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.filterMessagesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.filterMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.filterMessagesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.filterMessagesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteMessageById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.deleteMessageById(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.deleteMessageById(
 			_sdkId,
 			entityId,
 			rev,
@@ -51,14 +51,14 @@ class MessageBasicPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteMessagesByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.deleteMessagesByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.deleteMessagesByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeMessageById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.purgeMessageById(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.purgeMessageById(
 			_sdkId,
 			id,
 			rev,
@@ -66,42 +66,42 @@ class MessageBasicPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteMessage(Message message) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.deleteMessage(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.deleteMessage(
 			_sdkId,
 			message,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteMessages(List<Message> messages) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.deleteMessages(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.deleteMessages(
 			_sdkId,
 			messages,
 		);
 	}
 
 	Future<void> purgeMessage(Message message) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.purgeMessage(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.purgeMessage(
 			_sdkId,
 			message,
 		);
 	}
 
 	Future<Message> undeleteMessage(Message message) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.undeleteMessage(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.undeleteMessage(
 			_sdkId,
 			message,
 		);
 	}
 
 	Future<EncryptedMessage> modifyMessage(EncryptedMessage entity) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.modifyMessage(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.modifyMessage(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedMessage> undeleteMessageById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.undeleteMessageById(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.undeleteMessageById(
 			_sdkId,
 			id,
 			rev,
@@ -109,21 +109,21 @@ class MessageBasicPlatformApi {
 	}
 
 	Future<EncryptedMessage> getMessage(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.getMessage(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.getMessage(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedMessage>> getMessages(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.getMessages(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.getMessages(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<List<EncryptedMessage>> setMessagesReadStatus(List<String> entityIds, int? time, bool readStatus, String? userId) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.setMessagesReadStatus(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.setMessagesReadStatus(
 			_sdkId,
 			entityIds,
 			time,
@@ -133,7 +133,7 @@ class MessageBasicPlatformApi {
 	}
 
 	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.messageBasic.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,

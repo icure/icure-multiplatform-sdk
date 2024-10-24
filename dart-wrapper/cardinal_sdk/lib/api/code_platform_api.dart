@@ -11,7 +11,7 @@ class CodePlatformApi {
 	CodePlatformApi(this._sdkId);
 
 	Future<List<Code>> listCodesByRegionTypeCodeVersion(String region, String? type, String? code, String? version) async {
-		return await CardinalSdkPlatformInterface.instance.code.listCodesByRegionTypeCodeVersion(
+		return await CardinalSdkPlatformInterface.instance.apis.code.listCodesByRegionTypeCodeVersion(
 			_sdkId,
 			region,
 			type,
@@ -21,7 +21,7 @@ class CodePlatformApi {
 	}
 
 	Future<List<String>> listCodeTypesBy(String? region, String? type) async {
-		return await CardinalSdkPlatformInterface.instance.code.listCodeTypesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.code.listCodeTypesBy(
 			_sdkId,
 			region,
 			type,
@@ -29,7 +29,7 @@ class CodePlatformApi {
 	}
 
 	Future<List<String>> listTagTypesBy(String? region, String? type) async {
-		return await CardinalSdkPlatformInterface.instance.code.listTagTypesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.code.listTagTypesBy(
 			_sdkId,
 			region,
 			type,
@@ -37,21 +37,21 @@ class CodePlatformApi {
 	}
 
 	Future<Code> createCode(Code c) async {
-		return await CardinalSdkPlatformInterface.instance.code.createCode(
+		return await CardinalSdkPlatformInterface.instance.apis.code.createCode(
 			_sdkId,
 			c,
 		);
 	}
 
 	Future<List<Code>> createCodes(List<Code> codeBatch) async {
-		return await CardinalSdkPlatformInterface.instance.code.createCodes(
+		return await CardinalSdkPlatformInterface.instance.apis.code.createCodes(
 			_sdkId,
 			codeBatch,
 		);
 	}
 
 	Future<List<Code>> createCodesInGroup(String groupId, List<Code> codeBatch) async {
-		return await CardinalSdkPlatformInterface.instance.code.createCodesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.code.createCodesInGroup(
 			_sdkId,
 			groupId,
 			codeBatch,
@@ -59,7 +59,7 @@ class CodePlatformApi {
 	}
 
 	Future<BooleanResponse> isCodeValid(String type, String code, String? version) async {
-		return await CardinalSdkPlatformInterface.instance.code.isCodeValid(
+		return await CardinalSdkPlatformInterface.instance.apis.code.isCodeValid(
 			_sdkId,
 			type,
 			code,
@@ -68,7 +68,7 @@ class CodePlatformApi {
 	}
 
 	Future<Code?> getCodeByRegionLanguageTypeLabel(String region, String label, String type, String? languages) async {
-		return await CardinalSdkPlatformInterface.instance.code.getCodeByRegionLanguageTypeLabel(
+		return await CardinalSdkPlatformInterface.instance.apis.code.getCodeByRegionLanguageTypeLabel(
 			_sdkId,
 			region,
 			label,
@@ -78,14 +78,14 @@ class CodePlatformApi {
 	}
 
 	Future<List<Code>> getCodes(List<String> codeIds) async {
-		return await CardinalSdkPlatformInterface.instance.code.getCodes(
+		return await CardinalSdkPlatformInterface.instance.apis.code.getCodes(
 			_sdkId,
 			codeIds,
 		);
 	}
 
 	Future<List<Code>> getCodesInGroup(String groupId, List<String> codeIds) async {
-		return await CardinalSdkPlatformInterface.instance.code.getCodesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.code.getCodesInGroup(
 			_sdkId,
 			groupId,
 			codeIds,
@@ -93,14 +93,14 @@ class CodePlatformApi {
 	}
 
 	Future<Code> getCode(String codeId) async {
-		return await CardinalSdkPlatformInterface.instance.code.getCode(
+		return await CardinalSdkPlatformInterface.instance.apis.code.getCode(
 			_sdkId,
 			codeId,
 		);
 	}
 
 	Future<Code> getCodeWithParts(String type, String code, String version) async {
-		return await CardinalSdkPlatformInterface.instance.code.getCodeWithParts(
+		return await CardinalSdkPlatformInterface.instance.apis.code.getCodeWithParts(
 			_sdkId,
 			type,
 			code,
@@ -109,21 +109,21 @@ class CodePlatformApi {
 	}
 
 	Future<Code> modifyCode(Code codeDto) async {
-		return await CardinalSdkPlatformInterface.instance.code.modifyCode(
+		return await CardinalSdkPlatformInterface.instance.apis.code.modifyCode(
 			_sdkId,
 			codeDto,
 		);
 	}
 
 	Future<List<Code>> modifyCodes(List<Code> codeBatch) async {
-		return await CardinalSdkPlatformInterface.instance.code.modifyCodes(
+		return await CardinalSdkPlatformInterface.instance.apis.code.modifyCodes(
 			_sdkId,
 			codeBatch,
 		);
 	}
 
 	Future<List<Code>> modifyCodesInGroup(String groupId, List<Code> codeBatch) async {
-		return await CardinalSdkPlatformInterface.instance.code.modifyCodesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.code.modifyCodesInGroup(
 			_sdkId,
 			groupId,
 			codeBatch,
@@ -131,35 +131,35 @@ class CodePlatformApi {
 	}
 
 	Future<PaginatedListIterator<Code>> filterCodesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.code.filterCodesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.code.filterCodesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Code>> filterCodesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.code.filterCodesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.code.filterCodesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchCodesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.code.matchCodesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.code.matchCodesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchCodesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.code.matchCodesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.code.matchCodesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<void> importCodes(String codeType) async {
-		return await CardinalSdkPlatformInterface.instance.code.importCodes(
+		return await CardinalSdkPlatformInterface.instance.apis.code.importCodes(
 			_sdkId,
 			codeType,
 		);

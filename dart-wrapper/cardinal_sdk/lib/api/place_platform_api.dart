@@ -9,28 +9,28 @@ class PlacePlatformApi {
 	PlacePlatformApi(this._sdkId);
 
 	Future<Place> getPlace(String placeId) async {
-		return await CardinalSdkPlatformInterface.instance.place.getPlace(
+		return await CardinalSdkPlatformInterface.instance.apis.place.getPlace(
 			_sdkId,
 			placeId,
 		);
 	}
 
 	Future<Place> createPlace(Place place) async {
-		return await CardinalSdkPlatformInterface.instance.place.createPlace(
+		return await CardinalSdkPlatformInterface.instance.apis.place.createPlace(
 			_sdkId,
 			place,
 		);
 	}
 
 	Future<Place> modifyPlace(Place place) async {
-		return await CardinalSdkPlatformInterface.instance.place.modifyPlace(
+		return await CardinalSdkPlatformInterface.instance.apis.place.modifyPlace(
 			_sdkId,
 			place,
 		);
 	}
 
 	Future<List<DocIdentifier>> deletePlaces(List<String> placeIds) async {
-		return await CardinalSdkPlatformInterface.instance.place.deletePlaces(
+		return await CardinalSdkPlatformInterface.instance.apis.place.deletePlaces(
 			_sdkId,
 			placeIds,
 		);

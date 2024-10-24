@@ -8,20 +8,20 @@ class ApplicationSettingsPlatformApi {
 	ApplicationSettingsPlatformApi(this._sdkId);
 
 	Future<List<ApplicationSettings>> getApplicationSettings() async {
-		return await CardinalSdkPlatformInterface.instance.applicationSettings.getApplicationSettings(
+		return await CardinalSdkPlatformInterface.instance.apis.applicationSettings.getApplicationSettings(
 			_sdkId,
 		);
 	}
 
 	Future<ApplicationSettings> createApplicationSettings(ApplicationSettings applicationSettings) async {
-		return await CardinalSdkPlatformInterface.instance.applicationSettings.createApplicationSettings(
+		return await CardinalSdkPlatformInterface.instance.apis.applicationSettings.createApplicationSettings(
 			_sdkId,
 			applicationSettings,
 		);
 	}
 
 	Future<ApplicationSettings> updateApplicationSettings(ApplicationSettings applicationSettings) async {
-		return await CardinalSdkPlatformInterface.instance.applicationSettings.updateApplicationSettings(
+		return await CardinalSdkPlatformInterface.instance.apis.applicationSettings.updateApplicationSettings(
 			_sdkId,
 			applicationSettings,
 		);

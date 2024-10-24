@@ -23,20 +23,20 @@ class GroupPlatformApi {
 	GroupPlatformApi(this._sdkId);
 
 	Future<List<Group>> listGroups() async {
-		return await CardinalSdkPlatformInterface.instance.group.listGroups(
+		return await CardinalSdkPlatformInterface.instance.apis.group.listGroups(
 			_sdkId,
 		);
 	}
 
 	Future<Group> getGroup(String id) async {
-		return await CardinalSdkPlatformInterface.instance.group.getGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.group.getGroup(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<Group> createGroup(String id, String name, GroupType? type, String password, String? server, int? q, int? n, String? superGroup, String? applicationId, DatabaseInitialisation initialisationData) async {
-		return await CardinalSdkPlatformInterface.instance.group.createGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.group.createGroup(
 			_sdkId,
 			id,
 			name,
@@ -52,7 +52,7 @@ class GroupPlatformApi {
 	}
 
 	Future<RegistrationSuccess> registerNewGroupAdministrator(GroupType? type, PermissionType? role, RegistrationInformation registrationInformation) async {
-		return await CardinalSdkPlatformInterface.instance.group.registerNewGroupAdministrator(
+		return await CardinalSdkPlatformInterface.instance.apis.group.registerNewGroupAdministrator(
 			_sdkId,
 			type,
 			role,
@@ -61,20 +61,20 @@ class GroupPlatformApi {
 	}
 
 	Future<List<Group>> listApps() async {
-		return await CardinalSdkPlatformInterface.instance.group.listApps(
+		return await CardinalSdkPlatformInterface.instance.apis.group.listApps(
 			_sdkId,
 		);
 	}
 
 	Future<String> getNameOfGroupParent(String id) async {
-		return await CardinalSdkPlatformInterface.instance.group.getNameOfGroupParent(
+		return await CardinalSdkPlatformInterface.instance.apis.group.getNameOfGroupParent(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<Group> modifyGroupName(String id, String name) async {
-		return await CardinalSdkPlatformInterface.instance.group.modifyGroupName(
+		return await CardinalSdkPlatformInterface.instance.apis.group.modifyGroupName(
 			_sdkId,
 			id,
 			name,
@@ -82,7 +82,7 @@ class GroupPlatformApi {
 	}
 
 	Future<String> getOperationToken(Operation operation, int? duration, String? description) async {
-		return await CardinalSdkPlatformInterface.instance.group.getOperationToken(
+		return await CardinalSdkPlatformInterface.instance.apis.group.getOperationToken(
 			_sdkId,
 			operation,
 			duration,
@@ -91,14 +91,14 @@ class GroupPlatformApi {
 	}
 
 	Future<void> deleteOperationToken(String tokenId) async {
-		return await CardinalSdkPlatformInterface.instance.group.deleteOperationToken(
+		return await CardinalSdkPlatformInterface.instance.apis.group.deleteOperationToken(
 			_sdkId,
 			tokenId,
 		);
 	}
 
 	Future<Group> setDefaultRoles(String groupId, String userType, List<String> roleIds) async {
-		return await CardinalSdkPlatformInterface.instance.group.setDefaultRoles(
+		return await CardinalSdkPlatformInterface.instance.apis.group.setDefaultRoles(
 			_sdkId,
 			groupId,
 			userType,
@@ -107,21 +107,21 @@ class GroupPlatformApi {
 	}
 
 	Future<Map<UserType, List<RoleConfiguration>>> getDefaultRoles(String groupId) async {
-		return await CardinalSdkPlatformInterface.instance.group.getDefaultRoles(
+		return await CardinalSdkPlatformInterface.instance.apis.group.getDefaultRoles(
 			_sdkId,
 			groupId,
 		);
 	}
 
 	Future<Group> deleteGroup(String id) async {
-		return await CardinalSdkPlatformInterface.instance.group.deleteGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.group.deleteGroup(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<Group> changeSuperGroup(String childGroupId, String operationToken) async {
-		return await CardinalSdkPlatformInterface.instance.group.changeSuperGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.group.changeSuperGroup(
 			_sdkId,
 			childGroupId,
 			operationToken,
@@ -129,14 +129,14 @@ class GroupPlatformApi {
 	}
 
 	Future<List<GroupDeletionReport>> hardDeleteGroup(String id) async {
-		return await CardinalSdkPlatformInterface.instance.group.hardDeleteGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.group.hardDeleteGroup(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<Group> modifyGroupProperties(String id, ListOfProperties properties) async {
-		return await CardinalSdkPlatformInterface.instance.group.modifyGroupProperties(
+		return await CardinalSdkPlatformInterface.instance.apis.group.modifyGroupProperties(
 			_sdkId,
 			id,
 			properties,
@@ -144,7 +144,7 @@ class GroupPlatformApi {
 	}
 
 	Future<Group> setGroupPassword(String id, String password) async {
-		return await CardinalSdkPlatformInterface.instance.group.setGroupPassword(
+		return await CardinalSdkPlatformInterface.instance.apis.group.setGroupPassword(
 			_sdkId,
 			id,
 			password,
@@ -152,7 +152,7 @@ class GroupPlatformApi {
 	}
 
 	Future<List<DesignDocument>> initDesignDocs(String id, String? clazz, bool? warmup, bool? dryRun) async {
-		return await CardinalSdkPlatformInterface.instance.group.initDesignDocs(
+		return await CardinalSdkPlatformInterface.instance.apis.group.initDesignDocs(
 			_sdkId,
 			id,
 			clazz,
@@ -162,7 +162,7 @@ class GroupPlatformApi {
 	}
 
 	Future<List<IdWithRev>> solveConflicts(String id, int? limit, bool? warmup) async {
-		return await CardinalSdkPlatformInterface.instance.group.solveConflicts(
+		return await CardinalSdkPlatformInterface.instance.apis.group.solveConflicts(
 			_sdkId,
 			id,
 			limit,
@@ -171,7 +171,7 @@ class GroupPlatformApi {
 	}
 
 	Future<void> resetStorage(String id, int? q, int? n, List<String> databases) async {
-		return await CardinalSdkPlatformInterface.instance.group.resetStorage(
+		return await CardinalSdkPlatformInterface.instance.apis.group.resetStorage(
 			_sdkId,
 			id,
 			q,
@@ -181,28 +181,28 @@ class GroupPlatformApi {
 	}
 
 	Future<List<GroupDatabasesInfo>> getGroupsStorageInfos(List<String> groups) async {
-		return await CardinalSdkPlatformInterface.instance.group.getGroupsStorageInfos(
+		return await CardinalSdkPlatformInterface.instance.apis.group.getGroupsStorageInfos(
 			_sdkId,
 			groups,
 		);
 	}
 
 	Future<ReplicationInfo> getReplicationInfo(String id) async {
-		return await CardinalSdkPlatformInterface.instance.group.getReplicationInfo(
+		return await CardinalSdkPlatformInterface.instance.apis.group.getReplicationInfo(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<List<String>> getHierarchy(String id) async {
-		return await CardinalSdkPlatformInterface.instance.group.getHierarchy(
+		return await CardinalSdkPlatformInterface.instance.apis.group.getHierarchy(
 			_sdkId,
 			id,
 		);
 	}
 
 	Future<List<DocIdentifier>> listAllGroupsIds() async {
-		return await CardinalSdkPlatformInterface.instance.group.listAllGroupsIds(
+		return await CardinalSdkPlatformInterface.instance.apis.group.listAllGroupsIds(
 			_sdkId,
 		);
 	}

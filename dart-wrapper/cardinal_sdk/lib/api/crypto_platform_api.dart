@@ -9,13 +9,13 @@ class CryptoPlatformApi {
 	CryptoPlatformApi(this._sdkId);
 
 	Future<void> forceReload() async {
-		return await CardinalSdkPlatformInterface.instance.crypto.forceReload(
+		return await CardinalSdkPlatformInterface.instance.apis.crypto.forceReload(
 			_sdkId,
 		);
 	}
 
 	Future<Map<String, Map<KeypairFingerprintV1String, Uint8List>>> currentDataOwnerKeys({ bool filterTrustedKeys = true }) async {
-		return await CardinalSdkPlatformInterface.instance.crypto.currentDataOwnerKeys(
+		return await CardinalSdkPlatformInterface.instance.apis.crypto.currentDataOwnerKeys(
 			_sdkId,
 			filterTrustedKeys,
 		);

@@ -21,14 +21,14 @@ class ReceiptPlatformApi {
 		encrypted = EncryptedReceiptPlatformApi(_sdkId);
 
 	Future<DecryptedReceipt> createReceipt(DecryptedReceipt entity) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.createReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.createReceipt(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedReceipt> withEncryptionMetadata(DecryptedReceipt? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.withEncryptionMetadata(
 			_sdkId,
 			base,
 			patient,
@@ -39,7 +39,7 @@ class ReceiptPlatformApi {
 	}
 
 	Future<Uint8List> getAndDecryptReceiptAttachment(Receipt receipt, String attachmentId) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.getAndDecryptReceiptAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.getAndDecryptReceiptAttachment(
 			_sdkId,
 			receipt,
 			attachmentId,
@@ -47,7 +47,7 @@ class ReceiptPlatformApi {
 	}
 
 	Future<EncryptedReceipt> encryptAndSetReceiptAttachment(Receipt receipt, String blobType, Uint8List attachment) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.encryptAndSetReceiptAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.encryptAndSetReceiptAttachment(
 			_sdkId,
 			receipt,
 			blobType,
@@ -56,28 +56,28 @@ class ReceiptPlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(Receipt receipt) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.getEncryptionKeysOf(
 			_sdkId,
 			receipt,
 		);
 	}
 
 	Future<bool> hasWriteAccess(Receipt receipt) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.hasWriteAccess(
 			_sdkId,
 			receipt,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(Receipt receipt) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.decryptPatientIdOf(
 			_sdkId,
 			receipt,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(Receipt entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -85,7 +85,7 @@ class ReceiptPlatformApi {
 	}
 
 	Future<Receipt> logReceipt(User user, String docId, List<String> refs, String blobType, Uint8List blob) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.logReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.logReceipt(
 			_sdkId,
 			user,
 			docId,
@@ -96,35 +96,35 @@ class ReceiptPlatformApi {
 	}
 
 	Future<DecryptedReceipt> decrypt(EncryptedReceipt receipt) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.decrypt(
 			_sdkId,
 			receipt,
 		);
 	}
 
 	Future<Receipt> tryDecrypt(EncryptedReceipt receipt) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryDecrypt(
 			_sdkId,
 			receipt,
 		);
 	}
 
 	Future<DocIdentifier> deleteReceipt(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.deleteReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.deleteReceipt(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteReceipts(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.deleteReceipts(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.deleteReceipts(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<Uint8List> getRawReceiptAttachment(String receiptId, String attachmentId) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.getRawReceiptAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.getRawReceiptAttachment(
 			_sdkId,
 			receiptId,
 			attachmentId,
@@ -132,7 +132,7 @@ class ReceiptPlatformApi {
 	}
 
 	Future<EncryptedReceipt> setRawReceiptAttachment(String receiptId, String rev, String blobType, Uint8List attachment) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.setRawReceiptAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.setRawReceiptAttachment(
 			_sdkId,
 			receiptId,
 			rev,
@@ -142,7 +142,7 @@ class ReceiptPlatformApi {
 	}
 
 	Future<DecryptedReceipt> shareWith(String delegateId, DecryptedReceipt receipt, ReceiptShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.shareWith(
 			_sdkId,
 			delegateId,
 			receipt,
@@ -151,7 +151,7 @@ class ReceiptPlatformApi {
 	}
 
 	Future<DecryptedReceipt> shareWithMany(DecryptedReceipt receipt, Map<String, ReceiptShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.shareWithMany(
 			_sdkId,
 			receipt,
 			delegates,
@@ -159,21 +159,21 @@ class ReceiptPlatformApi {
 	}
 
 	Future<DecryptedReceipt> modifyReceipt(DecryptedReceipt entity) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.modifyReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.modifyReceipt(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedReceipt> getReceipt(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.getReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.getReceipt(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedReceipt>> listByReference(String reference) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.listByReference(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.listByReference(
 			_sdkId,
 			reference,
 		);
@@ -185,7 +185,7 @@ class TryAndRecoverReceiptPlatformApi {
 	TryAndRecoverReceiptPlatformApi(this._sdkId);
 
 	Future<Receipt> shareWith(String delegateId, Receipt receipt, ReceiptShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			receipt,
@@ -194,7 +194,7 @@ class TryAndRecoverReceiptPlatformApi {
 	}
 
 	Future<Receipt> shareWithMany(Receipt receipt, Map<String, ReceiptShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.shareWithMany(
 			_sdkId,
 			receipt,
 			delegates,
@@ -202,21 +202,21 @@ class TryAndRecoverReceiptPlatformApi {
 	}
 
 	Future<Receipt> modifyReceipt(Receipt entity) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.tryAndRecover.modifyReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.modifyReceipt(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<Receipt> getReceipt(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.tryAndRecover.getReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.getReceipt(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<Receipt>> listByReference(String reference) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.tryAndRecover.listByReference(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.listByReference(
 			_sdkId,
 			reference,
 		);
@@ -228,7 +228,7 @@ class EncryptedReceiptPlatformApi {
 	EncryptedReceiptPlatformApi(this._sdkId);
 
 	Future<EncryptedReceipt> shareWith(String delegateId, EncryptedReceipt receipt, ReceiptShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			receipt,
@@ -237,7 +237,7 @@ class EncryptedReceiptPlatformApi {
 	}
 
 	Future<EncryptedReceipt> shareWithMany(EncryptedReceipt receipt, Map<String, ReceiptShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.shareWithMany(
 			_sdkId,
 			receipt,
 			delegates,
@@ -245,21 +245,21 @@ class EncryptedReceiptPlatformApi {
 	}
 
 	Future<EncryptedReceipt> modifyReceipt(EncryptedReceipt entity) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.encrypted.modifyReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.modifyReceipt(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedReceipt> getReceipt(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.encrypted.getReceipt(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.getReceipt(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedReceipt>> listByReference(String reference) async {
-		return await CardinalSdkPlatformInterface.instance.receipt.encrypted.listByReference(
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.listByReference(
 			_sdkId,
 			reference,
 		);

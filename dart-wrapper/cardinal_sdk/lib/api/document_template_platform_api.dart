@@ -10,62 +10,62 @@ class DocumentTemplatePlatformApi {
 	DocumentTemplatePlatformApi(this._sdkId);
 
 	Future<DocumentTemplate> getDocumentTemplate(String documentTemplateId) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.getDocumentTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.getDocumentTemplate(
 			_sdkId,
 			documentTemplateId,
 		);
 	}
 
 	Future<DocumentTemplate> createDocumentTemplate(DocumentTemplate documentTemplate) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.createDocumentTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.createDocumentTemplate(
 			_sdkId,
 			documentTemplate,
 		);
 	}
 
 	Future<DocumentTemplate> modifyDocumentTemplate(DocumentTemplate documentTemplate) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.modifyDocumentTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.modifyDocumentTemplate(
 			_sdkId,
 			documentTemplate,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteDocumentTemplates(List<String> documentTemplateIds) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.deleteDocumentTemplates(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.deleteDocumentTemplates(
 			_sdkId,
 			documentTemplateIds,
 		);
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplatesBySpeciality(String specialityCode) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.listDocumentTemplatesBySpeciality(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.listDocumentTemplatesBySpeciality(
 			_sdkId,
 			specialityCode,
 		);
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplatesByDocumentType(String documentTypeCode) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.listDocumentTemplatesByDocumentType(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.listDocumentTemplatesByDocumentType(
 			_sdkId,
 			documentTypeCode,
 		);
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplatesByDocumentTypeForCurrentUser(String documentTypeCode) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.listDocumentTemplatesByDocumentTypeForCurrentUser(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.listDocumentTemplatesByDocumentTypeForCurrentUser(
 			_sdkId,
 			documentTypeCode,
 		);
 	}
 
 	Future<List<DocumentTemplate>> listDocumentTemplates() async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.listDocumentTemplates(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.listDocumentTemplates(
 			_sdkId,
 		);
 	}
 
 	Future<Uint8List> getDocumentTemplateAttachment(String documentTemplateId, String attachmentId) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.getDocumentTemplateAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.getDocumentTemplateAttachment(
 			_sdkId,
 			documentTemplateId,
 			attachmentId,
@@ -73,7 +73,7 @@ class DocumentTemplatePlatformApi {
 	}
 
 	Future<Uint8List> getAttachmentText(String documentTemplateId, String attachmentId) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.getAttachmentText(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.getAttachmentText(
 			_sdkId,
 			documentTemplateId,
 			attachmentId,
@@ -81,7 +81,7 @@ class DocumentTemplatePlatformApi {
 	}
 
 	Future<DocumentTemplate> setDocumentTemplateAttachment(String documentTemplateId, Uint8List payload) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.setDocumentTemplateAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.setDocumentTemplateAttachment(
 			_sdkId,
 			documentTemplateId,
 			payload,
@@ -89,7 +89,7 @@ class DocumentTemplatePlatformApi {
 	}
 
 	Future<String> getAttachmentUrl(String documentId, String attachmentId) async {
-		return await CardinalSdkPlatformInterface.instance.documentTemplate.getAttachmentUrl(
+		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.getAttachmentUrl(
 			_sdkId,
 			documentId,
 			attachmentId,

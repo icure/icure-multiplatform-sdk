@@ -17,21 +17,21 @@ class HealthcarePartyPlatformApi {
 	HealthcarePartyPlatformApi(this._sdkId);
 
 	Future<HealthcareParty> getHealthcareParty(String healthcarePartyId) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.getHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getHealthcareParty(
 			_sdkId,
 			healthcarePartyId,
 		);
 	}
 
 	Future<HealthcareParty> createHealthcareParty(HealthcareParty p) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.createHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.createHealthcareParty(
 			_sdkId,
 			p,
 		);
 	}
 
 	Future<HealthcareParty> modifyHealthcarePartyInGroup(String groupId, HealthcareParty healthcareParty) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.modifyHealthcarePartyInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.modifyHealthcarePartyInGroup(
 			_sdkId,
 			groupId,
 			healthcareParty,
@@ -39,7 +39,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<HealthcareParty> createHealthcarePartyInGroup(String groupId, HealthcareParty healthcareParty) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.createHealthcarePartyInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.createHealthcarePartyInGroup(
 			_sdkId,
 			groupId,
 			healthcareParty,
@@ -47,76 +47,76 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<HealthcareParty> getCurrentHealthcareParty() async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.getCurrentHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getCurrentHealthcareParty(
 			_sdkId,
 		);
 	}
 
 	Future<List<HealthcareParty>> listHealthcarePartiesByName(String name) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.listHealthcarePartiesByName(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.listHealthcarePartiesByName(
 			_sdkId,
 			name,
 		);
 	}
 
 	Future<List<HealthcareParty>> getHealthcareParties(List<String> healthcarePartyIds) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.getHealthcareParties(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getHealthcareParties(
 			_sdkId,
 			healthcarePartyIds,
 		);
 	}
 
 	Future<List<HealthcareParty>> listHealthcarePartiesByParentId(String parentId) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.listHealthcarePartiesByParentId(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.listHealthcarePartiesByParentId(
 			_sdkId,
 			parentId,
 		);
 	}
 
 	Future<PublicKey> getPublicKey(String healthcarePartyId) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.getPublicKey(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getPublicKey(
 			_sdkId,
 			healthcarePartyId,
 		);
 	}
 
 	Future<HealthcareParty> modifyHealthcareParty(HealthcareParty healthcareParty) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.modifyHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.modifyHealthcareParty(
 			_sdkId,
 			healthcareParty,
 		);
 	}
 
 	Future<List<String>> matchHealthcarePartiesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.matchHealthcarePartiesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.matchHealthcarePartiesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.filterHealthPartiesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.filterHealthPartiesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchHealthcarePartiesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.matchHealthcarePartiesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.matchHealthcarePartiesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.filterHealthPartiesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.filterHealthPartiesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<HealthcareParty>> getHealthcarePartiesInGroup(String groupId, List<String>? healthcarePartyIds) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.getHealthcarePartiesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getHealthcarePartiesInGroup(
 			_sdkId,
 			groupId,
 			healthcarePartyIds,
@@ -124,7 +124,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<DataOwnerRegistrationSuccess> registerPatient(String groupId, String? parentHcPartyId, String? token, bool? useShortToken, HealthcareParty hcp) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.registerPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.registerPatient(
 			_sdkId,
 			groupId,
 			parentHcPartyId,
@@ -135,7 +135,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteHealthcarePartyById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcarePartyById(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartyById(
 			_sdkId,
 			entityId,
 			rev,
@@ -143,14 +143,14 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteHealthcarePartiesByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcarePartiesByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartiesByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<DocIdentifier> deleteHealthcarePartyInGroupById(String groupId, String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcarePartyInGroupById(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartyInGroupById(
 			_sdkId,
 			groupId,
 			entityId,
@@ -159,7 +159,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteHealthcarePartiesInGroupByIds(String groupId, List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcarePartiesInGroupByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartiesInGroupByIds(
 			_sdkId,
 			groupId,
 			entityIds,
@@ -167,7 +167,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<void> purgeHealthcarePartyById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.purgeHealthcarePartyById(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.purgeHealthcarePartyById(
 			_sdkId,
 			id,
 			rev,
@@ -175,7 +175,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<HealthcareParty> undeleteHealthcarePartyById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.undeleteHealthcarePartyById(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.undeleteHealthcarePartyById(
 			_sdkId,
 			id,
 			rev,
@@ -183,35 +183,35 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteHealthcareParty(HealthcareParty healthcareParty) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcareParty(
 			_sdkId,
 			healthcareParty,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteHealthcareParties(List<HealthcareParty> healthcareParties) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcareParties(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcareParties(
 			_sdkId,
 			healthcareParties,
 		);
 	}
 
 	Future<void> purgeHealthcareParty(HealthcareParty healthcareParty) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.purgeHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.purgeHealthcareParty(
 			_sdkId,
 			healthcareParty,
 		);
 	}
 
 	Future<HealthcareParty> undeleteHealthcareParty(HealthcareParty healthcareParty) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.undeleteHealthcareParty(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.undeleteHealthcareParty(
 			_sdkId,
 			healthcareParty,
 		);
 	}
 
 	Future<DocIdentifier> deleteHealthcarePartyInGroup(String groupId, HealthcareParty hcp) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcarePartyInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartyInGroup(
 			_sdkId,
 			groupId,
 			hcp,
@@ -219,7 +219,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteHealthcarePartiesInGroup(String groupId, List<HealthcareParty> healthcareParties) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.deleteHealthcarePartiesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartiesInGroup(
 			_sdkId,
 			groupId,
 			healthcareParties,
@@ -227,7 +227,7 @@ class HealthcarePartyPlatformApi {
 	}
 
 	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.healthcareParty.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,

@@ -15,35 +15,35 @@ class CalendarItemBasicPlatformApi {
 	CalendarItemBasicPlatformApi(this._sdkId);
 
 	Future<List<String>> matchCalendarItemsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.matchCalendarItemsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.matchCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchCalendarItemsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.matchCalendarItemsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.matchCalendarItemsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.filterCalendarItemsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.filterCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.filterCalendarItemsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.filterCalendarItemsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteCalendarItemById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.deleteCalendarItemById(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.deleteCalendarItemById(
 			_sdkId,
 			entityId,
 			rev,
@@ -51,14 +51,14 @@ class CalendarItemBasicPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteCalendarItemsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.deleteCalendarItemsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.deleteCalendarItemsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeCalendarItemById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.purgeCalendarItemById(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.purgeCalendarItemById(
 			_sdkId,
 			id,
 			rev,
@@ -66,28 +66,28 @@ class CalendarItemBasicPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteCalendarItem(CalendarItem calendarItem) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.deleteCalendarItem(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.deleteCalendarItem(
 			_sdkId,
 			calendarItem,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteCalendarItems(List<CalendarItem> calendarItems) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.deleteCalendarItems(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.deleteCalendarItems(
 			_sdkId,
 			calendarItems,
 		);
 	}
 
 	Future<void> purgeCalendarItem(CalendarItem calendarItem) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.purgeCalendarItem(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.purgeCalendarItem(
 			_sdkId,
 			calendarItem,
 		);
 	}
 
 	Future<EncryptedCalendarItem> undeleteCalendarItemById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.undeleteCalendarItemById(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.undeleteCalendarItemById(
 			_sdkId,
 			id,
 			rev,
@@ -95,35 +95,35 @@ class CalendarItemBasicPlatformApi {
 	}
 
 	Future<EncryptedCalendarItem> undeleteCalendarItem(CalendarItem calendarItem) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.undeleteCalendarItem(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.undeleteCalendarItem(
 			_sdkId,
 			calendarItem,
 		);
 	}
 
 	Future<EncryptedCalendarItem> modifyCalendarItem(EncryptedCalendarItem entity) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.modifyCalendarItem(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.modifyCalendarItem(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedCalendarItem> getCalendarItem(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.getCalendarItem(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.getCalendarItem(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedCalendarItem>> getCalendarItems(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.getCalendarItems(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.getCalendarItems(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.calendarItemBasic.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,
