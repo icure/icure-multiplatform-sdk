@@ -62,12 +62,12 @@ class UserPlatformApi {
 			'UserApi.getUsers',
 			{
 				"sdkId": sdkId,
-				"userIds": jsonEncode(userIds.map((x0) => x0)),
+				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getUsers");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => User.fromJSON(x1) );
+		return parsedResJson.map((x1) => User.fromJSON(x1) ).toList();
 	}
 
 	Future<User> getUserByEmail(String sdkId, String email) async {
@@ -106,7 +106,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method findByHcpartyId");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> findByPatientId(String sdkId, String id) async {
@@ -119,7 +119,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method findByPatientId");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<User> modifyUser(String sdkId, User user) async {
@@ -154,7 +154,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 				"userId": jsonEncode(userId),
-				"properties": jsonEncode(properties?.map((x0) => EncryptedPropertyStub.encode(x0))),
+				"properties": jsonEncode(properties?.map((x0) => EncryptedPropertyStub.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyProperties");
@@ -201,7 +201,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<User>> filterUsersBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -227,7 +227,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<UserGroup>> getMatchingUsers(String sdkId) async {
@@ -239,7 +239,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMatchingUsers");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => UserGroup.fromJSON(x1) );
+		return parsedResJson.map((x1) => UserGroup.fromJSON(x1) ).toList();
 	}
 
 	Future<List<User>> getUsersInGroup(String sdkId, String groupId, List<String> userIds) async {
@@ -248,12 +248,12 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"userIds": jsonEncode(userIds.map((x0) => x0)),
+				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getUsersInGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => User.fromJSON(x1) );
+		return parsedResJson.map((x1) => User.fromJSON(x1) ).toList();
 	}
 
 	Future<User> createUserInGroup(String sdkId, String groupId, User user) async {
@@ -370,7 +370,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTokenInAllGroups");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => TokenWithGroup.fromJSON(x1) );
+		return parsedResJson.map((x1) => TokenWithGroup.fromJSON(x1) ).toList();
 	}
 
 	Future<PaginatedListIterator<User>> filterUsersInGroupBy(String sdkId, String groupId, BaseFilterOptions filter) async {
@@ -398,7 +398,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersInGroupBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<User>> filterUsersInGroupBySorted(String sdkId, String groupId, BaseSortableFilterOptions filter) async {
@@ -426,7 +426,7 @@ class UserPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersInGroupBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<void> enable2faForUserWithGroup(String sdkId, String userId, String groupId, Enable2faRequest request) async {
@@ -609,7 +609,7 @@ class UserPlatformApi {
 			'UserApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

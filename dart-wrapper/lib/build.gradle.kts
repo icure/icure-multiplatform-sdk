@@ -15,7 +15,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC.1"
+val version = "1.0.0-RC.10"
 project.version = version ?: "0.0.0-snapshot"
 
 kotlin {
@@ -34,7 +34,7 @@ kotlin {
 	sourceSets {
 		val commonMain by getting {
 			dependencies {
-				implementation(project(":cardinal-sdk"))
+				implementation("com.icure:cardinal-sdk:1.0.0-RC.10")
 				implementation(libs.coroutinesCore)
 				implementation(libs.kotlinSerialization)
 			}

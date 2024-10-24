@@ -15,8 +15,8 @@ class Medication {
 	Substanceproduct? substanceProduct;
 	Medicinalproduct? medicinalProduct;
 	int? _numberOfPackages;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get numberOfPackages => _numberOfPackages;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set numberOfPackages(int? value) {
+	@ActualInt32() int? get numberOfPackages => _numberOfPackages;
+	@ActualInt32() set numberOfPackages(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('numberOfPackages value cannot exceed 2147483647');
 		}
@@ -44,8 +44,8 @@ class Medication {
 	Map<String, ParagraphAgreement>? agreements;
 	String? medicationSchemeIdOnSafe;
 	int? _medicationSchemeSafeVersion;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get medicationSchemeSafeVersion => _medicationSchemeSafeVersion;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set medicationSchemeSafeVersion(int? value) {
+	@ActualInt32() int? get medicationSchemeSafeVersion => _medicationSchemeSafeVersion;
+	@ActualInt32() set medicationSchemeSafeVersion(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('medicationSchemeSafeVersion value cannot exceed 2147483647');
 		}
@@ -67,8 +67,8 @@ class Medication {
 	List<Suspension>? suspension;
 	String? prescriptionRID;
 	int? _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set status(int? value) {
+	@ActualInt32() int? get status => _status;
+	@ActualInt32() set status(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -146,7 +146,7 @@ class Medication {
 			duration: data["duration"] == null ? null : Duration.fromJSON(data["duration"]),
 			renewal: data["renewal"] == null ? null : Renewal.fromJSON(data["renewal"]),
 			knownUsage: data["knownUsage"],
-			regimen: data["regimen"]?.map((x0) => RegimenItem.fromJSON(x0) ),
+			regimen: data["regimen"]?.map((x0) => RegimenItem.fromJSON(x0) ).toList(),
 			posology: data["posology"],
 			agreements: data["agreements"]?.map((k0, v0) => MapEntry(k0, ParagraphAgreement.fromJSON(v0))),
 			medicationSchemeIdOnSafe: data["medicationSchemeIdOnSafe"],
@@ -163,7 +163,7 @@ class Medication {
 			origin: data["origin"],
 			medicationChanged: data["medicationChanged"],
 			posologyChanged: data["posologyChanged"],
-			suspension: data["suspension"]?.map((x0) => Suspension.fromJSON(x0) ),
+			suspension: data["suspension"]?.map((x0) => Suspension.fromJSON(x0) ).toList(),
 			prescriptionRID: data["prescriptionRID"]
 		);
 	}
@@ -191,7 +191,7 @@ class Medication {
 			"duration" : value.duration == null ? null : Duration.encode(value.duration!),
 			"renewal" : value.renewal == null ? null : Renewal.encode(value.renewal!),
 			"knownUsage" : value.knownUsage,
-			"regimen" : value.regimen?.map((x0) => RegimenItem.encode(x0)),
+			"regimen" : value.regimen?.map((x0) => RegimenItem.encode(x0)).toList(),
 			"posology" : value.posology,
 			"agreements" : value.agreements?.map((k0, v0) => MapEntry(k0, ParagraphAgreement.encode(v0))),
 			"medicationSchemeIdOnSafe" : value.medicationSchemeIdOnSafe,
@@ -209,7 +209,7 @@ class Medication {
 			"origin" : value.origin,
 			"medicationChanged" : value.medicationChanged,
 			"posologyChanged" : value.posologyChanged,
-			"suspension" : value.suspension?.map((x0) => Suspension.encode(x0)),
+			"suspension" : value.suspension?.map((x0) => Suspension.encode(x0)).toList(),
 			"prescriptionRID" : value.prescriptionRID,
 			"status" : value.status
 		};

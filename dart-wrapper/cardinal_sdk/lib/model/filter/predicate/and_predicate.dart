@@ -9,13 +9,13 @@ class AndPredicate implements Predicate {
 
 	factory AndPredicate.fromJSON(Map<String, dynamic> data) {
 		return AndPredicate(
-			predicates: data["predicates"].map((x0) => Predicate.fromJSON(x0) )
+			predicates: data["predicates"].map((x0) => Predicate.fromJSON(x0) ).toList()
 		);
 	}
 
 	static Map<String, dynamic> encode(AndPredicate value) {
 		Map<String, dynamic> entityAsMap = {
-			"predicates" : value.predicates.map((x0) => Predicate.encode(x0))
+			"predicates" : value.predicates.map((x0) => Predicate.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

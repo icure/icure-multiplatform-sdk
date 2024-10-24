@@ -27,11 +27,11 @@ class PersonName {
 	factory PersonName.fromJSON(Map<String, dynamic> data) {
 		return PersonName(
 			lastName: data["lastName"],
-			firstNames: data["firstNames"].map((x0) => x0 ),
+			firstNames: data["firstNames"].map((x0) => x0 ).toList(),
 			start: data["start"],
 			end: data["end"],
-			prefix: data["prefix"].map((x0) => x0 ),
-			suffix: data["suffix"].map((x0) => x0 ),
+			prefix: data["prefix"].map((x0) => x0 ).toList(),
+			suffix: data["suffix"].map((x0) => x0 ).toList(),
 			text: data["text"],
 			use: data["use"] == null ? null : PersonNameUse.fromJSON(data["use"])
 		);
@@ -40,11 +40,11 @@ class PersonName {
 	static Map<String, dynamic> encode(PersonName value) {
 		Map<String, dynamic> entityAsMap = {
 			"lastName" : value.lastName,
-			"firstNames" : value.firstNames.map((x0) => x0),
+			"firstNames" : value.firstNames.map((x0) => x0).toList(),
 			"start" : value.start,
 			"end" : value.end,
-			"prefix" : value.prefix.map((x0) => x0),
-			"suffix" : value.suffix.map((x0) => x0),
+			"prefix" : value.prefix.map((x0) => x0).toList(),
+			"suffix" : value.suffix.map((x0) => x0).toList(),
 			"text" : value.text,
 			"use" : value.use == null ? null : PersonNameUse.encode(value.use!)
 		};

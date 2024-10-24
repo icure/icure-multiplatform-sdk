@@ -62,7 +62,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, Classification classification) async {
@@ -88,7 +88,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, Classification entity, Set<String> delegates) async {
@@ -97,7 +97,7 @@ class ClassificationPlatformApi {
 			{
 				"sdkId": sdkId,
 				"entity": jsonEncode(Classification.encode(entity)),
-				"delegates": jsonEncode(delegates.map((x0) => x0)),
+				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
 		);
 	}
@@ -138,7 +138,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchClassificationsBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -151,7 +151,7 @@ class ClassificationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<DocIdentifier> deleteClassification(String sdkId, String entityId) async {
@@ -172,12 +172,12 @@ class ClassificationPlatformApi {
 			'ClassificationApi.deleteClassifications',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedClassification> shareWith(String sdkId, String delegateId, DecryptedClassification classification, ClassificationShareOptions? options) async {
@@ -266,12 +266,12 @@ class ClassificationPlatformApi {
 			'ClassificationApi.getClassifications',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedClassification.fromJSON(x1) );
+		return parsedResJson.map((x1) => DecryptedClassification.fromJSON(x1) ).toList();
 	}
 }
 
@@ -365,12 +365,12 @@ class TryAndRecoverClassificationPlatformApi {
 			'ClassificationApi.tryAndRecover.getClassifications',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Classification.fromJSON(x1) );
+		return parsedResJson.map((x1) => Classification.fromJSON(x1) ).toList();
 	}
 }
 
@@ -464,11 +464,11 @@ class EncryptedClassificationPlatformApi {
 			'ClassificationApi.encrypted.getClassifications',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedClassification.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedClassification.fromJSON(x1) ).toList();
 	}
 }

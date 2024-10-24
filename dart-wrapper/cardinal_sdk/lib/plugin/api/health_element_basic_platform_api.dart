@@ -25,7 +25,7 @@ class HealthElementBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchHealthElementsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -38,7 +38,7 @@ class HealthElementBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(String sdkId, BaseFilterOptions filter) async {
@@ -86,12 +86,12 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.deleteHealthElementsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElementsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthElementById(String sdkId, String id, String rev) async {
@@ -123,12 +123,12 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.deleteHealthElements',
 			{
 				"sdkId": sdkId,
-				"healthElements": jsonEncode(healthElements.map((x0) => HealthElement.encode(x0))),
+				"healthElements": jsonEncode(healthElements.map((x0) => HealthElement.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthElement(String sdkId, HealthElement healthElement) async {
@@ -186,12 +186,12 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.modifyHealthElements',
 			{
 				"sdkId": sdkId,
-				"entities": jsonEncode(entities.map((x0) => EncryptedHealthElement.encode(x0))),
+				"entities": jsonEncode(entities.map((x0) => EncryptedHealthElement.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedHealthElement.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedHealthElement> getHealthElement(String sdkId, String entityId) async {
@@ -212,12 +212,12 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.getHealthElements',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedHealthElement.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -225,7 +225,7 @@ class HealthElementBasicPlatformApi {
 			'HealthElementBasicApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

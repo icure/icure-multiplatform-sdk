@@ -12,7 +12,7 @@ class Duration {
 
 	factory Duration.fromJSON(Map<String, dynamic> data) {
 		return Duration(
-			value: data["value"],
+			value: data["value"].toDouble(),
 			unit: data["unit"] == null ? null : CodeStub.fromJSON(data["unit"])
 		);
 	}

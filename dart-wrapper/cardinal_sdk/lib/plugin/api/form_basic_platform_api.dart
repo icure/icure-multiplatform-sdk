@@ -24,7 +24,7 @@ class FormBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchFormsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -37,7 +37,7 @@ class FormBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(String sdkId, BaseFilterOptions filter) async {
@@ -85,12 +85,12 @@ class FormBasicPlatformApi {
 			'FormBasicApi.deleteFormsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteFormsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeFormById(String sdkId, String id, String rev) async {
@@ -122,12 +122,12 @@ class FormBasicPlatformApi {
 			'FormBasicApi.deleteForms',
 			{
 				"sdkId": sdkId,
-				"forms": jsonEncode(forms.map((x0) => Form.encode(x0))),
+				"forms": jsonEncode(forms.map((x0) => Form.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeForm(String sdkId, Form form) async {
@@ -252,12 +252,12 @@ class FormBasicPlatformApi {
 			'FormBasicApi.modifyForms',
 			{
 				"sdkId": sdkId,
-				"entities": jsonEncode(entities.map((x0) => EncryptedForm.encode(x0))),
+				"entities": jsonEncode(entities.map((x0) => EncryptedForm.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedForm.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedForm.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedForm> getForm(String sdkId, String entityId) async {
@@ -278,12 +278,12 @@ class FormBasicPlatformApi {
 			'FormBasicApi.getForms',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getForms");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedForm.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedForm.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedForm> getLatestFormByLogicalUuid(String sdkId, String logicalUuid) async {

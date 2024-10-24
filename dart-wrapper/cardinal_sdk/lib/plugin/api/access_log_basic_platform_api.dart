@@ -22,7 +22,7 @@ class AccessLogBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchAccessLogsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -35,7 +35,7 @@ class AccessLogBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(String sdkId, BaseFilterOptions filter) async {
@@ -83,12 +83,12 @@ class AccessLogBasicPlatformApi {
 			'AccessLogBasicApi.deleteAccessLogsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeAccessLogById(String sdkId, String id, String rev) async {
@@ -120,12 +120,12 @@ class AccessLogBasicPlatformApi {
 			'AccessLogBasicApi.deleteAccessLogs',
 			{
 				"sdkId": sdkId,
-				"accessLogs": jsonEncode(accessLogs.map((x0) => AccessLog.encode(x0))),
+				"accessLogs": jsonEncode(accessLogs.map((x0) => AccessLog.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogs");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeAccessLog(String sdkId, AccessLog accessLog) async {
@@ -196,11 +196,11 @@ class AccessLogBasicPlatformApi {
 			'AccessLogBasicApi.getAccessLogs',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getAccessLogs");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedAccessLog.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedAccessLog.fromJSON(x1) ).toList();
 	}
 }

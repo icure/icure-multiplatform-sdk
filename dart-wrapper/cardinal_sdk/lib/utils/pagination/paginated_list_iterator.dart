@@ -1,3 +1,7 @@
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
+
+import '../../annotations/actual_int32.dart';
+
 class PaginatedListIterator<T> {
   final String _instanceId;
   final T Function(Map<String, dynamic>) _decodeT;
@@ -9,9 +13,9 @@ class PaginatedListIterator<T> {
   }
 
   Future<List<T>> next(@ActualInt32() int limit) async {
-    return CardinalSdkPlatformInterface.instance
+    final nextJson = await CardinalSdkPlatformInterface.instance
         .pagination
-        .next(_instanceId, limit)
-        .map((x) => _decodeT(x));
+        .next(_instanceId, limit);
+    return nextJson.map((x) => _decodeT(x)).toList();
   }
 }

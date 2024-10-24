@@ -94,8 +94,8 @@ class EncryptedAddress implements Address {
 			state: data["state"],
 			country: data["country"],
 			note: data["note"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
-			telecoms: data["telecoms"].map((x0) => EncryptedTelecom.fromJSON(x0) ),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
+			telecoms: data["telecoms"].map((x0) => EncryptedTelecom.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -112,8 +112,8 @@ class EncryptedAddress implements Address {
 			"state" : value.state,
 			"country" : value.country,
 			"note" : value.note,
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
-			"telecoms" : value.telecoms.map((x0) => EncryptedTelecom.encode(x0)),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
+			"telecoms" : value.telecoms.map((x0) => EncryptedTelecom.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
@@ -163,8 +163,8 @@ class DecryptedAddress implements Address {
 			state: data["state"],
 			country: data["country"],
 			note: data["note"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
-			telecoms: data["telecoms"].map((x0) => DecryptedTelecom.fromJSON(x0) ),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
+			telecoms: data["telecoms"].map((x0) => DecryptedTelecom.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -181,8 +181,8 @@ class DecryptedAddress implements Address {
 			"state" : value.state,
 			"country" : value.country,
 			"note" : value.note,
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
-			"telecoms" : value.telecoms.map((x0) => DecryptedTelecom.encode(x0)),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
+			"telecoms" : value.telecoms.map((x0) => DecryptedTelecom.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;

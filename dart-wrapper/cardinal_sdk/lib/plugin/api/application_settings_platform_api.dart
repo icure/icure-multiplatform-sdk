@@ -17,7 +17,7 @@ class ApplicationSettingsPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getApplicationSettings");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => ApplicationSettings.fromJSON(x1) );
+		return parsedResJson.map((x1) => ApplicationSettings.fromJSON(x1) ).toList();
 	}
 
 	Future<ApplicationSettings> createApplicationSettings(String sdkId, ApplicationSettings applicationSettings) async {

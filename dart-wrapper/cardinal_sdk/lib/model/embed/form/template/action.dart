@@ -16,17 +16,17 @@ class Action {
 
 	factory Action.fromJSON(Map<String, dynamic> data) {
 		return Action(
-			launchers: data["launchers"]?.map((x0) => Launcher.fromJSON(x0) ),
+			launchers: data["launchers"]?.map((x0) => Launcher.fromJSON(x0) ).toList(),
 			expression: data["expression"],
-			states: data["states"]?.map((x0) => State.fromJSON(x0) )
+			states: data["states"]?.map((x0) => State.fromJSON(x0) ).toList()
 		);
 	}
 
 	static Map<String, dynamic> encode(Action value) {
 		Map<String, dynamic> entityAsMap = {
-			"launchers" : value.launchers?.map((x0) => Launcher.encode(x0)),
+			"launchers" : value.launchers?.map((x0) => Launcher.encode(x0)).toList(),
 			"expression" : value.expression,
-			"states" : value.states?.map((x0) => State.encode(x0))
+			"states" : value.states?.map((x0) => State.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

@@ -8,8 +8,8 @@ import 'package:cardinal_sdk/model/embed/administration_quantity.dart';
 class RegimenItem {
 	int? date;
 	int? _dayNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get dayNumber => _dayNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set dayNumber(int? value) {
+	@ActualInt32() int? get dayNumber => _dayNumber;
+	@ActualInt32() set dayNumber(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('dayNumber value cannot exceed 2147483647');
 		}

@@ -60,14 +60,14 @@ class SecretIdShareOptionsUseExactly implements SecretIdShareOptions {
 
 	factory SecretIdShareOptionsUseExactly.fromJSON(Map<String, dynamic> data) {
 		return SecretIdShareOptionsUseExactly(
-			data["secretIds"].map((x0) => x0 ),
+			data["secretIds"].map((x0) => x0 ).toList(),
 			data["createUnknownSecretIds"]
 		);
 	}
 
 	static Map<String, dynamic> encode(SecretIdShareOptionsUseExactly value) {
 		Map<String, dynamic> entityAsMap = {
-			"secretIds" : value.secretIds.map((x0) => x0),
+			"secretIds" : value.secretIds.map((x0) => x0).toList(),
 			"createUnknownSecretIds" : value.createUnknownSecretIds
 		};
 		return entityAsMap;

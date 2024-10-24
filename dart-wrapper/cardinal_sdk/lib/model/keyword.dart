@@ -49,12 +49,12 @@ class Keyword implements StoredDocument, ICureDocument<String> {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			value: data["value"],
-			subWords: data["subWords"].map((x0) => KeywordSubword.fromJSON(x0) ),
+			subWords: data["subWords"].map((x0) => KeywordSubword.fromJSON(x0) ).toList(),
 			userId: data["userId"],
 		);
 	}
@@ -68,12 +68,12 @@ class Keyword implements StoredDocument, ICureDocument<String> {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"value" : value.value,
-			"subWords" : value.subWords.map((x0) => KeywordSubword.encode(x0)),
+			"subWords" : value.subWords.map((x0) => KeywordSubword.encode(x0)).toList(),
 			"userId" : value.userId
 		};
 		return entityAsMap;

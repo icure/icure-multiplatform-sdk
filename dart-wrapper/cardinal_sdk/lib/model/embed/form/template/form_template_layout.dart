@@ -22,20 +22,20 @@ class FormTemplateLayout {
 	factory FormTemplateLayout.fromJSON(Map<String, dynamic> data) {
 		return FormTemplateLayout(
 			data["form"],
-			actions: data["actions"].map((x0) => Action.fromJSON(x0) ),
-			sections: data["sections"].map((x0) => Section.fromJSON(x0) ),
+			actions: data["actions"].map((x0) => Action.fromJSON(x0) ).toList(),
+			sections: data["sections"].map((x0) => Section.fromJSON(x0) ).toList(),
 			description: data["description"],
-			keywords: data["keywords"]?.map((x0) => x0 ),
+			keywords: data["keywords"]?.map((x0) => x0 ).toList(),
 		);
 	}
 
 	static Map<String, dynamic> encode(FormTemplateLayout value) {
 		Map<String, dynamic> entityAsMap = {
 			"form" : value.form,
-			"actions" : value.actions.map((x0) => Action.encode(x0)),
-			"sections" : value.sections.map((x0) => Section.encode(x0)),
+			"actions" : value.actions.map((x0) => Action.encode(x0)).toList(),
+			"sections" : value.sections.map((x0) => Section.encode(x0)).toList(),
 			"description" : value.description,
-			"keywords" : value.keywords?.map((x0) => x0)
+			"keywords" : value.keywords?.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

@@ -29,9 +29,9 @@ sealed class PlanOfAction implements Encryptable, ICureDocument<String>, Named {
 	abstract String? note;
 	abstract String? idOpeningContact;
 	abstract String? idClosingContact;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int status;
+	@ActualInt32() abstract int status;
 	abstract Set<String> documentIds;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? numberOfCares;
+	@ActualInt32() abstract int? numberOfCares;
 	List<CareTeamMembership?> get careTeamMemberships;
 	abstract bool relevant;
 	@override abstract Base64String? encryptedSelf;
@@ -86,8 +86,8 @@ class EncryptedPlanOfAction implements PlanOfAction {
 	@override String? idOpeningContact;
 	@override String? idClosingContact;
 	int _status = 0;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int value) {
+	@ActualInt32() @override int get status => _status;
+	@ActualInt32() @override set status(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -95,8 +95,8 @@ class EncryptedPlanOfAction implements PlanOfAction {
 	}
 	@override Set<String> documentIds = {};
 	int? _numberOfCares;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get numberOfCares => _numberOfCares;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set numberOfCares(int? value) {
+	@ActualInt32() @override int? get numberOfCares => _numberOfCares;
+	@ActualInt32() @override set numberOfCares(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('numberOfCares value cannot exceed 2147483647');
 		}
@@ -150,8 +150,8 @@ class EncryptedPlanOfAction implements PlanOfAction {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			prescriberId: data["prescriberId"],
 			valueDate: data["valueDate"],
@@ -163,8 +163,8 @@ class EncryptedPlanOfAction implements PlanOfAction {
 			note: data["note"],
 			idOpeningContact: data["idOpeningContact"],
 			idClosingContact: data["idClosingContact"],
-			documentIds: data["documentIds"].map((x0) => x0 ),
-			careTeamMemberships: data["careTeamMemberships"].map((x0) => x0 == null ? null : EncryptedCareTeamMembership.fromJSON(x0) ),
+			documentIds: data["documentIds"].map((x0) => x0 ).toList(),
+			careTeamMemberships: data["careTeamMemberships"].map((x0) => x0 == null ? null : EncryptedCareTeamMembership.fromJSON(x0) ).toList(),
 			relevant: data["relevant"],
 			encryptedSelf: data["encryptedSelf"],
 		);
@@ -178,8 +178,8 @@ class EncryptedPlanOfAction implements PlanOfAction {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"prescriberId" : value.prescriberId,
 			"valueDate" : value.valueDate,
@@ -192,9 +192,9 @@ class EncryptedPlanOfAction implements PlanOfAction {
 			"idOpeningContact" : value.idOpeningContact,
 			"idClosingContact" : value.idClosingContact,
 			"status" : value.status,
-			"documentIds" : value.documentIds.map((x0) => x0),
+			"documentIds" : value.documentIds.map((x0) => x0).toList(),
 			"numberOfCares" : value.numberOfCares,
-			"careTeamMemberships" : value.careTeamMemberships.map((x0) => x0 == null ? null : EncryptedCareTeamMembership.encode(x0!)),
+			"careTeamMemberships" : value.careTeamMemberships.map((x0) => x0 == null ? null : EncryptedCareTeamMembership.encode(x0!)).toList(),
 			"relevant" : value.relevant,
 			"encryptedSelf" : value.encryptedSelf
 		};
@@ -223,8 +223,8 @@ class DecryptedPlanOfAction implements PlanOfAction {
 	@override String? idOpeningContact;
 	@override String? idClosingContact;
 	int _status = 0;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int value) {
+	@ActualInt32() @override int get status => _status;
+	@ActualInt32() @override set status(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -232,8 +232,8 @@ class DecryptedPlanOfAction implements PlanOfAction {
 	}
 	@override Set<String> documentIds = {};
 	int? _numberOfCares;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get numberOfCares => _numberOfCares;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set numberOfCares(int? value) {
+	@ActualInt32() @override int? get numberOfCares => _numberOfCares;
+	@ActualInt32() @override set numberOfCares(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('numberOfCares value cannot exceed 2147483647');
 		}
@@ -287,8 +287,8 @@ class DecryptedPlanOfAction implements PlanOfAction {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			prescriberId: data["prescriberId"],
 			valueDate: data["valueDate"],
@@ -300,8 +300,8 @@ class DecryptedPlanOfAction implements PlanOfAction {
 			note: data["note"],
 			idOpeningContact: data["idOpeningContact"],
 			idClosingContact: data["idClosingContact"],
-			documentIds: data["documentIds"].map((x0) => x0 ),
-			careTeamMemberships: data["careTeamMemberships"].map((x0) => x0 == null ? null : DecryptedCareTeamMembership.fromJSON(x0) ),
+			documentIds: data["documentIds"].map((x0) => x0 ).toList(),
+			careTeamMemberships: data["careTeamMemberships"].map((x0) => x0 == null ? null : DecryptedCareTeamMembership.fromJSON(x0) ).toList(),
 			relevant: data["relevant"],
 			encryptedSelf: data["encryptedSelf"],
 		);
@@ -315,8 +315,8 @@ class DecryptedPlanOfAction implements PlanOfAction {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"prescriberId" : value.prescriberId,
 			"valueDate" : value.valueDate,
@@ -329,9 +329,9 @@ class DecryptedPlanOfAction implements PlanOfAction {
 			"idOpeningContact" : value.idOpeningContact,
 			"idClosingContact" : value.idClosingContact,
 			"status" : value.status,
-			"documentIds" : value.documentIds.map((x0) => x0),
+			"documentIds" : value.documentIds.map((x0) => x0).toList(),
 			"numberOfCares" : value.numberOfCares,
-			"careTeamMemberships" : value.careTeamMemberships.map((x0) => x0 == null ? null : DecryptedCareTeamMembership.encode(x0!)),
+			"careTeamMemberships" : value.careTeamMemberships.map((x0) => x0 == null ? null : DecryptedCareTeamMembership.encode(x0!)).toList(),
 			"relevant" : value.relevant,
 			"encryptedSelf" : value.encryptedSelf
 		};

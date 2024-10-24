@@ -13,14 +13,14 @@ class KeywordSubword {
 	factory KeywordSubword.fromJSON(Map<String, dynamic> data) {
 		return KeywordSubword(
 			value: data["value"],
-			subWords: data["subWords"]?.map((x0) => KeywordSubword.fromJSON(x0) )
+			subWords: data["subWords"]?.map((x0) => KeywordSubword.fromJSON(x0) ).toList()
 		);
 	}
 
 	static Map<String, dynamic> encode(KeywordSubword value) {
 		Map<String, dynamic> entityAsMap = {
 			"value" : value.value,
-			"subWords" : value.subWords?.map((x0) => KeywordSubword.encode(x0))
+			"subWords" : value.subWords?.map((x0) => KeywordSubword.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

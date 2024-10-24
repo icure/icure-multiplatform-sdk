@@ -74,8 +74,8 @@ class FormTemplate implements StoredDocument {
 			shortReport: data["shortReport"],
 			mediumReport: data["mediumReport"],
 			longReport: data["longReport"],
-			reports: data["reports"].map((x0) => x0 ),
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			reports: data["reports"].map((x0) => x0 ).toList(),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			layoutAttachmentId: data["layoutAttachmentId"],
 			templateLayoutAttachmentId: data["templateLayoutAttachmentId"],
 		);
@@ -100,8 +100,8 @@ class FormTemplate implements StoredDocument {
 			"shortReport" : value.shortReport,
 			"mediumReport" : value.mediumReport,
 			"longReport" : value.longReport,
-			"reports" : value.reports.map((x0) => x0),
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
+			"reports" : value.reports.map((x0) => x0).toList(),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
 			"layoutAttachmentId" : value.layoutAttachmentId,
 			"templateLayoutAttachmentId" : value.templateLayoutAttachmentId
 		};

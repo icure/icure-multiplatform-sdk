@@ -53,11 +53,11 @@ class PlacePlatformApi {
 			'PlaceApi.deletePlaces',
 			{
 				"sdkId": sdkId,
-				"placeIds": jsonEncode(placeIds.map((x0) => x0)),
+				"placeIds": jsonEncode(placeIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deletePlaces");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 }

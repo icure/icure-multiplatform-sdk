@@ -39,13 +39,13 @@ class CryptoActorStub implements Versionable<String>, CryptoActor, HasTags {
 		return CryptoActorStub(
 			data["id"],
 			data["rev"],
-			data["publicKeysForOaepWithSha256"].map((x0) => x0 ),
-			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			data["publicKeysForOaepWithSha256"].map((x0) => x0 ).toList(),
+			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
 			aesExchangeKeys: data["aesExchangeKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			transferKeys: data["transferKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			privateKeyShamirPartitions: data["privateKeyShamirPartitions"].map((k0, v0) => MapEntry(k0, v0)),
 			publicKey: data["publicKey"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 		);
 	}
 
@@ -53,13 +53,13 @@ class CryptoActorStub implements Versionable<String>, CryptoActor, HasTags {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
 			"rev" : value.rev,
-			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
+			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
 			"aesExchangeKeys" : value.aesExchangeKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			"transferKeys" : value.transferKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			"privateKeyShamirPartitions" : value.privateKeyShamirPartitions.map((k0, v0) => MapEntry(k0, v0)),
 			"publicKey" : value.publicKey,
-			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0),
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0))
+			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0).toList(),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

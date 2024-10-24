@@ -33,10 +33,10 @@ class SecureDelegation {
 			AccessLevel.fromJSON(data["permissions"]),
 			delegator: data["delegator"],
 			delegate: data["delegate"],
-			secretIds: data["secretIds"].map((x0) => x0 ),
-			encryptionKeys: data["encryptionKeys"].map((x0) => x0 ),
-			owningEntityIds: data["owningEntityIds"].map((x0) => x0 ),
-			parentDelegations: data["parentDelegations"].map((x0) => x0 ),
+			secretIds: data["secretIds"].map((x0) => x0 ).toList(),
+			encryptionKeys: data["encryptionKeys"].map((x0) => x0 ).toList(),
+			owningEntityIds: data["owningEntityIds"].map((x0) => x0 ).toList(),
+			parentDelegations: data["parentDelegations"].map((x0) => x0 ).toList(),
 			exchangeDataId: data["exchangeDataId"],
 		);
 	}
@@ -45,10 +45,10 @@ class SecureDelegation {
 		Map<String, dynamic> entityAsMap = {
 			"delegator" : value.delegator,
 			"delegate" : value.delegate,
-			"secretIds" : value.secretIds.map((x0) => x0),
-			"encryptionKeys" : value.encryptionKeys.map((x0) => x0),
-			"owningEntityIds" : value.owningEntityIds.map((x0) => x0),
-			"parentDelegations" : value.parentDelegations.map((x0) => x0),
+			"secretIds" : value.secretIds.map((x0) => x0).toList(),
+			"encryptionKeys" : value.encryptionKeys.map((x0) => x0).toList(),
+			"owningEntityIds" : value.owningEntityIds.map((x0) => x0).toList(),
+			"parentDelegations" : value.parentDelegations.map((x0) => x0).toList(),
 			"exchangeDataId" : value.exchangeDataId,
 			"permissions" : AccessLevel.encode(value.permissions)
 		};

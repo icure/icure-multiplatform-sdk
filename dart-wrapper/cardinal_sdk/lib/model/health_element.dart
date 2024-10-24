@@ -41,7 +41,7 @@ sealed class HealthElement implements StoredDocument, ICureDocument<String>, Has
 	abstract String? idOpeningContact;
 	abstract String? idClosingContact;
 	abstract String? idService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int status;
+	@ActualInt32() abstract int status;
 	abstract Laterality? laterality;
 	List<PlanOfAction> get plansOfAction;
 	List<Episode> get episodes;
@@ -107,8 +107,8 @@ class EncryptedHealthElement implements HealthElement {
 	@override String? idClosingContact;
 	@override String? idService;
 	int _status = 0;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int value) {
+	@ActualInt32() @override int get status => _status;
+	@ActualInt32() @override set status(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -178,15 +178,15 @@ class EncryptedHealthElement implements HealthElement {
 		return EncryptedHealthElement(
 			data["id"],
 			status: data["status"],
-			identifiers: data["identifiers"].map((x0) => Identifier.fromJSON(x0) ),
+			identifiers: data["identifiers"].map((x0) => Identifier.fromJSON(x0) ).toList(),
 			rev: data["rev"],
 			created: data["created"],
 			modified: data["modified"],
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			healthElementId: data["healthElementId"],
@@ -195,19 +195,19 @@ class EncryptedHealthElement implements HealthElement {
 			closingDate: data["closingDate"],
 			descr: data["descr"],
 			note: data["note"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
 			relevant: data["relevant"],
 			idOpeningContact: data["idOpeningContact"],
 			idClosingContact: data["idClosingContact"],
 			idService: data["idService"],
 			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
-			plansOfAction: data["plansOfAction"].map((x0) => EncryptedPlanOfAction.fromJSON(x0) ),
-			episodes: data["episodes"].map((x0) => EncryptedEpisode.fromJSON(x0) ),
-			careTeam: data["careTeam"].map((x0) => EncryptedCareTeamMember.fromJSON(x0) ),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			plansOfAction: data["plansOfAction"].map((x0) => EncryptedPlanOfAction.fromJSON(x0) ).toList(),
+			episodes: data["episodes"].map((x0) => EncryptedEpisode.fromJSON(x0) ).toList(),
+			careTeam: data["careTeam"].map((x0) => EncryptedCareTeamMember.fromJSON(x0) ).toList(),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -216,15 +216,15 @@ class EncryptedHealthElement implements HealthElement {
 	static Map<String, dynamic> encode(EncryptedHealthElement value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
-			"identifiers" : value.identifiers.map((x0) => Identifier.encode(x0)),
+			"identifiers" : value.identifiers.map((x0) => Identifier.encode(x0)).toList(),
 			"rev" : value.rev,
 			"created" : value.created,
 			"modified" : value.modified,
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"healthElementId" : value.healthElementId,
@@ -233,20 +233,20 @@ class EncryptedHealthElement implements HealthElement {
 			"closingDate" : value.closingDate,
 			"descr" : value.descr,
 			"note" : value.note,
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
 			"relevant" : value.relevant,
 			"idOpeningContact" : value.idOpeningContact,
 			"idClosingContact" : value.idClosingContact,
 			"idService" : value.idService,
 			"status" : value.status,
 			"laterality" : value.laterality == null ? null : Laterality.encode(value.laterality!),
-			"plansOfAction" : value.plansOfAction.map((x0) => EncryptedPlanOfAction.encode(x0)),
-			"episodes" : value.episodes.map((x0) => EncryptedEpisode.encode(x0)),
-			"careTeam" : value.careTeam.map((x0) => EncryptedCareTeamMember.encode(x0)),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"plansOfAction" : value.plansOfAction.map((x0) => EncryptedPlanOfAction.encode(x0)).toList(),
+			"episodes" : value.episodes.map((x0) => EncryptedEpisode.encode(x0)).toList(),
+			"careTeam" : value.careTeam.map((x0) => EncryptedCareTeamMember.encode(x0)).toList(),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
@@ -279,8 +279,8 @@ class DecryptedHealthElement implements HealthElement {
 	@override String? idClosingContact;
 	@override String? idService;
 	int _status = 0;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int value) {
+	@ActualInt32() @override int get status => _status;
+	@ActualInt32() @override set status(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -350,15 +350,15 @@ class DecryptedHealthElement implements HealthElement {
 		return DecryptedHealthElement(
 			data["id"],
 			status: data["status"],
-			identifiers: data["identifiers"].map((x0) => Identifier.fromJSON(x0) ),
+			identifiers: data["identifiers"].map((x0) => Identifier.fromJSON(x0) ).toList(),
 			rev: data["rev"],
 			created: data["created"],
 			modified: data["modified"],
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			healthElementId: data["healthElementId"],
@@ -367,19 +367,19 @@ class DecryptedHealthElement implements HealthElement {
 			closingDate: data["closingDate"],
 			descr: data["descr"],
 			note: data["note"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
 			relevant: data["relevant"],
 			idOpeningContact: data["idOpeningContact"],
 			idClosingContact: data["idClosingContact"],
 			idService: data["idService"],
 			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
-			plansOfAction: data["plansOfAction"].map((x0) => DecryptedPlanOfAction.fromJSON(x0) ),
-			episodes: data["episodes"].map((x0) => DecryptedEpisode.fromJSON(x0) ),
-			careTeam: data["careTeam"].map((x0) => DecryptedCareTeamMember.fromJSON(x0) ),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			plansOfAction: data["plansOfAction"].map((x0) => DecryptedPlanOfAction.fromJSON(x0) ).toList(),
+			episodes: data["episodes"].map((x0) => DecryptedEpisode.fromJSON(x0) ).toList(),
+			careTeam: data["careTeam"].map((x0) => DecryptedCareTeamMember.fromJSON(x0) ).toList(),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -388,15 +388,15 @@ class DecryptedHealthElement implements HealthElement {
 	static Map<String, dynamic> encode(DecryptedHealthElement value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
-			"identifiers" : value.identifiers.map((x0) => Identifier.encode(x0)),
+			"identifiers" : value.identifiers.map((x0) => Identifier.encode(x0)).toList(),
 			"rev" : value.rev,
 			"created" : value.created,
 			"modified" : value.modified,
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"healthElementId" : value.healthElementId,
@@ -405,20 +405,20 @@ class DecryptedHealthElement implements HealthElement {
 			"closingDate" : value.closingDate,
 			"descr" : value.descr,
 			"note" : value.note,
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
 			"relevant" : value.relevant,
 			"idOpeningContact" : value.idOpeningContact,
 			"idClosingContact" : value.idClosingContact,
 			"idService" : value.idService,
 			"status" : value.status,
 			"laterality" : value.laterality == null ? null : Laterality.encode(value.laterality!),
-			"plansOfAction" : value.plansOfAction.map((x0) => DecryptedPlanOfAction.encode(x0)),
-			"episodes" : value.episodes.map((x0) => DecryptedEpisode.encode(x0)),
-			"careTeam" : value.careTeam.map((x0) => DecryptedCareTeamMember.encode(x0)),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"plansOfAction" : value.plansOfAction.map((x0) => DecryptedPlanOfAction.encode(x0)).toList(),
+			"episodes" : value.episodes.map((x0) => DecryptedEpisode.encode(x0)).toList(),
+			"careTeam" : value.careTeam.map((x0) => DecryptedCareTeamMember.encode(x0)).toList(),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};

@@ -34,12 +34,12 @@ class DevicePlatformApi {
 			'DeviceApi.getDevices',
 			{
 				"sdkId": sdkId,
-				"deviceIds": jsonEncode(deviceIds.map((x0) => x0)),
+				"deviceIds": jsonEncode(deviceIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Device.fromJSON(x1) );
+		return parsedResJson.map((x1) => Device.fromJSON(x1) ).toList();
 	}
 
 	Future<Device> createDevice(String sdkId, Device p) async {
@@ -73,12 +73,12 @@ class DevicePlatformApi {
 			'DeviceApi.createDevices',
 			{
 				"sdkId": sdkId,
-				"devices": jsonEncode(devices.map((x0) => Device.encode(x0))),
+				"devices": jsonEncode(devices.map((x0) => Device.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method createDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) );
+		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> modifyDevices(String sdkId, List<Device> devices) async {
@@ -86,12 +86,12 @@ class DevicePlatformApi {
 			'DeviceApi.modifyDevices',
 			{
 				"sdkId": sdkId,
-				"devices": jsonEncode(devices.map((x0) => Device.encode(x0))),
+				"devices": jsonEncode(devices.map((x0) => Device.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) );
+		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<PaginatedListIterator<Device>> filterDevicesBy(String sdkId, BaseFilterOptions filter) async {
@@ -130,7 +130,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDevicesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchDevicesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -143,7 +143,7 @@ class DevicePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDevicesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<DocIdentifier> deleteDeviceById(String sdkId, String entityId, String rev) async {
@@ -165,12 +165,12 @@ class DevicePlatformApi {
 			'DeviceApi.deleteDevicesByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevicesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeDeviceById(String sdkId, String id, String rev) async {
@@ -216,12 +216,12 @@ class DevicePlatformApi {
 			'DeviceApi.deleteDevices',
 			{
 				"sdkId": sdkId,
-				"devices": jsonEncode(devices.map((x0) => Device.encode(x0))),
+				"devices": jsonEncode(devices.map((x0) => Device.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevices");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeDevice(String sdkId, Device device) async {
@@ -253,12 +253,12 @@ class DevicePlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"deviceIds": jsonEncode(deviceIds?.map((x0) => x0)),
+				"deviceIds": jsonEncode(deviceIds?.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getDevicesInGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Device.fromJSON(x1) );
+		return parsedResJson.map((x1) => Device.fromJSON(x1) ).toList();
 	}
 
 	Future<Device> modifyDeviceInGroup(String sdkId, String groupId, Device device) async {
@@ -295,12 +295,12 @@ class DevicePlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"deviceIds": jsonEncode(deviceIds.map((x0) => IdWithRev.encode(x0))),
+				"deviceIds": jsonEncode(deviceIds.map((x0) => IdWithRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevicesInGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<Device>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -308,7 +308,7 @@ class DevicePlatformApi {
 			'DeviceApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

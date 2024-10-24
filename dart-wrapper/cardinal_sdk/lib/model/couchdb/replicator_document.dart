@@ -18,8 +18,8 @@ class ReplicatorDocument implements Versionable<String> {
 	String? replicationStateTime;
 	ReplicationStats? replicationStats;
 	int? _errorCount;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get errorCount => _errorCount;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set errorCount(int? value) {
+	@ActualInt32() int? get errorCount => _errorCount;
+	@ActualInt32() set errorCount(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('errorCount value cannot exceed 2147483647');
 		}
@@ -55,11 +55,11 @@ class ReplicatorDocument implements Versionable<String> {
 			owner: data["owner"],
 			create_target: data["create_target"],
 			continuous: data["continuous"],
-			doc_ids: data["doc_ids"]?.map((x0) => x0 ),
+			doc_ids: data["doc_ids"]?.map((x0) => x0 ).toList(),
 			replicationState: data["replicationState"],
 			replicationStateTime: data["replicationStateTime"],
 			replicationStats: data["replicationStats"] == null ? null : ReplicationStats.fromJSON(data["replicationStats"]),
-			revsInfo: data["revsInfo"]?.map((x0) => x0.map((k1, v1) => MapEntry(k1, v1)) ),
+			revsInfo: data["revsInfo"]?.map((x0) => x0.map((k1, v1) => MapEntry(k1, v1)) ).toList(),
 			revHistory: data["revHistory"]?.map((k0, v0) => MapEntry(k0, v0)),
 		);
 	}
@@ -73,12 +73,12 @@ class ReplicatorDocument implements Versionable<String> {
 			"owner" : value.owner,
 			"create_target" : value.create_target,
 			"continuous" : value.continuous,
-			"doc_ids" : value.doc_ids?.map((x0) => x0),
+			"doc_ids" : value.doc_ids?.map((x0) => x0).toList(),
 			"replicationState" : value.replicationState,
 			"replicationStateTime" : value.replicationStateTime,
 			"replicationStats" : value.replicationStats == null ? null : ReplicationStats.encode(value.replicationStats!),
 			"errorCount" : value.errorCount,
-			"revsInfo" : value.revsInfo?.map((x0) => x0.map((k1, v1) => MapEntry(k1, v1))),
+			"revsInfo" : value.revsInfo?.map((x0) => x0.map((k1, v1) => MapEntry(k1, v1))).toList(),
 			"revHistory" : value.revHistory?.map((k0, v0) => MapEntry(k0, v0))
 		};
 		return entityAsMap;

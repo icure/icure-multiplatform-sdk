@@ -58,7 +58,7 @@ class MedicalLocation implements StoredDocument, Named {
 			nihii: data["nihii"],
 			ssin: data["ssin"],
 			address: data["address"] == null ? null : DecryptedAddress.fromJSON(data["address"]),
-			agendaIds: data["agendaIds"].map((x0) => x0 ),
+			agendaIds: data["agendaIds"].map((x0) => x0 ).toList(),
 			options: data["options"].map((k0, v0) => MapEntry(k0, v0)),
 			publicInformations: data["publicInformations"].map((k0, v0) => MapEntry(k0, v0)),
 		);
@@ -79,7 +79,7 @@ class MedicalLocation implements StoredDocument, Named {
 			"nihii" : value.nihii,
 			"ssin" : value.ssin,
 			"address" : value.address == null ? null : DecryptedAddress.encode(value.address!),
-			"agendaIds" : value.agendaIds.map((x0) => x0),
+			"agendaIds" : value.agendaIds.map((x0) => x0).toList(),
 			"options" : value.options.map((k0, v0) => MapEntry(k0, v0)),
 			"publicInformations" : value.publicInformations.map((k0, v0) => MapEntry(k0, v0))
 		};

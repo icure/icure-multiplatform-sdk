@@ -67,7 +67,7 @@ class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
 			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
 			healthcarePartyId: data["healthcarePartyId"],
 			sendFormats: data["sendFormats"].map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), v0)),
-			referralPeriods: data["referralPeriods"].map((x0) => ReferralPeriod.fromJSON(x0) ),
+			referralPeriods: data["referralPeriods"].map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
 			referral: data["referral"],
 			encryptedSelf: data["encryptedSelf"]
 		);
@@ -78,7 +78,7 @@ class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
 			"type" : value.type == null ? null : PatientHealthCarePartyType.encode(value.type!),
 			"healthcarePartyId" : value.healthcarePartyId,
 			"sendFormats" : value.sendFormats.map((k0, v0) => MapEntry(TelecomType.encode(k0), v0)),
-			"referralPeriods" : value.referralPeriods.map((x0) => ReferralPeriod.encode(x0)),
+			"referralPeriods" : value.referralPeriods.map((x0) => ReferralPeriod.encode(x0)).toList(),
 			"referral" : value.referral,
 			"encryptedSelf" : value.encryptedSelf
 		};
@@ -109,7 +109,7 @@ class DecryptedPatientHealthCareParty implements PatientHealthCareParty {
 			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
 			healthcarePartyId: data["healthcarePartyId"],
 			sendFormats: data["sendFormats"].map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), v0)),
-			referralPeriods: data["referralPeriods"].map((x0) => ReferralPeriod.fromJSON(x0) ),
+			referralPeriods: data["referralPeriods"].map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
 			referral: data["referral"],
 			encryptedSelf: data["encryptedSelf"]
 		);
@@ -120,7 +120,7 @@ class DecryptedPatientHealthCareParty implements PatientHealthCareParty {
 			"type" : value.type == null ? null : PatientHealthCarePartyType.encode(value.type!),
 			"healthcarePartyId" : value.healthcarePartyId,
 			"sendFormats" : value.sendFormats.map((k0, v0) => MapEntry(TelecomType.encode(k0), v0)),
-			"referralPeriods" : value.referralPeriods.map((x0) => ReferralPeriod.encode(x0)),
+			"referralPeriods" : value.referralPeriods.map((x0) => ReferralPeriod.encode(x0)).toList(),
 			"referral" : value.referral,
 			"encryptedSelf" : value.encryptedSelf
 		};

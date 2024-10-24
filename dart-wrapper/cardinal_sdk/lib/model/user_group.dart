@@ -34,7 +34,7 @@ class UserGroup {
 		return UserGroup(
 			groupId: data["groupId"],
 			groupName: data["groupName"],
-			groupsHierarchy: data["groupsHierarchy"].map((x0) => Group.fromJSON(x0) ),
+			groupsHierarchy: data["groupsHierarchy"].map((x0) => Group.fromJSON(x0) ).toList(),
 			userId: data["userId"],
 			login: data["login"],
 			name: data["name"],
@@ -51,7 +51,7 @@ class UserGroup {
 		Map<String, dynamic> entityAsMap = {
 			"groupId" : value.groupId,
 			"groupName" : value.groupName,
-			"groupsHierarchy" : value.groupsHierarchy.map((x0) => Group.encode(x0)),
+			"groupsHierarchy" : value.groupsHierarchy.map((x0) => Group.encode(x0)).toList(),
 			"userId" : value.userId,
 			"login" : value.login,
 			"name" : value.name,

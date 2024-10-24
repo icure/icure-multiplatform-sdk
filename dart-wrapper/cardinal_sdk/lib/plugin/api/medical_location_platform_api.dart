@@ -35,7 +35,7 @@ class MedicalLocationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMedicalLocations");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<MedicalLocation> getMedicalLocation(String sdkId, String locationId) async {
@@ -69,12 +69,12 @@ class MedicalLocationPlatformApi {
 			'MedicalLocationApi.getMedicalLocations',
 			{
 				"sdkId": sdkId,
-				"medicalLocationIds": jsonEncode(medicalLocationIds.map((x0) => x0)),
+				"medicalLocationIds": jsonEncode(medicalLocationIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMedicalLocations");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => MedicalLocation.fromJSON(x1) );
+		return parsedResJson.map((x1) => MedicalLocation.fromJSON(x1) ).toList();
 	}
 
 	Future<List<String>> matchMedicalLocationsBy(String sdkId, BaseFilterOptions filter) async {
@@ -87,7 +87,7 @@ class MedicalLocationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMedicalLocationsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchMedicalLocationsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -100,7 +100,7 @@ class MedicalLocationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMedicalLocationsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBy(String sdkId, BaseFilterOptions filter) async {

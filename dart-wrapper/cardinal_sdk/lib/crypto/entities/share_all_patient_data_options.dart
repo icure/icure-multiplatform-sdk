@@ -117,8 +117,8 @@ class ShareAllPatientDataOptionsEntityResult {
 	bool? success;
 	ShareAllPatientDataOptionsSharePatientDataError? error;
 	int _modified;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int get modified => _modified;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set modified(int value) {
+	@ActualInt32() int get modified => _modified;
+	@ActualInt32() set modified(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('modified value cannot exceed 2147483647');
 		}
@@ -214,14 +214,14 @@ class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataO
 
 	factory ShareAllPatientDataOptionsBulkShareFailure.fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsBulkShareFailure(
-			data["errors"].map((x0) => FailedRequestDetails.fromJSON(x0) ),
+			data["errors"].map((x0) => FailedRequestDetails.fromJSON(x0) ).toList(),
 			data["message"]
 		);
 	}
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsBulkShareFailure value) {
 		Map<String, dynamic> entityAsMap = {
-			"errors" : value.errors.map((x0) => FailedRequestDetails.encode(x0)),
+			"errors" : value.errors.map((x0) => FailedRequestDetails.encode(x0)).toList(),
 			"message" : value.message
 		};
 		return entityAsMap;

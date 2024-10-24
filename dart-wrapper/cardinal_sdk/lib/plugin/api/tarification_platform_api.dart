@@ -39,12 +39,12 @@ class TarificationPlatformApi {
 			'TarificationApi.getTarifications',
 			{
 				"sdkId": sdkId,
-				"tarificationIds": jsonEncode(tarificationIds.map((x0) => x0)),
+				"tarificationIds": jsonEncode(tarificationIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTarifications");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Tarification.fromJSON(x1) );
+		return parsedResJson.map((x1) => Tarification.fromJSON(x1) ).toList();
 	}
 
 	Future<Tarification> modifyTarification(String sdkId, Tarification tarification) async {

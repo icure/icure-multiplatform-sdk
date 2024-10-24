@@ -26,7 +26,7 @@ class CardinalMaintenanceTaskPlatformApi {
 			{
 				"sdkId": sdkId,
 				"key": jsonEncode(key),
-				"requestToOwnerTypes": jsonEncode(requestToOwnerTypes?.map((x0) => DataOwnerType.encode(x0))),
+				"requestToOwnerTypes": jsonEncode(requestToOwnerTypes?.map((x0) => DataOwnerType.encode(x0)).toList()),
 			}
 		);
 	}

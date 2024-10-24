@@ -23,8 +23,8 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 	Set<String> regions = {};
 	List<Periodicity> periodicity = [];
 	int? _level;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get level => _level;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set level(int? value) {
+	@ActualInt32() int? get level => _level;
+	@ActualInt32() set level(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('level value cannot exceed 2147483647');
 		}
@@ -100,23 +100,23 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 			code: data["code"],
 			version: data["version"],
 			author: data["author"],
-			regions: data["regions"].map((x0) => x0 ),
-			periodicity: data["periodicity"].map((x0) => Periodicity.fromJSON(x0) ),
-			links: data["links"].map((x0) => x0 ),
-			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(LinkQualification.fromJSON(k0), v0.map((x1) => x1 ))),
-			flags: data["flags"].map((x0) => CodeFlag.fromJSON(x0) ),
-			searchTerms: data["searchTerms"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			regions: data["regions"].map((x0) => x0 ).toList(),
+			periodicity: data["periodicity"].map((x0) => Periodicity.fromJSON(x0) ).toList(),
+			links: data["links"].map((x0) => x0 ).toList(),
+			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(LinkQualification.fromJSON(k0), v0.map((x1) => x1 ).toList())),
+			flags: data["flags"].map((x0) => CodeFlag.fromJSON(x0) ).toList(),
+			searchTerms: data["searchTerms"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
 			data: data["data"],
 			appendices: data["appendices"].map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), v0)),
 			disabled: data["disabled"],
-			valorisations: data["valorisations"].map((x0) => DecryptedValorisation.fromJSON(x0) ),
+			valorisations: data["valorisations"].map((x0) => DecryptedValorisation.fromJSON(x0) ).toList(),
 			category: data["category"].map((k0, v0) => MapEntry(k0, v0)),
 			consultationCode: data["consultationCode"],
 			hasRelatedCode: data["hasRelatedCode"],
 			needsPrescriber: data["needsPrescriber"],
-			relatedCodes: data["relatedCodes"].map((x0) => x0 ),
+			relatedCodes: data["relatedCodes"].map((x0) => x0 ).toList(),
 			ngroup: data["nGroup"],
-			letterValues: data["letterValues"].map((x0) => LetterValue.fromJSON(x0) ),
+			letterValues: data["letterValues"].map((x0) => LetterValue.fromJSON(x0) ).toList(),
 		);
 	}
 
@@ -131,24 +131,24 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 			"code" : value.code,
 			"version" : value.version,
 			"author" : value.author,
-			"regions" : value.regions.map((x0) => x0),
-			"periodicity" : value.periodicity.map((x0) => Periodicity.encode(x0)),
+			"regions" : value.regions.map((x0) => x0).toList(),
+			"periodicity" : value.periodicity.map((x0) => Periodicity.encode(x0)).toList(),
 			"level" : value.level,
-			"links" : value.links.map((x0) => x0),
-			"qualifiedLinks" : value.qualifiedLinks.map((k0, v0) => MapEntry(LinkQualification.encode(k0), v0.map((x1) => x1))),
-			"flags" : value.flags.map((x0) => CodeFlag.encode(x0)),
-			"searchTerms" : value.searchTerms.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
+			"links" : value.links.map((x0) => x0).toList(),
+			"qualifiedLinks" : value.qualifiedLinks.map((k0, v0) => MapEntry(LinkQualification.encode(k0), v0.map((x1) => x1).toList())),
+			"flags" : value.flags.map((x0) => CodeFlag.encode(x0)).toList(),
+			"searchTerms" : value.searchTerms.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
 			"data" : value.data,
 			"appendices" : value.appendices.map((k0, v0) => MapEntry(AppendixType.encode(k0), v0)),
 			"disabled" : value.disabled,
-			"valorisations" : value.valorisations.map((x0) => DecryptedValorisation.encode(x0)),
+			"valorisations" : value.valorisations.map((x0) => DecryptedValorisation.encode(x0)).toList(),
 			"category" : value.category.map((k0, v0) => MapEntry(k0, v0)),
 			"consultationCode" : value.consultationCode,
 			"hasRelatedCode" : value.hasRelatedCode,
 			"needsPrescriber" : value.needsPrescriber,
-			"relatedCodes" : value.relatedCodes.map((x0) => x0),
+			"relatedCodes" : value.relatedCodes.map((x0) => x0).toList(),
 			"nGroup" : value.ngroup,
-			"letterValues" : value.letterValues.map((x0) => LetterValue.encode(x0))
+			"letterValues" : value.letterValues.map((x0) => LetterValue.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

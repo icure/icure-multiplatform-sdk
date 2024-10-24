@@ -7,16 +7,16 @@ class TimeTableItem {
 	int? rruleStartDate;
 	String? rrule;
 	int? _notBeforeInMinutes;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get notBeforeInMinutes => _notBeforeInMinutes;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set notBeforeInMinutes(int? value) {
+	@ActualInt32() int? get notBeforeInMinutes => _notBeforeInMinutes;
+	@ActualInt32() set notBeforeInMinutes(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('notBeforeInMinutes value cannot exceed 2147483647');
 		}
 		_notBeforeInMinutes = value;
 	}
 	int? _notAfterInMinutes;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get notAfterInMinutes => _notAfterInMinutes;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set notAfterInMinutes(int? value) {
+	@ActualInt32() int? get notAfterInMinutes => _notAfterInMinutes;
+	@ActualInt32() set notAfterInMinutes(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('notAfterInMinutes value cannot exceed 2147483647');
 		}
@@ -64,9 +64,9 @@ class TimeTableItem {
 			rruleStartDate: data["rruleStartDate"],
 			rrule: data["rrule"],
 			zoneId: data["zoneId"],
-			days: data["days"].map((x0) => x0 ),
-			recurrenceTypes: data["recurrenceTypes"].map((x0) => x0 ),
-			hours: data["hours"].map((x0) => TimeTableHour.fromJSON(x0) ),
+			days: data["days"].map((x0) => x0 ).toList(),
+			recurrenceTypes: data["recurrenceTypes"].map((x0) => x0 ).toList(),
+			hours: data["hours"].map((x0) => TimeTableHour.fromJSON(x0) ).toList(),
 			calendarItemTypeId: data["calendarItemTypeId"],
 			homeVisit: data["homeVisit"],
 			placeId: data["placeId"],
@@ -83,9 +83,9 @@ class TimeTableItem {
 			"notBeforeInMinutes" : value.notBeforeInMinutes,
 			"notAfterInMinutes" : value.notAfterInMinutes,
 			"zoneId" : value.zoneId,
-			"days" : value.days.map((x0) => x0),
-			"recurrenceTypes" : value.recurrenceTypes.map((x0) => x0),
-			"hours" : value.hours.map((x0) => TimeTableHour.encode(x0)),
+			"days" : value.days.map((x0) => x0).toList(),
+			"recurrenceTypes" : value.recurrenceTypes.map((x0) => x0).toList(),
+			"hours" : value.hours.map((x0) => TimeTableHour.encode(x0)).toList(),
 			"calendarItemTypeId" : value.calendarItemTypeId,
 			"homeVisit" : value.homeVisit,
 			"placeId" : value.placeId,

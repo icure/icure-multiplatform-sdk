@@ -25,7 +25,7 @@ class CalendarItemBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchCalendarItemsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -38,7 +38,7 @@ class CalendarItemBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(String sdkId, BaseFilterOptions filter) async {
@@ -86,12 +86,12 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.deleteCalendarItemsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItemsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeCalendarItemById(String sdkId, String id, String rev) async {
@@ -123,12 +123,12 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.deleteCalendarItems',
 			{
 				"sdkId": sdkId,
-				"calendarItems": jsonEncode(calendarItems.map((x0) => CalendarItem.encode(x0))),
+				"calendarItems": jsonEncode(calendarItems.map((x0) => CalendarItem.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeCalendarItem(String sdkId, CalendarItem calendarItem) async {
@@ -199,12 +199,12 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.getCalendarItems',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedCalendarItem.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedCalendarItem.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -212,7 +212,7 @@ class CalendarItemBasicPlatformApi {
 			'CalendarItemBasicApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

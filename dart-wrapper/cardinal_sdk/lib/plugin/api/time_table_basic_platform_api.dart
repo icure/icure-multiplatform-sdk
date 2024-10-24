@@ -22,7 +22,7 @@ class TimeTableBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchTimeTablesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -35,7 +35,7 @@ class TimeTableBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(String sdkId, BaseFilterOptions filter) async {
@@ -83,12 +83,12 @@ class TimeTableBasicPlatformApi {
 			'TimeTableBasicApi.deleteTimeTablesByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTablesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTimeTableById(String sdkId, String id, String rev) async {
@@ -120,12 +120,12 @@ class TimeTableBasicPlatformApi {
 			'TimeTableBasicApi.deleteTimeTables',
 			{
 				"sdkId": sdkId,
-				"timeTables": jsonEncode(timeTables.map((x0) => TimeTable.encode(x0))),
+				"timeTables": jsonEncode(timeTables.map((x0) => TimeTable.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTimeTable(String sdkId, TimeTable timeTable) async {
@@ -196,11 +196,11 @@ class TimeTableBasicPlatformApi {
 			'TimeTableBasicApi.getTimeTables',
 			{
 				"sdkId": sdkId,
-				"timeTableIds": jsonEncode(timeTableIds.map((x0) => x0)),
+				"timeTableIds": jsonEncode(timeTableIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedTimeTable.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedTimeTable.fromJSON(x1) ).toList();
 	}
 }

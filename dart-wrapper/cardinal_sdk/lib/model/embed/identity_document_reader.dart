@@ -7,24 +7,24 @@ class IdentityDocumentReader {
 	String? supportSerialNumber;
 	int? timeReadingEIdDocument;
 	int _eidDocumentSupportType = 0;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int get eidDocumentSupportType => _eidDocumentSupportType;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set eidDocumentSupportType(int value) {
+	@ActualInt32() int get eidDocumentSupportType => _eidDocumentSupportType;
+	@ActualInt32() set eidDocumentSupportType(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('eidDocumentSupportType value cannot exceed 2147483647');
 		}
 		_eidDocumentSupportType = value;
 	}
 	int _reasonManualEncoding = 0;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int get reasonManualEncoding => _reasonManualEncoding;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set reasonManualEncoding(int value) {
+	@ActualInt32() int get reasonManualEncoding => _reasonManualEncoding;
+	@ActualInt32() set reasonManualEncoding(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('reasonManualEncoding value cannot exceed 2147483647');
 		}
 		_reasonManualEncoding = value;
 	}
 	int _reasonUsingVignette = 0;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int get reasonUsingVignette => _reasonUsingVignette;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set reasonUsingVignette(int value) {
+	@ActualInt32() int get reasonUsingVignette => _reasonUsingVignette;
+	@ActualInt32() set reasonUsingVignette(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('reasonUsingVignette value cannot exceed 2147483647');
 		}

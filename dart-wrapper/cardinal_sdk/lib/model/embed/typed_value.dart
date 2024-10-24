@@ -66,7 +66,7 @@ class DecryptedTypedValue implements TypedValue {
 			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
 			booleanValue: data["booleanValue"],
 			integerValue: data["integerValue"],
-			doubleValue: data["doubleValue"],
+			doubleValue: data["doubleValue"].toDouble(),
 			stringValue: data["stringValue"],
 			dateValue: data["dateValue"] == null ? null : DateTime.parse(data["dateValue"] as String),
 			encryptedSelf: data["encryptedSelf"]
@@ -110,7 +110,7 @@ class EncryptedTypedValue implements TypedValue {
 			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
 			booleanValue: data["booleanValue"],
 			integerValue: data["integerValue"],
-			doubleValue: data["doubleValue"],
+			doubleValue: data["doubleValue"].toDouble(),
 			stringValue: data["stringValue"],
 			dateValue: data["dateValue"] == null ? null : DateTime.parse(data["dateValue"] as String),
 			encryptedSelf: data["encryptedSelf"]

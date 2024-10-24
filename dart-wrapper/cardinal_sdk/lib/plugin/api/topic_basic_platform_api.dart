@@ -26,7 +26,7 @@ class TopicBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchTopicsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -39,7 +39,7 @@ class TopicBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(String sdkId, BaseFilterOptions filter) async {
@@ -87,12 +87,12 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.deleteTopicsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopicsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTopicById(String sdkId, String id, String rev) async {
@@ -124,12 +124,12 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.deleteTopics',
 			{
 				"sdkId": sdkId,
-				"topics": jsonEncode(topics.map((x0) => Topic.encode(x0))),
+				"topics": jsonEncode(topics.map((x0) => Topic.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopics");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeTopic(String sdkId, Topic topic) async {
@@ -200,12 +200,12 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.getTopics',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getTopics");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedTopic.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedTopic.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedTopic> addParticipant(String sdkId, String entityId, String dataOwnerId, TopicRole topicRole) async {
@@ -242,7 +242,7 @@ class TopicBasicPlatformApi {
 			'TopicBasicApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

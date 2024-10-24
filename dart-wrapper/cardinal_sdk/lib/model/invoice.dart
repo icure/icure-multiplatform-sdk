@@ -54,7 +54,7 @@ sealed class Invoice implements StoredDocument, ICureDocument<String>, HasEncryp
 	abstract String? gnotionLastName;
 	abstract String? gnotionFirstName;
 	abstract String? gnotionCdHcParty;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? invoicePeriod;
+	@ActualInt32() abstract int? invoicePeriod;
 	abstract String? careProviderType;
 	abstract String? internshipNihii;
 	abstract String? internshipSsin;
@@ -71,8 +71,8 @@ sealed class Invoice implements StoredDocument, ICureDocument<String>, HasEncryp
 	abstract String? error;
 	abstract String? encounterLocationName;
 	abstract String? encounterLocationNihii;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? encounterLocationNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? longDelayJustification;
+	@ActualInt32() abstract int? encounterLocationNorm;
+	@ActualInt32() abstract int? longDelayJustification;
 	abstract String? correctiveInvoiceId;
 	abstract String? correctedInvoiceId;
 	abstract bool? creditNote;
@@ -80,7 +80,7 @@ sealed class Invoice implements StoredDocument, ICureDocument<String>, HasEncryp
 	abstract IdentityDocumentReader? idDocument;
 	abstract int? admissionDate;
 	abstract String? locationNihii;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? locationService;
+	@ActualInt32() abstract int? locationService;
 	abstract String? cancelReason;
 	abstract int? cancelDate;
 	abstract Map<String, String> options;
@@ -157,8 +157,8 @@ class DecryptedInvoice implements Invoice {
 	@override String? gnotionFirstName;
 	@override String? gnotionCdHcParty;
 	int? _invoicePeriod;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get invoicePeriod => _invoicePeriod;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set invoicePeriod(int? value) {
+	@ActualInt32() @override int? get invoicePeriod => _invoicePeriod;
+	@ActualInt32() @override set invoicePeriod(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('invoicePeriod value cannot exceed 2147483647');
 		}
@@ -181,16 +181,16 @@ class DecryptedInvoice implements Invoice {
 	@override String? encounterLocationName;
 	@override String? encounterLocationNihii;
 	int? _encounterLocationNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get encounterLocationNorm => _encounterLocationNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set encounterLocationNorm(int? value) {
+	@ActualInt32() @override int? get encounterLocationNorm => _encounterLocationNorm;
+	@ActualInt32() @override set encounterLocationNorm(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('encounterLocationNorm value cannot exceed 2147483647');
 		}
 		_encounterLocationNorm = value;
 	}
 	int? _longDelayJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get longDelayJustification => _longDelayJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set longDelayJustification(int? value) {
+	@ActualInt32() @override int? get longDelayJustification => _longDelayJustification;
+	@ActualInt32() @override set longDelayJustification(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('longDelayJustification value cannot exceed 2147483647');
 		}
@@ -204,8 +204,8 @@ class DecryptedInvoice implements Invoice {
 	@override int? admissionDate;
 	@override String? locationNihii;
 	int? _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get locationService => _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set locationService(int? value) {
+	@ActualInt32() @override int? get locationService => _locationService;
+	@ActualInt32() @override set locationService(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('locationService value cannot exceed 2147483647');
 		}
@@ -320,14 +320,14 @@ class DecryptedInvoice implements Invoice {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			invoiceDate: data["invoiceDate"],
 			sentDate: data["sentDate"],
 			printedDate: data["printedDate"],
-			invoicingCodes: data["invoicingCodes"].map((x0) => DecryptedInvoicingCode.fromJSON(x0) ),
+			invoicingCodes: data["invoicingCodes"].map((x0) => DecryptedInvoicingCode.fromJSON(x0) ).toList(),
 			receipts: data["receipts"].map((k0, v0) => MapEntry(k0, v0)),
 			recipientType: data["recipientType"],
 			recipientId: data["recipientId"],
@@ -341,8 +341,8 @@ class DecryptedInvoice implements Invoice {
 			interventionType: data["interventionType"] == null ? null : InvoiceInterventionType.fromJSON(data["interventionType"]),
 			groupId: data["groupId"],
 			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
-			paid: data["paid"],
-			payments: data["payments"]?.map((x0) => Payment.fromJSON(x0) ),
+			paid: data["paid"].toDouble(),
+			payments: data["payments"]?.map((x0) => Payment.fromJSON(x0) ).toList(),
 			gnotionNihii: data["gnotionNihii"],
 			gnotionSsin: data["gnotionSsin"],
 			gnotionLastName: data["gnotionLastName"],
@@ -374,10 +374,10 @@ class DecryptedInvoice implements Invoice {
 			cancelReason: data["cancelReason"],
 			cancelDate: data["cancelDate"],
 			options: data["options"].map((k0, v0) => MapEntry(k0, v0)),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -392,14 +392,14 @@ class DecryptedInvoice implements Invoice {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"invoiceDate" : value.invoiceDate,
 			"sentDate" : value.sentDate,
 			"printedDate" : value.printedDate,
-			"invoicingCodes" : value.invoicingCodes.map((x0) => DecryptedInvoicingCode.encode(x0)),
+			"invoicingCodes" : value.invoicingCodes.map((x0) => DecryptedInvoicingCode.encode(x0)).toList(),
 			"receipts" : value.receipts.map((k0, v0) => MapEntry(k0, v0)),
 			"recipientType" : value.recipientType,
 			"recipientId" : value.recipientId,
@@ -414,7 +414,7 @@ class DecryptedInvoice implements Invoice {
 			"groupId" : value.groupId,
 			"paymentType" : value.paymentType == null ? null : PaymentType.encode(value.paymentType!),
 			"paid" : value.paid,
-			"payments" : value.payments?.map((x0) => Payment.encode(x0)),
+			"payments" : value.payments?.map((x0) => Payment.encode(x0)).toList(),
 			"gnotionNihii" : value.gnotionNihii,
 			"gnotionSsin" : value.gnotionSsin,
 			"gnotionLastName" : value.gnotionLastName,
@@ -450,10 +450,10 @@ class DecryptedInvoice implements Invoice {
 			"cancelReason" : value.cancelReason,
 			"cancelDate" : value.cancelDate,
 			"options" : value.options.map((k0, v0) => MapEntry(k0, v0)),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
@@ -498,8 +498,8 @@ class EncryptedInvoice implements Invoice {
 	@override String? gnotionFirstName;
 	@override String? gnotionCdHcParty;
 	int? _invoicePeriod;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get invoicePeriod => _invoicePeriod;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set invoicePeriod(int? value) {
+	@ActualInt32() @override int? get invoicePeriod => _invoicePeriod;
+	@ActualInt32() @override set invoicePeriod(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('invoicePeriod value cannot exceed 2147483647');
 		}
@@ -522,16 +522,16 @@ class EncryptedInvoice implements Invoice {
 	@override String? encounterLocationName;
 	@override String? encounterLocationNihii;
 	int? _encounterLocationNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get encounterLocationNorm => _encounterLocationNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set encounterLocationNorm(int? value) {
+	@ActualInt32() @override int? get encounterLocationNorm => _encounterLocationNorm;
+	@ActualInt32() @override set encounterLocationNorm(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('encounterLocationNorm value cannot exceed 2147483647');
 		}
 		_encounterLocationNorm = value;
 	}
 	int? _longDelayJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get longDelayJustification => _longDelayJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set longDelayJustification(int? value) {
+	@ActualInt32() @override int? get longDelayJustification => _longDelayJustification;
+	@ActualInt32() @override set longDelayJustification(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('longDelayJustification value cannot exceed 2147483647');
 		}
@@ -545,8 +545,8 @@ class EncryptedInvoice implements Invoice {
 	@override int? admissionDate;
 	@override String? locationNihii;
 	int? _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get locationService => _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set locationService(int? value) {
+	@ActualInt32() @override int? get locationService => _locationService;
+	@ActualInt32() @override set locationService(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('locationService value cannot exceed 2147483647');
 		}
@@ -661,14 +661,14 @@ class EncryptedInvoice implements Invoice {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			invoiceDate: data["invoiceDate"],
 			sentDate: data["sentDate"],
 			printedDate: data["printedDate"],
-			invoicingCodes: data["invoicingCodes"].map((x0) => EncryptedInvoicingCode.fromJSON(x0) ),
+			invoicingCodes: data["invoicingCodes"].map((x0) => EncryptedInvoicingCode.fromJSON(x0) ).toList(),
 			receipts: data["receipts"].map((k0, v0) => MapEntry(k0, v0)),
 			recipientType: data["recipientType"],
 			recipientId: data["recipientId"],
@@ -682,8 +682,8 @@ class EncryptedInvoice implements Invoice {
 			interventionType: data["interventionType"] == null ? null : InvoiceInterventionType.fromJSON(data["interventionType"]),
 			groupId: data["groupId"],
 			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
-			paid: data["paid"],
-			payments: data["payments"]?.map((x0) => Payment.fromJSON(x0) ),
+			paid: data["paid"].toDouble(),
+			payments: data["payments"]?.map((x0) => Payment.fromJSON(x0) ).toList(),
 			gnotionNihii: data["gnotionNihii"],
 			gnotionSsin: data["gnotionSsin"],
 			gnotionLastName: data["gnotionLastName"],
@@ -715,10 +715,10 @@ class EncryptedInvoice implements Invoice {
 			cancelReason: data["cancelReason"],
 			cancelDate: data["cancelDate"],
 			options: data["options"].map((k0, v0) => MapEntry(k0, v0)),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -733,14 +733,14 @@ class EncryptedInvoice implements Invoice {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"invoiceDate" : value.invoiceDate,
 			"sentDate" : value.sentDate,
 			"printedDate" : value.printedDate,
-			"invoicingCodes" : value.invoicingCodes.map((x0) => EncryptedInvoicingCode.encode(x0)),
+			"invoicingCodes" : value.invoicingCodes.map((x0) => EncryptedInvoicingCode.encode(x0)).toList(),
 			"receipts" : value.receipts.map((k0, v0) => MapEntry(k0, v0)),
 			"recipientType" : value.recipientType,
 			"recipientId" : value.recipientId,
@@ -755,7 +755,7 @@ class EncryptedInvoice implements Invoice {
 			"groupId" : value.groupId,
 			"paymentType" : value.paymentType == null ? null : PaymentType.encode(value.paymentType!),
 			"paid" : value.paid,
-			"payments" : value.payments?.map((x0) => Payment.encode(x0)),
+			"payments" : value.payments?.map((x0) => Payment.encode(x0)).toList(),
 			"gnotionNihii" : value.gnotionNihii,
 			"gnotionSsin" : value.gnotionSsin,
 			"gnotionLastName" : value.gnotionLastName,
@@ -791,10 +791,10 @@ class EncryptedInvoice implements Invoice {
 			"cancelReason" : value.cancelReason,
 			"cancelDate" : value.cancelDate,
 			"options" : value.options.map((k0, v0) => MapEntry(k0, v0)),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};

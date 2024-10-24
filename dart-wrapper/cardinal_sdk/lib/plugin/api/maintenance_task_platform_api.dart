@@ -62,7 +62,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<bool> hasWriteAccess(String sdkId, MaintenanceTask maintenanceTask) async {
@@ -88,7 +88,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(String sdkId, MaintenanceTask entity, Set<String> delegates) async {
@@ -97,7 +97,7 @@ class MaintenanceTaskPlatformApi {
 			{
 				"sdkId": sdkId,
 				"entity": jsonEncode(MaintenanceTask.encode(entity)),
-				"delegates": jsonEncode(delegates.map((x0) => x0)),
+				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
 		);
 	}
@@ -138,7 +138,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, SortableFilterOptions filter) async {
@@ -151,7 +151,7 @@ class MaintenanceTaskPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<DocIdentifier> deleteMaintenanceTaskById(String sdkId, String entityId, String rev) async {
@@ -173,12 +173,12 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.deleteMaintenanceTasksByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasksByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTaskById(String sdkId, String id, String rev) async {
@@ -210,12 +210,12 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.deleteMaintenanceTasks',
 			{
 				"sdkId": sdkId,
-				"maintenanceTasks": jsonEncode(maintenanceTasks.map((x0) => MaintenanceTask.encode(x0))),
+				"maintenanceTasks": jsonEncode(maintenanceTasks.map((x0) => MaintenanceTask.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTask(String sdkId, MaintenanceTask maintenanceTask) async {
@@ -341,12 +341,12 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.getMaintenanceTasks',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DecryptedMaintenanceTask.fromJSON(x1) );
+		return parsedResJson.map((x1) => DecryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -354,7 +354,7 @@ class MaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
@@ -482,12 +482,12 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.tryAndRecover.getMaintenanceTasks',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => MaintenanceTask.fromJSON(x1) );
+		return parsedResJson.map((x1) => MaintenanceTask.fromJSON(x1) ).toList();
 	}
 }
 
@@ -608,11 +608,11 @@ class EncryptedMaintenanceTaskPlatformApi {
 			'MaintenanceTaskApi.encrypted.getMaintenanceTasks',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedMaintenanceTask.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 }

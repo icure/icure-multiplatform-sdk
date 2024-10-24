@@ -7,16 +7,16 @@ class TimePicker implements Field {
 	@override String field;
 	@override String? shortLabel;
 	int? _rows;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get rows => _rows;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set rows(int? value) {
+	@ActualInt32() @override int? get rows => _rows;
+	@ActualInt32() @override set rows(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('rows value cannot exceed 2147483647');
 		}
 		_rows = value;
 	}
 	int? _columns;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get columns => _columns;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set columns(int? value) {
+	@ActualInt32() @override int? get columns => _columns;
+	@ActualInt32() @override set columns(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('columns value cannot exceed 2147483647');
 		}
@@ -66,8 +66,8 @@ class TimePicker implements Field {
 			grows: data["grows"],
 			multiline: data["multiline"],
 			schema: data["schema"],
-			tags: data["tags"]?.map((x0) => x0 ),
-			codifications: data["codifications"]?.map((x0) => x0 ),
+			tags: data["tags"]?.map((x0) => x0 ).toList(),
+			codifications: data["codifications"]?.map((x0) => x0 ).toList(),
 			options: data["options"]?.map((k0, v0) => MapEntry(k0, v0)),
 			labels: data["labels"]?.map((k0, v0) => MapEntry(k0, v0)),
 			value: data["value"],
@@ -88,8 +88,8 @@ class TimePicker implements Field {
 			"grows" : value.grows,
 			"multiline" : value.multiline,
 			"schema" : value.schema,
-			"tags" : value.tags?.map((x0) => x0),
-			"codifications" : value.codifications?.map((x0) => x0),
+			"tags" : value.tags?.map((x0) => x0).toList(),
+			"codifications" : value.codifications?.map((x0) => x0).toList(),
 			"options" : value.options?.map((k0, v0) => MapEntry(k0, v0)),
 			"labels" : value.labels?.map((k0, v0) => MapEntry(k0, v0)),
 			"value" : value.value,

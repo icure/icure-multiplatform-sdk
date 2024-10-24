@@ -44,7 +44,7 @@ class FrontEndMigrationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getFrontEndMigrations");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => FrontEndMigration.fromJSON(x1) );
+		return parsedResJson.map((x1) => FrontEndMigration.fromJSON(x1) ).toList();
 	}
 
 	Future<DocIdentifier> deleteFrontEndMigration(String sdkId, String frontEndMigrationId) async {
@@ -70,7 +70,7 @@ class FrontEndMigrationPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getFrontEndMigrationByName");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => FrontEndMigration.fromJSON(x1) );
+		return parsedResJson.map((x1) => FrontEndMigration.fromJSON(x1) ).toList();
 	}
 
 	Future<FrontEndMigration> modifyFrontEndMigration(String sdkId, FrontEndMigration frontEndMigration) async {

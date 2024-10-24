@@ -19,6 +19,6 @@ class PermissionPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyUserPermissions");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Permission.fromJSON(x1) );
+		return parsedResJson.map((x1) => Permission.fromJSON(x1) ).toList();
 	}
 }
