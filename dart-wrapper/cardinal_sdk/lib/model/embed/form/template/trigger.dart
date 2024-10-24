@@ -13,19 +13,19 @@ enum Trigger {
 	static String encode(Trigger value) {
 		switch (value) {
 			case Trigger.init:
-				return '"INIT"';
+				return 'INIT';
 			case Trigger.change:
-				return '"CHANGE"';
+				return 'CHANGE';
 			case Trigger.click:
-				return '"CLICK"';
+				return 'CLICK';
 			case Trigger.visible:
-				return '"VISIBLE"';
+				return 'VISIBLE';
 			case Trigger.error:
-				return '"ERROR"';
+				return 'ERROR';
 			case Trigger.valid:
-				return '"VALID"';
+				return 'VALID';
 			case Trigger.event:
-				return '"EVENT"';
+				return 'EVENT';
 			}
 	}
 

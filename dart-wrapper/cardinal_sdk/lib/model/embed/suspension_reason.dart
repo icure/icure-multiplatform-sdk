@@ -11,15 +11,15 @@ enum SuspensionReason {
 	static String encode(SuspensionReason value) {
 		switch (value) {
 			case SuspensionReason.notInsured:
-				return '"notInsured"';
+				return 'notInsured';
 			case SuspensionReason.noReasonGiven:
-				return '"noReasonGiven"';
+				return 'noReasonGiven';
 			case SuspensionReason.isHospitalized:
-				return '"isHospitalized"';
+				return 'isHospitalized';
 			case SuspensionReason.outsideOfCountry:
-				return '"outsideOfCountry"';
+				return 'outsideOfCountry';
 			case SuspensionReason.changeOfMutuality:
-				return '"changeOfMutuality"';
+				return 'changeOfMutuality';
 			}
 	}
 

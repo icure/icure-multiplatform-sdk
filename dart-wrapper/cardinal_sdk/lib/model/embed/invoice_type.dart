@@ -12,17 +12,17 @@ enum InvoiceType {
 	static String encode(InvoiceType value) {
 		switch (value) {
 			case InvoiceType.patient:
-				return '"patient"';
+				return 'patient';
 			case InvoiceType.mutualfund:
-				return '"mutualfund"';
+				return 'mutualfund';
 			case InvoiceType.payingagency:
-				return '"payingagency"';
+				return 'payingagency';
 			case InvoiceType.insurance:
-				return '"insurance"';
+				return 'insurance';
 			case InvoiceType.efact:
-				return '"efact"';
+				return 'efact';
 			case InvoiceType.other:
-				return '"other"';
+				return 'other';
 			}
 	}
 

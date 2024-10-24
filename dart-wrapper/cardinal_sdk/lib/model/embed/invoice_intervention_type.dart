@@ -8,9 +8,9 @@ enum InvoiceInterventionType {
 	static String encode(InvoiceInterventionType value) {
 		switch (value) {
 			case InvoiceInterventionType.total:
-				return '"total"';
+				return 'total';
 			case InvoiceInterventionType.userfees:
-				return '"userfees"';
+				return 'userfees';
 			}
 	}
 

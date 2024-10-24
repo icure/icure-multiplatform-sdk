@@ -10,13 +10,13 @@ enum FlatRateType {
 	static String encode(FlatRateType value) {
 		switch (value) {
 			case FlatRateType.physician:
-				return '"physician"';
+				return 'physician';
 			case FlatRateType.physiotherapist:
-				return '"physiotherapist"';
+				return 'physiotherapist';
 			case FlatRateType.nurse:
-				return '"nurse"';
+				return 'nurse';
 			case FlatRateType.ptd:
-				return '"ptd"';
+				return 'ptd';
 			}
 	}
 

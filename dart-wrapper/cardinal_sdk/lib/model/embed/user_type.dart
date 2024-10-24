@@ -10,13 +10,13 @@ enum UserType {
 	static String encode(UserType value) {
 		switch (value) {
 			case UserType.hcp:
-				return '"HCP"';
+				return 'HCP';
 			case UserType.patient:
-				return '"PATIENT"';
+				return 'PATIENT';
 			case UserType.device:
-				return '"DEVICE"';
+				return 'DEVICE';
 			case UserType.user:
-				return '"USER"';
+				return 'USER';
 			}
 	}
 

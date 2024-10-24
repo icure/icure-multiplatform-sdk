@@ -20,33 +20,33 @@ enum TelecomType {
 	static String encode(TelecomType value) {
 		switch (value) {
 			case TelecomType.mobile:
-				return '"mobile"';
+				return 'mobile';
 			case TelecomType.phone:
-				return '"phone"';
+				return 'phone';
 			case TelecomType.email:
-				return '"email"';
+				return 'email';
 			case TelecomType.fax:
-				return '"fax"';
+				return 'fax';
 			case TelecomType.skype:
-				return '"skype"';
+				return 'skype';
 			case TelecomType.im:
-				return '"im"';
+				return 'im';
 			case TelecomType.medibridge:
-				return '"medibridge"';
+				return 'medibridge';
 			case TelecomType.ehealthbox:
-				return '"ehealthbox"';
+				return 'ehealthbox';
 			case TelecomType.apicrypt:
-				return '"apicrypt"';
+				return 'apicrypt';
 			case TelecomType.web:
-				return '"web"';
+				return 'web';
 			case TelecomType.print:
-				return '"print"';
+				return 'print';
 			case TelecomType.disk:
-				return '"disk"';
+				return 'disk';
 			case TelecomType.other:
-				return '"other"';
+				return 'other';
 			case TelecomType.pager:
-				return '"pager"';
+				return 'pager';
 			}
 	}
 

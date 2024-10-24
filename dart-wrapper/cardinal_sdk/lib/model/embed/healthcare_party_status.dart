@@ -9,11 +9,11 @@ enum HealthcarePartyStatus {
 	static String encode(HealthcarePartyStatus value) {
 		switch (value) {
 			case HealthcarePartyStatus.trainee:
-				return '"trainee"';
+				return 'trainee';
 			case HealthcarePartyStatus.withconvention:
-				return '"withconvention"';
+				return 'withconvention';
 			case HealthcarePartyStatus.accreditated:
-				return '"accreditated"';
+				return 'accreditated';
 			}
 	}
 

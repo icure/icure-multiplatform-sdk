@@ -18,29 +18,29 @@ enum AddressType {
 	static String encode(AddressType value) {
 		switch (value) {
 			case AddressType.home:
-				return '"home"';
+				return 'home';
 			case AddressType.work:
-				return '"work"';
+				return 'work';
 			case AddressType.vacation:
-				return '"vacation"';
+				return 'vacation';
 			case AddressType.hospital:
-				return '"hospital"';
+				return 'hospital';
 			case AddressType.clinic:
-				return '"clinic"';
+				return 'clinic';
 			case AddressType.hq:
-				return '"hq"';
+				return 'hq';
 			case AddressType.other:
-				return '"other"';
+				return 'other';
 			case AddressType.temporary:
-				return '"temporary"';
+				return 'temporary';
 			case AddressType.postal:
-				return '"postal"';
+				return 'postal';
 			case AddressType.diplomatic:
-				return '"diplomatic"';
+				return 'diplomatic';
 			case AddressType.reference:
-				return '"reference"';
+				return 'reference';
 			case AddressType.careaddress:
-				return '"careaddress"';
+				return 'careaddress';
 			}
 	}
 

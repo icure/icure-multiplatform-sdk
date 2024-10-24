@@ -32,11 +32,11 @@ enum ShareAllPatientDataOptionsTag {
 	static String encode(ShareAllPatientDataOptionsTag value) {
 		switch (value) {
 			case ShareAllPatientDataOptionsTag.all:
-				return '"All"';
+				return 'All';
 			case ShareAllPatientDataOptionsTag.medicalInformation:
-				return '"MedicalInformation"';
+				return 'MedicalInformation';
 			case ShareAllPatientDataOptionsTag.financialInformation:
-				return '"FinancialInformation"';
+				return 'FinancialInformation';
 			}
 	}
 
@@ -69,21 +69,21 @@ enum ShareAllPatientDataOptionsShareableEntity {
 	static String encode(ShareAllPatientDataOptionsShareableEntity value) {
 		switch (value) {
 			case ShareAllPatientDataOptionsShareableEntity.calendarItem:
-				return '"CalendarItem"';
+				return 'CalendarItem';
 			case ShareAllPatientDataOptionsShareableEntity.contact:
-				return '"Contact"';
+				return 'Contact';
 			case ShareAllPatientDataOptionsShareableEntity.classification:
-				return '"Classification"';
+				return 'Classification';
 			case ShareAllPatientDataOptionsShareableEntity.document:
-				return '"Document"';
+				return 'Document';
 			case ShareAllPatientDataOptionsShareableEntity.form:
-				return '"Form"';
+				return 'Form';
 			case ShareAllPatientDataOptionsShareableEntity.healthElement:
-				return '"HealthElement"';
+				return 'HealthElement';
 			case ShareAllPatientDataOptionsShareableEntity.invoice:
-				return '"Invoice"';
+				return 'Invoice';
 			case ShareAllPatientDataOptionsShareableEntity.patient:
-				return '"Patient"';
+				return 'Patient';
 			}
 	}
 

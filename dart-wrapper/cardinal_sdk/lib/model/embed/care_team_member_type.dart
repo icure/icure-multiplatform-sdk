@@ -9,11 +9,11 @@ enum CareTeamMemberType {
 	static String encode(CareTeamMemberType value) {
 		switch (value) {
 			case CareTeamMemberType.physician:
-				return '"physician"';
+				return 'physician';
 			case CareTeamMemberType.specialist:
-				return '"specialist"';
+				return 'specialist';
 			case CareTeamMemberType.other:
-				return '"other"';
+				return 'other';
 			}
 	}
 

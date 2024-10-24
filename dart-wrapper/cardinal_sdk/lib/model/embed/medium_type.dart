@@ -13,19 +13,19 @@ enum MediumType {
 	static String encode(MediumType value) {
 		switch (value) {
 			case MediumType.cdrom:
-				return '"cdrom"';
+				return 'cdrom';
 			case MediumType.eattest:
-				return '"eattest"';
+				return 'eattest';
 			case MediumType.efact:
-				return '"efact"';
+				return 'efact';
 			case MediumType.email:
-				return '"email"';
+				return 'email';
 			case MediumType.mediprima:
-				return '"mediprima"';
+				return 'mediprima';
 			case MediumType.paper:
-				return '"paper"';
+				return 'paper';
 			case MediumType.stat:
-				return '"stat"';
+				return 'stat';
 			}
 	}
 

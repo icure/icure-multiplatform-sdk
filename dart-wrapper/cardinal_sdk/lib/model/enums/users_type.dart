@@ -9,11 +9,11 @@ enum UsersType {
 	static String encode(UsersType value) {
 		switch (value) {
 			case UsersType.database:
-				return '"database"';
+				return 'database';
 			case UsersType.ldap:
-				return '"ldap"';
+				return 'ldap';
 			case UsersType.token:
-				return '"token"';
+				return 'token';
 			}
 	}
 

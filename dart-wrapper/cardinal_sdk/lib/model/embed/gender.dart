@@ -13,19 +13,19 @@ enum Gender {
 	static String encode(Gender value) {
 		switch (value) {
 			case Gender.male:
-				return '"male"';
+				return 'male';
 			case Gender.female:
-				return '"female"';
+				return 'female';
 			case Gender.indeterminate:
-				return '"indeterminate"';
+				return 'indeterminate';
 			case Gender.changed:
-				return '"changed"';
+				return 'changed';
 			case Gender.changedToMale:
-				return '"changedToMale"';
+				return 'changedToMale';
 			case Gender.changedToFemale:
-				return '"changedToFemale"';
+				return 'changedToFemale';
 			case Gender.unknown:
-				return '"unknown"';
+				return 'unknown';
 			}
 	}
 

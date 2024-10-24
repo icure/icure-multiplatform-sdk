@@ -13,19 +13,19 @@ enum DeactivationReason {
 	static String encode(DeactivationReason value) {
 		switch (value) {
 			case DeactivationReason.deceased:
-				return '"deceased"';
+				return 'deceased';
 			case DeactivationReason.moved:
-				return '"moved"';
+				return 'moved';
 			case DeactivationReason.otherDoctor:
-				return '"other_doctor"';
+				return 'other_doctor';
 			case DeactivationReason.retired:
-				return '"retired"';
+				return 'retired';
 			case DeactivationReason.noContact:
-				return '"no_contact"';
+				return 'no_contact';
 			case DeactivationReason.unknown:
-				return '"unknown"';
+				return 'unknown';
 			case DeactivationReason.none:
-				return '"none"';
+				return 'none';
 			}
 	}
 

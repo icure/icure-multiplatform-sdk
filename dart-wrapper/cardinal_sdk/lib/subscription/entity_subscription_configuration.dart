@@ -64,11 +64,11 @@ enum EntitySubscriptionConfigurationFullBufferBehaviour {
 	static String encode(EntitySubscriptionConfigurationFullBufferBehaviour value) {
 		switch (value) {
 			case EntitySubscriptionConfigurationFullBufferBehaviour.close:
-				return '"Close"';
+				return 'Close';
 			case EntitySubscriptionConfigurationFullBufferBehaviour.dropOldest:
-				return '"DropOldest"';
+				return 'DropOldest';
 			case EntitySubscriptionConfigurationFullBufferBehaviour.ignore:
-				return '"Ignore"';
+				return 'Ignore';
 			}
 	}
 

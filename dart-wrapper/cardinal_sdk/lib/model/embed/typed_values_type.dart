@@ -13,19 +13,19 @@ enum TypedValuesType {
 	static String encode(TypedValuesType value) {
 		switch (value) {
 			case TypedValuesType.boolean:
-				return '"BOOLEAN"';
+				return 'BOOLEAN';
 			case TypedValuesType.integer:
-				return '"INTEGER"';
+				return 'INTEGER';
 			case TypedValuesType.double:
-				return '"DOUBLE"';
+				return 'DOUBLE';
 			case TypedValuesType.string:
-				return '"STRING"';
+				return 'STRING';
 			case TypedValuesType.date:
-				return '"DATE"';
+				return 'DATE';
 			case TypedValuesType.clob:
-				return '"CLOB"';
+				return 'CLOB';
 			case TypedValuesType.json:
-				return '"JSON"';
+				return 'JSON';
 			}
 	}
 

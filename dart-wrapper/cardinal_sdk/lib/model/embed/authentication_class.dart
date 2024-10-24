@@ -12,17 +12,17 @@ enum AuthenticationClass {
 	static String encode(AuthenticationClass value) {
 		switch (value) {
 			case AuthenticationClass.digitalId:
-				return '"DIGITAL_ID"';
+				return 'DIGITAL_ID';
 			case AuthenticationClass.twoFactorAuthentication:
-				return '"TWO_FACTOR_AUTHENTICATION"';
+				return 'TWO_FACTOR_AUTHENTICATION';
 			case AuthenticationClass.shortLivedToken:
-				return '"SHORT_LIVED_TOKEN"';
+				return 'SHORT_LIVED_TOKEN';
 			case AuthenticationClass.externalAuthentication:
-				return '"EXTERNAL_AUTHENTICATION"';
+				return 'EXTERNAL_AUTHENTICATION';
 			case AuthenticationClass.password:
-				return '"PASSWORD"';
+				return 'PASSWORD';
 			case AuthenticationClass.longLivedToken:
-				return '"LONG_LIVED_TOKEN"';
+				return 'LONG_LIVED_TOKEN';
 			}
 	}
 

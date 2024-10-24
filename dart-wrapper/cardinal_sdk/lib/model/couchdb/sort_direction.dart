@@ -8,9 +8,9 @@ enum SortDirection {
 	static String encode(SortDirection value) {
 		switch (value) {
 			case SortDirection.asc:
-				return '"asc"';
+				return 'asc';
 			case SortDirection.desc:
-				return '"desc"';
+				return 'desc';
 			}
 	}
 

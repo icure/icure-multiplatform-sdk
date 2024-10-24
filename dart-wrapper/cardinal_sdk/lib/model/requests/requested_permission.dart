@@ -11,15 +11,15 @@ enum RequestedPermission {
 	static String encode(RequestedPermission value) {
 		switch (value) {
 			case RequestedPermission.maxRead:
-				return '"MAX_READ"';
+				return 'MAX_READ';
 			case RequestedPermission.fullRead:
-				return '"FULL_READ"';
+				return 'FULL_READ';
 			case RequestedPermission.maxWrite:
-				return '"MAX_WRITE"';
+				return 'MAX_WRITE';
 			case RequestedPermission.fullWrite:
-				return '"FULL_WRITE"';
+				return 'FULL_WRITE';
 			case RequestedPermission.root:
-				return '"ROOT"';
+				return 'ROOT';
 			}
 	}
 

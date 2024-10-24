@@ -10,13 +10,13 @@ enum TaskStatus {
 	static String encode(TaskStatus value) {
 		switch (value) {
 			case TaskStatus.pending:
-				return '"pending"';
+				return 'pending';
 			case TaskStatus.ongoing:
-				return '"ongoing"';
+				return 'ongoing';
 			case TaskStatus.cancelled:
-				return '"cancelled"';
+				return 'cancelled';
 			case TaskStatus.completed:
-				return '"completed"';
+				return 'completed';
 			}
 	}
 

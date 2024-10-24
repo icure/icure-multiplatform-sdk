@@ -14,21 +14,21 @@ enum PatientHealthCarePartyType {
 	static String encode(PatientHealthCarePartyType value) {
 		switch (value) {
 			case PatientHealthCarePartyType.doctor:
-				return '"doctor"';
+				return 'doctor';
 			case PatientHealthCarePartyType.referral:
-				return '"referral"';
+				return 'referral';
 			case PatientHealthCarePartyType.medicalhouse:
-				return '"medicalhouse"';
+				return 'medicalhouse';
 			case PatientHealthCarePartyType.retirementhome:
-				return '"retirementhome"';
+				return 'retirementhome';
 			case PatientHealthCarePartyType.hospital:
-				return '"hospital"';
+				return 'hospital';
 			case PatientHealthCarePartyType.other:
-				return '"other"';
+				return 'other';
 			case PatientHealthCarePartyType.referringphysician:
-				return '"referringphysician"';
+				return 'referringphysician';
 			case PatientHealthCarePartyType.managingorganization:
-				return '"managingorganization"';
+				return 'managingorganization';
 			}
 	}
 

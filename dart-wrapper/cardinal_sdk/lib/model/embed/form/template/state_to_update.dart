@@ -11,15 +11,15 @@ enum StateToUpdate {
 	static String encode(StateToUpdate value) {
 		switch (value) {
 			case StateToUpdate.value:
-				return '"VALUE"';
+				return 'VALUE';
 			case StateToUpdate.visible:
-				return '"VISIBLE"';
+				return 'VISIBLE';
 			case StateToUpdate.readonly:
-				return '"READONLY"';
+				return 'READONLY';
 			case StateToUpdate.clazz:
-				return '"CLAZZ"';
+				return 'CLAZZ';
 			case StateToUpdate.required:
-				return '"REQUIRED"';
+				return 'REQUIRED';
 			}
 	}
 

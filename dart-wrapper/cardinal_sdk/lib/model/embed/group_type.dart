@@ -9,11 +9,11 @@ enum GroupType {
 	static String encode(GroupType value) {
 		switch (value) {
 			case GroupType.root:
-				return '"root"';
+				return 'root';
 			case GroupType.app:
-				return '"app"';
+				return 'app';
 			case GroupType.database:
-				return '"database"';
+				return 'database';
 			}
 	}
 

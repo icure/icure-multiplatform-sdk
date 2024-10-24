@@ -14,21 +14,21 @@ enum PaymentType {
 	static String encode(PaymentType value) {
 		switch (value) {
 			case PaymentType.cash:
-				return '"cash"';
+				return 'cash';
 			case PaymentType.wired:
-				return '"wired"';
+				return 'wired';
 			case PaymentType.insurance:
-				return '"insurance"';
+				return 'insurance';
 			case PaymentType.creditcard:
-				return '"creditcard"';
+				return 'creditcard';
 			case PaymentType.debitcard:
-				return '"debitcard"';
+				return 'debitcard';
 			case PaymentType.paypal:
-				return '"paypal"';
+				return 'paypal';
 			case PaymentType.bitcoin:
-				return '"bitcoin"';
+				return 'bitcoin';
 			case PaymentType.other:
-				return '"other"';
+				return 'other';
 			}
 	}
 

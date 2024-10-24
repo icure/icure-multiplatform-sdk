@@ -8,9 +8,9 @@ enum SubscriptionEventType {
 	static String encode(SubscriptionEventType value) {
 		switch (value) {
 			case SubscriptionEventType.create:
-				return '"Create"';
+				return 'Create';
 			case SubscriptionEventType.update:
-				return '"Update"';
+				return 'Update';
 			}
 	}
 

@@ -10,13 +10,13 @@ enum ContractChangeType {
 	static String encode(ContractChangeType value) {
 		switch (value) {
 			case ContractChangeType.inscriptionStart:
-				return '"inscriptionStart"';
+				return 'inscriptionStart';
 			case ContractChangeType.inscriptionEnd:
-				return '"inscriptionEnd"';
+				return 'inscriptionEnd';
 			case ContractChangeType.suspension:
-				return '"suspension"';
+				return 'suspension';
 			case ContractChangeType.coverageChange:
-				return '"coverageChange"';
+				return 'coverageChange';
 			}
 	}
 

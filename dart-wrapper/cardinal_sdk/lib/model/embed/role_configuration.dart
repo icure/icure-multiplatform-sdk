@@ -34,11 +34,11 @@ enum RoleConfigurationSource {
 	static String encode(RoleConfigurationSource value) {
 		switch (value) {
 			case RoleConfigurationSource.configuration:
-				return '"CONFIGURATION"';
+				return 'CONFIGURATION';
 			case RoleConfigurationSource.inherited:
-				return '"INHERITED"';
+				return 'INHERITED';
 			case RoleConfigurationSource.predefined:
-				return '"DEFAULT"';
+				return 'DEFAULT';
 			}
 	}
 

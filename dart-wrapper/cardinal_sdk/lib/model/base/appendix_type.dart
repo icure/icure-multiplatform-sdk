@@ -9,11 +9,11 @@ enum AppendixType {
 	static String encode(AppendixType value) {
 		switch (value) {
 			case AppendixType.externalLink:
-				return '"externalLink"';
+				return 'externalLink';
 			case AppendixType.video:
-				return '"video"';
+				return 'video';
 			case AppendixType.description:
-				return '"description"';
+				return 'description';
 			}
 	}
 

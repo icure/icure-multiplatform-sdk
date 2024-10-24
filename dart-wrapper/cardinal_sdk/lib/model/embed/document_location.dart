@@ -8,9 +8,9 @@ enum DocumentLocation {
 	static String encode(DocumentLocation value) {
 		switch (value) {
 			case DocumentLocation.annex:
-				return '"annex"';
+				return 'annex';
 			case DocumentLocation.body:
-				return '"body"';
+				return 'body';
 			}
 	}
 
