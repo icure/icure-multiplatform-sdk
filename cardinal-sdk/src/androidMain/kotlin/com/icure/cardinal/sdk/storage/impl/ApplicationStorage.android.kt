@@ -12,7 +12,7 @@ actual suspend fun ApplicationStorageFacade(context: ApplicationContext?): Stora
 	return SharedPreferenceStorage(context.getSharedPreferences(SharedPreferenceStorage.SHARED_PREFERENCE_REFERENCE, Context.MODE_PRIVATE))
 }
 
-class SharedPreferenceStorage(val sharedPreferences: SharedPreferences): StorageFacade {
+class SharedPreferenceStorage(private val sharedPreferences: SharedPreferences): StorageFacade {
 	private val editor
 		get() = sharedPreferences.edit()
 
