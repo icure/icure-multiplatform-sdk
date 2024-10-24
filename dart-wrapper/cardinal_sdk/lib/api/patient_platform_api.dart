@@ -27,28 +27,28 @@ class PatientPlatformApi {
 		encrypted = EncryptedPatientPlatformApi(_sdkId);
 
 	Future<Set<String>> getSecretIdsOf(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.getSecretIdsOf(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.getSecretIdsOf(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.getEncryptionKeysOf(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<DecryptedPatient> createPatient(DecryptedPatient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.createPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.createPatient(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<DecryptedPatient> withEncryptionMetadata(DecryptedPatient? base, User? user, { Map<String, AccessLevel> delegates = const {} }) async {
-		return await CardinalSdkPlatformInterface.instance.patient.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.withEncryptionMetadata(
 			_sdkId,
 			base,
 			user,
@@ -57,14 +57,14 @@ class PatientPlatformApi {
 	}
 
 	Future<bool> hasWriteAccess(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.hasWriteAccess(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(Patient entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.patient.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -72,28 +72,28 @@ class PatientPlatformApi {
 	}
 
 	Future<DecryptedPatient> decrypt(EncryptedPatient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.decrypt(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<Patient> tryDecrypt(EncryptedPatient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryDecrypt(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<List<IdWithRev>> createPatients(List<DecryptedPatient> patientDtos) async {
-		return await CardinalSdkPlatformInterface.instance.patient.createPatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.createPatients(
 			_sdkId,
 			patientDtos,
 		);
 	}
 
 	Future<ShareAllPatientDataOptionsResult> shareAllDataOfPatient(String patientId, Map<String, Set<ShareAllPatientDataOptionsTag>> delegatesWithShareType) async {
-		return await CardinalSdkPlatformInterface.instance.patient.shareAllDataOfPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.shareAllDataOfPatient(
 			_sdkId,
 			patientId,
 			delegatesWithShareType,
@@ -101,42 +101,42 @@ class PatientPlatformApi {
 	}
 
 	Future<Set<String>> getConfidentialSecretIdsOf(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.getConfidentialSecretIdsOf(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.getConfidentialSecretIdsOf(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<bool> forceInitializeExchangeDataToNewlyInvitedPatient(String patientId) async {
-		return await CardinalSdkPlatformInterface.instance.patient.forceInitializeExchangeDataToNewlyInvitedPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.forceInitializeExchangeDataToNewlyInvitedPatient(
 			_sdkId,
 			patientId,
 		);
 	}
 
 	Future<List<String>> matchPatientsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.matchPatientsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.matchPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchPatientsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.matchPatientsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.matchPatientsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<EncryptedPatient> ensureEncryptionMetadataForSelfIsInitialized({ Map<String, AccessLevel> sharingWith = const {} }) async {
-		return await CardinalSdkPlatformInterface.instance.patient.ensureEncryptionMetadataForSelfIsInitialized(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.ensureEncryptionMetadataForSelfIsInitialized(
 			_sdkId,
 			sharingWith,
 		);
 	}
 
 	Future<DocIdentifier> deletePatientById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.patient.deletePatientById(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.deletePatientById(
 			_sdkId,
 			entityId,
 			rev,
@@ -144,14 +144,14 @@ class PatientPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deletePatientsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.patient.deletePatientsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.deletePatientsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgePatientById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.patient.purgePatientById(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.purgePatientById(
 			_sdkId,
 			id,
 			rev,
@@ -159,35 +159,35 @@ class PatientPlatformApi {
 	}
 
 	Future<DocIdentifier> deletePatient(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.deletePatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.deletePatient(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<List<DocIdentifier>> deletePatients(List<Patient> patients) async {
-		return await CardinalSdkPlatformInterface.instance.patient.deletePatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.deletePatients(
 			_sdkId,
 			patients,
 		);
 	}
 
 	Future<void> purgePatient(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.purgePatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.purgePatient(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<EntityAccessInformation> getDataOwnersWithAccessTo(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.getDataOwnersWithAccessTo(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.getDataOwnersWithAccessTo(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<DecryptedPatient> shareWith(String delegateId, DecryptedPatient patient, PatientShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.patient.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.shareWith(
 			_sdkId,
 			delegateId,
 			patient,
@@ -196,7 +196,7 @@ class PatientPlatformApi {
 	}
 
 	Future<DecryptedPatient> shareWithMany(DecryptedPatient patient, Map<String, PatientShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.patient.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.shareWithMany(
 			_sdkId,
 			patient,
 			delegates,
@@ -204,42 +204,42 @@ class PatientPlatformApi {
 	}
 
 	Future<DecryptedPatient> initializeConfidentialSecretId(DecryptedPatient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.initializeConfidentialSecretId(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.initializeConfidentialSecretId(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.filterPatientsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.filterPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.filterPatientsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.filterPatientsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Patient> undeletePatient(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.undeletePatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.undeletePatient(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<DecryptedPatient> modifyPatient(DecryptedPatient entity) async {
-		return await CardinalSdkPlatformInterface.instance.patient.modifyPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.modifyPatient(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedPatient> undeletePatientById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.patient.undeletePatientById(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.undeletePatientById(
 			_sdkId,
 			id,
 			rev,
@@ -247,21 +247,21 @@ class PatientPlatformApi {
 	}
 
 	Future<List<DecryptedPatient>> undeletePatients(List<IdWithMandatoryRev> ids) async {
-		return await CardinalSdkPlatformInterface.instance.patient.undeletePatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.undeletePatients(
 			_sdkId,
 			ids,
 		);
 	}
 
 	Future<DecryptedPatient> getPatient(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.patient.getPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.getPatient(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<DecryptedPatient> getPatientResolvingMerges(String patientId, int? maxMergeDepth) async {
-		return await CardinalSdkPlatformInterface.instance.patient.getPatientResolvingMerges(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.getPatientResolvingMerges(
 			_sdkId,
 			patientId,
 			maxMergeDepth,
@@ -269,21 +269,21 @@ class PatientPlatformApi {
 	}
 
 	Future<List<DecryptedPatient>> getPatients(List<String> patientIds) async {
-		return await CardinalSdkPlatformInterface.instance.patient.getPatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.getPatients(
 			_sdkId,
 			patientIds,
 		);
 	}
 
 	Future<List<IdWithRev>> modifyPatients(List<EncryptedPatient> patientDtos) async {
-		return await CardinalSdkPlatformInterface.instance.patient.modifyPatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.modifyPatients(
 			_sdkId,
 			patientDtos,
 		);
 	}
 
 	Future<DecryptedPatient> mergePatients(Patient from, DecryptedPatient mergedInto) async {
-		return await CardinalSdkPlatformInterface.instance.patient.mergePatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.mergePatients(
 			_sdkId,
 			from,
 			mergedInto,
@@ -291,7 +291,7 @@ class PatientPlatformApi {
 	}
 
 	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.patient.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,
@@ -305,7 +305,7 @@ class TryAndRecoverPatientPlatformApi {
 	TryAndRecoverPatientPlatformApi(this._sdkId);
 
 	Future<Patient> shareWith(String delegateId, Patient patient, PatientShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			patient,
@@ -314,7 +314,7 @@ class TryAndRecoverPatientPlatformApi {
 	}
 
 	Future<Patient> shareWithMany(Patient patient, Map<String, PatientShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.shareWithMany(
 			_sdkId,
 			patient,
 			delegates,
@@ -322,42 +322,42 @@ class TryAndRecoverPatientPlatformApi {
 	}
 
 	Future<Patient> initializeConfidentialSecretId(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.initializeConfidentialSecretId(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.initializeConfidentialSecretId(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<PaginatedListIterator<Patient>> filterPatientsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.filterPatientsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.filterPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Patient>> filterPatientsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.filterPatientsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.filterPatientsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Patient> undeletePatient(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.undeletePatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.undeletePatient(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<Patient> modifyPatient(Patient entity) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.modifyPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.modifyPatient(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<Patient> undeletePatientById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.undeletePatientById(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.undeletePatientById(
 			_sdkId,
 			id,
 			rev,
@@ -365,21 +365,21 @@ class TryAndRecoverPatientPlatformApi {
 	}
 
 	Future<List<Patient>> undeletePatients(List<IdWithMandatoryRev> ids) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.undeletePatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.undeletePatients(
 			_sdkId,
 			ids,
 		);
 	}
 
 	Future<Patient> getPatient(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.getPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.getPatient(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<Patient> getPatientResolvingMerges(String patientId, int? maxMergeDepth) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.getPatientResolvingMerges(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.getPatientResolvingMerges(
 			_sdkId,
 			patientId,
 			maxMergeDepth,
@@ -387,21 +387,21 @@ class TryAndRecoverPatientPlatformApi {
 	}
 
 	Future<List<Patient>> getPatients(List<String> patientIds) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.getPatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.getPatients(
 			_sdkId,
 			patientIds,
 		);
 	}
 
 	Future<List<IdWithRev>> modifyPatients(List<EncryptedPatient> patientDtos) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.modifyPatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.modifyPatients(
 			_sdkId,
 			patientDtos,
 		);
 	}
 
 	Future<Patient> mergePatients(Patient from, Patient mergedInto) async {
-		return await CardinalSdkPlatformInterface.instance.patient.tryAndRecover.mergePatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.mergePatients(
 			_sdkId,
 			from,
 			mergedInto,
@@ -414,7 +414,7 @@ class EncryptedPatientPlatformApi {
 	EncryptedPatientPlatformApi(this._sdkId);
 
 	Future<EncryptedPatient> shareWith(String delegateId, EncryptedPatient patient, PatientShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			patient,
@@ -423,7 +423,7 @@ class EncryptedPatientPlatformApi {
 	}
 
 	Future<EncryptedPatient> shareWithMany(EncryptedPatient patient, Map<String, PatientShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.shareWithMany(
 			_sdkId,
 			patient,
 			delegates,
@@ -431,42 +431,42 @@ class EncryptedPatientPlatformApi {
 	}
 
 	Future<EncryptedPatient> initializeConfidentialSecretId(EncryptedPatient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.initializeConfidentialSecretId(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.initializeConfidentialSecretId(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.filterPatientsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.filterPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.filterPatientsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.filterPatientsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Patient> undeletePatient(Patient patient) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.undeletePatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.undeletePatient(
 			_sdkId,
 			patient,
 		);
 	}
 
 	Future<EncryptedPatient> modifyPatient(EncryptedPatient entity) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.modifyPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.modifyPatient(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedPatient> undeletePatientById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.undeletePatientById(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.undeletePatientById(
 			_sdkId,
 			id,
 			rev,
@@ -474,21 +474,21 @@ class EncryptedPatientPlatformApi {
 	}
 
 	Future<List<EncryptedPatient>> undeletePatients(List<IdWithMandatoryRev> ids) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.undeletePatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.undeletePatients(
 			_sdkId,
 			ids,
 		);
 	}
 
 	Future<EncryptedPatient> getPatient(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.getPatient(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.getPatient(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<EncryptedPatient> getPatientResolvingMerges(String patientId, int? maxMergeDepth) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.getPatientResolvingMerges(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.getPatientResolvingMerges(
 			_sdkId,
 			patientId,
 			maxMergeDepth,
@@ -496,21 +496,21 @@ class EncryptedPatientPlatformApi {
 	}
 
 	Future<List<EncryptedPatient>> getPatients(List<String> patientIds) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.getPatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.getPatients(
 			_sdkId,
 			patientIds,
 		);
 	}
 
 	Future<List<IdWithRev>> modifyPatients(List<EncryptedPatient> patientDtos) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.modifyPatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.modifyPatients(
 			_sdkId,
 			patientDtos,
 		);
 	}
 
 	Future<EncryptedPatient> mergePatients(Patient from, EncryptedPatient mergedInto) async {
-		return await CardinalSdkPlatformInterface.instance.patient.encrypted.mergePatients(
+		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.mergePatients(
 			_sdkId,
 			from,
 			mergedInto,

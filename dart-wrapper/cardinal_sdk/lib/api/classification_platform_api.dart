@@ -22,14 +22,14 @@ class ClassificationPlatformApi {
 		encrypted = EncryptedClassificationPlatformApi(_sdkId);
 
 	Future<DecryptedClassification> createClassification(DecryptedClassification entity) async {
-		return await CardinalSdkPlatformInterface.instance.classification.createClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.createClassification(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedClassification> withEncryptionMetadata(DecryptedClassification? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
-		return await CardinalSdkPlatformInterface.instance.classification.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.withEncryptionMetadata(
 			_sdkId,
 			base,
 			patient,
@@ -40,28 +40,28 @@ class ClassificationPlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(Classification classification) async {
-		return await CardinalSdkPlatformInterface.instance.classification.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.getEncryptionKeysOf(
 			_sdkId,
 			classification,
 		);
 	}
 
 	Future<bool> hasWriteAccess(Classification classification) async {
-		return await CardinalSdkPlatformInterface.instance.classification.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.hasWriteAccess(
 			_sdkId,
 			classification,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(Classification classification) async {
-		return await CardinalSdkPlatformInterface.instance.classification.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.decryptPatientIdOf(
 			_sdkId,
 			classification,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(Classification entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.classification.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -69,49 +69,49 @@ class ClassificationPlatformApi {
 	}
 
 	Future<DecryptedClassification> decrypt(EncryptedClassification classification) async {
-		return await CardinalSdkPlatformInterface.instance.classification.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.decrypt(
 			_sdkId,
 			classification,
 		);
 	}
 
 	Future<Classification> tryDecrypt(EncryptedClassification classification) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryDecrypt(
 			_sdkId,
 			classification,
 		);
 	}
 
 	Future<List<String>> matchClassificationsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.matchClassificationsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.matchClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchClassificationsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.matchClassificationsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.matchClassificationsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteClassification(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.classification.deleteClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.deleteClassification(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteClassifications(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.classification.deleteClassifications(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.deleteClassifications(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<DecryptedClassification> shareWith(String delegateId, DecryptedClassification classification, ClassificationShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.classification.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.shareWith(
 			_sdkId,
 			delegateId,
 			classification,
@@ -120,7 +120,7 @@ class ClassificationPlatformApi {
 	}
 
 	Future<DecryptedClassification> shareWithMany(DecryptedClassification classification, Map<String, ClassificationShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.classification.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.shareWithMany(
 			_sdkId,
 			classification,
 			delegates,
@@ -128,35 +128,35 @@ class ClassificationPlatformApi {
 	}
 
 	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.filterClassificationsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.filterClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.filterClassificationsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.filterClassificationsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DecryptedClassification> modifyClassification(DecryptedClassification entity) async {
-		return await CardinalSdkPlatformInterface.instance.classification.modifyClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.modifyClassification(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedClassification> getClassification(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.classification.getClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.getClassification(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedClassification>> getClassifications(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.classification.getClassifications(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.getClassifications(
 			_sdkId,
 			entityIds,
 		);
@@ -168,7 +168,7 @@ class TryAndRecoverClassificationPlatformApi {
 	TryAndRecoverClassificationPlatformApi(this._sdkId);
 
 	Future<Classification> shareWith(String delegateId, Classification classification, ClassificationShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			classification,
@@ -177,7 +177,7 @@ class TryAndRecoverClassificationPlatformApi {
 	}
 
 	Future<Classification> shareWithMany(Classification classification, Map<String, ClassificationShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.shareWithMany(
 			_sdkId,
 			classification,
 			delegates,
@@ -185,35 +185,35 @@ class TryAndRecoverClassificationPlatformApi {
 	}
 
 	Future<PaginatedListIterator<Classification>> filterClassificationsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryAndRecover.filterClassificationsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.filterClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Classification>> filterClassificationsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryAndRecover.filterClassificationsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.filterClassificationsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Classification> modifyClassification(Classification entity) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryAndRecover.modifyClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.modifyClassification(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<Classification> getClassification(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryAndRecover.getClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.getClassification(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<Classification>> getClassifications(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.classification.tryAndRecover.getClassifications(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.getClassifications(
 			_sdkId,
 			entityIds,
 		);
@@ -225,7 +225,7 @@ class EncryptedClassificationPlatformApi {
 	EncryptedClassificationPlatformApi(this._sdkId);
 
 	Future<EncryptedClassification> shareWith(String delegateId, EncryptedClassification classification, ClassificationShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.classification.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			classification,
@@ -234,7 +234,7 @@ class EncryptedClassificationPlatformApi {
 	}
 
 	Future<EncryptedClassification> shareWithMany(EncryptedClassification classification, Map<String, ClassificationShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.classification.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.shareWithMany(
 			_sdkId,
 			classification,
 			delegates,
@@ -242,35 +242,35 @@ class EncryptedClassificationPlatformApi {
 	}
 
 	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.encrypted.filterClassificationsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.filterClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classification.encrypted.filterClassificationsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.filterClassificationsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<EncryptedClassification> modifyClassification(EncryptedClassification entity) async {
-		return await CardinalSdkPlatformInterface.instance.classification.encrypted.modifyClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.modifyClassification(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedClassification> getClassification(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.classification.encrypted.getClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.getClassification(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedClassification>> getClassifications(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.classification.encrypted.getClassifications(
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.getClassifications(
 			_sdkId,
 			entityIds,
 		);

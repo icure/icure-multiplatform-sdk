@@ -24,14 +24,14 @@ class MaintenanceTaskPlatformApi {
 		encrypted = EncryptedMaintenanceTaskPlatformApi(_sdkId);
 
 	Future<DecryptedMaintenanceTask> createMaintenanceTask(DecryptedMaintenanceTask entity) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.createMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.createMaintenanceTask(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedMaintenanceTask> withEncryptionMetadata(DecryptedMaintenanceTask? maintenanceTask, User? user, { Map<String, AccessLevel> delegates = const {} }) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.withEncryptionMetadata(
 			_sdkId,
 			maintenanceTask,
 			user,
@@ -40,28 +40,28 @@ class MaintenanceTaskPlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.getEncryptionKeysOf(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<bool> hasWriteAccess(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.hasWriteAccess(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.decryptPatientIdOf(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(MaintenanceTask entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -69,35 +69,35 @@ class MaintenanceTaskPlatformApi {
 	}
 
 	Future<DecryptedMaintenanceTask> decrypt(EncryptedMaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.decrypt(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<MaintenanceTask> tryDecrypt(EncryptedMaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryDecrypt(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<List<String>> matchMaintenanceTasksBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.matchMaintenanceTasksBy(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.matchMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchMaintenanceTasksBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.matchMaintenanceTasksBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.matchMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteMaintenanceTaskById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.deleteMaintenanceTaskById(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.deleteMaintenanceTaskById(
 			_sdkId,
 			entityId,
 			rev,
@@ -105,14 +105,14 @@ class MaintenanceTaskPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteMaintenanceTasksByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.deleteMaintenanceTasksByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.deleteMaintenanceTasksByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeMaintenanceTaskById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.purgeMaintenanceTaskById(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.purgeMaintenanceTaskById(
 			_sdkId,
 			id,
 			rev,
@@ -120,28 +120,28 @@ class MaintenanceTaskPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.deleteMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.deleteMaintenanceTask(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteMaintenanceTasks(List<MaintenanceTask> maintenanceTasks) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.deleteMaintenanceTasks(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.deleteMaintenanceTasks(
 			_sdkId,
 			maintenanceTasks,
 		);
 	}
 
 	Future<void> purgeMaintenanceTask(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.purgeMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.purgeMaintenanceTask(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<DecryptedMaintenanceTask> shareWith(String delegateId, DecryptedMaintenanceTask maintenanceTask, MaintenanceTaskShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.shareWith(
 			_sdkId,
 			delegateId,
 			maintenanceTask,
@@ -150,7 +150,7 @@ class MaintenanceTaskPlatformApi {
 	}
 
 	Future<DecryptedMaintenanceTask> shareWithMany(DecryptedMaintenanceTask maintenanceTask, Map<String, MaintenanceTaskShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.shareWithMany(
 			_sdkId,
 			maintenanceTask,
 			delegates,
@@ -158,28 +158,28 @@ class MaintenanceTaskPlatformApi {
 	}
 
 	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.filterMaintenanceTasksBy(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.filterMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.filterMaintenanceTasksBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.filterMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<MaintenanceTask> undeleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.undeleteMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.undeleteMaintenanceTask(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<DecryptedMaintenanceTask> undeleteMaintenanceTaskById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.undeleteMaintenanceTaskById(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.undeleteMaintenanceTaskById(
 			_sdkId,
 			id,
 			rev,
@@ -187,28 +187,28 @@ class MaintenanceTaskPlatformApi {
 	}
 
 	Future<DecryptedMaintenanceTask> modifyMaintenanceTask(DecryptedMaintenanceTask entity) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.modifyMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.modifyMaintenanceTask(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedMaintenanceTask> getMaintenanceTask(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.getMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.getMaintenanceTask(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedMaintenanceTask>> getMaintenanceTasks(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.getMaintenanceTasks(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.getMaintenanceTasks(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,
@@ -222,7 +222,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 	TryAndRecoverMaintenanceTaskPlatformApi(this._sdkId);
 
 	Future<MaintenanceTask> shareWith(String delegateId, MaintenanceTask maintenanceTask, MaintenanceTaskShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			maintenanceTask,
@@ -231,7 +231,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 	}
 
 	Future<MaintenanceTask> shareWithMany(MaintenanceTask maintenanceTask, Map<String, MaintenanceTaskShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.shareWithMany(
 			_sdkId,
 			maintenanceTask,
 			delegates,
@@ -239,28 +239,28 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 	}
 
 	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.filterMaintenanceTasksBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.filterMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<MaintenanceTask> undeleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.undeleteMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.undeleteMaintenanceTask(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<MaintenanceTask> undeleteMaintenanceTaskById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.undeleteMaintenanceTaskById(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.undeleteMaintenanceTaskById(
 			_sdkId,
 			id,
 			rev,
@@ -268,21 +268,21 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 	}
 
 	Future<MaintenanceTask> modifyMaintenanceTask(MaintenanceTask entity) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.modifyMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.modifyMaintenanceTask(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<MaintenanceTask> getMaintenanceTask(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.getMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.getMaintenanceTask(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<MaintenanceTask>> getMaintenanceTasks(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.tryAndRecover.getMaintenanceTasks(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.getMaintenanceTasks(
 			_sdkId,
 			entityIds,
 		);
@@ -294,7 +294,7 @@ class EncryptedMaintenanceTaskPlatformApi {
 	EncryptedMaintenanceTaskPlatformApi(this._sdkId);
 
 	Future<EncryptedMaintenanceTask> shareWith(String delegateId, EncryptedMaintenanceTask maintenanceTask, MaintenanceTaskShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			maintenanceTask,
@@ -303,7 +303,7 @@ class EncryptedMaintenanceTaskPlatformApi {
 	}
 
 	Future<EncryptedMaintenanceTask> shareWithMany(EncryptedMaintenanceTask maintenanceTask, Map<String, MaintenanceTaskShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.shareWithMany(
 			_sdkId,
 			maintenanceTask,
 			delegates,
@@ -311,28 +311,28 @@ class EncryptedMaintenanceTaskPlatformApi {
 	}
 
 	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.filterMaintenanceTasksBy(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.filterMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.filterMaintenanceTasksBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.filterMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<MaintenanceTask> undeleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.undeleteMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.undeleteMaintenanceTask(
 			_sdkId,
 			maintenanceTask,
 		);
 	}
 
 	Future<EncryptedMaintenanceTask> undeleteMaintenanceTaskById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.undeleteMaintenanceTaskById(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.undeleteMaintenanceTaskById(
 			_sdkId,
 			id,
 			rev,
@@ -340,21 +340,21 @@ class EncryptedMaintenanceTaskPlatformApi {
 	}
 
 	Future<EncryptedMaintenanceTask> modifyMaintenanceTask(EncryptedMaintenanceTask entity) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.modifyMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.modifyMaintenanceTask(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedMaintenanceTask> getMaintenanceTask(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.getMaintenanceTask(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.getMaintenanceTask(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedMaintenanceTask>> getMaintenanceTasks(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.maintenanceTask.encrypted.getMaintenanceTasks(
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.getMaintenanceTasks(
 			_sdkId,
 			entityIds,
 		);

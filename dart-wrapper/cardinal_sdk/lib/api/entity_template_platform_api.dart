@@ -10,28 +10,28 @@ class EntityTemplatePlatformApi {
 	EntityTemplatePlatformApi(this._sdkId);
 
 	Future<EntityTemplate> getEntityTemplate(String documentTemplateId) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.getEntityTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.getEntityTemplate(
 			_sdkId,
 			documentTemplateId,
 		);
 	}
 
 	Future<EntityTemplate> createEntityTemplate(EntityTemplate applicationSettings) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.createEntityTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.createEntityTemplate(
 			_sdkId,
 			applicationSettings,
 		);
 	}
 
 	Future<EntityTemplate> modifyEntityTemplate(EntityTemplate documentTemplate) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.modifyEntityTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.modifyEntityTemplate(
 			_sdkId,
 			documentTemplate,
 		);
 	}
 
 	Future<List<EntityTemplate>> listEntityTemplatesBy(String userId, String type, String? searchString, bool? includeEntities) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.listEntityTemplatesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.listEntityTemplatesBy(
 			_sdkId,
 			userId,
 			type,
@@ -41,7 +41,7 @@ class EntityTemplatePlatformApi {
 	}
 
 	Future<List<EntityTemplate>> listAllEntityTemplatesBy(String type, String? searchString, bool? includeEntities) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.listAllEntityTemplatesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.listAllEntityTemplatesBy(
 			_sdkId,
 			type,
 			searchString,
@@ -50,7 +50,7 @@ class EntityTemplatePlatformApi {
 	}
 
 	Future<List<EntityTemplate>> listEntityTemplatesByKeyword(String userId, String type, String keyword, bool? includeEntities) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.listEntityTemplatesByKeyword(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.listEntityTemplatesByKeyword(
 			_sdkId,
 			userId,
 			type,
@@ -60,7 +60,7 @@ class EntityTemplatePlatformApi {
 	}
 
 	Future<List<EntityTemplate>> findAllEntityTemplatesByKeyword(String type, String keyword, bool? includeEntities) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.findAllEntityTemplatesByKeyword(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.findAllEntityTemplatesByKeyword(
 			_sdkId,
 			type,
 			keyword,
@@ -69,28 +69,28 @@ class EntityTemplatePlatformApi {
 	}
 
 	Future<List<EntityTemplate>> getEntityTemplates(List<String> entityTemplateIds) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.getEntityTemplates(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.getEntityTemplates(
 			_sdkId,
 			entityTemplateIds,
 		);
 	}
 
 	Future<List<EntityTemplate>> modifyEntityTemplates(List<EntityTemplate> entityTemplates) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.modifyEntityTemplates(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.modifyEntityTemplates(
 			_sdkId,
 			entityTemplates,
 		);
 	}
 
 	Future<List<EntityTemplate>> createEntityTemplates(List<EntityTemplate> entityTemplates) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.createEntityTemplates(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.createEntityTemplates(
 			_sdkId,
 			entityTemplates,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteEntityTemplates(List<IdWithMandatoryRev> entityTemplateIds) async {
-		return await CardinalSdkPlatformInterface.instance.entityTemplate.deleteEntityTemplates(
+		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.deleteEntityTemplates(
 			_sdkId,
 			entityTemplateIds,
 		);

@@ -1,14 +1,13 @@
+import 'package:cardinal_sdk/plugin/api/cardinal_sdk_method_channel_apis.dart';
+import 'package:cardinal_sdk/plugin/api/cardinal_sdk_platform_apis_plugin.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-import 'cardinal_sdk_platform_apis_plugin.dart';
-import 'cardinal_sdk_method_channel_apis.dart';
-
-abstract class CardinalSdkPlatformInterface extends PlatformInterface with CardinalSdkPlatformApisPlugin {
+class CardinalSdkPlatformInterface extends PlatformInterface {
   CardinalSdkPlatformInterface() : super(token: _token);
 
   static final Object _token = Object();
 
-  static CardinalSdkPlatformInterface _instance = CardinalSdkMethodChannelApis();
+  static CardinalSdkPlatformInterface _instance = CardinalSdkMethodChannelInterface();
 
   static CardinalSdkPlatformInterface get instance => _instance;
 
@@ -16,4 +15,13 @@ abstract class CardinalSdkPlatformInterface extends PlatformInterface with Cardi
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }
+
+  CardinalSdkPlatformApisPlugin get apis => throw UnimplementedError();
+}
+
+class CardinalSdkMethodChannelInterface extends CardinalSdkPlatformInterface {
+  final _apis = CardinalSdkMethodChannelApis();
+
+  @override
+  CardinalSdkPlatformApisPlugin get apis => _apis;
 }

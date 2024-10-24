@@ -8,7 +8,7 @@ class RolePlatformApi {
 	RolePlatformApi(this._sdkId);
 
 	Future<List<Role>> getAllRoles() async {
-		return await CardinalSdkPlatformInterface.instance.role.getAllRoles(
+		return await CardinalSdkPlatformInterface.instance.apis.role.getAllRoles(
 			_sdkId,
 		);
 	}

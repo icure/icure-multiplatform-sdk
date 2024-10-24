@@ -9,49 +9,49 @@ class InsurancePlatformApi {
 	InsurancePlatformApi(this._sdkId);
 
 	Future<Insurance> getInsurance(String insuranceId) async {
-		return await CardinalSdkPlatformInterface.instance.insurance.getInsurance(
+		return await CardinalSdkPlatformInterface.instance.apis.insurance.getInsurance(
 			_sdkId,
 			insuranceId,
 		);
 	}
 
 	Future<List<Insurance>> getInsurances(List<String> insuranceIds) async {
-		return await CardinalSdkPlatformInterface.instance.insurance.getInsurances(
+		return await CardinalSdkPlatformInterface.instance.apis.insurance.getInsurances(
 			_sdkId,
 			insuranceIds,
 		);
 	}
 
 	Future<Insurance> createInsurance(Insurance insurance) async {
-		return await CardinalSdkPlatformInterface.instance.insurance.createInsurance(
+		return await CardinalSdkPlatformInterface.instance.apis.insurance.createInsurance(
 			_sdkId,
 			insurance,
 		);
 	}
 
 	Future<DocIdentifier> deleteInsurance(String insuranceId) async {
-		return await CardinalSdkPlatformInterface.instance.insurance.deleteInsurance(
+		return await CardinalSdkPlatformInterface.instance.apis.insurance.deleteInsurance(
 			_sdkId,
 			insuranceId,
 		);
 	}
 
 	Future<List<Insurance>> listInsurancesByCode(String insuranceCode) async {
-		return await CardinalSdkPlatformInterface.instance.insurance.listInsurancesByCode(
+		return await CardinalSdkPlatformInterface.instance.apis.insurance.listInsurancesByCode(
 			_sdkId,
 			insuranceCode,
 		);
 	}
 
 	Future<List<Insurance>> listInsurancesByName(String insuranceName) async {
-		return await CardinalSdkPlatformInterface.instance.insurance.listInsurancesByName(
+		return await CardinalSdkPlatformInterface.instance.apis.insurance.listInsurancesByName(
 			_sdkId,
 			insuranceName,
 		);
 	}
 
 	Future<Insurance> modifyInsurance(Insurance insurance) async {
-		return await CardinalSdkPlatformInterface.instance.insurance.modifyInsurance(
+		return await CardinalSdkPlatformInterface.instance.apis.insurance.modifyInsurance(
 			_sdkId,
 			insurance,
 		);

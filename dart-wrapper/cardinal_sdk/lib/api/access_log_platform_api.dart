@@ -23,14 +23,14 @@ class AccessLogPlatformApi {
 		encrypted = EncryptedAccessLogPlatformApi(_sdkId);
 
 	Future<DecryptedAccessLog> createAccessLog(DecryptedAccessLog entity) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.createAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.createAccessLog(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedAccessLog> withEncryptionMetadata(DecryptedAccessLog? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.withEncryptionMetadata(
 			_sdkId,
 			base,
 			patient,
@@ -41,28 +41,28 @@ class AccessLogPlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.getEncryptionKeysOf(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<bool> hasWriteAccess(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.hasWriteAccess(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.decryptPatientIdOf(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(AccessLog entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -70,35 +70,35 @@ class AccessLogPlatformApi {
 	}
 
 	Future<DecryptedAccessLog> decrypt(EncryptedAccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.decrypt(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<AccessLog> tryDecrypt(EncryptedAccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryDecrypt(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<List<String>> matchAccessLogsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.matchAccessLogsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.matchAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchAccessLogsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.matchAccessLogsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.matchAccessLogsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteAccessLogById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.deleteAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.deleteAccessLogById(
 			_sdkId,
 			entityId,
 			rev,
@@ -106,14 +106,14 @@ class AccessLogPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteAccessLogsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.deleteAccessLogsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.deleteAccessLogsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeAccessLogById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.purgeAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.purgeAccessLogById(
 			_sdkId,
 			id,
 			rev,
@@ -121,28 +121,28 @@ class AccessLogPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.deleteAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.deleteAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteAccessLogs(List<AccessLog> accessLogs) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.deleteAccessLogs(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.deleteAccessLogs(
 			_sdkId,
 			accessLogs,
 		);
 	}
 
 	Future<void> purgeAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.purgeAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.purgeAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<DecryptedAccessLog> shareWith(String delegateId, DecryptedAccessLog accessLog, AccessLogShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.shareWith(
 			_sdkId,
 			delegateId,
 			accessLog,
@@ -151,7 +151,7 @@ class AccessLogPlatformApi {
 	}
 
 	Future<DecryptedAccessLog> shareWithMany(DecryptedAccessLog accessLog, Map<String, AccessLogShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.shareWithMany(
 			_sdkId,
 			accessLog,
 			delegates,
@@ -159,21 +159,21 @@ class AccessLogPlatformApi {
 	}
 
 	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.filterAccessLogsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.filterAccessLogsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.filterAccessLogsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DecryptedAccessLog> undeleteAccessLogById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.undeleteAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.undeleteAccessLogById(
 			_sdkId,
 			id,
 			rev,
@@ -181,28 +181,28 @@ class AccessLogPlatformApi {
 	}
 
 	Future<DecryptedAccessLog> undeleteAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.undeleteAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.undeleteAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<DecryptedAccessLog> modifyAccessLog(DecryptedAccessLog entity) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.modifyAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.modifyAccessLog(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedAccessLog> getAccessLog(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.getAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.getAccessLog(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedAccessLog>> getAccessLogs(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.getAccessLogs(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.getAccessLogs(
 			_sdkId,
 			entityIds,
 		);
@@ -214,7 +214,7 @@ class TryAndRecoverAccessLogPlatformApi {
 	TryAndRecoverAccessLogPlatformApi(this._sdkId);
 
 	Future<AccessLog> shareWith(String delegateId, AccessLog accessLog, AccessLogShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			accessLog,
@@ -223,7 +223,7 @@ class TryAndRecoverAccessLogPlatformApi {
 	}
 
 	Future<AccessLog> shareWithMany(AccessLog accessLog, Map<String, AccessLogShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.shareWithMany(
 			_sdkId,
 			accessLog,
 			delegates,
@@ -231,21 +231,21 @@ class TryAndRecoverAccessLogPlatformApi {
 	}
 
 	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.filterAccessLogsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.filterAccessLogsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.filterAccessLogsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<AccessLog> undeleteAccessLogById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.undeleteAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.undeleteAccessLogById(
 			_sdkId,
 			id,
 			rev,
@@ -253,28 +253,28 @@ class TryAndRecoverAccessLogPlatformApi {
 	}
 
 	Future<AccessLog> undeleteAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.undeleteAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.undeleteAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<AccessLog> modifyAccessLog(AccessLog entity) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.modifyAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.modifyAccessLog(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<AccessLog> getAccessLog(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.getAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.getAccessLog(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<AccessLog>> getAccessLogs(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.tryAndRecover.getAccessLogs(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.getAccessLogs(
 			_sdkId,
 			entityIds,
 		);
@@ -286,7 +286,7 @@ class EncryptedAccessLogPlatformApi {
 	EncryptedAccessLogPlatformApi(this._sdkId);
 
 	Future<EncryptedAccessLog> shareWith(String delegateId, EncryptedAccessLog accessLog, AccessLogShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			accessLog,
@@ -295,7 +295,7 @@ class EncryptedAccessLogPlatformApi {
 	}
 
 	Future<EncryptedAccessLog> shareWithMany(EncryptedAccessLog accessLog, Map<String, AccessLogShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.shareWithMany(
 			_sdkId,
 			accessLog,
 			delegates,
@@ -303,21 +303,21 @@ class EncryptedAccessLogPlatformApi {
 	}
 
 	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.filterAccessLogsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.filterAccessLogsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.filterAccessLogsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<EncryptedAccessLog> undeleteAccessLogById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.undeleteAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.undeleteAccessLogById(
 			_sdkId,
 			id,
 			rev,
@@ -325,28 +325,28 @@ class EncryptedAccessLogPlatformApi {
 	}
 
 	Future<EncryptedAccessLog> undeleteAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.undeleteAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.undeleteAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<EncryptedAccessLog> modifyAccessLog(EncryptedAccessLog entity) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.modifyAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.modifyAccessLog(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedAccessLog> getAccessLog(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.getAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.getAccessLog(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedAccessLog>> getAccessLogs(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.accessLog.encrypted.getAccessLogs(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.getAccessLogs(
 			_sdkId,
 			entityIds,
 		);

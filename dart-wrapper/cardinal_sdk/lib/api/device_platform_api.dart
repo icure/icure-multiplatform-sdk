@@ -16,77 +16,77 @@ class DevicePlatformApi {
 	DevicePlatformApi(this._sdkId);
 
 	Future<Device> getDevice(String deviceId) async {
-		return await CardinalSdkPlatformInterface.instance.device.getDevice(
+		return await CardinalSdkPlatformInterface.instance.apis.device.getDevice(
 			_sdkId,
 			deviceId,
 		);
 	}
 
 	Future<List<Device>> getDevices(List<String> deviceIds) async {
-		return await CardinalSdkPlatformInterface.instance.device.getDevices(
+		return await CardinalSdkPlatformInterface.instance.apis.device.getDevices(
 			_sdkId,
 			deviceIds,
 		);
 	}
 
 	Future<Device> createDevice(Device p) async {
-		return await CardinalSdkPlatformInterface.instance.device.createDevice(
+		return await CardinalSdkPlatformInterface.instance.apis.device.createDevice(
 			_sdkId,
 			p,
 		);
 	}
 
 	Future<Device> modifyDevice(Device device) async {
-		return await CardinalSdkPlatformInterface.instance.device.modifyDevice(
+		return await CardinalSdkPlatformInterface.instance.apis.device.modifyDevice(
 			_sdkId,
 			device,
 		);
 	}
 
 	Future<List<IdWithRev>> createDevices(List<Device> devices) async {
-		return await CardinalSdkPlatformInterface.instance.device.createDevices(
+		return await CardinalSdkPlatformInterface.instance.apis.device.createDevices(
 			_sdkId,
 			devices,
 		);
 	}
 
 	Future<List<IdWithRev>> modifyDevices(List<Device> devices) async {
-		return await CardinalSdkPlatformInterface.instance.device.modifyDevices(
+		return await CardinalSdkPlatformInterface.instance.apis.device.modifyDevices(
 			_sdkId,
 			devices,
 		);
 	}
 
 	Future<PaginatedListIterator<Device>> filterDevicesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.device.filterDevicesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.device.filterDevicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Device>> filterDevicesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.device.filterDevicesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.device.filterDevicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchDevicesBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.device.matchDevicesBy(
+		return await CardinalSdkPlatformInterface.instance.apis.device.matchDevicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchDevicesBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.device.matchDevicesBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.device.matchDevicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteDeviceById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.device.deleteDeviceById(
+		return await CardinalSdkPlatformInterface.instance.apis.device.deleteDeviceById(
 			_sdkId,
 			entityId,
 			rev,
@@ -94,14 +94,14 @@ class DevicePlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteDevicesByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.device.deleteDevicesByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.device.deleteDevicesByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeDeviceById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.device.purgeDeviceById(
+		return await CardinalSdkPlatformInterface.instance.apis.device.purgeDeviceById(
 			_sdkId,
 			id,
 			rev,
@@ -109,7 +109,7 @@ class DevicePlatformApi {
 	}
 
 	Future<Device> undeleteDeviceById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.device.undeleteDeviceById(
+		return await CardinalSdkPlatformInterface.instance.apis.device.undeleteDeviceById(
 			_sdkId,
 			id,
 			rev,
@@ -117,35 +117,35 @@ class DevicePlatformApi {
 	}
 
 	Future<DocIdentifier> deleteDevice(Device device) async {
-		return await CardinalSdkPlatformInterface.instance.device.deleteDevice(
+		return await CardinalSdkPlatformInterface.instance.apis.device.deleteDevice(
 			_sdkId,
 			device,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteDevices(List<Device> devices) async {
-		return await CardinalSdkPlatformInterface.instance.device.deleteDevices(
+		return await CardinalSdkPlatformInterface.instance.apis.device.deleteDevices(
 			_sdkId,
 			devices,
 		);
 	}
 
 	Future<void> purgeDevice(Device device) async {
-		return await CardinalSdkPlatformInterface.instance.device.purgeDevice(
+		return await CardinalSdkPlatformInterface.instance.apis.device.purgeDevice(
 			_sdkId,
 			device,
 		);
 	}
 
 	Future<Device> undeleteDevice(Device device) async {
-		return await CardinalSdkPlatformInterface.instance.device.undeleteDevice(
+		return await CardinalSdkPlatformInterface.instance.apis.device.undeleteDevice(
 			_sdkId,
 			device,
 		);
 	}
 
 	Future<List<Device>> getDevicesInGroup(String groupId, List<String>? deviceIds) async {
-		return await CardinalSdkPlatformInterface.instance.device.getDevicesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.device.getDevicesInGroup(
 			_sdkId,
 			groupId,
 			deviceIds,
@@ -153,7 +153,7 @@ class DevicePlatformApi {
 	}
 
 	Future<Device> modifyDeviceInGroup(String groupId, Device device) async {
-		return await CardinalSdkPlatformInterface.instance.device.modifyDeviceInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.device.modifyDeviceInGroup(
 			_sdkId,
 			groupId,
 			device,
@@ -161,7 +161,7 @@ class DevicePlatformApi {
 	}
 
 	Future<Device> createDeviceInGroup(String groupId, Device device) async {
-		return await CardinalSdkPlatformInterface.instance.device.createDeviceInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.device.createDeviceInGroup(
 			_sdkId,
 			groupId,
 			device,
@@ -169,7 +169,7 @@ class DevicePlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteDevicesInGroup(String groupId, List<IdWithRev> deviceIds) async {
-		return await CardinalSdkPlatformInterface.instance.device.deleteDevicesInGroup(
+		return await CardinalSdkPlatformInterface.instance.apis.device.deleteDevicesInGroup(
 			_sdkId,
 			groupId,
 			deviceIds,
@@ -177,7 +177,7 @@ class DevicePlatformApi {
 	}
 
 	Future<EntitySubscription<Device>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.device.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.device.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,

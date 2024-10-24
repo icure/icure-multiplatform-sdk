@@ -15,35 +15,35 @@ class HealthElementBasicPlatformApi {
 	HealthElementBasicPlatformApi(this._sdkId);
 
 	Future<List<String>> matchHealthElementsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.matchHealthElementsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.matchHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchHealthElementsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.matchHealthElementsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.matchHealthElementsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.filterHealthElementsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.filterHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.filterHealthElementsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.filterHealthElementsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteHealthElementById(String entityId, String? rev) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.deleteHealthElementById(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.deleteHealthElementById(
 			_sdkId,
 			entityId,
 			rev,
@@ -51,14 +51,14 @@ class HealthElementBasicPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteHealthElementsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.deleteHealthElementsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.deleteHealthElementsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeHealthElementById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.purgeHealthElementById(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.purgeHealthElementById(
 			_sdkId,
 			id,
 			rev,
@@ -66,28 +66,28 @@ class HealthElementBasicPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteHealthElement(HealthElement healthElement) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.deleteHealthElement(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.deleteHealthElement(
 			_sdkId,
 			healthElement,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteHealthElements(List<HealthElement> healthElements) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.deleteHealthElements(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.deleteHealthElements(
 			_sdkId,
 			healthElements,
 		);
 	}
 
 	Future<void> purgeHealthElement(HealthElement healthElement) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.purgeHealthElement(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.purgeHealthElement(
 			_sdkId,
 			healthElement,
 		);
 	}
 
 	Future<EncryptedHealthElement> undeleteHealthElementById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.undeleteHealthElementById(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.undeleteHealthElementById(
 			_sdkId,
 			id,
 			rev,
@@ -95,42 +95,42 @@ class HealthElementBasicPlatformApi {
 	}
 
 	Future<EncryptedHealthElement> undeleteHealthElement(HealthElement healthElement) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.undeleteHealthElement(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.undeleteHealthElement(
 			_sdkId,
 			healthElement,
 		);
 	}
 
 	Future<EncryptedHealthElement> modifyHealthElement(EncryptedHealthElement entity) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.modifyHealthElement(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.modifyHealthElement(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<List<EncryptedHealthElement>> modifyHealthElements(List<EncryptedHealthElement> entities) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.modifyHealthElements(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.modifyHealthElements(
 			_sdkId,
 			entities,
 		);
 	}
 
 	Future<EncryptedHealthElement> getHealthElement(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.getHealthElement(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.getHealthElement(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedHealthElement>> getHealthElements(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.getHealthElements(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.getHealthElements(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.healthElementBasic.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,

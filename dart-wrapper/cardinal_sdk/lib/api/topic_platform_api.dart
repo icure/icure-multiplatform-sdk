@@ -27,14 +27,14 @@ class TopicPlatformApi {
 		encrypted = EncryptedTopicPlatformApi(_sdkId);
 
 	Future<DecryptedTopic> createTopic(DecryptedTopic entity) async {
-		return await CardinalSdkPlatformInterface.instance.topic.createTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.createTopic(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedTopic> withEncryptionMetadata(DecryptedTopic? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
-		return await CardinalSdkPlatformInterface.instance.topic.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.withEncryptionMetadata(
 			_sdkId,
 			base,
 			patient,
@@ -45,28 +45,28 @@ class TopicPlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.getEncryptionKeysOf(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<bool> hasWriteAccess(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.hasWriteAccess(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.decryptPatientIdOf(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(Topic entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.topic.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -74,35 +74,35 @@ class TopicPlatformApi {
 	}
 
 	Future<DecryptedTopic> decrypt(EncryptedTopic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.decrypt(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<Topic> tryDecrypt(EncryptedTopic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryDecrypt(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<List<String>> matchTopicsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.matchTopicsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.matchTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchTopicsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.matchTopicsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.matchTopicsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteTopicById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.topic.deleteTopicById(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.deleteTopicById(
 			_sdkId,
 			entityId,
 			rev,
@@ -110,14 +110,14 @@ class TopicPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteTopicsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.topic.deleteTopicsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.deleteTopicsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeTopicById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.topic.purgeTopicById(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.purgeTopicById(
 			_sdkId,
 			id,
 			rev,
@@ -125,28 +125,28 @@ class TopicPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteTopic(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.deleteTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.deleteTopic(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteTopics(List<Topic> topics) async {
-		return await CardinalSdkPlatformInterface.instance.topic.deleteTopics(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.deleteTopics(
 			_sdkId,
 			topics,
 		);
 	}
 
 	Future<void> purgeTopic(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.purgeTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.purgeTopic(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<DecryptedTopic> shareWith(String delegateId, DecryptedTopic topic, TopicShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.topic.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.shareWith(
 			_sdkId,
 			delegateId,
 			topic,
@@ -155,7 +155,7 @@ class TopicPlatformApi {
 	}
 
 	Future<DecryptedTopic> shareWithMany(DecryptedTopic topic, Map<String, TopicShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.topic.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.shareWithMany(
 			_sdkId,
 			topic,
 			delegates,
@@ -163,35 +163,35 @@ class TopicPlatformApi {
 	}
 
 	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.filterTopicsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.filterTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.filterTopicsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.filterTopicsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Topic> undeleteTopic(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.undeleteTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.undeleteTopic(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<DecryptedTopic> modifyTopic(DecryptedTopic entity) async {
-		return await CardinalSdkPlatformInterface.instance.topic.modifyTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.modifyTopic(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedTopic> undeleteTopicById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.topic.undeleteTopicById(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.undeleteTopicById(
 			_sdkId,
 			id,
 			rev,
@@ -199,21 +199,21 @@ class TopicPlatformApi {
 	}
 
 	Future<DecryptedTopic> getTopic(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.topic.getTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.getTopic(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedTopic>> getTopics(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.topic.getTopics(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.getTopics(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<DecryptedTopic> addParticipant(String entityId, String dataOwnerId, TopicRole topicRole) async {
-		return await CardinalSdkPlatformInterface.instance.topic.addParticipant(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.addParticipant(
 			_sdkId,
 			entityId,
 			dataOwnerId,
@@ -222,7 +222,7 @@ class TopicPlatformApi {
 	}
 
 	Future<DecryptedTopic> removeParticipant(String entityId, String dataOwnerId) async {
-		return await CardinalSdkPlatformInterface.instance.topic.removeParticipant(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.removeParticipant(
 			_sdkId,
 			entityId,
 			dataOwnerId,
@@ -230,7 +230,7 @@ class TopicPlatformApi {
 	}
 
 	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
-		return await CardinalSdkPlatformInterface.instance.topic.subscribeToEvents(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.subscribeToEvents(
 			_sdkId,
 			events,
 			filter,
@@ -244,7 +244,7 @@ class TryAndRecoverTopicPlatformApi {
 	TryAndRecoverTopicPlatformApi(this._sdkId);
 
 	Future<Topic> shareWith(String delegateId, Topic topic, TopicShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			topic,
@@ -253,7 +253,7 @@ class TryAndRecoverTopicPlatformApi {
 	}
 
 	Future<Topic> shareWithMany(Topic topic, Map<String, TopicShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.shareWithMany(
 			_sdkId,
 			topic,
 			delegates,
@@ -261,35 +261,35 @@ class TryAndRecoverTopicPlatformApi {
 	}
 
 	Future<PaginatedListIterator<Topic>> filterTopicsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.filterTopicsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.filterTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Topic>> filterTopicsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.filterTopicsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.filterTopicsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Topic> undeleteTopic(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.undeleteTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.undeleteTopic(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<Topic> modifyTopic(Topic entity) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.modifyTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.modifyTopic(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<Topic> undeleteTopicById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.undeleteTopicById(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.undeleteTopicById(
 			_sdkId,
 			id,
 			rev,
@@ -297,21 +297,21 @@ class TryAndRecoverTopicPlatformApi {
 	}
 
 	Future<Topic> getTopic(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.getTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.getTopic(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<Topic>> getTopics(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.getTopics(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.getTopics(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<Topic> addParticipant(String entityId, String dataOwnerId, TopicRole topicRole) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.addParticipant(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.addParticipant(
 			_sdkId,
 			entityId,
 			dataOwnerId,
@@ -320,7 +320,7 @@ class TryAndRecoverTopicPlatformApi {
 	}
 
 	Future<Topic> removeParticipant(String entityId, String dataOwnerId) async {
-		return await CardinalSdkPlatformInterface.instance.topic.tryAndRecover.removeParticipant(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.removeParticipant(
 			_sdkId,
 			entityId,
 			dataOwnerId,
@@ -333,7 +333,7 @@ class EncryptedTopicPlatformApi {
 	EncryptedTopicPlatformApi(this._sdkId);
 
 	Future<EncryptedTopic> shareWith(String delegateId, EncryptedTopic topic, TopicShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			topic,
@@ -342,7 +342,7 @@ class EncryptedTopicPlatformApi {
 	}
 
 	Future<EncryptedTopic> shareWithMany(EncryptedTopic topic, Map<String, TopicShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.shareWithMany(
 			_sdkId,
 			topic,
 			delegates,
@@ -350,35 +350,35 @@ class EncryptedTopicPlatformApi {
 	}
 
 	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.filterTopicsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.filterTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.filterTopicsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.filterTopicsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Topic> undeleteTopic(Topic topic) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.undeleteTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.undeleteTopic(
 			_sdkId,
 			topic,
 		);
 	}
 
 	Future<EncryptedTopic> modifyTopic(EncryptedTopic entity) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.modifyTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.modifyTopic(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedTopic> undeleteTopicById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.undeleteTopicById(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.undeleteTopicById(
 			_sdkId,
 			id,
 			rev,
@@ -386,21 +386,21 @@ class EncryptedTopicPlatformApi {
 	}
 
 	Future<EncryptedTopic> getTopic(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.getTopic(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.getTopic(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedTopic>> getTopics(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.getTopics(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.getTopics(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EncryptedTopic> addParticipant(String entityId, String dataOwnerId, TopicRole topicRole) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.addParticipant(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.addParticipant(
 			_sdkId,
 			entityId,
 			dataOwnerId,
@@ -409,7 +409,7 @@ class EncryptedTopicPlatformApi {
 	}
 
 	Future<EncryptedTopic> removeParticipant(String entityId, String dataOwnerId) async {
-		return await CardinalSdkPlatformInterface.instance.topic.encrypted.removeParticipant(
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.removeParticipant(
 			_sdkId,
 			entityId,
 			dataOwnerId,

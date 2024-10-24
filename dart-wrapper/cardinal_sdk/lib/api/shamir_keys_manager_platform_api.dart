@@ -11,14 +11,14 @@ class ShamirKeysManagerPlatformApi {
 	ShamirKeysManagerPlatformApi(this._sdkId);
 
 	Future<Map<KeypairFingerprintV1String, Set<String>>> getExistingSplitsInfo(CryptoActor dataOwner) async {
-		return await CardinalSdkPlatformInterface.instance.shamirKeysManager.getExistingSplitsInfo(
+		return await CardinalSdkPlatformInterface.instance.apis.shamirKeysManager.getExistingSplitsInfo(
 			_sdkId,
 			dataOwner,
 		);
 	}
 
 	Future<CryptoActorStubWithType> updateSelfSplits(Map<KeypairFingerprintV1String, ShamirUpdateRequest> keySplitsToUpdate, Set<KeypairFingerprintV1String> keySplitsToDelete) async {
-		return await CardinalSdkPlatformInterface.instance.shamirKeysManager.updateSelfSplits(
+		return await CardinalSdkPlatformInterface.instance.apis.shamirKeysManager.updateSelfSplits(
 			_sdkId,
 			keySplitsToUpdate,
 			keySplitsToDelete,

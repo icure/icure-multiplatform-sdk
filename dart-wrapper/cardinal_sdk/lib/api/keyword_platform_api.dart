@@ -9,35 +9,35 @@ class KeywordPlatformApi {
 	KeywordPlatformApi(this._sdkId);
 
 	Future<Keyword> getKeyword(String frontEndMigrationId) async {
-		return await CardinalSdkPlatformInterface.instance.keyword.getKeyword(
+		return await CardinalSdkPlatformInterface.instance.apis.keyword.getKeyword(
 			_sdkId,
 			frontEndMigrationId,
 		);
 	}
 
 	Future<Keyword> createKeyword(Keyword frontEndMigration) async {
-		return await CardinalSdkPlatformInterface.instance.keyword.createKeyword(
+		return await CardinalSdkPlatformInterface.instance.apis.keyword.createKeyword(
 			_sdkId,
 			frontEndMigration,
 		);
 	}
 
 	Future<Keyword> modifyKeyword(Keyword keyword) async {
-		return await CardinalSdkPlatformInterface.instance.keyword.modifyKeyword(
+		return await CardinalSdkPlatformInterface.instance.apis.keyword.modifyKeyword(
 			_sdkId,
 			keyword,
 		);
 	}
 
 	Future<List<Keyword>> getKeywordsByUser(String userId) async {
-		return await CardinalSdkPlatformInterface.instance.keyword.getKeywordsByUser(
+		return await CardinalSdkPlatformInterface.instance.apis.keyword.getKeywordsByUser(
 			_sdkId,
 			userId,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteKeywords(List<String> keywordIds) async {
-		return await CardinalSdkPlatformInterface.instance.keyword.deleteKeywords(
+		return await CardinalSdkPlatformInterface.instance.apis.keyword.deleteKeywords(
 			_sdkId,
 			keywordIds,
 		);

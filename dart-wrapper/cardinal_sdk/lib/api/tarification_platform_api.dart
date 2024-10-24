@@ -8,35 +8,35 @@ class TarificationPlatformApi {
 	TarificationPlatformApi(this._sdkId);
 
 	Future<Tarification> getTarification(String tarificationId) async {
-		return await CardinalSdkPlatformInterface.instance.tarification.getTarification(
+		return await CardinalSdkPlatformInterface.instance.apis.tarification.getTarification(
 			_sdkId,
 			tarificationId,
 		);
 	}
 
 	Future<Tarification> createTarification(Tarification tarification) async {
-		return await CardinalSdkPlatformInterface.instance.tarification.createTarification(
+		return await CardinalSdkPlatformInterface.instance.apis.tarification.createTarification(
 			_sdkId,
 			tarification,
 		);
 	}
 
 	Future<List<Tarification>> getTarifications(List<String> tarificationIds) async {
-		return await CardinalSdkPlatformInterface.instance.tarification.getTarifications(
+		return await CardinalSdkPlatformInterface.instance.apis.tarification.getTarifications(
 			_sdkId,
 			tarificationIds,
 		);
 	}
 
 	Future<Tarification> modifyTarification(Tarification tarification) async {
-		return await CardinalSdkPlatformInterface.instance.tarification.modifyTarification(
+		return await CardinalSdkPlatformInterface.instance.apis.tarification.modifyTarification(
 			_sdkId,
 			tarification,
 		);
 	}
 
 	Future<Tarification> getTarificationWithParts(String type, String tarification, String version) async {
-		return await CardinalSdkPlatformInterface.instance.tarification.getTarificationWithParts(
+		return await CardinalSdkPlatformInterface.instance.apis.tarification.getTarificationWithParts(
 			_sdkId,
 			type,
 			tarification,

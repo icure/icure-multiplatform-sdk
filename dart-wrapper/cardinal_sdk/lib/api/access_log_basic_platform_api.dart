@@ -12,35 +12,35 @@ class AccessLogBasicPlatformApi {
 	AccessLogBasicPlatformApi(this._sdkId);
 
 	Future<List<String>> matchAccessLogsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.matchAccessLogsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.matchAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchAccessLogsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.matchAccessLogsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.matchAccessLogsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.filterAccessLogsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.filterAccessLogsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.filterAccessLogsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteAccessLogById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.deleteAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.deleteAccessLogById(
 			_sdkId,
 			entityId,
 			rev,
@@ -48,14 +48,14 @@ class AccessLogBasicPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteAccessLogsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.deleteAccessLogsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.deleteAccessLogsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeAccessLogById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.purgeAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.purgeAccessLogById(
 			_sdkId,
 			id,
 			rev,
@@ -63,28 +63,28 @@ class AccessLogBasicPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.deleteAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.deleteAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteAccessLogs(List<AccessLog> accessLogs) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.deleteAccessLogs(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.deleteAccessLogs(
 			_sdkId,
 			accessLogs,
 		);
 	}
 
 	Future<void> purgeAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.purgeAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.purgeAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<EncryptedAccessLog> undeleteAccessLogById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.undeleteAccessLogById(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.undeleteAccessLogById(
 			_sdkId,
 			id,
 			rev,
@@ -92,28 +92,28 @@ class AccessLogBasicPlatformApi {
 	}
 
 	Future<EncryptedAccessLog> undeleteAccessLog(AccessLog accessLog) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.undeleteAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.undeleteAccessLog(
 			_sdkId,
 			accessLog,
 		);
 	}
 
 	Future<EncryptedAccessLog> modifyAccessLog(EncryptedAccessLog entity) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.modifyAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.modifyAccessLog(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedAccessLog> getAccessLog(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.getAccessLog(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.getAccessLog(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedAccessLog>> getAccessLogs(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.accessLogBasic.getAccessLogs(
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.getAccessLogs(
 			_sdkId,
 			entityIds,
 		);

@@ -10,14 +10,14 @@ class CardinalMaintenanceTaskPlatformApi {
 	CardinalMaintenanceTaskPlatformApi(this._sdkId);
 
 	Future<void> applyKeyPairUpdate(KeyPairUpdateNotification updateRequest) async {
-		return await CardinalSdkPlatformInterface.instance.cardinalMaintenanceTask.applyKeyPairUpdate(
+		return await CardinalSdkPlatformInterface.instance.apis.cardinalMaintenanceTask.applyKeyPairUpdate(
 			_sdkId,
 			updateRequest,
 		);
 	}
 
 	Future<void> createKeyPairUpdateNotificationsToAllDelegationCounterparts(SpkiHexString key, Set<DataOwnerType>? requestToOwnerTypes) async {
-		return await CardinalSdkPlatformInterface.instance.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
+		return await CardinalSdkPlatformInterface.instance.apis.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
 			_sdkId,
 			key,
 			requestToOwnerTypes,
@@ -25,7 +25,7 @@ class CardinalMaintenanceTaskPlatformApi {
 	}
 
 	Future<void> createKeyPairUpdateNotificationTo(String dataOwnerId, SpkiHexString key) async {
-		return await CardinalSdkPlatformInterface.instance.cardinalMaintenanceTask.createKeyPairUpdateNotificationTo(
+		return await CardinalSdkPlatformInterface.instance.apis.cardinalMaintenanceTask.createKeyPairUpdateNotificationTo(
 			_sdkId,
 			dataOwnerId,
 			key,

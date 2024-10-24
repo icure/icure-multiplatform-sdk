@@ -14,35 +14,35 @@ class FormBasicPlatformApi {
 	FormBasicPlatformApi(this._sdkId);
 
 	Future<List<String>> matchFormsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.matchFormsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.matchFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchFormsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.matchFormsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.matchFormsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.filterFormsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.filterFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.filterFormsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.filterFormsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteFormById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.deleteFormById(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.deleteFormById(
 			_sdkId,
 			entityId,
 			rev,
@@ -50,14 +50,14 @@ class FormBasicPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteFormsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.deleteFormsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.deleteFormsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeFormById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.purgeFormById(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.purgeFormById(
 			_sdkId,
 			id,
 			rev,
@@ -65,28 +65,28 @@ class FormBasicPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteForm(Form form) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.deleteForm(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.deleteForm(
 			_sdkId,
 			form,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteForms(List<Form> forms) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.deleteForms(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.deleteForms(
 			_sdkId,
 			forms,
 		);
 	}
 
 	Future<void> purgeForm(Form form) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.purgeForm(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.purgeForm(
 			_sdkId,
 			form,
 		);
 	}
 
 	Future<FormTemplate> getFormTemplate(String formTemplateId, bool? raw) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.getFormTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.getFormTemplate(
 			_sdkId,
 			formTemplateId,
 			raw,
@@ -94,28 +94,28 @@ class FormBasicPlatformApi {
 	}
 
 	Future<FormTemplate> createFormTemplate(FormTemplate formTemplate) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.createFormTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.createFormTemplate(
 			_sdkId,
 			formTemplate,
 		);
 	}
 
 	Future<DocIdentifier> deleteFormTemplate(String formTemplateId) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.deleteFormTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.deleteFormTemplate(
 			_sdkId,
 			formTemplateId,
 		);
 	}
 
 	Future<FormTemplate> updateFormTemplate(FormTemplate formTemplate) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.updateFormTemplate(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.updateFormTemplate(
 			_sdkId,
 			formTemplate,
 		);
 	}
 
 	Future<String> setTemplateAttachment(String formTemplateId, Uint8List payload) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.setTemplateAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.setTemplateAttachment(
 			_sdkId,
 			formTemplateId,
 			payload,
@@ -123,14 +123,14 @@ class FormBasicPlatformApi {
 	}
 
 	Future<EncryptedForm> modifyForm(EncryptedForm entity) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.modifyForm(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.modifyForm(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedForm> undeleteFormById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.undeleteFormById(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.undeleteFormById(
 			_sdkId,
 			id,
 			rev,
@@ -138,42 +138,42 @@ class FormBasicPlatformApi {
 	}
 
 	Future<EncryptedForm> undeleteForm(Form form) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.undeleteForm(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.undeleteForm(
 			_sdkId,
 			form,
 		);
 	}
 
 	Future<List<EncryptedForm>> modifyForms(List<EncryptedForm> entities) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.modifyForms(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.modifyForms(
 			_sdkId,
 			entities,
 		);
 	}
 
 	Future<EncryptedForm> getForm(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.getForm(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.getForm(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedForm>> getForms(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.getForms(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.getForms(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EncryptedForm> getLatestFormByLogicalUuid(String logicalUuid) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.getLatestFormByLogicalUuid(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.getLatestFormByLogicalUuid(
 			_sdkId,
 			logicalUuid,
 		);
 	}
 
 	Future<EncryptedForm> getLatestFormByUniqueId(String uniqueId) async {
-		return await CardinalSdkPlatformInterface.instance.formBasic.getLatestFormByUniqueId(
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.getLatestFormByUniqueId(
 			_sdkId,
 			uniqueId,
 		);

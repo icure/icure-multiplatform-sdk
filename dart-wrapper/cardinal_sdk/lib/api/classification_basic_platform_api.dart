@@ -11,63 +11,63 @@ class ClassificationBasicPlatformApi {
 	ClassificationBasicPlatformApi(this._sdkId);
 
 	Future<List<String>> matchClassificationsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.matchClassificationsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.matchClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchClassificationsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.matchClassificationsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.matchClassificationsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(BaseFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.filterClassificationsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.filterClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(BaseSortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.filterClassificationsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.filterClassificationsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteClassification(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.deleteClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.deleteClassification(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteClassifications(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.deleteClassifications(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.deleteClassifications(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<EncryptedClassification> modifyClassification(EncryptedClassification entity) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.modifyClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.modifyClassification(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedClassification> getClassification(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.getClassification(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.getClassification(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedClassification>> getClassifications(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.classificationBasic.getClassifications(
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.getClassifications(
 			_sdkId,
 			entityIds,
 		);

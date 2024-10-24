@@ -8,14 +8,14 @@ class EntityReferencePlatformApi {
 	EntityReferencePlatformApi(this._sdkId);
 
 	Future<EntityReference> getLatest(String prefix) async {
-		return await CardinalSdkPlatformInterface.instance.entityReference.getLatest(
+		return await CardinalSdkPlatformInterface.instance.apis.entityReference.getLatest(
 			_sdkId,
 			prefix,
 		);
 	}
 
 	Future<EntityReference> createEntityReference(EntityReference entityReference) async {
-		return await CardinalSdkPlatformInterface.instance.entityReference.createEntityReference(
+		return await CardinalSdkPlatformInterface.instance.apis.entityReference.createEntityReference(
 			_sdkId,
 			entityReference,
 		);

@@ -24,14 +24,14 @@ class DocumentPlatformApi {
 		encrypted = EncryptedDocumentPlatformApi(_sdkId);
 
 	Future<DecryptedDocument> createDocument(DecryptedDocument entity) async {
-		return await CardinalSdkPlatformInterface.instance.document.createDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.createDocument(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedDocument> withEncryptionMetadata(DecryptedDocument? base, Message? message, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
-		return await CardinalSdkPlatformInterface.instance.document.withEncryptionMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.document.withEncryptionMetadata(
 			_sdkId,
 			base,
 			message,
@@ -42,21 +42,21 @@ class DocumentPlatformApi {
 	}
 
 	Future<Uint8List?> getAndTryDecryptMainAttachment(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.getAndTryDecryptMainAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getAndTryDecryptMainAttachment(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<Uint8List> getAndDecryptMainAttachment(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.getAndDecryptMainAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getAndDecryptMainAttachment(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<EncryptedDocument> encryptAndSetMainAttachment(Document document, List<String>? utis, Uint8List attachment) async {
-		return await CardinalSdkPlatformInterface.instance.document.encryptAndSetMainAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encryptAndSetMainAttachment(
 			_sdkId,
 			document,
 			utis,
@@ -65,7 +65,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<Uint8List> getAndDecryptSecondaryAttachment(Document document, String key) async {
-		return await CardinalSdkPlatformInterface.instance.document.getAndDecryptSecondaryAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getAndDecryptSecondaryAttachment(
 			_sdkId,
 			document,
 			key,
@@ -73,7 +73,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<EncryptedDocument> encryptAndSetSecondaryAttachment(Document document, String key, List<String>? utis, Uint8List attachment) async {
-		return await CardinalSdkPlatformInterface.instance.document.encryptAndSetSecondaryAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encryptAndSetSecondaryAttachment(
 			_sdkId,
 			document,
 			key,
@@ -83,28 +83,28 @@ class DocumentPlatformApi {
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.getEncryptionKeysOf(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getEncryptionKeysOf(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<bool> hasWriteAccess(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.hasWriteAccess(
+		return await CardinalSdkPlatformInterface.instance.apis.document.hasWriteAccess(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<Set<String>> decryptPatientIdOf(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.decryptPatientIdOf(
+		return await CardinalSdkPlatformInterface.instance.apis.document.decryptPatientIdOf(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<void> createDelegationDeAnonymizationMetadata(Document entity, Set<String> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.document.createDelegationDeAnonymizationMetadata(
+		return await CardinalSdkPlatformInterface.instance.apis.document.createDelegationDeAnonymizationMetadata(
 			_sdkId,
 			entity,
 			delegates,
@@ -112,21 +112,21 @@ class DocumentPlatformApi {
 	}
 
 	Future<DecryptedDocument> decrypt(EncryptedDocument document) async {
-		return await CardinalSdkPlatformInterface.instance.document.decrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.document.decrypt(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<Document> tryDecrypt(EncryptedDocument document) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryDecrypt(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryDecrypt(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<Uint8List?> tryDecryptAttachment(Document document, Uint8List encryptedAttachment) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryDecryptAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryDecryptAttachment(
 			_sdkId,
 			document,
 			encryptedAttachment,
@@ -134,21 +134,21 @@ class DocumentPlatformApi {
 	}
 
 	Future<List<String>> matchDocumentsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.matchDocumentsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.document.matchDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<List<String>> matchDocumentsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.matchDocumentsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.document.matchDocumentsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DocIdentifier> deleteDocumentById(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.document.deleteDocumentById(
+		return await CardinalSdkPlatformInterface.instance.apis.document.deleteDocumentById(
 			_sdkId,
 			entityId,
 			rev,
@@ -156,14 +156,14 @@ class DocumentPlatformApi {
 	}
 
 	Future<List<DocIdentifier>> deleteDocumentsByIds(List<IdWithMandatoryRev> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.document.deleteDocumentsByIds(
+		return await CardinalSdkPlatformInterface.instance.apis.document.deleteDocumentsByIds(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<void> purgeDocumentById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.document.purgeDocumentById(
+		return await CardinalSdkPlatformInterface.instance.apis.document.purgeDocumentById(
 			_sdkId,
 			id,
 			rev,
@@ -171,35 +171,35 @@ class DocumentPlatformApi {
 	}
 
 	Future<DocIdentifier> deleteDocument(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.deleteDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.deleteDocument(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<List<DocIdentifier>> deleteDocuments(List<Document> documents) async {
-		return await CardinalSdkPlatformInterface.instance.document.deleteDocuments(
+		return await CardinalSdkPlatformInterface.instance.apis.document.deleteDocuments(
 			_sdkId,
 			documents,
 		);
 	}
 
 	Future<void> purgeDocument(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.purgeDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.purgeDocument(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<Uint8List> getRawMainAttachment(String documentId) async {
-		return await CardinalSdkPlatformInterface.instance.document.getRawMainAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getRawMainAttachment(
 			_sdkId,
 			documentId,
 		);
 	}
 
 	Future<Uint8List> getRawSecondaryAttachment(String documentId, String key) async {
-		return await CardinalSdkPlatformInterface.instance.document.getRawSecondaryAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getRawSecondaryAttachment(
 			_sdkId,
 			documentId,
 			key,
@@ -207,7 +207,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<EncryptedDocument> setRawMainAttachment(String documentId, String rev, List<String>? utis, Uint8List attachment, bool encrypted) async {
-		return await CardinalSdkPlatformInterface.instance.document.setRawMainAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.setRawMainAttachment(
 			_sdkId,
 			documentId,
 			rev,
@@ -218,7 +218,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<EncryptedDocument> setRawSecondaryAttachment(String documentId, String key, String rev, List<String>? utis, Uint8List attachment, bool encrypted) async {
-		return await CardinalSdkPlatformInterface.instance.document.setRawSecondaryAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.setRawSecondaryAttachment(
 			_sdkId,
 			documentId,
 			key,
@@ -230,7 +230,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<EncryptedDocument> deleteMainAttachment(String entityId, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.document.deleteMainAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.deleteMainAttachment(
 			_sdkId,
 			entityId,
 			rev,
@@ -238,7 +238,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<EncryptedDocument> deleteSecondaryAttachment(String documentId, String key, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.document.deleteSecondaryAttachment(
+		return await CardinalSdkPlatformInterface.instance.apis.document.deleteSecondaryAttachment(
 			_sdkId,
 			documentId,
 			key,
@@ -247,7 +247,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<DecryptedDocument> shareWith(String delegateId, DecryptedDocument document, DocumentShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.document.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.document.shareWith(
 			_sdkId,
 			delegateId,
 			document,
@@ -256,7 +256,7 @@ class DocumentPlatformApi {
 	}
 
 	Future<DecryptedDocument> shareWithMany(DecryptedDocument document, Map<String, DocumentShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.document.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.document.shareWithMany(
 			_sdkId,
 			document,
 			delegates,
@@ -264,21 +264,21 @@ class DocumentPlatformApi {
 	}
 
 	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.filterDocumentsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.document.filterDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.filterDocumentsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.document.filterDocumentsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<DecryptedDocument> undeleteDocumentById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.document.undeleteDocumentById(
+		return await CardinalSdkPlatformInterface.instance.apis.document.undeleteDocumentById(
 			_sdkId,
 			id,
 			rev,
@@ -286,35 +286,35 @@ class DocumentPlatformApi {
 	}
 
 	Future<DecryptedDocument> undeleteDocument(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.undeleteDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.undeleteDocument(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<DecryptedDocument> modifyDocument(DecryptedDocument entity) async {
-		return await CardinalSdkPlatformInterface.instance.document.modifyDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.modifyDocument(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<DecryptedDocument> getDocument(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.document.getDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getDocument(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<DecryptedDocument>> getDocuments(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.document.getDocuments(
+		return await CardinalSdkPlatformInterface.instance.apis.document.getDocuments(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<List<DecryptedDocument>> modifyDocuments(List<DecryptedDocument> entities) async {
-		return await CardinalSdkPlatformInterface.instance.document.modifyDocuments(
+		return await CardinalSdkPlatformInterface.instance.apis.document.modifyDocuments(
 			_sdkId,
 			entities,
 		);
@@ -326,7 +326,7 @@ class TryAndRecoverDocumentPlatformApi {
 	TryAndRecoverDocumentPlatformApi(this._sdkId);
 
 	Future<Document> shareWith(String delegateId, Document document, DocumentShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
 			document,
@@ -335,7 +335,7 @@ class TryAndRecoverDocumentPlatformApi {
 	}
 
 	Future<Document> shareWithMany(Document document, Map<String, DocumentShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.shareWithMany(
 			_sdkId,
 			document,
 			delegates,
@@ -343,21 +343,21 @@ class TryAndRecoverDocumentPlatformApi {
 	}
 
 	Future<PaginatedListIterator<Document>> filterDocumentsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.filterDocumentsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.filterDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<Document>> filterDocumentsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.filterDocumentsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.filterDocumentsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<Document> undeleteDocumentById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.undeleteDocumentById(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.undeleteDocumentById(
 			_sdkId,
 			id,
 			rev,
@@ -365,35 +365,35 @@ class TryAndRecoverDocumentPlatformApi {
 	}
 
 	Future<Document> undeleteDocument(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.undeleteDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.undeleteDocument(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<Document> modifyDocument(Document entity) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.modifyDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.modifyDocument(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<Document> getDocument(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.getDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.getDocument(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<Document>> getDocuments(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.getDocuments(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.getDocuments(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<List<Document>> modifyDocuments(List<Document> entities) async {
-		return await CardinalSdkPlatformInterface.instance.document.tryAndRecover.modifyDocuments(
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.modifyDocuments(
 			_sdkId,
 			entities,
 		);
@@ -405,7 +405,7 @@ class EncryptedDocumentPlatformApi {
 	EncryptedDocumentPlatformApi(this._sdkId);
 
 	Future<EncryptedDocument> shareWith(String delegateId, EncryptedDocument document, DocumentShareOptions? options) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.shareWith(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.shareWith(
 			_sdkId,
 			delegateId,
 			document,
@@ -414,7 +414,7 @@ class EncryptedDocumentPlatformApi {
 	}
 
 	Future<EncryptedDocument> shareWithMany(EncryptedDocument document, Map<String, DocumentShareOptions> delegates) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.shareWithMany(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.shareWithMany(
 			_sdkId,
 			document,
 			delegates,
@@ -422,21 +422,21 @@ class EncryptedDocumentPlatformApi {
 	}
 
 	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(FilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.filterDocumentsBy(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.filterDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(SortableFilterOptions filter) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.filterDocumentsBySorted(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.filterDocumentsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
 	Future<EncryptedDocument> undeleteDocumentById(String id, String rev) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.undeleteDocumentById(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.undeleteDocumentById(
 			_sdkId,
 			id,
 			rev,
@@ -444,35 +444,35 @@ class EncryptedDocumentPlatformApi {
 	}
 
 	Future<EncryptedDocument> undeleteDocument(Document document) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.undeleteDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.undeleteDocument(
 			_sdkId,
 			document,
 		);
 	}
 
 	Future<EncryptedDocument> modifyDocument(EncryptedDocument entity) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.modifyDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.modifyDocument(
 			_sdkId,
 			entity,
 		);
 	}
 
 	Future<EncryptedDocument> getDocument(String entityId) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.getDocument(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.getDocument(
 			_sdkId,
 			entityId,
 		);
 	}
 
 	Future<List<EncryptedDocument>> getDocuments(List<String> entityIds) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.getDocuments(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.getDocuments(
 			_sdkId,
 			entityIds,
 		);
 	}
 
 	Future<List<EncryptedDocument>> modifyDocuments(List<EncryptedDocument> entities) async {
-		return await CardinalSdkPlatformInterface.instance.document.encrypted.modifyDocuments(
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.modifyDocuments(
 			_sdkId,
 			entities,
 		);
