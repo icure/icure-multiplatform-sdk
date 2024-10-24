@@ -66,5 +66,6 @@ public fun dispatchApi(
   "InsuranceApi" -> InsuranceApiDispatcher.dispatch(methodName, parameters, resultCallback)
   "AgendaApi" -> AgendaApiDispatcher.dispatch(methodName, parameters, resultCallback)
   "GroupApi" -> GroupApiDispatcher.dispatch(methodName, parameters, resultCallback)
+  "PaginatedListIterator" -> PaginatedListIteratorDispatcher.dispatch(methodName, parameters, resultCallback)
   else -> false
 }
