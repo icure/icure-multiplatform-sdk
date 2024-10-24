@@ -8,8 +8,8 @@ class Measure {
 	double? value;
 	double? ref;
 	int? _severity;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get severity => _severity;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set severity(int? value) {
+	@ActualInt32() int? get severity => _severity;
+	@ActualInt32() set severity(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('severity value cannot exceed 2147483647');
 		}
@@ -17,8 +17,8 @@ class Measure {
 	}
 	String? severityCode;
 	int? _evolution;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get evolution => _evolution;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set evolution(int? value) {
+	@ActualInt32() int? get evolution => _evolution;
+	@ActualInt32() set evolution(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('evolution value cannot exceed 2147483647');
 		}
@@ -50,15 +50,15 @@ class Measure {
 		return Measure(
 			severity: data["severity"],
 			evolution: data["evolution"],
-			value: data["value"],
-			ref: data["ref"],
+			value: data["value"].toDouble(),
+			ref: data["ref"].toDouble(),
 			severityCode: data["severityCode"],
 			unit: data["unit"],
-			unitCodes: data["unitCodes"]?.map((x0) => CodeStub.fromJSON(x0) ),
+			unitCodes: data["unitCodes"]?.map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			comment: data["comment"],
 			comparator: data["comparator"],
 			sign: data["sign"],
-			referenceRanges: data["referenceRanges"].map((x0) => ReferenceRange.fromJSON(x0) )
+			referenceRanges: data["referenceRanges"].map((x0) => ReferenceRange.fromJSON(x0) ).toList()
 		);
 	}
 
@@ -70,11 +70,11 @@ class Measure {
 			"severityCode" : value.severityCode,
 			"evolution" : value.evolution,
 			"unit" : value.unit,
-			"unitCodes" : value.unitCodes?.map((x0) => CodeStub.encode(x0)),
+			"unitCodes" : value.unitCodes?.map((x0) => CodeStub.encode(x0)).toList(),
 			"comment" : value.comment,
 			"comparator" : value.comparator,
 			"sign" : value.sign,
-			"referenceRanges" : value.referenceRanges.map((x0) => ReferenceRange.encode(x0))
+			"referenceRanges" : value.referenceRanges.map((x0) => ReferenceRange.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

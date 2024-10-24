@@ -19,7 +19,7 @@ class Delegation {
 			owner: data["owner"],
 			delegatedTo: data["delegatedTo"],
 			key: data["key"],
-			tags: data["tags"].map((x0) => x0 )
+			tags: data["tags"].map((x0) => x0 ).toList()
 		);
 	}
 
@@ -28,7 +28,7 @@ class Delegation {
 			"owner" : value.owner,
 			"delegatedTo" : value.delegatedTo,
 			"key" : value.key,
-			"tags" : value.tags.map((x0) => x0)
+			"tags" : value.tags.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

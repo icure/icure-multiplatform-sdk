@@ -29,7 +29,7 @@ class Replication implements StoredDocument, Identifiable<String>, Named {
 			deletionDate: data["deletionDate"],
 			name: data["name"],
 			context: data["context"],
-			databaseSynchronizations: data["databaseSynchronizations"].map((x0) => DatabaseSynchronization.fromJSON(x0) ),
+			databaseSynchronizations: data["databaseSynchronizations"].map((x0) => DatabaseSynchronization.fromJSON(x0) ).toList(),
 		);
 	}
 
@@ -40,7 +40,7 @@ class Replication implements StoredDocument, Identifiable<String>, Named {
 			"deletionDate" : value.deletionDate,
 			"name" : value.name,
 			"context" : value.context,
-			"databaseSynchronizations" : value.databaseSynchronizations.map((x0) => DatabaseSynchronization.encode(x0))
+			"databaseSynchronizations" : value.databaseSynchronizations.map((x0) => DatabaseSynchronization.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

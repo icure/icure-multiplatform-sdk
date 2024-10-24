@@ -24,7 +24,7 @@ class RegistrationInformation {
 			data["lastName"],
 			data["emailAddress"],
 			userOptions: data["userOptions"],
-			userRoles: data["userRoles"].map((x0) => x0 ),
+			userRoles: data["userRoles"].map((x0) => x0 ).toList(),
 			minimumKrakenVersion: data["minimumKrakenVersion"],
 		);
 	}
@@ -35,7 +35,7 @@ class RegistrationInformation {
 			"lastName" : value.lastName,
 			"emailAddress" : value.emailAddress,
 			"userOptions" : value.userOptions,
-			"userRoles" : value.userRoles.map((x0) => x0),
+			"userRoles" : value.userRoles.map((x0) => x0).toList(),
 			"minimumKrakenVersion" : value.minimumKrakenVersion
 		};
 		return entityAsMap;

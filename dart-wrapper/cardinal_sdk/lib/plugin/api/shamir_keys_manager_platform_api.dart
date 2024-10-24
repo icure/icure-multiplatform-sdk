@@ -21,7 +21,7 @@ class ShamirKeysManagerPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getExistingSplitsInfo");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((k1, v1) => MapEntry(k1, v1.map((x2) => x2 )));
+		return parsedResJson.map((k1, v1) => MapEntry(k1, v1.map((x2) => x2 ).toList()));
 	}
 
 	Future<CryptoActorStubWithType> updateSelfSplits(String sdkId, Map<KeypairFingerprintV1String, ShamirUpdateRequest> keySplitsToUpdate, Set<KeypairFingerprintV1String> keySplitsToDelete) async {
@@ -30,7 +30,7 @@ class ShamirKeysManagerPlatformApi {
 			{
 				"sdkId": sdkId,
 				"keySplitsToUpdate": jsonEncode(keySplitsToUpdate.map((k0, v0) => MapEntry(k0, ShamirUpdateRequest.encode(v0)))),
-				"keySplitsToDelete": jsonEncode(keySplitsToDelete.map((x0) => x0)),
+				"keySplitsToDelete": jsonEncode(keySplitsToDelete.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method updateSelfSplits");

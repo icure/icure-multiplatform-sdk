@@ -4,8 +4,8 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
 class EntitySubscriptionConfiguration {
 	int _channelBufferCapacity = 100;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int get channelBufferCapacity => _channelBufferCapacity;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set channelBufferCapacity(int value) {
+	@ActualInt32() int get channelBufferCapacity => _channelBufferCapacity;
+	@ActualInt32() set channelBufferCapacity(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('channelBufferCapacity value cannot exceed 2147483647');
 		}
@@ -15,8 +15,8 @@ class EntitySubscriptionConfiguration {
 	Duration reconnectionDelay = Duration(seconds: 2);
 	double retryDelayExponentFactor = 2.0;
 	int _connectionMaxRetries = 5;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int get connectionMaxRetries => _connectionMaxRetries;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set connectionMaxRetries(int value) {
+	@ActualInt32() int get connectionMaxRetries => _connectionMaxRetries;
+	@ActualInt32() set connectionMaxRetries(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('connectionMaxRetries value cannot exceed 2147483647');
 		}
@@ -40,7 +40,7 @@ class EntitySubscriptionConfiguration {
 			connectionMaxRetries: data["connectionMaxRetries"],
 			onBufferFull: EntitySubscriptionConfigurationFullBufferBehaviour.fromJSON(data["onBufferFull"]),
 			reconnectionDelay: Duration(milliseconds: data["reconnectionDelay"]),
-			retryDelayExponentFactor: data["retryDelayExponentFactor"]
+			retryDelayExponentFactor: data["retryDelayExponentFactor"].toDouble()
 		);
 	}
 

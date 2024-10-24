@@ -42,7 +42,7 @@ sealed class Service implements Encryptable, ICureDocument<String> {
 	@override abstract String? responsible;
 	@override abstract String? medicalLocationId;
 	abstract String? comment;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? status;
+	@ActualInt32() abstract int? status;
 	abstract Set<String> invoicingCodes;
 	abstract List<Annotation> notes;
 	abstract Map<LinkQualification, Map<String, String>> qualifiedLinks;
@@ -110,8 +110,8 @@ class DecryptedService implements Service {
 	@override String? medicalLocationId;
 	@override String? comment;
 	int? _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
+	@ActualInt32() @override int? get status => _status;
+	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -181,16 +181,16 @@ class DecryptedService implements Service {
 			data["id"],
 			status: data["status"],
 			transactionId: data["transactionId"],
-			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ).toList(),
 			contactId: data["contactId"],
-			subContactIds: data["subContactIds"]?.map((x0) => x0 ),
-			plansOfActionIds: data["plansOfActionIds"]?.map((x0) => x0 ),
-			healthElementsIds: data["healthElementsIds"]?.map((x0) => x0 ),
-			formIds: data["formIds"]?.map((x0) => x0 ),
-			secretForeignKeys: data["secretForeignKeys"]?.map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			subContactIds: data["subContactIds"]?.map((x0) => x0 ).toList(),
+			plansOfActionIds: data["plansOfActionIds"]?.map((x0) => x0 ).toList(),
+			healthElementsIds: data["healthElementsIds"]?.map((x0) => x0 ).toList(),
+			formIds: data["formIds"]?.map((x0) => x0 ).toList(),
+			secretForeignKeys: data["secretForeignKeys"]?.map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			label: data["label"],
 			index: data["index"],
 			content: data["content"].map((k0, v0) => MapEntry(k0, DecryptedContent.fromJSON(v0))),
@@ -207,11 +207,11 @@ class DecryptedService implements Service {
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
 			comment: data["comment"],
-			invoicingCodes: data["invoicingCodes"].map((x0) => x0 ),
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			invoicingCodes: data["invoicingCodes"].map((x0) => x0 ).toList(),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
 			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(LinkQualification.fromJSON(k0), v0.map((k1, v1) => MapEntry(k1, v1)))),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -221,16 +221,16 @@ class DecryptedService implements Service {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
 			"transactionId" : value.transactionId,
-			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)),
+			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)).toList(),
 			"contactId" : value.contactId,
-			"subContactIds" : value.subContactIds?.map((x0) => x0),
-			"plansOfActionIds" : value.plansOfActionIds?.map((x0) => x0),
-			"healthElementsIds" : value.healthElementsIds?.map((x0) => x0),
-			"formIds" : value.formIds?.map((x0) => x0),
-			"secretForeignKeys" : value.secretForeignKeys?.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"subContactIds" : value.subContactIds?.map((x0) => x0).toList(),
+			"plansOfActionIds" : value.plansOfActionIds?.map((x0) => x0).toList(),
+			"healthElementsIds" : value.healthElementsIds?.map((x0) => x0).toList(),
+			"formIds" : value.formIds?.map((x0) => x0).toList(),
+			"secretForeignKeys" : value.secretForeignKeys?.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"label" : value.label,
 			"index" : value.index,
 			"content" : value.content.map((k0, v0) => MapEntry(k0, DecryptedContent.encode(v0))),
@@ -248,11 +248,11 @@ class DecryptedService implements Service {
 			"medicalLocationId" : value.medicalLocationId,
 			"comment" : value.comment,
 			"status" : value.status,
-			"invoicingCodes" : value.invoicingCodes.map((x0) => x0),
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
+			"invoicingCodes" : value.invoicingCodes.map((x0) => x0).toList(),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
 			"qualifiedLinks" : value.qualifiedLinks.map((k0, v0) => MapEntry(LinkQualification.encode(k0), v0.map((k1, v1) => MapEntry(k1, v1)))),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
@@ -290,8 +290,8 @@ class EncryptedService implements Service {
 	@override String? medicalLocationId;
 	@override String? comment;
 	int? _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
+	@ActualInt32() @override int? get status => _status;
+	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -361,16 +361,16 @@ class EncryptedService implements Service {
 			data["id"],
 			status: data["status"],
 			transactionId: data["transactionId"],
-			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ).toList(),
 			contactId: data["contactId"],
-			subContactIds: data["subContactIds"]?.map((x0) => x0 ),
-			plansOfActionIds: data["plansOfActionIds"]?.map((x0) => x0 ),
-			healthElementsIds: data["healthElementsIds"]?.map((x0) => x0 ),
-			formIds: data["formIds"]?.map((x0) => x0 ),
-			secretForeignKeys: data["secretForeignKeys"]?.map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			subContactIds: data["subContactIds"]?.map((x0) => x0 ).toList(),
+			plansOfActionIds: data["plansOfActionIds"]?.map((x0) => x0 ).toList(),
+			healthElementsIds: data["healthElementsIds"]?.map((x0) => x0 ).toList(),
+			formIds: data["formIds"]?.map((x0) => x0 ).toList(),
+			secretForeignKeys: data["secretForeignKeys"]?.map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			label: data["label"],
 			index: data["index"],
 			content: data["content"].map((k0, v0) => MapEntry(k0, EncryptedContent.fromJSON(v0))),
@@ -387,11 +387,11 @@ class EncryptedService implements Service {
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
 			comment: data["comment"],
-			invoicingCodes: data["invoicingCodes"].map((x0) => x0 ),
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			invoicingCodes: data["invoicingCodes"].map((x0) => x0 ).toList(),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
 			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(LinkQualification.fromJSON(k0), v0.map((k1, v1) => MapEntry(k1, v1)))),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -401,16 +401,16 @@ class EncryptedService implements Service {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
 			"transactionId" : value.transactionId,
-			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)),
+			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)).toList(),
 			"contactId" : value.contactId,
-			"subContactIds" : value.subContactIds?.map((x0) => x0),
-			"plansOfActionIds" : value.plansOfActionIds?.map((x0) => x0),
-			"healthElementsIds" : value.healthElementsIds?.map((x0) => x0),
-			"formIds" : value.formIds?.map((x0) => x0),
-			"secretForeignKeys" : value.secretForeignKeys?.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"subContactIds" : value.subContactIds?.map((x0) => x0).toList(),
+			"plansOfActionIds" : value.plansOfActionIds?.map((x0) => x0).toList(),
+			"healthElementsIds" : value.healthElementsIds?.map((x0) => x0).toList(),
+			"formIds" : value.formIds?.map((x0) => x0).toList(),
+			"secretForeignKeys" : value.secretForeignKeys?.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"label" : value.label,
 			"index" : value.index,
 			"content" : value.content.map((k0, v0) => MapEntry(k0, EncryptedContent.encode(v0))),
@@ -428,11 +428,11 @@ class EncryptedService implements Service {
 			"medicalLocationId" : value.medicalLocationId,
 			"comment" : value.comment,
 			"status" : value.status,
-			"invoicingCodes" : value.invoicingCodes.map((x0) => x0),
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
+			"invoicingCodes" : value.invoicingCodes.map((x0) => x0).toList(),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
 			"qualifiedLinks" : value.qualifiedLinks.map((k0, v0) => MapEntry(LinkQualification.encode(k0), v0.map((k1, v1) => MapEntry(k1, v1)))),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};

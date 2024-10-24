@@ -14,14 +14,14 @@ class FieldsGroup implements StructureElement {
 	factory FieldsGroup.fromJSON(Map<String, dynamic> data) {
 		return FieldsGroup(
 			data["group"],
-			fields: data["fields"]?.map((x0) => StructureElement.fromJSON(x0) ),
+			fields: data["fields"]?.map((x0) => StructureElement.fromJSON(x0) ).toList(),
 		);
 	}
 
 	static Map<String, dynamic> encode(FieldsGroup value) {
 		Map<String, dynamic> entityAsMap = {
 			"group" : value.group,
-			"fields" : value.fields?.map((x0) => StructureElement.encode(x0))
+			"fields" : value.fields?.map((x0) => StructureElement.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

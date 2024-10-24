@@ -6,8 +6,8 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 class Weekday {
 	CodeStub? weekday;
 	int? _weekNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get weekNumber => _weekNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set weekNumber(int? value) {
+	@ActualInt32() int? get weekNumber => _weekNumber;
+	@ActualInt32() set weekNumber(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('weekNumber value cannot exceed 2147483647');
 		}

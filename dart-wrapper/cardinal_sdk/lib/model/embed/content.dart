@@ -85,7 +85,7 @@ class EncryptedContent implements Content {
 	factory EncryptedContent.fromJSON(Map<String, dynamic> data) {
 		return EncryptedContent(
 			stringValue: data["stringValue"],
-			numberValue: data["numberValue"],
+			numberValue: data["numberValue"].toDouble(),
 			booleanValue: data["booleanValue"],
 			instantValue: data["instantValue"] == null ? null : DateTime.parse(data["instantValue"] as String),
 			fuzzyDateValue: data["fuzzyDateValue"],
@@ -94,9 +94,9 @@ class EncryptedContent implements Content {
 			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
 			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
 			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
-			compoundValue: data["compoundValue"]?.map((x0) => EncryptedService.fromJSON(x0) ),
-			ratio: data["ratio"]?.map((x0) => Measure.fromJSON(x0) ),
-			range: data["range"]?.map((x0) => Measure.fromJSON(x0) )
+			compoundValue: data["compoundValue"]?.map((x0) => EncryptedService.fromJSON(x0) ).toList(),
+			ratio: data["ratio"]?.map((x0) => Measure.fromJSON(x0) ).toList(),
+			range: data["range"]?.map((x0) => Measure.fromJSON(x0) ).toList()
 		);
 	}
 
@@ -112,9 +112,9 @@ class EncryptedContent implements Content {
 			"measureValue" : value.measureValue == null ? null : Measure.encode(value.measureValue!),
 			"medicationValue" : value.medicationValue == null ? null : Medication.encode(value.medicationValue!),
 			"timeSeries" : value.timeSeries == null ? null : TimeSeries.encode(value.timeSeries!),
-			"compoundValue" : value.compoundValue?.map((x0) => EncryptedService.encode(x0)),
-			"ratio" : value.ratio?.map((x0) => Measure.encode(x0)),
-			"range" : value.range?.map((x0) => Measure.encode(x0))
+			"compoundValue" : value.compoundValue?.map((x0) => EncryptedService.encode(x0)).toList(),
+			"ratio" : value.ratio?.map((x0) => Measure.encode(x0)).toList(),
+			"range" : value.range?.map((x0) => Measure.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}
@@ -153,7 +153,7 @@ class DecryptedContent implements Content {
 	factory DecryptedContent.fromJSON(Map<String, dynamic> data) {
 		return DecryptedContent(
 			stringValue: data["stringValue"],
-			numberValue: data["numberValue"],
+			numberValue: data["numberValue"].toDouble(),
 			booleanValue: data["booleanValue"],
 			instantValue: data["instantValue"] == null ? null : DateTime.parse(data["instantValue"] as String),
 			fuzzyDateValue: data["fuzzyDateValue"],
@@ -162,9 +162,9 @@ class DecryptedContent implements Content {
 			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
 			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
 			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
-			compoundValue: data["compoundValue"]?.map((x0) => DecryptedService.fromJSON(x0) ),
-			ratio: data["ratio"]?.map((x0) => Measure.fromJSON(x0) ),
-			range: data["range"]?.map((x0) => Measure.fromJSON(x0) )
+			compoundValue: data["compoundValue"]?.map((x0) => DecryptedService.fromJSON(x0) ).toList(),
+			ratio: data["ratio"]?.map((x0) => Measure.fromJSON(x0) ).toList(),
+			range: data["range"]?.map((x0) => Measure.fromJSON(x0) ).toList()
 		);
 	}
 
@@ -180,9 +180,9 @@ class DecryptedContent implements Content {
 			"measureValue" : value.measureValue == null ? null : Measure.encode(value.measureValue!),
 			"medicationValue" : value.medicationValue == null ? null : Medication.encode(value.medicationValue!),
 			"timeSeries" : value.timeSeries == null ? null : TimeSeries.encode(value.timeSeries!),
-			"compoundValue" : value.compoundValue?.map((x0) => DecryptedService.encode(x0)),
-			"ratio" : value.ratio?.map((x0) => Measure.encode(x0)),
-			"range" : value.range?.map((x0) => Measure.encode(x0))
+			"compoundValue" : value.compoundValue?.map((x0) => DecryptedService.encode(x0)).toList(),
+			"ratio" : value.ratio?.map((x0) => Measure.encode(x0)).toList(),
+			"range" : value.range?.map((x0) => Measure.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

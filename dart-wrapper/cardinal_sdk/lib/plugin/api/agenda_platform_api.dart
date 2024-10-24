@@ -44,12 +44,12 @@ class AgendaPlatformApi {
 			'AgendaApi.deleteAgendasByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgendasByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeAgendaById(String sdkId, String id, String rev) async {
@@ -95,12 +95,12 @@ class AgendaPlatformApi {
 			'AgendaApi.deleteAgendas',
 			{
 				"sdkId": sdkId,
-				"agendas": jsonEncode(agendas.map((x0) => Agenda.encode(x0))),
+				"agendas": jsonEncode(agendas.map((x0) => Agenda.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgendas");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeAgenda(String sdkId, Agenda agenda) async {
@@ -144,12 +144,12 @@ class AgendaPlatformApi {
 			'AgendaApi.getAgendas',
 			{
 				"sdkId": sdkId,
-				"agendaIds": jsonEncode(agendaIds.map((x0) => x0)),
+				"agendaIds": jsonEncode(agendaIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getAgendas");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Agenda.fromJSON(x1) );
+		return parsedResJson.map((x1) => Agenda.fromJSON(x1) ).toList();
 	}
 
 	Future<Agenda> modifyAgenda(String sdkId, Agenda agendaDto) async {
@@ -175,7 +175,7 @@ class AgendaPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAgendasBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchAgendasBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -188,7 +188,7 @@ class AgendaPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchAgendasBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<Agenda>> filterAgendasBy(String sdkId, BaseFilterOptions filter) async {

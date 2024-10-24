@@ -26,12 +26,12 @@ class ReferenceRange {
 
 	factory ReferenceRange.fromJSON(Map<String, dynamic> data) {
 		return ReferenceRange(
-			low: data["low"],
-			high: data["high"],
+			low: data["low"].toDouble(),
+			high: data["high"].toDouble(),
 			stringValue: data["stringValue"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
 			age: data["age"] == null ? null : Range.fromJSON(data["age"])
 		);
 	}
@@ -41,9 +41,9 @@ class ReferenceRange {
 			"low" : value.low,
 			"high" : value.high,
 			"stringValue" : value.stringValue,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
 			"age" : value.age == null ? null : Range.encode(value.age!)
 		};
 		return entityAsMap;

@@ -28,7 +28,7 @@ sealed class MedicalHouseContract implements Encryptable {
 	abstract bool noKine;
 	abstract bool noGp;
 	abstract bool noNurse;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? unsubscriptionReasonId;
+	@ActualInt32() abstract int? unsubscriptionReasonId;
 	abstract int? ptdStart;
 	abstract int? ptdEnd;
 	abstract int? ptdLastInvoiced;
@@ -38,7 +38,7 @@ sealed class MedicalHouseContract implements Encryptable {
 	abstract String? suspensionSource;
 	abstract bool forcedSuspension;
 	abstract MhcSignatureType? signatureType;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? status;
+	@ActualInt32() abstract int? status;
 	abstract Map<String, String> options;
 	abstract Map<String, String> receipts;
 	@override abstract Base64String? encryptedSelf;
@@ -93,8 +93,8 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 	@override bool noGp = false;
 	@override bool noNurse = false;
 	int? _unsubscriptionReasonId;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get unsubscriptionReasonId => _unsubscriptionReasonId;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set unsubscriptionReasonId(int? value) {
+	@ActualInt32() @override int? get unsubscriptionReasonId => _unsubscriptionReasonId;
+	@ActualInt32() @override set unsubscriptionReasonId(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('unsubscriptionReasonId value cannot exceed 2147483647');
 		}
@@ -110,8 +110,8 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 	@override bool forcedSuspension = false;
 	@override MhcSignatureType? signatureType;
 	int? _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
+	@ActualInt32() @override int? get status => _status;
+	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -266,8 +266,8 @@ class EncryptedMedicalHouseContract implements MedicalHouseContract {
 	@override bool noGp = false;
 	@override bool noNurse = false;
 	int? _unsubscriptionReasonId;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get unsubscriptionReasonId => _unsubscriptionReasonId;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set unsubscriptionReasonId(int? value) {
+	@ActualInt32() @override int? get unsubscriptionReasonId => _unsubscriptionReasonId;
+	@ActualInt32() @override set unsubscriptionReasonId(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('unsubscriptionReasonId value cannot exceed 2147483647');
 		}
@@ -283,8 +283,8 @@ class EncryptedMedicalHouseContract implements MedicalHouseContract {
 	@override bool forcedSuspension = false;
 	@override MhcSignatureType? signatureType;
 	int? _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
+	@ActualInt32() @override int? get status => _status;
+	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}

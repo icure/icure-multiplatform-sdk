@@ -19,8 +19,8 @@ class Medicinalproduct {
 
 	factory Medicinalproduct.fromJSON(Map<String, dynamic> data) {
 		return Medicinalproduct(
-			intendedcds: data["intendedcds"].map((x0) => CodeStub.fromJSON(x0) ),
-			deliveredcds: data["deliveredcds"].map((x0) => CodeStub.fromJSON(x0) ),
+			intendedcds: data["intendedcds"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			deliveredcds: data["deliveredcds"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			intendedname: data["intendedname"],
 			deliveredname: data["deliveredname"],
 			productId: data["productId"]
@@ -29,8 +29,8 @@ class Medicinalproduct {
 
 	static Map<String, dynamic> encode(Medicinalproduct value) {
 		Map<String, dynamic> entityAsMap = {
-			"intendedcds" : value.intendedcds.map((x0) => CodeStub.encode(x0)),
-			"deliveredcds" : value.deliveredcds.map((x0) => CodeStub.encode(x0)),
+			"intendedcds" : value.intendedcds.map((x0) => CodeStub.encode(x0)).toList(),
+			"deliveredcds" : value.deliveredcds.map((x0) => CodeStub.encode(x0)).toList(),
 			"intendedname" : value.intendedname,
 			"deliveredname" : value.deliveredname,
 			"productId" : value.productId

@@ -9,13 +9,13 @@ class ListOfProperties {
 
 	factory ListOfProperties.fromJSON(Map<String, dynamic> data) {
 		return ListOfProperties(
-			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) )
+			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toList()
 		);
 	}
 
 	static Map<String, dynamic> encode(ListOfProperties value) {
 		Map<String, dynamic> entityAsMap = {
-			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0))
+			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

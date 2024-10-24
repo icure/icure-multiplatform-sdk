@@ -16,7 +16,7 @@ class Payment {
 		return Payment(
 			paymentDate: data["paymentDate"],
 			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
-			paid: data["paid"]
+			paid: data["paid"].toDouble()
 		);
 	}
 

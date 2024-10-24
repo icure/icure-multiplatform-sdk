@@ -16,8 +16,8 @@ import 'package:cardinal_sdk/model/embed/form/template/structure_element.dart';
 abstract interface class Field implements StructureElement {
 	abstract String field;
 	abstract String? shortLabel;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? rows;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? columns;
+	@ActualInt32() abstract int? rows;
+	@ActualInt32() abstract int? columns;
 	abstract bool? grows;
 	abstract String? schema;
 	abstract List<String>? tags;

@@ -58,7 +58,7 @@ class KeywordPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getKeywordsByUser");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Keyword.fromJSON(x1) );
+		return parsedResJson.map((x1) => Keyword.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DocIdentifier>> deleteKeywords(String sdkId, List<String> keywordIds) async {
@@ -66,11 +66,11 @@ class KeywordPlatformApi {
 			'KeywordApi.deleteKeywords',
 			{
 				"sdkId": sdkId,
-				"keywordIds": jsonEncode(keywordIds.map((x0) => x0)),
+				"keywordIds": jsonEncode(keywordIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteKeywords");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 }

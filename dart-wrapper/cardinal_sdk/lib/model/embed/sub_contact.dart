@@ -20,7 +20,7 @@ sealed class SubContact implements Encryptable, ICureDocument<String?> {
 	@override abstract int? endOfLife;
 	abstract String? descr;
 	abstract String? protocol;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? status;
+	@ActualInt32() abstract int? status;
 	abstract String? formId;
 	abstract String? planOfActionId;
 	abstract String? healthElementId;
@@ -70,8 +70,8 @@ class EncryptedSubContact implements SubContact {
 	@override String? descr;
 	@override String? protocol;
 	int? _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
+	@ActualInt32() @override int? get status => _status;
+	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -116,8 +116,8 @@ class EncryptedSubContact implements SubContact {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			descr: data["descr"],
 			protocol: data["protocol"],
@@ -125,7 +125,7 @@ class EncryptedSubContact implements SubContact {
 			planOfActionId: data["planOfActionId"],
 			healthElementId: data["healthElementId"],
 			classificationId: data["classificationId"],
-			services: data["services"].map((x0) => ServiceLink.fromJSON(x0) ),
+			services: data["services"].map((x0) => ServiceLink.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -138,8 +138,8 @@ class EncryptedSubContact implements SubContact {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"descr" : value.descr,
 			"protocol" : value.protocol,
@@ -148,7 +148,7 @@ class EncryptedSubContact implements SubContact {
 			"planOfActionId" : value.planOfActionId,
 			"healthElementId" : value.healthElementId,
 			"classificationId" : value.classificationId,
-			"services" : value.services.map((x0) => ServiceLink.encode(x0)),
+			"services" : value.services.map((x0) => ServiceLink.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
@@ -168,8 +168,8 @@ class DecryptedSubContact implements SubContact {
 	@override String? descr;
 	@override String? protocol;
 	int? _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get status => _status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set status(int? value) {
+	@ActualInt32() @override int? get status => _status;
+	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('status value cannot exceed 2147483647');
 		}
@@ -214,8 +214,8 @@ class DecryptedSubContact implements SubContact {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			descr: data["descr"],
 			protocol: data["protocol"],
@@ -223,7 +223,7 @@ class DecryptedSubContact implements SubContact {
 			planOfActionId: data["planOfActionId"],
 			healthElementId: data["healthElementId"],
 			classificationId: data["classificationId"],
-			services: data["services"].map((x0) => ServiceLink.fromJSON(x0) ),
+			services: data["services"].map((x0) => ServiceLink.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -236,8 +236,8 @@ class DecryptedSubContact implements SubContact {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"descr" : value.descr,
 			"protocol" : value.protocol,
@@ -246,7 +246,7 @@ class DecryptedSubContact implements SubContact {
 			"planOfActionId" : value.planOfActionId,
 			"healthElementId" : value.healthElementId,
 			"classificationId" : value.classificationId,
-			"services" : value.services.map((x0) => ServiceLink.encode(x0)),
+			"services" : value.services.map((x0) => ServiceLink.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;

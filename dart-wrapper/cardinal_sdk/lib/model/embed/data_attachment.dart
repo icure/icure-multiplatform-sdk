@@ -15,7 +15,7 @@ class DataAttachment {
 		return DataAttachment(
 			couchDbAttachmentId: data["couchDbAttachmentId"],
 			objectStoreAttachmentId: data["objectStoreAttachmentId"],
-			utis: data["utis"].map((x0) => x0 )
+			utis: data["utis"].map((x0) => x0 ).toList()
 		);
 	}
 
@@ -23,7 +23,7 @@ class DataAttachment {
 		Map<String, dynamic> entityAsMap = {
 			"couchDbAttachmentId" : value.couchDbAttachmentId,
 			"objectStoreAttachmentId" : value.objectStoreAttachmentId,
-			"utis" : value.utis.map((x0) => x0)
+			"utis" : value.utis.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

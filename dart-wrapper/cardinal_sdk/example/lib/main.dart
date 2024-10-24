@@ -1,8 +1,50 @@
+import 'dart:math';
+
+import 'package:cardinal_sdk/model/patient.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/cardinal_sdk.dart';
+
+import 'dart:math';
+import 'dart:convert';
+
+String generateUuid() {
+  final random = Random.secure();
+
+  String generateHex(int count) {
+    return List<int>.generate(count, (_) => random.nextInt(256))
+        .map((int byte) => byte.toRadixString(16).padLeft(2, '0'))
+        .join('');
+  }
+
+  String generateTimeLow() {
+    return generateHex(4);
+  }
+
+  String generateTimeMid() {
+    return generateHex(2);
+  }
+
+  String generateTimeHiAndVersion() {
+    final timeHi = generateHex(2);
+    final hiAndVersion = (int.parse(timeHi, radix: 16) & 0x0fff) | 0x4000;
+    return hiAndVersion.toRadixString(16).padLeft(4, '0');
+  }
+
+  String generateClockSeqAndReserved() {
+    final clockSeq = generateHex(2);
+    final clockSeqRes = (int.parse(clockSeq, radix: 16) & 0x3fff) | 0x8000;
+    return clockSeqRes.toRadixString(16).padLeft(4, '0');
+  }
+
+  String generateNode() {
+    return generateHex(6);
+  }
+
+  return '${generateTimeLow()}-${generateTimeMid()}-${generateTimeHiAndVersion()}-${generateClockSeqAndReserved()}-${generateNode()}';
+}
 
 void main() {
   runApp(const MyApp());
@@ -16,49 +58,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _res1 = 'Unfinished 1';
-  String _res2 = 'Unfinished 2';
-  final _cardinalSdkPlugin = CardinalSdk();
+  String _res = 'Unfinished';
 
   @override
   void initState() {
     super.initState();
-    initState2();
-    initState1();
+    initStateAsync();
   }
 
-  Future<void> initState1() async {
-    print("Started state 1");
-    String platformVersion;
-    try {
-      platformVersion =
-          await _cardinalSdkPlugin.example(5000) ?? 'Null example 5000';
-      print("On init state 1 done with $platformVersion");
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-    if (!mounted) return;
-    setState(() {
-      _res1 = platformVersion;
-    });
-  }
-
-  Future<void> initState2() async {
-    print("Started state 2");
-    String platformVersion;
-    try {
-      platformVersion =
-          await _cardinalSdkPlugin.example(5001) ?? 'Null example 5001';
-      print("On init state 2 done with $platformVersion");
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _res2 = platformVersion;
-    });
+  Future<void> initStateAsync() async {
+    print("Started init");
+    final sdk = await CardinalSdk.initialize("luca+dartman@icure.com", "4a57f15e-10b3-4287-9d33-1cea74d39db3");
+    print("Sdk initialized");
+    final patient = await sdk.patient.createPatient(
+      await sdk.patient.withEncryptionMetadata(DecryptedPatient(
+        generateUuid(),
+        firstName: "Gino",
+        lastName: "Bros",
+        note: "The third mario bros"
+      ), null)
+    );
+    print("Created patient");
+    print(patient);
+    print("Retrieved patient");
+    print(await sdk.patient.getPatient(patient.id));
+    print("Retrieved encrypted patient");
+    print(await sdk.patient.encrypted.getPatient(patient.id));
   }
 
   @override
@@ -69,7 +94,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Example1: $_res1\nExample2: $_res2\n'),
+          child: Text('Example1: $_res'),
         ),
       ),
     );

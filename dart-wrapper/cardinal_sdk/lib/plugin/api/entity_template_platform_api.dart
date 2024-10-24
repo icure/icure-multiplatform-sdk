@@ -62,7 +62,7 @@ class EntityTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listEntityTemplatesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) );
+		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EntityTemplate>> listAllEntityTemplatesBy(String sdkId, String type, String? searchString, bool? includeEntities) async {
@@ -77,7 +77,7 @@ class EntityTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listAllEntityTemplatesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) );
+		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EntityTemplate>> listEntityTemplatesByKeyword(String sdkId, String userId, String type, String keyword, bool? includeEntities) async {
@@ -93,7 +93,7 @@ class EntityTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listEntityTemplatesByKeyword");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) );
+		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EntityTemplate>> findAllEntityTemplatesByKeyword(String sdkId, String type, String keyword, bool? includeEntities) async {
@@ -108,7 +108,7 @@ class EntityTemplatePlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method findAllEntityTemplatesByKeyword");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) );
+		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EntityTemplate>> getEntityTemplates(String sdkId, List<String> entityTemplateIds) async {
@@ -116,12 +116,12 @@ class EntityTemplatePlatformApi {
 			'EntityTemplateApi.getEntityTemplates',
 			{
 				"sdkId": sdkId,
-				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => x0)),
+				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getEntityTemplates");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) );
+		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EntityTemplate>> modifyEntityTemplates(String sdkId, List<EntityTemplate> entityTemplates) async {
@@ -129,12 +129,12 @@ class EntityTemplatePlatformApi {
 			'EntityTemplateApi.modifyEntityTemplates',
 			{
 				"sdkId": sdkId,
-				"entityTemplates": jsonEncode(entityTemplates.map((x0) => EntityTemplate.encode(x0))),
+				"entityTemplates": jsonEncode(entityTemplates.map((x0) => EntityTemplate.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyEntityTemplates");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) );
+		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EntityTemplate>> createEntityTemplates(String sdkId, List<EntityTemplate> entityTemplates) async {
@@ -142,12 +142,12 @@ class EntityTemplatePlatformApi {
 			'EntityTemplateApi.createEntityTemplates',
 			{
 				"sdkId": sdkId,
-				"entityTemplates": jsonEncode(entityTemplates.map((x0) => EntityTemplate.encode(x0))),
+				"entityTemplates": jsonEncode(entityTemplates.map((x0) => EntityTemplate.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method createEntityTemplates");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) );
+		return parsedResJson.map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
 	Future<List<DocIdentifier>> deleteEntityTemplates(String sdkId, List<IdWithMandatoryRev> entityTemplateIds) async {
@@ -155,11 +155,11 @@ class EntityTemplatePlatformApi {
 			'EntityTemplateApi.deleteEntityTemplates',
 			{
 				"sdkId": sdkId,
-				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteEntityTemplates");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 }

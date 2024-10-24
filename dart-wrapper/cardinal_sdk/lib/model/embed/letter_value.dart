@@ -17,8 +17,8 @@ class LetterValue {
 		return LetterValue(
 			letter: data["letter"],
 			index: data["index"],
-			coefficient: data["coefficient"],
-			value: data["value"]
+			coefficient: data["coefficient"].toDouble(),
+			value: data["value"].toDouble()
 		);
 	}
 

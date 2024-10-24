@@ -8,13 +8,13 @@ class ListOfIds {
 
 	factory ListOfIds.fromJSON(Map<String, dynamic> data) {
 		return ListOfIds(
-			ids: data["ids"].map((x0) => x0 )
+			ids: data["ids"].map((x0) => x0 ).toList()
 		);
 	}
 
 	static Map<String, dynamic> encode(ListOfIds value) {
 		Map<String, dynamic> entityAsMap = {
-			"ids" : value.ids.map((x0) => x0)
+			"ids" : value.ids.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

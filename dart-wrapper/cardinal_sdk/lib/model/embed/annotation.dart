@@ -39,7 +39,7 @@ class Annotation implements Identifiable<String> {
 			markdown: data["markdown"].map((k0, v0) => MapEntry(k0, v0)),
 			location: data["location"],
 			confidential: data["confidential"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"],
 		);
 	}
@@ -54,7 +54,7 @@ class Annotation implements Identifiable<String> {
 			"markdown" : value.markdown.map((k0, v0) => MapEntry(k0, v0)),
 			"location" : value.location,
 			"confidential" : value.confidential,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;

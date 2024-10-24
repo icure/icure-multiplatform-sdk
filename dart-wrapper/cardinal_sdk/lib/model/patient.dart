@@ -59,14 +59,14 @@ sealed class Patient implements StoredDocument, ICureDocument<String>, Person, H
 	abstract String? alias;
 	abstract bool active;
 	abstract DeactivationReason deactivationReason;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? deactivationDate;
+	@ActualInt32() abstract int? deactivationDate;
 	abstract String? ssin;
 	abstract String? maidenName;
 	abstract String? spouseName;
 	abstract String? partnerName;
 	abstract PersonalStatus? personalStatus;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? dateOfBirth;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? dateOfDeath;
+	@ActualInt32() abstract int? dateOfBirth;
+	@ActualInt32() abstract int? dateOfDeath;
 	abstract int? timestampOfLatestEidReading;
 	abstract String? placeOfBirth;
 	abstract String? placeOfDeath;
@@ -171,8 +171,8 @@ class EncryptedPatient implements Patient {
 	@override bool active = true;
 	@override DeactivationReason deactivationReason = DeactivationReason.none;
 	int? _deactivationDate;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get deactivationDate => _deactivationDate;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set deactivationDate(int? value) {
+	@ActualInt32() @override int? get deactivationDate => _deactivationDate;
+	@ActualInt32() @override set deactivationDate(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('deactivationDate value cannot exceed 2147483647');
 		}
@@ -184,16 +184,16 @@ class EncryptedPatient implements Patient {
 	@override String? partnerName;
 	@override PersonalStatus? personalStatus = PersonalStatus.unknown;
 	int? _dateOfBirth;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get dateOfBirth => _dateOfBirth;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set dateOfBirth(int? value) {
+	@ActualInt32() @override int? get dateOfBirth => _dateOfBirth;
+	@ActualInt32() @override set dateOfBirth(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('dateOfBirth value cannot exceed 2147483647');
 		}
 		_dateOfBirth = value;
 	}
 	int? _dateOfDeath;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get dateOfDeath => _dateOfDeath;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set dateOfDeath(int? value) {
+	@ActualInt32() @override int? get dateOfDeath => _dateOfDeath;
+	@ActualInt32() @override set dateOfDeath(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('dateOfDeath value cannot exceed 2147483647');
 		}
@@ -372,27 +372,27 @@ class EncryptedPatient implements Patient {
 			deactivationDate: data["deactivationDate"],
 			dateOfBirth: data["dateOfBirth"],
 			dateOfDeath: data["dateOfDeath"],
-			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ).toList(),
 			rev: data["rev"],
 			created: data["created"],
 			modified: data["modified"],
 			author: data["author"],
 			responsible: data["responsible"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			firstName: data["firstName"],
 			lastName: data["lastName"],
-			names: data["names"].map((x0) => PersonName.fromJSON(x0) ),
+			names: data["names"].map((x0) => PersonName.fromJSON(x0) ).toList(),
 			companyName: data["companyName"],
-			languages: data["languages"].map((x0) => x0 ),
-			addresses: data["addresses"].map((x0) => EncryptedAddress.fromJSON(x0) ),
+			languages: data["languages"].map((x0) => x0 ).toList(),
+			addresses: data["addresses"].map((x0) => EncryptedAddress.fromJSON(x0) ).toList(),
 			civility: data["civility"],
 			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
 			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
 			mergeToPatientId: data["mergeToPatientId"],
-			mergedIds: data["mergedIds"].map((x0) => x0 ),
+			mergedIds: data["mergedIds"].map((x0) => x0 ).toList(),
 			alias: data["alias"],
 			active: data["active"],
 			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
@@ -407,7 +407,7 @@ class EncryptedPatient implements Patient {
 			deceased: data["deceased"],
 			education: data["education"],
 			profession: data["profession"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
 			note: data["note"],
 			administrativeNote: data["administrativeNote"],
 			nationality: data["nationality"],
@@ -416,29 +416,29 @@ class EncryptedPatient implements Patient {
 			preferredUserId: data["preferredUserId"],
 			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
 			externalId: data["externalId"],
-			insurabilities: data["insurabilities"].map((x0) => EncryptedInsurability.fromJSON(x0) ),
-			partnerships: data["partnerships"].map((x0) => Partnership.fromJSON(x0) ),
-			patientHealthCareParties: data["patientHealthCareParties"].map((x0) => EncryptedPatientHealthCareParty.fromJSON(x0) ),
-			financialInstitutionInformation: data["financialInstitutionInformation"].map((x0) => EncryptedFinancialInstitutionInformation.fromJSON(x0) ),
-			medicalHouseContracts: data["medicalHouseContracts"].map((x0) => EncryptedMedicalHouseContract.fromJSON(x0) ),
-			patientProfessions: data["patientProfessions"].map((x0) => CodeStub.fromJSON(x0) ),
-			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
-			properties: data["properties"].map((x0) => EncryptedPropertyStub.fromJSON(x0) ),
-			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			insurabilities: data["insurabilities"].map((x0) => EncryptedInsurability.fromJSON(x0) ).toList(),
+			partnerships: data["partnerships"].map((x0) => Partnership.fromJSON(x0) ).toList(),
+			patientHealthCareParties: data["patientHealthCareParties"].map((x0) => EncryptedPatientHealthCareParty.fromJSON(x0) ).toList(),
+			financialInstitutionInformation: data["financialInstitutionInformation"].map((x0) => EncryptedFinancialInstitutionInformation.fromJSON(x0) ).toList(),
+			medicalHouseContracts: data["medicalHouseContracts"].map((x0) => EncryptedMedicalHouseContract.fromJSON(x0) ).toList(),
+			patientProfessions: data["patientProfessions"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
+			properties: data["properties"].map((x0) => EncryptedPropertyStub.fromJSON(x0) ).toList(),
+			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
 			aesExchangeKeys: data["aesExchangeKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			transferKeys: data["transferKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			privateKeyShamirPartitions: data["privateKeyShamirPartitions"].map((k0, v0) => MapEntry(k0, v0)),
 			publicKey: data["publicKey"],
-			publicKeysForOaepWithSha256: data["publicKeysForOaepWithSha256"].map((x0) => x0 ),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			publicKeysForOaepWithSha256: data["publicKeysForOaepWithSha256"].map((x0) => x0 ).toList(),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 			medicalLocationId: data["medicalLocationId"],
-			nonDuplicateIds: data["nonDuplicateIds"].map((x0) => x0 ),
-			encryptedAdministrativesDocuments: data["encryptedAdministrativesDocuments"].map((x0) => x0 ),
+			nonDuplicateIds: data["nonDuplicateIds"].map((x0) => x0 ).toList(),
+			encryptedAdministrativesDocuments: data["encryptedAdministrativesDocuments"].map((x0) => x0 ).toList(),
 			comment: data["comment"],
 			warning: data["warning"],
 			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
@@ -446,35 +446,35 @@ class EncryptedPatient implements Patient {
 			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
 			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
 			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
-			schoolingInfos: data["schoolingInfos"].map((x0) => SchoolingInfo.fromJSON(x0) ),
-			employementInfos: data["employementInfos"].map((x0) => EmploymentInfo.fromJSON(x0) ),
+			schoolingInfos: data["schoolingInfos"].map((x0) => SchoolingInfo.fromJSON(x0) ).toList(),
+			employementInfos: data["employementInfos"].map((x0) => EmploymentInfo.fromJSON(x0) ).toList(),
 		);
 	}
 
 	static Map<String, dynamic> encode(EncryptedPatient value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
-			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)),
+			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)).toList(),
 			"rev" : value.rev,
 			"created" : value.created,
 			"modified" : value.modified,
 			"author" : value.author,
 			"responsible" : value.responsible,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"firstName" : value.firstName,
 			"lastName" : value.lastName,
-			"names" : value.names.map((x0) => PersonName.encode(x0)),
+			"names" : value.names.map((x0) => PersonName.encode(x0)).toList(),
 			"companyName" : value.companyName,
-			"languages" : value.languages.map((x0) => x0),
-			"addresses" : value.addresses.map((x0) => EncryptedAddress.encode(x0)),
+			"languages" : value.languages.map((x0) => x0).toList(),
+			"addresses" : value.addresses.map((x0) => EncryptedAddress.encode(x0)).toList(),
 			"civility" : value.civility,
 			"gender" : value.gender == null ? null : Gender.encode(value.gender!),
 			"birthSex" : value.birthSex == null ? null : Gender.encode(value.birthSex!),
 			"mergeToPatientId" : value.mergeToPatientId,
-			"mergedIds" : value.mergedIds.map((x0) => x0),
+			"mergedIds" : value.mergedIds.map((x0) => x0).toList(),
 			"alias" : value.alias,
 			"active" : value.active,
 			"deactivationReason" : DeactivationReason.encode(value.deactivationReason),
@@ -492,7 +492,7 @@ class EncryptedPatient implements Patient {
 			"deceased" : value.deceased,
 			"education" : value.education,
 			"profession" : value.profession,
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
 			"note" : value.note,
 			"administrativeNote" : value.administrativeNote,
 			"nationality" : value.nationality,
@@ -501,29 +501,29 @@ class EncryptedPatient implements Patient {
 			"preferredUserId" : value.preferredUserId,
 			"picture" : value.picture == null ? null : base64Encode(value.picture as List<int>),
 			"externalId" : value.externalId,
-			"insurabilities" : value.insurabilities.map((x0) => EncryptedInsurability.encode(x0)),
-			"partnerships" : value.partnerships.map((x0) => Partnership.encode(x0)),
-			"patientHealthCareParties" : value.patientHealthCareParties.map((x0) => EncryptedPatientHealthCareParty.encode(x0)),
-			"financialInstitutionInformation" : value.financialInstitutionInformation.map((x0) => EncryptedFinancialInstitutionInformation.encode(x0)),
-			"medicalHouseContracts" : value.medicalHouseContracts.map((x0) => EncryptedMedicalHouseContract.encode(x0)),
-			"patientProfessions" : value.patientProfessions.map((x0) => CodeStub.encode(x0)),
-			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
-			"properties" : value.properties.map((x0) => EncryptedPropertyStub.encode(x0)),
-			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
+			"insurabilities" : value.insurabilities.map((x0) => EncryptedInsurability.encode(x0)).toList(),
+			"partnerships" : value.partnerships.map((x0) => Partnership.encode(x0)).toList(),
+			"patientHealthCareParties" : value.patientHealthCareParties.map((x0) => EncryptedPatientHealthCareParty.encode(x0)).toList(),
+			"financialInstitutionInformation" : value.financialInstitutionInformation.map((x0) => EncryptedFinancialInstitutionInformation.encode(x0)).toList(),
+			"medicalHouseContracts" : value.medicalHouseContracts.map((x0) => EncryptedMedicalHouseContract.encode(x0)).toList(),
+			"patientProfessions" : value.patientProfessions.map((x0) => CodeStub.encode(x0)).toList(),
+			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
+			"properties" : value.properties.map((x0) => EncryptedPropertyStub.encode(x0)).toList(),
+			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
 			"aesExchangeKeys" : value.aesExchangeKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			"transferKeys" : value.transferKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			"privateKeyShamirPartitions" : value.privateKeyShamirPartitions.map((k0, v0) => MapEntry(k0, v0)),
 			"publicKey" : value.publicKey,
-			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0).toList(),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!),
 			"medicalLocationId" : value.medicalLocationId,
-			"nonDuplicateIds" : value.nonDuplicateIds.map((x0) => x0),
-			"encryptedAdministrativesDocuments" : value.encryptedAdministrativesDocuments.map((x0) => x0),
+			"nonDuplicateIds" : value.nonDuplicateIds.map((x0) => x0).toList(),
+			"encryptedAdministrativesDocuments" : value.encryptedAdministrativesDocuments.map((x0) => x0).toList(),
 			"comment" : value.comment,
 			"warning" : value.warning,
 			"fatherBirthCountry" : value.fatherBirthCountry == null ? null : CodeStub.encode(value.fatherBirthCountry!),
@@ -531,8 +531,8 @@ class EncryptedPatient implements Patient {
 			"nativeCountry" : value.nativeCountry == null ? null : CodeStub.encode(value.nativeCountry!),
 			"socialStatus" : value.socialStatus == null ? null : CodeStub.encode(value.socialStatus!),
 			"mainSourceOfIncome" : value.mainSourceOfIncome == null ? null : CodeStub.encode(value.mainSourceOfIncome!),
-			"schoolingInfos" : value.schoolingInfos.map((x0) => SchoolingInfo.encode(x0)),
-			"employementInfos" : value.employementInfos.map((x0) => EmploymentInfo.encode(x0))
+			"schoolingInfos" : value.schoolingInfos.map((x0) => SchoolingInfo.encode(x0)).toList(),
+			"employementInfos" : value.employementInfos.map((x0) => EmploymentInfo.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}
@@ -565,8 +565,8 @@ class DecryptedPatient implements Patient {
 	@override bool active = true;
 	@override DeactivationReason deactivationReason = DeactivationReason.none;
 	int? _deactivationDate;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get deactivationDate => _deactivationDate;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set deactivationDate(int? value) {
+	@ActualInt32() @override int? get deactivationDate => _deactivationDate;
+	@ActualInt32() @override set deactivationDate(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('deactivationDate value cannot exceed 2147483647');
 		}
@@ -578,16 +578,16 @@ class DecryptedPatient implements Patient {
 	@override String? partnerName;
 	@override PersonalStatus? personalStatus = PersonalStatus.unknown;
 	int? _dateOfBirth;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get dateOfBirth => _dateOfBirth;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set dateOfBirth(int? value) {
+	@ActualInt32() @override int? get dateOfBirth => _dateOfBirth;
+	@ActualInt32() @override set dateOfBirth(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('dateOfBirth value cannot exceed 2147483647');
 		}
 		_dateOfBirth = value;
 	}
 	int? _dateOfDeath;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get dateOfDeath => _dateOfDeath;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set dateOfDeath(int? value) {
+	@ActualInt32() @override int? get dateOfDeath => _dateOfDeath;
+	@ActualInt32() @override set dateOfDeath(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('dateOfDeath value cannot exceed 2147483647');
 		}
@@ -766,27 +766,27 @@ class DecryptedPatient implements Patient {
 			deactivationDate: data["deactivationDate"],
 			dateOfBirth: data["dateOfBirth"],
 			dateOfDeath: data["dateOfDeath"],
-			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ),
+			identifier: data["identifier"].map((x0) => Identifier.fromJSON(x0) ).toList(),
 			rev: data["rev"],
 			created: data["created"],
 			modified: data["modified"],
 			author: data["author"],
 			responsible: data["responsible"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			firstName: data["firstName"],
 			lastName: data["lastName"],
-			names: data["names"].map((x0) => PersonName.fromJSON(x0) ),
+			names: data["names"].map((x0) => PersonName.fromJSON(x0) ).toList(),
 			companyName: data["companyName"],
-			languages: data["languages"].map((x0) => x0 ),
-			addresses: data["addresses"].map((x0) => DecryptedAddress.fromJSON(x0) ),
+			languages: data["languages"].map((x0) => x0 ).toList(),
+			addresses: data["addresses"].map((x0) => DecryptedAddress.fromJSON(x0) ).toList(),
 			civility: data["civility"],
 			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
 			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
 			mergeToPatientId: data["mergeToPatientId"],
-			mergedIds: data["mergedIds"].map((x0) => x0 ),
+			mergedIds: data["mergedIds"].map((x0) => x0 ).toList(),
 			alias: data["alias"],
 			active: data["active"],
 			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
@@ -801,7 +801,7 @@ class DecryptedPatient implements Patient {
 			deceased: data["deceased"],
 			education: data["education"],
 			profession: data["profession"],
-			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ),
+			notes: data["notes"].map((x0) => Annotation.fromJSON(x0) ).toList(),
 			note: data["note"],
 			administrativeNote: data["administrativeNote"],
 			nationality: data["nationality"],
@@ -810,29 +810,29 @@ class DecryptedPatient implements Patient {
 			preferredUserId: data["preferredUserId"],
 			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
 			externalId: data["externalId"],
-			insurabilities: data["insurabilities"].map((x0) => DecryptedInsurability.fromJSON(x0) ),
-			partnerships: data["partnerships"].map((x0) => Partnership.fromJSON(x0) ),
-			patientHealthCareParties: data["patientHealthCareParties"].map((x0) => DecryptedPatientHealthCareParty.fromJSON(x0) ),
-			financialInstitutionInformation: data["financialInstitutionInformation"].map((x0) => DecryptedFinancialInstitutionInformation.fromJSON(x0) ),
-			medicalHouseContracts: data["medicalHouseContracts"].map((x0) => DecryptedMedicalHouseContract.fromJSON(x0) ),
-			patientProfessions: data["patientProfessions"].map((x0) => CodeStub.fromJSON(x0) ),
-			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
-			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ),
-			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			insurabilities: data["insurabilities"].map((x0) => DecryptedInsurability.fromJSON(x0) ).toList(),
+			partnerships: data["partnerships"].map((x0) => Partnership.fromJSON(x0) ).toList(),
+			patientHealthCareParties: data["patientHealthCareParties"].map((x0) => DecryptedPatientHealthCareParty.fromJSON(x0) ).toList(),
+			financialInstitutionInformation: data["financialInstitutionInformation"].map((x0) => DecryptedFinancialInstitutionInformation.fromJSON(x0) ).toList(),
+			medicalHouseContracts: data["medicalHouseContracts"].map((x0) => DecryptedMedicalHouseContract.fromJSON(x0) ).toList(),
+			patientProfessions: data["patientProfessions"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			parameters: data["parameters"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
+			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toList(),
+			hcPartyKeys: data["hcPartyKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
 			aesExchangeKeys: data["aesExchangeKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			transferKeys: data["transferKeys"].map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			privateKeyShamirPartitions: data["privateKeyShamirPartitions"].map((k0, v0) => MapEntry(k0, v0)),
 			publicKey: data["publicKey"],
-			publicKeysForOaepWithSha256: data["publicKeysForOaepWithSha256"].map((x0) => x0 ),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			publicKeysForOaepWithSha256: data["publicKeysForOaepWithSha256"].map((x0) => x0 ).toList(),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 			medicalLocationId: data["medicalLocationId"],
-			nonDuplicateIds: data["nonDuplicateIds"].map((x0) => x0 ),
-			encryptedAdministrativesDocuments: data["encryptedAdministrativesDocuments"].map((x0) => x0 ),
+			nonDuplicateIds: data["nonDuplicateIds"].map((x0) => x0 ).toList(),
+			encryptedAdministrativesDocuments: data["encryptedAdministrativesDocuments"].map((x0) => x0 ).toList(),
 			comment: data["comment"],
 			warning: data["warning"],
 			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
@@ -840,35 +840,35 @@ class DecryptedPatient implements Patient {
 			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
 			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
 			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
-			schoolingInfos: data["schoolingInfos"].map((x0) => SchoolingInfo.fromJSON(x0) ),
-			employementInfos: data["employementInfos"].map((x0) => EmploymentInfo.fromJSON(x0) ),
+			schoolingInfos: data["schoolingInfos"].map((x0) => SchoolingInfo.fromJSON(x0) ).toList(),
+			employementInfos: data["employementInfos"].map((x0) => EmploymentInfo.fromJSON(x0) ).toList(),
 		);
 	}
 
 	static Map<String, dynamic> encode(DecryptedPatient value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
-			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)),
+			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)).toList(),
 			"rev" : value.rev,
 			"created" : value.created,
 			"modified" : value.modified,
 			"author" : value.author,
 			"responsible" : value.responsible,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"firstName" : value.firstName,
 			"lastName" : value.lastName,
-			"names" : value.names.map((x0) => PersonName.encode(x0)),
+			"names" : value.names.map((x0) => PersonName.encode(x0)).toList(),
 			"companyName" : value.companyName,
-			"languages" : value.languages.map((x0) => x0),
-			"addresses" : value.addresses.map((x0) => DecryptedAddress.encode(x0)),
+			"languages" : value.languages.map((x0) => x0).toList(),
+			"addresses" : value.addresses.map((x0) => DecryptedAddress.encode(x0)).toList(),
 			"civility" : value.civility,
 			"gender" : value.gender == null ? null : Gender.encode(value.gender!),
 			"birthSex" : value.birthSex == null ? null : Gender.encode(value.birthSex!),
 			"mergeToPatientId" : value.mergeToPatientId,
-			"mergedIds" : value.mergedIds.map((x0) => x0),
+			"mergedIds" : value.mergedIds.map((x0) => x0).toList(),
 			"alias" : value.alias,
 			"active" : value.active,
 			"deactivationReason" : DeactivationReason.encode(value.deactivationReason),
@@ -886,7 +886,7 @@ class DecryptedPatient implements Patient {
 			"deceased" : value.deceased,
 			"education" : value.education,
 			"profession" : value.profession,
-			"notes" : value.notes.map((x0) => Annotation.encode(x0)),
+			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList(),
 			"note" : value.note,
 			"administrativeNote" : value.administrativeNote,
 			"nationality" : value.nationality,
@@ -895,29 +895,29 @@ class DecryptedPatient implements Patient {
 			"preferredUserId" : value.preferredUserId,
 			"picture" : value.picture == null ? null : base64Encode(value.picture as List<int>),
 			"externalId" : value.externalId,
-			"insurabilities" : value.insurabilities.map((x0) => DecryptedInsurability.encode(x0)),
-			"partnerships" : value.partnerships.map((x0) => Partnership.encode(x0)),
-			"patientHealthCareParties" : value.patientHealthCareParties.map((x0) => DecryptedPatientHealthCareParty.encode(x0)),
-			"financialInstitutionInformation" : value.financialInstitutionInformation.map((x0) => DecryptedFinancialInstitutionInformation.encode(x0)),
-			"medicalHouseContracts" : value.medicalHouseContracts.map((x0) => DecryptedMedicalHouseContract.encode(x0)),
-			"patientProfessions" : value.patientProfessions.map((x0) => CodeStub.encode(x0)),
-			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
-			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0)),
-			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
+			"insurabilities" : value.insurabilities.map((x0) => DecryptedInsurability.encode(x0)).toList(),
+			"partnerships" : value.partnerships.map((x0) => Partnership.encode(x0)).toList(),
+			"patientHealthCareParties" : value.patientHealthCareParties.map((x0) => DecryptedPatientHealthCareParty.encode(x0)).toList(),
+			"financialInstitutionInformation" : value.financialInstitutionInformation.map((x0) => DecryptedFinancialInstitutionInformation.encode(x0)).toList(),
+			"medicalHouseContracts" : value.medicalHouseContracts.map((x0) => DecryptedMedicalHouseContract.encode(x0)).toList(),
+			"patientProfessions" : value.patientProfessions.map((x0) => CodeStub.encode(x0)).toList(),
+			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
+			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0)).toList(),
+			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
 			"aesExchangeKeys" : value.aesExchangeKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			"transferKeys" : value.transferKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			"privateKeyShamirPartitions" : value.privateKeyShamirPartitions.map((k0, v0) => MapEntry(k0, v0)),
 			"publicKey" : value.publicKey,
-			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0).toList(),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!),
 			"medicalLocationId" : value.medicalLocationId,
-			"nonDuplicateIds" : value.nonDuplicateIds.map((x0) => x0),
-			"encryptedAdministrativesDocuments" : value.encryptedAdministrativesDocuments.map((x0) => x0),
+			"nonDuplicateIds" : value.nonDuplicateIds.map((x0) => x0).toList(),
+			"encryptedAdministrativesDocuments" : value.encryptedAdministrativesDocuments.map((x0) => x0).toList(),
 			"comment" : value.comment,
 			"warning" : value.warning,
 			"fatherBirthCountry" : value.fatherBirthCountry == null ? null : CodeStub.encode(value.fatherBirthCountry!),
@@ -925,8 +925,8 @@ class DecryptedPatient implements Patient {
 			"nativeCountry" : value.nativeCountry == null ? null : CodeStub.encode(value.nativeCountry!),
 			"socialStatus" : value.socialStatus == null ? null : CodeStub.encode(value.socialStatus!),
 			"mainSourceOfIncome" : value.mainSourceOfIncome == null ? null : CodeStub.encode(value.mainSourceOfIncome!),
-			"schoolingInfos" : value.schoolingInfos.map((x0) => SchoolingInfo.encode(x0)),
-			"employementInfos" : value.employementInfos.map((x0) => EmploymentInfo.encode(x0))
+			"schoolingInfos" : value.schoolingInfos.map((x0) => SchoolingInfo.encode(x0)).toList(),
+			"employementInfos" : value.employementInfos.map((x0) => EmploymentInfo.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

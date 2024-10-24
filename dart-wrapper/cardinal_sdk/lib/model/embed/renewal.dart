@@ -5,8 +5,8 @@ import 'package:cardinal_sdk/model/embed/duration.dart';
 
 class Renewal {
 	int? _decimal;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get decimal => _decimal;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set decimal(int? value) {
+	@ActualInt32() int? get decimal => _decimal;
+	@ActualInt32() set decimal(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('decimal value cannot exceed 2147483647');
 		}

@@ -8,7 +8,7 @@ class SecretIdUseOption {
 	const SecretIdUseOption._internal(this._json);
 
 	factory SecretIdUseOption.Use(Set<String> secretIds) {
-		return SecretIdUseOption._internal({"secretIds": secretIds.map((x0) => x0), "kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.Use"});
+		return SecretIdUseOption._internal({"secretIds": secretIds.map((x0) => x0).toList(), "kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.Use"});
 	}
 
 	factory SecretIdUseOption.fromJSON(Map<String, dynamic> data) {

@@ -6,16 +6,16 @@ class ReplicationInfo {
 	bool active = false;
 	bool running = false;
 	int? _pendingFrom;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get pendingFrom => _pendingFrom;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set pendingFrom(int? value) {
+	@ActualInt32() int? get pendingFrom => _pendingFrom;
+	@ActualInt32() set pendingFrom(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('pendingFrom value cannot exceed 2147483647');
 		}
 		_pendingFrom = value;
 	}
 	int? _pendingTo;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get pendingTo => _pendingTo;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set pendingTo(int? value) {
+	@ActualInt32() int? get pendingTo => _pendingTo;
+	@ActualInt32() set pendingTo(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('pendingTo value cannot exceed 2147483647');
 		}

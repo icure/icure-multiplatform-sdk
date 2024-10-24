@@ -20,8 +20,8 @@ class Code implements StoredDocument, CodeIdentification<String> {
 	Set<String> regions = {};
 	Set<Periodicity> periodicity = {};
 	int? _level;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get level => _level;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set level(int? value) {
+	@ActualInt32() int? get level => _level;
+	@ActualInt32() set level(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('level value cannot exceed 2147483647');
 		}
@@ -77,12 +77,12 @@ class Code implements StoredDocument, CodeIdentification<String> {
 			version: data["version"],
 			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
 			author: data["author"],
-			regions: data["regions"].map((x0) => x0 ),
-			periodicity: data["periodicity"].map((x0) => Periodicity.fromJSON(x0) ),
-			links: data["links"].map((x0) => x0 ),
-			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
-			flags: data["flags"].map((x0) => CodeFlag.fromJSON(x0) ),
-			searchTerms: data["searchTerms"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ))),
+			regions: data["regions"].map((x0) => x0 ).toList(),
+			periodicity: data["periodicity"].map((x0) => Periodicity.fromJSON(x0) ).toList(),
+			links: data["links"].map((x0) => x0 ).toList(),
+			qualifiedLinks: data["qualifiedLinks"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
+			flags: data["flags"].map((x0) => CodeFlag.fromJSON(x0) ).toList(),
+			searchTerms: data["searchTerms"].map((k0, v0) => MapEntry(k0, v0.map((x1) => x1 ).toList())),
 			data: data["data"],
 			appendices: data["appendices"].map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), v0)),
 			disabled: data["disabled"],
@@ -100,13 +100,13 @@ class Code implements StoredDocument, CodeIdentification<String> {
 			"version" : value.version,
 			"label" : value.label?.map((k0, v0) => MapEntry(k0, v0)),
 			"author" : value.author,
-			"regions" : value.regions.map((x0) => x0),
-			"periodicity" : value.periodicity.map((x0) => Periodicity.encode(x0)),
+			"regions" : value.regions.map((x0) => x0).toList(),
+			"periodicity" : value.periodicity.map((x0) => Periodicity.encode(x0)).toList(),
 			"level" : value.level,
-			"links" : value.links.map((x0) => x0),
-			"qualifiedLinks" : value.qualifiedLinks.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
-			"flags" : value.flags.map((x0) => CodeFlag.encode(x0)),
-			"searchTerms" : value.searchTerms.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1))),
+			"links" : value.links.map((x0) => x0).toList(),
+			"qualifiedLinks" : value.qualifiedLinks.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
+			"flags" : value.flags.map((x0) => CodeFlag.encode(x0)).toList(),
+			"searchTerms" : value.searchTerms.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
 			"data" : value.data,
 			"appendices" : value.appendices.map((k0, v0) => MapEntry(AppendixType.encode(k0), v0)),
 			"disabled" : value.disabled

@@ -32,7 +32,7 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listGroups");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Group.fromJSON(x1) );
+		return parsedResJson.map((x1) => Group.fromJSON(x1) ).toList();
 	}
 
 	Future<Group> getGroup(String sdkId, String id) async {
@@ -94,7 +94,7 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listApps");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => Group.fromJSON(x1) );
+		return parsedResJson.map((x1) => Group.fromJSON(x1) ).toList();
 	}
 
 	Future<String> getNameOfGroupParent(String sdkId, String id) async {
@@ -156,7 +156,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
 				"userType": jsonEncode(userType),
-				"roleIds": jsonEncode(roleIds.map((x0) => x0)),
+				"roleIds": jsonEncode(roleIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method setDefaultRoles");
@@ -174,7 +174,7 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getDefaultRoles");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((k1, v1) => MapEntry(UserType.fromJSON(k1), v1.map((x2) => RoleConfiguration.fromJSON(x2) )));
+		return parsedResJson.map((k1, v1) => MapEntry(UserType.fromJSON(k1), v1.map((x2) => RoleConfiguration.fromJSON(x2) ).toList()));
 	}
 
 	Future<Group> deleteGroup(String sdkId, String id) async {
@@ -214,7 +214,7 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method hardDeleteGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => GroupDeletionReport.fromJSON(x1) );
+		return parsedResJson.map((x1) => GroupDeletionReport.fromJSON(x1) ).toList();
 	}
 
 	Future<Group> modifyGroupProperties(String sdkId, String id, ListOfProperties properties) async {
@@ -258,7 +258,7 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method initDesignDocs");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DesignDocument.fromJSON(x1) );
+		return parsedResJson.map((x1) => DesignDocument.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> solveConflicts(String sdkId, String id, int? limit, bool? warmup) async {
@@ -273,7 +273,7 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method solveConflicts");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) );
+		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<void> resetStorage(String sdkId, String id, int? q, int? n, List<String> databases) async {
@@ -284,7 +284,7 @@ class GroupPlatformApi {
 				"id": jsonEncode(id),
 				"q": jsonEncode(q),
 				"n": jsonEncode(n),
-				"databases": jsonEncode(databases.map((x0) => x0)),
+				"databases": jsonEncode(databases.map((x0) => x0).toList()),
 			}
 		);
 	}
@@ -294,12 +294,12 @@ class GroupPlatformApi {
 			'GroupApi.getGroupsStorageInfos',
 			{
 				"sdkId": sdkId,
-				"groups": jsonEncode(groups.map((x0) => x0)),
+				"groups": jsonEncode(groups.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getGroupsStorageInfos");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => GroupDatabasesInfo.fromJSON(x1) );
+		return parsedResJson.map((x1) => GroupDatabasesInfo.fromJSON(x1) ).toList();
 	}
 
 	Future<ReplicationInfo> getReplicationInfo(String sdkId, String id) async {
@@ -325,7 +325,7 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method getHierarchy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<DocIdentifier>> listAllGroupsIds(String sdkId) async {
@@ -337,6 +337,6 @@ class GroupPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listAllGroupsIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 }

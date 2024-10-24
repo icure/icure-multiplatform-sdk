@@ -93,7 +93,7 @@ class HealthcarePartyPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listHealthcarePartiesByName");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) );
+		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) ).toList();
 	}
 
 	Future<List<HealthcareParty>> getHealthcareParties(String sdkId, List<String> healthcarePartyIds) async {
@@ -101,12 +101,12 @@ class HealthcarePartyPlatformApi {
 			'HealthcarePartyApi.getHealthcareParties',
 			{
 				"sdkId": sdkId,
-				"healthcarePartyIds": jsonEncode(healthcarePartyIds.map((x0) => x0)),
+				"healthcarePartyIds": jsonEncode(healthcarePartyIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getHealthcareParties");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) );
+		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) ).toList();
 	}
 
 	Future<List<HealthcareParty>> listHealthcarePartiesByParentId(String sdkId, String parentId) async {
@@ -119,7 +119,7 @@ class HealthcarePartyPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method listHealthcarePartiesByParentId");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) );
+		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) ).toList();
 	}
 
 	Future<PublicKey> getPublicKey(String sdkId, String healthcarePartyId) async {
@@ -158,7 +158,7 @@ class HealthcarePartyPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthcarePartiesBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBy(String sdkId, BaseFilterOptions filter) async {
@@ -184,7 +184,7 @@ class HealthcarePartyPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthcarePartiesBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -206,12 +206,12 @@ class HealthcarePartyPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"healthcarePartyIds": jsonEncode(healthcarePartyIds?.map((x0) => x0)),
+				"healthcarePartyIds": jsonEncode(healthcarePartyIds?.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getHealthcarePartiesInGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) );
+		return parsedResJson.map((x1) => HealthcareParty.fromJSON(x1) ).toList();
 	}
 
 	Future<DataOwnerRegistrationSuccess> registerPatient(String sdkId, String groupId, String? parentHcPartyId, String? token, bool? useShortToken, HealthcareParty hcp) async {
@@ -250,12 +250,12 @@ class HealthcarePartyPlatformApi {
 			'HealthcarePartyApi.deleteHealthcarePartiesByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<DocIdentifier> deleteHealthcarePartyInGroupById(String sdkId, String groupId, String entityId, String rev) async {
@@ -279,12 +279,12 @@ class HealthcarePartyPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesInGroupByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthcarePartyById(String sdkId, String id, String rev) async {
@@ -330,12 +330,12 @@ class HealthcarePartyPlatformApi {
 			'HealthcarePartyApi.deleteHealthcareParties',
 			{
 				"sdkId": sdkId,
-				"healthcareParties": jsonEncode(healthcareParties.map((x0) => HealthcareParty.encode(x0))),
+				"healthcareParties": jsonEncode(healthcareParties.map((x0) => HealthcareParty.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcareParties");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthcareParty(String sdkId, HealthcareParty healthcareParty) async {
@@ -381,12 +381,12 @@ class HealthcarePartyPlatformApi {
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"healthcareParties": jsonEncode(healthcareParties.map((x0) => HealthcareParty.encode(x0))),
+				"healthcareParties": jsonEncode(healthcareParties.map((x0) => HealthcareParty.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesInGroup");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -394,7 +394,7 @@ class HealthcarePartyPlatformApi {
 			'HealthcarePartyApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

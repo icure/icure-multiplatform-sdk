@@ -27,7 +27,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchPatientsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -40,7 +40,7 @@ class PatientBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(String sdkId, BaseFilterOptions filter) async {
@@ -88,12 +88,12 @@ class PatientBasicPlatformApi {
 			'PatientBasicApi.deletePatientsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deletePatientsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgePatientById(String sdkId, String id, String rev) async {
@@ -125,12 +125,12 @@ class PatientBasicPlatformApi {
 			'PatientBasicApi.deletePatients',
 			{
 				"sdkId": sdkId,
-				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0))),
+				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deletePatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgePatient(String sdkId, Patient patient) async {
@@ -201,12 +201,12 @@ class PatientBasicPlatformApi {
 			'PatientBasicApi.undeletePatients',
 			{
 				"sdkId": sdkId,
-				"ids": jsonEncode(ids.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"ids": jsonEncode(ids.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedPatient.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedPatient> getPatient(String sdkId, String entityId) async {
@@ -241,12 +241,12 @@ class PatientBasicPlatformApi {
 			'PatientBasicApi.getPatients',
 			{
 				"sdkId": sdkId,
-				"patientIds": jsonEncode(patientIds.map((x0) => x0)),
+				"patientIds": jsonEncode(patientIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getPatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedPatient.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
 	}
 
 	Future<List<IdWithRev>> modifyPatients(String sdkId, List<EncryptedPatient> patientDtos) async {
@@ -254,12 +254,12 @@ class PatientBasicPlatformApi {
 			'PatientBasicApi.modifyPatients',
 			{
 				"sdkId": sdkId,
-				"patientDtos": jsonEncode(patientDtos.map((x0) => EncryptedPatient.encode(x0))),
+				"patientDtos": jsonEncode(patientDtos.map((x0) => EncryptedPatient.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatients");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) );
+		return parsedResJson.map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedPatient> mergePatients(String sdkId, Patient from, EncryptedPatient mergedInto) async {
@@ -281,7 +281,7 @@ class PatientBasicPlatformApi {
 			'PatientBasicApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

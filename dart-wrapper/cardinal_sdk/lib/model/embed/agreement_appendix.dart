@@ -4,16 +4,16 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
 class AgreementAppendix {
 	int? _docSeq;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get docSeq => _docSeq;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set docSeq(int? value) {
+	@ActualInt32() int? get docSeq => _docSeq;
+	@ActualInt32() set docSeq(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('docSeq value cannot exceed 2147483647');
 		}
 		_docSeq = value;
 	}
 	int? _verseSeq;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get verseSeq => _verseSeq;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set verseSeq(int? value) {
+	@ActualInt32() int? get verseSeq => _verseSeq;
+	@ActualInt32() set verseSeq(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('verseSeq value cannot exceed 2147483647');
 		}

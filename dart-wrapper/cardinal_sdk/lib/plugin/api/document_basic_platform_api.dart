@@ -23,7 +23,7 @@ class DocumentBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchDocumentsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -36,7 +36,7 @@ class DocumentBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(String sdkId, BaseFilterOptions filter) async {
@@ -84,12 +84,12 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.deleteDocumentsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocumentsByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeDocumentById(String sdkId, String id, String rev) async {
@@ -121,12 +121,12 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.deleteDocuments',
 			{
 				"sdkId": sdkId,
-				"documents": jsonEncode(documents.map((x0) => Document.encode(x0))),
+				"documents": jsonEncode(documents.map((x0) => Document.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocuments");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeDocument(String sdkId, Document document) async {
@@ -173,7 +173,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"documentId": jsonEncode(documentId),
 				"rev": jsonEncode(rev),
-				"utis": jsonEncode(utis?.map((x0) => x0)),
+				"utis": jsonEncode(utis?.map((x0) => x0).toList()),
 				"attachment": jsonEncode(base64Encode(attachment as List<int>)),
 				"encrypted": jsonEncode(encrypted),
 			}
@@ -191,7 +191,7 @@ class DocumentBasicPlatformApi {
 				"documentId": jsonEncode(documentId),
 				"key": jsonEncode(key),
 				"rev": jsonEncode(rev),
-				"utis": jsonEncode(utis?.map((x0) => x0)),
+				"utis": jsonEncode(utis?.map((x0) => x0).toList()),
 				"attachment": jsonEncode(base64Encode(attachment as List<int>)),
 				"encrypted": jsonEncode(encrypted),
 			}
@@ -288,12 +288,12 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.getDocuments',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getDocuments");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedDocument.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedDocument.fromJSON(x1) ).toList();
 	}
 
 	Future<List<EncryptedDocument>> modifyDocuments(String sdkId, List<EncryptedDocument> entities) async {
@@ -301,11 +301,11 @@ class DocumentBasicPlatformApi {
 			'DocumentBasicApi.modifyDocuments',
 			{
 				"sdkId": sdkId,
-				"entities": jsonEncode(entities.map((x0) => EncryptedDocument.encode(x0))),
+				"entities": jsonEncode(entities.map((x0) => EncryptedDocument.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method modifyDocuments");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedDocument.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedDocument.fromJSON(x1) ).toList();
 	}
 }

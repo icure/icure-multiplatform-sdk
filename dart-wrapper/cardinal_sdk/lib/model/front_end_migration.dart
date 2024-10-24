@@ -49,7 +49,7 @@ class FrontEndMigration implements StoredDocument {
 			startKey: data["startKey"],
 			startKeyDocId: data["startKeyDocId"],
 			processCount: data["processCount"],
-			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ),
+			properties: data["properties"].map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toList(),
 		);
 	}
 
@@ -67,7 +67,7 @@ class FrontEndMigration implements StoredDocument {
 			"startKey" : value.startKey,
 			"startKeyDocId" : value.startKeyDocId,
 			"processCount" : value.processCount,
-			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0))
+			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

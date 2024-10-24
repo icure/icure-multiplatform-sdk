@@ -8,8 +8,8 @@ class FailedRequestDetails {
 	String delegateId;
 	bool updatedForMigration;
 	int? _code;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int? get code => _code;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set code(int? value) {
+	@ActualInt32() int? get code => _code;
+	@ActualInt32() set code(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('code value cannot exceed 2147483647');
 		}

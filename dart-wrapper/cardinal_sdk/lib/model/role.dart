@@ -23,7 +23,7 @@ class Role implements StoredDocument {
 			rev: data["rev"],
 			deletionDate: data["deletionDate"],
 			name: data["name"],
-			permissions: data["permissions"].map((x0) => x0 ),
+			permissions: data["permissions"].map((x0) => x0 ).toList(),
 		);
 	}
 
@@ -33,7 +33,7 @@ class Role implements StoredDocument {
 			"rev" : value.rev,
 			"deletionDate" : value.deletionDate,
 			"name" : value.name,
-			"permissions" : value.permissions.map((x0) => x0)
+			"permissions" : value.permissions.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

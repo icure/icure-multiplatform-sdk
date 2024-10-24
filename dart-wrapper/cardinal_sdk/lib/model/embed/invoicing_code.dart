@@ -27,27 +27,27 @@ sealed class InvoicingCode implements Encryptable {
 	abstract String? error;
 	abstract String? contract;
 	abstract int? contractDate;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? units;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? side;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? timeOfDay;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? eidReadingHour;
+	@ActualInt32() abstract int? units;
+	@ActualInt32() abstract int? side;
+	@ActualInt32() abstract int? timeOfDay;
+	@ActualInt32() abstract int? eidReadingHour;
 	abstract String? eidReadingValue;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? override3rdPayerCode;
+	@ActualInt32() abstract int? override3rdPayerCode;
 	abstract String? override3rdPayerReason;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? transplantationCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? prescriberNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? percentNorm;
+	@ActualInt32() abstract int? transplantationCode;
+	@ActualInt32() abstract int? prescriberNorm;
+	@ActualInt32() abstract int? percentNorm;
 	abstract String? prescriberNihii;
 	abstract String? relatedCode;
 	abstract int? prescriptionDate;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? derogationMaxNumber;
+	@ActualInt32() abstract int? derogationMaxNumber;
 	abstract String? prescriberSsin;
 	abstract String? prescriberLastName;
 	abstract String? prescriberFirstName;
 	abstract String? prescriberCdHcParty;
 	abstract String? locationNihii;
 	abstract String? locationCdHcParty;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? locationService;
+	@ActualInt32() abstract int? locationService;
 	abstract int? admissionDate;
 	abstract bool? canceled;
 	abstract bool? accepted;
@@ -55,8 +55,8 @@ sealed class InvoicingCode implements Encryptable {
 	abstract bool? resent;
 	abstract bool? archived;
 	abstract bool? lost;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? insuranceJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? cancelPatientInterventionReason;
+	@ActualInt32() abstract int? insuranceJustification;
+	@ActualInt32() abstract int? cancelPatientInterventionReason;
 	abstract int? status;
 	@override abstract Base64String? encryptedSelf;
 
@@ -111,32 +111,32 @@ class DecryptedInvoicingCode implements InvoicingCode {
 	@override String? contract;
 	@override int? contractDate;
 	int? _units;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get units => _units;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set units(int? value) {
+	@ActualInt32() @override int? get units => _units;
+	@ActualInt32() @override set units(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('units value cannot exceed 2147483647');
 		}
 		_units = value;
 	}
 	int? _side;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get side => _side;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set side(int? value) {
+	@ActualInt32() @override int? get side => _side;
+	@ActualInt32() @override set side(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('side value cannot exceed 2147483647');
 		}
 		_side = value;
 	}
 	int? _timeOfDay;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get timeOfDay => _timeOfDay;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set timeOfDay(int? value) {
+	@ActualInt32() @override int? get timeOfDay => _timeOfDay;
+	@ActualInt32() @override set timeOfDay(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('timeOfDay value cannot exceed 2147483647');
 		}
 		_timeOfDay = value;
 	}
 	int? _eidReadingHour;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get eidReadingHour => _eidReadingHour;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set eidReadingHour(int? value) {
+	@ActualInt32() @override int? get eidReadingHour => _eidReadingHour;
+	@ActualInt32() @override set eidReadingHour(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('eidReadingHour value cannot exceed 2147483647');
 		}
@@ -144,8 +144,8 @@ class DecryptedInvoicingCode implements InvoicingCode {
 	}
 	@override String? eidReadingValue;
 	int? _override3rdPayerCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get override3rdPayerCode => _override3rdPayerCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set override3rdPayerCode(int? value) {
+	@ActualInt32() @override int? get override3rdPayerCode => _override3rdPayerCode;
+	@ActualInt32() @override set override3rdPayerCode(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('override3rdPayerCode value cannot exceed 2147483647');
 		}
@@ -153,24 +153,24 @@ class DecryptedInvoicingCode implements InvoicingCode {
 	}
 	@override String? override3rdPayerReason;
 	int? _transplantationCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get transplantationCode => _transplantationCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set transplantationCode(int? value) {
+	@ActualInt32() @override int? get transplantationCode => _transplantationCode;
+	@ActualInt32() @override set transplantationCode(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('transplantationCode value cannot exceed 2147483647');
 		}
 		_transplantationCode = value;
 	}
 	int? _prescriberNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get prescriberNorm => _prescriberNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set prescriberNorm(int? value) {
+	@ActualInt32() @override int? get prescriberNorm => _prescriberNorm;
+	@ActualInt32() @override set prescriberNorm(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('prescriberNorm value cannot exceed 2147483647');
 		}
 		_prescriberNorm = value;
 	}
 	int? _percentNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get percentNorm => _percentNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set percentNorm(int? value) {
+	@ActualInt32() @override int? get percentNorm => _percentNorm;
+	@ActualInt32() @override set percentNorm(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('percentNorm value cannot exceed 2147483647');
 		}
@@ -180,8 +180,8 @@ class DecryptedInvoicingCode implements InvoicingCode {
 	@override String? relatedCode;
 	@override int? prescriptionDate;
 	int? _derogationMaxNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get derogationMaxNumber => _derogationMaxNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set derogationMaxNumber(int? value) {
+	@ActualInt32() @override int? get derogationMaxNumber => _derogationMaxNumber;
+	@ActualInt32() @override set derogationMaxNumber(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('derogationMaxNumber value cannot exceed 2147483647');
 		}
@@ -194,8 +194,8 @@ class DecryptedInvoicingCode implements InvoicingCode {
 	@override String? locationNihii;
 	@override String? locationCdHcParty;
 	int? _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get locationService => _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set locationService(int? value) {
+	@ActualInt32() @override int? get locationService => _locationService;
+	@ActualInt32() @override set locationService(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('locationService value cannot exceed 2147483647');
 		}
@@ -209,16 +209,16 @@ class DecryptedInvoicingCode implements InvoicingCode {
 	@override bool? archived;
 	@override bool? lost;
 	int? _insuranceJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get insuranceJustification => _insuranceJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set insuranceJustification(int? value) {
+	@ActualInt32() @override int? get insuranceJustification => _insuranceJustification;
+	@ActualInt32() @override set insuranceJustification(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('insuranceJustification value cannot exceed 2147483647');
 		}
 		_insuranceJustification = value;
 	}
 	int? _cancelPatientInterventionReason;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get cancelPatientInterventionReason => _cancelPatientInterventionReason;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set cancelPatientInterventionReason(int? value) {
+	@ActualInt32() @override int? get cancelPatientInterventionReason => _cancelPatientInterventionReason;
+	@ActualInt32() @override set cancelPatientInterventionReason(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('cancelPatientInterventionReason value cannot exceed 2147483647');
 		}
@@ -316,13 +316,13 @@ class DecryptedInvoicingCode implements InvoicingCode {
 			tarificationId: data["tarificationId"],
 			code: data["code"],
 			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
-			paid: data["paid"],
-			totalAmount: data["totalAmount"],
-			reimbursement: data["reimbursement"],
-			patientIntervention: data["patientIntervention"],
-			doctorSupplement: data["doctorSupplement"],
-			conventionAmount: data["conventionAmount"],
-			vat: data["vat"],
+			paid: data["paid"].toDouble(),
+			totalAmount: data["totalAmount"].toDouble(),
+			reimbursement: data["reimbursement"].toDouble(),
+			patientIntervention: data["patientIntervention"].toDouble(),
+			doctorSupplement: data["doctorSupplement"].toDouble(),
+			conventionAmount: data["conventionAmount"].toDouble(),
+			vat: data["vat"].toDouble(),
 			error: data["error"],
 			contract: data["contract"],
 			contractDate: data["contractDate"],
@@ -430,32 +430,32 @@ class EncryptedInvoicingCode implements InvoicingCode {
 	@override String? contract;
 	@override int? contractDate;
 	int? _units;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get units => _units;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set units(int? value) {
+	@ActualInt32() @override int? get units => _units;
+	@ActualInt32() @override set units(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('units value cannot exceed 2147483647');
 		}
 		_units = value;
 	}
 	int? _side;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get side => _side;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set side(int? value) {
+	@ActualInt32() @override int? get side => _side;
+	@ActualInt32() @override set side(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('side value cannot exceed 2147483647');
 		}
 		_side = value;
 	}
 	int? _timeOfDay;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get timeOfDay => _timeOfDay;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set timeOfDay(int? value) {
+	@ActualInt32() @override int? get timeOfDay => _timeOfDay;
+	@ActualInt32() @override set timeOfDay(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('timeOfDay value cannot exceed 2147483647');
 		}
 		_timeOfDay = value;
 	}
 	int? _eidReadingHour;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get eidReadingHour => _eidReadingHour;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set eidReadingHour(int? value) {
+	@ActualInt32() @override int? get eidReadingHour => _eidReadingHour;
+	@ActualInt32() @override set eidReadingHour(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('eidReadingHour value cannot exceed 2147483647');
 		}
@@ -463,8 +463,8 @@ class EncryptedInvoicingCode implements InvoicingCode {
 	}
 	@override String? eidReadingValue;
 	int? _override3rdPayerCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get override3rdPayerCode => _override3rdPayerCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set override3rdPayerCode(int? value) {
+	@ActualInt32() @override int? get override3rdPayerCode => _override3rdPayerCode;
+	@ActualInt32() @override set override3rdPayerCode(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('override3rdPayerCode value cannot exceed 2147483647');
 		}
@@ -472,24 +472,24 @@ class EncryptedInvoicingCode implements InvoicingCode {
 	}
 	@override String? override3rdPayerReason;
 	int? _transplantationCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get transplantationCode => _transplantationCode;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set transplantationCode(int? value) {
+	@ActualInt32() @override int? get transplantationCode => _transplantationCode;
+	@ActualInt32() @override set transplantationCode(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('transplantationCode value cannot exceed 2147483647');
 		}
 		_transplantationCode = value;
 	}
 	int? _prescriberNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get prescriberNorm => _prescriberNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set prescriberNorm(int? value) {
+	@ActualInt32() @override int? get prescriberNorm => _prescriberNorm;
+	@ActualInt32() @override set prescriberNorm(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('prescriberNorm value cannot exceed 2147483647');
 		}
 		_prescriberNorm = value;
 	}
 	int? _percentNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get percentNorm => _percentNorm;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set percentNorm(int? value) {
+	@ActualInt32() @override int? get percentNorm => _percentNorm;
+	@ActualInt32() @override set percentNorm(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('percentNorm value cannot exceed 2147483647');
 		}
@@ -499,8 +499,8 @@ class EncryptedInvoicingCode implements InvoicingCode {
 	@override String? relatedCode;
 	@override int? prescriptionDate;
 	int? _derogationMaxNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get derogationMaxNumber => _derogationMaxNumber;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set derogationMaxNumber(int? value) {
+	@ActualInt32() @override int? get derogationMaxNumber => _derogationMaxNumber;
+	@ActualInt32() @override set derogationMaxNumber(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('derogationMaxNumber value cannot exceed 2147483647');
 		}
@@ -513,8 +513,8 @@ class EncryptedInvoicingCode implements InvoicingCode {
 	@override String? locationNihii;
 	@override String? locationCdHcParty;
 	int? _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get locationService => _locationService;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set locationService(int? value) {
+	@ActualInt32() @override int? get locationService => _locationService;
+	@ActualInt32() @override set locationService(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('locationService value cannot exceed 2147483647');
 		}
@@ -528,16 +528,16 @@ class EncryptedInvoicingCode implements InvoicingCode {
 	@override bool? archived;
 	@override bool? lost;
 	int? _insuranceJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get insuranceJustification => _insuranceJustification;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set insuranceJustification(int? value) {
+	@ActualInt32() @override int? get insuranceJustification => _insuranceJustification;
+	@ActualInt32() @override set insuranceJustification(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('insuranceJustification value cannot exceed 2147483647');
 		}
 		_insuranceJustification = value;
 	}
 	int? _cancelPatientInterventionReason;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get cancelPatientInterventionReason => _cancelPatientInterventionReason;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set cancelPatientInterventionReason(int? value) {
+	@ActualInt32() @override int? get cancelPatientInterventionReason => _cancelPatientInterventionReason;
+	@ActualInt32() @override set cancelPatientInterventionReason(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('cancelPatientInterventionReason value cannot exceed 2147483647');
 		}
@@ -635,13 +635,13 @@ class EncryptedInvoicingCode implements InvoicingCode {
 			tarificationId: data["tarificationId"],
 			code: data["code"],
 			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
-			paid: data["paid"],
-			totalAmount: data["totalAmount"],
-			reimbursement: data["reimbursement"],
-			patientIntervention: data["patientIntervention"],
-			doctorSupplement: data["doctorSupplement"],
-			conventionAmount: data["conventionAmount"],
-			vat: data["vat"],
+			paid: data["paid"].toDouble(),
+			totalAmount: data["totalAmount"].toDouble(),
+			reimbursement: data["reimbursement"].toDouble(),
+			patientIntervention: data["patientIntervention"].toDouble(),
+			doctorSupplement: data["doctorSupplement"].toDouble(),
+			conventionAmount: data["conventionAmount"].toDouble(),
+			vat: data["vat"].toDouble(),
 			error: data["error"],
 			contract: data["contract"],
 			contractDate: data["contractDate"],

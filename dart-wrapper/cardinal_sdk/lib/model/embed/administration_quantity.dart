@@ -14,7 +14,7 @@ class AdministrationQuantity {
 
 	factory AdministrationQuantity.fromJSON(Map<String, dynamic> data) {
 		return AdministrationQuantity(
-			quantity: data["quantity"],
+			quantity: data["quantity"].toDouble(),
 			administrationUnit: data["administrationUnit"] == null ? null : CodeStub.fromJSON(data["administrationUnit"]),
 			unit: data["unit"]
 		);

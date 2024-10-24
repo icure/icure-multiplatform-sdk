@@ -34,11 +34,11 @@ class EntityTemplate implements StoredDocument {
 			deletionDate: data["deletionDate"],
 			userId: data["userId"],
 			descr: data["descr"],
-			keywords: data["keywords"]?.map((x0) => x0 ),
+			keywords: data["keywords"]?.map((x0) => x0 ).toList(),
 			entityType: data["entityType"],
 			subType: data["subType"],
 			defaultTemplate: data["defaultTemplate"],
-			entity: data["entity"].map((x0) => x0 ),
+			entity: data["entity"].map((x0) => x0 ).toList(),
 		);
 	}
 
@@ -49,11 +49,11 @@ class EntityTemplate implements StoredDocument {
 			"deletionDate" : value.deletionDate,
 			"userId" : value.userId,
 			"descr" : value.descr,
-			"keywords" : value.keywords?.map((x0) => x0),
+			"keywords" : value.keywords?.map((x0) => x0).toList(),
 			"entityType" : value.entityType,
 			"subType" : value.subType,
 			"defaultTemplate" : value.defaultTemplate,
-			"entity" : value.entity.map((x0) => x0)
+			"entity" : value.entity.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

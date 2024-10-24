@@ -25,7 +25,7 @@ class MaintenanceTaskBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBy");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, BaseSortableFilterOptions filter) async {
@@ -38,7 +38,7 @@ class MaintenanceTaskBasicPlatformApi {
 		);
 		if (res == null) throw AssertionError("received null result from platform method matchMaintenanceTasksBySorted");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => x1 );
+		return parsedResJson.map((x1) => x1 ).toList();
 	}
 
 	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, BaseFilterOptions filter) async {
@@ -86,12 +86,12 @@ class MaintenanceTaskBasicPlatformApi {
 			'MaintenanceTaskBasicApi.deleteMaintenanceTasksByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0))),
+				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasksByIds");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTaskById(String sdkId, String id, String rev) async {
@@ -123,12 +123,12 @@ class MaintenanceTaskBasicPlatformApi {
 			'MaintenanceTaskBasicApi.deleteMaintenanceTasks',
 			{
 				"sdkId": sdkId,
-				"maintenanceTasks": jsonEncode(maintenanceTasks.map((x0) => MaintenanceTask.encode(x0))),
+				"maintenanceTasks": jsonEncode(maintenanceTasks.map((x0) => MaintenanceTask.encode(x0)).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) );
+		return parsedResJson.map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeMaintenanceTask(String sdkId, MaintenanceTask maintenanceTask) async {
@@ -199,12 +199,12 @@ class MaintenanceTaskBasicPlatformApi {
 			'MaintenanceTaskBasicApi.getMaintenanceTasks',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => x0)),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTasks");
 		final parsedResJson = jsonDecode(res);
-		return parsedResJson.map((x1) => EncryptedMaintenanceTask.fromJSON(x1) );
+		return parsedResJson.map((x1) => EncryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 
 	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
@@ -212,7 +212,7 @@ class MaintenanceTaskBasicPlatformApi {
 			'MaintenanceTaskBasicApi.subscribeToEvents',
 			{
 				"sdkId": sdkId,
-				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0))),
+				"events": jsonEncode(events.map((x0) => SubscriptionEventType.encode(x0)).toList()),
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}

@@ -133,8 +133,8 @@ class DecryptedTopic implements Topic {
 			healthElementId: data["healthElementId"],
 			contactId: data["contactId"],
 			description: data["description"],
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
@@ -142,13 +142,13 @@ class DecryptedTopic implements Topic {
 			deletionDate: data["deletionDate"],
 			activeParticipants: data["activeParticipants"].map((k0, v0) => MapEntry(k0, TopicRole.fromJSON(v0))),
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
-			linkedHealthElements: data["linkedHealthElements"].map((x0) => x0 ),
-			linkedServices: data["linkedServices"].map((x0) => x0 ),
+			linkedHealthElements: data["linkedHealthElements"].map((x0) => x0 ).toList(),
+			linkedServices: data["linkedServices"].map((x0) => x0 ).toList(),
 		);
 	}
 
@@ -161,8 +161,8 @@ class DecryptedTopic implements Topic {
 			"healthElementId" : value.healthElementId,
 			"contactId" : value.contactId,
 			"description" : value.description,
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
@@ -170,13 +170,13 @@ class DecryptedTopic implements Topic {
 			"deletionDate" : value.deletionDate,
 			"activeParticipants" : value.activeParticipants.map((k0, v0) => MapEntry(k0, TopicRole.encode(v0))),
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
-			"linkedHealthElements" : value.linkedHealthElements.map((x0) => x0),
-			"linkedServices" : value.linkedServices.map((x0) => x0)
+			"linkedHealthElements" : value.linkedHealthElements.map((x0) => x0).toList(),
+			"linkedServices" : value.linkedServices.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}
@@ -250,8 +250,8 @@ class EncryptedTopic implements Topic {
 			healthElementId: data["healthElementId"],
 			contactId: data["contactId"],
 			description: data["description"],
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
@@ -259,13 +259,13 @@ class EncryptedTopic implements Topic {
 			deletionDate: data["deletionDate"],
 			activeParticipants: data["activeParticipants"].map((k0, v0) => MapEntry(k0, TopicRole.fromJSON(v0))),
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
-			linkedHealthElements: data["linkedHealthElements"].map((x0) => x0 ),
-			linkedServices: data["linkedServices"].map((x0) => x0 ),
+			linkedHealthElements: data["linkedHealthElements"].map((x0) => x0 ).toList(),
+			linkedServices: data["linkedServices"].map((x0) => x0 ).toList(),
 		);
 	}
 
@@ -278,8 +278,8 @@ class EncryptedTopic implements Topic {
 			"healthElementId" : value.healthElementId,
 			"contactId" : value.contactId,
 			"description" : value.description,
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
@@ -287,13 +287,13 @@ class EncryptedTopic implements Topic {
 			"deletionDate" : value.deletionDate,
 			"activeParticipants" : value.activeParticipants.map((k0, v0) => MapEntry(k0, TopicRole.encode(v0))),
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!),
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
-			"linkedHealthElements" : value.linkedHealthElements.map((x0) => x0),
-			"linkedServices" : value.linkedServices.map((x0) => x0)
+			"linkedHealthElements" : value.linkedHealthElements.map((x0) => x0).toList(),
+			"linkedServices" : value.linkedServices.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

@@ -25,7 +25,7 @@ sealed class Form implements StoredDocument, ICureDocument<String>, HasEncryptio
 	@override abstract int? deletionDate;
 	abstract int? openingDate;
 	abstract String? status;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") abstract int? version;
+	@ActualInt32() abstract int? version;
 	abstract String? logicalUuid;
 	abstract String? descr;
 	abstract String? uniqueId;
@@ -85,8 +85,8 @@ class EncryptedForm implements Form {
 	@override int? openingDate;
 	@override String? status;
 	int? _version;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get version => _version;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set version(int? value) {
+	@ActualInt32() @override int? get version => _version;
+	@ActualInt32() @override set version(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('version value cannot exceed 2147483647');
 		}
@@ -154,8 +154,8 @@ class EncryptedForm implements Form {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			openingDate: data["openingDate"],
@@ -168,10 +168,10 @@ class EncryptedForm implements Form {
 			healthElementId: data["healthElementId"],
 			planOfActionId: data["planOfActionId"],
 			parent: data["parent"],
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -186,8 +186,8 @@ class EncryptedForm implements Form {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"openingDate" : value.openingDate,
@@ -201,10 +201,10 @@ class EncryptedForm implements Form {
 			"healthElementId" : value.healthElementId,
 			"planOfActionId" : value.planOfActionId,
 			"parent" : value.parent,
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
@@ -227,8 +227,8 @@ class DecryptedForm implements Form {
 	@override int? openingDate;
 	@override String? status;
 	int? _version;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override int? get version => _version;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") @override set version(int? value) {
+	@ActualInt32() @override int? get version => _version;
+	@ActualInt32() @override set version(int? value) {
 		if (value != null && value > 2147483647) {
 			throw ArgumentError('version value cannot exceed 2147483647');
 		}
@@ -296,8 +296,8 @@ class DecryptedForm implements Form {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			openingDate: data["openingDate"],
@@ -310,10 +310,10 @@ class DecryptedForm implements Form {
 			healthElementId: data["healthElementId"],
 			planOfActionId: data["planOfActionId"],
 			parent: data["parent"],
-			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ),
-			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
-			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ))),
+			secretForeignKeys: data["secretForeignKeys"].map((x0) => x0 ).toList(),
+			cryptedForeignKeys: data["cryptedForeignKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			delegations: data["delegations"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
+			encryptionKeys: data["encryptionKeys"].map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.fromJSON(x1) ).toList())),
 			encryptedSelf: data["encryptedSelf"],
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);
@@ -328,8 +328,8 @@ class DecryptedForm implements Form {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"openingDate" : value.openingDate,
@@ -343,10 +343,10 @@ class DecryptedForm implements Form {
 			"healthElementId" : value.healthElementId,
 			"planOfActionId" : value.planOfActionId,
 			"parent" : value.parent,
-			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0),
-			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
-			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)))),
+			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
+			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
+			"encryptionKeys" : value.encryptionKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"encryptedSelf" : value.encryptedSelf,
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};

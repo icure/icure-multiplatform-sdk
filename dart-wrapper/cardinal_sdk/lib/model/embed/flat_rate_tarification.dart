@@ -61,7 +61,7 @@ class EncryptedFlatRateTarification implements FlatRateTarification {
 			code: data["code"],
 			flatRateType: data["flatRateType"] == null ? null : FlatRateType.fromJSON(data["flatRateType"]),
 			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
-			valorisations: data["valorisations"].map((x0) => EncryptedValorisation.fromJSON(x0) ),
+			valorisations: data["valorisations"].map((x0) => EncryptedValorisation.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -71,7 +71,7 @@ class EncryptedFlatRateTarification implements FlatRateTarification {
 			"code" : value.code,
 			"flatRateType" : value.flatRateType == null ? null : FlatRateType.encode(value.flatRateType!),
 			"label" : value.label?.map((k0, v0) => MapEntry(k0, v0)),
-			"valorisations" : value.valorisations.map((x0) => EncryptedValorisation.encode(x0)),
+			"valorisations" : value.valorisations.map((x0) => EncryptedValorisation.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
@@ -97,7 +97,7 @@ class DecryptedFlatRateTarification implements FlatRateTarification {
 			code: data["code"],
 			flatRateType: data["flatRateType"] == null ? null : FlatRateType.fromJSON(data["flatRateType"]),
 			label: data["label"]?.map((k0, v0) => MapEntry(k0, v0)),
-			valorisations: data["valorisations"].map((x0) => DecryptedValorisation.fromJSON(x0) ),
+			valorisations: data["valorisations"].map((x0) => DecryptedValorisation.fromJSON(x0) ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -107,7 +107,7 @@ class DecryptedFlatRateTarification implements FlatRateTarification {
 			"code" : value.code,
 			"flatRateType" : value.flatRateType == null ? null : FlatRateType.encode(value.flatRateType!),
 			"label" : value.label?.map((k0, v0) => MapEntry(k0, v0)),
-			"valorisations" : value.valorisations.map((x0) => DecryptedValorisation.encode(x0)),
+			"valorisations" : value.valorisations.map((x0) => DecryptedValorisation.encode(x0)).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;

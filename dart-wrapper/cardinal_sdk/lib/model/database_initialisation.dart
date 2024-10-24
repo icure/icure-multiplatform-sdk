@@ -19,8 +19,8 @@ class DatabaseInitialisation {
 
 	factory DatabaseInitialisation.fromJSON(Map<String, dynamic> data) {
 		return DatabaseInitialisation(
-			users: data["users"]?.map((x0) => User.fromJSON(x0) ),
-			healthcareParties: data["healthcareParties"]?.map((x0) => HealthcareParty.fromJSON(x0) ),
+			users: data["users"]?.map((x0) => User.fromJSON(x0) ).toList(),
+			healthcareParties: data["healthcareParties"]?.map((x0) => HealthcareParty.fromJSON(x0) ).toList(),
 			replication: data["replication"] == null ? null : Replication.fromJSON(data["replication"]),
 			minimumKrakenVersion: data["minimumKrakenVersion"]
 		);
@@ -28,8 +28,8 @@ class DatabaseInitialisation {
 
 	static Map<String, dynamic> encode(DatabaseInitialisation value) {
 		Map<String, dynamic> entityAsMap = {
-			"users" : value.users?.map((x0) => User.encode(x0)),
-			"healthcareParties" : value.healthcareParties?.map((x0) => HealthcareParty.encode(x0)),
+			"users" : value.users?.map((x0) => User.encode(x0)).toList(),
+			"healthcareParties" : value.healthcareParties?.map((x0) => HealthcareParty.encode(x0)).toList(),
 			"replication" : value.replication == null ? null : Replication.encode(value.replication!),
 			"minimumKrakenVersion" : value.minimumKrakenVersion
 		};

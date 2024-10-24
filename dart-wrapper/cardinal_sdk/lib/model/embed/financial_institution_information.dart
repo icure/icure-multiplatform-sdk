@@ -71,7 +71,7 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 			bic: data["bic"],
 			proxyBankAccount: data["proxyBankAccount"],
 			proxyBic: data["proxyBic"],
-			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ),
+			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -84,7 +84,7 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 			"bic" : value.bic,
 			"proxyBankAccount" : value.proxyBankAccount,
 			"proxyBic" : value.proxyBic,
-			"preferredFiiForPartners" : value.preferredFiiForPartners.map((x0) => x0),
+			"preferredFiiForPartners" : value.preferredFiiForPartners.map((x0) => x0).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
@@ -119,7 +119,7 @@ class DecryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 			bic: data["bic"],
 			proxyBankAccount: data["proxyBankAccount"],
 			proxyBic: data["proxyBic"],
-			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ),
+			preferredFiiForPartners: data["preferredFiiForPartners"].map((x0) => x0 ).toList(),
 			encryptedSelf: data["encryptedSelf"]
 		);
 	}
@@ -132,7 +132,7 @@ class DecryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 			"bic" : value.bic,
 			"proxyBankAccount" : value.proxyBankAccount,
 			"proxyBic" : value.proxyBic,
-			"preferredFiiForPartners" : value.preferredFiiForPartners.map((x0) => x0),
+			"preferredFiiForPartners" : value.preferredFiiForPartners.map((x0) => x0).toList(),
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;

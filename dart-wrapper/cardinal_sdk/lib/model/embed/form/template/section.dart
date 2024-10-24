@@ -18,18 +18,18 @@ class Section {
 	factory Section.fromJSON(Map<String, dynamic> data) {
 		return Section(
 			data["section"],
-			data["fields"].map((x0) => StructureElement.fromJSON(x0) ),
+			data["fields"].map((x0) => StructureElement.fromJSON(x0) ).toList(),
 			description: data["description"],
-			keywords: data["keywords"]?.map((x0) => x0 ),
+			keywords: data["keywords"]?.map((x0) => x0 ).toList(),
 		);
 	}
 
 	static Map<String, dynamic> encode(Section value) {
 		Map<String, dynamic> entityAsMap = {
 			"section" : value.section,
-			"fields" : value.fields.map((x0) => StructureElement.encode(x0)),
+			"fields" : value.fields.map((x0) => StructureElement.encode(x0)).toList(),
 			"description" : value.description,
-			"keywords" : value.keywords?.map((x0) => x0)
+			"keywords" : value.keywords?.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}

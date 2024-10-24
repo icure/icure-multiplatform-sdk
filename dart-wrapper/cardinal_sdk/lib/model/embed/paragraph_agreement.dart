@@ -62,17 +62,17 @@ class ParagraphAgreement {
 			start: data["start"],
 			end: data["end"],
 			cancelationDate: data["cancelationDate"],
-			quantityValue: data["quantityValue"],
+			quantityValue: data["quantityValue"].toDouble(),
 			quantityUnit: data["quantityUnit"],
 			ioRequestReference: data["ioRequestReference"],
 			responseType: data["responseType"],
 			refusalJustification: data["refusalJustification"]?.map((k0, v0) => MapEntry(k0, v0)),
-			verses: data["verses"]?.map((x0) => x0 ),
+			verses: data["verses"]?.map((x0) => x0 ).toList(),
 			coverageType: data["coverageType"],
-			unitNumber: data["unitNumber"],
-			strength: data["strength"],
+			unitNumber: data["unitNumber"].toDouble(),
+			strength: data["strength"].toDouble(),
 			strengthUnit: data["strengthUnit"],
-			agreementAppendices: data["agreementAppendices"]?.map((x0) => AgreementAppendix.fromJSON(x0) ),
+			agreementAppendices: data["agreementAppendices"]?.map((x0) => AgreementAppendix.fromJSON(x0) ).toList(),
 			documentId: data["documentId"]
 		);
 	}
@@ -94,12 +94,12 @@ class ParagraphAgreement {
 			"ioRequestReference" : value.ioRequestReference,
 			"responseType" : value.responseType,
 			"refusalJustification" : value.refusalJustification?.map((k0, v0) => MapEntry(k0, v0)),
-			"verses" : value.verses?.map((x0) => x0),
+			"verses" : value.verses?.map((x0) => x0).toList(),
 			"coverageType" : value.coverageType,
 			"unitNumber" : value.unitNumber,
 			"strength" : value.strength,
 			"strengthUnit" : value.strengthUnit,
-			"agreementAppendices" : value.agreementAppendices?.map((x0) => AgreementAppendix.encode(x0)),
+			"agreementAppendices" : value.agreementAppendices?.map((x0) => AgreementAppendix.encode(x0)).toList(),
 			"documentId" : value.documentId
 		};
 		return entityAsMap;

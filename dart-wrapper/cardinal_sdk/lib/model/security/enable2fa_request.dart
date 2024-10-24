@@ -5,8 +5,8 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 class Enable2faRequest {
 	String secret;
 	int _otpLength;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") int get otpLength => _otpLength;
-	@ActualInt32("This property cannot contain a value exceeding 2147483647") set otpLength(int value) {
+	@ActualInt32() int get otpLength => _otpLength;
+	@ActualInt32() set otpLength(int value) {
 		if (value > 2147483647) {
 			throw ArgumentError('otpLength value cannot exceed 2147483647');
 		}

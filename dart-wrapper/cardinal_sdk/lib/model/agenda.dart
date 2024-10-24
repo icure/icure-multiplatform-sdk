@@ -49,13 +49,13 @@ class Agenda implements StoredDocument, ICureDocument<String> {
 			author: data["author"],
 			responsible: data["responsible"],
 			medicalLocationId: data["medicalLocationId"],
-			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ),
-			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ),
+			tags: data["tags"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: data["codes"].map((x0) => CodeStub.fromJSON(x0) ).toList(),
 			endOfLife: data["endOfLife"],
 			deletionDate: data["deletionDate"],
 			name: data["name"],
 			userId: data["userId"],
-			rights: data["rights"].map((x0) => Right.fromJSON(x0) ),
+			rights: data["rights"].map((x0) => Right.fromJSON(x0) ).toList(),
 		);
 	}
 
@@ -68,13 +68,13 @@ class Agenda implements StoredDocument, ICureDocument<String> {
 			"author" : value.author,
 			"responsible" : value.responsible,
 			"medicalLocationId" : value.medicalLocationId,
-			"tags" : value.tags.map((x0) => CodeStub.encode(x0)),
-			"codes" : value.codes.map((x0) => CodeStub.encode(x0)),
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
 			"endOfLife" : value.endOfLife,
 			"deletionDate" : value.deletionDate,
 			"name" : value.name,
 			"userId" : value.userId,
-			"rights" : value.rights.map((x0) => Right.encode(x0))
+			"rights" : value.rights.map((x0) => Right.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}
