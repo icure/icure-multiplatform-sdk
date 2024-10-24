@@ -72,6 +72,7 @@ kotlin {
 		val androidMain by getting {
 			dependencies {
 				implementation(libs.ktorClientEngineOkhttp)
+				implementation(libs.androidx.datastore)
 			}
 		}
 		val androidUnitTest by getting {
