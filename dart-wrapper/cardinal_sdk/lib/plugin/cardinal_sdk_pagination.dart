@@ -16,7 +16,7 @@ class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPl
   @override
   Future<bool> hasNext(String sdkId) async {
     final res = await _methodChannel.invokeMethod<String>(
-        'PaginatedListIterator.hasNext',
+        'hasNext',
         {
           "sdkId": sdkId
         }
@@ -28,7 +28,7 @@ class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPl
   @override
   Future<List<dynamic>> next(String sdkId, @ActualInt32() int limit) async {
     final res = await _methodChannel.invokeMethod<String>(
-        'PaginatedListIterator.next',
+        'next',
         {
           "sdkId": sdkId,
           "limit": limit
