@@ -16,11 +16,17 @@ class CardinalSdkPlugin: FlutterPlugin {
     apiChannel.setMethodCallHandler(CardinalApisPlugin)
     initializersChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/initializers")
     initializersChannel.setMethodCallHandler(InitializersPlugin)
+    paginationChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/pagination")
+    paginationChannel.setMethodCallHandler(PaginationPlugin)
+    subscriptionChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/subscription")
+    subscriptionChannel.setMethodCallHandler(SubscriptionPlugin)
   }
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     apiChannel.setMethodCallHandler(null)
     initializersChannel.setMethodCallHandler(null)
+    paginationChannel.setMethodCallHandler(null)
+    subscriptionChannel.setMethodCallHandler(null)
     ApiScope.teardown()
   }
 }
