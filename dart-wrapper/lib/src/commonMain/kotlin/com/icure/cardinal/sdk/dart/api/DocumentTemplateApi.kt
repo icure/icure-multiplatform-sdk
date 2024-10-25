@@ -1,25 +1,21 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.DocumentTemplate
-import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object DocumentTemplateApi {
   public fun getDocumentTemplate(
     dartResultCallback: (
@@ -184,40 +180,6 @@ public object DocumentTemplateApi {
       dartResultCallback,
       ListSerializer(DocumentTemplate.serializer())) {
       NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.listDocumentTemplates()
-    }
-  }
-
-  public fun findAllDocumentTemplates(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    startKeyString: String,
-    startDocumentIdString: String,
-    limitString: String,
-  ) {
-    val startKey = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startKeyString
-    )
-    val startDocumentId = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startDocumentIdString
-    )
-    val limit = fullLanguageInteropJson.decodeFromString(
-      Int.serializer().nullable,
-      limitString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      PaginatedList.serializer(DocumentTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.findAllDocumentTemplates(
-        startKey,
-        startDocumentId,
-        limit,
-      )
     }
   }
 

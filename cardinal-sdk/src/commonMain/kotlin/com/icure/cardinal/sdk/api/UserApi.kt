@@ -19,7 +19,8 @@ import kotlin.js.JsName
 
 interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteUserUnsafe(entityId: String): DocIdentifier
+	@JsName("deleteUserUnsafe")
+	suspend fun deleteUser(entityId: String): DocIdentifier
 	suspend fun getCurrentUser(): User
 
 	@Deprecated(

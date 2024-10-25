@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -19,6 +17,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -34,6 +34,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object CalendarItemApi {
   public fun createCalendarItem(
     dartResultCallback: (
@@ -544,7 +545,11 @@ public object CalendarItemApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).calendarItem.filterCalendarItemsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedCalendarItem.serializer()
+      ))
+    }
   }
 
   public fun filterCalendarItemsBySorted(
@@ -567,7 +572,11 @@ public object CalendarItemApi {
           NativeReferences.get<CardinalSdk>(sdkId).calendarItem.filterCalendarItemsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedCalendarItem.serializer()
+      ))
+    }
   }
 
   public fun undeleteCalendarItemById(
@@ -717,9 +726,14 @@ public object CalendarItemApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedCalendarItem.serializer()
+      ))
+    }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -837,7 +851,11 @@ public object CalendarItemApi {
             NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.filterCalendarItemsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedCalendarItem.serializer()
+        ))
+      }
     }
 
     public fun filterCalendarItemsBySorted(
@@ -860,7 +878,11 @@ public object CalendarItemApi {
             NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.filterCalendarItemsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedCalendarItem.serializer()
+        ))
+      }
     }
 
     public fun undeleteCalendarItemById(
@@ -980,6 +1002,7 @@ public object CalendarItemApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1097,7 +1120,11 @@ public object CalendarItemApi {
             NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.filterCalendarItemsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(CalendarItem::class)
+        ))
+      }
     }
 
     public fun filterCalendarItemsBySorted(
@@ -1120,7 +1147,11 @@ public object CalendarItemApi {
             NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.filterCalendarItemsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(CalendarItem::class)
+        ))
+      }
     }
 
     public fun undeleteCalendarItemById(

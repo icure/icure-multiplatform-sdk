@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -20,6 +18,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -35,6 +35,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object TopicApi {
   public fun createTopic(
     dartResultCallback: (
@@ -511,7 +512,11 @@ public object TopicApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).topic.filterTopicsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedTopic.serializer()
+      ))
+    }
   }
 
   public fun filterTopicsBySorted(
@@ -533,7 +538,11 @@ public object TopicApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).topic.filterTopicsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedTopic.serializer()
+      ))
+    }
   }
 
   public fun undeleteTopic(
@@ -745,9 +754,14 @@ public object TopicApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedTopic.serializer()
+      ))
+    }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -830,7 +844,11 @@ public object TopicApi {
         val richResult = NativeReferences.get<CardinalSdk>(sdkId).topic.encrypted.filterTopicsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedTopic.serializer()
+        ))
+      }
     }
 
     public fun filterTopicsBySorted(
@@ -853,7 +871,11 @@ public object TopicApi {
             NativeReferences.get<CardinalSdk>(sdkId).topic.encrypted.filterTopicsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedTopic.serializer()
+        ))
+      }
     }
 
     public fun undeleteTopic(
@@ -1035,6 +1057,7 @@ public object TopicApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1118,7 +1141,11 @@ public object TopicApi {
             NativeReferences.get<CardinalSdk>(sdkId).topic.tryAndRecover.filterTopicsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Topic::class)
+        ))
+      }
     }
 
     public fun filterTopicsBySorted(
@@ -1141,7 +1168,11 @@ public object TopicApi {
             NativeReferences.get<CardinalSdk>(sdkId).topic.tryAndRecover.filterTopicsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Topic::class)
+        ))
+      }
     }
 
     public fun undeleteTopic(

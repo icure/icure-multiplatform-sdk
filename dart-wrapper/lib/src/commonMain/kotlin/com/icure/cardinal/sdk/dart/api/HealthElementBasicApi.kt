@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -12,19 +10,19 @@ import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlin.OptIn
-import kotlin.String
-import kotlin.Unit
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object HealthElementBasicApi {
   public fun matchHealthElementsBy(
     dartResultCallback: (
@@ -90,7 +88,11 @@ public object HealthElementBasicApi {
           NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.filterHealthElementsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedHealthElement.serializer()
+      ))
+    }
   }
 
   public fun filterHealthElementsBySorted(
@@ -113,7 +115,11 @@ public object HealthElementBasicApi {
           NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.filterHealthElementsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedHealthElement.serializer()
+      ))
+    }
   }
 
   public fun deleteHealthElementById(
@@ -429,6 +435,10 @@ public object HealthElementBasicApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedHealthElement.serializer()
+      ))
+    }
   }
 }

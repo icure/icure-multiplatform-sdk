@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -14,6 +12,8 @@ import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -28,6 +28,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object PatientBasicApi {
   public fun matchPatientsBy(
     dartResultCallback: (
@@ -92,7 +93,11 @@ public object PatientBasicApi {
       val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).patient.filterPatientsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedPatient.serializer()
+      ))
+    }
   }
 
   public fun filterPatientsBySorted(
@@ -114,7 +119,11 @@ public object PatientBasicApi {
       val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).patient.filterPatientsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedPatient.serializer()
+      ))
+    }
   }
 
   public fun deletePatientById(
@@ -530,6 +539,10 @@ public object PatientBasicApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedPatient.serializer()
+      ))
+    }
   }
 }

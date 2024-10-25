@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -18,6 +16,7 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -31,6 +30,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object ClassificationApi {
   public fun createClassification(
     dartResultCallback: (
@@ -408,7 +408,11 @@ public object ClassificationApi {
           NativeReferences.get<CardinalSdk>(sdkId).classification.filterClassificationsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedClassification.serializer()
+      ))
+    }
   }
 
   public fun filterClassificationsBySorted(
@@ -431,7 +435,11 @@ public object ClassificationApi {
           NativeReferences.get<CardinalSdk>(sdkId).classification.filterClassificationsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedClassification.serializer()
+      ))
+    }
   }
 
   public fun modifyClassification(
@@ -500,6 +508,7 @@ public object ClassificationApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -583,7 +592,11 @@ public object ClassificationApi {
             NativeReferences.get<CardinalSdk>(sdkId).classification.encrypted.filterClassificationsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedClassification.serializer()
+        ))
+      }
     }
 
     public fun filterClassificationsBySorted(
@@ -606,7 +619,11 @@ public object ClassificationApi {
             NativeReferences.get<CardinalSdk>(sdkId).classification.encrypted.filterClassificationsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedClassification.serializer()
+        ))
+      }
     }
 
     public fun modifyClassification(
@@ -676,6 +693,7 @@ public object ClassificationApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -759,7 +777,11 @@ public object ClassificationApi {
             NativeReferences.get<CardinalSdk>(sdkId).classification.tryAndRecover.filterClassificationsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Classification::class)
+        ))
+      }
     }
 
     public fun filterClassificationsBySorted(
@@ -782,7 +804,11 @@ public object ClassificationApi {
             NativeReferences.get<CardinalSdk>(sdkId).classification.tryAndRecover.filterClassificationsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Classification::class)
+        ))
+      }
     }
 
     public fun modifyClassification(

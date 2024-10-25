@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -11,6 +9,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.EncryptedClassification
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.OptIn
@@ -20,6 +19,7 @@ import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object ClassificationBasicApi {
   public fun matchClassificationsBy(
     dartResultCallback: (
@@ -85,7 +85,11 @@ public object ClassificationBasicApi {
           NativeReferences.get<CardinalBaseSdk>(sdkId).classification.filterClassificationsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedClassification.serializer()
+      ))
+    }
   }
 
   public fun filterClassificationsBySorted(
@@ -108,7 +112,11 @@ public object ClassificationBasicApi {
           NativeReferences.get<CardinalBaseSdk>(sdkId).classification.filterClassificationsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedClassification.serializer()
+      ))
+    }
   }
 
   public fun deleteClassification(

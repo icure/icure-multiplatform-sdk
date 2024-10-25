@@ -6,7 +6,7 @@ abstract class CardinalSdkPlatformSubscriptionPlugin {
   Future<void> close(String sdkId);
   Future<EntitySubscriptionCloseReason?> getCloseReason(String sdkId);
   Future<Map<String, dynamic>> getEvent(String sdkId);
-  Future<Map<String, dynamic>> waitForEvent(String sdkId, timeout: Duration);
+  Future<Map<String, dynamic>> waitForEvent(String sdkId, Duration timeout);
 }
 
 class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscriptionPlugin {
@@ -15,49 +15,49 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
   CardinalSdkMethodChannelSubscription();
 
   @override
-  Future<void> close(String sdkId) async {
+  Future<void> close(String subscriptionId) async {
     await _methodChannel.invokeMethod<String>(
         'close',
         {
-          "sdkId": sdkId
+          "subscriptionId": subscriptionId
         }
     );
     return;
   }
 
   @override
-  Future<EntitySubscriptionCloseReason?> getCloseReason(String sdkId) async {
+  Future<EntitySubscriptionCloseReason?> getCloseReason(String subscriptionId) async {
     final res = await _methodChannel.invokeMethod<String>(
         'getCloseReason',
         {
-          "sdkId": sdkId
+          "subscriptionId": subscriptionId
         }
     );
-    return res == null ? null : EntitySubscriptionCloseReason.fromJson(jsonDecode(res));
+    return res == null ? null : EntitySubscriptionCloseReason.fromJSON(jsonDecode(res));
   }
 
   @override
-  Future<Map<String, dynamic>> getEvent(String sdkId) async {
+  Future<Map<String, dynamic>> getEvent(String subscriptionId) async {
     final res = await _methodChannel.invokeMethod<String>(
         'getEvent',
         {
-          "sdkId": sdkId
+          "subscriptionId": subscriptionId
         }
     );
     if (res == null) throw AssertionError("received null result from platform method getEvent");
-    return res;
+    return jsonDecode(res);
   }
 
   @override
-  Future<Map<String, dynamic>> waitForEvent(String sdkId, timeout: Duration) async {
+  Future<Map<String, dynamic>> waitForEvent(String subscriptionId, Duration timeout) async {
     final res = await _methodChannel.invokeMethod<String>(
         'getEvent',
         {
-          "sdkId": sdkId,
+          "subscriptionId": subscriptionId,
           "timeout": timeout.inMilliseconds
         }
     );
     if (res == null) throw AssertionError("received null result from platform method waitForEvent");
-    return res;
+    return jsonDecode(res);
   }
 }

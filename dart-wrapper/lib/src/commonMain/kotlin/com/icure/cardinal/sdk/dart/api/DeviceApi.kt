@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -13,6 +11,8 @@ import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -25,6 +25,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object DeviceApi {
   public fun getDevice(
     dartResultCallback: (
@@ -177,7 +178,11 @@ public object DeviceApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).device.filterDevicesBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        Device.serializer()
+      ))
+    }
   }
 
   public fun filterDevicesBySorted(
@@ -199,7 +204,11 @@ public object DeviceApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).device.filterDevicesBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        Device.serializer()
+      ))
+    }
   }
 
   public fun matchDevicesBy(
@@ -583,6 +592,10 @@ public object DeviceApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        Device.serializer()
+      ))
+    }
   }
 }

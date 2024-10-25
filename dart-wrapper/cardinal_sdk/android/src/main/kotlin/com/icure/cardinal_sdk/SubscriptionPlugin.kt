@@ -1,6 +1,8 @@
 package com.icure.cardinal_sdk
 
 import com.icure.cardinal.sdk.dart.subscription.EntitySubscription
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
 
 object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 
@@ -29,7 +31,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 		) -> Unit,
 	): Boolean = when(methodName) {
 		"close" -> close(parameters, resultCallback)
-		"getCloseReason" -> next(parameters, resultCallback)
+		"getCloseReason" -> getCloseReason(parameters, resultCallback)
 		"getEvent" -> getEvent(parameters, resultCallback)
 		"waitForEvent" -> waitForEvent(parameters, resultCallback)
 		else -> null
@@ -42,7 +44,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 	) -> Unit) {
 		EntitySubscription.close(
 			resultCallback,
-			parameters.getValue("sdkId")
+			parameters.getValue("subscriptionId")
 		)
 	}
 
@@ -53,7 +55,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 	) -> Unit) {
 		EntitySubscription.getCloseReason(
 			resultCallback,
-			parameters.getValue("sdkId")
+			parameters.getValue("subscriptionId")
 		)
 	}
 
@@ -64,7 +66,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 	) -> Unit) {
 		EntitySubscription.getEvent(
 			resultCallback,
-			parameters.getValue("sdkId")
+			parameters.getValue("subscriptionId")
 		)
 	}
 
@@ -73,9 +75,9 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 		String?,
 		String?,
 	) -> Unit) {
-		EntitySubscription.getEvent(
+		EntitySubscription.waitForEvent(
 			resultCallback,
-			parameters.getValue("sdkId"),
+			parameters.getValue("subscriptionId"),
 			parameters.getValue("timeout")
 		)
 	}

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -10,6 +8,7 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.BooleanResponse
 import com.icure.cardinal.sdk.model.Code
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.OptIn
@@ -19,6 +18,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object CodeApi {
   public fun listCodesByRegionTypeCodeVersion(
     dartResultCallback: (
@@ -459,7 +459,11 @@ public object CodeApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).code.filterCodesBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        Code.serializer()
+      ))
+    }
   }
 
   public fun filterCodesBySorted(
@@ -481,7 +485,11 @@ public object CodeApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).code.filterCodesBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        Code.serializer()
+      ))
+    }
   }
 
   public fun matchCodesBy(

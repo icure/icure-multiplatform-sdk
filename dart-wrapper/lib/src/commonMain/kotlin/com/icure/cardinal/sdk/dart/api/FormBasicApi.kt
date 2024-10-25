@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -14,6 +12,7 @@ import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -25,6 +24,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object FormBasicApi {
   public fun matchFormsBy(
     dartResultCallback: (
@@ -89,7 +89,11 @@ public object FormBasicApi {
       val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).form.filterFormsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedForm.serializer()
+      ))
+    }
   }
 
   public fun filterFormsBySorted(
@@ -111,7 +115,11 @@ public object FormBasicApi {
       val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).form.filterFormsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedForm.serializer()
+      ))
+    }
   }
 
   public fun deleteFormById(

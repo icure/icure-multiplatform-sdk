@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -17,6 +15,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -32,6 +32,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object MaintenanceTaskApi {
   public fun createMaintenanceTask(
     dartResultCallback: (
@@ -497,7 +498,11 @@ public object MaintenanceTaskApi {
           NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.filterMaintenanceTasksBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedMaintenanceTask.serializer()
+      ))
+    }
   }
 
   public fun filterMaintenanceTasksBySorted(
@@ -520,7 +525,11 @@ public object MaintenanceTaskApi {
           NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.filterMaintenanceTasksBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedMaintenanceTask.serializer()
+      ))
+    }
   }
 
   public fun undeleteMaintenanceTask(
@@ -670,9 +679,14 @@ public object MaintenanceTaskApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedMaintenanceTask.serializer()
+      ))
+    }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -756,7 +770,11 @@ public object MaintenanceTaskApi {
             NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.filterMaintenanceTasksBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedMaintenanceTask.serializer()
+        ))
+      }
     }
 
     public fun filterMaintenanceTasksBySorted(
@@ -779,7 +797,11 @@ public object MaintenanceTaskApi {
             NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.filterMaintenanceTasksBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedMaintenanceTask.serializer()
+        ))
+      }
     }
 
     public fun undeleteMaintenanceTask(
@@ -899,6 +921,7 @@ public object MaintenanceTaskApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -982,7 +1005,11 @@ public object MaintenanceTaskApi {
             NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(MaintenanceTask::class)
+        ))
+      }
     }
 
     public fun filterMaintenanceTasksBySorted(
@@ -1005,7 +1032,11 @@ public object MaintenanceTaskApi {
             NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.filterMaintenanceTasksBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(MaintenanceTask::class)
+        ))
+      }
     }
 
     public fun undeleteMaintenanceTask(

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -13,6 +11,8 @@ import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -26,6 +26,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object TopicBasicApi {
   public fun matchTopicsBy(
     dartResultCallback: (
@@ -90,7 +91,11 @@ public object TopicBasicApi {
       val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).topic.filterTopicsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedTopic.serializer()
+      ))
+    }
   }
 
   public fun filterTopicsBySorted(
@@ -112,7 +117,11 @@ public object TopicBasicApi {
       val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).topic.filterTopicsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedTopic.serializer()
+      ))
+    }
   }
 
   public fun deleteTopicById(
@@ -468,6 +477,10 @@ public object TopicBasicApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedTopic.serializer()
+      ))
+    }
   }
 }

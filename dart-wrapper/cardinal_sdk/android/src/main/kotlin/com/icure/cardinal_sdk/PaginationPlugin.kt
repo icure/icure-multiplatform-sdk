@@ -1,6 +1,8 @@
 package com.icure.cardinal_sdk
 
 import com.icure.cardinal.sdk.dart.utils.PaginatedListIterator
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
 
 object PaginationPlugin : MethodChannel.MethodCallHandler {
 
@@ -40,7 +42,7 @@ object PaginationPlugin : MethodChannel.MethodCallHandler {
 	) -> Unit) {
 		PaginatedListIterator.hasNext(
 			resultCallback,
-			parameters.getValue("sdkId")
+			parameters.getValue("paginatedListIteratorId")
 		)
 	}
 
@@ -51,7 +53,7 @@ object PaginationPlugin : MethodChannel.MethodCallHandler {
 	) -> Unit) {
 		PaginatedListIterator.next(
 			resultCallback,
-			parameters.getValue("sdkId"),
+			parameters.getValue("paginatedListIteratorId"),
 			parameters.getValue("limit")
 		)
 	}

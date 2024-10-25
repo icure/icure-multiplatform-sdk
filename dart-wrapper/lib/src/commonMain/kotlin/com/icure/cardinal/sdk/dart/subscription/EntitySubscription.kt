@@ -1,20 +1,16 @@
+@file:OptIn(InternalIcureApi::class)
+
 package com.icure.cardinal.sdk.dart.subscription
 
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
-import com.icure.cardinal.sdk.model.base.Identifiable
-import com.icure.cardinal.sdk.serialization.DurationAsMillisecondsSerializer
-import com.icure.cardinal.sdk.subscription.EntitySubscription
-import com.icure.cardinal.sdk.subscription.EntitySubscriptionCloseReason
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.encodeToJsonElement
 
-@OptIn(InternalIcureApi::class)
 object EntitySubscription {
 
 	fun close(
@@ -29,7 +25,7 @@ object EntitySubscription {
 			dartResultCallback,
 			Unit.serializer()
 		) {
-			NativeReferences.get<EntitySubscription<Identifiable<String>>>(sdkId).close()
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).close()
 		}
 	}
 
@@ -43,9 +39,9 @@ object EntitySubscription {
 	) {
 		ApiScope.execute(
 			dartResultCallback,
-			EntitySubscriptionCloseReason.serializer().nullable
+			JsonElement.serializer()
 		) {
-			NativeReferences.get<EntitySubscription<Identifiable<String>>>(sdkId).closeReason
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).closeReason
 		}
 	}
 
@@ -61,12 +57,7 @@ object EntitySubscription {
 			dartResultCallback,
 			JsonElement.serializer()
 		) {
-			NativeReferences.get<EntitySubscription<Identifiable<String>>>(sdkId)
-				.eventChannel
-				.tryReceive()
-				.getOrNull().let {
-					fullLanguageInteropJson.encodeToJsonElement(it)
-				}
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).getEvent()
 		}
 	}
 
@@ -80,21 +71,14 @@ object EntitySubscription {
 		timeoutString: String
 	) {
 		val timeout = fullLanguageInteropJson.decodeFromString(
-			DurationAsMillisecondsSerializer,
+			Int.serializer(),
 			timeoutString
 		)
 		ApiScope.execute(
 			dartResultCallback,
 			JsonElement.serializer().nullable
 		) {
-			withTimeoutOrNull(timeout.inWholeMilliseconds) {
-				NativeReferences.get<EntitySubscription<Identifiable<String>>>(sdkId)
-					.eventChannel
-					.receiveCatching()
-					.getOrNull().let {
-						fullLanguageInteropJson.encodeToJsonElement(it)
-					}
-			}
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).waitForEvent(timeout)
 		}
 	}
 

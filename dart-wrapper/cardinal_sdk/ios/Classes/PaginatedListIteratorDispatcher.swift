@@ -25,7 +25,7 @@ class PaginatedListIteratorDispatcher {
 	) {
 		PaginatedListIterator.shared.hasNext(
 			dartResultCallback: resultCallback,
-			sdkId: parameters["sdkId"]!,
+			sdkId: parameters["paginatedListIteratorId"]!,
 		)
 	}
 
@@ -35,7 +35,7 @@ class PaginatedListIteratorDispatcher {
 	) {
 		PaginatedListIterator.shared.next(
 			dartResultCallback: resultCallback,
-			sdkId: parameters["sdkId"]!,
+			sdkId: parameters["paginatedListIteratorId"]!,
 			limit: parameters["limit"]!
 		)
 	}

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -20,6 +18,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -33,6 +32,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object DocumentApi {
   public fun createDocument(
     dartResultCallback: (
@@ -893,7 +893,11 @@ public object DocumentApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).document.filterDocumentsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedDocument.serializer()
+      ))
+    }
   }
 
   public fun filterDocumentsBySorted(
@@ -915,7 +919,11 @@ public object DocumentApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).document.filterDocumentsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedDocument.serializer()
+      ))
+    }
   }
 
   public fun undeleteDocumentById(
@@ -1056,6 +1064,7 @@ public object DocumentApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -1139,7 +1148,11 @@ public object DocumentApi {
             NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.filterDocumentsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedDocument.serializer()
+        ))
+      }
     }
 
     public fun filterDocumentsBySorted(
@@ -1162,7 +1175,11 @@ public object DocumentApi {
             NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.filterDocumentsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedDocument.serializer()
+        ))
+      }
     }
 
     public fun undeleteDocumentById(
@@ -1304,6 +1321,7 @@ public object DocumentApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1387,7 +1405,11 @@ public object DocumentApi {
             NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.filterDocumentsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Document::class)
+        ))
+      }
     }
 
     public fun filterDocumentsBySorted(
@@ -1410,7 +1432,11 @@ public object DocumentApi {
             NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.filterDocumentsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Document::class)
+        ))
+      }
     }
 
     public fun undeleteDocumentById(

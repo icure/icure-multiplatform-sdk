@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -11,6 +9,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.MedicalLocation
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.OptIn
@@ -19,6 +18,7 @@ import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object MedicalLocationApi {
   public fun createMedicalLocation(
     dartResultCallback: (
@@ -194,7 +194,11 @@ public object MedicalLocationApi {
           NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.filterMedicalLocationsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        MedicalLocation.serializer()
+      ))
+    }
   }
 
   public fun filterMedicalLocationsBySorted(
@@ -217,6 +221,10 @@ public object MedicalLocationApi {
           NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.filterMedicalLocationsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        MedicalLocation.serializer()
+      ))
+    }
   }
 }

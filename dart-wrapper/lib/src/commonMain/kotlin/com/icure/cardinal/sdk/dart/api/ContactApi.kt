@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -23,6 +21,8 @@ import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.model.embed.Service
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -39,6 +39,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object ContactApi {
   public fun matchContactsBy(
     dartResultCallback: (
@@ -426,7 +427,11 @@ public object ContactApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedService.serializer()
+      ))
+    }
   }
 
   public fun deleteContactById(
@@ -682,7 +687,11 @@ public object ContactApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).contact.filterContactsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedContact.serializer()
+      ))
+    }
   }
 
   public fun filterServicesBy(
@@ -704,7 +713,11 @@ public object ContactApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).contact.filterServicesBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedService.serializer()
+      ))
+    }
   }
 
   public fun filterContactsBySorted(
@@ -726,7 +739,11 @@ public object ContactApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).contact.filterContactsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedContact.serializer()
+      ))
+    }
   }
 
   public fun filterServicesBySorted(
@@ -748,7 +765,11 @@ public object ContactApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).contact.filterServicesBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedService.serializer()
+      ))
+    }
   }
 
   public fun undeleteContactById(
@@ -964,9 +985,14 @@ public object ContactApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedContact.serializer()
+      ))
+    }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -1050,7 +1076,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.encrypted.filterContactsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedContact.serializer()
+        ))
+      }
     }
 
     public fun filterServicesBy(
@@ -1073,7 +1103,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.encrypted.filterServicesBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedService.serializer()
+        ))
+      }
     }
 
     public fun filterContactsBySorted(
@@ -1096,7 +1130,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.encrypted.filterContactsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedContact.serializer()
+        ))
+      }
     }
 
     public fun filterServicesBySorted(
@@ -1119,7 +1157,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.encrypted.filterServicesBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedService.serializer()
+        ))
+      }
     }
 
     public fun undeleteContactById(
@@ -1305,6 +1347,7 @@ public object ContactApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1388,7 +1431,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.tryAndRecover.filterContactsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Contact::class)
+        ))
+      }
     }
 
     public fun filterServicesBy(
@@ -1411,7 +1458,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.tryAndRecover.filterServicesBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Service::class)
+        ))
+      }
     }
 
     public fun filterContactsBySorted(
@@ -1434,7 +1485,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.tryAndRecover.filterContactsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Contact::class)
+        ))
+      }
     }
 
     public fun filterServicesBySorted(
@@ -1457,7 +1512,11 @@ public object ContactApi {
             NativeReferences.get<CardinalSdk>(sdkId).contact.tryAndRecover.filterServicesBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Service::class)
+        ))
+      }
     }
 
     public fun undeleteContactById(

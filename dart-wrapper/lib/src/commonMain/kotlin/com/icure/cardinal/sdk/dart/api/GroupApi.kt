@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -11,7 +9,6 @@ import com.icure.cardinal.sdk.model.Group
 import com.icure.cardinal.sdk.model.GroupDeletionReport
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.ListOfProperties
-import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.RegistrationInformation
 import com.icure.cardinal.sdk.model.RegistrationSuccess
 import com.icure.cardinal.sdk.model.ReplicationInfo
@@ -35,8 +32,8 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonElement
 
+@OptIn(InternalIcureApi::class)
 public object GroupApi {
   public fun listGroups(dartResultCallback: (
     String?,
@@ -191,86 +188,6 @@ public object GroupApi {
       dartResultCallback,
       ListSerializer(Group.serializer())) {
       NativeReferences.get<CardinalSdk>(sdkId).group.listApps()
-    }
-  }
-
-  public fun findGroups(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    idString: String,
-    startDocumentIdString: String,
-    limitString: String,
-  ) {
-    val id = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      idString
-    )
-    val startDocumentId = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startDocumentIdString
-    )
-    val limit = fullLanguageInteropJson.decodeFromString(
-      Int.serializer().nullable,
-      limitString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      PaginatedList.serializer(Group.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.findGroups(
-        id,
-        startDocumentId,
-        limit,
-      )
-    }
-  }
-
-  public fun findGroupsWithContent(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    idString: String,
-    searchStringString: String,
-    startKeyString: String,
-    startDocumentIdString: String,
-    limitString: String,
-  ) {
-    val id = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      idString
-    )
-    val searchString = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      searchStringString
-    )
-    val startKey = fullLanguageInteropJson.decodeFromString(
-      JsonElement.serializer().nullable,
-      startKeyString
-    )
-    val startDocumentId = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startDocumentIdString
-    )
-    val limit = fullLanguageInteropJson.decodeFromString(
-      Int.serializer().nullable,
-      limitString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      PaginatedList.serializer(Group.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.findGroupsWithContent(
-        id,
-        searchString,
-        startKey,
-        startDocumentId,
-        limit,
-      )
     }
   }
 

@@ -1,14 +1,11 @@
 import 'dart:math';
 
+import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/cardinal_sdk.dart';
-
-import 'dart:math';
-import 'dart:convert';
 
 String generateUuid() {
   final random = Random.secure();
@@ -84,6 +81,24 @@ class _MyAppState extends State<MyApp> {
     print(DecryptedPatient.encode(await sdk.patient.getPatient(patient.id)));
     print("Retrieved encrypted patient");
     print(EncryptedPatient.encode(await sdk.patient.encrypted.getPatient(patient.id)));
+    // print("Creating more patients");
+    // final List<DecryptedPatient> manyPatients = [];
+    // for (int i = 0; i < 100; i++) {
+    //   manyPatients.add(await sdk.patient.withEncryptionMetadata(DecryptedPatient(
+    //           generateUuid(),
+    //           firstName: "Gino",
+    //           lastName: "Bros-${generateUuid()}",
+    //           note: "The third mario bros"
+    //   ), null));
+    // }
+    // await sdk.patient.createPatients(manyPatients);
+    print("Created many patients, now retrieving");
+    final filter = FilterOptions({ "kotlinType": "com.icure.cardinal.sdk.filters.PatientFilters.AllForSelf" });
+    final pages = await sdk.patient.encrypted.filterPatientsBy(filter);
+    while (await pages.hasNext()) {
+      print("Got page ${await pages.next(10)}");
+    }
+    print("Done iterating");
   }
 
   @override

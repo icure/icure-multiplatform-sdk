@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -11,6 +9,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.OptIn
@@ -19,6 +18,7 @@ import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object AgendaApi {
   public fun createAgenda(
     dartResultCallback: (
@@ -365,7 +365,11 @@ public object AgendaApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).agenda.filterAgendasBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        Agenda.serializer()
+      ))
+    }
   }
 
   public fun filterAgendasBySorted(
@@ -387,6 +391,10 @@ public object AgendaApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).agenda.filterAgendasBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        Agenda.serializer()
+      ))
+    }
   }
 }

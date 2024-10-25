@@ -20,13 +20,16 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
+import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface AccessLogBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteAccessLogUnsafe(entityId: String): DocIdentifier
+	@JsName("deleteAccessLogUnsafe")
+	suspend fun deleteAccessLog(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteAccessLogsUnsafe(entityIds: List<String>): List<DocIdentifier>
+	@JsName("deleteAccessLogsUnsafe")
+	suspend fun deleteAccessLogs(entityIds: List<String>): List<DocIdentifier>
 
 	/**
 	 * Deletes a accessLog. If you don't have write access to the accessLog the method will fail.

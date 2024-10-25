@@ -1,24 +1,20 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Insurance
-import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object InsuranceApi {
   public fun getInsurance(
     dartResultCallback: (
@@ -104,34 +100,6 @@ public object InsuranceApi {
       DocIdentifier.serializer()) {
       NativeReferences.get<CardinalSdk>(sdkId).insurance.deleteInsurance(
         insuranceId,
-      )
-    }
-  }
-
-  public fun getAllInsurances(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    startDocumentIdString: String,
-    limitString: String,
-  ) {
-    val startDocumentId = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startDocumentIdString
-    )
-    val limit = fullLanguageInteropJson.decodeFromString(
-      Int.serializer().nullable,
-      limitString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      PaginatedList.serializer(Insurance.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.getAllInsurances(
-        startDocumentId,
-        limit,
       )
     }
   }

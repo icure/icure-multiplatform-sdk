@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -21,6 +19,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -34,6 +33,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object FormApi {
   public fun createForm(
     dartResultCallback: (
@@ -654,7 +654,11 @@ public object FormApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.filterFormsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedForm.serializer()
+      ))
+    }
   }
 
   public fun filterFormsBySorted(
@@ -676,7 +680,11 @@ public object FormApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.filterFormsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedForm.serializer()
+      ))
+    }
   }
 
   public fun modifyForm(
@@ -861,6 +869,7 @@ public object FormApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -943,7 +952,11 @@ public object FormApi {
         val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.filterFormsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedForm.serializer()
+        ))
+      }
     }
 
     public fun filterFormsBySorted(
@@ -966,7 +979,11 @@ public object FormApi {
             NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.filterFormsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedForm.serializer()
+        ))
+      }
     }
 
     public fun modifyForm(
@@ -1152,6 +1169,7 @@ public object FormApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1234,7 +1252,11 @@ public object FormApi {
         val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.filterFormsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Form::class)
+        ))
+      }
     }
 
     public fun filterFormsBySorted(
@@ -1257,7 +1279,11 @@ public object FormApi {
             NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.filterFormsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Form::class)
+        ))
+      }
     }
 
     public fun modifyForm(

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -20,6 +18,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -36,6 +36,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object PatientApi {
   public fun getSecretIdsOf(
     dartResultCallback: (
@@ -661,7 +662,11 @@ public object PatientApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).patient.filterPatientsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedPatient.serializer()
+      ))
+    }
   }
 
   public fun filterPatientsBySorted(
@@ -683,7 +688,11 @@ public object PatientApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).patient.filterPatientsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedPatient.serializer()
+      ))
+    }
   }
 
   public fun undeletePatient(
@@ -933,9 +942,14 @@ public object PatientApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedPatient.serializer()
+      ))
+    }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -1041,7 +1055,11 @@ public object PatientApi {
             NativeReferences.get<CardinalSdk>(sdkId).patient.encrypted.filterPatientsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedPatient.serializer()
+        ))
+      }
     }
 
     public fun filterPatientsBySorted(
@@ -1064,7 +1082,11 @@ public object PatientApi {
             NativeReferences.get<CardinalSdk>(sdkId).patient.encrypted.filterPatientsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedPatient.serializer()
+        ))
+      }
     }
 
     public fun undeletePatient(
@@ -1284,6 +1306,7 @@ public object PatientApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1389,7 +1412,11 @@ public object PatientApi {
             NativeReferences.get<CardinalSdk>(sdkId).patient.tryAndRecover.filterPatientsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Patient::class)
+        ))
+      }
     }
 
     public fun filterPatientsBySorted(
@@ -1412,7 +1439,11 @@ public object PatientApi {
             NativeReferences.get<CardinalSdk>(sdkId).patient.tryAndRecover.filterPatientsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Patient::class)
+        ))
+      }
     }
 
     public fun undeletePatient(

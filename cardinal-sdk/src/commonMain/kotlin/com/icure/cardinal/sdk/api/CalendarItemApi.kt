@@ -26,9 +26,11 @@ import kotlin.js.JsName
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface CalendarItemBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteCalendarItemUnsafe(entityId: String): DocIdentifier
+	@JsName("deleteCalendarItemUnsafe")
+	suspend fun deleteCalendarItem(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteCalendarItemsUnsafe(entityIds: List<String>): List<DocIdentifier>
+	@JsName("deleteCalendarItemsUnsafe")
+	suspend fun deleteCalendarItems(entityIds: List<String>): List<DocIdentifier>
 	
 	/**
 	 * Deletes a calendarItem. If you don't have write access to the calendarItem the method will fail.

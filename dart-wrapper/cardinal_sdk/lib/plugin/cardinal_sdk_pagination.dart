@@ -14,11 +14,11 @@ class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPl
   CardinalSdkMethodChannelPagination();
 
   @override
-  Future<bool> hasNext(String sdkId) async {
+  Future<bool> hasNext(String paginatedListIteratorId) async {
     final res = await _methodChannel.invokeMethod<String>(
         'hasNext',
         {
-          "sdkId": sdkId
+          "paginatedListIteratorId": paginatedListIteratorId
         }
     );
     if (res == null) throw AssertionError("received null result from platform method hasNext");
@@ -26,12 +26,12 @@ class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPl
   }
 
   @override
-  Future<List<dynamic>> next(String sdkId, @ActualInt32() int limit) async {
+  Future<List<dynamic>> next(String paginatedListIteratorId, @ActualInt32() int limit) async {
     final res = await _methodChannel.invokeMethod<String>(
         'next',
         {
-          "sdkId": sdkId,
-          "limit": limit
+          "paginatedListIteratorId": paginatedListIteratorId,
+          "limit": jsonEncode(limit)
         }
     );
     if (res == null) throw AssertionError("received null result from platform method hasNext");

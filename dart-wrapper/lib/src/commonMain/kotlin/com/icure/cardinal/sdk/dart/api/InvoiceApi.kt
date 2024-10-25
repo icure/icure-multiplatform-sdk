@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -12,7 +10,6 @@ import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.Invoice
-import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
@@ -36,8 +33,8 @@ import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonElement
 
+@OptIn(InternalIcureApi::class)
 public object InvoiceApi {
   public fun createInvoice(
     dartResultCallback: (
@@ -711,58 +708,6 @@ public object InvoiceApi {
     }
   }
 
-  public fun findInvoicesByAuthor(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    hcPartyIdString: String,
-    fromDateString: String,
-    toDateString: String,
-    startKeyString: String,
-    startDocumentIdString: String,
-    limitString: String,
-  ) {
-    val hcPartyId = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      hcPartyIdString
-    )
-    val fromDate = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      fromDateString
-    )
-    val toDate = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      toDateString
-    )
-    val startKey = fullLanguageInteropJson.decodeFromString(
-      JsonElement.serializer().nullable,
-      startKeyString
-    )
-    val startDocumentId = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startDocumentIdString
-    )
-    val limit = fullLanguageInteropJson.decodeFromString(
-      Int.serializer().nullable,
-      limitString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      PaginatedList.serializer(DecryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).invoice.findInvoicesByAuthor(
-        hcPartyId,
-        fromDate,
-        toDate,
-        startKey,
-        startDocumentId,
-        limit,
-      )
-    }
-  }
-
   public fun listInvoicesByHCPartyAndPatientForeignKeys(
     dartResultCallback: (
       String?,
@@ -1071,6 +1016,7 @@ public object InvoiceApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -1438,58 +1384,6 @@ public object InvoiceApi {
       }
     }
 
-    public fun findInvoicesByAuthor(
-      dartResultCallback: (
-        String?,
-        String?,
-        String?,
-      ) -> Unit,
-      sdkId: String,
-      hcPartyIdString: String,
-      fromDateString: String,
-      toDateString: String,
-      startKeyString: String,
-      startDocumentIdString: String,
-      limitString: String,
-    ) {
-      val hcPartyId = fullLanguageInteropJson.decodeFromString(
-        String.serializer(),
-        hcPartyIdString
-      )
-      val fromDate = fullLanguageInteropJson.decodeFromString(
-        Long.serializer().nullable,
-        fromDateString
-      )
-      val toDate = fullLanguageInteropJson.decodeFromString(
-        Long.serializer().nullable,
-        toDateString
-      )
-      val startKey = fullLanguageInteropJson.decodeFromString(
-        JsonElement.serializer().nullable,
-        startKeyString
-      )
-      val startDocumentId = fullLanguageInteropJson.decodeFromString(
-        String.serializer().nullable,
-        startDocumentIdString
-      )
-      val limit = fullLanguageInteropJson.decodeFromString(
-        Int.serializer().nullable,
-        limitString
-      )
-      ApiScope.execute(
-        dartResultCallback,
-        PaginatedList.serializer(EncryptedInvoice.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).invoice.encrypted.findInvoicesByAuthor(
-          hcPartyId,
-          fromDate,
-          toDate,
-          startKey,
-          startDocumentId,
-          limit,
-        )
-      }
-    }
-
     public fun listInvoicesByHCPartyAndPatientForeignKeys(
       dartResultCallback: (
         String?,
@@ -1799,6 +1693,7 @@ public object InvoiceApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -2162,58 +2057,6 @@ public object InvoiceApi {
           serviceId,
           secretFKeys,
           tarificationIds,
-        )
-      }
-    }
-
-    public fun findInvoicesByAuthor(
-      dartResultCallback: (
-        String?,
-        String?,
-        String?,
-      ) -> Unit,
-      sdkId: String,
-      hcPartyIdString: String,
-      fromDateString: String,
-      toDateString: String,
-      startKeyString: String,
-      startDocumentIdString: String,
-      limitString: String,
-    ) {
-      val hcPartyId = fullLanguageInteropJson.decodeFromString(
-        String.serializer(),
-        hcPartyIdString
-      )
-      val fromDate = fullLanguageInteropJson.decodeFromString(
-        Long.serializer().nullable,
-        fromDateString
-      )
-      val toDate = fullLanguageInteropJson.decodeFromString(
-        Long.serializer().nullable,
-        toDateString
-      )
-      val startKey = fullLanguageInteropJson.decodeFromString(
-        JsonElement.serializer().nullable,
-        startKeyString
-      )
-      val startDocumentId = fullLanguageInteropJson.decodeFromString(
-        String.serializer().nullable,
-        startDocumentIdString
-      )
-      val limit = fullLanguageInteropJson.decodeFromString(
-        Int.serializer().nullable,
-        limitString
-      )
-      ApiScope.execute(
-        dartResultCallback,
-        PaginatedList.serializer(PolymorphicSerializer(Invoice::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).invoice.tryAndRecover.findInvoicesByAuthor(
-          hcPartyId,
-          fromDate,
-          toDate,
-          startKey,
-          startDocumentId,
-          limit,
         )
       }
     }

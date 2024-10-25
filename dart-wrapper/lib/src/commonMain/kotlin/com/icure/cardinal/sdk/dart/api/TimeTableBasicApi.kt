@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -12,6 +10,7 @@ import com.icure.cardinal.sdk.model.EncryptedTimeTable
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.OptIn
@@ -21,6 +20,7 @@ import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object TimeTableBasicApi {
   public fun matchTimeTablesBy(
     dartResultCallback: (
@@ -85,7 +85,11 @@ public object TimeTableBasicApi {
       val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).timeTable.filterTimeTablesBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedTimeTable.serializer()
+      ))
+    }
   }
 
   public fun filterTimeTablesBySorted(
@@ -108,7 +112,11 @@ public object TimeTableBasicApi {
           NativeReferences.get<CardinalBaseSdk>(sdkId).timeTable.filterTimeTablesBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedTimeTable.serializer()
+      ))
+    }
   }
 
   public fun deleteTimeTableById(

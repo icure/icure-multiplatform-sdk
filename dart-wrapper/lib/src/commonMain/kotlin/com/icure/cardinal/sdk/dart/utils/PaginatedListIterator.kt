@@ -1,15 +1,13 @@
 package com.icure.cardinal.sdk.dart.utils
 
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
-import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.utils.InternalIcureApi
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
 
 @InternalIcureApi
 object PaginatedListIterator {
-
 	fun hasNext(
 		dartResultCallback: (
 			String?,
@@ -22,7 +20,7 @@ object PaginatedListIterator {
 			dartResultCallback,
 			Boolean.serializer()
 		) {
-			NativeReferences.get<PaginatedListIterator<JsonElement>>(sdkId).hasNext()
+			NativeReferences.get<PaginatedListIteratorWithSerializer<*>>(sdkId).hasNext()
 		}
 	}
 
@@ -41,9 +39,9 @@ object PaginatedListIterator {
 		)
 		ApiScope.execute(
 			dartResultCallback,
-			ListSerializer(JsonElement.serializer())
+			JsonElement.serializer()
 		) {
-			NativeReferences.get<PaginatedListIterator<JsonElement>>(sdkId).next(limit)
+			NativeReferences.get<PaginatedListIteratorWithSerializer<*>>(sdkId).nextAsJson(limit)
 		}
 	}
 }

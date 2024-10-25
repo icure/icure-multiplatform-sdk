@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -14,6 +12,8 @@ import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -27,6 +27,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object HealthcarePartyApi {
   public fun getHealthcareParty(
     dartResultCallback: (
@@ -292,7 +293,11 @@ public object HealthcarePartyApi {
           NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.filterHealthPartiesBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        HealthcareParty.serializer()
+      ))
+    }
   }
 
   public fun matchHealthcarePartiesBySorted(
@@ -337,7 +342,11 @@ public object HealthcarePartyApi {
           NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.filterHealthPartiesBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        HealthcareParty.serializer()
+      ))
+    }
   }
 
   public fun getHealthcarePartiesInGroup(
@@ -757,6 +766,10 @@ public object HealthcarePartyApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        HealthcareParty.serializer()
+      ))
+    }
   }
 }

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -12,6 +10,8 @@ import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -25,6 +25,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object MaintenanceTaskBasicApi {
   public fun matchMaintenanceTasksBy(
     dartResultCallback: (
@@ -90,7 +91,11 @@ public object MaintenanceTaskBasicApi {
           NativeReferences.get<CardinalBaseSdk>(sdkId).maintenanceTask.filterMaintenanceTasksBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedMaintenanceTask.serializer()
+      ))
+    }
   }
 
   public fun filterMaintenanceTasksBySorted(
@@ -113,7 +118,11 @@ public object MaintenanceTaskBasicApi {
           NativeReferences.get<CardinalBaseSdk>(sdkId).maintenanceTask.filterMaintenanceTasksBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        EncryptedMaintenanceTask.serializer()
+      ))
+    }
   }
 
   public fun deleteMaintenanceTaskById(
@@ -408,6 +417,10 @@ public object MaintenanceTaskBasicApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedMaintenanceTask.serializer()
+      ))
+    }
   }
 }

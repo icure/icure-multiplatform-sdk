@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -19,6 +17,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -35,6 +35,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object MessageApi {
   public fun createMessage(
     dartResultCallback: (
@@ -533,7 +534,11 @@ public object MessageApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).message.filterMessagesBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedMessage.serializer()
+      ))
+    }
   }
 
   public fun filterMessagesBySorted(
@@ -555,7 +560,11 @@ public object MessageApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).message.filterMessagesBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedMessage.serializer()
+      ))
+    }
   }
 
   public fun undeleteMessage(
@@ -745,9 +754,14 @@ public object MessageApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedMessage.serializer()
+      ))
+    }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -831,7 +845,11 @@ public object MessageApi {
             NativeReferences.get<CardinalSdk>(sdkId).message.encrypted.filterMessagesBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedMessage.serializer()
+        ))
+      }
     }
 
     public fun filterMessagesBySorted(
@@ -854,7 +872,11 @@ public object MessageApi {
             NativeReferences.get<CardinalSdk>(sdkId).message.encrypted.filterMessagesBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedMessage.serializer()
+        ))
+      }
     }
 
     public fun undeleteMessage(
@@ -1014,6 +1036,7 @@ public object MessageApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1097,7 +1120,11 @@ public object MessageApi {
             NativeReferences.get<CardinalSdk>(sdkId).message.tryAndRecover.filterMessagesBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Message::class)
+        ))
+      }
     }
 
     public fun filterMessagesBySorted(
@@ -1120,7 +1147,11 @@ public object MessageApi {
             NativeReferences.get<CardinalSdk>(sdkId).message.tryAndRecover.filterMessagesBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(Message::class)
+        ))
+      }
     }
 
     public fun undeleteMessage(

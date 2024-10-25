@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -19,6 +17,7 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -32,6 +31,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object TimeTableApi {
   public fun createTimeTable(
     dartResultCallback: (
@@ -508,7 +508,11 @@ public object TimeTableApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).timeTable.filterTimeTablesBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedTimeTable.serializer()
+      ))
+    }
   }
 
   public fun filterTimeTablesBySorted(
@@ -530,7 +534,11 @@ public object TimeTableApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).timeTable.filterTimeTablesBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedTimeTable.serializer()
+      ))
+    }
   }
 
   public fun undeleteTimeTable(
@@ -649,6 +657,7 @@ public object TimeTableApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -732,7 +741,11 @@ public object TimeTableApi {
             NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.filterTimeTablesBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedTimeTable.serializer()
+        ))
+      }
     }
 
     public fun filterTimeTablesBySorted(
@@ -755,7 +768,11 @@ public object TimeTableApi {
             NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.filterTimeTablesBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedTimeTable.serializer()
+        ))
+      }
     }
 
     public fun undeleteTimeTable(
@@ -875,6 +892,7 @@ public object TimeTableApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -958,7 +976,11 @@ public object TimeTableApi {
             NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.filterTimeTablesBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(TimeTable::class)
+        ))
+      }
     }
 
     public fun filterTimeTablesBySorted(
@@ -981,7 +1003,11 @@ public object TimeTableApi {
             NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.filterTimeTablesBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(TimeTable::class)
+        ))
+      }
     }
 
     public fun undeleteTimeTable(

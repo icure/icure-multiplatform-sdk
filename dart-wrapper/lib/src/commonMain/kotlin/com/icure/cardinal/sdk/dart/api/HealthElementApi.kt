@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -19,6 +17,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -34,6 +34,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object HealthElementApi {
   public fun createHealthElement(
     dartResultCallback: (
@@ -533,7 +534,11 @@ public object HealthElementApi {
           NativeReferences.get<CardinalSdk>(sdkId).healthElement.filterHealthElementsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedHealthElement.serializer()
+      ))
+    }
   }
 
   public fun filterHealthElementsBySorted(
@@ -556,7 +561,11 @@ public object HealthElementApi {
           NativeReferences.get<CardinalSdk>(sdkId).healthElement.filterHealthElementsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedHealthElement.serializer()
+      ))
+    }
   }
 
   public fun undeleteHealthElementById(
@@ -728,9 +737,14 @@ public object HealthElementApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        EncryptedHealthElement.serializer()
+      ))
+    }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -814,7 +828,11 @@ public object HealthElementApi {
             NativeReferences.get<CardinalSdk>(sdkId).healthElement.encrypted.filterHealthElementsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedHealthElement.serializer()
+        ))
+      }
     }
 
     public fun filterHealthElementsBySorted(
@@ -837,7 +855,11 @@ public object HealthElementApi {
             NativeReferences.get<CardinalSdk>(sdkId).healthElement.encrypted.filterHealthElementsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedHealthElement.serializer()
+        ))
+      }
     }
 
     public fun undeleteHealthElementById(
@@ -979,6 +1001,7 @@ public object HealthElementApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -1062,7 +1085,11 @@ public object HealthElementApi {
             NativeReferences.get<CardinalSdk>(sdkId).healthElement.tryAndRecover.filterHealthElementsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(HealthElement::class)
+        ))
+      }
     }
 
     public fun filterHealthElementsBySorted(
@@ -1085,7 +1112,11 @@ public object HealthElementApi {
             NativeReferences.get<CardinalSdk>(sdkId).healthElement.tryAndRecover.filterHealthElementsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(HealthElement::class)
+        ))
+      }
     }
 
     public fun undeleteHealthElementById(

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -19,12 +17,9 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlin.Boolean
-import kotlin.OptIn
-import kotlin.String
-import kotlin.Unit
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
@@ -32,6 +27,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object AccessLogApi {
   public fun createAccessLog(
     dartResultCallback: (
@@ -508,7 +504,11 @@ public object AccessLogApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).accessLog.filterAccessLogsBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedAccessLog.serializer()
+      ))
+    }
   }
 
   public fun filterAccessLogsBySorted(
@@ -530,7 +530,11 @@ public object AccessLogApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).accessLog.filterAccessLogsBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        DecryptedAccessLog.serializer()
+      ))
+    }
   }
 
   public fun undeleteAccessLogById(
@@ -649,6 +653,7 @@ public object AccessLogApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
@@ -732,7 +737,11 @@ public object AccessLogApi {
             NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.filterAccessLogsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedAccessLog.serializer()
+        ))
+      }
     }
 
     public fun filterAccessLogsBySorted(
@@ -755,7 +764,11 @@ public object AccessLogApi {
             NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.filterAccessLogsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          EncryptedAccessLog.serializer()
+        ))
+      }
     }
 
     public fun undeleteAccessLogById(
@@ -875,6 +888,7 @@ public object AccessLogApi {
     }
   }
 
+  @OptIn(InternalIcureApi::class)
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
@@ -958,7 +972,11 @@ public object AccessLogApi {
             NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.filterAccessLogsBy(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(AccessLog::class)
+        ))
+      }
     }
 
     public fun filterAccessLogsBySorted(
@@ -981,7 +999,11 @@ public object AccessLogApi {
             NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.filterAccessLogsBySorted(
           filter,
         )
-        NativeReferences.create(richResult)}
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          PolymorphicSerializer(AccessLog::class)
+        ))
+      }
     }
 
     public fun undeleteAccessLogById(

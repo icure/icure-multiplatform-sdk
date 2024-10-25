@@ -2,7 +2,7 @@ import 'package:cardinal_sdk/model/base/identifiable.dart';
 
 sealed class EntitySubscriptionEvent<E extends Identifiable<String>> {
 
-	static EntitySubscriptionEvent fromJSON(Map<String, dynamic> data, Identifiable<String> Function(Map<String, dynamic> data) entityFromJson) {
+	static EntitySubscriptionEvent<E> fromJSON<E extends Identifiable<String>>(Map<String, dynamic> data, E Function(Map<String, dynamic> data) entityFromJson) {
 		if (data["kotlinType"] == null) {
 			throw ArgumentError('Missing discriminator: kotlinType');
 		}
@@ -28,7 +28,7 @@ sealed class EntitySubscriptionEvent<E extends Identifiable<String>> {
 	}
 }
 
-class Connected implements EntitySubscriptionEvent {
+class Connected implements EntitySubscriptionEvent<Never> {
 	static final Connected _singleton = Connected._internal();
 	factory Connected.fromJSON(Map<String, dynamic> data) {
 		return Connected(
@@ -42,7 +42,7 @@ class Connected implements EntitySubscriptionEvent {
 	}
 }
 
-class Reconnected implements EntitySubscriptionEvent {
+class Reconnected implements EntitySubscriptionEvent<Never> {
 	static final Reconnected _singleton = Reconnected._internal();
 	factory Reconnected.fromJSON(Map<String, dynamic> data) {
 		return Reconnected(
@@ -56,7 +56,7 @@ class Reconnected implements EntitySubscriptionEvent {
 	}
 }
 
-class UnexpectedError implements EntitySubscriptionEvent {
+class UnexpectedError implements EntitySubscriptionEvent<Never> {
 	String message;
 	UnexpectedError(this.message);
 
@@ -67,7 +67,7 @@ class UnexpectedError implements EntitySubscriptionEvent {
 	}
 }
 
-sealed class ConnectionError implements EntitySubscriptionEvent {
+sealed class ConnectionError implements EntitySubscriptionEvent<Never> {
 
 	static ConnectionError fromJSON(Map<String, dynamic> data) {
 		if (data["kotlinType"] == null) {
@@ -113,18 +113,18 @@ class ClosedByServer implements ConnectionError {
 	}
 }
 
-class EntityNotification<E extends Identifiable<String>> implements EntitySubscriptionEvent {
+class EntityNotification<E extends Identifiable<String>> implements EntitySubscriptionEvent<E> {
 	E entity;
 	EntityNotification(this.entity);
 
-	factory EntityNotification.fromJSON(Map<String, dynamic> data, Identifiable<String> Function(Map<String, dynamic> data) entityFromJson) {
+	factory EntityNotification.fromJSON(Map<String, dynamic> data, E Function(Map<String, dynamic> data) entityFromJson) {
 		return EntityNotification(
-				entityFromJson(data) as E
+				entityFromJson(data)
 		);
 	}
 }
 
-sealed class EntityError implements EntitySubscriptionEvent {
+sealed class EntityError implements EntitySubscriptionEvent<Never> {
 
 	static EntityError fromJSON(Map<String, dynamic> data) {
 		if (data["kotlinType"] == null) {

@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -16,6 +14,8 @@ import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -29,6 +29,7 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 public object UserApi {
   public fun getCurrentUser(dartResultCallback: (
     String?,
@@ -327,7 +328,11 @@ public object UserApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersBy(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        User.serializer()
+      ))
+    }
   }
 
   public fun matchUsersBy(
@@ -371,7 +376,11 @@ public object UserApi {
       val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersBySorted(
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        User.serializer()
+      ))
+    }
   }
 
   public fun matchUsersBySorted(
@@ -715,7 +724,11 @@ public object UserApi {
         groupId,
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        User.serializer()
+      ))
+    }
   }
 
   public fun matchUsersInGroupBy(
@@ -771,7 +784,11 @@ public object UserApi {
         groupId,
         filter,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(PaginatedListIteratorWithSerializer(
+        richResult,
+        User.serializer()
+      ))
+    }
   }
 
   public fun matchUsersInGroupBySorted(
@@ -1207,6 +1224,10 @@ public object UserApi {
         filter,
         subscriptionConfig,
       )
-      NativeReferences.create(richResult)}
+      NativeReferences.create(EntitySubscriptionWithSerializer(
+        richResult,
+        User.serializer()
+      ))
+    }
   }
 }

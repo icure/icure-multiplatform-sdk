@@ -1,6 +1,4 @@
 // auto-generated file
-@file:OptIn(InternalIcureApi::class)
-
 package com.icure.cardinal.sdk.dart.api
 
 import com.icure.cardinal.sdk.CardinalSdk
@@ -13,6 +11,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
 
+@OptIn(InternalIcureApi::class)
 public object RoleApi {
   public fun getAllRoles(dartResultCallback: (
     String?,

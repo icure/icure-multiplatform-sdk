@@ -3,6 +3,7 @@ import 'package:cardinal_sdk/plugin/api/cardinal_sdk_method_channel_apis.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_pagination.dart';
 import 'package:cardinal_sdk/plugin/api/cardinal_sdk_platform_apis_plugin.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_initializers.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_subscription.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 class CardinalSdkPlatformInterface extends PlatformInterface {
