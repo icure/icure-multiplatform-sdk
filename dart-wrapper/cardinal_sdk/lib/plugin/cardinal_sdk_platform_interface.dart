@@ -1,3 +1,4 @@
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/api/cardinal_sdk_method_channel_apis.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_pagination.dart';
 import 'package:cardinal_sdk/plugin/api/cardinal_sdk_platform_apis_plugin.dart';
