@@ -14,6 +14,8 @@ class CardinalSdkPlugin: FlutterPlugin {
     ApiScope.setup()
     apiChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/api")
     apiChannel.setMethodCallHandler(CardinalApisPlugin)
+    filtersChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/filters")
+    filtersChannel.setMethodCallHandler(CardinalFiltersPlugin)
     initializersChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/initializers")
     initializersChannel.setMethodCallHandler(InitializersPlugin)
   }
