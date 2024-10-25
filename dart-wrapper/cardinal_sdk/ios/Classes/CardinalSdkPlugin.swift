@@ -6,8 +6,10 @@ public class CardinalSdkPlugin: NSObject, FlutterPlugin {
         ApiScope.shared.setup()
         let apiChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/api", binaryMessenger: registrar.messenger())
         let initializersChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/initializers", binaryMessenger: registrar.messenger())
+        let filtersChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/filters", binaryMessenger: registrar.messenger())
         apiChannel.setMethodCallHandler(ApisPlugin.handle)
         initializersChannel.setMethodCallHandler(InitializersPlugin.handle)
+        filtersChannel.setMethodCallHandler(FiltersPlugin.handle)
         registrar.addApplicationDelegate(CardinalSdkPlugin())
     }
         
