@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.dart.utils
 
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.KSerializer
 
 object DartResult {
@@ -12,6 +13,7 @@ object DartResult {
 		inlineResolve(resultCallback, resultSerializer) { method() }
 	}
 
+	@OptIn(InternalIcureApi::class)
 	inline fun <T> inlineResolve(
 		resultCallback: (success: String?, failureCode: String?, failureMessage: String?) -> Unit,
 		resultSerializer: KSerializer<T>,
@@ -19,7 +21,7 @@ object DartResult {
 	) {
 		try {
 			resultCallback(
-				Serialization.fullJson.encodeToString(resultSerializer, method()),
+				Serialization.fullLanguageInteropJson.encodeToString(resultSerializer, method()),
 				null,
 				null
 			)

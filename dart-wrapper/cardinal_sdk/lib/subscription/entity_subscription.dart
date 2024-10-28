@@ -18,15 +18,15 @@ class EntitySubscription<T extends Identifiable<String>> {
     return subscription;
   }
 
-  Future<void> close(String sdkId) async {
+  Future<void> close() async {
     CardinalSdkPlatformInterface.instance.subscription.close(_instanceId);
   }
 
-  Future<EntitySubscriptionCloseReason?> getCloseReason(String sdkId) async {
+  Future<EntitySubscriptionCloseReason?> getCloseReason() async {
     return CardinalSdkPlatformInterface.instance.subscription.getCloseReason(_instanceId);
   }
 
-  Future<EntitySubscriptionEvent<T>?> getEvent(String sdkId) async {
+  Future<EntitySubscriptionEvent<T>?> getEvent() async {
     final eventJson = await CardinalSdkPlatformInterface.instance
         .subscription
         .getEvent(_instanceId);
@@ -37,7 +37,7 @@ class EntitySubscription<T extends Identifiable<String>> {
     }
   }
 
-  Future<EntitySubscriptionEvent<T>?> waitForEvent(String sdkId, Duration timeout) async {
+  Future<EntitySubscriptionEvent<T>?> waitForEvent(Duration timeout) async {
     final eventJson = await CardinalSdkPlatformInterface.instance
         .subscription
         .waitForEvent(_instanceId, timeout);

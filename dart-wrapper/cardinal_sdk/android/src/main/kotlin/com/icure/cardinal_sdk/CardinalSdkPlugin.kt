@@ -1,6 +1,7 @@
 package com.icure.cardinal_sdk
 
 import CardinalApisPlugin
+import CardinalFiltersPlugin
 import InitializersPlugin
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -8,6 +9,7 @@ import io.flutter.plugin.common.MethodChannel
 
 class CardinalSdkPlugin: FlutterPlugin {
   private lateinit var apiChannel : MethodChannel
+  private lateinit var filtersChannel : MethodChannel
   private lateinit var initializersChannel : MethodChannel
   private lateinit var paginationChannel : MethodChannel
   private lateinit var subscriptionChannel : MethodChannel

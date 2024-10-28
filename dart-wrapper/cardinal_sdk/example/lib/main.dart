@@ -1,7 +1,12 @@
+// ignore_for_file: avoid_print
+
+import 'dart:developer';
+import 'dart:io';
 import 'dart:math';
 
-import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/filters/patient_filters.dart';
 import 'package:cardinal_sdk/model/patient.dart';
+import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -63,6 +68,13 @@ class _MyAppState extends State<MyApp> {
     initStateAsync();
   }
 
+  Future<void> usePages(CardinalSdk sdk) async {
+    final pages = await sdk.patient.encrypted.filterPatientsBy(await PatientFilters.allPatientsForSelf());
+    while (await pages.hasNext()) {
+      print("Got page ${(await pages.next(10)).map((e) => EncryptedPatient.encode(e)).toList()}");
+    }
+  }
+
   Future<void> initStateAsync() async {
     print("Started init");
     final sdk = await CardinalSdk.initialize("luca+dartman@icure.com", "4a57f15e-10b3-4287-9d33-1cea74d39db3");
@@ -73,7 +85,7 @@ class _MyAppState extends State<MyApp> {
         firstName: "Gino",
         lastName: "Bros",
         note: "The third mario bros"
-      ), null)
+      ))
     );
     print("Created patient");
     print(patient);
@@ -92,12 +104,33 @@ class _MyAppState extends State<MyApp> {
     //   ), null));
     // }
     // await sdk.patient.createPatients(manyPatients);
-    print("Created many patients, now retrieving");
-    final filter = FilterOptions({ "kotlinType": "com.icure.cardinal.sdk.filters.PatientFilters.AllForSelf" });
-    final pages = await sdk.patient.encrypted.filterPatientsBy(filter);
-    while (await pages.hasNext()) {
-      print("Got page ${await pages.next(10)}");
+    // print("Created many patients, now retrieving");
+    final filter = await PatientFilters.allPatientsForSelf();
+    await usePages(sdk);
+    await forceGC();
+    print("Subscribing");
+    final subscription = await sdk.patient.subscribeToEvents({SubscriptionEventType.create}, filter);
+    print("Subscribed, get some events expecting null");
+    print("GetEvent returned ${await subscription.getEvent()}");
+    print("WaitForEvent 2s returned ${await subscription.waitForEvent(const Duration(seconds: 2))}");
+    print("Create some data and get event");
+    for (int i = 0; i < 3; i++) {
+      await sdk.patient.createPatient(await sdk.patient.withEncryptionMetadata(DecryptedPatient(
+              generateUuid(),
+              firstName: "Gino",
+              lastName: "Bros-${generateUuid()}",
+              note: "$i"
+      )));
+      if (i % 2 == 0) {
+        print("WaitForEvent 1s returned ${await subscription.waitForEvent(const Duration(seconds: 1))}");
+      } else {
+        sleep(const Duration(seconds: 1));
+        print("GetEvent returned ${await subscription.getEvent()}");
+      }
     }
+    print("Closing");
+    await subscription.close();
+    print("Close reason ${await subscription.getCloseReason()}");
     print("Done iterating");
   }
 
@@ -113,5 +146,30 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+}
+
+Future<void> forceGC({
+  Duration? timeout,
+  int fullGcCycles = 1,
+}) async {
+  final stopwatch = timeout == null ? null : (Stopwatch()..start());
+  final barrier = reachabilityBarrier;
+
+  final storage = <List<int>>[];
+
+  void allocateMemory() {
+    storage.add(List.generate(30000, (n) => n));
+    if (storage.length > 100) {
+      storage.removeAt(0);
+    }
+  }
+
+  while (reachabilityBarrier < barrier + fullGcCycles) {
+    if ((stopwatch?.elapsed ?? Duration.zero) > (timeout ?? Duration.zero)) {
+      throw TimeoutException('forceGC timed out', timeout);
+    }
+    await Future<void>.delayed(Duration.zero);
+    allocateMemory();
   }
 }

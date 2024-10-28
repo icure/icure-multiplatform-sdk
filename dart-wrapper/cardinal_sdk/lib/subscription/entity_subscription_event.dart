@@ -119,7 +119,7 @@ class EntityNotification<E extends Identifiable<String>> implements EntitySubscr
 
 	factory EntityNotification.fromJSON(Map<String, dynamic> data, E Function(Map<String, dynamic> data) entityFromJson) {
 		return EntityNotification(
-				entityFromJson(data)
+				entityFromJson(data["entity"])
 		);
 	}
 }

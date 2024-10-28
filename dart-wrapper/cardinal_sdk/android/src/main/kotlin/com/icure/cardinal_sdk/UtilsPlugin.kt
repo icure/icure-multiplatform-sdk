@@ -30,7 +30,7 @@ object UtilsPlugin : MethodChannel.MethodCallHandler {
 			String?,
 		) -> Unit,
 	): Boolean = when(methodName) {
-		"releasePlatformResource" -> hasNext(parameters, resultCallback)
+		"releasePlatformResource" -> releasePlatformResource(parameters, resultCallback)
 		else -> null
 	}?.let { true } ?: false
 

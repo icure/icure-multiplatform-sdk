@@ -33,7 +33,9 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
           "subscriptionId": subscriptionId
         }
     );
-    return res == null ? null : EntitySubscriptionCloseReason.fromJSON(jsonDecode(res));
+    if (res == null) throw AssertionError("received null result from platform method getEvent");
+    final decodedRes = jsonDecode(res);
+    return decodedRes == null ? null : EntitySubscriptionCloseReason.fromJSON(decodedRes);
   }
 
   @override
@@ -49,7 +51,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
   }
 
   @override
-  Future<Map<String, dynamic>> waitForEvent(String subscriptionId, Duration timeout) async {
+  Future<Map<String, dynamic>?> waitForEvent(String subscriptionId, Duration timeout) async {
     final res = await _methodChannel.invokeMethod<String>(
         'getEvent',
         {
