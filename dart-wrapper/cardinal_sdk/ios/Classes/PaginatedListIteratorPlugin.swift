@@ -55,7 +55,7 @@ class PaginatedListIteratorPlugin {
 		PaginatedListIterator.shared.next(
 			dartResultCallback: resultCallback,
 			paginatedListIteratorId: parameters["paginatedListIteratorId"]!,
-			limit: parameters["limit"]!
+			limitString: parameters["limit"]!
 		)
 	}
 

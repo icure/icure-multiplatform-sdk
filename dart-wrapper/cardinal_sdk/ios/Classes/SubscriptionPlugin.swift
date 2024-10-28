@@ -77,7 +77,7 @@ class SubscriptionPlugin {
 		EntitySubscription.shared.waitForEvent(
 			dartResultCallback: resultCallback,
 			subscriptionId: parameters["subscriptionId"]!,
-			timeoutString: parameters["timeoutString"]!
+			timeoutString: parameters["timeout"]!
 		)
 	}
 }
