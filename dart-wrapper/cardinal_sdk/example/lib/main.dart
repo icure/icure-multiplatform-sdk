@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/filters/meta_filters.dart';
 import 'package:cardinal_sdk/filters/patient_filters.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -132,6 +134,15 @@ class _MyAppState extends State<MyApp> {
     await subscription.close();
     print("Close reason ${await subscription.getCloseReason()}");
     print("Done iterating");
+    await doFilterExample();
+  }
+
+  Future<void> doFilterExample() async {
+    final simple = PatientFilters.byActiveForSelf(true);
+    final sortable = PatientFilters.byAddressForSelf("address");
+    print("Simple ${FilterOptions.encode(await simple)}");
+    print("Sortable ${FilterOptions.encode(await simple)}");
+    print("(sortable & simple) - (sortable | (simple & sortable)) ${FilterOptions.encode(await ((sortable & simple) - (sortable | (simple & sortable))))}");
   }
 
   @override

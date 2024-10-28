@@ -46,7 +46,7 @@ class SubscriptionPlugin {
 	) {
 		EntitySubscription.shared.close(
 			dartResultCallback: resultCallback,
-			subscriptionId: parameters["subscriptionId"]!,
+			subscriptionId: parameters["subscriptionId"]!
 		)
 	}
 

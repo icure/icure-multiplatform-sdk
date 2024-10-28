@@ -43,7 +43,7 @@ class UtilsPlugin {
 	) {
 		ResourceUtils.shared.releasePlatformResource(
 			dartResultCallback: resultCallback,
-			resourceId: parameters["resourceId"]!,
+			resourceId: parameters["resourceId"]!
 		)
 	}
 }
