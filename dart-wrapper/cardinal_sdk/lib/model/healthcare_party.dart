@@ -27,31 +27,31 @@ import 'package:cardinal_sdk/model/base/has_tags.dart';
 
 class HealthcareParty implements StoredDocument, Named, Person, CryptoActor, DataOwner, HasCodes, HasTags {
 	@override String id;
-	@override String? rev;
-	int? created;
-	int? modified;
-	@override int? deletionDate;
+	@override String? rev = null;
+	int? created = null;
+	int? modified = null;
+	@override int? deletionDate = null;
 	List<Identifier> identifier = [];
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override String? name;
-	@override String? lastName;
-	@override String? firstName;
+	@override String? name = null;
+	@override String? lastName = null;
+	@override String? firstName = null;
 	@override List<PersonName> names = [];
-	@override Gender? gender;
-	@override String? civility;
-	@override String? companyName;
-	String? speciality;
-	String? bankAccount;
-	String? bic;
-	String? proxyBankAccount;
-	String? proxyBic;
-	String? invoiceHeader;
-	String? cbe;
-	String? ehp;
-	String? userId;
-	String? parentId;
-	int? _convention;
+	@override Gender? gender = null;
+	@override String? civility = null;
+	@override String? companyName = null;
+	String? speciality = null;
+	String? bankAccount = null;
+	String? bic = null;
+	String? proxyBankAccount = null;
+	String? proxyBic = null;
+	String? invoiceHeader = null;
+	String? cbe = null;
+	String? ehp = null;
+	String? userId = null;
+	String? parentId = null;
+	int? _convention = null;
 	@ActualInt32() int? get convention => _convention;
 	@ActualInt32() set convention(int? value) {
 		if (value != null && value > 2147483647) {
@@ -59,24 +59,24 @@ class HealthcareParty implements StoredDocument, Named, Person, CryptoActor, Dat
 		}
 		_convention = value;
 	}
-	String? nihii;
-	String? nihiiSpecCode;
-	String? ssin;
+	String? nihii = null;
+	String? nihiiSpecCode = null;
+	String? ssin = null;
 	@override List<DecryptedAddress> addresses = [];
 	@override List<String> languages = [];
-	Uint8List? picture;
+	Uint8List? picture = null;
 	Set<HealthcarePartyStatus> statuses = {};
 	List<HealthcarePartyHistoryStatus> statusHistory = [];
 	Set<CodeStub> specialityCodes = {};
 	Map<TelecomType, String> sendFormats = {};
-	String? notes;
+	String? notes = null;
 	List<DecryptedFinancialInstitutionInformation> financialInstitutionInformation = [];
 	Map<String, String>? descr = {};
-	String? billingType;
-	String? type;
-	String? contactPerson;
-	String? contactPersonHcpId;
-	String? supervisorId;
+	String? billingType = null;
+	String? type = null;
+	String? contactPerson = null;
+	String? contactPersonHcpId = null;
+	String? supervisorId = null;
 	List<DecryptedFlatRateTarification> flatRateTarifications = [];
 	Map<String, String> importedData = {};
 	@Deprecated('Use properties instead') Map<String, String> options = {};
@@ -85,55 +85,54 @@ class HealthcareParty implements StoredDocument, Named, Person, CryptoActor, Dat
 	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
 	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
 	@override Map<String, HexString> privateKeyShamirPartitions = {};
-	@override SpkiHexString? publicKey;
+	@override SpkiHexString? publicKey = null;
 	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
 	HealthcareParty(
 		this.id,
 		{
 			int? convention,
-			this.rev,
-			this.created,
-			this.modified,
-			this.deletionDate,
-			this.name,
-			this.lastName,
-			this.firstName,
-			this.gender,
-			this.civility,
-			this.companyName,
-			this.speciality,
-			this.bankAccount,
-			this.bic,
-			this.proxyBankAccount,
-			this.proxyBic,
-			this.invoiceHeader,
-			this.cbe,
-			this.ehp,
-			this.userId,
-			this.parentId,
-			this.nihii,
-			this.nihiiSpecCode,
-			this.ssin,
-			this.picture,
-			this.notes,
-			this.billingType,
-			this.type,
-			this.contactPerson,
-			this.contactPersonHcpId,
-			this.supervisorId,
-			this.publicKey,
+			String? rev,
+			int? created,
+			int? modified,
+			int? deletionDate,
 			List<Identifier>? identifier,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			String? name,
+			String? lastName,
+			String? firstName,
 			List<PersonName>? names,
+			Gender? gender,
+			String? civility,
+			String? companyName,
+			String? speciality,
+			String? bankAccount,
+			String? bic,
+			String? proxyBankAccount,
+			String? proxyBic,
+			String? invoiceHeader,
+			String? cbe,
+			String? ehp,
+			String? userId,
+			String? parentId,
+			String? nihii,
+			String? nihiiSpecCode,
+			String? ssin,
 			List<DecryptedAddress>? addresses,
 			List<String>? languages,
+			Uint8List? picture,
 			Set<HealthcarePartyStatus>? statuses,
 			List<HealthcarePartyHistoryStatus>? statusHistory,
 			Set<CodeStub>? specialityCodes,
 			Map<TelecomType, String>? sendFormats,
+			String? notes,
 			List<DecryptedFinancialInstitutionInformation>? financialInstitutionInformation,
 			Map<String, String>? descr,
+			String? billingType,
+			String? type,
+			String? contactPerson,
+			String? contactPersonHcpId,
+			String? supervisorId,
 			List<DecryptedFlatRateTarification>? flatRateTarifications,
 			Map<String, String>? importedData,
 			Map<String, String>? options,
@@ -142,19 +141,50 @@ class HealthcareParty implements StoredDocument, Named, Person, CryptoActor, Dat
 			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
 			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
 			Map<String, HexString>? privateKeyShamirPartitions,
+			SpkiHexString? publicKey,
 			Set<SpkiHexString>? publicKeysForOaepWithSha256
-		}) : identifier = identifier ?? [],
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		deletionDate = deletionDate ?? null,
+		identifier = identifier ?? [],
 		tags = tags ?? {},
 		codes = codes ?? {},
+		name = name ?? null,
+		lastName = lastName ?? null,
+		firstName = firstName ?? null,
 		names = names ?? [],
+		gender = gender ?? null,
+		civility = civility ?? null,
+		companyName = companyName ?? null,
+		speciality = speciality ?? null,
+		bankAccount = bankAccount ?? null,
+		bic = bic ?? null,
+		proxyBankAccount = proxyBankAccount ?? null,
+		proxyBic = proxyBic ?? null,
+		invoiceHeader = invoiceHeader ?? null,
+		cbe = cbe ?? null,
+		ehp = ehp ?? null,
+		userId = userId ?? null,
+		parentId = parentId ?? null,
+		nihii = nihii ?? null,
+		nihiiSpecCode = nihiiSpecCode ?? null,
+		ssin = ssin ?? null,
 		addresses = addresses ?? [],
 		languages = languages ?? [],
+		picture = picture ?? null,
 		statuses = statuses ?? {},
 		statusHistory = statusHistory ?? [],
 		specialityCodes = specialityCodes ?? {},
 		sendFormats = sendFormats ?? {},
+		notes = notes ?? null,
 		financialInstitutionInformation = financialInstitutionInformation ?? [],
 		descr = descr ?? {},
+		billingType = billingType ?? null,
+		type = type ?? null,
+		contactPerson = contactPerson ?? null,
+		contactPersonHcpId = contactPersonHcpId ?? null,
+		supervisorId = supervisorId ?? null,
 		flatRateTarifications = flatRateTarifications ?? [],
 		importedData = importedData ?? {},
 		options = options ?? {},
@@ -163,8 +193,9 @@ class HealthcareParty implements StoredDocument, Named, Person, CryptoActor, Dat
 		aesExchangeKeys = aesExchangeKeys ?? {},
 		transferKeys = transferKeys ?? {},
 		privateKeyShamirPartitions = privateKeyShamirPartitions ?? {},
+		publicKey = publicKey ?? null,
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256 ?? {},
-		_convention = convention;
+		_convention = convention ?? null;
 
 	factory HealthcareParty.fromJSON(Map<String, dynamic> data) {
 		return HealthcareParty(

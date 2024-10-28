@@ -67,60 +67,73 @@ sealed class Topic implements StoredDocument, ICureDocument<String>, HasEncrypti
 
 class DecryptedTopic implements Topic {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? healthElementId;
-	@override String? contactId;
-	@override String? description;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? healthElementId = null;
+	@override String? contactId = null;
+	@override String? description = null;
 	@override Set<CodeStub> codes = {};
 	@override Set<CodeStub> tags = {};
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
-	@override int? endOfLife;
-	@override int? deletionDate;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
 	@override Map<String, TopicRole> activeParticipants = {};
-	@override SecurityMetadata? securityMetadata;
+	@override SecurityMetadata? securityMetadata = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	@override Set<String> linkedHealthElements = {};
 	@override Set<String> linkedServices = {};
 	DecryptedTopic(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.healthElementId,
-			this.contactId,
-			this.description,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.securityMetadata,
-			this.encryptedSelf,
+			String? rev,
+			int? created,
+			int? modified,
+			String? healthElementId,
+			String? contactId,
+			String? description,
 			Set<CodeStub>? codes,
 			Set<CodeStub>? tags,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
+			int? endOfLife,
+			int? deletionDate,
 			Map<String, TopicRole>? activeParticipants,
+			SecurityMetadata? securityMetadata,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
 			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
 			Set<String>? linkedHealthElements,
 			Set<String>? linkedServices
-		}) : codes = codes ?? {},
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		healthElementId = healthElementId ?? null,
+		contactId = contactId ?? null,
+		description = description ?? null,
+		codes = codes ?? {},
 		tags = tags ?? {},
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
 		activeParticipants = activeParticipants ?? {},
+		securityMetadata = securityMetadata ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
 		linkedHealthElements = linkedHealthElements ?? {},
 		linkedServices = linkedServices ?? {};
 
@@ -184,60 +197,73 @@ class DecryptedTopic implements Topic {
 
 class EncryptedTopic implements Topic {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? healthElementId;
-	@override String? contactId;
-	@override String? description;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? healthElementId = null;
+	@override String? contactId = null;
+	@override String? description = null;
 	@override Set<CodeStub> codes = {};
 	@override Set<CodeStub> tags = {};
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
-	@override int? endOfLife;
-	@override int? deletionDate;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
 	@override Map<String, TopicRole> activeParticipants = {};
-	@override SecurityMetadata? securityMetadata;
+	@override SecurityMetadata? securityMetadata = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	@override Set<String> linkedHealthElements = {};
 	@override Set<String> linkedServices = {};
 	EncryptedTopic(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.healthElementId,
-			this.contactId,
-			this.description,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.securityMetadata,
-			this.encryptedSelf,
+			String? rev,
+			int? created,
+			int? modified,
+			String? healthElementId,
+			String? contactId,
+			String? description,
 			Set<CodeStub>? codes,
 			Set<CodeStub>? tags,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
+			int? endOfLife,
+			int? deletionDate,
 			Map<String, TopicRole>? activeParticipants,
+			SecurityMetadata? securityMetadata,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
 			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
 			Set<String>? linkedHealthElements,
 			Set<String>? linkedServices
-		}) : codes = codes ?? {},
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		healthElementId = healthElementId ?? null,
+		contactId = contactId ?? null,
+		description = description ?? null,
+		codes = codes ?? {},
 		tags = tags ?? {},
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
 		activeParticipants = activeParticipants ?? {},
+		securityMetadata = securityMetadata ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
 		linkedHealthElements = linkedHealthElements ?? {},
 		linkedServices = linkedServices ?? {};
 

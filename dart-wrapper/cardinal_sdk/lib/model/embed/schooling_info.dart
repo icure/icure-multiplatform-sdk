@@ -3,16 +3,19 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 
 
 class SchoolingInfo {
-	int? startDate;
-	int? endDate;
-	String? school;
-	CodeStub? typeOfEducation;
+	int? startDate = null;
+	int? endDate = null;
+	String? school = null;
+	CodeStub? typeOfEducation = null;
 	SchoolingInfo({
-			this.startDate,
-			this.endDate,
-			this.school,
-			this.typeOfEducation
-		});
+			int? startDate,
+			int? endDate,
+			String? school,
+			CodeStub? typeOfEducation
+		}) : startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		school = school ?? null,
+		typeOfEducation = typeOfEducation ?? null;
 
 	factory SchoolingInfo.fromJSON(Map<String, dynamic> data) {
 		return SchoolingInfo(

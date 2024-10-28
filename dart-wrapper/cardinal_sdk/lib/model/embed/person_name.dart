@@ -3,26 +3,31 @@ import 'package:cardinal_sdk/model/embed/person_name_use.dart';
 
 
 class PersonName {
-	String? lastName;
+	String? lastName = null;
 	List<String> firstNames = [];
-	int? start;
-	int? end;
+	int? start = null;
+	int? end = null;
 	List<String> prefix = [];
 	List<String> suffix = [];
-	String? text;
-	PersonNameUse? use;
+	String? text = null;
+	PersonNameUse? use = null;
 	PersonName({
-			this.lastName,
-			this.start,
-			this.end,
-			this.text,
-			this.use,
+			String? lastName,
 			List<String>? firstNames,
+			int? start,
+			int? end,
 			List<String>? prefix,
-			List<String>? suffix
-		}) : firstNames = firstNames ?? [],
+			List<String>? suffix,
+			String? text,
+			PersonNameUse? use
+		}) : lastName = lastName ?? null,
+		firstNames = firstNames ?? [],
+		start = start ?? null,
+		end = end ?? null,
 		prefix = prefix ?? [],
-		suffix = suffix ?? [];
+		suffix = suffix ?? [],
+		text = text ?? null,
+		use = use ?? null;
 
 	factory PersonName.fromJSON(Map<String, dynamic> data) {
 		return PersonName(

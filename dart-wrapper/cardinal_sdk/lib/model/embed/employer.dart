@@ -4,12 +4,13 @@ import 'package:cardinal_sdk/model/base/named.dart';
 
 
 class Employer implements Named {
-	@override String? name;
-	DecryptedAddress? addresse;
+	@override String? name = null;
+	DecryptedAddress? addresse = null;
 	Employer({
-			this.name,
-			this.addresse
-		});
+			String? name,
+			DecryptedAddress? addresse
+		}) : name = name ?? null,
+		addresse = addresse ?? null;
 
 	factory Employer.fromJSON(Map<String, dynamic> data) {
 		return Employer(

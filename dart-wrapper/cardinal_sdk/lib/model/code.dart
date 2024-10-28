@@ -9,17 +9,17 @@ import 'package:cardinal_sdk/model/base/code_identification.dart';
 
 class Code implements StoredDocument, CodeIdentification<String> {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	@override String? context;
-	@override String? type;
-	@override String? code;
-	@override String? version;
-	@override Map<String, String>? label;
-	String? author;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	@override String? context = null;
+	@override String? type = null;
+	@override String? code = null;
+	@override String? version = null;
+	@override Map<String, String>? label = null;
+	String? author = null;
 	Set<String> regions = {};
 	Set<Periodicity> periodicity = {};
-	int? _level;
+	int? _level = null;
 	@ActualInt32() int? get level => _level;
 	@ActualInt32() set level(int? value) {
 		if (value != null && value > 2147483647) {
@@ -31,39 +31,48 @@ class Code implements StoredDocument, CodeIdentification<String> {
 	Map<String, List<String>> qualifiedLinks = {};
 	Set<CodeFlag> flags = {};
 	Map<String, Set<String>> searchTerms = {};
-	String? data;
+	String? data = null;
 	Map<AppendixType, String> appendices = {};
 	bool disabled = false;
 	Code(
 		this.id,
 		{
 			int? level,
-			this.rev,
-			this.deletionDate,
-			this.context,
-			this.type,
-			this.code,
-			this.version,
-			this.label,
-			this.author,
-			this.data,
+			String? rev,
+			int? deletionDate,
+			String? context,
+			String? type,
+			String? code,
+			String? version,
+			Map<String, String>? label,
+			String? author,
 			Set<String>? regions,
 			Set<Periodicity>? periodicity,
 			Set<String>? links,
 			Map<String, List<String>>? qualifiedLinks,
 			Set<CodeFlag>? flags,
 			Map<String, Set<String>>? searchTerms,
+			String? data,
 			Map<AppendixType, String>? appendices,
 			bool? disabled
-		}) : regions = regions ?? {},
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		context = context ?? null,
+		type = type ?? null,
+		code = code ?? null,
+		version = version ?? null,
+		label = label ?? null,
+		author = author ?? null,
+		regions = regions ?? {},
 		periodicity = periodicity ?? {},
 		links = links ?? {},
 		qualifiedLinks = qualifiedLinks ?? {},
 		flags = flags ?? {},
 		searchTerms = searchTerms ?? {},
+		data = data ?? null,
 		appendices = appendices ?? {},
 		disabled = disabled ?? false,
-		_level = level;
+		_level = level ?? null;
 
 	factory Code.fromJSON(Map<String, dynamic> data) {
 		return Code(

@@ -2,16 +2,19 @@
 
 
 class CalendarItemTag {
-	String? code;
-	int? date;
-	String? userId;
-	String? userName;
+	String? code = null;
+	int? date = null;
+	String? userId = null;
+	String? userName = null;
 	CalendarItemTag({
-			this.code,
-			this.date,
-			this.userId,
-			this.userName
-		});
+			String? code,
+			int? date,
+			String? userId,
+			String? userName
+		}) : code = code ?? null,
+		date = date ?? null,
+		userId = userId ?? null,
+		userName = userName ?? null;
 
 	factory CalendarItemTag.fromJSON(Map<String, dynamic> data) {
 		return CalendarItemTag(

@@ -2,9 +2,9 @@
 
 
 class IndexingInfo {
-	Map<String, int>? statuses;
+	Map<String, int>? statuses = null;
 	IndexingInfo({
-			this.statuses});
+			Map<String, int>? statuses}) : statuses = statuses ?? null;
 
 	factory IndexingInfo.fromJSON(Map<String, dynamic> data) {
 		return IndexingInfo(

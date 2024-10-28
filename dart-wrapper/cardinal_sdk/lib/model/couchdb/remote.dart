@@ -4,12 +4,12 @@ import 'package:cardinal_sdk/model/couchdb/remote_authentication.dart';
 
 class Remote {
 	String url;
-	RemoteAuthentication? auth;
+	RemoteAuthentication? auth = null;
 	Remote(
 		this.url,
 		{
-			this.auth
-		});
+			RemoteAuthentication? auth
+		}) : auth = auth ?? null;
 
 	factory Remote.fromJSON(Map<String, dynamic> data) {
 		return Remote(

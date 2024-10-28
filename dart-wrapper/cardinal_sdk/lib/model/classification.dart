@@ -63,54 +63,66 @@ sealed class Classification implements StoredDocument, ICureDocument<String>, Ha
 
 class EncryptedClassification implements Classification {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? parentId;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? parentId = null;
 	@override String label = "";
-	@override String? templateId;
+	@override String? templateId = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	EncryptedClassification(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.parentId,
-			this.templateId,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? parentId,
 			String? label,
+			String? templateId,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		parentId = parentId ?? null,
 		label = label ?? "",
+		templateId = templateId ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null;
 
 	factory EncryptedClassification.fromJSON(Map<String, dynamic> data) {
 		return EncryptedClassification(
@@ -166,54 +178,66 @@ class EncryptedClassification implements Classification {
 
 class DecryptedClassification implements Classification {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? parentId;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? parentId = null;
 	@override String label = "";
-	@override String? templateId;
+	@override String? templateId = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	DecryptedClassification(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.parentId,
-			this.templateId,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? parentId,
 			String? label,
+			String? templateId,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		parentId = parentId ?? null,
 		label = label ?? "",
+		templateId = templateId ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null;
 
 	factory DecryptedClassification.fromJSON(Map<String, dynamic> data) {
 		return DecryptedClassification(

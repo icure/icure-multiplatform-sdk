@@ -6,8 +6,8 @@ import 'package:cardinal_sdk/model/embed/administration_quantity.dart';
 
 
 class RegimenItem {
-	int? date;
-	int? _dayNumber;
+	int? date = null;
+	int? _dayNumber = null;
 	@ActualInt32() int? get dayNumber => _dayNumber;
 	@ActualInt32() set dayNumber(int? value) {
 		if (value != null && value > 2147483647) {
@@ -15,18 +15,23 @@ class RegimenItem {
 		}
 		_dayNumber = value;
 	}
-	Weekday? weekday;
-	CodeStub? dayPeriod;
-	int? timeOfDay;
-	AdministrationQuantity? administratedQuantity;
+	Weekday? weekday = null;
+	CodeStub? dayPeriod = null;
+	int? timeOfDay = null;
+	AdministrationQuantity? administratedQuantity = null;
 	RegimenItem({
 			int? dayNumber,
-			this.date,
-			this.weekday,
-			this.dayPeriod,
-			this.timeOfDay,
-			this.administratedQuantity
-		}) : _dayNumber = dayNumber;
+			int? date,
+			Weekday? weekday,
+			CodeStub? dayPeriod,
+			int? timeOfDay,
+			AdministrationQuantity? administratedQuantity
+		}) : date = date ?? null,
+		weekday = weekday ?? null,
+		dayPeriod = dayPeriod ?? null,
+		timeOfDay = timeOfDay ?? null,
+		administratedQuantity = administratedQuantity ?? null,
+		_dayNumber = dayNumber ?? null;
 
 	factory RegimenItem.fromJSON(Map<String, dynamic> data) {
 		return RegimenItem(

@@ -2,14 +2,16 @@
 
 
 class ReferralPeriod {
-	DateTime? startDate;
-	DateTime? endDate;
-	String? comment;
+	DateTime? startDate = null;
+	DateTime? endDate = null;
+	String? comment = null;
 	ReferralPeriod({
-			this.startDate,
-			this.endDate,
-			this.comment
-		});
+			DateTime? startDate,
+			DateTime? endDate,
+			String? comment
+		}) : startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		comment = comment ?? null;
 
 	factory ReferralPeriod.fromJSON(Map<String, dynamic> data) {
 		return ReferralPeriod(

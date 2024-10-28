@@ -72,19 +72,19 @@ sealed class Form implements StoredDocument, ICureDocument<String>, HasEncryptio
 
 class EncryptedForm implements Form {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override int? openingDate;
-	@override String? status;
-	int? _version;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override int? openingDate = null;
+	@override String? status = null;
+	int? _version = null;
 	@ActualInt32() @override int? get version => _version;
 	@ActualInt32() @override set version(int? value) {
 		if (value != null && value > 2147483647) {
@@ -92,57 +92,77 @@ class EncryptedForm implements Form {
 		}
 		_version = value;
 	}
-	@override String? logicalUuid;
-	@override String? descr;
-	@override String? uniqueId;
-	@override String? formTemplateId;
-	@override String? contactId;
-	@override String? healthElementId;
-	@override String? planOfActionId;
-	@override String? parent;
+	@override String? logicalUuid = null;
+	@override String? descr = null;
+	@override String? uniqueId = null;
+	@override String? formTemplateId = null;
+	@override String? contactId = null;
+	@override String? healthElementId = null;
+	@override String? planOfActionId = null;
+	@override String? parent = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	EncryptedForm(
 		this.id,
 		{
 			int? version,
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.openingDate,
-			this.status,
-			this.logicalUuid,
-			this.descr,
-			this.uniqueId,
-			this.formTemplateId,
-			this.contactId,
-			this.healthElementId,
-			this.planOfActionId,
-			this.parent,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			int? openingDate,
+			String? status,
+			String? logicalUuid,
+			String? descr,
+			String? uniqueId,
+			String? formTemplateId,
+			String? contactId,
+			String? healthElementId,
+			String? planOfActionId,
+			String? parent,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		openingDate = openingDate ?? null,
+		status = status ?? null,
+		logicalUuid = logicalUuid ?? null,
+		descr = descr ?? null,
+		uniqueId = uniqueId ?? null,
+		formTemplateId = formTemplateId ?? null,
+		contactId = contactId ?? null,
+		healthElementId = healthElementId ?? null,
+		planOfActionId = planOfActionId ?? null,
+		parent = parent ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
-		_version = version;
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		_version = version ?? null;
 
 	factory EncryptedForm.fromJSON(Map<String, dynamic> data) {
 		return EncryptedForm(
@@ -214,19 +234,19 @@ class EncryptedForm implements Form {
 
 class DecryptedForm implements Form {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override int? openingDate;
-	@override String? status;
-	int? _version;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override int? openingDate = null;
+	@override String? status = null;
+	int? _version = null;
 	@ActualInt32() @override int? get version => _version;
 	@ActualInt32() @override set version(int? value) {
 		if (value != null && value > 2147483647) {
@@ -234,57 +254,77 @@ class DecryptedForm implements Form {
 		}
 		_version = value;
 	}
-	@override String? logicalUuid;
-	@override String? descr;
-	@override String? uniqueId;
-	@override String? formTemplateId;
-	@override String? contactId;
-	@override String? healthElementId;
-	@override String? planOfActionId;
-	@override String? parent;
+	@override String? logicalUuid = null;
+	@override String? descr = null;
+	@override String? uniqueId = null;
+	@override String? formTemplateId = null;
+	@override String? contactId = null;
+	@override String? healthElementId = null;
+	@override String? planOfActionId = null;
+	@override String? parent = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	DecryptedForm(
 		this.id,
 		{
 			int? version,
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.openingDate,
-			this.status,
-			this.logicalUuid,
-			this.descr,
-			this.uniqueId,
-			this.formTemplateId,
-			this.contactId,
-			this.healthElementId,
-			this.planOfActionId,
-			this.parent,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			int? openingDate,
+			String? status,
+			String? logicalUuid,
+			String? descr,
+			String? uniqueId,
+			String? formTemplateId,
+			String? contactId,
+			String? healthElementId,
+			String? planOfActionId,
+			String? parent,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		openingDate = openingDate ?? null,
+		status = status ?? null,
+		logicalUuid = logicalUuid ?? null,
+		descr = descr ?? null,
+		uniqueId = uniqueId ?? null,
+		formTemplateId = formTemplateId ?? null,
+		contactId = contactId ?? null,
+		healthElementId = healthElementId ?? null,
+		planOfActionId = planOfActionId ?? null,
+		parent = parent ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
-		_version = version;
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		_version = version ?? null;
 
 	factory DecryptedForm.fromJSON(Map<String, dynamic> data) {
 		return DecryptedForm(

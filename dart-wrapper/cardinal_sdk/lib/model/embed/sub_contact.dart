@@ -58,18 +58,18 @@ sealed class SubContact implements Encryptable, ICureDocument<String?> {
 }
 
 class EncryptedSubContact implements SubContact {
-	@override String? id;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? id = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override String? descr;
-	@override String? protocol;
-	int? _status;
+	@override int? endOfLife = null;
+	@override String? descr = null;
+	@override String? protocol = null;
+	int? _status = null;
 	@ActualInt32() @override int? get status => _status;
 	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
@@ -77,35 +77,49 @@ class EncryptedSubContact implements SubContact {
 		}
 		_status = value;
 	}
-	@override String? formId;
-	@override String? planOfActionId;
-	@override String? healthElementId;
-	@override String? classificationId;
+	@override String? formId = null;
+	@override String? planOfActionId = null;
+	@override String? healthElementId = null;
+	@override String? classificationId = null;
 	@override List<ServiceLink> services = [];
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	EncryptedSubContact({
 			int? status,
-			this.id,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.descr,
-			this.protocol,
-			this.formId,
-			this.planOfActionId,
-			this.healthElementId,
-			this.classificationId,
-			this.encryptedSelf,
+			String? id,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
-			List<ServiceLink>? services
-		}) : tags = tags ?? {},
+			int? endOfLife,
+			String? descr,
+			String? protocol,
+			String? formId,
+			String? planOfActionId,
+			String? healthElementId,
+			String? classificationId,
+			List<ServiceLink>? services,
+			Base64String? encryptedSelf
+		}) : id = id ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		descr = descr ?? null,
+		protocol = protocol ?? null,
+		formId = formId ?? null,
+		planOfActionId = planOfActionId ?? null,
+		healthElementId = healthElementId ?? null,
+		classificationId = classificationId ?? null,
 		services = services ?? [],
-		_status = status;
+		encryptedSelf = encryptedSelf ?? null,
+		_status = status ?? null;
 
 	factory EncryptedSubContact.fromJSON(Map<String, dynamic> data) {
 		return EncryptedSubContact(
@@ -156,18 +170,18 @@ class EncryptedSubContact implements SubContact {
 }
 
 class DecryptedSubContact implements SubContact {
-	@override String? id;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? id = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override String? descr;
-	@override String? protocol;
-	int? _status;
+	@override int? endOfLife = null;
+	@override String? descr = null;
+	@override String? protocol = null;
+	int? _status = null;
 	@ActualInt32() @override int? get status => _status;
 	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
@@ -175,35 +189,49 @@ class DecryptedSubContact implements SubContact {
 		}
 		_status = value;
 	}
-	@override String? formId;
-	@override String? planOfActionId;
-	@override String? healthElementId;
-	@override String? classificationId;
+	@override String? formId = null;
+	@override String? planOfActionId = null;
+	@override String? healthElementId = null;
+	@override String? classificationId = null;
 	@override List<ServiceLink> services = [];
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	DecryptedSubContact({
 			int? status,
-			this.id,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.descr,
-			this.protocol,
-			this.formId,
-			this.planOfActionId,
-			this.healthElementId,
-			this.classificationId,
-			this.encryptedSelf,
+			String? id,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
-			List<ServiceLink>? services
-		}) : tags = tags ?? {},
+			int? endOfLife,
+			String? descr,
+			String? protocol,
+			String? formId,
+			String? planOfActionId,
+			String? healthElementId,
+			String? classificationId,
+			List<ServiceLink>? services,
+			Base64String? encryptedSelf
+		}) : id = id ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		descr = descr ?? null,
+		protocol = protocol ?? null,
+		formId = formId ?? null,
+		planOfActionId = planOfActionId ?? null,
+		healthElementId = healthElementId ?? null,
+		classificationId = classificationId ?? null,
 		services = services ?? [],
-		_status = status;
+		encryptedSelf = encryptedSelf ?? null,
+		_status = status ?? null;
 
 	factory DecryptedSubContact.fromJSON(Map<String, dynamic> data) {
 		return DecryptedSubContact(

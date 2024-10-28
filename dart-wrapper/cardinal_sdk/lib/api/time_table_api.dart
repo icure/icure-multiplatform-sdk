@@ -29,7 +29,7 @@ class TimeTableApi {
 		);
 	}
 
-	Future<DecryptedTimeTable> withEncryptionMetadata(DecryptedTimeTable? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedTimeTable> withEncryptionMetadata(DecryptedTimeTable? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -141,7 +141,7 @@ class TimeTableApi {
 		);
 	}
 
-	Future<DecryptedTimeTable> shareWith(String delegateId, DecryptedTimeTable timeTable, TimeTableShareOptions? options) async {
+	Future<DecryptedTimeTable> shareWith(String delegateId, DecryptedTimeTable timeTable, { TimeTableShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.shareWith(
 			_sdkId,
 			delegateId,
@@ -213,7 +213,7 @@ class TryAndRecoverTimeTableApi {
 	final String _sdkId;
 	TryAndRecoverTimeTableApi(this._sdkId);
 
-	Future<TimeTable> shareWith(String delegateId, TimeTable timeTable, TimeTableShareOptions? options) async {
+	Future<TimeTable> shareWith(String delegateId, TimeTable timeTable, { TimeTableShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -285,7 +285,7 @@ class EncryptedTimeTableApi {
 	final String _sdkId;
 	EncryptedTimeTableApi(this._sdkId);
 
-	Future<EncryptedTimeTable> shareWith(String delegateId, EncryptedTimeTable timeTable, TimeTableShareOptions? options) async {
+	Future<EncryptedTimeTable> shareWith(String delegateId, EncryptedTimeTable timeTable, { TimeTableShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.shareWith(
 			_sdkId,
 			delegateId,

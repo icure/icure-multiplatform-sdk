@@ -7,15 +7,17 @@ import 'package:cardinal_sdk/model/replication.dart';
 class DatabaseInitialisation {
 	List<User>? users = [];
 	List<HealthcareParty>? healthcareParties = [];
-	Replication? replication;
-	String? minimumKrakenVersion;
+	Replication? replication = null;
+	String? minimumKrakenVersion = null;
 	DatabaseInitialisation({
-			this.replication,
-			this.minimumKrakenVersion,
 			List<User>? users,
-			List<HealthcareParty>? healthcareParties
+			List<HealthcareParty>? healthcareParties,
+			Replication? replication,
+			String? minimumKrakenVersion
 		}) : users = users ?? [],
-		healthcareParties = healthcareParties ?? [];
+		healthcareParties = healthcareParties ?? [],
+		replication = replication ?? null,
+		minimumKrakenVersion = minimumKrakenVersion ?? null;
 
 	factory DatabaseInitialisation.fromJSON(Map<String, dynamic> data) {
 		return DatabaseInitialisation(

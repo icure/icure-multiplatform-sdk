@@ -33,40 +33,40 @@ abstract class ContactFilters {
 		);
 	}
 
-	static Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byPatientsOpeningDateForDataOwner(
 			dataOwnerId,
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byPatientsOpeningDateForSelf(
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byPatientSecretIdsOpeningDateForDataOwner(
 			dataOwnerId,
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byPatientSecretIdsOpeningDateForSelf(
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
@@ -90,88 +90,88 @@ abstract class ContactFilters {
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Contact>> byCodeAndOpeningDateForDataOwner(String dataOwnerId, String codeType, String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	static Future<BaseSortableFilterOptions<Contact>> byCodeAndOpeningDateForDataOwner(String dataOwnerId, String codeType, { String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byCodeAndOpeningDateForDataOwner(
 			dataOwnerId,
 			codeType,
-			codeCode,
-			startOfContactOpeningDate,
-			endOfContactOpeningDate,
+			codeCode: codeCode,
+			startOfContactOpeningDate: startOfContactOpeningDate,
+			endOfContactOpeningDate: endOfContactOpeningDate,
 		);
 	}
 
-	static Future<SortableFilterOptions<Contact>> byCodeAndOpeningDateForSelf(String codeType, String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	static Future<SortableFilterOptions<Contact>> byCodeAndOpeningDateForSelf(String codeType, { String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byCodeAndOpeningDateForSelf(
 			codeType,
-			codeCode,
-			startOfContactOpeningDate,
-			endOfContactOpeningDate,
+			codeCode: codeCode,
+			startOfContactOpeningDate: startOfContactOpeningDate,
+			endOfContactOpeningDate: endOfContactOpeningDate,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Contact>> byTagAndOpeningDateForDataOwner(String dataOwnerId, String tagType, String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	static Future<BaseSortableFilterOptions<Contact>> byTagAndOpeningDateForDataOwner(String dataOwnerId, String tagType, { String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byTagAndOpeningDateForDataOwner(
 			dataOwnerId,
 			tagType,
-			tagCode,
-			startOfContactOpeningDate,
-			endOfContactOpeningDate,
+			tagCode: tagCode,
+			startOfContactOpeningDate: startOfContactOpeningDate,
+			endOfContactOpeningDate: endOfContactOpeningDate,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Contact>> byOpeningDateForDataOwner(String dataOwnerId, int? startDate, int? endDate, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<Contact>> byOpeningDateForDataOwner(String dataOwnerId, { int? startDate, int? endDate, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byOpeningDateForDataOwner(
 			dataOwnerId,
-			startDate,
-			endDate,
+			startDate: startDate,
+			endDate: endDate,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Contact>> byOpeningDateForSelf(int? startDate, int? endDate, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Contact>> byOpeningDateForSelf({ int? startDate, int? endDate, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byOpeningDateForSelf(
-			startDate,
-			endDate,
+			startDate: startDate,
+			endDate: endDate,
 			descending: descending,
 		);
 	}
 
-	static Future<FilterOptions<Contact>> byServiceTagForSelf(String tagType, String? tagCode) async {
+	static Future<FilterOptions<Contact>> byServiceTagForSelf(String tagType, { String? tagCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byServiceTagForSelf(
 			tagType,
-			tagCode,
+			tagCode: tagCode,
 		);
 	}
 
-	static Future<BaseFilterOptions<Contact>> byServiceTagForDataOwner(String dataOwnerId, String tagType, String? tagCode) async {
+	static Future<BaseFilterOptions<Contact>> byServiceTagForDataOwner(String dataOwnerId, String tagType, { String? tagCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byServiceTagForDataOwner(
 			dataOwnerId,
 			tagType,
-			tagCode,
+			tagCode: tagCode,
 		);
 	}
 
-	static Future<FilterOptions<Contact>> byServiceCodeForSelf(String codeType, String? codeCode) async {
+	static Future<FilterOptions<Contact>> byServiceCodeForSelf(String codeType, { String? codeCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byServiceCodeForSelf(
 			codeType,
-			codeCode,
+			codeCode: codeCode,
 		);
 	}
 
-	static Future<BaseFilterOptions<Contact>> byServiceCodeForDataOwner(String dataOwnerId, String codeType, String? codeCode) async {
+	static Future<BaseFilterOptions<Contact>> byServiceCodeForDataOwner(String dataOwnerId, String codeType, { String? codeCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byServiceCodeForDataOwner(
 			dataOwnerId,
 			codeType,
-			codeCode,
+			codeCode: codeCode,
 		);
 	}
 
-	static Future<SortableFilterOptions<Contact>> byTagAndOpeningDateForSelf(String tagType, String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	static Future<SortableFilterOptions<Contact>> byTagAndOpeningDateForSelf(String tagType, { String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		return CardinalSdkPlatformInterface.instance.filters.contact.byTagAndOpeningDateForSelf(
 			tagType,
-			tagCode,
-			startOfContactOpeningDate,
-			endOfContactOpeningDate,
+			tagCode: tagCode,
+			startOfContactOpeningDate: startOfContactOpeningDate,
+			endOfContactOpeningDate: endOfContactOpeningDate,
 		);
 	}
 

@@ -4,8 +4,8 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
 
 class Weekday {
-	CodeStub? weekday;
-	int? _weekNumber;
+	CodeStub? weekday = null;
+	int? _weekNumber = null;
 	@ActualInt32() int? get weekNumber => _weekNumber;
 	@ActualInt32() set weekNumber(int? value) {
 		if (value != null && value > 2147483647) {
@@ -15,8 +15,9 @@ class Weekday {
 	}
 	Weekday({
 			int? weekNumber,
-			this.weekday
-		}) : _weekNumber = weekNumber;
+			CodeStub? weekday
+		}) : weekday = weekday ?? null,
+		_weekNumber = weekNumber ?? null;
 
 	factory Weekday.fromJSON(Map<String, dynamic> data) {
 		return Weekday(

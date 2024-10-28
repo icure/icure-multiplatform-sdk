@@ -122,7 +122,7 @@ class MaintenanceTaskBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<MaintenanceTask> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<MaintenanceTask> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.subscribeToEvents(
 			_sdkId,
 			events,

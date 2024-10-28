@@ -2,16 +2,19 @@
 
 
 class LetterValue {
-	String? letter;
-	String? index;
-	double? coefficient;
-	double? value;
+	String? letter = null;
+	String? index = null;
+	double? coefficient = null;
+	double? value = null;
 	LetterValue({
-			this.letter,
-			this.index,
-			this.coefficient,
-			this.value
-		});
+			String? letter,
+			String? index,
+			double? coefficient,
+			double? value
+		}) : letter = letter ?? null,
+		index = index ?? null,
+		coefficient = coefficient ?? null,
+		value = value ?? null;
 
 	factory LetterValue.fromJSON(Map<String, dynamic> data) {
 		return LetterValue(

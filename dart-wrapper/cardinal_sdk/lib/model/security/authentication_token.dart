@@ -2,17 +2,18 @@
 
 
 class AuthenticationToken {
-	String? token;
+	String? token = null;
 	int creationTime;
 	int validity;
-	int? deletionDate;
+	int? deletionDate = null;
 	AuthenticationToken(
 		this.creationTime,
 		this.validity,
 		{
-			this.token,
-			this.deletionDate
-		});
+			String? token,
+			int? deletionDate
+		}) : token = token ?? null,
+		deletionDate = deletionDate ?? null;
 
 	factory AuthenticationToken.fromJSON(Map<String, dynamic> data) {
 		return AuthenticationToken(

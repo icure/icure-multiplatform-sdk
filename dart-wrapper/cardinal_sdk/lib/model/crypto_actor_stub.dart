@@ -15,7 +15,7 @@ class CryptoActorStub implements Versionable<String>, CryptoActor, HasTags {
 	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
 	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
 	@override Map<String, HexString> privateKeyShamirPartitions = {};
-	@override SpkiHexString? publicKey;
+	@override SpkiHexString? publicKey = null;
 	@override Set<SpkiHexString> publicKeysForOaepWithSha256;
 	@override Set<CodeStub> tags = {};
 	CryptoActorStub(
@@ -23,16 +23,17 @@ class CryptoActorStub implements Versionable<String>, CryptoActor, HasTags {
 		this.rev,
 		this.publicKeysForOaepWithSha256,
 		{
-			this.publicKey,
 			Map<String, List<HexString>>? hcPartyKeys,
 			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
 			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
 			Map<String, HexString>? privateKeyShamirPartitions,
+			SpkiHexString? publicKey,
 			Set<CodeStub>? tags
 		}) : hcPartyKeys = hcPartyKeys ?? {},
 		aesExchangeKeys = aesExchangeKeys ?? {},
 		transferKeys = transferKeys ?? {},
 		privateKeyShamirPartitions = privateKeyShamirPartitions ?? {},
+		publicKey = publicKey ?? null,
 		tags = tags ?? {};
 
 	factory CryptoActorStub.fromJSON(Map<String, dynamic> data) {

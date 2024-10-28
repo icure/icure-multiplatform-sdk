@@ -2,12 +2,13 @@
 
 
 class TimeTableHour {
-	int? startHour;
-	int? endHour;
+	int? startHour = null;
+	int? endHour = null;
 	TimeTableHour({
-			this.startHour,
-			this.endHour
-		});
+			int? startHour,
+			int? endHour
+		}) : startHour = startHour ?? null,
+		endHour = endHour ?? null;
 
 	factory TimeTableHour.fromJSON(Map<String, dynamic> data) {
 		return TimeTableHour(

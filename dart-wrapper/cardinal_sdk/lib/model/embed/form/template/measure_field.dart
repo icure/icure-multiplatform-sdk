@@ -5,8 +5,8 @@ import 'package:cardinal_sdk/model/embed/form/template/field.dart';
 
 class MeasureField implements Field {
 	@override String field;
-	@override String? shortLabel;
-	int? _rows;
+	@override String? shortLabel = null;
+	int? _rows = null;
 	@ActualInt32() @override int? get rows => _rows;
 	@ActualInt32() @override set rows(int? value) {
 		if (value != null && value > 2147483647) {
@@ -14,7 +14,7 @@ class MeasureField implements Field {
 		}
 		_rows = value;
 	}
-	int? _columns;
+	int? _columns = null;
 	@ActualInt32() @override int? get columns => _columns;
 	@ActualInt32() @override set columns(int? value) {
 		if (value != null && value > 2147483647) {
@@ -22,40 +22,54 @@ class MeasureField implements Field {
 		}
 		_columns = value;
 	}
-	@override bool? grows;
-	@override bool? multiline;
-	@override String? schema;
-	@override List<String>? tags;
-	@override List<String>? codifications;
-	@override Map<String, String>? options;
-	@override Map<String, String>? labels;
-	@override String? value;
-	@override String? unit;
-	@override bool? required;
-	@override String? hideCondition;
-	@override bool? now;
-	@override bool? translate;
+	@override bool? grows = null;
+	@override bool? multiline = null;
+	@override String? schema = null;
+	@override List<String>? tags = null;
+	@override List<String>? codifications = null;
+	@override Map<String, String>? options = null;
+	@override Map<String, String>? labels = null;
+	@override String? value = null;
+	@override String? unit = null;
+	@override bool? required = null;
+	@override String? hideCondition = null;
+	@override bool? now = null;
+	@override bool? translate = null;
 	MeasureField(
 		this.field,
 		{
 			int? rows,
 			int? columns,
-			this.shortLabel,
-			this.grows,
-			this.multiline,
-			this.schema,
-			this.tags,
-			this.codifications,
-			this.options,
-			this.labels,
-			this.value,
-			this.unit,
-			this.required,
-			this.hideCondition,
-			this.now,
-			this.translate
-		}) : _rows = rows,
-		_columns = columns;
+			String? shortLabel,
+			bool? grows,
+			bool? multiline,
+			String? schema,
+			List<String>? tags,
+			List<String>? codifications,
+			Map<String, String>? options,
+			Map<String, String>? labels,
+			String? value,
+			String? unit,
+			bool? required,
+			String? hideCondition,
+			bool? now,
+			bool? translate
+		}) : shortLabel = shortLabel ?? null,
+		grows = grows ?? null,
+		multiline = multiline ?? null,
+		schema = schema ?? null,
+		tags = tags ?? null,
+		codifications = codifications ?? null,
+		options = options ?? null,
+		labels = labels ?? null,
+		value = value ?? null,
+		unit = unit ?? null,
+		required = required ?? null,
+		hideCondition = hideCondition ?? null,
+		now = now ?? null,
+		translate = translate ?? null,
+		_rows = rows ?? null,
+		_columns = columns ?? null;
 
 	factory MeasureField.fromJSON(Map<String, dynamic> data) {
 		return MeasureField(

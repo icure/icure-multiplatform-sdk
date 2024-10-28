@@ -3,12 +3,13 @@ import 'package:cardinal_sdk/model/embed/typed_values_type.dart';
 
 
 class PropertyTypeStub {
-	String? identifier;
-	TypedValuesType? type;
+	String? identifier = null;
+	TypedValuesType? type = null;
 	PropertyTypeStub({
-			this.identifier,
-			this.type
-		});
+			String? identifier,
+			TypedValuesType? type
+		}) : identifier = identifier ?? null,
+		type = type ?? null;
 
 	factory PropertyTypeStub.fromJSON(Map<String, dynamic> data) {
 		return PropertyTypeStub(

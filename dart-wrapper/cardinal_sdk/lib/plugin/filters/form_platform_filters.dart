@@ -35,7 +35,7 @@ class FormPlatformFilters {
 		return FilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Form>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Form>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormFilters.byPatientsOpeningDateForDataOwner',
 			{
@@ -51,7 +51,7 @@ class FormPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Form>> byPatientsOpeningDateForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Form>> byPatientsOpeningDateForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormFilters.byPatientsOpeningDateForSelf',
 			{
@@ -66,7 +66,7 @@ class FormPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Form>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Form>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormFilters.byPatientSecretIdsOpeningDateForDataOwner',
 			{
@@ -82,7 +82,7 @@ class FormPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Form>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Form>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormFilters.byPatientSecretIdsOpeningDateForSelf',
 			{

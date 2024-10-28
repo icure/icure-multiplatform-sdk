@@ -2,74 +2,106 @@
 
 
 class FlowItem {
-	String? id;
-	String? title;
-	String? comment;
-	int? receptionDate;
-	int? processingDate;
-	String? processer;
-	int? cancellationDate;
-	String? canceller;
-	String? cancellationReason;
-	String? cancellationNote;
-	String? status;
-	bool? homeVisit;
-	String? municipality;
-	String? town;
-	String? zipCode;
-	String? street;
-	String? building;
-	String? buildingNumber;
-	String? doorbellName;
-	String? floor;
-	String? letterBox;
-	String? notesOps;
-	String? notesContact;
-	String? latitude;
-	String? longitude;
-	String? type;
-	bool? emergency;
-	String? phoneNumber;
-	String? patientId;
-	String? patientLastName;
-	String? patientFirstName;
-	String? description;
-	String? interventionCode;
+	String? id = null;
+	String? title = null;
+	String? comment = null;
+	int? receptionDate = null;
+	int? processingDate = null;
+	String? processer = null;
+	int? cancellationDate = null;
+	String? canceller = null;
+	String? cancellationReason = null;
+	String? cancellationNote = null;
+	String? status = null;
+	bool? homeVisit = null;
+	String? municipality = null;
+	String? town = null;
+	String? zipCode = null;
+	String? street = null;
+	String? building = null;
+	String? buildingNumber = null;
+	String? doorbellName = null;
+	String? floor = null;
+	String? letterBox = null;
+	String? notesOps = null;
+	String? notesContact = null;
+	String? latitude = null;
+	String? longitude = null;
+	String? type = null;
+	bool? emergency = null;
+	String? phoneNumber = null;
+	String? patientId = null;
+	String? patientLastName = null;
+	String? patientFirstName = null;
+	String? description = null;
+	String? interventionCode = null;
 	FlowItem({
-			this.id,
-			this.title,
-			this.comment,
-			this.receptionDate,
-			this.processingDate,
-			this.processer,
-			this.cancellationDate,
-			this.canceller,
-			this.cancellationReason,
-			this.cancellationNote,
-			this.status,
-			this.homeVisit,
-			this.municipality,
-			this.town,
-			this.zipCode,
-			this.street,
-			this.building,
-			this.buildingNumber,
-			this.doorbellName,
-			this.floor,
-			this.letterBox,
-			this.notesOps,
-			this.notesContact,
-			this.latitude,
-			this.longitude,
-			this.type,
-			this.emergency,
-			this.phoneNumber,
-			this.patientId,
-			this.patientLastName,
-			this.patientFirstName,
-			this.description,
-			this.interventionCode
-		});
+			String? id,
+			String? title,
+			String? comment,
+			int? receptionDate,
+			int? processingDate,
+			String? processer,
+			int? cancellationDate,
+			String? canceller,
+			String? cancellationReason,
+			String? cancellationNote,
+			String? status,
+			bool? homeVisit,
+			String? municipality,
+			String? town,
+			String? zipCode,
+			String? street,
+			String? building,
+			String? buildingNumber,
+			String? doorbellName,
+			String? floor,
+			String? letterBox,
+			String? notesOps,
+			String? notesContact,
+			String? latitude,
+			String? longitude,
+			String? type,
+			bool? emergency,
+			String? phoneNumber,
+			String? patientId,
+			String? patientLastName,
+			String? patientFirstName,
+			String? description,
+			String? interventionCode
+		}) : id = id ?? null,
+		title = title ?? null,
+		comment = comment ?? null,
+		receptionDate = receptionDate ?? null,
+		processingDate = processingDate ?? null,
+		processer = processer ?? null,
+		cancellationDate = cancellationDate ?? null,
+		canceller = canceller ?? null,
+		cancellationReason = cancellationReason ?? null,
+		cancellationNote = cancellationNote ?? null,
+		status = status ?? null,
+		homeVisit = homeVisit ?? null,
+		municipality = municipality ?? null,
+		town = town ?? null,
+		zipCode = zipCode ?? null,
+		street = street ?? null,
+		building = building ?? null,
+		buildingNumber = buildingNumber ?? null,
+		doorbellName = doorbellName ?? null,
+		floor = floor ?? null,
+		letterBox = letterBox ?? null,
+		notesOps = notesOps ?? null,
+		notesContact = notesContact ?? null,
+		latitude = latitude ?? null,
+		longitude = longitude ?? null,
+		type = type ?? null,
+		emergency = emergency ?? null,
+		phoneNumber = phoneNumber ?? null,
+		patientId = patientId ?? null,
+		patientLastName = patientLastName ?? null,
+		patientFirstName = patientFirstName ?? null,
+		description = description ?? null,
+		interventionCode = interventionCode ?? null;
 
 	factory FlowItem.fromJSON(Map<String, dynamic> data) {
 		return FlowItem(

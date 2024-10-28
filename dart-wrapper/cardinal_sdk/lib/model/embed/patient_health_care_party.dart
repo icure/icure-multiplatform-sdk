@@ -45,22 +45,25 @@ sealed class PatientHealthCareParty implements Encryptable {
 }
 
 class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
-	@override PatientHealthCarePartyType? type;
-	@override String? healthcarePartyId;
+	@override PatientHealthCarePartyType? type = null;
+	@override String? healthcarePartyId = null;
 	@override Map<TelecomType, String> sendFormats = {};
 	@override List<ReferralPeriod> referralPeriods = [];
 	@override bool referral = false;
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	EncryptedPatientHealthCareParty({
-			this.type,
-			this.healthcarePartyId,
-			this.encryptedSelf,
+			PatientHealthCarePartyType? type,
+			String? healthcarePartyId,
 			Map<TelecomType, String>? sendFormats,
 			List<ReferralPeriod>? referralPeriods,
-			bool? referral
-		}) : sendFormats = sendFormats ?? {},
+			bool? referral,
+			Base64String? encryptedSelf
+		}) : type = type ?? null,
+		healthcarePartyId = healthcarePartyId ?? null,
+		sendFormats = sendFormats ?? {},
 		referralPeriods = referralPeriods ?? [],
-		referral = referral ?? false;
+		referral = referral ?? false,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedPatientHealthCareParty.fromJSON(Map<String, dynamic> data) {
 		return EncryptedPatientHealthCareParty(
@@ -87,22 +90,25 @@ class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
 }
 
 class DecryptedPatientHealthCareParty implements PatientHealthCareParty {
-	@override PatientHealthCarePartyType? type;
-	@override String? healthcarePartyId;
+	@override PatientHealthCarePartyType? type = null;
+	@override String? healthcarePartyId = null;
 	@override Map<TelecomType, String> sendFormats = {};
 	@override List<ReferralPeriod> referralPeriods = [];
 	@override bool referral = false;
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	DecryptedPatientHealthCareParty({
-			this.type,
-			this.healthcarePartyId,
-			this.encryptedSelf,
+			PatientHealthCarePartyType? type,
+			String? healthcarePartyId,
 			Map<TelecomType, String>? sendFormats,
 			List<ReferralPeriod>? referralPeriods,
-			bool? referral
-		}) : sendFormats = sendFormats ?? {},
+			bool? referral,
+			Base64String? encryptedSelf
+		}) : type = type ?? null,
+		healthcarePartyId = healthcarePartyId ?? null,
+		sendFormats = sendFormats ?? {},
 		referralPeriods = referralPeriods ?? [],
-		referral = referral ?? false;
+		referral = referral ?? false,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedPatientHealthCareParty.fromJSON(Map<String, dynamic> data) {
 		return DecryptedPatientHealthCareParty(

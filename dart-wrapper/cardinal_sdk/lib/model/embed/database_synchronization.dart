@@ -2,16 +2,19 @@
 
 
 class DatabaseSynchronization {
-	String? source;
-	String? target;
-	String? filter;
-	DatabaseSynchronizationTarget? localTarget;
+	String? source = null;
+	String? target = null;
+	String? filter = null;
+	DatabaseSynchronizationTarget? localTarget = null;
 	DatabaseSynchronization({
-			this.source,
-			this.target,
-			this.filter,
-			this.localTarget
-		});
+			String? source,
+			String? target,
+			String? filter,
+			DatabaseSynchronizationTarget? localTarget
+		}) : source = source ?? null,
+		target = target ?? null,
+		filter = filter ?? null,
+		localTarget = localTarget ?? null;
 
 	factory DatabaseSynchronization.fromJSON(Map<String, dynamic> data) {
 		return DatabaseSynchronization(

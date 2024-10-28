@@ -4,13 +4,13 @@
 class TokenWithGroup {
 	String token;
 	String groupId;
-	String? groupName;
+	String? groupName = null;
 	TokenWithGroup(
 		this.token,
 		this.groupId,
 		{
-			this.groupName
-		});
+			String? groupName
+		}) : groupName = groupName ?? null;
 
 	factory TokenWithGroup.fromJSON(Map<String, dynamic> data) {
 		return TokenWithGroup(

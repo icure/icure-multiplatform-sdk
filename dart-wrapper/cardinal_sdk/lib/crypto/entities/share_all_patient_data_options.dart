@@ -114,8 +114,8 @@ enum ShareAllPatientDataOptionsShareableEntity {
 }
 
 class ShareAllPatientDataOptionsEntityResult {
-	bool? success;
-	ShareAllPatientDataOptionsSharePatientDataError? error;
+	bool? success = null;
+	ShareAllPatientDataOptionsSharePatientDataError? error = null;
 	int _modified;
 	@ActualInt32() int get modified => _modified;
 	@ActualInt32() set modified(int value) {
@@ -127,9 +127,11 @@ class ShareAllPatientDataOptionsEntityResult {
 	ShareAllPatientDataOptionsEntityResult(
 		int modified,
 		{
-			this.success,
-			this.error
-		}) : _modified = modified;
+			bool? success,
+			ShareAllPatientDataOptionsSharePatientDataError? error
+		}) : success = success ?? null,
+		error = error ?? null,
+		_modified = modified;
 
 	factory ShareAllPatientDataOptionsEntityResult.fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsEntityResult(

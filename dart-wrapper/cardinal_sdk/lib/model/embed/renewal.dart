@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/embed/duration.dart';
 
 
 class Renewal {
-	int? _decimal;
+	int? _decimal = null;
 	@ActualInt32() int? get decimal => _decimal;
 	@ActualInt32() set decimal(int? value) {
 		if (value != null && value > 2147483647) {
@@ -12,11 +12,12 @@ class Renewal {
 		}
 		_decimal = value;
 	}
-	Duration? duration;
+	Duration? duration = null;
 	Renewal({
 			int? decimal,
-			this.duration
-		}) : _decimal = decimal;
+			Duration? duration
+		}) : duration = duration ?? null,
+		_decimal = decimal ?? null;
 
 	factory Renewal.fromJSON(Map<String, dynamic> data) {
 		return Renewal(

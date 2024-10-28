@@ -38,7 +38,7 @@ class FormApi {
 		);
 	}
 
-	Future<DecryptedForm> withEncryptionMetadata(DecryptedForm? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedForm> withEncryptionMetadata(DecryptedForm? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -150,7 +150,7 @@ class FormApi {
 		);
 	}
 
-	Future<FormTemplate> getFormTemplate(String formTemplateId, bool? raw) async {
+	Future<FormTemplate> getFormTemplate(String formTemplateId, { bool? raw }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.getFormTemplate(
 			_sdkId,
 			formTemplateId,
@@ -187,7 +187,7 @@ class FormApi {
 		);
 	}
 
-	Future<DecryptedForm> shareWith(String delegateId, DecryptedForm form, FormShareOptions? options) async {
+	Future<DecryptedForm> shareWith(String delegateId, DecryptedForm form, { FormShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.shareWith(
 			_sdkId,
 			delegateId,
@@ -280,7 +280,7 @@ class TryAndRecoverFormApi {
 	final String _sdkId;
 	TryAndRecoverFormApi(this._sdkId);
 
-	Future<Form> shareWith(String delegateId, Form form, FormShareOptions? options) async {
+	Future<Form> shareWith(String delegateId, Form form, { FormShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -373,7 +373,7 @@ class EncryptedFormApi {
 	final String _sdkId;
 	EncryptedFormApi(this._sdkId);
 
-	Future<EncryptedForm> shareWith(String delegateId, EncryptedForm form, FormShareOptions? options) async {
+	Future<EncryptedForm> shareWith(String delegateId, EncryptedForm form, { FormShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.shareWith(
 			_sdkId,
 			delegateId,

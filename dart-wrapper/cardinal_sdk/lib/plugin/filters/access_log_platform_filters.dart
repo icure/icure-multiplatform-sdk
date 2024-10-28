@@ -10,7 +10,7 @@ class AccessLogPlatformFilters {
 	MethodChannel _methodChannel;
 	AccessLogPlatformFilters(this._methodChannel);
 
-	Future<SortableFilterOptions<AccessLog>> byPatientsDateForDataOwner(String dataOwnerId, List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<AccessLog>> byPatientsDateForDataOwner(String dataOwnerId, List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogFilters.byPatientsDateForDataOwner',
 			{
@@ -26,7 +26,7 @@ class AccessLogPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<AccessLog>> byPatientsDateForSelf(List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<AccessLog>> byPatientsDateForSelf(List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogFilters.byPatientsDateForSelf',
 			{
@@ -41,7 +41,7 @@ class AccessLogPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<AccessLog>> byPatientSecretIdsDateForDataOwner(String dataOwnerId, List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<AccessLog>> byPatientSecretIdsDateForDataOwner(String dataOwnerId, List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogFilters.byPatientSecretIdsDateForDataOwner',
 			{
@@ -57,7 +57,7 @@ class AccessLogPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<AccessLog>> byPatientSecretIdsDateForSelf(List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<AccessLog>> byPatientSecretIdsDateForSelf(List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogFilters.byPatientSecretIdsDateForSelf',
 			{
@@ -72,7 +72,7 @@ class AccessLogPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<AccessLog>> byDate(DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<AccessLog>> byDate({ DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogFilters.byDate',
 			{
@@ -86,7 +86,7 @@ class AccessLogPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<AccessLog>> byUserTypeDate(String userId, String? accessType, DateTime? from, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<AccessLog>> byUserTypeDate(String userId, { String? accessType, DateTime? from, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogFilters.byUserTypeDate',
 			{

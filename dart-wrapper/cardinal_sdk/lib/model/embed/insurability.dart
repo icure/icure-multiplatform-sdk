@@ -47,27 +47,36 @@ sealed class Insurability implements Encryptable {
 
 class DecryptedInsurability implements Insurability {
 	@override Map<String, String> parameters = {};
-	@override bool? hospitalisation;
-	@override bool? ambulatory;
-	@override bool? dental;
-	@override String? identificationNumber;
-	@override String? insuranceId;
-	@override int? startDate;
-	@override int? endDate;
-	@override String? titularyId;
-	@override Base64String? encryptedSelf;
+	@override bool? hospitalisation = null;
+	@override bool? ambulatory = null;
+	@override bool? dental = null;
+	@override String? identificationNumber = null;
+	@override String? insuranceId = null;
+	@override int? startDate = null;
+	@override int? endDate = null;
+	@override String? titularyId = null;
+	@override Base64String? encryptedSelf = null;
 	DecryptedInsurability({
-			this.hospitalisation,
-			this.ambulatory,
-			this.dental,
-			this.identificationNumber,
-			this.insuranceId,
-			this.startDate,
-			this.endDate,
-			this.titularyId,
-			this.encryptedSelf,
-			Map<String, String>? parameters
-		}) : parameters = parameters ?? {};
+			Map<String, String>? parameters,
+			bool? hospitalisation,
+			bool? ambulatory,
+			bool? dental,
+			String? identificationNumber,
+			String? insuranceId,
+			int? startDate,
+			int? endDate,
+			String? titularyId,
+			Base64String? encryptedSelf
+		}) : parameters = parameters ?? {},
+		hospitalisation = hospitalisation ?? null,
+		ambulatory = ambulatory ?? null,
+		dental = dental ?? null,
+		identificationNumber = identificationNumber ?? null,
+		insuranceId = insuranceId ?? null,
+		startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		titularyId = titularyId ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedInsurability.fromJSON(Map<String, dynamic> data) {
 		return DecryptedInsurability(
@@ -103,27 +112,36 @@ class DecryptedInsurability implements Insurability {
 
 class EncryptedInsurability implements Insurability {
 	@override Map<String, String> parameters = {};
-	@override bool? hospitalisation;
-	@override bool? ambulatory;
-	@override bool? dental;
-	@override String? identificationNumber;
-	@override String? insuranceId;
-	@override int? startDate;
-	@override int? endDate;
-	@override String? titularyId;
-	@override Base64String? encryptedSelf;
+	@override bool? hospitalisation = null;
+	@override bool? ambulatory = null;
+	@override bool? dental = null;
+	@override String? identificationNumber = null;
+	@override String? insuranceId = null;
+	@override int? startDate = null;
+	@override int? endDate = null;
+	@override String? titularyId = null;
+	@override Base64String? encryptedSelf = null;
 	EncryptedInsurability({
-			this.hospitalisation,
-			this.ambulatory,
-			this.dental,
-			this.identificationNumber,
-			this.insuranceId,
-			this.startDate,
-			this.endDate,
-			this.titularyId,
-			this.encryptedSelf,
-			Map<String, String>? parameters
-		}) : parameters = parameters ?? {};
+			Map<String, String>? parameters,
+			bool? hospitalisation,
+			bool? ambulatory,
+			bool? dental,
+			String? identificationNumber,
+			String? insuranceId,
+			int? startDate,
+			int? endDate,
+			String? titularyId,
+			Base64String? encryptedSelf
+		}) : parameters = parameters ?? {},
+		hospitalisation = hospitalisation ?? null,
+		ambulatory = ambulatory ?? null,
+		dental = dental ?? null,
+		identificationNumber = identificationNumber ?? null,
+		insuranceId = insuranceId ?? null,
+		startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		titularyId = titularyId ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedInsurability.fromJSON(Map<String, dynamic> data) {
 		return EncryptedInsurability(

@@ -4,29 +4,32 @@ import 'package:cardinal_sdk/model/couchdb/view.dart';
 
 class DesignDocument {
 	String id;
-	String? rev;
+	String? rev = null;
 	Map<String, String> revHistory = {};
-	String? language;
+	String? language = null;
 	Map<String, View> views = {};
 	Map<String, String> lists = {};
 	Map<String, String> shows = {};
-	Map<String, String>? updateHandlers;
+	Map<String, String>? updateHandlers = null;
 	Map<String, String> filters = {};
 	DesignDocument(
 		this.id,
 		{
-			this.rev,
-			this.language,
-			this.updateHandlers,
+			String? rev,
 			Map<String, String>? revHistory,
+			String? language,
 			Map<String, View>? views,
 			Map<String, String>? lists,
 			Map<String, String>? shows,
+			Map<String, String>? updateHandlers,
 			Map<String, String>? filters
-		}) : revHistory = revHistory ?? {},
+		}) : rev = rev ?? null,
+		revHistory = revHistory ?? {},
+		language = language ?? null,
 		views = views ?? {},
 		lists = lists ?? {},
 		shows = shows ?? {},
+		updateHandlers = updateHandlers ?? null,
 		filters = filters ?? {};
 
 	factory DesignDocument.fromJSON(Map<String, dynamic> data) {

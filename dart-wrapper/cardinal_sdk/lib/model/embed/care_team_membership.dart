@@ -42,18 +42,22 @@ sealed class CareTeamMembership implements Encryptable {
 }
 
 class DecryptedCareTeamMembership implements CareTeamMembership {
-	@override int? startDate;
-	@override int? endDate;
-	@override String? careTeamMemberId;
-	@override MembershipType? membershipType;
-	@override Base64String? encryptedSelf;
+	@override int? startDate = null;
+	@override int? endDate = null;
+	@override String? careTeamMemberId = null;
+	@override MembershipType? membershipType = null;
+	@override Base64String? encryptedSelf = null;
 	DecryptedCareTeamMembership({
-			this.startDate,
-			this.endDate,
-			this.careTeamMemberId,
-			this.membershipType,
-			this.encryptedSelf
-		});
+			int? startDate,
+			int? endDate,
+			String? careTeamMemberId,
+			MembershipType? membershipType,
+			Base64String? encryptedSelf
+		}) : startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		careTeamMemberId = careTeamMemberId ?? null,
+		membershipType = membershipType ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedCareTeamMembership.fromJSON(Map<String, dynamic> data) {
 		return DecryptedCareTeamMembership(
@@ -78,18 +82,22 @@ class DecryptedCareTeamMembership implements CareTeamMembership {
 }
 
 class EncryptedCareTeamMembership implements CareTeamMembership {
-	@override int? startDate;
-	@override int? endDate;
-	@override String? careTeamMemberId;
-	@override MembershipType? membershipType;
-	@override Base64String? encryptedSelf;
+	@override int? startDate = null;
+	@override int? endDate = null;
+	@override String? careTeamMemberId = null;
+	@override MembershipType? membershipType = null;
+	@override Base64String? encryptedSelf = null;
 	EncryptedCareTeamMembership({
-			this.startDate,
-			this.endDate,
-			this.careTeamMemberId,
-			this.membershipType,
-			this.encryptedSelf
-		});
+			int? startDate,
+			int? endDate,
+			String? careTeamMemberId,
+			MembershipType? membershipType,
+			Base64String? encryptedSelf
+		}) : startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		careTeamMemberId = careTeamMemberId ?? null,
+		membershipType = membershipType ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedCareTeamMembership.fromJSON(Map<String, dynamic> data) {
 		return EncryptedCareTeamMembership(

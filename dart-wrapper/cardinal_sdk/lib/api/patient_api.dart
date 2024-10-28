@@ -47,7 +47,7 @@ class PatientApi {
 		);
 	}
 
-	Future<DecryptedPatient> withEncryptionMetadata(DecryptedPatient? base, User? user, { Map<String, AccessLevel> delegates = const {} }) async {
+	Future<DecryptedPatient> withEncryptionMetadata(DecryptedPatient? base, { User? user, Map<String, AccessLevel> delegates = const {} }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -186,7 +186,7 @@ class PatientApi {
 		);
 	}
 
-	Future<DecryptedPatient> shareWith(String delegateId, DecryptedPatient patient, PatientShareOptions? options) async {
+	Future<DecryptedPatient> shareWith(String delegateId, DecryptedPatient patient, { PatientShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.shareWith(
 			_sdkId,
 			delegateId,
@@ -290,7 +290,7 @@ class PatientApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Patient> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Patient> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.subscribeToEvents(
 			_sdkId,
 			events,
@@ -304,7 +304,7 @@ class TryAndRecoverPatientApi {
 	final String _sdkId;
 	TryAndRecoverPatientApi(this._sdkId);
 
-	Future<Patient> shareWith(String delegateId, Patient patient, PatientShareOptions? options) async {
+	Future<Patient> shareWith(String delegateId, Patient patient, { PatientShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -413,7 +413,7 @@ class EncryptedPatientApi {
 	final String _sdkId;
 	EncryptedPatientApi(this._sdkId);
 
-	Future<EncryptedPatient> shareWith(String delegateId, EncryptedPatient patient, PatientShareOptions? options) async {
+	Future<EncryptedPatient> shareWith(String delegateId, EncryptedPatient patient, { PatientShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.shareWith(
 			_sdkId,
 			delegateId,

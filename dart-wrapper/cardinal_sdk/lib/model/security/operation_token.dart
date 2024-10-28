@@ -7,15 +7,15 @@ class OperationToken {
 	int creationTime;
 	int validity;
 	Operation operation;
-	String? description;
+	String? description = null;
 	OperationToken(
 		this.tokenHash,
 		this.creationTime,
 		this.validity,
 		this.operation,
 		{
-			this.description
-		});
+			String? description
+		}) : description = description ?? null;
 
 	factory OperationToken.fromJSON(Map<String, dynamic> data) {
 		return OperationToken(

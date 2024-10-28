@@ -33,7 +33,7 @@ class HealthcarePartyPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<HealthcareParty>> byCode(String codeType, String? codeCode) async {
+	Future<BaseSortableFilterOptions<HealthcareParty>> byCode(String codeType, { String? codeCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyFilters.byCode',
 			{
@@ -46,7 +46,7 @@ class HealthcarePartyPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<HealthcareParty>> byTag(String tagType, String? tagCode) async {
+	Future<BaseSortableFilterOptions<HealthcareParty>> byTag(String tagType, { String? tagCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyFilters.byTag',
 			{

@@ -4,18 +4,22 @@ import 'package:cardinal_sdk/model/embed/partnership_status.dart';
 
 
 class Partnership {
-	PartnershipType? type;
-	PartnershipStatus? status;
-	String? partnerId;
-	String? meToOtherRelationshipDescription;
-	String? otherToMeRelationshipDescription;
+	PartnershipType? type = null;
+	PartnershipStatus? status = null;
+	String? partnerId = null;
+	String? meToOtherRelationshipDescription = null;
+	String? otherToMeRelationshipDescription = null;
 	Partnership({
-			this.type,
-			this.status,
-			this.partnerId,
-			this.meToOtherRelationshipDescription,
-			this.otherToMeRelationshipDescription
-		});
+			PartnershipType? type,
+			PartnershipStatus? status,
+			String? partnerId,
+			String? meToOtherRelationshipDescription,
+			String? otherToMeRelationshipDescription
+		}) : type = type ?? null,
+		status = status ?? null,
+		partnerId = partnerId ?? null,
+		meToOtherRelationshipDescription = meToOtherRelationshipDescription ?? null,
+		otherToMeRelationshipDescription = otherToMeRelationshipDescription ?? null;
 
 	factory Partnership.fromJSON(Map<String, dynamic> data) {
 		return Partnership(

@@ -5,17 +5,20 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 class Substanceproduct {
 	List<CodeStub> intendedcds = [];
 	List<CodeStub> deliveredcds = [];
-	String? intendedname;
-	String? deliveredname;
-	String? productId;
+	String? intendedname = null;
+	String? deliveredname = null;
+	String? productId = null;
 	Substanceproduct({
-			this.intendedname,
-			this.deliveredname,
-			this.productId,
 			List<CodeStub>? intendedcds,
-			List<CodeStub>? deliveredcds
+			List<CodeStub>? deliveredcds,
+			String? intendedname,
+			String? deliveredname,
+			String? productId
 		}) : intendedcds = intendedcds ?? [],
-		deliveredcds = deliveredcds ?? [];
+		deliveredcds = deliveredcds ?? [],
+		intendedname = intendedname ?? null,
+		deliveredname = deliveredname ?? null,
+		productId = productId ?? null;
 
 	factory Substanceproduct.fromJSON(Map<String, dynamic> data) {
 		return Substanceproduct(

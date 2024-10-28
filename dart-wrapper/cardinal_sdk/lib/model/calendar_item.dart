@@ -87,96 +87,129 @@ sealed class CalendarItem implements StoredDocument, ICureDocument<String>, HasE
 
 class DecryptedCalendarItem implements CalendarItem {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? title;
-	@override String? calendarItemTypeId;
-	@override String? masterCalendarItemId;
-	@override String? patientId;
-	@override bool? important;
-	@override bool? homeVisit;
-	@override String? phoneNumber;
-	@override String? placeId;
-	@override DecryptedAddress? address;
-	@override String? addressText;
-	@override int? startTime;
-	@override int? endTime;
-	@override int? confirmationTime;
-	@override int? cancellationTimestamp;
-	@override String? confirmationId;
-	@override int? duration;
-	@override bool? allDay;
-	@override String? details;
-	@override bool? wasMigrated;
-	@override String? agendaId;
-	@override String? hcpId;
-	@override String? recurrenceId;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? title = null;
+	@override String? calendarItemTypeId = null;
+	@override String? masterCalendarItemId = null;
+	@override String? patientId = null;
+	@override bool? important = null;
+	@override bool? homeVisit = null;
+	@override String? phoneNumber = null;
+	@override String? placeId = null;
+	@override DecryptedAddress? address = null;
+	@override String? addressText = null;
+	@override int? startTime = null;
+	@override int? endTime = null;
+	@override int? confirmationTime = null;
+	@override int? cancellationTimestamp = null;
+	@override String? confirmationId = null;
+	@override int? duration = null;
+	@override bool? allDay = null;
+	@override String? details = null;
+	@override bool? wasMigrated = null;
+	@override String? agendaId = null;
+	@override String? hcpId = null;
+	@override String? recurrenceId = null;
 	@override Set<CalendarItemTag> meetingTags = {};
-	@override FlowItem? flowItem;
+	@override FlowItem? flowItem = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	DecryptedCalendarItem(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.title,
-			this.calendarItemTypeId,
-			this.masterCalendarItemId,
-			this.patientId,
-			this.important,
-			this.homeVisit,
-			this.phoneNumber,
-			this.placeId,
-			this.address,
-			this.addressText,
-			this.startTime,
-			this.endTime,
-			this.confirmationTime,
-			this.cancellationTimestamp,
-			this.confirmationId,
-			this.duration,
-			this.allDay,
-			this.details,
-			this.wasMigrated,
-			this.agendaId,
-			this.hcpId,
-			this.recurrenceId,
-			this.flowItem,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? title,
+			String? calendarItemTypeId,
+			String? masterCalendarItemId,
+			String? patientId,
+			bool? important,
+			bool? homeVisit,
+			String? phoneNumber,
+			String? placeId,
+			DecryptedAddress? address,
+			String? addressText,
+			int? startTime,
+			int? endTime,
+			int? confirmationTime,
+			int? cancellationTimestamp,
+			String? confirmationId,
+			int? duration,
+			bool? allDay,
+			String? details,
+			bool? wasMigrated,
+			String? agendaId,
+			String? hcpId,
+			String? recurrenceId,
 			Set<CalendarItemTag>? meetingTags,
+			FlowItem? flowItem,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		title = title ?? null,
+		calendarItemTypeId = calendarItemTypeId ?? null,
+		masterCalendarItemId = masterCalendarItemId ?? null,
+		patientId = patientId ?? null,
+		important = important ?? null,
+		homeVisit = homeVisit ?? null,
+		phoneNumber = phoneNumber ?? null,
+		placeId = placeId ?? null,
+		address = address ?? null,
+		addressText = addressText ?? null,
+		startTime = startTime ?? null,
+		endTime = endTime ?? null,
+		confirmationTime = confirmationTime ?? null,
+		cancellationTimestamp = cancellationTimestamp ?? null,
+		confirmationId = confirmationId ?? null,
+		duration = duration ?? null,
+		allDay = allDay ?? null,
+		details = details ?? null,
+		wasMigrated = wasMigrated ?? null,
+		agendaId = agendaId ?? null,
+		hcpId = hcpId ?? null,
+		recurrenceId = recurrenceId ?? null,
 		meetingTags = meetingTags ?? {},
+		flowItem = flowItem ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null;
 
 	factory DecryptedCalendarItem.fromJSON(Map<String, dynamic> data) {
 		return DecryptedCalendarItem(
@@ -274,96 +307,129 @@ class DecryptedCalendarItem implements CalendarItem {
 
 class EncryptedCalendarItem implements CalendarItem {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? title;
-	@override String? calendarItemTypeId;
-	@override String? masterCalendarItemId;
-	@override String? patientId;
-	@override bool? important;
-	@override bool? homeVisit;
-	@override String? phoneNumber;
-	@override String? placeId;
-	@override EncryptedAddress? address;
-	@override String? addressText;
-	@override int? startTime;
-	@override int? endTime;
-	@override int? confirmationTime;
-	@override int? cancellationTimestamp;
-	@override String? confirmationId;
-	@override int? duration;
-	@override bool? allDay;
-	@override String? details;
-	@override bool? wasMigrated;
-	@override String? agendaId;
-	@override String? hcpId;
-	@override String? recurrenceId;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? title = null;
+	@override String? calendarItemTypeId = null;
+	@override String? masterCalendarItemId = null;
+	@override String? patientId = null;
+	@override bool? important = null;
+	@override bool? homeVisit = null;
+	@override String? phoneNumber = null;
+	@override String? placeId = null;
+	@override EncryptedAddress? address = null;
+	@override String? addressText = null;
+	@override int? startTime = null;
+	@override int? endTime = null;
+	@override int? confirmationTime = null;
+	@override int? cancellationTimestamp = null;
+	@override String? confirmationId = null;
+	@override int? duration = null;
+	@override bool? allDay = null;
+	@override String? details = null;
+	@override bool? wasMigrated = null;
+	@override String? agendaId = null;
+	@override String? hcpId = null;
+	@override String? recurrenceId = null;
 	@override Set<CalendarItemTag> meetingTags = {};
-	@override FlowItem? flowItem;
+	@override FlowItem? flowItem = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	EncryptedCalendarItem(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.title,
-			this.calendarItemTypeId,
-			this.masterCalendarItemId,
-			this.patientId,
-			this.important,
-			this.homeVisit,
-			this.phoneNumber,
-			this.placeId,
-			this.address,
-			this.addressText,
-			this.startTime,
-			this.endTime,
-			this.confirmationTime,
-			this.cancellationTimestamp,
-			this.confirmationId,
-			this.duration,
-			this.allDay,
-			this.details,
-			this.wasMigrated,
-			this.agendaId,
-			this.hcpId,
-			this.recurrenceId,
-			this.flowItem,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? title,
+			String? calendarItemTypeId,
+			String? masterCalendarItemId,
+			String? patientId,
+			bool? important,
+			bool? homeVisit,
+			String? phoneNumber,
+			String? placeId,
+			EncryptedAddress? address,
+			String? addressText,
+			int? startTime,
+			int? endTime,
+			int? confirmationTime,
+			int? cancellationTimestamp,
+			String? confirmationId,
+			int? duration,
+			bool? allDay,
+			String? details,
+			bool? wasMigrated,
+			String? agendaId,
+			String? hcpId,
+			String? recurrenceId,
 			Set<CalendarItemTag>? meetingTags,
+			FlowItem? flowItem,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		title = title ?? null,
+		calendarItemTypeId = calendarItemTypeId ?? null,
+		masterCalendarItemId = masterCalendarItemId ?? null,
+		patientId = patientId ?? null,
+		important = important ?? null,
+		homeVisit = homeVisit ?? null,
+		phoneNumber = phoneNumber ?? null,
+		placeId = placeId ?? null,
+		address = address ?? null,
+		addressText = addressText ?? null,
+		startTime = startTime ?? null,
+		endTime = endTime ?? null,
+		confirmationTime = confirmationTime ?? null,
+		cancellationTimestamp = cancellationTimestamp ?? null,
+		confirmationId = confirmationId ?? null,
+		duration = duration ?? null,
+		allDay = allDay ?? null,
+		details = details ?? null,
+		wasMigrated = wasMigrated ?? null,
+		agendaId = agendaId ?? null,
+		hcpId = hcpId ?? null,
+		recurrenceId = recurrenceId ?? null,
 		meetingTags = meetingTags ?? {},
+		flowItem = flowItem ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null;
 
 	factory EncryptedCalendarItem.fromJSON(Map<String, dynamic> data) {
 		return EncryptedCalendarItem(

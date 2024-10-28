@@ -4,28 +4,36 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 class EntityTemplate implements StoredDocument {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	String? userId;
-	String? descr;
-	Set<String>? keywords;
-	String? entityType;
-	String? subType;
-	bool? defaultTemplate;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	String? userId = null;
+	String? descr = null;
+	Set<String>? keywords = null;
+	String? entityType = null;
+	String? subType = null;
+	bool? defaultTemplate = null;
 	List<Map<String, dynamic>> entity = [];
 	EntityTemplate(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.userId,
-			this.descr,
-			this.keywords,
-			this.entityType,
-			this.subType,
-			this.defaultTemplate,
+			String? rev,
+			int? deletionDate,
+			String? userId,
+			String? descr,
+			Set<String>? keywords,
+			String? entityType,
+			String? subType,
+			bool? defaultTemplate,
 			List<Map<String, dynamic>>? entity
-		}) : entity = entity ?? [];
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		userId = userId ?? null,
+		descr = descr ?? null,
+		keywords = keywords ?? null,
+		entityType = entityType ?? null,
+		subType = subType ?? null,
+		defaultTemplate = defaultTemplate ?? null,
+		entity = entity ?? [];
 
 	factory EntityTemplate.fromJSON(Map<String, dynamic> data) {
 		return EntityTemplate(

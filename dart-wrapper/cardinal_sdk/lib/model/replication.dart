@@ -7,20 +7,24 @@ import 'package:cardinal_sdk/model/base/named.dart';
 
 class Replication implements StoredDocument, Identifiable<String>, Named {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	@override String? name;
-	String? context;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	@override String? name = null;
+	String? context = null;
 	List<DatabaseSynchronization> databaseSynchronizations = [];
 	Replication(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.name,
-			this.context,
+			String? rev,
+			int? deletionDate,
+			String? name,
+			String? context,
 			List<DatabaseSynchronization>? databaseSynchronizations
-		}) : databaseSynchronizations = databaseSynchronizations ?? [];
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		name = name ?? null,
+		context = context ?? null,
+		databaseSynchronizations = databaseSynchronizations ?? [];
 
 	factory Replication.fromJSON(Map<String, dynamic> data) {
 		return Replication(

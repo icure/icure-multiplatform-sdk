@@ -5,7 +5,7 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 class ReplicationInfo {
 	bool active = false;
 	bool running = false;
-	int? _pendingFrom;
+	int? _pendingFrom = null;
 	@ActualInt32() int? get pendingFrom => _pendingFrom;
 	@ActualInt32() set pendingFrom(int? value) {
 		if (value != null && value > 2147483647) {
@@ -13,7 +13,7 @@ class ReplicationInfo {
 		}
 		_pendingFrom = value;
 	}
-	int? _pendingTo;
+	int? _pendingTo = null;
 	@ActualInt32() int? get pendingTo => _pendingTo;
 	@ActualInt32() set pendingTo(int? value) {
 		if (value != null && value > 2147483647) {
@@ -28,8 +28,8 @@ class ReplicationInfo {
 			bool? running
 		}) : active = active ?? false,
 		running = running ?? false,
-		_pendingFrom = pendingFrom,
-		_pendingTo = pendingTo;
+		_pendingFrom = pendingFrom ?? null,
+		_pendingTo = pendingTo ?? null;
 
 	factory ReplicationInfo.fromJSON(Map<String, dynamic> data) {
 		return ReplicationInfo(

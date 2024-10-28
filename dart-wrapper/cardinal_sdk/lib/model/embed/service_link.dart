@@ -2,9 +2,9 @@
 
 
 class ServiceLink {
-	String? serviceId;
+	String? serviceId = null;
 	ServiceLink({
-			this.serviceId});
+			String? serviceId}) : serviceId = serviceId ?? null;
 
 	factory ServiceLink.fromJSON(Map<String, dynamic> data) {
 		return ServiceLink(

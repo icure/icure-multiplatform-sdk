@@ -91,26 +91,26 @@ sealed class InvoicingCode implements Encryptable {
 
 class DecryptedInvoicingCode implements InvoicingCode {
 	@override String? id;
-	@override int? dateCode;
-	@override String? logicalId;
-	@override String? label;
-	@override String? userId;
-	@override String? contactId;
-	@override String? serviceId;
-	@override String? tarificationId;
-	@override String? code;
-	@override PaymentType? paymentType;
-	@override double? paid;
-	@override double? totalAmount;
-	@override double? reimbursement;
-	@override double? patientIntervention;
-	@override double? doctorSupplement;
-	@override double? conventionAmount;
-	@override double? vat;
-	@override String? error;
-	@override String? contract;
-	@override int? contractDate;
-	int? _units;
+	@override int? dateCode = null;
+	@override String? logicalId = null;
+	@override String? label = null;
+	@override String? userId = null;
+	@override String? contactId = null;
+	@override String? serviceId = null;
+	@override String? tarificationId = null;
+	@override String? code = null;
+	@override PaymentType? paymentType = null;
+	@override double? paid = null;
+	@override double? totalAmount = null;
+	@override double? reimbursement = null;
+	@override double? patientIntervention = null;
+	@override double? doctorSupplement = null;
+	@override double? conventionAmount = null;
+	@override double? vat = null;
+	@override String? error = null;
+	@override String? contract = null;
+	@override int? contractDate = null;
+	int? _units = null;
 	@ActualInt32() @override int? get units => _units;
 	@ActualInt32() @override set units(int? value) {
 		if (value != null && value > 2147483647) {
@@ -118,7 +118,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_units = value;
 	}
-	int? _side;
+	int? _side = null;
 	@ActualInt32() @override int? get side => _side;
 	@ActualInt32() @override set side(int? value) {
 		if (value != null && value > 2147483647) {
@@ -126,7 +126,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_side = value;
 	}
-	int? _timeOfDay;
+	int? _timeOfDay = null;
 	@ActualInt32() @override int? get timeOfDay => _timeOfDay;
 	@ActualInt32() @override set timeOfDay(int? value) {
 		if (value != null && value > 2147483647) {
@@ -134,7 +134,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_timeOfDay = value;
 	}
-	int? _eidReadingHour;
+	int? _eidReadingHour = null;
 	@ActualInt32() @override int? get eidReadingHour => _eidReadingHour;
 	@ActualInt32() @override set eidReadingHour(int? value) {
 		if (value != null && value > 2147483647) {
@@ -142,8 +142,8 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_eidReadingHour = value;
 	}
-	@override String? eidReadingValue;
-	int? _override3rdPayerCode;
+	@override String? eidReadingValue = null;
+	int? _override3rdPayerCode = null;
 	@ActualInt32() @override int? get override3rdPayerCode => _override3rdPayerCode;
 	@ActualInt32() @override set override3rdPayerCode(int? value) {
 		if (value != null && value > 2147483647) {
@@ -151,8 +151,8 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_override3rdPayerCode = value;
 	}
-	@override String? override3rdPayerReason;
-	int? _transplantationCode;
+	@override String? override3rdPayerReason = null;
+	int? _transplantationCode = null;
 	@ActualInt32() @override int? get transplantationCode => _transplantationCode;
 	@ActualInt32() @override set transplantationCode(int? value) {
 		if (value != null && value > 2147483647) {
@@ -160,7 +160,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_transplantationCode = value;
 	}
-	int? _prescriberNorm;
+	int? _prescriberNorm = null;
 	@ActualInt32() @override int? get prescriberNorm => _prescriberNorm;
 	@ActualInt32() @override set prescriberNorm(int? value) {
 		if (value != null && value > 2147483647) {
@@ -168,7 +168,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_prescriberNorm = value;
 	}
-	int? _percentNorm;
+	int? _percentNorm = null;
 	@ActualInt32() @override int? get percentNorm => _percentNorm;
 	@ActualInt32() @override set percentNorm(int? value) {
 		if (value != null && value > 2147483647) {
@@ -176,10 +176,10 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_percentNorm = value;
 	}
-	@override String? prescriberNihii;
-	@override String? relatedCode;
-	@override int? prescriptionDate;
-	int? _derogationMaxNumber;
+	@override String? prescriberNihii = null;
+	@override String? relatedCode = null;
+	@override int? prescriptionDate = null;
+	int? _derogationMaxNumber = null;
 	@ActualInt32() @override int? get derogationMaxNumber => _derogationMaxNumber;
 	@ActualInt32() @override set derogationMaxNumber(int? value) {
 		if (value != null && value > 2147483647) {
@@ -187,13 +187,13 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_derogationMaxNumber = value;
 	}
-	@override String? prescriberSsin;
-	@override String? prescriberLastName;
-	@override String? prescriberFirstName;
-	@override String? prescriberCdHcParty;
-	@override String? locationNihii;
-	@override String? locationCdHcParty;
-	int? _locationService;
+	@override String? prescriberSsin = null;
+	@override String? prescriberLastName = null;
+	@override String? prescriberFirstName = null;
+	@override String? prescriberCdHcParty = null;
+	@override String? locationNihii = null;
+	@override String? locationCdHcParty = null;
+	int? _locationService = null;
 	@ActualInt32() @override int? get locationService => _locationService;
 	@ActualInt32() @override set locationService(int? value) {
 		if (value != null && value > 2147483647) {
@@ -201,14 +201,14 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_locationService = value;
 	}
-	@override int? admissionDate;
-	@override bool? canceled;
-	@override bool? accepted;
-	@override bool? pending;
-	@override bool? resent;
-	@override bool? archived;
-	@override bool? lost;
-	int? _insuranceJustification;
+	@override int? admissionDate = null;
+	@override bool? canceled = null;
+	@override bool? accepted = null;
+	@override bool? pending = null;
+	@override bool? resent = null;
+	@override bool? archived = null;
+	@override bool? lost = null;
+	int? _insuranceJustification = null;
 	@ActualInt32() @override int? get insuranceJustification => _insuranceJustification;
 	@ActualInt32() @override set insuranceJustification(int? value) {
 		if (value != null && value > 2147483647) {
@@ -216,7 +216,7 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_insuranceJustification = value;
 	}
-	int? _cancelPatientInterventionReason;
+	int? _cancelPatientInterventionReason = null;
 	@ActualInt32() @override int? get cancelPatientInterventionReason => _cancelPatientInterventionReason;
 	@ActualInt32() @override set cancelPatientInterventionReason(int? value) {
 		if (value != null && value > 2147483647) {
@@ -224,8 +224,8 @@ class DecryptedInvoicingCode implements InvoicingCode {
 		}
 		_cancelPatientInterventionReason = value;
 	}
-	@override int? status;
-	@override Base64String? encryptedSelf;
+	@override int? status = null;
+	@override Base64String? encryptedSelf = null;
 	DecryptedInvoicingCode({
 			int? units,
 			int? side,
@@ -240,57 +240,96 @@ class DecryptedInvoicingCode implements InvoicingCode {
 			int? insuranceJustification,
 			int? cancelPatientInterventionReason,
 			this.id,
-			this.dateCode,
-			this.logicalId,
-			this.label,
-			this.userId,
-			this.contactId,
-			this.serviceId,
-			this.tarificationId,
-			this.code,
-			this.paymentType,
-			this.paid,
-			this.totalAmount,
-			this.reimbursement,
-			this.patientIntervention,
-			this.doctorSupplement,
-			this.conventionAmount,
-			this.vat,
-			this.error,
-			this.contract,
-			this.contractDate,
-			this.eidReadingValue,
-			this.override3rdPayerReason,
-			this.prescriberNihii,
-			this.relatedCode,
-			this.prescriptionDate,
-			this.prescriberSsin,
-			this.prescriberLastName,
-			this.prescriberFirstName,
-			this.prescriberCdHcParty,
-			this.locationNihii,
-			this.locationCdHcParty,
-			this.admissionDate,
-			this.canceled,
-			this.accepted,
-			this.pending,
-			this.resent,
-			this.archived,
-			this.lost,
-			this.status,
-			this.encryptedSelf
-		}) : _units = units,
-		_side = side,
-		_timeOfDay = timeOfDay,
-		_eidReadingHour = eidReadingHour,
-		_override3rdPayerCode = override3rdPayerCode,
-		_transplantationCode = transplantationCode,
-		_prescriberNorm = prescriberNorm,
-		_percentNorm = percentNorm,
-		_derogationMaxNumber = derogationMaxNumber,
-		_locationService = locationService,
-		_insuranceJustification = insuranceJustification,
-		_cancelPatientInterventionReason = cancelPatientInterventionReason;
+			int? dateCode,
+			String? logicalId,
+			String? label,
+			String? userId,
+			String? contactId,
+			String? serviceId,
+			String? tarificationId,
+			String? code,
+			PaymentType? paymentType,
+			double? paid,
+			double? totalAmount,
+			double? reimbursement,
+			double? patientIntervention,
+			double? doctorSupplement,
+			double? conventionAmount,
+			double? vat,
+			String? error,
+			String? contract,
+			int? contractDate,
+			String? eidReadingValue,
+			String? override3rdPayerReason,
+			String? prescriberNihii,
+			String? relatedCode,
+			int? prescriptionDate,
+			String? prescriberSsin,
+			String? prescriberLastName,
+			String? prescriberFirstName,
+			String? prescriberCdHcParty,
+			String? locationNihii,
+			String? locationCdHcParty,
+			int? admissionDate,
+			bool? canceled,
+			bool? accepted,
+			bool? pending,
+			bool? resent,
+			bool? archived,
+			bool? lost,
+			int? status,
+			Base64String? encryptedSelf
+		}) : dateCode = dateCode ?? null,
+		logicalId = logicalId ?? null,
+		label = label ?? null,
+		userId = userId ?? null,
+		contactId = contactId ?? null,
+		serviceId = serviceId ?? null,
+		tarificationId = tarificationId ?? null,
+		code = code ?? null,
+		paymentType = paymentType ?? null,
+		paid = paid ?? null,
+		totalAmount = totalAmount ?? null,
+		reimbursement = reimbursement ?? null,
+		patientIntervention = patientIntervention ?? null,
+		doctorSupplement = doctorSupplement ?? null,
+		conventionAmount = conventionAmount ?? null,
+		vat = vat ?? null,
+		error = error ?? null,
+		contract = contract ?? null,
+		contractDate = contractDate ?? null,
+		eidReadingValue = eidReadingValue ?? null,
+		override3rdPayerReason = override3rdPayerReason ?? null,
+		prescriberNihii = prescriberNihii ?? null,
+		relatedCode = relatedCode ?? null,
+		prescriptionDate = prescriptionDate ?? null,
+		prescriberSsin = prescriberSsin ?? null,
+		prescriberLastName = prescriberLastName ?? null,
+		prescriberFirstName = prescriberFirstName ?? null,
+		prescriberCdHcParty = prescriberCdHcParty ?? null,
+		locationNihii = locationNihii ?? null,
+		locationCdHcParty = locationCdHcParty ?? null,
+		admissionDate = admissionDate ?? null,
+		canceled = canceled ?? null,
+		accepted = accepted ?? null,
+		pending = pending ?? null,
+		resent = resent ?? null,
+		archived = archived ?? null,
+		lost = lost ?? null,
+		status = status ?? null,
+		encryptedSelf = encryptedSelf ?? null,
+		_units = units ?? null,
+		_side = side ?? null,
+		_timeOfDay = timeOfDay ?? null,
+		_eidReadingHour = eidReadingHour ?? null,
+		_override3rdPayerCode = override3rdPayerCode ?? null,
+		_transplantationCode = transplantationCode ?? null,
+		_prescriberNorm = prescriberNorm ?? null,
+		_percentNorm = percentNorm ?? null,
+		_derogationMaxNumber = derogationMaxNumber ?? null,
+		_locationService = locationService ?? null,
+		_insuranceJustification = insuranceJustification ?? null,
+		_cancelPatientInterventionReason = cancelPatientInterventionReason ?? null;
 
 	factory DecryptedInvoicingCode.fromJSON(Map<String, dynamic> data) {
 		return DecryptedInvoicingCode(
@@ -410,26 +449,26 @@ class DecryptedInvoicingCode implements InvoicingCode {
 
 class EncryptedInvoicingCode implements InvoicingCode {
 	@override String? id;
-	@override int? dateCode;
-	@override String? logicalId;
-	@override String? label;
-	@override String? userId;
-	@override String? contactId;
-	@override String? serviceId;
-	@override String? tarificationId;
-	@override String? code;
-	@override PaymentType? paymentType;
-	@override double? paid;
-	@override double? totalAmount;
-	@override double? reimbursement;
-	@override double? patientIntervention;
-	@override double? doctorSupplement;
-	@override double? conventionAmount;
-	@override double? vat;
-	@override String? error;
-	@override String? contract;
-	@override int? contractDate;
-	int? _units;
+	@override int? dateCode = null;
+	@override String? logicalId = null;
+	@override String? label = null;
+	@override String? userId = null;
+	@override String? contactId = null;
+	@override String? serviceId = null;
+	@override String? tarificationId = null;
+	@override String? code = null;
+	@override PaymentType? paymentType = null;
+	@override double? paid = null;
+	@override double? totalAmount = null;
+	@override double? reimbursement = null;
+	@override double? patientIntervention = null;
+	@override double? doctorSupplement = null;
+	@override double? conventionAmount = null;
+	@override double? vat = null;
+	@override String? error = null;
+	@override String? contract = null;
+	@override int? contractDate = null;
+	int? _units = null;
 	@ActualInt32() @override int? get units => _units;
 	@ActualInt32() @override set units(int? value) {
 		if (value != null && value > 2147483647) {
@@ -437,7 +476,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_units = value;
 	}
-	int? _side;
+	int? _side = null;
 	@ActualInt32() @override int? get side => _side;
 	@ActualInt32() @override set side(int? value) {
 		if (value != null && value > 2147483647) {
@@ -445,7 +484,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_side = value;
 	}
-	int? _timeOfDay;
+	int? _timeOfDay = null;
 	@ActualInt32() @override int? get timeOfDay => _timeOfDay;
 	@ActualInt32() @override set timeOfDay(int? value) {
 		if (value != null && value > 2147483647) {
@@ -453,7 +492,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_timeOfDay = value;
 	}
-	int? _eidReadingHour;
+	int? _eidReadingHour = null;
 	@ActualInt32() @override int? get eidReadingHour => _eidReadingHour;
 	@ActualInt32() @override set eidReadingHour(int? value) {
 		if (value != null && value > 2147483647) {
@@ -461,8 +500,8 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_eidReadingHour = value;
 	}
-	@override String? eidReadingValue;
-	int? _override3rdPayerCode;
+	@override String? eidReadingValue = null;
+	int? _override3rdPayerCode = null;
 	@ActualInt32() @override int? get override3rdPayerCode => _override3rdPayerCode;
 	@ActualInt32() @override set override3rdPayerCode(int? value) {
 		if (value != null && value > 2147483647) {
@@ -470,8 +509,8 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_override3rdPayerCode = value;
 	}
-	@override String? override3rdPayerReason;
-	int? _transplantationCode;
+	@override String? override3rdPayerReason = null;
+	int? _transplantationCode = null;
 	@ActualInt32() @override int? get transplantationCode => _transplantationCode;
 	@ActualInt32() @override set transplantationCode(int? value) {
 		if (value != null && value > 2147483647) {
@@ -479,7 +518,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_transplantationCode = value;
 	}
-	int? _prescriberNorm;
+	int? _prescriberNorm = null;
 	@ActualInt32() @override int? get prescriberNorm => _prescriberNorm;
 	@ActualInt32() @override set prescriberNorm(int? value) {
 		if (value != null && value > 2147483647) {
@@ -487,7 +526,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_prescriberNorm = value;
 	}
-	int? _percentNorm;
+	int? _percentNorm = null;
 	@ActualInt32() @override int? get percentNorm => _percentNorm;
 	@ActualInt32() @override set percentNorm(int? value) {
 		if (value != null && value > 2147483647) {
@@ -495,10 +534,10 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_percentNorm = value;
 	}
-	@override String? prescriberNihii;
-	@override String? relatedCode;
-	@override int? prescriptionDate;
-	int? _derogationMaxNumber;
+	@override String? prescriberNihii = null;
+	@override String? relatedCode = null;
+	@override int? prescriptionDate = null;
+	int? _derogationMaxNumber = null;
 	@ActualInt32() @override int? get derogationMaxNumber => _derogationMaxNumber;
 	@ActualInt32() @override set derogationMaxNumber(int? value) {
 		if (value != null && value > 2147483647) {
@@ -506,13 +545,13 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_derogationMaxNumber = value;
 	}
-	@override String? prescriberSsin;
-	@override String? prescriberLastName;
-	@override String? prescriberFirstName;
-	@override String? prescriberCdHcParty;
-	@override String? locationNihii;
-	@override String? locationCdHcParty;
-	int? _locationService;
+	@override String? prescriberSsin = null;
+	@override String? prescriberLastName = null;
+	@override String? prescriberFirstName = null;
+	@override String? prescriberCdHcParty = null;
+	@override String? locationNihii = null;
+	@override String? locationCdHcParty = null;
+	int? _locationService = null;
 	@ActualInt32() @override int? get locationService => _locationService;
 	@ActualInt32() @override set locationService(int? value) {
 		if (value != null && value > 2147483647) {
@@ -520,14 +559,14 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_locationService = value;
 	}
-	@override int? admissionDate;
-	@override bool? canceled;
-	@override bool? accepted;
-	@override bool? pending;
-	@override bool? resent;
-	@override bool? archived;
-	@override bool? lost;
-	int? _insuranceJustification;
+	@override int? admissionDate = null;
+	@override bool? canceled = null;
+	@override bool? accepted = null;
+	@override bool? pending = null;
+	@override bool? resent = null;
+	@override bool? archived = null;
+	@override bool? lost = null;
+	int? _insuranceJustification = null;
 	@ActualInt32() @override int? get insuranceJustification => _insuranceJustification;
 	@ActualInt32() @override set insuranceJustification(int? value) {
 		if (value != null && value > 2147483647) {
@@ -535,7 +574,7 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_insuranceJustification = value;
 	}
-	int? _cancelPatientInterventionReason;
+	int? _cancelPatientInterventionReason = null;
 	@ActualInt32() @override int? get cancelPatientInterventionReason => _cancelPatientInterventionReason;
 	@ActualInt32() @override set cancelPatientInterventionReason(int? value) {
 		if (value != null && value > 2147483647) {
@@ -543,8 +582,8 @@ class EncryptedInvoicingCode implements InvoicingCode {
 		}
 		_cancelPatientInterventionReason = value;
 	}
-	@override int? status;
-	@override Base64String? encryptedSelf;
+	@override int? status = null;
+	@override Base64String? encryptedSelf = null;
 	EncryptedInvoicingCode({
 			int? units,
 			int? side,
@@ -559,57 +598,96 @@ class EncryptedInvoicingCode implements InvoicingCode {
 			int? insuranceJustification,
 			int? cancelPatientInterventionReason,
 			this.id,
-			this.dateCode,
-			this.logicalId,
-			this.label,
-			this.userId,
-			this.contactId,
-			this.serviceId,
-			this.tarificationId,
-			this.code,
-			this.paymentType,
-			this.paid,
-			this.totalAmount,
-			this.reimbursement,
-			this.patientIntervention,
-			this.doctorSupplement,
-			this.conventionAmount,
-			this.vat,
-			this.error,
-			this.contract,
-			this.contractDate,
-			this.eidReadingValue,
-			this.override3rdPayerReason,
-			this.prescriberNihii,
-			this.relatedCode,
-			this.prescriptionDate,
-			this.prescriberSsin,
-			this.prescriberLastName,
-			this.prescriberFirstName,
-			this.prescriberCdHcParty,
-			this.locationNihii,
-			this.locationCdHcParty,
-			this.admissionDate,
-			this.canceled,
-			this.accepted,
-			this.pending,
-			this.resent,
-			this.archived,
-			this.lost,
-			this.status,
-			this.encryptedSelf
-		}) : _units = units,
-		_side = side,
-		_timeOfDay = timeOfDay,
-		_eidReadingHour = eidReadingHour,
-		_override3rdPayerCode = override3rdPayerCode,
-		_transplantationCode = transplantationCode,
-		_prescriberNorm = prescriberNorm,
-		_percentNorm = percentNorm,
-		_derogationMaxNumber = derogationMaxNumber,
-		_locationService = locationService,
-		_insuranceJustification = insuranceJustification,
-		_cancelPatientInterventionReason = cancelPatientInterventionReason;
+			int? dateCode,
+			String? logicalId,
+			String? label,
+			String? userId,
+			String? contactId,
+			String? serviceId,
+			String? tarificationId,
+			String? code,
+			PaymentType? paymentType,
+			double? paid,
+			double? totalAmount,
+			double? reimbursement,
+			double? patientIntervention,
+			double? doctorSupplement,
+			double? conventionAmount,
+			double? vat,
+			String? error,
+			String? contract,
+			int? contractDate,
+			String? eidReadingValue,
+			String? override3rdPayerReason,
+			String? prescriberNihii,
+			String? relatedCode,
+			int? prescriptionDate,
+			String? prescriberSsin,
+			String? prescriberLastName,
+			String? prescriberFirstName,
+			String? prescriberCdHcParty,
+			String? locationNihii,
+			String? locationCdHcParty,
+			int? admissionDate,
+			bool? canceled,
+			bool? accepted,
+			bool? pending,
+			bool? resent,
+			bool? archived,
+			bool? lost,
+			int? status,
+			Base64String? encryptedSelf
+		}) : dateCode = dateCode ?? null,
+		logicalId = logicalId ?? null,
+		label = label ?? null,
+		userId = userId ?? null,
+		contactId = contactId ?? null,
+		serviceId = serviceId ?? null,
+		tarificationId = tarificationId ?? null,
+		code = code ?? null,
+		paymentType = paymentType ?? null,
+		paid = paid ?? null,
+		totalAmount = totalAmount ?? null,
+		reimbursement = reimbursement ?? null,
+		patientIntervention = patientIntervention ?? null,
+		doctorSupplement = doctorSupplement ?? null,
+		conventionAmount = conventionAmount ?? null,
+		vat = vat ?? null,
+		error = error ?? null,
+		contract = contract ?? null,
+		contractDate = contractDate ?? null,
+		eidReadingValue = eidReadingValue ?? null,
+		override3rdPayerReason = override3rdPayerReason ?? null,
+		prescriberNihii = prescriberNihii ?? null,
+		relatedCode = relatedCode ?? null,
+		prescriptionDate = prescriptionDate ?? null,
+		prescriberSsin = prescriberSsin ?? null,
+		prescriberLastName = prescriberLastName ?? null,
+		prescriberFirstName = prescriberFirstName ?? null,
+		prescriberCdHcParty = prescriberCdHcParty ?? null,
+		locationNihii = locationNihii ?? null,
+		locationCdHcParty = locationCdHcParty ?? null,
+		admissionDate = admissionDate ?? null,
+		canceled = canceled ?? null,
+		accepted = accepted ?? null,
+		pending = pending ?? null,
+		resent = resent ?? null,
+		archived = archived ?? null,
+		lost = lost ?? null,
+		status = status ?? null,
+		encryptedSelf = encryptedSelf ?? null,
+		_units = units ?? null,
+		_side = side ?? null,
+		_timeOfDay = timeOfDay ?? null,
+		_eidReadingHour = eidReadingHour ?? null,
+		_override3rdPayerCode = override3rdPayerCode ?? null,
+		_transplantationCode = transplantationCode ?? null,
+		_prescriberNorm = prescriberNorm ?? null,
+		_percentNorm = percentNorm ?? null,
+		_derogationMaxNumber = derogationMaxNumber ?? null,
+		_locationService = locationService ?? null,
+		_insuranceJustification = insuranceJustification ?? null,
+		_cancelPatientInterventionReason = cancelPatientInterventionReason ?? null;
 
 	factory EncryptedInvoicingCode.fromJSON(Map<String, dynamic> data) {
 		return EncryptedInvoicingCode(

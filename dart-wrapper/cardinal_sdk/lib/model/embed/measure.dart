@@ -5,9 +5,9 @@ import 'package:cardinal_sdk/model/embed/reference_range.dart';
 
 
 class Measure {
-	double? value;
-	double? ref;
-	int? _severity;
+	double? value = null;
+	double? ref = null;
+	int? _severity = null;
 	@ActualInt32() int? get severity => _severity;
 	@ActualInt32() set severity(int? value) {
 		if (value != null && value > 2147483647) {
@@ -15,8 +15,8 @@ class Measure {
 		}
 		_severity = value;
 	}
-	String? severityCode;
-	int? _evolution;
+	String? severityCode = null;
+	int? _evolution = null;
 	@ActualInt32() int? get evolution => _evolution;
 	@ActualInt32() set evolution(int? value) {
 		if (value != null && value > 2147483647) {
@@ -24,27 +24,35 @@ class Measure {
 		}
 		_evolution = value;
 	}
-	String? unit;
-	Set<CodeStub>? unitCodes;
-	String? comment;
-	String? comparator;
-	String? sign;
+	String? unit = null;
+	Set<CodeStub>? unitCodes = null;
+	String? comment = null;
+	String? comparator = null;
+	String? sign = null;
 	List<ReferenceRange> referenceRanges = [];
 	Measure({
 			int? severity,
 			int? evolution,
-			this.value,
-			this.ref,
-			this.severityCode,
-			this.unit,
-			this.unitCodes,
-			this.comment,
-			this.comparator,
-			this.sign,
+			double? value,
+			double? ref,
+			String? severityCode,
+			String? unit,
+			Set<CodeStub>? unitCodes,
+			String? comment,
+			String? comparator,
+			String? sign,
 			List<ReferenceRange>? referenceRanges
-		}) : referenceRanges = referenceRanges ?? [],
-		_severity = severity,
-		_evolution = evolution;
+		}) : value = value ?? null,
+		ref = ref ?? null,
+		severityCode = severityCode ?? null,
+		unit = unit ?? null,
+		unitCodes = unitCodes ?? null,
+		comment = comment ?? null,
+		comparator = comparator ?? null,
+		sign = sign ?? null,
+		referenceRanges = referenceRanges ?? [],
+		_severity = severity ?? null,
+		_evolution = evolution ?? null;
 
 	factory Measure.fromJSON(Map<String, dynamic> data) {
 		return Measure(

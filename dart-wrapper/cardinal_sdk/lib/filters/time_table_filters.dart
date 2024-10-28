@@ -13,11 +13,11 @@ abstract class TimeTableFilters {
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<TimeTable>> byPeriodAndAgendaId(String agendaId, int? from, int? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<TimeTable>> byPeriodAndAgendaId(String agendaId, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.timeTable.byPeriodAndAgendaId(
 			agendaId,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}

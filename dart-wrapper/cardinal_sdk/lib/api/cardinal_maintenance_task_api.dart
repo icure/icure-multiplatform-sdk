@@ -16,7 +16,7 @@ class CardinalMaintenanceTaskApi {
 		);
 	}
 
-	Future<void> createKeyPairUpdateNotificationsToAllDelegationCounterparts(SpkiHexString key, Set<DataOwnerType>? requestToOwnerTypes) async {
+	Future<void> createKeyPairUpdateNotificationsToAllDelegationCounterparts(SpkiHexString key, { Set<DataOwnerType>? requestToOwnerTypes }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
 			_sdkId,
 			key,

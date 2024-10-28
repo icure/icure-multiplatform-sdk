@@ -8,40 +8,40 @@ import 'package:cardinal_sdk/model/calendar_item.dart';
 abstract class CalendarItemFilters {
 	CalendarItemFilters();
 
-	static Future<SortableFilterOptions<CalendarItem>> byPatientsStartTimeForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<CalendarItem>> byPatientsStartTimeForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.calendarItem.byPatientsStartTimeForDataOwner(
 			dataOwnerId,
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<CalendarItem>> byPatientsStartTimeForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<CalendarItem>> byPatientsStartTimeForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.calendarItem.byPatientsStartTimeForSelf(
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<CalendarItem>> byPatientSecretIdsStartTimeForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<CalendarItem>> byPatientSecretIdsStartTimeForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.calendarItem.byPatientSecretIdsStartTimeForDataOwner(
 			dataOwnerId,
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<CalendarItem>> byPatientSecretIdsStartTimeForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<CalendarItem>> byPatientSecretIdsStartTimeForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.calendarItem.byPatientSecretIdsStartTimeForSelf(
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}

@@ -2,12 +2,13 @@
 
 
 class Range {
-	double? low;
-	double? high;
+	double? low = null;
+	double? high = null;
 	Range({
-			this.low,
-			this.high
-		});
+			double? low,
+			double? high
+		}) : low = low ?? null,
+		high = high ?? null;
 
 	factory Range.fromJSON(Map<String, dynamic> data) {
 		return Range(

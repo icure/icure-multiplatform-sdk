@@ -9,40 +9,40 @@ import 'package:cardinal_sdk/model/embed/document_type.dart';
 abstract class DocumentFilters {
 	DocumentFilters();
 
-	static Future<SortableFilterOptions<Document>> byPatientsCreatedForDataOwner(String dataOwnerId, List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Document>> byPatientsCreatedForDataOwner(String dataOwnerId, List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.document.byPatientsCreatedForDataOwner(
 			dataOwnerId,
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Document>> byPatientsCreatedForSelf(List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Document>> byPatientsCreatedForSelf(List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.document.byPatientsCreatedForSelf(
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Document>> byPatientSecretIdsCreatedForDataOwner(String dataOwnerId, List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<Document>> byPatientSecretIdsCreatedForDataOwner(String dataOwnerId, List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.document.byPatientSecretIdsCreatedForDataOwner(
 			dataOwnerId,
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Document>> byPatientSecretIdsCreatedForSelf(List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Document>> byPatientSecretIdsCreatedForSelf(List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.document.byPatientSecretIdsCreatedForSelf(
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}

@@ -3,52 +3,73 @@ import 'package:cardinal_sdk/model/embed/agreement_appendix.dart';
 
 
 class ParagraphAgreement {
-	int? timestamp;
-	String? paragraph;
-	bool? accepted;
-	bool? inTreatment;
-	bool? canceled;
-	String? careProviderReference;
-	String? decisionReference;
-	int? start;
-	int? end;
-	int? cancelationDate;
-	double? quantityValue;
-	String? quantityUnit;
-	String? ioRequestReference;
-	String? responseType;
-	Map<String, String>? refusalJustification;
-	Set<int>? verses;
-	String? coverageType;
-	double? unitNumber;
-	double? strength;
-	String? strengthUnit;
-	List<AgreementAppendix>? agreementAppendices;
-	String? documentId;
+	int? timestamp = null;
+	String? paragraph = null;
+	bool? accepted = null;
+	bool? inTreatment = null;
+	bool? canceled = null;
+	String? careProviderReference = null;
+	String? decisionReference = null;
+	int? start = null;
+	int? end = null;
+	int? cancelationDate = null;
+	double? quantityValue = null;
+	String? quantityUnit = null;
+	String? ioRequestReference = null;
+	String? responseType = null;
+	Map<String, String>? refusalJustification = null;
+	Set<int>? verses = null;
+	String? coverageType = null;
+	double? unitNumber = null;
+	double? strength = null;
+	String? strengthUnit = null;
+	List<AgreementAppendix>? agreementAppendices = null;
+	String? documentId = null;
 	ParagraphAgreement({
-			this.timestamp,
-			this.paragraph,
-			this.accepted,
-			this.inTreatment,
-			this.canceled,
-			this.careProviderReference,
-			this.decisionReference,
-			this.start,
-			this.end,
-			this.cancelationDate,
-			this.quantityValue,
-			this.quantityUnit,
-			this.ioRequestReference,
-			this.responseType,
-			this.refusalJustification,
-			this.verses,
-			this.coverageType,
-			this.unitNumber,
-			this.strength,
-			this.strengthUnit,
-			this.agreementAppendices,
-			this.documentId
-		});
+			int? timestamp,
+			String? paragraph,
+			bool? accepted,
+			bool? inTreatment,
+			bool? canceled,
+			String? careProviderReference,
+			String? decisionReference,
+			int? start,
+			int? end,
+			int? cancelationDate,
+			double? quantityValue,
+			String? quantityUnit,
+			String? ioRequestReference,
+			String? responseType,
+			Map<String, String>? refusalJustification,
+			Set<int>? verses,
+			String? coverageType,
+			double? unitNumber,
+			double? strength,
+			String? strengthUnit,
+			List<AgreementAppendix>? agreementAppendices,
+			String? documentId
+		}) : timestamp = timestamp ?? null,
+		paragraph = paragraph ?? null,
+		accepted = accepted ?? null,
+		inTreatment = inTreatment ?? null,
+		canceled = canceled ?? null,
+		careProviderReference = careProviderReference ?? null,
+		decisionReference = decisionReference ?? null,
+		start = start ?? null,
+		end = end ?? null,
+		cancelationDate = cancelationDate ?? null,
+		quantityValue = quantityValue ?? null,
+		quantityUnit = quantityUnit ?? null,
+		ioRequestReference = ioRequestReference ?? null,
+		responseType = responseType ?? null,
+		refusalJustification = refusalJustification ?? null,
+		verses = verses ?? null,
+		coverageType = coverageType ?? null,
+		unitNumber = unitNumber ?? null,
+		strength = strength ?? null,
+		strengthUnit = strengthUnit ?? null,
+		agreementAppendices = agreementAppendices ?? null,
+		documentId = documentId ?? null;
 
 	factory ParagraphAgreement.fromJSON(Map<String, dynamic> data) {
 		return ParagraphAgreement(

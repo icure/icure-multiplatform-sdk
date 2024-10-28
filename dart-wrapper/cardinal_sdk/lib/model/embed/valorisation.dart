@@ -47,30 +47,40 @@ sealed class Valorisation implements Encryptable {
 }
 
 class EncryptedValorisation implements Valorisation {
-	@override int? startOfValidity;
-	@override int? endOfValidity;
-	@override String? predicate;
-	@override List<int>? reference;
-	@override double? totalAmount;
-	@override double? reimbursement;
-	@override double? patientIntervention;
-	@override double? doctorSupplement;
-	@override double? vat;
+	@override int? startOfValidity = null;
+	@override int? endOfValidity = null;
+	@override String? predicate = null;
+	@override List<int>? reference = null;
+	@override double? totalAmount = null;
+	@override double? reimbursement = null;
+	@override double? patientIntervention = null;
+	@override double? doctorSupplement = null;
+	@override double? vat = null;
 	@override Map<String, String>? label = {};
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	EncryptedValorisation({
-			this.startOfValidity,
-			this.endOfValidity,
-			this.predicate,
-			this.reference,
-			this.totalAmount,
-			this.reimbursement,
-			this.patientIntervention,
-			this.doctorSupplement,
-			this.vat,
-			this.encryptedSelf,
-			Map<String, String>? label
-		}) : label = label ?? {};
+			int? startOfValidity,
+			int? endOfValidity,
+			String? predicate,
+			List<int>? reference,
+			double? totalAmount,
+			double? reimbursement,
+			double? patientIntervention,
+			double? doctorSupplement,
+			double? vat,
+			Map<String, String>? label,
+			Base64String? encryptedSelf
+		}) : startOfValidity = startOfValidity ?? null,
+		endOfValidity = endOfValidity ?? null,
+		predicate = predicate ?? null,
+		reference = reference ?? null,
+		totalAmount = totalAmount ?? null,
+		reimbursement = reimbursement ?? null,
+		patientIntervention = patientIntervention ?? null,
+		doctorSupplement = doctorSupplement ?? null,
+		vat = vat ?? null,
+		label = label ?? {},
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedValorisation.fromJSON(Map<String, dynamic> data) {
 		return EncryptedValorisation(
@@ -107,30 +117,40 @@ class EncryptedValorisation implements Valorisation {
 }
 
 class DecryptedValorisation implements Valorisation {
-	@override int? startOfValidity;
-	@override int? endOfValidity;
-	@override String? predicate;
-	@override List<int>? reference;
-	@override double? totalAmount;
-	@override double? reimbursement;
-	@override double? patientIntervention;
-	@override double? doctorSupplement;
-	@override double? vat;
+	@override int? startOfValidity = null;
+	@override int? endOfValidity = null;
+	@override String? predicate = null;
+	@override List<int>? reference = null;
+	@override double? totalAmount = null;
+	@override double? reimbursement = null;
+	@override double? patientIntervention = null;
+	@override double? doctorSupplement = null;
+	@override double? vat = null;
 	@override Map<String, String>? label = {};
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	DecryptedValorisation({
-			this.startOfValidity,
-			this.endOfValidity,
-			this.predicate,
-			this.reference,
-			this.totalAmount,
-			this.reimbursement,
-			this.patientIntervention,
-			this.doctorSupplement,
-			this.vat,
-			this.encryptedSelf,
-			Map<String, String>? label
-		}) : label = label ?? {};
+			int? startOfValidity,
+			int? endOfValidity,
+			String? predicate,
+			List<int>? reference,
+			double? totalAmount,
+			double? reimbursement,
+			double? patientIntervention,
+			double? doctorSupplement,
+			double? vat,
+			Map<String, String>? label,
+			Base64String? encryptedSelf
+		}) : startOfValidity = startOfValidity ?? null,
+		endOfValidity = endOfValidity ?? null,
+		predicate = predicate ?? null,
+		reference = reference ?? null,
+		totalAmount = totalAmount ?? null,
+		reimbursement = reimbursement ?? null,
+		patientIntervention = patientIntervention ?? null,
+		doctorSupplement = doctorSupplement ?? null,
+		vat = vat ?? null,
+		label = label ?? {},
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedValorisation.fromJSON(Map<String, dynamic> data) {
 		return DecryptedValorisation(

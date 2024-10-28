@@ -5,15 +5,16 @@ import 'package:cardinal_sdk/model/embed/form/template/structure_element.dart';
 class Section {
 	String section;
 	List<StructureElement> fields;
-	String? description;
-	List<String>? keywords;
+	String? description = null;
+	List<String>? keywords = null;
 	Section(
 		this.section,
 		this.fields,
 		{
-			this.description,
-			this.keywords
-		});
+			String? description,
+			List<String>? keywords
+		}) : description = description ?? null,
+		keywords = keywords ?? null;
 
 	factory Section.fromJSON(Map<String, dynamic> data) {
 		return Section(

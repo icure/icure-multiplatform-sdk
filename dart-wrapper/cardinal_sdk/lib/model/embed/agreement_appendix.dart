@@ -3,7 +3,7 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
 
 class AgreementAppendix {
-	int? _docSeq;
+	int? _docSeq = null;
 	@ActualInt32() int? get docSeq => _docSeq;
 	@ActualInt32() set docSeq(int? value) {
 		if (value != null && value > 2147483647) {
@@ -11,7 +11,7 @@ class AgreementAppendix {
 		}
 		_docSeq = value;
 	}
-	int? _verseSeq;
+	int? _verseSeq = null;
 	@ActualInt32() int? get verseSeq => _verseSeq;
 	@ActualInt32() set verseSeq(int? value) {
 		if (value != null && value > 2147483647) {
@@ -19,15 +19,17 @@ class AgreementAppendix {
 		}
 		_verseSeq = value;
 	}
-	String? documentId;
-	String? path;
+	String? documentId = null;
+	String? path = null;
 	AgreementAppendix({
 			int? docSeq,
 			int? verseSeq,
-			this.documentId,
-			this.path
-		}) : _docSeq = docSeq,
-		_verseSeq = verseSeq;
+			String? documentId,
+			String? path
+		}) : documentId = documentId ?? null,
+		path = path ?? null,
+		_docSeq = docSeq ?? null,
+		_verseSeq = verseSeq ?? null;
 
 	factory AgreementAppendix.fromJSON(Map<String, dynamic> data) {
 		return AgreementAppendix(

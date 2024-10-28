@@ -3,9 +3,9 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
 
 class IdentityDocumentReader {
-	String? justificatifDocumentNumber;
-	String? supportSerialNumber;
-	int? timeReadingEIdDocument;
+	String? justificatifDocumentNumber = null;
+	String? supportSerialNumber = null;
+	int? timeReadingEIdDocument = null;
 	int _eidDocumentSupportType = 0;
 	@ActualInt32() int get eidDocumentSupportType => _eidDocumentSupportType;
 	@ActualInt32() set eidDocumentSupportType(int value) {
@@ -34,10 +34,13 @@ class IdentityDocumentReader {
 			int? eidDocumentSupportType,
 			int? reasonManualEncoding,
 			int? reasonUsingVignette,
-			this.justificatifDocumentNumber,
-			this.supportSerialNumber,
-			this.timeReadingEIdDocument
-		}) : _eidDocumentSupportType = eidDocumentSupportType ?? 0,
+			String? justificatifDocumentNumber,
+			String? supportSerialNumber,
+			int? timeReadingEIdDocument
+		}) : justificatifDocumentNumber = justificatifDocumentNumber ?? null,
+		supportSerialNumber = supportSerialNumber ?? null,
+		timeReadingEIdDocument = timeReadingEIdDocument ?? null,
+		_eidDocumentSupportType = eidDocumentSupportType ?? 0,
 		_reasonManualEncoding = reasonManualEncoding ?? 0,
 		_reasonUsingVignette = reasonUsingVignette ?? 0;
 

@@ -3,22 +3,28 @@ import 'package:cardinal_sdk/model/base/code_identification.dart';
 
 
 class CodeStub implements CodeIdentification<String?> {
-	@override String? id;
-	@override String? context;
-	@override String? type;
-	@override String? code;
-	@override String? version;
-	String? contextLabel;
-	@override Map<String, String>? label;
+	@override String? id = null;
+	@override String? context = null;
+	@override String? type = null;
+	@override String? code = null;
+	@override String? version = null;
+	String? contextLabel = null;
+	@override Map<String, String>? label = null;
 	CodeStub({
-			this.id,
-			this.context,
-			this.type,
-			this.code,
-			this.version,
-			this.contextLabel,
-			this.label
-		});
+			String? id,
+			String? context,
+			String? type,
+			String? code,
+			String? version,
+			String? contextLabel,
+			Map<String, String>? label
+		}) : id = id ?? null,
+		context = context ?? null,
+		type = type ?? null,
+		code = code ?? null,
+		version = version ?? null,
+		contextLabel = contextLabel ?? null,
+		label = label ?? null;
 
 	factory CodeStub.fromJSON(Map<String, dynamic> data) {
 		return CodeStub(

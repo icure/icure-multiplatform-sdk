@@ -5,29 +5,36 @@ import 'package:cardinal_sdk/model/base/identifiable.dart';
 
 class Annotation implements Identifiable<String> {
 	@override String id;
-	String? author;
-	int? created;
-	int? modified;
-	String? text;
+	String? author = null;
+	int? created = null;
+	int? modified = null;
+	String? text = null;
 	Map<String, String> markdown = {};
-	String? location;
-	bool? confidential;
+	String? location = null;
+	bool? confidential = null;
 	Set<CodeStub> tags = {};
-	String? encryptedSelf;
+	String? encryptedSelf = null;
 	Annotation(
 		this.id,
 		{
-			this.author,
-			this.created,
-			this.modified,
-			this.text,
-			this.location,
-			this.confidential,
-			this.encryptedSelf,
+			String? author,
+			int? created,
+			int? modified,
+			String? text,
 			Map<String, String>? markdown,
-			Set<CodeStub>? tags
-		}) : markdown = markdown ?? {},
-		tags = tags ?? {};
+			String? location,
+			bool? confidential,
+			Set<CodeStub>? tags,
+			String? encryptedSelf
+		}) : author = author ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		text = text ?? null,
+		markdown = markdown ?? {},
+		location = location ?? null,
+		confidential = confidential ?? null,
+		tags = tags ?? {},
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory Annotation.fromJSON(Map<String, dynamic> data) {
 		return Annotation(

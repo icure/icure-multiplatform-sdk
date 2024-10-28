@@ -3,24 +3,31 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 
 
 class Identifier {
-	String? id;
-	String? assigner;
-	String? start;
-	String? end;
-	String? system;
-	CodeStub? type;
-	String? use;
-	String? value;
+	String? id = null;
+	String? assigner = null;
+	String? start = null;
+	String? end = null;
+	String? system = null;
+	CodeStub? type = null;
+	String? use = null;
+	String? value = null;
 	Identifier({
-			this.id,
-			this.assigner,
-			this.start,
-			this.end,
-			this.system,
-			this.type,
-			this.use,
-			this.value
-		});
+			String? id,
+			String? assigner,
+			String? start,
+			String? end,
+			String? system,
+			CodeStub? type,
+			String? use,
+			String? value
+		}) : id = id ?? null,
+		assigner = assigner ?? null,
+		start = start ?? null,
+		end = end ?? null,
+		system = system ?? null,
+		type = type ?? null,
+		use = use ?? null,
+		value = value ?? null;
 
 	factory Identifier.fromJSON(Map<String, dynamic> data) {
 		return Identifier(

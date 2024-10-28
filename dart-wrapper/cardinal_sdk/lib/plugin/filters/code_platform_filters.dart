@@ -32,7 +32,7 @@ class CodePlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Code>> byQualifiedLink(String linkType, String? linkedId) async {
+	Future<BaseFilterOptions<Code>> byQualifiedLink(String linkType, { String? linkedId }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeFilters.byQualifiedLink',
 			{
@@ -45,7 +45,7 @@ class CodePlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Code>> byRegionTypeCodeVersion(String region, String? type, String? code, String? version) async {
+	Future<BaseFilterOptions<Code>> byRegionTypeCodeVersion(String region, { String? type, String? code, String? version }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeFilters.byRegionTypeCodeVersion',
 			{
@@ -60,7 +60,7 @@ class CodePlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Code>> byLanguageTypeLabelRegion(String language, String type, String? label, String? region) async {
+	Future<BaseFilterOptions<Code>> byLanguageTypeLabelRegion(String language, String type, { String? label, String? region }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeFilters.byLanguageTypeLabelRegion',
 			{
@@ -75,7 +75,7 @@ class CodePlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Code>> byLanguageTypesLabelRegionVersion(String language, List<String> types, String label, String? region, String? version) async {
+	Future<BaseFilterOptions<Code>> byLanguageTypesLabelRegionVersion(String language, List<String> types, String label, { String? region, String? version }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeFilters.byLanguageTypesLabelRegionVersion',
 			{

@@ -5,33 +5,38 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 class Insurance implements StoredDocument {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
+	@override String? rev = null;
+	@override int? deletionDate = null;
 	Map<String, String> name = {};
 	bool privateInsurance = false;
 	bool hospitalisationInsurance = false;
 	bool ambulatoryInsurance = false;
-	String? code;
-	String? agreementNumber;
-	String? parent;
+	String? code = null;
+	String? agreementNumber = null;
+	String? parent = null;
 	DecryptedAddress address;
 	Insurance(
 		this.id,
 		this.address,
 		{
-			this.rev,
-			this.deletionDate,
-			this.code,
-			this.agreementNumber,
-			this.parent,
+			String? rev,
+			int? deletionDate,
 			Map<String, String>? name,
 			bool? privateInsurance,
 			bool? hospitalisationInsurance,
-			bool? ambulatoryInsurance
-		}) : name = name ?? {},
+			bool? ambulatoryInsurance,
+			String? code,
+			String? agreementNumber,
+			String? parent
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		name = name ?? {},
 		privateInsurance = privateInsurance ?? false,
 		hospitalisationInsurance = hospitalisationInsurance ?? false,
-		ambulatoryInsurance = ambulatoryInsurance ?? false;
+		ambulatoryInsurance = ambulatoryInsurance ?? false,
+		code = code ?? null,
+		agreementNumber = agreementNumber ?? null,
+		parent = parent ?? null;
 
 	factory Insurance.fromJSON(Map<String, dynamic> data) {
 		return Insurance(

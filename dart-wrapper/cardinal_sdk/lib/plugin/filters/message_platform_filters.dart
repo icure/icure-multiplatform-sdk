@@ -83,7 +83,7 @@ class MessagePlatformFilters {
 		return FilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Message>> byPatientsSentDateForDataOwner(String dataOwnerId, List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Message>> byPatientsSentDateForDataOwner(String dataOwnerId, List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageFilters.byPatientsSentDateForDataOwner',
 			{
@@ -99,7 +99,7 @@ class MessagePlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Message>> byPatientsSentDateForSelf(List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Message>> byPatientsSentDateForSelf(List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageFilters.byPatientsSentDateForSelf',
 			{
@@ -114,7 +114,7 @@ class MessagePlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Message>> byPatientSecretIdsSentDateForDataOwner(String dataOwnerId, List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Message>> byPatientSecretIdsSentDateForDataOwner(String dataOwnerId, List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageFilters.byPatientSecretIdsSentDateForDataOwner',
 			{
@@ -130,7 +130,7 @@ class MessagePlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Message>> byPatientSecretIdsSentDateForSelf(List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Message>> byPatientSecretIdsSentDateForSelf(List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageFilters.byPatientSecretIdsSentDateForSelf',
 			{

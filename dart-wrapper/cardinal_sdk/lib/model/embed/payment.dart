@@ -4,13 +4,15 @@ import 'package:cardinal_sdk/model/embed/payment_type.dart';
 
 class Payment {
 	int paymentDate = 0;
-	PaymentType? paymentType;
-	double? paid;
+	PaymentType? paymentType = null;
+	double? paid = null;
 	Payment({
-			this.paymentType,
-			this.paid,
-			int? paymentDate
-		}) : paymentDate = paymentDate ?? 0;
+			int? paymentDate,
+			PaymentType? paymentType,
+			double? paid
+		}) : paymentDate = paymentDate ?? 0,
+		paymentType = paymentType ?? null,
+		paid = paid ?? null;
 
 	factory Payment.fromJSON(Map<String, dynamic> data) {
 		return Payment(

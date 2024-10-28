@@ -9,51 +9,69 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 class FormTemplate implements StoredDocument {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	FormTemplateLayout? templateLayout;
-	Uint8List? rawTemplateLayout;
-	String? name;
-	String? guid;
-	DocumentGroup? group;
-	String? descr;
-	String? disabled;
-	CodeStub? specialty;
-	String? author;
-	String? formInstancePreferredLocation;
-	String? keyboardShortcut;
-	String? shortReport;
-	String? mediumReport;
-	String? longReport;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	FormTemplateLayout? templateLayout = null;
+	Uint8List? rawTemplateLayout = null;
+	String? name = null;
+	String? guid = null;
+	DocumentGroup? group = null;
+	String? descr = null;
+	String? disabled = null;
+	CodeStub? specialty = null;
+	String? author = null;
+	String? formInstancePreferredLocation = null;
+	String? keyboardShortcut = null;
+	String? shortReport = null;
+	String? mediumReport = null;
+	String? longReport = null;
 	Set<String> reports = {};
 	Set<CodeStub> tags = {};
-	String? layoutAttachmentId;
-	String? templateLayoutAttachmentId;
+	String? layoutAttachmentId = null;
+	String? templateLayoutAttachmentId = null;
 	FormTemplate(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.templateLayout,
-			this.rawTemplateLayout,
-			this.name,
-			this.guid,
-			this.group,
-			this.descr,
-			this.disabled,
-			this.specialty,
-			this.author,
-			this.formInstancePreferredLocation,
-			this.keyboardShortcut,
-			this.shortReport,
-			this.mediumReport,
-			this.longReport,
-			this.layoutAttachmentId,
-			this.templateLayoutAttachmentId,
+			String? rev,
+			int? deletionDate,
+			FormTemplateLayout? templateLayout,
+			Uint8List? rawTemplateLayout,
+			String? name,
+			String? guid,
+			DocumentGroup? group,
+			String? descr,
+			String? disabled,
+			CodeStub? specialty,
+			String? author,
+			String? formInstancePreferredLocation,
+			String? keyboardShortcut,
+			String? shortReport,
+			String? mediumReport,
+			String? longReport,
 			Set<String>? reports,
-			Set<CodeStub>? tags
-		}) : reports = reports ?? {},
-		tags = tags ?? {};
+			Set<CodeStub>? tags,
+			String? layoutAttachmentId,
+			String? templateLayoutAttachmentId
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		templateLayout = templateLayout ?? null,
+		rawTemplateLayout = rawTemplateLayout ?? null,
+		name = name ?? null,
+		guid = guid ?? null,
+		group = group ?? null,
+		descr = descr ?? null,
+		disabled = disabled ?? null,
+		specialty = specialty ?? null,
+		author = author ?? null,
+		formInstancePreferredLocation = formInstancePreferredLocation ?? null,
+		keyboardShortcut = keyboardShortcut ?? null,
+		shortReport = shortReport ?? null,
+		mediumReport = mediumReport ?? null,
+		longReport = longReport ?? null,
+		reports = reports ?? {},
+		tags = tags ?? {},
+		layoutAttachmentId = layoutAttachmentId ?? null,
+		templateLayoutAttachmentId = templateLayoutAttachmentId ?? null;
 
 	factory FormTemplate.fromJSON(Map<String, dynamic> data) {
 		return FormTemplate(

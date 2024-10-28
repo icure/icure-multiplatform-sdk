@@ -2,12 +2,13 @@
 
 
 class PublicKey {
-	String? hcPartyId;
-	String? hexString;
+	String? hcPartyId = null;
+	String? hexString = null;
 	PublicKey({
-			this.hcPartyId,
-			this.hexString
-		});
+			String? hcPartyId,
+			String? hexString
+		}) : hcPartyId = hcPartyId ?? null,
+		hexString = hexString ?? null;
 
 	factory PublicKey.fromJSON(Map<String, dynamic> data) {
 		return PublicKey(

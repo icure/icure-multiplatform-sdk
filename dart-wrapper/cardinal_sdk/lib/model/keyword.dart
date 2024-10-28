@@ -7,38 +7,48 @@ import 'package:cardinal_sdk/model/base/icure_document.dart';
 
 class Keyword implements StoredDocument, ICureDocument<String> {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	String? value;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	String? value = null;
 	Set<KeywordSubword> subWords = {};
-	String? userId;
+	String? userId = null;
 	Keyword(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.value,
-			this.userId,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
-			Set<KeywordSubword>? subWords
-		}) : tags = tags ?? {},
+			int? endOfLife,
+			int? deletionDate,
+			String? value,
+			Set<KeywordSubword>? subWords,
+			String? userId
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
-		subWords = subWords ?? {};
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		value = value ?? null,
+		subWords = subWords ?? {},
+		userId = userId ?? null;
 
 	factory Keyword.fromJSON(Map<String, dynamic> data) {
 		return Keyword(

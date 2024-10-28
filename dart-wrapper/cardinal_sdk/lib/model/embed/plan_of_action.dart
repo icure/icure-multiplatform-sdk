@@ -67,24 +67,24 @@ sealed class PlanOfAction implements Encryptable, ICureDocument<String>, Named {
 
 class EncryptedPlanOfAction implements PlanOfAction {
 	@override String id;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override String? prescriberId;
-	@override int? valueDate;
-	@override int? openingDate;
-	@override int? closingDate;
-	@override int? deadlineDate;
-	@override String? name;
-	@override String? descr;
-	@override String? note;
-	@override String? idOpeningContact;
-	@override String? idClosingContact;
+	@override int? endOfLife = null;
+	@override String? prescriberId = null;
+	@override int? valueDate = null;
+	@override int? openingDate = null;
+	@override int? closingDate = null;
+	@override int? deadlineDate = null;
+	@override String? name = null;
+	@override String? descr = null;
+	@override String? note = null;
+	@override String? idOpeningContact = null;
+	@override String? idClosingContact = null;
 	int _status = 0;
 	@ActualInt32() @override int get status => _status;
 	@ActualInt32() @override set status(int value) {
@@ -94,7 +94,7 @@ class EncryptedPlanOfAction implements PlanOfAction {
 		_status = value;
 	}
 	@override Set<String> documentIds = {};
-	int? _numberOfCares;
+	int? _numberOfCares = null;
 	@ActualInt32() @override int? get numberOfCares => _numberOfCares;
 	@ActualInt32() @override set numberOfCares(int? value) {
 		if (value != null && value > 2147483647) {
@@ -104,41 +104,58 @@ class EncryptedPlanOfAction implements PlanOfAction {
 	}
 	@override List<EncryptedCareTeamMembership?> careTeamMemberships = [];
 	@override bool relevant = true;
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	EncryptedPlanOfAction(
 		this.id,
 		{
 			int? status,
 			int? numberOfCares,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.prescriberId,
-			this.valueDate,
-			this.openingDate,
-			this.closingDate,
-			this.deadlineDate,
-			this.name,
-			this.descr,
-			this.note,
-			this.idOpeningContact,
-			this.idClosingContact,
-			this.encryptedSelf,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			String? prescriberId,
+			int? valueDate,
+			int? openingDate,
+			int? closingDate,
+			int? deadlineDate,
+			String? name,
+			String? descr,
+			String? note,
+			String? idOpeningContact,
+			String? idClosingContact,
 			Set<String>? documentIds,
 			List<EncryptedCareTeamMembership?>? careTeamMemberships,
-			bool? relevant
-		}) : tags = tags ?? {},
+			bool? relevant,
+			Base64String? encryptedSelf
+		}) : created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		prescriberId = prescriberId ?? null,
+		valueDate = valueDate ?? null,
+		openingDate = openingDate ?? null,
+		closingDate = closingDate ?? null,
+		deadlineDate = deadlineDate ?? null,
+		name = name ?? null,
+		descr = descr ?? null,
+		note = note ?? null,
+		idOpeningContact = idOpeningContact ?? null,
+		idClosingContact = idClosingContact ?? null,
 		documentIds = documentIds ?? {},
 		careTeamMemberships = careTeamMemberships ?? [],
 		relevant = relevant ?? true,
+		encryptedSelf = encryptedSelf ?? null,
 		_status = status ?? 0,
-		_numberOfCares = numberOfCares;
+		_numberOfCares = numberOfCares ?? null;
 
 	factory EncryptedPlanOfAction.fromJSON(Map<String, dynamic> data) {
 		return EncryptedPlanOfAction(
@@ -204,24 +221,24 @@ class EncryptedPlanOfAction implements PlanOfAction {
 
 class DecryptedPlanOfAction implements PlanOfAction {
 	@override String id;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override String? prescriberId;
-	@override int? valueDate;
-	@override int? openingDate;
-	@override int? closingDate;
-	@override int? deadlineDate;
-	@override String? name;
-	@override String? descr;
-	@override String? note;
-	@override String? idOpeningContact;
-	@override String? idClosingContact;
+	@override int? endOfLife = null;
+	@override String? prescriberId = null;
+	@override int? valueDate = null;
+	@override int? openingDate = null;
+	@override int? closingDate = null;
+	@override int? deadlineDate = null;
+	@override String? name = null;
+	@override String? descr = null;
+	@override String? note = null;
+	@override String? idOpeningContact = null;
+	@override String? idClosingContact = null;
 	int _status = 0;
 	@ActualInt32() @override int get status => _status;
 	@ActualInt32() @override set status(int value) {
@@ -231,7 +248,7 @@ class DecryptedPlanOfAction implements PlanOfAction {
 		_status = value;
 	}
 	@override Set<String> documentIds = {};
-	int? _numberOfCares;
+	int? _numberOfCares = null;
 	@ActualInt32() @override int? get numberOfCares => _numberOfCares;
 	@ActualInt32() @override set numberOfCares(int? value) {
 		if (value != null && value > 2147483647) {
@@ -241,41 +258,58 @@ class DecryptedPlanOfAction implements PlanOfAction {
 	}
 	@override List<DecryptedCareTeamMembership?> careTeamMemberships = [];
 	@override bool relevant = true;
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	DecryptedPlanOfAction(
 		this.id,
 		{
 			int? status,
 			int? numberOfCares,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.prescriberId,
-			this.valueDate,
-			this.openingDate,
-			this.closingDate,
-			this.deadlineDate,
-			this.name,
-			this.descr,
-			this.note,
-			this.idOpeningContact,
-			this.idClosingContact,
-			this.encryptedSelf,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			String? prescriberId,
+			int? valueDate,
+			int? openingDate,
+			int? closingDate,
+			int? deadlineDate,
+			String? name,
+			String? descr,
+			String? note,
+			String? idOpeningContact,
+			String? idClosingContact,
 			Set<String>? documentIds,
 			List<DecryptedCareTeamMembership?>? careTeamMemberships,
-			bool? relevant
-		}) : tags = tags ?? {},
+			bool? relevant,
+			Base64String? encryptedSelf
+		}) : created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		prescriberId = prescriberId ?? null,
+		valueDate = valueDate ?? null,
+		openingDate = openingDate ?? null,
+		closingDate = closingDate ?? null,
+		deadlineDate = deadlineDate ?? null,
+		name = name ?? null,
+		descr = descr ?? null,
+		note = note ?? null,
+		idOpeningContact = idOpeningContact ?? null,
+		idClosingContact = idClosingContact ?? null,
 		documentIds = documentIds ?? {},
 		careTeamMemberships = careTeamMemberships ?? [],
 		relevant = relevant ?? true,
+		encryptedSelf = encryptedSelf ?? null,
 		_status = status ?? 0,
-		_numberOfCares = numberOfCares;
+		_numberOfCares = numberOfCares ?? null;
 
 	factory DecryptedPlanOfAction.fromJSON(Map<String, dynamic> data) {
 		return DecryptedPlanOfAction(

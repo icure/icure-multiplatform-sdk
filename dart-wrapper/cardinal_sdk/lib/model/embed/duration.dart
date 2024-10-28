@@ -3,12 +3,13 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 
 
 class Duration {
-	double? value;
-	CodeStub? unit;
+	double? value = null;
+	CodeStub? unit = null;
 	Duration({
-			this.value,
-			this.unit
-		});
+			double? value,
+			CodeStub? unit
+		}) : value = value ?? null,
+		unit = unit ?? null;
 
 	factory Duration.fromJSON(Map<String, dynamic> data) {
 		return Duration(

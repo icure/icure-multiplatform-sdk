@@ -3,12 +3,13 @@ import 'package:cardinal_sdk/model/embed/keyword_subword.dart';
 
 
 class KeywordSubword {
-	String? value;
-	List<KeywordSubword>? subWords;
+	String? value = null;
+	List<KeywordSubword>? subWords = null;
 	KeywordSubword({
-			this.value,
-			this.subWords
-		});
+			String? value,
+			List<KeywordSubword>? subWords
+		}) : value = value ?? null,
+		subWords = subWords ?? null;
 
 	factory KeywordSubword.fromJSON(Map<String, dynamic> data) {
 		return KeywordSubword(

@@ -4,16 +4,18 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 class EntityReference implements StoredDocument {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	String? docId;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	String? docId = null;
 	EntityReference(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.docId
-		});
+			String? rev,
+			int? deletionDate,
+			String? docId
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		docId = docId ?? null;
 
 	factory EntityReference.fromJSON(Map<String, dynamic> data) {
 		return EntityReference(

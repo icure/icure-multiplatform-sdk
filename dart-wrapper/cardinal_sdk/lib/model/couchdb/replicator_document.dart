@@ -7,17 +7,17 @@ import 'package:cardinal_sdk/model/base/versionable.dart';
 
 class ReplicatorDocument implements Versionable<String> {
 	@override String id;
-	@override String? rev;
-	Remote? source;
-	Remote? target;
-	String? owner;
-	bool? create_target;
-	bool? continuous;
-	List<String>? doc_ids;
-	String? replicationState;
-	String? replicationStateTime;
-	ReplicationStats? replicationStats;
-	int? _errorCount;
+	@override String? rev = null;
+	Remote? source = null;
+	Remote? target = null;
+	String? owner = null;
+	bool? create_target = null;
+	bool? continuous = null;
+	List<String>? doc_ids = null;
+	String? replicationState = null;
+	String? replicationStateTime = null;
+	ReplicationStats? replicationStats = null;
+	int? _errorCount = null;
 	@ActualInt32() int? get errorCount => _errorCount;
 	@ActualInt32() set errorCount(int? value) {
 		if (value != null && value > 2147483647) {
@@ -25,25 +25,37 @@ class ReplicatorDocument implements Versionable<String> {
 		}
 		_errorCount = value;
 	}
-	List<Map<String, String>>? revsInfo;
-	Map<String, String>? revHistory;
+	List<Map<String, String>>? revsInfo = null;
+	Map<String, String>? revHistory = null;
 	ReplicatorDocument(
 		this.id,
 		{
 			int? errorCount,
-			this.rev,
-			this.source,
-			this.target,
-			this.owner,
-			this.create_target,
-			this.continuous,
-			this.doc_ids,
-			this.replicationState,
-			this.replicationStateTime,
-			this.replicationStats,
-			this.revsInfo,
-			this.revHistory
-		}) : _errorCount = errorCount;
+			String? rev,
+			Remote? source,
+			Remote? target,
+			String? owner,
+			bool? create_target,
+			bool? continuous,
+			List<String>? doc_ids,
+			String? replicationState,
+			String? replicationStateTime,
+			ReplicationStats? replicationStats,
+			List<Map<String, String>>? revsInfo,
+			Map<String, String>? revHistory
+		}) : rev = rev ?? null,
+		source = source ?? null,
+		target = target ?? null,
+		owner = owner ?? null,
+		create_target = create_target ?? null,
+		continuous = continuous ?? null,
+		doc_ids = doc_ids ?? null,
+		replicationState = replicationState ?? null,
+		replicationStateTime = replicationStateTime ?? null,
+		replicationStats = replicationStats ?? null,
+		revsInfo = revsInfo ?? null,
+		revHistory = revHistory ?? null,
+		_errorCount = errorCount ?? null;
 
 	factory ReplicatorDocument.fromJSON(Map<String, dynamic> data) {
 		return ReplicatorDocument(

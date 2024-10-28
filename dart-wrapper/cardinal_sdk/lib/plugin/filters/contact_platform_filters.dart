@@ -59,7 +59,7 @@ class ContactPlatformFilters {
 		return FilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byPatientsOpeningDateForDataOwner',
 			{
@@ -75,7 +75,7 @@ class ContactPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Contact>> byPatientsOpeningDateForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byPatientsOpeningDateForSelf',
 			{
@@ -90,7 +90,7 @@ class ContactPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byPatientSecretIdsOpeningDateForDataOwner',
 			{
@@ -106,7 +106,7 @@ class ContactPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Contact>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byPatientSecretIdsOpeningDateForSelf',
 			{
@@ -158,7 +158,7 @@ class ContactPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Contact>> byCodeAndOpeningDateForDataOwner(String dataOwnerId, String codeType, String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	Future<BaseSortableFilterOptions<Contact>> byCodeAndOpeningDateForDataOwner(String dataOwnerId, String codeType, { String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byCodeAndOpeningDateForDataOwner',
 			{
@@ -174,7 +174,7 @@ class ContactPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Contact>> byCodeAndOpeningDateForSelf(String codeType, String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	Future<SortableFilterOptions<Contact>> byCodeAndOpeningDateForSelf(String codeType, { String? codeCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byCodeAndOpeningDateForSelf',
 			{
@@ -189,7 +189,7 @@ class ContactPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Contact>> byTagAndOpeningDateForDataOwner(String dataOwnerId, String tagType, String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	Future<BaseSortableFilterOptions<Contact>> byTagAndOpeningDateForDataOwner(String dataOwnerId, String tagType, { String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byTagAndOpeningDateForDataOwner',
 			{
@@ -205,7 +205,7 @@ class ContactPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Contact>> byOpeningDateForDataOwner(String dataOwnerId, int? startDate, int? endDate, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Contact>> byOpeningDateForDataOwner(String dataOwnerId, { int? startDate, int? endDate, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byOpeningDateForDataOwner',
 			{
@@ -220,7 +220,7 @@ class ContactPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Contact>> byOpeningDateForSelf(int? startDate, int? endDate, { bool descending = false }) async {
+	Future<SortableFilterOptions<Contact>> byOpeningDateForSelf({ int? startDate, int? endDate, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byOpeningDateForSelf',
 			{
@@ -234,7 +234,7 @@ class ContactPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<FilterOptions<Contact>> byServiceTagForSelf(String tagType, String? tagCode) async {
+	Future<FilterOptions<Contact>> byServiceTagForSelf(String tagType, { String? tagCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byServiceTagForSelf',
 			{
@@ -247,7 +247,7 @@ class ContactPlatformFilters {
 		return FilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Contact>> byServiceTagForDataOwner(String dataOwnerId, String tagType, String? tagCode) async {
+	Future<BaseFilterOptions<Contact>> byServiceTagForDataOwner(String dataOwnerId, String tagType, { String? tagCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byServiceTagForDataOwner',
 			{
@@ -261,7 +261,7 @@ class ContactPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<FilterOptions<Contact>> byServiceCodeForSelf(String codeType, String? codeCode) async {
+	Future<FilterOptions<Contact>> byServiceCodeForSelf(String codeType, { String? codeCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byServiceCodeForSelf',
 			{
@@ -274,7 +274,7 @@ class ContactPlatformFilters {
 		return FilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Contact>> byServiceCodeForDataOwner(String dataOwnerId, String codeType, String? codeCode) async {
+	Future<BaseFilterOptions<Contact>> byServiceCodeForDataOwner(String dataOwnerId, String codeType, { String? codeCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byServiceCodeForDataOwner',
 			{
@@ -288,7 +288,7 @@ class ContactPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Contact>> byTagAndOpeningDateForSelf(String tagType, String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate) async {
+	Future<SortableFilterOptions<Contact>> byTagAndOpeningDateForSelf(String tagType, { String? tagCode, int? startOfContactOpeningDate, int? endOfContactOpeningDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactFilters.byTagAndOpeningDateForSelf',
 			{

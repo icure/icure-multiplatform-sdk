@@ -8,57 +8,57 @@ import 'package:cardinal_sdk/model/access_log.dart';
 abstract class AccessLogFilters {
 	AccessLogFilters();
 
-	static Future<SortableFilterOptions<AccessLog>> byPatientsDateForDataOwner(String dataOwnerId, List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<AccessLog>> byPatientsDateForDataOwner(String dataOwnerId, List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.accessLog.byPatientsDateForDataOwner(
 			dataOwnerId,
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<AccessLog>> byPatientsDateForSelf(List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<AccessLog>> byPatientsDateForSelf(List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.accessLog.byPatientsDateForSelf(
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<AccessLog>> byPatientSecretIdsDateForDataOwner(String dataOwnerId, List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<AccessLog>> byPatientSecretIdsDateForDataOwner(String dataOwnerId, List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.accessLog.byPatientSecretIdsDateForDataOwner(
 			dataOwnerId,
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<AccessLog>> byPatientSecretIdsDateForSelf(List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<AccessLog>> byPatientSecretIdsDateForSelf(List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.accessLog.byPatientSecretIdsDateForSelf(
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<AccessLog>> byDate(DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<AccessLog>> byDate({ DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.accessLog.byDate(
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<AccessLog>> byUserTypeDate(String userId, String? accessType, DateTime? from, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<AccessLog>> byUserTypeDate(String userId, { String? accessType, DateTime? from, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.accessLog.byUserTypeDate(
 			userId,
-			accessType,
-			from,
+			accessType: accessType,
+			from: from,
 			descending: descending,
 		);
 	}

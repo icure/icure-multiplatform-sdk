@@ -6,40 +6,52 @@ import 'package:cardinal_sdk/model/base/named.dart';
 
 class MedicalLocation implements StoredDocument, Named {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	@override String? name;
-	String? description;
-	String? responsible;
-	bool? guardPost;
-	String? cbe;
-	String? bic;
-	String? bankAccount;
-	String? nihii;
-	String? ssin;
-	DecryptedAddress? address;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	@override String? name = null;
+	String? description = null;
+	String? responsible = null;
+	bool? guardPost = null;
+	String? cbe = null;
+	String? bic = null;
+	String? bankAccount = null;
+	String? nihii = null;
+	String? ssin = null;
+	DecryptedAddress? address = null;
 	Set<String> agendaIds = {};
 	Map<String, String> options = {};
 	Map<String, String> publicInformations = {};
 	MedicalLocation(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.name,
-			this.description,
-			this.responsible,
-			this.guardPost,
-			this.cbe,
-			this.bic,
-			this.bankAccount,
-			this.nihii,
-			this.ssin,
-			this.address,
+			String? rev,
+			int? deletionDate,
+			String? name,
+			String? description,
+			String? responsible,
+			bool? guardPost,
+			String? cbe,
+			String? bic,
+			String? bankAccount,
+			String? nihii,
+			String? ssin,
+			DecryptedAddress? address,
 			Set<String>? agendaIds,
 			Map<String, String>? options,
 			Map<String, String>? publicInformations
-		}) : agendaIds = agendaIds ?? {},
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		name = name ?? null,
+		description = description ?? null,
+		responsible = responsible ?? null,
+		guardPost = guardPost ?? null,
+		cbe = cbe ?? null,
+		bic = bic ?? null,
+		bankAccount = bankAccount ?? null,
+		nihii = nihii ?? null,
+		ssin = ssin ?? null,
+		address = address ?? null,
+		agendaIds = agendaIds ?? {},
 		options = options ?? {},
 		publicInformations = publicInformations ?? {};
 

@@ -19,17 +19,17 @@ abstract class HealthcarePartyFilters {
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<HealthcareParty>> byCode(String codeType, String? codeCode) async {
+	static Future<BaseSortableFilterOptions<HealthcareParty>> byCode(String codeType, { String? codeCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthcareParty.byCode(
 			codeType,
-			codeCode,
+			codeCode: codeCode,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<HealthcareParty>> byTag(String tagType, String? tagCode) async {
+	static Future<BaseSortableFilterOptions<HealthcareParty>> byTag(String tagType, { String? tagCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthcareParty.byTag(
 			tagType,
-			tagCode,
+			tagCode: tagCode,
 		);
 	}
 

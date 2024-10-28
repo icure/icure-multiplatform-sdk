@@ -5,13 +5,14 @@ import 'package:cardinal_sdk/model/embed/form/template/state.dart';
 
 class Action {
 	List<Launcher>? launchers = [];
-	String? expression;
+	String? expression = null;
 	List<State>? states = [];
 	Action({
-			this.expression,
 			List<Launcher>? launchers,
+			String? expression,
 			List<State>? states
 		}) : launchers = launchers ?? [],
+		expression = expression ?? null,
 		states = states ?? [];
 
 	factory Action.fromJSON(Map<String, dynamic> data) {

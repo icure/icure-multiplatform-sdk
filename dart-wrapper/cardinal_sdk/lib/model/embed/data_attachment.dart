@@ -2,14 +2,16 @@
 
 
 class DataAttachment {
-	String? couchDbAttachmentId;
-	String? objectStoreAttachmentId;
+	String? couchDbAttachmentId = null;
+	String? objectStoreAttachmentId = null;
 	List<String> utis = [];
 	DataAttachment({
-			this.couchDbAttachmentId,
-			this.objectStoreAttachmentId,
+			String? couchDbAttachmentId,
+			String? objectStoreAttachmentId,
 			List<String>? utis
-		}) : utis = utis ?? [];
+		}) : couchDbAttachmentId = couchDbAttachmentId ?? null,
+		objectStoreAttachmentId = objectStoreAttachmentId ?? null,
+		utis = utis ?? [];
 
 	factory DataAttachment.fromJSON(Map<String, dynamic> data) {
 		return DataAttachment(

@@ -140,7 +140,7 @@ class TopicBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Topic> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Topic> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.subscribeToEvents(
 			_sdkId,
 			events,

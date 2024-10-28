@@ -5,14 +5,16 @@ import 'package:cardinal_sdk/model/filter/predicate/predicate.dart';
 
 
 class KeyValuePredicate implements Predicate {
-	String? key;
-	Operator? operator;
-	AnyPrimitive? value;
+	String? key = null;
+	Operator? operator = null;
+	AnyPrimitive? value = null;
 	KeyValuePredicate({
-			this.key,
-			this.operator,
-			this.value
-		});
+			String? key,
+			Operator? operator,
+			AnyPrimitive? value
+		}) : key = key ?? null,
+		operator = operator ?? null,
+		value = value ?? null;
 
 	factory KeyValuePredicate.fromJSON(Map<String, dynamic> data) {
 		return KeyValuePredicate(

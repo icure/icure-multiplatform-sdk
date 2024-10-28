@@ -21,7 +21,7 @@ class TimeTablePlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<TimeTable>> byPeriodAndAgendaId(String agendaId, int? from, int? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<TimeTable>> byPeriodAndAgendaId(String agendaId, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableFilters.byPeriodAndAgendaId',
 			{

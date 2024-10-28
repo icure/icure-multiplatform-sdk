@@ -10,7 +10,7 @@ class CodeApi {
 	final String _sdkId;
 	CodeApi(this._sdkId);
 
-	Future<List<Code>> listCodesByRegionTypeCodeVersion(String region, String? type, String? code, String? version) async {
+	Future<List<Code>> listCodesByRegionTypeCodeVersion(String region, { String? type, String? code, String? version }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.listCodesByRegionTypeCodeVersion(
 			_sdkId,
 			region,
@@ -20,7 +20,7 @@ class CodeApi {
 		);
 	}
 
-	Future<List<String>> listCodeTypesBy(String? region, String? type) async {
+	Future<List<String>> listCodeTypesBy({ String? region, String? type }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.listCodeTypesBy(
 			_sdkId,
 			region,
@@ -28,7 +28,7 @@ class CodeApi {
 		);
 	}
 
-	Future<List<String>> listTagTypesBy(String? region, String? type) async {
+	Future<List<String>> listTagTypesBy({ String? region, String? type }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.listTagTypesBy(
 			_sdkId,
 			region,

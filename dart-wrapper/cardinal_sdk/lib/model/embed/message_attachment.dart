@@ -3,12 +3,13 @@ import 'package:cardinal_sdk/model/embed/document_location.dart';
 
 
 class MessageAttachment {
-	DocumentLocation? type;
+	DocumentLocation? type = null;
 	List<String> ids = [];
 	MessageAttachment({
-			this.type,
+			DocumentLocation? type,
 			List<String>? ids
-		}) : ids = ids ?? [];
+		}) : type = type ?? null,
+		ids = ids ?? [];
 
 	factory MessageAttachment.fromJSON(Map<String, dynamic> data) {
 		return MessageAttachment(

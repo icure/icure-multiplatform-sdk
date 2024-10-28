@@ -72,7 +72,7 @@ class ContactBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(BaseFilterOptions<Service> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(BaseFilterOptions<Service> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.subscribeToServiceCreateOrUpdateEvents(
 			_sdkId,
 			filter,
@@ -189,7 +189,7 @@ class ContactBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Contact> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Contact> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.subscribeToEvents(
 			_sdkId,
 			events,

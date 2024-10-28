@@ -55,12 +55,12 @@ abstract class PatientFilters {
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Patient>> byGenderEducationProfessionForDataOwner(String dataOwnerId, Gender gender, String? education, String? profession) async {
+	static Future<BaseSortableFilterOptions<Patient>> byGenderEducationProfessionForDataOwner(String dataOwnerId, Gender gender, { String? education, String? profession }) async {
 		return CardinalSdkPlatformInterface.instance.filters.patient.byGenderEducationProfessionForDataOwner(
 			dataOwnerId,
 			gender,
-			education,
-			profession,
+			education: education,
+			profession: profession,
 		);
 	}
 
@@ -78,12 +78,12 @@ abstract class PatientFilters {
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForDataOwner(String dataOwnerId, String searchString, String postalCode, String? houseNumber) async {
+	static Future<BaseSortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForDataOwner(String dataOwnerId, String searchString, String postalCode, { String? houseNumber }) async {
 		return CardinalSdkPlatformInterface.instance.filters.patient.byAddressPostalCodeHouseNumberForDataOwner(
 			dataOwnerId,
 			searchString,
 			postalCode,
-			houseNumber,
+			houseNumber: houseNumber,
 		);
 	}
 
@@ -126,11 +126,11 @@ abstract class PatientFilters {
 		);
 	}
 
-	static Future<SortableFilterOptions<Patient>> byGenderEducationProfessionForSelf(Gender gender, String? education, String? profession) async {
+	static Future<SortableFilterOptions<Patient>> byGenderEducationProfessionForSelf(Gender gender, { String? education, String? profession }) async {
 		return CardinalSdkPlatformInterface.instance.filters.patient.byGenderEducationProfessionForSelf(
 			gender,
-			education,
-			profession,
+			education: education,
+			profession: profession,
 		);
 	}
 
@@ -146,11 +146,11 @@ abstract class PatientFilters {
 		);
 	}
 
-	static Future<SortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForSelf(String searchString, String postalCode, String? houseNumber) async {
+	static Future<SortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForSelf(String searchString, String postalCode, { String? houseNumber }) async {
 		return CardinalSdkPlatformInterface.instance.filters.patient.byAddressPostalCodeHouseNumberForSelf(
 			searchString,
 			postalCode,
-			houseNumber,
+			houseNumber: houseNumber,
 		);
 	}
 
@@ -166,19 +166,19 @@ abstract class PatientFilters {
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Patient>> byModificationDateForDataOwner(String dataOwnerId, int? from, int? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<Patient>> byModificationDateForDataOwner(String dataOwnerId, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.patient.byModificationDateForDataOwner(
 			dataOwnerId,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Patient>> byModificationDateForSelf(int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Patient>> byModificationDateForSelf({ int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.patient.byModificationDateForSelf(
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}

@@ -5,18 +5,20 @@ class RegistrationInformation {
 	String firstName;
 	String lastName;
 	String emailAddress;
-	String? userOptions;
+	String? userOptions = null;
 	Set<String> userRoles = {};
-	String? minimumKrakenVersion;
+	String? minimumKrakenVersion = null;
 	RegistrationInformation(
 		this.firstName,
 		this.lastName,
 		this.emailAddress,
 		{
-			this.userOptions,
-			this.minimumKrakenVersion,
-			Set<String>? userRoles
-		}) : userRoles = userRoles ?? {};
+			String? userOptions,
+			Set<String>? userRoles,
+			String? minimumKrakenVersion
+		}) : userOptions = userOptions ?? null,
+		userRoles = userRoles ?? {},
+		minimumKrakenVersion = minimumKrakenVersion ?? null;
 
 	factory RegistrationInformation.fromJSON(Map<String, dynamic> data) {
 		return RegistrationInformation(

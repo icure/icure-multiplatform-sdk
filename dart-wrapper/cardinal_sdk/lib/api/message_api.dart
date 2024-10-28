@@ -39,7 +39,7 @@ class MessageApi {
 		);
 	}
 
-	Future<DecryptedMessage> withEncryptionMetadata(DecryptedMessage? base, Patient? patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedMessage> withEncryptionMetadata(DecryptedMessage? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -151,7 +151,7 @@ class MessageApi {
 		);
 	}
 
-	Future<DecryptedMessage> shareWith(String delegateId, DecryptedMessage message, MessageShareOptions? options) async {
+	Future<DecryptedMessage> shareWith(String delegateId, DecryptedMessage message, { MessageShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.shareWith(
 			_sdkId,
 			delegateId,
@@ -228,7 +228,7 @@ class MessageApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Message> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Message> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.subscribeToEvents(
 			_sdkId,
 			events,
@@ -242,7 +242,7 @@ class TryAndRecoverMessageApi {
 	final String _sdkId;
 	TryAndRecoverMessageApi(this._sdkId);
 
-	Future<Message> shareWith(String delegateId, Message message, MessageShareOptions? options) async {
+	Future<Message> shareWith(String delegateId, Message message, { MessageShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -324,7 +324,7 @@ class EncryptedMessageApi {
 	final String _sdkId;
 	EncryptedMessageApi(this._sdkId);
 
-	Future<EncryptedMessage> shareWith(String delegateId, EncryptedMessage message, MessageShareOptions? options) async {
+	Future<EncryptedMessage> shareWith(String delegateId, EncryptedMessage message, { MessageShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.shareWith(
 			_sdkId,
 			delegateId,

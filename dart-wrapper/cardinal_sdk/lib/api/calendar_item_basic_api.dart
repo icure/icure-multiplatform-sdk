@@ -122,7 +122,7 @@ class CalendarItemBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<CalendarItem> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<CalendarItem> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.subscribeToEvents(
 			_sdkId,
 			events,

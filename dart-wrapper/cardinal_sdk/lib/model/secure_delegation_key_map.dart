@@ -53,35 +53,41 @@ sealed class SecureDelegationKeyMap implements StoredDocument, HasEncryptionMeta
 
 class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 	@override String id;
-	@override String? rev;
+	@override String? rev = null;
 	@override String delegationKey;
-	@override String? delegator;
-	@override String? delegate;
+	@override String? delegator = null;
+	@override String? delegate = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
-	@override int? deletionDate;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
+	@override int? deletionDate = null;
 	EncryptedSecureDelegationKeyMap(
 		this.id,
 		this.delegationKey,
 		{
-			this.rev,
-			this.delegator,
-			this.delegate,
-			this.encryptedSelf,
-			this.securityMetadata,
-			this.deletionDate,
+			String? rev,
+			String? delegator,
+			String? delegate,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : secretForeignKeys = secretForeignKeys ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata,
+			int? deletionDate
+		}) : rev = rev ?? null,
+		delegator = delegator ?? null,
+		delegate = delegate ?? null,
+		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		deletionDate = deletionDate ?? null;
 
 	factory EncryptedSecureDelegationKeyMap.fromJSON(Map<String, dynamic> data) {
 		return EncryptedSecureDelegationKeyMap(
@@ -121,35 +127,41 @@ class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 
 class DecryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 	@override String id;
-	@override String? rev;
+	@override String? rev = null;
 	@override String delegationKey;
-	@override String? delegator;
-	@override String? delegate;
+	@override String? delegator = null;
+	@override String? delegate = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
-	@override int? deletionDate;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
+	@override int? deletionDate = null;
 	DecryptedSecureDelegationKeyMap(
 		this.id,
 		this.delegationKey,
 		{
-			this.rev,
-			this.delegator,
-			this.delegate,
-			this.encryptedSelf,
-			this.securityMetadata,
-			this.deletionDate,
+			String? rev,
+			String? delegator,
+			String? delegate,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : secretForeignKeys = secretForeignKeys ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata,
+			int? deletionDate
+		}) : rev = rev ?? null,
+		delegator = delegator ?? null,
+		delegate = delegate ?? null,
+		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		deletionDate = deletionDate ?? null;
 
 	factory DecryptedSecureDelegationKeyMap.fromJSON(Map<String, dynamic> data) {
 		return DecryptedSecureDelegationKeyMap(

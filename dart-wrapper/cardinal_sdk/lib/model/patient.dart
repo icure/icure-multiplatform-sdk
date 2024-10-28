@@ -147,30 +147,30 @@ sealed class Patient implements StoredDocument, ICureDocument<String>, Person, H
 class EncryptedPatient implements Patient {
 	@override String id;
 	@override List<Identifier> identifier = [];
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? firstName;
-	@override String? lastName;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? firstName = null;
+	@override String? lastName = null;
 	@override List<PersonName> names = [];
-	@override String? companyName;
+	@override String? companyName = null;
 	@override List<String> languages = [];
 	@override List<EncryptedAddress> addresses = [];
-	@override String? civility;
+	@override String? civility = null;
 	@override Gender? gender = Gender.unknown;
 	@override Gender? birthSex = Gender.unknown;
-	@override String? mergeToPatientId;
+	@override String? mergeToPatientId = null;
 	@override Set<String> mergedIds = {};
-	@override String? alias;
+	@override String? alias = null;
 	@override bool active = true;
 	@override DeactivationReason deactivationReason = DeactivationReason.none;
-	int? _deactivationDate;
+	int? _deactivationDate = null;
 	@ActualInt32() @override int? get deactivationDate => _deactivationDate;
 	@ActualInt32() @override set deactivationDate(int? value) {
 		if (value != null && value > 2147483647) {
@@ -178,12 +178,12 @@ class EncryptedPatient implements Patient {
 		}
 		_deactivationDate = value;
 	}
-	@override String? ssin;
-	@override String? maidenName;
-	@override String? spouseName;
-	@override String? partnerName;
+	@override String? ssin = null;
+	@override String? maidenName = null;
+	@override String? spouseName = null;
+	@override String? partnerName = null;
 	@override PersonalStatus? personalStatus = PersonalStatus.unknown;
-	int? _dateOfBirth;
+	int? _dateOfBirth = null;
 	@ActualInt32() @override int? get dateOfBirth => _dateOfBirth;
 	@ActualInt32() @override set dateOfBirth(int? value) {
 		if (value != null && value > 2147483647) {
@@ -191,7 +191,7 @@ class EncryptedPatient implements Patient {
 		}
 		_dateOfBirth = value;
 	}
-	int? _dateOfDeath;
+	int? _dateOfDeath = null;
 	@ActualInt32() @override int? get dateOfDeath => _dateOfDeath;
 	@ActualInt32() @override set dateOfDeath(int? value) {
 		if (value != null && value > 2147483647) {
@@ -199,21 +199,21 @@ class EncryptedPatient implements Patient {
 		}
 		_dateOfDeath = value;
 	}
-	@override int? timestampOfLatestEidReading;
-	@override String? placeOfBirth;
-	@override String? placeOfDeath;
-	@override bool? deceased;
-	@override String? education;
-	@override String? profession;
+	@override int? timestampOfLatestEidReading = null;
+	@override String? placeOfBirth = null;
+	@override String? placeOfDeath = null;
+	@override bool? deceased = null;
+	@override String? education = null;
+	@override String? profession = null;
 	@override List<Annotation> notes = [];
-	@override String? note;
-	@override String? administrativeNote;
-	@override String? nationality;
-	@override String? race;
-	@override String? ethnicity;
-	@override String? preferredUserId;
-	@override Uint8List? picture;
-	@override String? externalId;
+	@override String? note = null;
+	@override String? administrativeNote = null;
+	@override String? nationality = null;
+	@override String? race = null;
+	@override String? ethnicity = null;
+	@override String? preferredUserId = null;
+	@override Uint8List? picture = null;
+	@override String? externalId = null;
 	@override List<EncryptedInsurability> insurabilities = [];
 	@override List<Partnership> partnerships = [];
 	@override List<EncryptedPatientHealthCareParty> patientHealthCareParties = [];
@@ -226,24 +226,24 @@ class EncryptedPatient implements Patient {
 	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
 	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
 	@override Map<String, HexString> privateKeyShamirPartitions = {};
-	@override SpkiHexString? publicKey;
+	@override SpkiHexString? publicKey = null;
 	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
-	@override String? medicalLocationId;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
+	@override String? medicalLocationId = null;
 	@override Set<String> nonDuplicateIds = {};
 	@override Set<String> encryptedAdministrativesDocuments = {};
-	@override String? comment;
-	@override String? warning;
-	@override CodeStub? fatherBirthCountry;
-	@override CodeStub? birthCountry;
-	@override CodeStub? nativeCountry;
-	@override CodeStub? socialStatus;
-	@override CodeStub? mainSourceOfIncome;
+	@override String? comment = null;
+	@override String? warning = null;
+	@override CodeStub? fatherBirthCountry = null;
+	@override CodeStub? birthCountry = null;
+	@override CodeStub? nativeCountry = null;
+	@override CodeStub? socialStatus = null;
+	@override CodeStub? mainSourceOfIncome = null;
 	@override List<SchoolingInfo> schoolingInfos = [];
 	@override List<EmploymentInfo> employementInfos = [];
 	EncryptedPatient(
@@ -252,61 +252,50 @@ class EncryptedPatient implements Patient {
 			int? deactivationDate,
 			int? dateOfBirth,
 			int? dateOfDeath,
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.endOfLife,
-			this.deletionDate,
-			this.firstName,
-			this.lastName,
-			this.companyName,
-			this.civility,
-			this.mergeToPatientId,
-			this.alias,
-			this.ssin,
-			this.maidenName,
-			this.spouseName,
-			this.partnerName,
-			this.timestampOfLatestEidReading,
-			this.placeOfBirth,
-			this.placeOfDeath,
-			this.deceased,
-			this.education,
-			this.profession,
-			this.note,
-			this.administrativeNote,
-			this.nationality,
-			this.race,
-			this.ethnicity,
-			this.preferredUserId,
-			this.picture,
-			this.externalId,
-			this.publicKey,
-			this.encryptedSelf,
-			this.securityMetadata,
-			this.medicalLocationId,
-			this.comment,
-			this.warning,
-			this.fatherBirthCountry,
-			this.birthCountry,
-			this.nativeCountry,
-			this.socialStatus,
-			this.mainSourceOfIncome,
 			List<Identifier>? identifier,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? firstName,
+			String? lastName,
 			List<PersonName>? names,
+			String? companyName,
 			List<String>? languages,
 			List<EncryptedAddress>? addresses,
+			String? civility,
 			Gender? gender,
 			Gender? birthSex,
+			String? mergeToPatientId,
 			Set<String>? mergedIds,
+			String? alias,
 			bool? active,
 			DeactivationReason? deactivationReason,
+			String? ssin,
+			String? maidenName,
+			String? spouseName,
+			String? partnerName,
 			PersonalStatus? personalStatus,
+			int? timestampOfLatestEidReading,
+			String? placeOfBirth,
+			String? placeOfDeath,
+			bool? deceased,
+			String? education,
+			String? profession,
 			List<Annotation>? notes,
+			String? note,
+			String? administrativeNote,
+			String? nationality,
+			String? race,
+			String? ethnicity,
+			String? preferredUserId,
+			Uint8List? picture,
+			String? externalId,
 			List<EncryptedInsurability>? insurabilities,
 			List<Partnership>? partnerships,
 			List<EncryptedPatientHealthCareParty>? patientHealthCareParties,
@@ -319,28 +308,70 @@ class EncryptedPatient implements Patient {
 			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
 			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
 			Map<String, HexString>? privateKeyShamirPartitions,
+			SpkiHexString? publicKey,
 			Set<SpkiHexString>? publicKeysForOaepWithSha256,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
 			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata,
+			String? medicalLocationId,
 			Set<String>? nonDuplicateIds,
 			Set<String>? encryptedAdministrativesDocuments,
+			String? comment,
+			String? warning,
+			CodeStub? fatherBirthCountry,
+			CodeStub? birthCountry,
+			CodeStub? nativeCountry,
+			CodeStub? socialStatus,
+			CodeStub? mainSourceOfIncome,
 			List<SchoolingInfo>? schoolingInfos,
 			List<EmploymentInfo>? employementInfos
 		}) : identifier = identifier ?? [],
+		rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
 		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		firstName = firstName ?? null,
+		lastName = lastName ?? null,
 		names = names ?? [],
+		companyName = companyName ?? null,
 		languages = languages ?? [],
 		addresses = addresses ?? [],
+		civility = civility ?? null,
 		gender = gender ?? Gender.unknown,
 		birthSex = birthSex ?? Gender.unknown,
+		mergeToPatientId = mergeToPatientId ?? null,
 		mergedIds = mergedIds ?? {},
+		alias = alias ?? null,
 		active = active ?? true,
 		deactivationReason = deactivationReason ?? DeactivationReason.none,
+		ssin = ssin ?? null,
+		maidenName = maidenName ?? null,
+		spouseName = spouseName ?? null,
+		partnerName = partnerName ?? null,
 		personalStatus = personalStatus ?? PersonalStatus.unknown,
+		timestampOfLatestEidReading = timestampOfLatestEidReading ?? null,
+		placeOfBirth = placeOfBirth ?? null,
+		placeOfDeath = placeOfDeath ?? null,
+		deceased = deceased ?? null,
+		education = education ?? null,
+		profession = profession ?? null,
 		notes = notes ?? [],
+		note = note ?? null,
+		administrativeNote = administrativeNote ?? null,
+		nationality = nationality ?? null,
+		race = race ?? null,
+		ethnicity = ethnicity ?? null,
+		preferredUserId = preferredUserId ?? null,
+		picture = picture ?? null,
+		externalId = externalId ?? null,
 		insurabilities = insurabilities ?? [],
 		partnerships = partnerships ?? [],
 		patientHealthCareParties = patientHealthCareParties ?? [],
@@ -353,18 +384,29 @@ class EncryptedPatient implements Patient {
 		aesExchangeKeys = aesExchangeKeys ?? {},
 		transferKeys = transferKeys ?? {},
 		privateKeyShamirPartitions = privateKeyShamirPartitions ?? {},
+		publicKey = publicKey ?? null,
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256 ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		medicalLocationId = medicalLocationId ?? null,
 		nonDuplicateIds = nonDuplicateIds ?? {},
 		encryptedAdministrativesDocuments = encryptedAdministrativesDocuments ?? {},
+		comment = comment ?? null,
+		warning = warning ?? null,
+		fatherBirthCountry = fatherBirthCountry ?? null,
+		birthCountry = birthCountry ?? null,
+		nativeCountry = nativeCountry ?? null,
+		socialStatus = socialStatus ?? null,
+		mainSourceOfIncome = mainSourceOfIncome ?? null,
 		schoolingInfos = schoolingInfos ?? [],
 		employementInfos = employementInfos ?? [],
-		_deactivationDate = deactivationDate,
-		_dateOfBirth = dateOfBirth,
-		_dateOfDeath = dateOfDeath;
+		_deactivationDate = deactivationDate ?? null,
+		_dateOfBirth = dateOfBirth ?? null,
+		_dateOfDeath = dateOfDeath ?? null;
 
 	factory EncryptedPatient.fromJSON(Map<String, dynamic> data) {
 		return EncryptedPatient(
@@ -541,30 +583,30 @@ class EncryptedPatient implements Patient {
 class DecryptedPatient implements Patient {
 	@override String id;
 	@override List<Identifier> identifier = [];
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? firstName;
-	@override String? lastName;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? firstName = null;
+	@override String? lastName = null;
 	@override List<PersonName> names = [];
-	@override String? companyName;
+	@override String? companyName = null;
 	@override List<String> languages = [];
 	@override List<DecryptedAddress> addresses = [];
-	@override String? civility;
+	@override String? civility = null;
 	@override Gender? gender = Gender.unknown;
 	@override Gender? birthSex = Gender.unknown;
-	@override String? mergeToPatientId;
+	@override String? mergeToPatientId = null;
 	@override Set<String> mergedIds = {};
-	@override String? alias;
+	@override String? alias = null;
 	@override bool active = true;
 	@override DeactivationReason deactivationReason = DeactivationReason.none;
-	int? _deactivationDate;
+	int? _deactivationDate = null;
 	@ActualInt32() @override int? get deactivationDate => _deactivationDate;
 	@ActualInt32() @override set deactivationDate(int? value) {
 		if (value != null && value > 2147483647) {
@@ -572,12 +614,12 @@ class DecryptedPatient implements Patient {
 		}
 		_deactivationDate = value;
 	}
-	@override String? ssin;
-	@override String? maidenName;
-	@override String? spouseName;
-	@override String? partnerName;
+	@override String? ssin = null;
+	@override String? maidenName = null;
+	@override String? spouseName = null;
+	@override String? partnerName = null;
 	@override PersonalStatus? personalStatus = PersonalStatus.unknown;
-	int? _dateOfBirth;
+	int? _dateOfBirth = null;
 	@ActualInt32() @override int? get dateOfBirth => _dateOfBirth;
 	@ActualInt32() @override set dateOfBirth(int? value) {
 		if (value != null && value > 2147483647) {
@@ -585,7 +627,7 @@ class DecryptedPatient implements Patient {
 		}
 		_dateOfBirth = value;
 	}
-	int? _dateOfDeath;
+	int? _dateOfDeath = null;
 	@ActualInt32() @override int? get dateOfDeath => _dateOfDeath;
 	@ActualInt32() @override set dateOfDeath(int? value) {
 		if (value != null && value > 2147483647) {
@@ -593,21 +635,21 @@ class DecryptedPatient implements Patient {
 		}
 		_dateOfDeath = value;
 	}
-	@override int? timestampOfLatestEidReading;
-	@override String? placeOfBirth;
-	@override String? placeOfDeath;
-	@override bool? deceased;
-	@override String? education;
-	@override String? profession;
+	@override int? timestampOfLatestEidReading = null;
+	@override String? placeOfBirth = null;
+	@override String? placeOfDeath = null;
+	@override bool? deceased = null;
+	@override String? education = null;
+	@override String? profession = null;
 	@override List<Annotation> notes = [];
-	@override String? note;
-	@override String? administrativeNote;
-	@override String? nationality;
-	@override String? race;
-	@override String? ethnicity;
-	@override String? preferredUserId;
-	@override Uint8List? picture;
-	@override String? externalId;
+	@override String? note = null;
+	@override String? administrativeNote = null;
+	@override String? nationality = null;
+	@override String? race = null;
+	@override String? ethnicity = null;
+	@override String? preferredUserId = null;
+	@override Uint8List? picture = null;
+	@override String? externalId = null;
 	@override List<DecryptedInsurability> insurabilities = [];
 	@override List<Partnership> partnerships = [];
 	@override List<DecryptedPatientHealthCareParty> patientHealthCareParties = [];
@@ -620,24 +662,24 @@ class DecryptedPatient implements Patient {
 	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
 	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
 	@override Map<String, HexString> privateKeyShamirPartitions = {};
-	@override SpkiHexString? publicKey;
+	@override SpkiHexString? publicKey = null;
 	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
-	@override String? medicalLocationId;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
+	@override String? medicalLocationId = null;
 	@override Set<String> nonDuplicateIds = {};
 	@override Set<String> encryptedAdministrativesDocuments = {};
-	@override String? comment;
-	@override String? warning;
-	@override CodeStub? fatherBirthCountry;
-	@override CodeStub? birthCountry;
-	@override CodeStub? nativeCountry;
-	@override CodeStub? socialStatus;
-	@override CodeStub? mainSourceOfIncome;
+	@override String? comment = null;
+	@override String? warning = null;
+	@override CodeStub? fatherBirthCountry = null;
+	@override CodeStub? birthCountry = null;
+	@override CodeStub? nativeCountry = null;
+	@override CodeStub? socialStatus = null;
+	@override CodeStub? mainSourceOfIncome = null;
 	@override List<SchoolingInfo> schoolingInfos = [];
 	@override List<EmploymentInfo> employementInfos = [];
 	DecryptedPatient(
@@ -646,61 +688,50 @@ class DecryptedPatient implements Patient {
 			int? deactivationDate,
 			int? dateOfBirth,
 			int? dateOfDeath,
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.endOfLife,
-			this.deletionDate,
-			this.firstName,
-			this.lastName,
-			this.companyName,
-			this.civility,
-			this.mergeToPatientId,
-			this.alias,
-			this.ssin,
-			this.maidenName,
-			this.spouseName,
-			this.partnerName,
-			this.timestampOfLatestEidReading,
-			this.placeOfBirth,
-			this.placeOfDeath,
-			this.deceased,
-			this.education,
-			this.profession,
-			this.note,
-			this.administrativeNote,
-			this.nationality,
-			this.race,
-			this.ethnicity,
-			this.preferredUserId,
-			this.picture,
-			this.externalId,
-			this.publicKey,
-			this.encryptedSelf,
-			this.securityMetadata,
-			this.medicalLocationId,
-			this.comment,
-			this.warning,
-			this.fatherBirthCountry,
-			this.birthCountry,
-			this.nativeCountry,
-			this.socialStatus,
-			this.mainSourceOfIncome,
 			List<Identifier>? identifier,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? firstName,
+			String? lastName,
 			List<PersonName>? names,
+			String? companyName,
 			List<String>? languages,
 			List<DecryptedAddress>? addresses,
+			String? civility,
 			Gender? gender,
 			Gender? birthSex,
+			String? mergeToPatientId,
 			Set<String>? mergedIds,
+			String? alias,
 			bool? active,
 			DeactivationReason? deactivationReason,
+			String? ssin,
+			String? maidenName,
+			String? spouseName,
+			String? partnerName,
 			PersonalStatus? personalStatus,
+			int? timestampOfLatestEidReading,
+			String? placeOfBirth,
+			String? placeOfDeath,
+			bool? deceased,
+			String? education,
+			String? profession,
 			List<Annotation>? notes,
+			String? note,
+			String? administrativeNote,
+			String? nationality,
+			String? race,
+			String? ethnicity,
+			String? preferredUserId,
+			Uint8List? picture,
+			String? externalId,
 			List<DecryptedInsurability>? insurabilities,
 			List<Partnership>? partnerships,
 			List<DecryptedPatientHealthCareParty>? patientHealthCareParties,
@@ -713,28 +744,70 @@ class DecryptedPatient implements Patient {
 			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
 			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
 			Map<String, HexString>? privateKeyShamirPartitions,
+			SpkiHexString? publicKey,
 			Set<SpkiHexString>? publicKeysForOaepWithSha256,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
 			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata,
+			String? medicalLocationId,
 			Set<String>? nonDuplicateIds,
 			Set<String>? encryptedAdministrativesDocuments,
+			String? comment,
+			String? warning,
+			CodeStub? fatherBirthCountry,
+			CodeStub? birthCountry,
+			CodeStub? nativeCountry,
+			CodeStub? socialStatus,
+			CodeStub? mainSourceOfIncome,
 			List<SchoolingInfo>? schoolingInfos,
 			List<EmploymentInfo>? employementInfos
 		}) : identifier = identifier ?? [],
+		rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
 		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		firstName = firstName ?? null,
+		lastName = lastName ?? null,
 		names = names ?? [],
+		companyName = companyName ?? null,
 		languages = languages ?? [],
 		addresses = addresses ?? [],
+		civility = civility ?? null,
 		gender = gender ?? Gender.unknown,
 		birthSex = birthSex ?? Gender.unknown,
+		mergeToPatientId = mergeToPatientId ?? null,
 		mergedIds = mergedIds ?? {},
+		alias = alias ?? null,
 		active = active ?? true,
 		deactivationReason = deactivationReason ?? DeactivationReason.none,
+		ssin = ssin ?? null,
+		maidenName = maidenName ?? null,
+		spouseName = spouseName ?? null,
+		partnerName = partnerName ?? null,
 		personalStatus = personalStatus ?? PersonalStatus.unknown,
+		timestampOfLatestEidReading = timestampOfLatestEidReading ?? null,
+		placeOfBirth = placeOfBirth ?? null,
+		placeOfDeath = placeOfDeath ?? null,
+		deceased = deceased ?? null,
+		education = education ?? null,
+		profession = profession ?? null,
 		notes = notes ?? [],
+		note = note ?? null,
+		administrativeNote = administrativeNote ?? null,
+		nationality = nationality ?? null,
+		race = race ?? null,
+		ethnicity = ethnicity ?? null,
+		preferredUserId = preferredUserId ?? null,
+		picture = picture ?? null,
+		externalId = externalId ?? null,
 		insurabilities = insurabilities ?? [],
 		partnerships = partnerships ?? [],
 		patientHealthCareParties = patientHealthCareParties ?? [],
@@ -747,18 +820,29 @@ class DecryptedPatient implements Patient {
 		aesExchangeKeys = aesExchangeKeys ?? {},
 		transferKeys = transferKeys ?? {},
 		privateKeyShamirPartitions = privateKeyShamirPartitions ?? {},
+		publicKey = publicKey ?? null,
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256 ?? {},
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		medicalLocationId = medicalLocationId ?? null,
 		nonDuplicateIds = nonDuplicateIds ?? {},
 		encryptedAdministrativesDocuments = encryptedAdministrativesDocuments ?? {},
+		comment = comment ?? null,
+		warning = warning ?? null,
+		fatherBirthCountry = fatherBirthCountry ?? null,
+		birthCountry = birthCountry ?? null,
+		nativeCountry = nativeCountry ?? null,
+		socialStatus = socialStatus ?? null,
+		mainSourceOfIncome = mainSourceOfIncome ?? null,
 		schoolingInfos = schoolingInfos ?? [],
 		employementInfos = employementInfos ?? [],
-		_deactivationDate = deactivationDate,
-		_dateOfBirth = dateOfBirth,
-		_dateOfDeath = dateOfDeath;
+		_deactivationDate = deactivationDate ?? null,
+		_dateOfBirth = dateOfBirth ?? null,
+		_dateOfDeath = dateOfDeath ?? null;
 
 	factory DecryptedPatient.fromJSON(Map<String, dynamic> data) {
 		return DecryptedPatient(

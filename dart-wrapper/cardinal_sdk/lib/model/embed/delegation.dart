@@ -3,16 +3,19 @@ import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 
 
 class Delegation {
-	String? owner;
-	String? delegatedTo;
-	HexString? key;
+	String? owner = null;
+	String? delegatedTo = null;
+	HexString? key = null;
 	List<String> tags = [];
 	Delegation({
-			this.owner,
-			this.delegatedTo,
-			this.key,
+			String? owner,
+			String? delegatedTo,
+			HexString? key,
 			List<String>? tags
-		}) : tags = tags ?? [];
+		}) : owner = owner ?? null,
+		delegatedTo = delegatedTo ?? null,
+		key = key ?? null,
+		tags = tags ?? [];
 
 	factory Delegation.fromJSON(Map<String, dynamic> data) {
 		return Delegation(

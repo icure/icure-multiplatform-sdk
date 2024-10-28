@@ -45,40 +45,40 @@ abstract class MessageFilters {
 		);
 	}
 
-	static Future<SortableFilterOptions<Message>> byPatientsSentDateForDataOwner(String dataOwnerId, List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Message>> byPatientsSentDateForDataOwner(String dataOwnerId, List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.message.byPatientsSentDateForDataOwner(
 			dataOwnerId,
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Message>> byPatientsSentDateForSelf(List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Message>> byPatientsSentDateForSelf(List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.message.byPatientsSentDateForSelf(
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<Message>> byPatientSecretIdsSentDateForDataOwner(String dataOwnerId, List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<Message>> byPatientSecretIdsSentDateForDataOwner(String dataOwnerId, List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.message.byPatientSecretIdsSentDateForDataOwner(
 			dataOwnerId,
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<Message>> byPatientSecretIdsSentDateForSelf(List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<Message>> byPatientSecretIdsSentDateForSelf(List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.message.byPatientSecretIdsSentDateForSelf(
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}

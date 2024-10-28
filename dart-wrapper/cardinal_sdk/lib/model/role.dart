@@ -4,18 +4,21 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 class Role implements StoredDocument {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	String? name;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	String? name = null;
 	Set<String> permissions = {};
 	Role(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.name,
+			String? rev,
+			int? deletionDate,
+			String? name,
 			Set<String>? permissions
-		}) : permissions = permissions ?? {};
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		name = name ?? null,
+		permissions = permissions ?? {};
 
 	factory Role.fromJSON(Map<String, dynamic> data) {
 		return Role(

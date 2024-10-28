@@ -69,7 +69,7 @@ class ContactApi {
 		);
 	}
 
-	Future<DecryptedContact> withEncryptionMetadata(DecryptedContact? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedContact> withEncryptionMetadata(DecryptedContact? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -137,7 +137,7 @@ class ContactApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(FilterOptions<Service> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(FilterOptions<Service> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.subscribeToServiceCreateOrUpdateEvents(
 			_sdkId,
 			filter,
@@ -197,7 +197,7 @@ class ContactApi {
 		);
 	}
 
-	Future<DecryptedContact> shareWith(String delegateId, DecryptedContact contact, ContactShareOptions? options) async {
+	Future<DecryptedContact> shareWith(String delegateId, DecryptedContact contact, { ContactShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.shareWith(
 			_sdkId,
 			delegateId,
@@ -299,7 +299,7 @@ class ContactApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Contact> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Contact> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.subscribeToEvents(
 			_sdkId,
 			events,
@@ -313,7 +313,7 @@ class TryAndRecoverContactApi {
 	final String _sdkId;
 	TryAndRecoverContactApi(this._sdkId);
 
-	Future<Contact> shareWith(String delegateId, Contact contact, ContactShareOptions? options) async {
+	Future<Contact> shareWith(String delegateId, Contact contact, { ContactShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -420,7 +420,7 @@ class EncryptedContactApi {
 	final String _sdkId;
 	EncryptedContactApi(this._sdkId);
 
-	Future<EncryptedContact> shareWith(String delegateId, EncryptedContact contact, ContactShareOptions? options) async {
+	Future<EncryptedContact> shareWith(String delegateId, EncryptedContact contact, { ContactShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.shareWith(
 			_sdkId,
 			delegateId,

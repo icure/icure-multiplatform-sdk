@@ -35,7 +35,7 @@ class GroupApi {
 		);
 	}
 
-	Future<Group> createGroup(String id, String name, GroupType? type, String password, String? server, int? q, int? n, String? superGroup, String? applicationId, DatabaseInitialisation initialisationData) async {
+	Future<Group> createGroup(String id, String name, String password, DatabaseInitialisation initialisationData, { GroupType? type, String? server, int? q, int? n, String? superGroup, String? applicationId }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.group.createGroup(
 			_sdkId,
 			id,
@@ -51,7 +51,7 @@ class GroupApi {
 		);
 	}
 
-	Future<RegistrationSuccess> registerNewGroupAdministrator(GroupType? type, PermissionType? role, RegistrationInformation registrationInformation) async {
+	Future<RegistrationSuccess> registerNewGroupAdministrator(RegistrationInformation registrationInformation, { GroupType? type, PermissionType? role }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.group.registerNewGroupAdministrator(
 			_sdkId,
 			type,
@@ -81,7 +81,7 @@ class GroupApi {
 		);
 	}
 
-	Future<String> getOperationToken(Operation operation, int? duration, String? description) async {
+	Future<String> getOperationToken(Operation operation, int? duration, { String? description }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.group.getOperationToken(
 			_sdkId,
 			operation,
@@ -151,7 +151,7 @@ class GroupApi {
 		);
 	}
 
-	Future<List<DesignDocument>> initDesignDocs(String id, String? clazz, bool? warmup, bool? dryRun) async {
+	Future<List<DesignDocument>> initDesignDocs(String id, bool? warmup, bool? dryRun, { String? clazz }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.group.initDesignDocs(
 			_sdkId,
 			id,
@@ -170,7 +170,7 @@ class GroupApi {
 		);
 	}
 
-	Future<void> resetStorage(String id, int? q, int? n, List<String> databases) async {
+	Future<void> resetStorage(String id, List<String> databases, { int? q, int? n }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.group.resetStorage(
 			_sdkId,
 			id,

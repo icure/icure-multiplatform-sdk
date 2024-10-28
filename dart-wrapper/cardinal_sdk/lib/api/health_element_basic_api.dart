@@ -129,7 +129,7 @@ class HealthElementBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<HealthElement> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<HealthElement> filter, { EntitySubscriptionConfiguration? subscriptionConfig }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.subscribeToEvents(
 			_sdkId,
 			events,

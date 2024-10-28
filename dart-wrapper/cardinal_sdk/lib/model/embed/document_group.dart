@@ -2,12 +2,13 @@
 
 
 class DocumentGroup {
-	String? guid;
-	String? name;
+	String? guid = null;
+	String? name = null;
 	DocumentGroup({
-			this.guid,
-			this.name
-		});
+			String? guid,
+			String? name
+		}) : guid = guid ?? null,
+		name = name ?? null;
 
 	factory DocumentGroup.fromJSON(Map<String, dynamic> data) {
 		return DocumentGroup(

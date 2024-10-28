@@ -4,16 +4,19 @@ import 'package:cardinal_sdk/model/embed/employer.dart';
 
 
 class EmploymentInfo {
-	int? startDate;
-	int? endDate;
-	CodeStub? professionType;
-	Employer? employer;
+	int? startDate = null;
+	int? endDate = null;
+	CodeStub? professionType = null;
+	Employer? employer = null;
 	EmploymentInfo({
-			this.startDate,
-			this.endDate,
-			this.professionType,
-			this.employer
-		});
+			int? startDate,
+			int? endDate,
+			CodeStub? professionType,
+			Employer? employer
+		}) : startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		professionType = professionType ?? null,
+		employer = employer ?? null;
 
 	factory EmploymentInfo.fromJSON(Map<String, dynamic> data) {
 		return EmploymentInfo(

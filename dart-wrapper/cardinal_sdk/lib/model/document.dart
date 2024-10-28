@@ -86,88 +86,114 @@ sealed class Document implements StoredDocument, ICureDocument<String>, HasEncry
 
 class EncryptedDocument implements Document {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override DocumentLocation? documentLocation;
-	@override DocumentType? documentType;
-	@override DocumentStatus? documentStatus;
-	@override String? externalUri;
-	@override String? name;
-	@override String? version;
-	@override String? storedICureDocumentId;
-	@override String? externalUuid;
-	@override int? size;
-	@override String? hash;
-	@override String? openingContactId;
-	@override String? attachmentId;
-	@override String? objectStoreReference;
-	@override String? mainUti;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override DocumentLocation? documentLocation = null;
+	@override DocumentType? documentType = null;
+	@override DocumentStatus? documentStatus = null;
+	@override String? externalUri = null;
+	@override String? name = null;
+	@override String? version = null;
+	@override String? storedICureDocumentId = null;
+	@override String? externalUuid = null;
+	@override int? size = null;
+	@override String? hash = null;
+	@override String? openingContactId = null;
+	@override String? attachmentId = null;
+	@override String? objectStoreReference = null;
+	@override String? mainUti = null;
 	@override Set<String> otherUtis = {};
 	@override Map<String, DataAttachment> secondaryAttachments = {};
 	@override List<DeletedAttachment> deletedAttachments = [];
-	@override Uint8List? encryptedAttachment;
-	@override Uint8List? decryptedAttachment;
+	@override Uint8List? encryptedAttachment = null;
+	@override Uint8List? decryptedAttachment = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	EncryptedDocument(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.documentLocation,
-			this.documentType,
-			this.documentStatus,
-			this.externalUri,
-			this.name,
-			this.version,
-			this.storedICureDocumentId,
-			this.externalUuid,
-			this.size,
-			this.hash,
-			this.openingContactId,
-			this.attachmentId,
-			this.objectStoreReference,
-			this.mainUti,
-			this.encryptedAttachment,
-			this.decryptedAttachment,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			DocumentLocation? documentLocation,
+			DocumentType? documentType,
+			DocumentStatus? documentStatus,
+			String? externalUri,
+			String? name,
+			String? version,
+			String? storedICureDocumentId,
+			String? externalUuid,
+			int? size,
+			String? hash,
+			String? openingContactId,
+			String? attachmentId,
+			String? objectStoreReference,
+			String? mainUti,
 			Set<String>? otherUtis,
 			Map<String, DataAttachment>? secondaryAttachments,
 			List<DeletedAttachment>? deletedAttachments,
+			Uint8List? encryptedAttachment,
+			Uint8List? decryptedAttachment,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		documentLocation = documentLocation ?? null,
+		documentType = documentType ?? null,
+		documentStatus = documentStatus ?? null,
+		externalUri = externalUri ?? null,
+		name = name ?? null,
+		version = version ?? null,
+		storedICureDocumentId = storedICureDocumentId ?? null,
+		externalUuid = externalUuid ?? null,
+		size = size ?? null,
+		hash = hash ?? null,
+		openingContactId = openingContactId ?? null,
+		attachmentId = attachmentId ?? null,
+		objectStoreReference = objectStoreReference ?? null,
+		mainUti = mainUti ?? null,
 		otherUtis = otherUtis ?? {},
 		secondaryAttachments = secondaryAttachments ?? {},
 		deletedAttachments = deletedAttachments ?? [],
+		encryptedAttachment = encryptedAttachment ?? null,
+		decryptedAttachment = decryptedAttachment ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null;
 
 	factory EncryptedDocument.fromJSON(Map<String, dynamic> data) {
 		return EncryptedDocument(
@@ -255,88 +281,114 @@ class EncryptedDocument implements Document {
 
 class DecryptedDocument implements Document {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override DocumentLocation? documentLocation;
-	@override DocumentType? documentType;
-	@override DocumentStatus? documentStatus;
-	@override String? externalUri;
-	@override String? name;
-	@override String? version;
-	@override String? storedICureDocumentId;
-	@override String? externalUuid;
-	@override int? size;
-	@override String? hash;
-	@override String? openingContactId;
-	@override String? attachmentId;
-	@override String? objectStoreReference;
-	@override String? mainUti;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override DocumentLocation? documentLocation = null;
+	@override DocumentType? documentType = null;
+	@override DocumentStatus? documentStatus = null;
+	@override String? externalUri = null;
+	@override String? name = null;
+	@override String? version = null;
+	@override String? storedICureDocumentId = null;
+	@override String? externalUuid = null;
+	@override int? size = null;
+	@override String? hash = null;
+	@override String? openingContactId = null;
+	@override String? attachmentId = null;
+	@override String? objectStoreReference = null;
+	@override String? mainUti = null;
 	@override Set<String> otherUtis = {};
 	@override Map<String, DataAttachment> secondaryAttachments = {};
 	@override List<DeletedAttachment> deletedAttachments = [];
-	@override Uint8List? encryptedAttachment;
-	@override Uint8List? decryptedAttachment;
+	@override Uint8List? encryptedAttachment = null;
+	@override Uint8List? decryptedAttachment = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	DecryptedDocument(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.documentLocation,
-			this.documentType,
-			this.documentStatus,
-			this.externalUri,
-			this.name,
-			this.version,
-			this.storedICureDocumentId,
-			this.externalUuid,
-			this.size,
-			this.hash,
-			this.openingContactId,
-			this.attachmentId,
-			this.objectStoreReference,
-			this.mainUti,
-			this.encryptedAttachment,
-			this.decryptedAttachment,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			DocumentLocation? documentLocation,
+			DocumentType? documentType,
+			DocumentStatus? documentStatus,
+			String? externalUri,
+			String? name,
+			String? version,
+			String? storedICureDocumentId,
+			String? externalUuid,
+			int? size,
+			String? hash,
+			String? openingContactId,
+			String? attachmentId,
+			String? objectStoreReference,
+			String? mainUti,
 			Set<String>? otherUtis,
 			Map<String, DataAttachment>? secondaryAttachments,
 			List<DeletedAttachment>? deletedAttachments,
+			Uint8List? encryptedAttachment,
+			Uint8List? decryptedAttachment,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		documentLocation = documentLocation ?? null,
+		documentType = documentType ?? null,
+		documentStatus = documentStatus ?? null,
+		externalUri = externalUri ?? null,
+		name = name ?? null,
+		version = version ?? null,
+		storedICureDocumentId = storedICureDocumentId ?? null,
+		externalUuid = externalUuid ?? null,
+		size = size ?? null,
+		hash = hash ?? null,
+		openingContactId = openingContactId ?? null,
+		attachmentId = attachmentId ?? null,
+		objectStoreReference = objectStoreReference ?? null,
+		mainUti = mainUti ?? null,
 		otherUtis = otherUtis ?? {},
 		secondaryAttachments = secondaryAttachments ?? {},
 		deletedAttachments = deletedAttachments ?? [],
+		encryptedAttachment = encryptedAttachment ?? null,
+		decryptedAttachment = decryptedAttachment ?? null,
 		secretForeignKeys = secretForeignKeys ?? {},
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {};
+		encryptionKeys = encryptionKeys ?? {},
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null;
 
 	factory DecryptedDocument.fromJSON(Map<String, dynamic> data) {
 		return DecryptedDocument(

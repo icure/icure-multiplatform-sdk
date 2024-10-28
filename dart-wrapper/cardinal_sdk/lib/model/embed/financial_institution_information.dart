@@ -44,24 +44,31 @@ sealed class FinancialInstitutionInformation implements Encryptable {
 }
 
 class EncryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
-	@override String? name;
-	@override String? key;
-	@override String? bankAccount;
-	@override String? bic;
-	@override String? proxyBankAccount;
-	@override String? proxyBic;
+	@override String? name = null;
+	@override String? key = null;
+	@override String? bankAccount = null;
+	@override String? bic = null;
+	@override String? proxyBankAccount = null;
+	@override String? proxyBic = null;
 	@override Set<String> preferredFiiForPartners = {};
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	EncryptedFinancialInstitutionInformation({
-			this.name,
-			this.key,
-			this.bankAccount,
-			this.bic,
-			this.proxyBankAccount,
-			this.proxyBic,
-			this.encryptedSelf,
-			Set<String>? preferredFiiForPartners
-		}) : preferredFiiForPartners = preferredFiiForPartners ?? {};
+			String? name,
+			String? key,
+			String? bankAccount,
+			String? bic,
+			String? proxyBankAccount,
+			String? proxyBic,
+			Set<String>? preferredFiiForPartners,
+			Base64String? encryptedSelf
+		}) : name = name ?? null,
+		key = key ?? null,
+		bankAccount = bankAccount ?? null,
+		bic = bic ?? null,
+		proxyBankAccount = proxyBankAccount ?? null,
+		proxyBic = proxyBic ?? null,
+		preferredFiiForPartners = preferredFiiForPartners ?? {},
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
 		return EncryptedFinancialInstitutionInformation(
@@ -92,24 +99,31 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 }
 
 class DecryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
-	@override String? name;
-	@override String? key;
-	@override String? bankAccount;
-	@override String? bic;
-	@override String? proxyBankAccount;
-	@override String? proxyBic;
+	@override String? name = null;
+	@override String? key = null;
+	@override String? bankAccount = null;
+	@override String? bic = null;
+	@override String? proxyBankAccount = null;
+	@override String? proxyBic = null;
 	@override Set<String> preferredFiiForPartners = {};
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	DecryptedFinancialInstitutionInformation({
-			this.name,
-			this.key,
-			this.bankAccount,
-			this.bic,
-			this.proxyBankAccount,
-			this.proxyBic,
-			this.encryptedSelf,
-			Set<String>? preferredFiiForPartners
-		}) : preferredFiiForPartners = preferredFiiForPartners ?? {};
+			String? name,
+			String? key,
+			String? bankAccount,
+			String? bic,
+			String? proxyBankAccount,
+			String? proxyBic,
+			Set<String>? preferredFiiForPartners,
+			Base64String? encryptedSelf
+		}) : name = name ?? null,
+		key = key ?? null,
+		bankAccount = bankAccount ?? null,
+		bic = bic ?? null,
+		proxyBankAccount = proxyBankAccount ?? null,
+		proxyBic = proxyBic ?? null,
+		preferredFiiForPartners = preferredFiiForPartners ?? {},
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
 		return DecryptedFinancialInstitutionInformation(

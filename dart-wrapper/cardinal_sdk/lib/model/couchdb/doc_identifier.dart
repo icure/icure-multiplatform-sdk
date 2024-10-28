@@ -2,12 +2,13 @@
 
 
 class DocIdentifier {
-	String? id;
-	String? rev;
+	String? id = null;
+	String? rev = null;
 	DocIdentifier({
-			this.id,
-			this.rev
-		});
+			String? id,
+			String? rev
+		}) : id = id ?? null,
+		rev = rev ?? null;
 
 	factory DocIdentifier.fromJSON(Map<String, dynamic> data) {
 		return DocIdentifier(

@@ -5,28 +5,31 @@ import 'package:cardinal_sdk/model/embed/access_level.dart';
 
 
 class SecureDelegation {
-	String? delegator;
-	String? delegate;
+	String? delegator = null;
+	String? delegate = null;
 	Set<Base64String> secretIds = {};
 	Set<Base64String> encryptionKeys = {};
 	Set<Base64String> owningEntityIds = {};
 	Set<SecureDelegationKeyString> parentDelegations = {};
-	String? exchangeDataId;
+	String? exchangeDataId = null;
 	AccessLevel permissions;
 	SecureDelegation(
 		this.permissions,
 		{
-			this.delegator,
-			this.delegate,
-			this.exchangeDataId,
+			String? delegator,
+			String? delegate,
 			Set<Base64String>? secretIds,
 			Set<Base64String>? encryptionKeys,
 			Set<Base64String>? owningEntityIds,
-			Set<SecureDelegationKeyString>? parentDelegations
-		}) : secretIds = secretIds ?? {},
+			Set<SecureDelegationKeyString>? parentDelegations,
+			String? exchangeDataId
+		}) : delegator = delegator ?? null,
+		delegate = delegate ?? null,
+		secretIds = secretIds ?? {},
 		encryptionKeys = encryptionKeys ?? {},
 		owningEntityIds = owningEntityIds ?? {},
-		parentDelegations = parentDelegations ?? {};
+		parentDelegations = parentDelegations ?? {},
+		exchangeDataId = exchangeDataId ?? null;
 
 	factory SecureDelegation.fromJSON(Map<String, dynamic> data) {
 		return SecureDelegation(

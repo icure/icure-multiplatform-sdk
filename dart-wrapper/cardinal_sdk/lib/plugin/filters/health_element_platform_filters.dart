@@ -59,7 +59,7 @@ class HealthElementPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<HealthElement>> byCodeForDataOwner(String dataOwnerId, String codeType, String? codeCode) async {
+	Future<BaseSortableFilterOptions<HealthElement>> byCodeForDataOwner(String dataOwnerId, String codeType, { String? codeCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byCodeForDataOwner',
 			{
@@ -73,7 +73,7 @@ class HealthElementPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<HealthElement>> byCodeForSelf(String codeType, String? codeCode) async {
+	Future<SortableFilterOptions<HealthElement>> byCodeForSelf(String codeType, { String? codeCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byCodeForSelf',
 			{
@@ -86,7 +86,7 @@ class HealthElementPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<HealthElement>> byTagForDataOwner(String dataOwnerId, String tagType, String? tagCode) async {
+	Future<BaseSortableFilterOptions<HealthElement>> byTagForDataOwner(String dataOwnerId, String tagType, { String? tagCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byTagForDataOwner',
 			{
@@ -100,7 +100,7 @@ class HealthElementPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<HealthElement>> byTagForSelf(String tagType, String? tagCode) async {
+	Future<SortableFilterOptions<HealthElement>> byTagForSelf(String tagType, { String? tagCode }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byTagForSelf',
 			{
@@ -175,7 +175,7 @@ class HealthElementPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byPatientsOpeningDateForDataOwner',
 			{
@@ -191,7 +191,7 @@ class HealthElementPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byPatientsOpeningDateForSelf',
 			{
@@ -206,7 +206,7 @@ class HealthElementPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byPatientSecretIdsOpeningDateForDataOwner',
 			{
@@ -222,7 +222,7 @@ class HealthElementPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementFilters.byPatientSecretIdsOpeningDateForSelf',
 			{

@@ -2,16 +2,19 @@
 
 
 class DeletedAttachment {
-	String? couchDbAttachmentId;
-	String? objectStoreAttachmentId;
-	String? key;
-	int? deletionTime;
+	String? couchDbAttachmentId = null;
+	String? objectStoreAttachmentId = null;
+	String? key = null;
+	int? deletionTime = null;
 	DeletedAttachment({
-			this.couchDbAttachmentId,
-			this.objectStoreAttachmentId,
-			this.key,
-			this.deletionTime
-		});
+			String? couchDbAttachmentId,
+			String? objectStoreAttachmentId,
+			String? key,
+			int? deletionTime
+		}) : couchDbAttachmentId = couchDbAttachmentId ?? null,
+		objectStoreAttachmentId = objectStoreAttachmentId ?? null,
+		key = key ?? null,
+		deletionTime = deletionTime ?? null;
 
 	factory DeletedAttachment.fromJSON(Map<String, dynamic> data) {
 		return DeletedAttachment(

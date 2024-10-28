@@ -99,7 +99,7 @@ class PatientPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Patient>> byGenderEducationProfessionForDataOwner(String dataOwnerId, Gender gender, String? education, String? profession) async {
+	Future<BaseSortableFilterOptions<Patient>> byGenderEducationProfessionForDataOwner(String dataOwnerId, Gender gender, { String? education, String? profession }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byGenderEducationProfessionForDataOwner',
 			{
@@ -140,7 +140,7 @@ class PatientPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForDataOwner(String dataOwnerId, String searchString, String postalCode, String? houseNumber) async {
+	Future<BaseSortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForDataOwner(String dataOwnerId, String searchString, String postalCode, { String? houseNumber }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byAddressPostalCodeHouseNumberForDataOwner',
 			{
@@ -230,7 +230,7 @@ class PatientPlatformFilters {
 		return FilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Patient>> byGenderEducationProfessionForSelf(Gender gender, String? education, String? profession) async {
+	Future<SortableFilterOptions<Patient>> byGenderEducationProfessionForSelf(Gender gender, { String? education, String? profession }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byGenderEducationProfessionForSelf',
 			{
@@ -268,7 +268,7 @@ class PatientPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForSelf(String searchString, String postalCode, String? houseNumber) async {
+	Future<SortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForSelf(String searchString, String postalCode, { String? houseNumber }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byAddressPostalCodeHouseNumberForSelf',
 			{
@@ -306,7 +306,7 @@ class PatientPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Patient>> byModificationDateForDataOwner(String dataOwnerId, int? from, int? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Patient>> byModificationDateForDataOwner(String dataOwnerId, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byModificationDateForDataOwner',
 			{
@@ -321,7 +321,7 @@ class PatientPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Patient>> byModificationDateForSelf(int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Patient>> byModificationDateForSelf({ int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byModificationDateForSelf',
 			{

@@ -7,17 +7,19 @@ class FormTemplateLayout {
 	String form;
 	List<Action> actions = [];
 	List<Section> sections = [];
-	String? description;
-	List<String>? keywords;
+	String? description = null;
+	List<String>? keywords = null;
 	FormTemplateLayout(
 		this.form,
 		{
-			this.description,
-			this.keywords,
 			List<Action>? actions,
-			List<Section>? sections
+			List<Section>? sections,
+			String? description,
+			List<String>? keywords
 		}) : actions = actions ?? [],
-		sections = sections ?? [];
+		sections = sections ?? [],
+		description = description ?? null,
+		keywords = keywords ?? null;
 
 	factory FormTemplateLayout.fromJSON(Map<String, dynamic> data) {
 		return FormTemplateLayout(

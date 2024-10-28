@@ -16,69 +16,86 @@ import 'package:cardinal_sdk/model/base/data_owner.dart';
 
 class Device implements StoredDocument, ICureDocument<String>, Named, CryptoActor, DataOwner {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
+	@override String? rev = null;
+	@override int? deletionDate = null;
 	List<Identifier> identifiers = [];
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override String? medicalLocationId;
-	String? externalId;
-	@override String? name;
-	String? type;
-	String? brand;
-	String? model;
-	String? serialNumber;
-	String? parentId;
-	Uint8List? picture;
+	@override int? endOfLife = null;
+	@override String? medicalLocationId = null;
+	String? externalId = null;
+	@override String? name = null;
+	String? type = null;
+	String? brand = null;
+	String? model = null;
+	String? serialNumber = null;
+	String? parentId = null;
+	Uint8List? picture = null;
 	@override Set<DecryptedPropertyStub> properties = {};
 	@override Map<String, List<HexString>> hcPartyKeys = {};
 	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
 	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
 	@override Map<String, HexString> privateKeyShamirPartitions = {};
-	@override SpkiHexString? publicKey;
+	@override SpkiHexString? publicKey = null;
 	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
 	Device(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.endOfLife,
-			this.medicalLocationId,
-			this.externalId,
-			this.name,
-			this.type,
-			this.brand,
-			this.model,
-			this.serialNumber,
-			this.parentId,
-			this.picture,
-			this.publicKey,
+			String? rev,
+			int? deletionDate,
 			List<Identifier>? identifiers,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			String? medicalLocationId,
+			String? externalId,
+			String? name,
+			String? type,
+			String? brand,
+			String? model,
+			String? serialNumber,
+			String? parentId,
+			Uint8List? picture,
 			Set<DecryptedPropertyStub>? properties,
 			Map<String, List<HexString>>? hcPartyKeys,
 			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
 			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
 			Map<String, HexString>? privateKeyShamirPartitions,
+			SpkiHexString? publicKey,
 			Set<SpkiHexString>? publicKeysForOaepWithSha256
-		}) : identifiers = identifiers ?? [],
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		identifiers = identifiers ?? [],
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
 		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		externalId = externalId ?? null,
+		name = name ?? null,
+		type = type ?? null,
+		brand = brand ?? null,
+		model = model ?? null,
+		serialNumber = serialNumber ?? null,
+		parentId = parentId ?? null,
+		picture = picture ?? null,
 		properties = properties ?? {},
 		hcPartyKeys = hcPartyKeys ?? {},
 		aesExchangeKeys = aesExchangeKeys ?? {},
 		transferKeys = transferKeys ?? {},
 		privateKeyShamirPartitions = privateKeyShamirPartitions ?? {},
+		publicKey = publicKey ?? null,
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256 ?? {};
 
 	factory Device.fromJSON(Map<String, dynamic> data) {

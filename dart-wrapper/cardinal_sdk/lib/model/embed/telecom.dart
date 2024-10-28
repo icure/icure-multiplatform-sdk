@@ -41,16 +41,19 @@ sealed class Telecom implements Encryptable {
 }
 
 class EncryptedTelecom implements Telecom {
-	@override TelecomType? telecomType;
-	@override String? telecomNumber;
-	@override String? telecomDescription;
-	@override Base64String? encryptedSelf;
+	@override TelecomType? telecomType = null;
+	@override String? telecomNumber = null;
+	@override String? telecomDescription = null;
+	@override Base64String? encryptedSelf = null;
 	EncryptedTelecom({
-			this.telecomType,
-			this.telecomNumber,
-			this.telecomDescription,
-			this.encryptedSelf
-		});
+			TelecomType? telecomType,
+			String? telecomNumber,
+			String? telecomDescription,
+			Base64String? encryptedSelf
+		}) : telecomType = telecomType ?? null,
+		telecomNumber = telecomNumber ?? null,
+		telecomDescription = telecomDescription ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedTelecom.fromJSON(Map<String, dynamic> data) {
 		return EncryptedTelecom(
@@ -73,16 +76,19 @@ class EncryptedTelecom implements Telecom {
 }
 
 class DecryptedTelecom implements Telecom {
-	@override TelecomType? telecomType;
-	@override String? telecomNumber;
-	@override String? telecomDescription;
-	@override Base64String? encryptedSelf;
+	@override TelecomType? telecomType = null;
+	@override String? telecomNumber = null;
+	@override String? telecomDescription = null;
+	@override Base64String? encryptedSelf = null;
 	DecryptedTelecom({
-			this.telecomType,
-			this.telecomNumber,
-			this.telecomDescription,
-			this.encryptedSelf
-		});
+			TelecomType? telecomType,
+			String? telecomNumber,
+			String? telecomDescription,
+			Base64String? encryptedSelf
+		}) : telecomType = telecomType ?? null,
+		telecomNumber = telecomNumber ?? null,
+		telecomDescription = telecomDescription ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedTelecom.fromJSON(Map<String, dynamic> data) {
 		return DecryptedTelecom(

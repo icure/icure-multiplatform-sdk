@@ -4,12 +4,12 @@ import 'package:cardinal_sdk/model/embed/form/template/structure_element.dart';
 
 class FieldsGroup implements StructureElement {
 	String group;
-	List<StructureElement>? fields;
+	List<StructureElement>? fields = null;
 	FieldsGroup(
 		this.group,
 		{
-			this.fields
-		});
+			List<StructureElement>? fields
+		}) : fields = fields ?? null;
 
 	factory FieldsGroup.fromJSON(Map<String, dynamic> data) {
 		return FieldsGroup(

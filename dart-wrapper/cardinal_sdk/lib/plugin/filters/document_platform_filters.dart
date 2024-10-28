@@ -11,7 +11,7 @@ class DocumentPlatformFilters {
 	MethodChannel _methodChannel;
 	DocumentPlatformFilters(this._methodChannel);
 
-	Future<SortableFilterOptions<Document>> byPatientsCreatedForDataOwner(String dataOwnerId, List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Document>> byPatientsCreatedForDataOwner(String dataOwnerId, List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentFilters.byPatientsCreatedForDataOwner',
 			{
@@ -27,7 +27,7 @@ class DocumentPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Document>> byPatientsCreatedForSelf(List<Patient> patients, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Document>> byPatientsCreatedForSelf(List<Patient> patients, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentFilters.byPatientsCreatedForSelf',
 			{
@@ -42,7 +42,7 @@ class DocumentPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Document>> byPatientSecretIdsCreatedForDataOwner(String dataOwnerId, List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Document>> byPatientSecretIdsCreatedForDataOwner(String dataOwnerId, List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentFilters.byPatientSecretIdsCreatedForDataOwner',
 			{
@@ -58,7 +58,7 @@ class DocumentPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Document>> byPatientSecretIdsCreatedForSelf(List<String> secretIds, DateTime? from, DateTime? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Document>> byPatientSecretIdsCreatedForSelf(List<String> secretIds, { DateTime? from, DateTime? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentFilters.byPatientSecretIdsCreatedForSelf',
 			{

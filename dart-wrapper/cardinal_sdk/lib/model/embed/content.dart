@@ -53,34 +53,46 @@ sealed class Content {
 }
 
 class EncryptedContent implements Content {
-	@override String? stringValue;
-	@override double? numberValue;
-	@override bool? booleanValue;
-	@override DateTime? instantValue;
-	@override int? fuzzyDateValue;
-	@override Uint8List? binaryValue;
-	@override String? documentId;
-	@override Measure? measureValue;
-	@override Medication? medicationValue;
-	@override TimeSeries? timeSeries;
-	@override List<EncryptedService>? compoundValue;
-	@override List<Measure>? ratio;
-	@override List<Measure>? range;
+	@override String? stringValue = null;
+	@override double? numberValue = null;
+	@override bool? booleanValue = null;
+	@override DateTime? instantValue = null;
+	@override int? fuzzyDateValue = null;
+	@override Uint8List? binaryValue = null;
+	@override String? documentId = null;
+	@override Measure? measureValue = null;
+	@override Medication? medicationValue = null;
+	@override TimeSeries? timeSeries = null;
+	@override List<EncryptedService>? compoundValue = null;
+	@override List<Measure>? ratio = null;
+	@override List<Measure>? range = null;
 	EncryptedContent({
-			this.stringValue,
-			this.numberValue,
-			this.booleanValue,
-			this.instantValue,
-			this.fuzzyDateValue,
-			this.binaryValue,
-			this.documentId,
-			this.measureValue,
-			this.medicationValue,
-			this.timeSeries,
-			this.compoundValue,
-			this.ratio,
-			this.range
-		});
+			String? stringValue,
+			double? numberValue,
+			bool? booleanValue,
+			DateTime? instantValue,
+			int? fuzzyDateValue,
+			Uint8List? binaryValue,
+			String? documentId,
+			Measure? measureValue,
+			Medication? medicationValue,
+			TimeSeries? timeSeries,
+			List<EncryptedService>? compoundValue,
+			List<Measure>? ratio,
+			List<Measure>? range
+		}) : stringValue = stringValue ?? null,
+		numberValue = numberValue ?? null,
+		booleanValue = booleanValue ?? null,
+		instantValue = instantValue ?? null,
+		fuzzyDateValue = fuzzyDateValue ?? null,
+		binaryValue = binaryValue ?? null,
+		documentId = documentId ?? null,
+		measureValue = measureValue ?? null,
+		medicationValue = medicationValue ?? null,
+		timeSeries = timeSeries ?? null,
+		compoundValue = compoundValue ?? null,
+		ratio = ratio ?? null,
+		range = range ?? null;
 
 	factory EncryptedContent.fromJSON(Map<String, dynamic> data) {
 		return EncryptedContent(
@@ -121,34 +133,46 @@ class EncryptedContent implements Content {
 }
 
 class DecryptedContent implements Content {
-	@override String? stringValue;
-	@override double? numberValue;
-	@override bool? booleanValue;
-	@override DateTime? instantValue;
-	@override int? fuzzyDateValue;
-	@override Uint8List? binaryValue;
-	@override String? documentId;
-	@override Measure? measureValue;
-	@override Medication? medicationValue;
-	@override TimeSeries? timeSeries;
-	@override List<DecryptedService>? compoundValue;
-	@override List<Measure>? ratio;
-	@override List<Measure>? range;
+	@override String? stringValue = null;
+	@override double? numberValue = null;
+	@override bool? booleanValue = null;
+	@override DateTime? instantValue = null;
+	@override int? fuzzyDateValue = null;
+	@override Uint8List? binaryValue = null;
+	@override String? documentId = null;
+	@override Measure? measureValue = null;
+	@override Medication? medicationValue = null;
+	@override TimeSeries? timeSeries = null;
+	@override List<DecryptedService>? compoundValue = null;
+	@override List<Measure>? ratio = null;
+	@override List<Measure>? range = null;
 	DecryptedContent({
-			this.stringValue,
-			this.numberValue,
-			this.booleanValue,
-			this.instantValue,
-			this.fuzzyDateValue,
-			this.binaryValue,
-			this.documentId,
-			this.measureValue,
-			this.medicationValue,
-			this.timeSeries,
-			this.compoundValue,
-			this.ratio,
-			this.range
-		});
+			String? stringValue,
+			double? numberValue,
+			bool? booleanValue,
+			DateTime? instantValue,
+			int? fuzzyDateValue,
+			Uint8List? binaryValue,
+			String? documentId,
+			Measure? measureValue,
+			Medication? medicationValue,
+			TimeSeries? timeSeries,
+			List<DecryptedService>? compoundValue,
+			List<Measure>? ratio,
+			List<Measure>? range
+		}) : stringValue = stringValue ?? null,
+		numberValue = numberValue ?? null,
+		booleanValue = booleanValue ?? null,
+		instantValue = instantValue ?? null,
+		fuzzyDateValue = fuzzyDateValue ?? null,
+		binaryValue = binaryValue ?? null,
+		documentId = documentId ?? null,
+		measureValue = measureValue ?? null,
+		medicationValue = medicationValue ?? null,
+		timeSeries = timeSeries ?? null,
+		compoundValue = compoundValue ?? null,
+		ratio = ratio ?? null,
+		range = range ?? null;
 
 	factory DecryptedContent.fromJSON(Map<String, dynamic> data) {
 		return DecryptedContent(

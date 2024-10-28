@@ -6,34 +6,45 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 class FrontEndMigration implements StoredDocument {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	String? name;
-	int? startDate;
-	int? endDate;
-	FrontEndMigrationStatus? status;
-	String? logs;
-	String? userId;
-	String? startKey;
-	String? startKeyDocId;
-	int? processCount;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	String? name = null;
+	int? startDate = null;
+	int? endDate = null;
+	FrontEndMigrationStatus? status = null;
+	String? logs = null;
+	String? userId = null;
+	String? startKey = null;
+	String? startKeyDocId = null;
+	int? processCount = null;
 	Set<DecryptedPropertyStub> properties = {};
 	FrontEndMigration(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.name,
-			this.startDate,
-			this.endDate,
-			this.status,
-			this.logs,
-			this.userId,
-			this.startKey,
-			this.startKeyDocId,
-			this.processCount,
+			String? rev,
+			int? deletionDate,
+			String? name,
+			int? startDate,
+			int? endDate,
+			FrontEndMigrationStatus? status,
+			String? logs,
+			String? userId,
+			String? startKey,
+			String? startKeyDocId,
+			int? processCount,
 			Set<DecryptedPropertyStub>? properties
-		}) : properties = properties ?? {};
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		name = name ?? null,
+		startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		status = status ?? null,
+		logs = logs ?? null,
+		userId = userId ?? null,
+		startKey = startKey ?? null,
+		startKeyDocId = startKeyDocId ?? null,
+		processCount = processCount ?? null,
+		properties = properties ?? {};
 
 	factory FrontEndMigration.fromJSON(Map<String, dynamic> data) {
 		return FrontEndMigration(

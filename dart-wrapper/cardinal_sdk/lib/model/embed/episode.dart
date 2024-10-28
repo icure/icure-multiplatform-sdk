@@ -45,20 +45,24 @@ sealed class Episode implements Encryptable, Identifiable<String>, Named {
 
 class DecryptedEpisode implements Episode {
 	@override String id;
-	@override String? name;
-	@override String? comment;
-	@override int? startDate;
-	@override int? endDate;
-	@override Base64String? encryptedSelf;
+	@override String? name = null;
+	@override String? comment = null;
+	@override int? startDate = null;
+	@override int? endDate = null;
+	@override Base64String? encryptedSelf = null;
 	DecryptedEpisode(
 		this.id,
 		{
-			this.name,
-			this.comment,
-			this.startDate,
-			this.endDate,
-			this.encryptedSelf
-		});
+			String? name,
+			String? comment,
+			int? startDate,
+			int? endDate,
+			Base64String? encryptedSelf
+		}) : name = name ?? null,
+		comment = comment ?? null,
+		startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedEpisode.fromJSON(Map<String, dynamic> data) {
 		return DecryptedEpisode(
@@ -86,20 +90,24 @@ class DecryptedEpisode implements Episode {
 
 class EncryptedEpisode implements Episode {
 	@override String id;
-	@override String? name;
-	@override String? comment;
-	@override int? startDate;
-	@override int? endDate;
-	@override Base64String? encryptedSelf;
+	@override String? name = null;
+	@override String? comment = null;
+	@override int? startDate = null;
+	@override int? endDate = null;
+	@override Base64String? encryptedSelf = null;
 	EncryptedEpisode(
 		this.id,
 		{
-			this.name,
-			this.comment,
-			this.startDate,
-			this.endDate,
-			this.encryptedSelf
-		});
+			String? name,
+			String? comment,
+			int? startDate,
+			int? endDate,
+			Base64String? encryptedSelf
+		}) : name = name ?? null,
+		comment = comment ?? null,
+		startDate = startDate ?? null,
+		endDate = endDate ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedEpisode.fromJSON(Map<String, dynamic> data) {
 		return EncryptedEpisode(

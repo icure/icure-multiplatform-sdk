@@ -29,7 +29,7 @@ class AccessLogApi {
 		);
 	}
 
-	Future<DecryptedAccessLog> withEncryptionMetadata(DecryptedAccessLog? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedAccessLog> withEncryptionMetadata(DecryptedAccessLog? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -141,7 +141,7 @@ class AccessLogApi {
 		);
 	}
 
-	Future<DecryptedAccessLog> shareWith(String delegateId, DecryptedAccessLog accessLog, AccessLogShareOptions? options) async {
+	Future<DecryptedAccessLog> shareWith(String delegateId, DecryptedAccessLog accessLog, { AccessLogShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.shareWith(
 			_sdkId,
 			delegateId,
@@ -213,7 +213,7 @@ class TryAndRecoverAccessLogApi {
 	final String _sdkId;
 	TryAndRecoverAccessLogApi(this._sdkId);
 
-	Future<AccessLog> shareWith(String delegateId, AccessLog accessLog, AccessLogShareOptions? options) async {
+	Future<AccessLog> shareWith(String delegateId, AccessLog accessLog, { AccessLogShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -285,7 +285,7 @@ class EncryptedAccessLogApi {
 	final String _sdkId;
 	EncryptedAccessLogApi(this._sdkId);
 
-	Future<EncryptedAccessLog> shareWith(String delegateId, EncryptedAccessLog accessLog, AccessLogShareOptions? options) async {
+	Future<EncryptedAccessLog> shareWith(String delegateId, EncryptedAccessLog accessLog, { AccessLogShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.shareWith(
 			_sdkId,
 			delegateId,

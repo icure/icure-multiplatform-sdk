@@ -3,12 +3,12 @@
 
 class IdWithRev {
 	String id;
-	String? rev;
+	String? rev = null;
 	IdWithRev(
 		this.id,
 		{
-			this.rev
-		});
+			String? rev
+		}) : rev = rev ?? null;
 
 	factory IdWithRev.fromJSON(Map<String, dynamic> data) {
 		return IdWithRev(

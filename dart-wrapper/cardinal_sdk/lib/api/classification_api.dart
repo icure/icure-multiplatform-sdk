@@ -28,7 +28,7 @@ class ClassificationApi {
 		);
 	}
 
-	Future<DecryptedClassification> withEncryptionMetadata(DecryptedClassification? base, Patient patient, User? user, { Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+	Future<DecryptedClassification> withEncryptionMetadata(DecryptedClassification? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.withEncryptionMetadata(
 			_sdkId,
 			base,
@@ -110,7 +110,7 @@ class ClassificationApi {
 		);
 	}
 
-	Future<DecryptedClassification> shareWith(String delegateId, DecryptedClassification classification, ClassificationShareOptions? options) async {
+	Future<DecryptedClassification> shareWith(String delegateId, DecryptedClassification classification, { ClassificationShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.shareWith(
 			_sdkId,
 			delegateId,
@@ -167,7 +167,7 @@ class TryAndRecoverClassificationApi {
 	final String _sdkId;
 	TryAndRecoverClassificationApi(this._sdkId);
 
-	Future<Classification> shareWith(String delegateId, Classification classification, ClassificationShareOptions? options) async {
+	Future<Classification> shareWith(String delegateId, Classification classification, { ClassificationShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.shareWith(
 			_sdkId,
 			delegateId,
@@ -224,7 +224,7 @@ class EncryptedClassificationApi {
 	final String _sdkId;
 	EncryptedClassificationApi(this._sdkId);
 
-	Future<EncryptedClassification> shareWith(String delegateId, EncryptedClassification classification, ClassificationShareOptions? options) async {
+	Future<EncryptedClassification> shareWith(String delegateId, EncryptedClassification classification, { ClassificationShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.shareWith(
 			_sdkId,
 			delegateId,

@@ -3,7 +3,7 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
 
 class ReplicationStats {
-	int? _revisionsChecked;
+	int? _revisionsChecked = null;
 	@ActualInt32() int? get revisionsChecked => _revisionsChecked;
 	@ActualInt32() set revisionsChecked(int? value) {
 		if (value != null && value > 2147483647) {
@@ -11,7 +11,7 @@ class ReplicationStats {
 		}
 		_revisionsChecked = value;
 	}
-	int? _missingRevisionsFound;
+	int? _missingRevisionsFound = null;
 	@ActualInt32() int? get missingRevisionsFound => _missingRevisionsFound;
 	@ActualInt32() set missingRevisionsFound(int? value) {
 		if (value != null && value > 2147483647) {
@@ -19,7 +19,7 @@ class ReplicationStats {
 		}
 		_missingRevisionsFound = value;
 	}
-	int? _docsRead;
+	int? _docsRead = null;
 	@ActualInt32() int? get docsRead => _docsRead;
 	@ActualInt32() set docsRead(int? value) {
 		if (value != null && value > 2147483647) {
@@ -27,7 +27,7 @@ class ReplicationStats {
 		}
 		_docsRead = value;
 	}
-	int? _docsWritten;
+	int? _docsWritten = null;
 	@ActualInt32() int? get docsWritten => _docsWritten;
 	@ActualInt32() set docsWritten(int? value) {
 		if (value != null && value > 2147483647) {
@@ -35,7 +35,7 @@ class ReplicationStats {
 		}
 		_docsWritten = value;
 	}
-	int? _changesPending;
+	int? _changesPending = null;
 	@ActualInt32() int? get changesPending => _changesPending;
 	@ActualInt32() set changesPending(int? value) {
 		if (value != null && value > 2147483647) {
@@ -43,7 +43,7 @@ class ReplicationStats {
 		}
 		_changesPending = value;
 	}
-	int? _docWriteFailures;
+	int? _docWriteFailures = null;
 	@ActualInt32() int? get docWriteFailures => _docWriteFailures;
 	@ActualInt32() set docWriteFailures(int? value) {
 		if (value != null && value > 2147483647) {
@@ -51,9 +51,9 @@ class ReplicationStats {
 		}
 		_docWriteFailures = value;
 	}
-	String? checkpointedSourceSeq;
-	String? startTime;
-	String? error;
+	String? checkpointedSourceSeq = null;
+	String? startTime = null;
+	String? error = null;
 	ReplicationStats({
 			int? revisionsChecked,
 			int? missingRevisionsFound,
@@ -61,15 +61,18 @@ class ReplicationStats {
 			int? docsWritten,
 			int? changesPending,
 			int? docWriteFailures,
-			this.checkpointedSourceSeq,
-			this.startTime,
-			this.error
-		}) : _revisionsChecked = revisionsChecked,
-		_missingRevisionsFound = missingRevisionsFound,
-		_docsRead = docsRead,
-		_docsWritten = docsWritten,
-		_changesPending = changesPending,
-		_docWriteFailures = docWriteFailures;
+			String? checkpointedSourceSeq,
+			String? startTime,
+			String? error
+		}) : checkpointedSourceSeq = checkpointedSourceSeq ?? null,
+		startTime = startTime ?? null,
+		error = error ?? null,
+		_revisionsChecked = revisionsChecked ?? null,
+		_missingRevisionsFound = missingRevisionsFound ?? null,
+		_docsRead = docsRead ?? null,
+		_docsWritten = docsWritten ?? null,
+		_changesPending = changesPending ?? null,
+		_docWriteFailures = docWriteFailures ?? null;
 
 	factory ReplicationStats.fromJSON(Map<String, dynamic> data) {
 		return ReplicationStats(

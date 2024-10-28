@@ -3,12 +3,12 @@
 
 class View {
 	String map;
-	String? reduce;
+	String? reduce = null;
 	View(
 		this.map,
 		{
-			this.reduce
-		});
+			String? reduce
+		}) : reduce = reduce ?? null;
 
 	factory View.fromJSON(Map<String, dynamic> data) {
 		return View(

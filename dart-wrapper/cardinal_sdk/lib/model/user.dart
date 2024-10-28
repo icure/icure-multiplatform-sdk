@@ -11,64 +11,81 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 
 class User implements StoredDocument {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
-	int? created;
+	@override String? rev = null;
+	@override int? deletionDate = null;
+	int? created = null;
 	List<Identifier> identifier = [];
-	String? name;
+	String? name = null;
 	Set<DecryptedPropertyStub> properties = {};
 	Set<Permission> permissions = {};
 	Set<String> roles = {};
-	UsersType? type;
-	UsersStatus? status;
-	String? login;
-	String? passwordHash;
-	String? groupId;
-	String? healthcarePartyId;
-	String? patientId;
-	String? deviceId;
+	UsersType? type = null;
+	UsersStatus? status = null;
+	String? login = null;
+	String? passwordHash = null;
+	String? groupId = null;
+	String? healthcarePartyId = null;
+	String? patientId = null;
+	String? deviceId = null;
 	Map<DelegationTag, Set<String>> autoDelegations = {};
-	DateTime? createdDate;
-	DateTime? termsOfUseDate;
-	String? email;
-	String? mobilePhone;
+	DateTime? createdDate = null;
+	DateTime? termsOfUseDate = null;
+	String? email = null;
+	String? mobilePhone = null;
 	Map<String, String> applicationTokens = {};
 	Map<String, AuthenticationToken> authenticationTokens = {};
-	UserSystemMetadata? systemMetadata;
+	UserSystemMetadata? systemMetadata = null;
 	User(
 		this.id,
 		{
-			this.rev,
-			this.deletionDate,
-			this.created,
-			this.name,
-			this.type,
-			this.status,
-			this.login,
-			this.passwordHash,
-			this.groupId,
-			this.healthcarePartyId,
-			this.patientId,
-			this.deviceId,
-			this.createdDate,
-			this.termsOfUseDate,
-			this.email,
-			this.mobilePhone,
-			this.systemMetadata,
+			String? rev,
+			int? deletionDate,
+			int? created,
 			List<Identifier>? identifier,
+			String? name,
 			Set<DecryptedPropertyStub>? properties,
 			Set<Permission>? permissions,
 			Set<String>? roles,
+			UsersType? type,
+			UsersStatus? status,
+			String? login,
+			String? passwordHash,
+			String? groupId,
+			String? healthcarePartyId,
+			String? patientId,
+			String? deviceId,
 			Map<DelegationTag, Set<String>>? autoDelegations,
+			DateTime? createdDate,
+			DateTime? termsOfUseDate,
+			String? email,
+			String? mobilePhone,
 			Map<String, String>? applicationTokens,
-			Map<String, AuthenticationToken>? authenticationTokens
-		}) : identifier = identifier ?? [],
+			Map<String, AuthenticationToken>? authenticationTokens,
+			UserSystemMetadata? systemMetadata
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		created = created ?? null,
+		identifier = identifier ?? [],
+		name = name ?? null,
 		properties = properties ?? {},
 		permissions = permissions ?? {},
 		roles = roles ?? {},
+		type = type ?? null,
+		status = status ?? null,
+		login = login ?? null,
+		passwordHash = passwordHash ?? null,
+		groupId = groupId ?? null,
+		healthcarePartyId = healthcarePartyId ?? null,
+		patientId = patientId ?? null,
+		deviceId = deviceId ?? null,
 		autoDelegations = autoDelegations ?? {},
+		createdDate = createdDate ?? null,
+		termsOfUseDate = termsOfUseDate ?? null,
+		email = email ?? null,
+		mobilePhone = mobilePhone ?? null,
 		applicationTokens = applicationTokens ?? {},
-		authenticationTokens = authenticationTokens ?? {};
+		authenticationTokens = authenticationTokens ?? {},
+		systemMetadata = systemMetadata ?? null;
 
 	factory User.fromJSON(Map<String, dynamic> data) {
 		return User(

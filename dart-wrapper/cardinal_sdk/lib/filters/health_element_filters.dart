@@ -33,33 +33,33 @@ abstract class HealthElementFilters {
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<HealthElement>> byCodeForDataOwner(String dataOwnerId, String codeType, String? codeCode) async {
+	static Future<BaseSortableFilterOptions<HealthElement>> byCodeForDataOwner(String dataOwnerId, String codeType, { String? codeCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byCodeForDataOwner(
 			dataOwnerId,
 			codeType,
-			codeCode,
+			codeCode: codeCode,
 		);
 	}
 
-	static Future<SortableFilterOptions<HealthElement>> byCodeForSelf(String codeType, String? codeCode) async {
+	static Future<SortableFilterOptions<HealthElement>> byCodeForSelf(String codeType, { String? codeCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byCodeForSelf(
 			codeType,
-			codeCode,
+			codeCode: codeCode,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<HealthElement>> byTagForDataOwner(String dataOwnerId, String tagType, String? tagCode) async {
+	static Future<BaseSortableFilterOptions<HealthElement>> byTagForDataOwner(String dataOwnerId, String tagType, { String? tagCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byTagForDataOwner(
 			dataOwnerId,
 			tagType,
-			tagCode,
+			tagCode: tagCode,
 		);
 	}
 
-	static Future<SortableFilterOptions<HealthElement>> byTagForSelf(String tagType, String? tagCode) async {
+	static Future<SortableFilterOptions<HealthElement>> byTagForSelf(String tagType, { String? tagCode }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byTagForSelf(
 			tagType,
-			tagCode,
+			tagCode: tagCode,
 		);
 	}
 
@@ -95,40 +95,40 @@ abstract class HealthElementFilters {
 		);
 	}
 
-	static Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byPatientsOpeningDateForDataOwner(
 			dataOwnerId,
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<HealthElement>> byPatientsOpeningDateForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byPatientsOpeningDateForSelf(
 			patients,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<BaseSortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	static Future<BaseSortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byPatientSecretIdsOpeningDateForDataOwner(
 			dataOwnerId,
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}
 
-	static Future<SortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	static Future<SortableFilterOptions<HealthElement>> byPatientSecretIdsOpeningDateForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		return CardinalSdkPlatformInterface.instance.filters.healthElement.byPatientSecretIdsOpeningDateForSelf(
 			secretIds,
-			from,
-			to,
+			from: from,
+			to: to,
 			descending: descending,
 		);
 	}

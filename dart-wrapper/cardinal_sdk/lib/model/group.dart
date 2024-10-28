@@ -10,45 +10,53 @@ import 'package:cardinal_sdk/model/base/has_tags.dart';
 
 class Group implements StoredDocument, HasTags {
 	@override String id;
-	@override String? rev;
-	@override int? deletionDate;
+	@override String? rev = null;
+	@override int? deletionDate = null;
 	@override Set<CodeStub> tags = {};
-	String? name;
-	String? password;
-	List<String>? servers;
+	String? name = null;
+	String? password = null;
+	List<String>? servers = null;
 	bool superAdmin = false;
 	Set<DecryptedPropertyStub> properties = {};
 	Map<UserType, Set<String>> defaultUserRoles = {};
 	Map<String, OperationToken> operationTokens = {};
 	Map<String, String> sharedEntities = {};
-	String? minimumKrakenVersion;
+	String? minimumKrakenVersion = null;
 	AuthenticationClass minimumAuthenticationClassForElevatedPrivileges;
-	String? superGroup;
-	String? applicationId;
+	String? superGroup = null;
+	String? applicationId = null;
 	Group(
 		this.id,
 		this.minimumAuthenticationClassForElevatedPrivileges,
 		{
-			this.rev,
-			this.deletionDate,
-			this.name,
-			this.password,
-			this.servers,
-			this.minimumKrakenVersion,
-			this.superGroup,
-			this.applicationId,
+			String? rev,
+			int? deletionDate,
 			Set<CodeStub>? tags,
+			String? name,
+			String? password,
+			List<String>? servers,
 			bool? superAdmin,
 			Set<DecryptedPropertyStub>? properties,
 			Map<UserType, Set<String>>? defaultUserRoles,
 			Map<String, OperationToken>? operationTokens,
-			Map<String, String>? sharedEntities
-		}) : tags = tags ?? {},
+			Map<String, String>? sharedEntities,
+			String? minimumKrakenVersion,
+			String? superGroup,
+			String? applicationId
+		}) : rev = rev ?? null,
+		deletionDate = deletionDate ?? null,
+		tags = tags ?? {},
+		name = name ?? null,
+		password = password ?? null,
+		servers = servers ?? null,
 		superAdmin = superAdmin ?? false,
 		properties = properties ?? {},
 		defaultUserRoles = defaultUserRoles ?? {},
 		operationTokens = operationTokens ?? {},
-		sharedEntities = sharedEntities ?? {};
+		sharedEntities = sharedEntities ?? {},
+		minimumKrakenVersion = minimumKrakenVersion ?? null,
+		superGroup = superGroup ?? null,
+		applicationId = applicationId ?? null;
 
 	factory Group.fromJSON(Map<String, dynamic> data) {
 		return Group(

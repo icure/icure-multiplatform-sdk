@@ -2,16 +2,19 @@
 
 
 class Suspension {
-	int? beginMoment;
-	int? endMoment;
-	String? suspensionReason;
-	String? lifecycle;
+	int? beginMoment = null;
+	int? endMoment = null;
+	String? suspensionReason = null;
+	String? lifecycle = null;
 	Suspension({
-			this.beginMoment,
-			this.endMoment,
-			this.suspensionReason,
-			this.lifecycle
-		});
+			int? beginMoment,
+			int? endMoment,
+			String? suspensionReason,
+			String? lifecycle
+		}) : beginMoment = beginMoment ?? null,
+		endMoment = endMoment ?? null,
+		suspensionReason = suspensionReason ?? null,
+		lifecycle = lifecycle ?? null;
 
 	factory Suspension.fromJSON(Map<String, dynamic> data) {
 		return Suspension(

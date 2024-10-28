@@ -18,38 +18,38 @@ abstract class CodeFilters {
 		);
 	}
 
-	static Future<BaseFilterOptions<Code>> byQualifiedLink(String linkType, String? linkedId) async {
+	static Future<BaseFilterOptions<Code>> byQualifiedLink(String linkType, { String? linkedId }) async {
 		return CardinalSdkPlatformInterface.instance.filters.code.byQualifiedLink(
 			linkType,
-			linkedId,
+			linkedId: linkedId,
 		);
 	}
 
-	static Future<BaseFilterOptions<Code>> byRegionTypeCodeVersion(String region, String? type, String? code, String? version) async {
+	static Future<BaseFilterOptions<Code>> byRegionTypeCodeVersion(String region, { String? type, String? code, String? version }) async {
 		return CardinalSdkPlatformInterface.instance.filters.code.byRegionTypeCodeVersion(
 			region,
-			type,
-			code,
-			version,
+			type: type,
+			code: code,
+			version: version,
 		);
 	}
 
-	static Future<BaseFilterOptions<Code>> byLanguageTypeLabelRegion(String language, String type, String? label, String? region) async {
+	static Future<BaseFilterOptions<Code>> byLanguageTypeLabelRegion(String language, String type, { String? label, String? region }) async {
 		return CardinalSdkPlatformInterface.instance.filters.code.byLanguageTypeLabelRegion(
 			language,
 			type,
-			label,
-			region,
+			label: label,
+			region: region,
 		);
 	}
 
-	static Future<BaseFilterOptions<Code>> byLanguageTypesLabelRegionVersion(String language, List<String> types, String label, String? region, String? version) async {
+	static Future<BaseFilterOptions<Code>> byLanguageTypesLabelRegionVersion(String language, List<String> types, String label, { String? region, String? version }) async {
 		return CardinalSdkPlatformInterface.instance.filters.code.byLanguageTypesLabelRegionVersion(
 			language,
 			types,
 			label,
-			region,
-			version,
+			region: region,
+			version: version,
 		);
 	}
 }

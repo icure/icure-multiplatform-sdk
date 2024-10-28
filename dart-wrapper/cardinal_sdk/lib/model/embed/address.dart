@@ -52,35 +52,46 @@ sealed class Address implements Encryptable {
 }
 
 class EncryptedAddress implements Address {
-	@override AddressType? addressType;
-	@override String? descr;
-	@override String? street;
-	@override String? houseNumber;
-	@override String? postboxNumber;
-	@override String? postalCode;
-	@override String? city;
-	@override String? state;
-	@override String? country;
-	@override String? note;
+	@override AddressType? addressType = null;
+	@override String? descr = null;
+	@override String? street = null;
+	@override String? houseNumber = null;
+	@override String? postboxNumber = null;
+	@override String? postalCode = null;
+	@override String? city = null;
+	@override String? state = null;
+	@override String? country = null;
+	@override String? note = null;
 	@override List<Annotation> notes = [];
 	@override List<EncryptedTelecom> telecoms = [];
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	EncryptedAddress({
-			this.addressType,
-			this.descr,
-			this.street,
-			this.houseNumber,
-			this.postboxNumber,
-			this.postalCode,
-			this.city,
-			this.state,
-			this.country,
-			this.note,
-			this.encryptedSelf,
+			AddressType? addressType,
+			String? descr,
+			String? street,
+			String? houseNumber,
+			String? postboxNumber,
+			String? postalCode,
+			String? city,
+			String? state,
+			String? country,
+			String? note,
 			List<Annotation>? notes,
-			List<EncryptedTelecom>? telecoms
-		}) : notes = notes ?? [],
-		telecoms = telecoms ?? [];
+			List<EncryptedTelecom>? telecoms,
+			Base64String? encryptedSelf
+		}) : addressType = addressType ?? null,
+		descr = descr ?? null,
+		street = street ?? null,
+		houseNumber = houseNumber ?? null,
+		postboxNumber = postboxNumber ?? null,
+		postalCode = postalCode ?? null,
+		city = city ?? null,
+		state = state ?? null,
+		country = country ?? null,
+		note = note ?? null,
+		notes = notes ?? [],
+		telecoms = telecoms ?? [],
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedAddress.fromJSON(Map<String, dynamic> data) {
 		return EncryptedAddress(
@@ -121,35 +132,46 @@ class EncryptedAddress implements Address {
 }
 
 class DecryptedAddress implements Address {
-	@override AddressType? addressType;
-	@override String? descr;
-	@override String? street;
-	@override String? houseNumber;
-	@override String? postboxNumber;
-	@override String? postalCode;
-	@override String? city;
-	@override String? state;
-	@override String? country;
-	@override String? note;
+	@override AddressType? addressType = null;
+	@override String? descr = null;
+	@override String? street = null;
+	@override String? houseNumber = null;
+	@override String? postboxNumber = null;
+	@override String? postalCode = null;
+	@override String? city = null;
+	@override String? state = null;
+	@override String? country = null;
+	@override String? note = null;
 	@override List<Annotation> notes = [];
 	@override List<DecryptedTelecom> telecoms = [];
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	DecryptedAddress({
-			this.addressType,
-			this.descr,
-			this.street,
-			this.houseNumber,
-			this.postboxNumber,
-			this.postalCode,
-			this.city,
-			this.state,
-			this.country,
-			this.note,
-			this.encryptedSelf,
+			AddressType? addressType,
+			String? descr,
+			String? street,
+			String? houseNumber,
+			String? postboxNumber,
+			String? postalCode,
+			String? city,
+			String? state,
+			String? country,
+			String? note,
 			List<Annotation>? notes,
-			List<DecryptedTelecom>? telecoms
-		}) : notes = notes ?? [],
-		telecoms = telecoms ?? [];
+			List<DecryptedTelecom>? telecoms,
+			Base64String? encryptedSelf
+		}) : addressType = addressType ?? null,
+		descr = descr ?? null,
+		street = street ?? null,
+		houseNumber = houseNumber ?? null,
+		postboxNumber = postboxNumber ?? null,
+		postalCode = postalCode ?? null,
+		city = city ?? null,
+		state = state ?? null,
+		country = country ?? null,
+		note = note ?? null,
+		notes = notes ?? [],
+		telecoms = telecoms ?? [],
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedAddress.fromJSON(Map<String, dynamic> data) {
 		return DecryptedAddress(

@@ -3,32 +3,43 @@ import 'package:cardinal_sdk/model/group.dart';
 
 
 class UserGroup {
-	String? groupId;
-	String? groupName;
+	String? groupId = null;
+	String? groupName = null;
 	List<Group> groupsHierarchy = [];
-	String? userId;
-	String? login;
-	String? name;
-	String? email;
-	String? phone;
-	String? patientId;
-	String? healthcarePartyId;
-	String? deviceId;
-	String? nameOfParentOfTopmostGroupInHierarchy;
+	String? userId = null;
+	String? login = null;
+	String? name = null;
+	String? email = null;
+	String? phone = null;
+	String? patientId = null;
+	String? healthcarePartyId = null;
+	String? deviceId = null;
+	String? nameOfParentOfTopmostGroupInHierarchy = null;
 	UserGroup({
-			this.groupId,
-			this.groupName,
-			this.userId,
-			this.login,
-			this.name,
-			this.email,
-			this.phone,
-			this.patientId,
-			this.healthcarePartyId,
-			this.deviceId,
-			this.nameOfParentOfTopmostGroupInHierarchy,
-			List<Group>? groupsHierarchy
-		}) : groupsHierarchy = groupsHierarchy ?? [];
+			String? groupId,
+			String? groupName,
+			List<Group>? groupsHierarchy,
+			String? userId,
+			String? login,
+			String? name,
+			String? email,
+			String? phone,
+			String? patientId,
+			String? healthcarePartyId,
+			String? deviceId,
+			String? nameOfParentOfTopmostGroupInHierarchy
+		}) : groupId = groupId ?? null,
+		groupName = groupName ?? null,
+		groupsHierarchy = groupsHierarchy ?? [],
+		userId = userId ?? null,
+		login = login ?? null,
+		name = name ?? null,
+		email = email ?? null,
+		phone = phone ?? null,
+		patientId = patientId ?? null,
+		healthcarePartyId = healthcarePartyId ?? null,
+		deviceId = deviceId ?? null,
+		nameOfParentOfTopmostGroupInHierarchy = nameOfParentOfTopmostGroupInHierarchy ?? null;
 
 	factory UserGroup.fromJSON(Map<String, dynamic> data) {
 		return UserGroup(

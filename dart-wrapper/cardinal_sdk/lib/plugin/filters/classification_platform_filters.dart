@@ -10,7 +10,7 @@ class ClassificationPlatformFilters {
 	MethodChannel _methodChannel;
 	ClassificationPlatformFilters(this._methodChannel);
 
-	Future<SortableFilterOptions<Classification>> byPatientsCreatedForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Classification>> byPatientsCreatedForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationFilters.byPatientsCreatedForDataOwner',
 			{
@@ -26,7 +26,7 @@ class ClassificationPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Classification>> byPatientsCreatedForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Classification>> byPatientsCreatedForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationFilters.byPatientsCreatedForSelf',
 			{
@@ -41,7 +41,7 @@ class ClassificationPlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Classification>> byPatientSecretIdsCreatedForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Classification>> byPatientSecretIdsCreatedForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationFilters.byPatientSecretIdsCreatedForDataOwner',
 			{
@@ -57,7 +57,7 @@ class ClassificationPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Classification>> byPatientSecretIdsCreatedForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Classification>> byPatientSecretIdsCreatedForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationFilters.byPatientSecretIdsCreatedForSelf',
 			{

@@ -44,22 +44,28 @@ sealed class TypedValue implements Encryptable {
 }
 
 class DecryptedTypedValue implements TypedValue {
-	@override TypedValuesType? type;
-	@override bool? booleanValue;
-	@override int? integerValue;
-	@override double? doubleValue;
-	@override String? stringValue;
-	@override DateTime? dateValue;
-	@override Base64String? encryptedSelf;
+	@override TypedValuesType? type = null;
+	@override bool? booleanValue = null;
+	@override int? integerValue = null;
+	@override double? doubleValue = null;
+	@override String? stringValue = null;
+	@override DateTime? dateValue = null;
+	@override Base64String? encryptedSelf = null;
 	DecryptedTypedValue({
-			this.type,
-			this.booleanValue,
-			this.integerValue,
-			this.doubleValue,
-			this.stringValue,
-			this.dateValue,
-			this.encryptedSelf
-		});
+			TypedValuesType? type,
+			bool? booleanValue,
+			int? integerValue,
+			double? doubleValue,
+			String? stringValue,
+			DateTime? dateValue,
+			Base64String? encryptedSelf
+		}) : type = type ?? null,
+		booleanValue = booleanValue ?? null,
+		integerValue = integerValue ?? null,
+		doubleValue = doubleValue ?? null,
+		stringValue = stringValue ?? null,
+		dateValue = dateValue ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedTypedValue.fromJSON(Map<String, dynamic> data) {
 		return DecryptedTypedValue(
@@ -88,22 +94,28 @@ class DecryptedTypedValue implements TypedValue {
 }
 
 class EncryptedTypedValue implements TypedValue {
-	@override TypedValuesType? type;
-	@override bool? booleanValue;
-	@override int? integerValue;
-	@override double? doubleValue;
-	@override String? stringValue;
-	@override DateTime? dateValue;
-	@override Base64String? encryptedSelf;
+	@override TypedValuesType? type = null;
+	@override bool? booleanValue = null;
+	@override int? integerValue = null;
+	@override double? doubleValue = null;
+	@override String? stringValue = null;
+	@override DateTime? dateValue = null;
+	@override Base64String? encryptedSelf = null;
 	EncryptedTypedValue({
-			this.type,
-			this.booleanValue,
-			this.integerValue,
-			this.doubleValue,
-			this.stringValue,
-			this.dateValue,
-			this.encryptedSelf
-		});
+			TypedValuesType? type,
+			bool? booleanValue,
+			int? integerValue,
+			double? doubleValue,
+			String? stringValue,
+			DateTime? dateValue,
+			Base64String? encryptedSelf
+		}) : type = type ?? null,
+		booleanValue = booleanValue ?? null,
+		integerValue = integerValue ?? null,
+		doubleValue = doubleValue ?? null,
+		stringValue = stringValue ?? null,
+		dateValue = dateValue ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedTypedValue.fromJSON(Map<String, dynamic> data) {
 		return EncryptedTypedValue(

@@ -43,18 +43,22 @@ sealed class PropertyStub implements Encryptable {
 }
 
 class EncryptedPropertyStub implements PropertyStub {
-	@override String? id;
-	@override PropertyTypeStub? type;
-	@override EncryptedTypedValue? typedValue;
-	@override @Deprecated('Remove from list instead') int? deletionDate;
-	@override Base64String? encryptedSelf;
+	@override String? id = null;
+	@override PropertyTypeStub? type = null;
+	@override EncryptedTypedValue? typedValue = null;
+	@override @Deprecated('Remove from list instead') int? deletionDate = null;
+	@override Base64String? encryptedSelf = null;
 	EncryptedPropertyStub({
-			this.id,
-			this.type,
-			this.typedValue,
-			this.deletionDate,
-			this.encryptedSelf
-		});
+			String? id,
+			PropertyTypeStub? type,
+			EncryptedTypedValue? typedValue,
+			int? deletionDate,
+			Base64String? encryptedSelf
+		}) : id = id ?? null,
+		type = type ?? null,
+		typedValue = typedValue ?? null,
+		deletionDate = deletionDate ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedPropertyStub.fromJSON(Map<String, dynamic> data) {
 		return EncryptedPropertyStub(
@@ -79,18 +83,22 @@ class EncryptedPropertyStub implements PropertyStub {
 }
 
 class DecryptedPropertyStub implements PropertyStub {
-	@override String? id;
-	@override PropertyTypeStub? type;
-	@override DecryptedTypedValue? typedValue;
-	@override @Deprecated('Remove from list instead') int? deletionDate;
-	@override Base64String? encryptedSelf;
+	@override String? id = null;
+	@override PropertyTypeStub? type = null;
+	@override DecryptedTypedValue? typedValue = null;
+	@override @Deprecated('Remove from list instead') int? deletionDate = null;
+	@override Base64String? encryptedSelf = null;
 	DecryptedPropertyStub({
-			this.id,
-			this.type,
-			this.typedValue,
-			this.deletionDate,
-			this.encryptedSelf
-		});
+			String? id,
+			PropertyTypeStub? type,
+			DecryptedTypedValue? typedValue,
+			int? deletionDate,
+			Base64String? encryptedSelf
+		}) : id = id ?? null,
+		type = type ?? null,
+		typedValue = typedValue ?? null,
+		deletionDate = deletionDate ?? null,
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedPropertyStub.fromJSON(Map<String, dynamic> data) {
 		return DecryptedPropertyStub(

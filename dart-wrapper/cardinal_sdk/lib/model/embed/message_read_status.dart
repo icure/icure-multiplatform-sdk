@@ -2,12 +2,13 @@
 
 
 class MessageReadStatus {
-	int? time;
+	int? time = null;
 	bool read = false;
 	MessageReadStatus({
-			this.time,
+			int? time,
 			bool? read
-		}) : read = read ?? false;
+		}) : time = time ?? null,
+		read = read ?? false;
 
 	factory MessageReadStatus.fromJSON(Map<String, dynamic> data) {
 		return MessageReadStatus(

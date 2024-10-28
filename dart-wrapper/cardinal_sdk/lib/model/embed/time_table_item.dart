@@ -4,9 +4,9 @@ import 'package:cardinal_sdk/model/embed/time_table_hour.dart';
 
 
 class TimeTableItem {
-	int? rruleStartDate;
-	String? rrule;
-	int? _notBeforeInMinutes;
+	int? rruleStartDate = null;
+	String? rrule = null;
+	int? _notBeforeInMinutes = null;
 	@ActualInt32() int? get notBeforeInMinutes => _notBeforeInMinutes;
 	@ActualInt32() set notBeforeInMinutes(int? value) {
 		if (value != null && value > 2147483647) {
@@ -14,7 +14,7 @@ class TimeTableItem {
 		}
 		_notBeforeInMinutes = value;
 	}
-	int? _notAfterInMinutes;
+	int? _notAfterInMinutes = null;
 	@ActualInt32() int? get notAfterInMinutes => _notAfterInMinutes;
 	@ActualInt32() set notAfterInMinutes(int? value) {
 		if (value != null && value > 2147483647) {
@@ -22,40 +22,45 @@ class TimeTableItem {
 		}
 		_notAfterInMinutes = value;
 	}
-	String? zoneId;
+	String? zoneId = null;
 	@Deprecated('Will be replaced by rrule') List<String> days = [];
 	@Deprecated('Will be replaced by rrule') List<String> recurrenceTypes = [];
 	List<TimeTableHour> hours = [];
-	String? calendarItemTypeId;
+	String? calendarItemTypeId = null;
 	bool homeVisit = false;
-	String? placeId;
+	String? placeId = null;
 	bool publicTimeTableItem = false;
 	bool acceptsNewPatient = true;
 	bool unavailable = false;
 	TimeTableItem({
 			int? notBeforeInMinutes,
 			int? notAfterInMinutes,
-			this.rruleStartDate,
-			this.rrule,
-			this.zoneId,
-			this.calendarItemTypeId,
-			this.placeId,
+			int? rruleStartDate,
+			String? rrule,
+			String? zoneId,
 			List<String>? days,
 			List<String>? recurrenceTypes,
 			List<TimeTableHour>? hours,
+			String? calendarItemTypeId,
 			bool? homeVisit,
+			String? placeId,
 			bool? publicTimeTableItem,
 			bool? acceptsNewPatient,
 			bool? unavailable
-		}) : days = days ?? [],
+		}) : rruleStartDate = rruleStartDate ?? null,
+		rrule = rrule ?? null,
+		zoneId = zoneId ?? null,
+		days = days ?? [],
 		recurrenceTypes = recurrenceTypes ?? [],
 		hours = hours ?? [],
+		calendarItemTypeId = calendarItemTypeId ?? null,
 		homeVisit = homeVisit ?? false,
+		placeId = placeId ?? null,
 		publicTimeTableItem = publicTimeTableItem ?? false,
 		acceptsNewPatient = acceptsNewPatient ?? true,
 		unavailable = unavailable ?? false,
-		_notBeforeInMinutes = notBeforeInMinutes,
-		_notAfterInMinutes = notAfterInMinutes;
+		_notBeforeInMinutes = notBeforeInMinutes ?? null,
+		_notAfterInMinutes = notAfterInMinutes ?? null;
 
 	factory TimeTableItem.fromJSON(Map<String, dynamic> data) {
 		return TimeTableItem(

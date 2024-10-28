@@ -85,20 +85,20 @@ sealed class Message implements StoredDocument, ICureDocument<String>, HasEncryp
 
 class DecryptedMessage implements Message {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? fromAddress;
-	@override String? fromHealthcarePartyId;
-	@override String? formId;
-	int? _status;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? fromAddress = null;
+	@override String? fromHealthcarePartyId = null;
+	@override String? formId = null;
+	int? _status = null;
 	@ActualInt32() @override int? get status => _status;
 	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
@@ -106,21 +106,21 @@ class DecryptedMessage implements Message {
 		}
 		_status = value;
 	}
-	@override String? recipientsType;
+	@override String? recipientsType = null;
 	@override Set<String> recipients = {};
 	@override Set<String> toAddresses = {};
-	@override int? received;
-	@override int? sent;
+	@override int? received = null;
+	@override int? sent = null;
 	@override Map<String, String> metas = {};
 	@override Map<String, MessageReadStatus> readStatus = {};
 	@override List<MessageAttachment> messageAttachments = [];
-	@override String? transportGuid;
-	@override String? remark;
-	@override String? conversationGuid;
-	@override String? subject;
+	@override String? transportGuid = null;
+	@override String? remark = null;
+	@override String? conversationGuid = null;
+	@override String? subject = null;
 	@override Set<String> invoiceIds = {};
-	@override String? parentId;
-	@override String? externalRef;
+	@override String? parentId = null;
+	@override String? externalRef = null;
 	@override Set<String> unassignedResults = {};
 	@override Map<String, String> assignedResults = {};
 	@override Map<String, String> senderReferences = {};
@@ -128,57 +128,77 @@ class DecryptedMessage implements Message {
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	DecryptedMessage(
 		this.id,
 		{
 			int? status,
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.fromAddress,
-			this.fromHealthcarePartyId,
-			this.formId,
-			this.recipientsType,
-			this.received,
-			this.sent,
-			this.transportGuid,
-			this.remark,
-			this.conversationGuid,
-			this.subject,
-			this.parentId,
-			this.externalRef,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? fromAddress,
+			String? fromHealthcarePartyId,
+			String? formId,
+			String? recipientsType,
 			Set<String>? recipients,
 			Set<String>? toAddresses,
+			int? received,
+			int? sent,
 			Map<String, String>? metas,
 			Map<String, MessageReadStatus>? readStatus,
 			List<MessageAttachment>? messageAttachments,
+			String? transportGuid,
+			String? remark,
+			String? conversationGuid,
+			String? subject,
 			Set<String>? invoiceIds,
+			String? parentId,
+			String? externalRef,
 			Set<String>? unassignedResults,
 			Map<String, String>? assignedResults,
 			Map<String, String>? senderReferences,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		fromAddress = fromAddress ?? null,
+		fromHealthcarePartyId = fromHealthcarePartyId ?? null,
+		formId = formId ?? null,
+		recipientsType = recipientsType ?? null,
 		recipients = recipients ?? {},
 		toAddresses = toAddresses ?? {},
+		received = received ?? null,
+		sent = sent ?? null,
 		metas = metas ?? {},
 		readStatus = readStatus ?? {},
 		messageAttachments = messageAttachments ?? [],
+		transportGuid = transportGuid ?? null,
+		remark = remark ?? null,
+		conversationGuid = conversationGuid ?? null,
+		subject = subject ?? null,
 		invoiceIds = invoiceIds ?? {},
+		parentId = parentId ?? null,
+		externalRef = externalRef ?? null,
 		unassignedResults = unassignedResults ?? {},
 		assignedResults = assignedResults ?? {},
 		senderReferences = senderReferences ?? {},
@@ -186,7 +206,9 @@ class DecryptedMessage implements Message {
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
-		_status = status;
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		_status = status ?? null;
 
 	factory DecryptedMessage.fromJSON(Map<String, dynamic> data) {
 		return DecryptedMessage(
@@ -280,20 +302,20 @@ class DecryptedMessage implements Message {
 
 class EncryptedMessage implements Message {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	@override String? fromAddress;
-	@override String? fromHealthcarePartyId;
-	@override String? formId;
-	int? _status;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	@override String? fromAddress = null;
+	@override String? fromHealthcarePartyId = null;
+	@override String? formId = null;
+	int? _status = null;
 	@ActualInt32() @override int? get status => _status;
 	@ActualInt32() @override set status(int? value) {
 		if (value != null && value > 2147483647) {
@@ -301,21 +323,21 @@ class EncryptedMessage implements Message {
 		}
 		_status = value;
 	}
-	@override String? recipientsType;
+	@override String? recipientsType = null;
 	@override Set<String> recipients = {};
 	@override Set<String> toAddresses = {};
-	@override int? received;
-	@override int? sent;
+	@override int? received = null;
+	@override int? sent = null;
 	@override Map<String, String> metas = {};
 	@override Map<String, MessageReadStatus> readStatus = {};
 	@override List<MessageAttachment> messageAttachments = [];
-	@override String? transportGuid;
-	@override String? remark;
-	@override String? conversationGuid;
-	@override String? subject;
+	@override String? transportGuid = null;
+	@override String? remark = null;
+	@override String? conversationGuid = null;
+	@override String? subject = null;
 	@override Set<String> invoiceIds = {};
-	@override String? parentId;
-	@override String? externalRef;
+	@override String? parentId = null;
+	@override String? externalRef = null;
 	@override Set<String> unassignedResults = {};
 	@override Map<String, String> assignedResults = {};
 	@override Map<String, String> senderReferences = {};
@@ -323,57 +345,77 @@ class EncryptedMessage implements Message {
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
 	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf;
-	@override SecurityMetadata? securityMetadata;
+	@override Base64String? encryptedSelf = null;
+	@override SecurityMetadata? securityMetadata = null;
 	EncryptedMessage(
 		this.id,
 		{
 			int? status,
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.fromAddress,
-			this.fromHealthcarePartyId,
-			this.formId,
-			this.recipientsType,
-			this.received,
-			this.sent,
-			this.transportGuid,
-			this.remark,
-			this.conversationGuid,
-			this.subject,
-			this.parentId,
-			this.externalRef,
-			this.encryptedSelf,
-			this.securityMetadata,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
+			int? endOfLife,
+			int? deletionDate,
+			String? fromAddress,
+			String? fromHealthcarePartyId,
+			String? formId,
+			String? recipientsType,
 			Set<String>? recipients,
 			Set<String>? toAddresses,
+			int? received,
+			int? sent,
 			Map<String, String>? metas,
 			Map<String, MessageReadStatus>? readStatus,
 			List<MessageAttachment>? messageAttachments,
+			String? transportGuid,
+			String? remark,
+			String? conversationGuid,
+			String? subject,
 			Set<String>? invoiceIds,
+			String? parentId,
+			String? externalRef,
 			Set<String>? unassignedResults,
 			Map<String, String>? assignedResults,
 			Map<String, String>? senderReferences,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys
-		}) : tags = tags ?? {},
+			Map<String, Set<Delegation>>? encryptionKeys,
+			Base64String? encryptedSelf,
+			SecurityMetadata? securityMetadata
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		fromAddress = fromAddress ?? null,
+		fromHealthcarePartyId = fromHealthcarePartyId ?? null,
+		formId = formId ?? null,
+		recipientsType = recipientsType ?? null,
 		recipients = recipients ?? {},
 		toAddresses = toAddresses ?? {},
+		received = received ?? null,
+		sent = sent ?? null,
 		metas = metas ?? {},
 		readStatus = readStatus ?? {},
 		messageAttachments = messageAttachments ?? [],
+		transportGuid = transportGuid ?? null,
+		remark = remark ?? null,
+		conversationGuid = conversationGuid ?? null,
+		subject = subject ?? null,
 		invoiceIds = invoiceIds ?? {},
+		parentId = parentId ?? null,
+		externalRef = externalRef ?? null,
 		unassignedResults = unassignedResults ?? {},
 		assignedResults = assignedResults ?? {},
 		senderReferences = senderReferences ?? {},
@@ -381,7 +423,9 @@ class EncryptedMessage implements Message {
 		cryptedForeignKeys = cryptedForeignKeys ?? {},
 		delegations = delegations ?? {},
 		encryptionKeys = encryptionKeys ?? {},
-		_status = status;
+		encryptedSelf = encryptedSelf ?? null,
+		securityMetadata = securityMetadata ?? null,
+		_status = status ?? null;
 
 	factory EncryptedMessage.fromJSON(Map<String, dynamic> data) {
 		return EncryptedMessage(

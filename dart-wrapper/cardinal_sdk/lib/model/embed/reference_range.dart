@@ -5,24 +5,28 @@ import 'package:cardinal_sdk/model/embed/range.dart';
 
 
 class ReferenceRange {
-	double? low;
-	double? high;
-	String? stringValue;
+	double? low = null;
+	double? high = null;
+	String? stringValue = null;
 	List<CodeStub> tags = [];
 	List<CodeStub> codes = [];
 	List<Annotation> notes = [];
-	Range? age;
+	Range? age = null;
 	ReferenceRange({
-			this.low,
-			this.high,
-			this.stringValue,
-			this.age,
+			double? low,
+			double? high,
+			String? stringValue,
 			List<CodeStub>? tags,
 			List<CodeStub>? codes,
-			List<Annotation>? notes
-		}) : tags = tags ?? [],
+			List<Annotation>? notes,
+			Range? age
+		}) : low = low ?? null,
+		high = high ?? null,
+		stringValue = stringValue ?? null,
+		tags = tags ?? [],
 		codes = codes ?? [],
-		notes = notes ?? [];
+		notes = notes ?? [],
+		age = age ?? null;
 
 	factory ReferenceRange.fromJSON(Map<String, dynamic> data) {
 		return ReferenceRange(

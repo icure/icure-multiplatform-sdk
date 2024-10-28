@@ -48,7 +48,7 @@ class ServicePlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Service>> byCodeAndValueDateForDataOwner(String dataOwnerId, String codeType, String? codeCode, int? startOfServiceValueDate, int? endOfServiceValueDate) async {
+	Future<BaseSortableFilterOptions<Service>> byCodeAndValueDateForDataOwner(String dataOwnerId, String codeType, { String? codeCode, int? startOfServiceValueDate, int? endOfServiceValueDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byCodeAndValueDateForDataOwner',
 			{
@@ -64,7 +64,7 @@ class ServicePlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Service>> byTagAndValueDateForDataOwner(String dataOwnerId, String tagType, String? tagCode, int? startOfServiceValueDate, int? endOfServiceValueDate) async {
+	Future<BaseSortableFilterOptions<Service>> byTagAndValueDateForDataOwner(String dataOwnerId, String tagType, { String? tagCode, int? startOfServiceValueDate, int? endOfServiceValueDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byTagAndValueDateForDataOwner',
 			{
@@ -131,7 +131,7 @@ class ServicePlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Service>> byCodeAndValueDateForSelf(String codeType, String? codeCode, int? startOfServiceValueDate, int? endOfServiceValueDate) async {
+	Future<SortableFilterOptions<Service>> byCodeAndValueDateForSelf(String codeType, { String? codeCode, int? startOfServiceValueDate, int? endOfServiceValueDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byCodeAndValueDateForSelf',
 			{
@@ -146,7 +146,7 @@ class ServicePlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Service>> byTagAndValueDateForSelf(String tagType, String? tagCode, int? startOfServiceValueDate, int? endOfServiceValueDate) async {
+	Future<SortableFilterOptions<Service>> byTagAndValueDateForSelf(String tagType, { String? tagCode, int? startOfServiceValueDate, int? endOfServiceValueDate }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byTagAndValueDateForSelf',
 			{
@@ -221,7 +221,7 @@ class ServicePlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Service>> byQualifiedLink(List<String> linkValues, LinkQualification? linkQualification) async {
+	Future<BaseFilterOptions<Service>> byQualifiedLink(List<String> linkValues, { LinkQualification? linkQualification }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byQualifiedLink',
 			{
@@ -234,7 +234,7 @@ class ServicePlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Service>> byPatientsDateForDataOwner(String dataOwnerId, List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Service>> byPatientsDateForDataOwner(String dataOwnerId, List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byPatientsDateForDataOwner',
 			{
@@ -250,7 +250,7 @@ class ServicePlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Service>> byPatientsDateForSelf(List<Patient> patients, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Service>> byPatientsDateForSelf(List<Patient> patients, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byPatientsDateForSelf',
 			{
@@ -265,7 +265,7 @@ class ServicePlatformFilters {
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseSortableFilterOptions<Service>> byPatientSecretIdsDateForDataOwner(String dataOwnerId, List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<BaseSortableFilterOptions<Service>> byPatientSecretIdsDateForDataOwner(String dataOwnerId, List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byPatientSecretIdsDateForDataOwner',
 			{
@@ -281,7 +281,7 @@ class ServicePlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<SortableFilterOptions<Service>> byPatientSecretIdsDateForSelf(List<String> secretIds, int? from, int? to, { bool descending = false }) async {
+	Future<SortableFilterOptions<Service>> byPatientSecretIdsDateForSelf(List<String> secretIds, { int? from, int? to, bool descending = false }) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ServiceFilters.byPatientSecretIdsDateForSelf',
 			{

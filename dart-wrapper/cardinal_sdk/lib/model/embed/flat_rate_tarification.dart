@@ -43,18 +43,22 @@ sealed class FlatRateTarification implements Encryptable {
 }
 
 class EncryptedFlatRateTarification implements FlatRateTarification {
-	@override String? code;
-	@override FlatRateType? flatRateType;
-	@override Map<String, String>? label;
+	@override String? code = null;
+	@override FlatRateType? flatRateType = null;
+	@override Map<String, String>? label = null;
 	@override List<EncryptedValorisation> valorisations = [];
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	EncryptedFlatRateTarification({
-			this.code,
-			this.flatRateType,
-			this.label,
-			this.encryptedSelf,
-			List<EncryptedValorisation>? valorisations
-		}) : valorisations = valorisations ?? [];
+			String? code,
+			FlatRateType? flatRateType,
+			Map<String, String>? label,
+			List<EncryptedValorisation>? valorisations,
+			Base64String? encryptedSelf
+		}) : code = code ?? null,
+		flatRateType = flatRateType ?? null,
+		label = label ?? null,
+		valorisations = valorisations ?? [],
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory EncryptedFlatRateTarification.fromJSON(Map<String, dynamic> data) {
 		return EncryptedFlatRateTarification(
@@ -79,18 +83,22 @@ class EncryptedFlatRateTarification implements FlatRateTarification {
 }
 
 class DecryptedFlatRateTarification implements FlatRateTarification {
-	@override String? code;
-	@override FlatRateType? flatRateType;
-	@override Map<String, String>? label;
+	@override String? code = null;
+	@override FlatRateType? flatRateType = null;
+	@override Map<String, String>? label = null;
 	@override List<DecryptedValorisation> valorisations = [];
-	@override Base64String? encryptedSelf;
+	@override Base64String? encryptedSelf = null;
 	DecryptedFlatRateTarification({
-			this.code,
-			this.flatRateType,
-			this.label,
-			this.encryptedSelf,
-			List<DecryptedValorisation>? valorisations
-		}) : valorisations = valorisations ?? [];
+			String? code,
+			FlatRateType? flatRateType,
+			Map<String, String>? label,
+			List<DecryptedValorisation>? valorisations,
+			Base64String? encryptedSelf
+		}) : code = code ?? null,
+		flatRateType = flatRateType ?? null,
+		label = label ?? null,
+		valorisations = valorisations ?? [],
+		encryptedSelf = encryptedSelf ?? null;
 
 	factory DecryptedFlatRateTarification.fromJSON(Map<String, dynamic> data) {
 		return DecryptedFlatRateTarification(

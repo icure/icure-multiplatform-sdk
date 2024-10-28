@@ -3,12 +3,13 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 
 
 class Periodicity {
-	CodeStub? relatedCode;
-	CodeStub? relatedPeriodicity;
+	CodeStub? relatedCode = null;
+	CodeStub? relatedPeriodicity = null;
 	Periodicity({
-			this.relatedCode,
-			this.relatedPeriodicity
-		});
+			CodeStub? relatedCode,
+			CodeStub? relatedPeriodicity
+		}) : relatedCode = relatedCode ?? null,
+		relatedPeriodicity = relatedPeriodicity ?? null;
 
 	factory Periodicity.fromJSON(Map<String, dynamic> data) {
 		return Periodicity(

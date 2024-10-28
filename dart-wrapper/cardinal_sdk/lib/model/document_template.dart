@@ -11,58 +11,78 @@ import 'package:cardinal_sdk/model/base/icure_document.dart';
 
 class DocumentTemplate implements StoredDocument, ICureDocument<String> {
 	@override String id;
-	@override String? rev;
-	@override int? created;
-	@override int? modified;
-	@override String? author;
-	@override String? responsible;
-	@override String? medicalLocationId;
+	@override String? rev = null;
+	@override int? created = null;
+	@override int? modified = null;
+	@override String? author = null;
+	@override String? responsible = null;
+	@override String? medicalLocationId = null;
 	@override Set<CodeStub> tags = {};
 	@override Set<CodeStub> codes = {};
-	@override int? endOfLife;
-	@override int? deletionDate;
-	Uint8List? attachment;
-	DocumentType? documentType;
-	String? mainUti;
-	String? name;
+	@override int? endOfLife = null;
+	@override int? deletionDate = null;
+	Uint8List? attachment = null;
+	DocumentType? documentType = null;
+	String? mainUti = null;
+	String? name = null;
 	Set<String> otherUtis = {};
-	String? attachmentId;
-	ReportVersion? version;
-	String? owner;
-	String? guid;
-	DocumentGroup? group;
-	String? descr;
-	String? disabled;
-	CodeStub? specialty;
+	String? attachmentId = null;
+	ReportVersion? version = null;
+	String? owner = null;
+	String? guid = null;
+	DocumentGroup? group = null;
+	String? descr = null;
+	String? disabled = null;
+	CodeStub? specialty = null;
 	DocumentTemplate(
 		this.id,
 		{
-			this.rev,
-			this.created,
-			this.modified,
-			this.author,
-			this.responsible,
-			this.medicalLocationId,
-			this.endOfLife,
-			this.deletionDate,
-			this.attachment,
-			this.documentType,
-			this.mainUti,
-			this.name,
-			this.attachmentId,
-			this.version,
-			this.owner,
-			this.guid,
-			this.group,
-			this.descr,
-			this.disabled,
-			this.specialty,
+			String? rev,
+			int? created,
+			int? modified,
+			String? author,
+			String? responsible,
+			String? medicalLocationId,
 			Set<CodeStub>? tags,
 			Set<CodeStub>? codes,
-			Set<String>? otherUtis
-		}) : tags = tags ?? {},
+			int? endOfLife,
+			int? deletionDate,
+			Uint8List? attachment,
+			DocumentType? documentType,
+			String? mainUti,
+			String? name,
+			Set<String>? otherUtis,
+			String? attachmentId,
+			ReportVersion? version,
+			String? owner,
+			String? guid,
+			DocumentGroup? group,
+			String? descr,
+			String? disabled,
+			CodeStub? specialty
+		}) : rev = rev ?? null,
+		created = created ?? null,
+		modified = modified ?? null,
+		author = author ?? null,
+		responsible = responsible ?? null,
+		medicalLocationId = medicalLocationId ?? null,
+		tags = tags ?? {},
 		codes = codes ?? {},
-		otherUtis = otherUtis ?? {};
+		endOfLife = endOfLife ?? null,
+		deletionDate = deletionDate ?? null,
+		attachment = attachment ?? null,
+		documentType = documentType ?? null,
+		mainUti = mainUti ?? null,
+		name = name ?? null,
+		otherUtis = otherUtis ?? {},
+		attachmentId = attachmentId ?? null,
+		version = version ?? null,
+		owner = owner ?? null,
+		guid = guid ?? null,
+		group = group ?? null,
+		descr = descr ?? null,
+		disabled = disabled ?? null,
+		specialty = specialty ?? null;
 
 	factory DocumentTemplate.fromJSON(Map<String, dynamic> data) {
 		return DocumentTemplate(

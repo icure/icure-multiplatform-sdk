@@ -3,9 +3,9 @@ import 'package:cardinal_sdk/model/couchdb/basic.dart';
 
 
 class RemoteAuthentication {
-	Basic? basic;
+	Basic? basic = null;
 	RemoteAuthentication({
-			this.basic});
+			Basic? basic}) : basic = basic ?? null;
 
 	factory RemoteAuthentication.fromJSON(Map<String, dynamic> data) {
 		return RemoteAuthentication(

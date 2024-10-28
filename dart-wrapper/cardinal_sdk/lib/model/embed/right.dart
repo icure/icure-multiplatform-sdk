@@ -2,16 +2,17 @@
 
 
 class Right {
-	String? userId;
+	String? userId = null;
 	bool read = false;
 	bool write = false;
 	bool administration = false;
 	Right({
-			this.userId,
+			String? userId,
 			bool? read,
 			bool? write,
 			bool? administration
-		}) : read = read ?? false,
+		}) : userId = userId ?? null,
+		read = read ?? false,
 		write = write ?? false,
 		administration = administration ?? false;
 
