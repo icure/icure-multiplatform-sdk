@@ -39,7 +39,9 @@ import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:flutter/services.dart';
 
 class CardinalSdk {
-  static final _finalizer = Finalizer((resourceId) => CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId));
+  static final Finalizer<String> _finalizer = Finalizer((resourceId) =>
+      CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId)
+  );
 
   final String _sdkId;
   final ApplicationSettingsApi applicationSettings;

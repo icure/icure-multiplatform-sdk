@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 abstract class CardinalSdkPlatformSubscriptionPlugin {
   Future<void> close(String sdkId);
   Future<EntitySubscriptionCloseReason?> getCloseReason(String sdkId);
-  Future<Map<String, dynamic>> getEvent(String sdkId);
-  Future<Map<String, dynamic>> waitForEvent(String sdkId, Duration timeout);
+  Future<Map<String, dynamic>?> getEvent(String sdkId);
+  Future<Map<String, dynamic>?> waitForEvent(String sdkId, Duration timeout);
 }
 
 class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscriptionPlugin {

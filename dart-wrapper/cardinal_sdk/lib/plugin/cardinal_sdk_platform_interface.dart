@@ -8,6 +8,8 @@ import 'package:cardinal_sdk/plugin/cardinal_sdk_initializers.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_subscription.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+import 'cardinal_sdk_utils.dart';
+
 
 class CardinalSdkPlatformInterface extends PlatformInterface {
   CardinalSdkPlatformInterface() : super(token: _token);
