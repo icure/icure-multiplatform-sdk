@@ -51,6 +51,25 @@ class SdkOptions implements CommonSdkOptions {
     this.useHierarchicalDataOwners = true,
     this.createTransferKeys = true
   }) : encryptedFields = encryptedFields ?? EncryptedFieldsConfiguration();
+
+  factory SdkOptions.fromJSON(Map<String, dynamic> data) {
+    return SdkOptions(
+        encryptedFields: EncryptedFieldsConfiguration.fromJSON(data["encryptedFields"]),
+        saltPasswordWithApplicationId: data["saltPasswordWithApplicationId"] as bool,
+        useHierarchicalDataOwners: data["useHierarchicalDataOwners"] as bool,
+        createTransferKeys: data["createTransferKeys"] as bool
+    );
+  }
+
+  static Map<String, dynamic> encode(SdkOptions value) {
+    Map<String, dynamic> entityAsMap = {
+      "encryptedFields": EncryptedFieldsConfiguration.encode(value.encryptedFields),
+      "saltPasswordWithApplicationId": value.saltPasswordWithApplicationId,
+      "useHierarchicalDataOwners": value.useHierarchicalDataOwners,
+      "createTransferKeys": value.createTransferKeys
+    };
+    return entityAsMap;
+  }
 }
 
 class BasicSdkOptions implements CommonSdkOptions {
@@ -63,6 +82,21 @@ class BasicSdkOptions implements CommonSdkOptions {
     this.saltPasswordWithApplicationId = true,
     // this.groupSelector
   }) : encryptedFields = encryptedFields ?? EncryptedFieldsConfiguration();
+
+  factory BasicSdkOptions.fromJSON(Map<String, dynamic> data) {
+    return BasicSdkOptions(
+        encryptedFields: EncryptedFieldsConfiguration.fromJSON(data["encryptedFields"]),
+        saltPasswordWithApplicationId: data["saltPasswordWithApplicationId"] as bool
+    );
+  }
+
+  static Map<String, dynamic> encode(BasicSdkOptions value) {
+    Map<String, dynamic> entityAsMap = {
+      "encryptedFields": EncryptedFieldsConfiguration.encode(value.encryptedFields),
+      "saltPasswordWithApplicationId": value.saltPasswordWithApplicationId
+    };
+    return entityAsMap;
+  }
 }
 
 class EncryptedFieldsConfiguration {
@@ -99,4 +133,45 @@ class EncryptedFieldsConfiguration {
     this.timeTable = const {},
     this.invoice = const {}
   });
+
+  factory EncryptedFieldsConfiguration.fromJSON(Map<String, dynamic> data) {
+    return EncryptedFieldsConfiguration(
+        accessLog: (data["accessLog"] as List<dynamic>).map((x) => x as String).toSet(),
+        calendarItem: (data["calendarItem"] as List<dynamic>).map((x) => x as String).toSet(),
+        contact: (data["contact"] as List<dynamic>).map((x) => x as String).toSet(),
+        service: (data["service"] as List<dynamic>).map((x) => x as String).toSet(),
+        healthElement: (data["healthElement"] as List<dynamic>).map((x) => x as String).toSet(),
+        maintenanceTask: (data["maintenanceTask"] as List<dynamic>).map((x) => x as String).toSet(),
+        patient: (data["patient"] as List<dynamic>).map((x) => x as String).toSet(),
+        message: (data["message"] as List<dynamic>).map((x) => x as String).toSet(),
+        topic: (data["topic"] as List<dynamic>).map((x) => x as String).toSet(),
+        document: (data["document"] as List<dynamic>).map((x) => x as String).toSet(),
+        form: (data["form"] as List<dynamic>).map((x) => x as String).toSet(),
+        receipt: (data["receipt"] as List<dynamic>).map((x) => x as String).toSet(),
+        classification: (data["classification"] as List<dynamic>).map((x) => x as String).toSet(),
+        timeTable: (data["timeTable"] as List<dynamic>).map((x) => x as String).toSet(),
+        invoice: (data["invoice"] as List<dynamic>).map((x) => x as String).toSet(),
+    );
+  }
+
+  static Map<String, dynamic> encode(EncryptedFieldsConfiguration value) {
+    Map<String, dynamic> entityAsMap = {
+      "accessLog": value.accessLog,
+      "calendarItem": value.calendarItem,
+      "contact": value.contact,
+      "service": value.service,
+      "healthElement": value.healthElement,
+      "maintenanceTask": value.maintenanceTask,
+      "patient": value.patient,
+      "message": value.message,
+      "topic": value.topic,
+      "document": value.document,
+      "form": value.form,
+      "receipt": value.receipt,
+      "classification": value.classification,
+      "timeTable": value.timeTable,
+      "invoice": value.invoice
+    };
+    return entityAsMap;
+  }
 }
