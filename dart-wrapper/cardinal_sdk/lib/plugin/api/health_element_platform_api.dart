@@ -145,7 +145,7 @@ class HealthElementPlatformApi {
 		return HealthElement.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchHealthElementsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBy(String sdkId, FilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.matchHealthElementsBy',
 			{
@@ -158,7 +158,7 @@ class HealthElementPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchHealthElementsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBySorted(String sdkId, SortableFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.matchHealthElementsBySorted',
 			{
@@ -274,7 +274,7 @@ class HealthElementPlatformApi {
 		return DecryptedHealthElement.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBy(String sdkId, FilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.filterHealthElementsBy',
 			{
@@ -287,7 +287,7 @@ class HealthElementPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedHealthElement.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBySorted(String sdkId, SortableFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.filterHealthElementsBySorted',
 			{
@@ -379,7 +379,7 @@ class HealthElementPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<HealthElement> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.subscribeToEvents',
 			{
@@ -428,7 +428,7 @@ class TryAndRecoverHealthElementPlatformApi {
 		return HealthElement.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBy(String sdkId, FilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.tryAndRecover.filterHealthElementsBy',
 			{
@@ -441,7 +441,7 @@ class TryAndRecoverHealthElementPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => HealthElement.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBySorted(String sdkId, SortableFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.tryAndRecover.filterHealthElementsBySorted',
 			{
@@ -567,7 +567,7 @@ class EncryptedHealthElementPlatformApi {
 		return EncryptedHealthElement.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(String sdkId, FilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.encrypted.filterHealthElementsBy',
 			{
@@ -580,7 +580,7 @@ class EncryptedHealthElementPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedHealthElement.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(String sdkId, SortableFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementApi.encrypted.filterHealthElementsBySorted',
 			{

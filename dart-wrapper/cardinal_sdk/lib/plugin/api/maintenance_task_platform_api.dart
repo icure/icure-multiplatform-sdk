@@ -128,7 +128,7 @@ class MaintenanceTaskPlatformApi {
 		return MaintenanceTask.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchMaintenanceTasksBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBy(String sdkId, FilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.matchMaintenanceTasksBy',
 			{
@@ -141,7 +141,7 @@ class MaintenanceTaskPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, SortableFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.matchMaintenanceTasksBySorted',
 			{
@@ -257,7 +257,7 @@ class MaintenanceTaskPlatformApi {
 		return DecryptedMaintenanceTask.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, FilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.filterMaintenanceTasksBy',
 			{
@@ -270,7 +270,7 @@ class MaintenanceTaskPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedMaintenanceTask.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, SortableFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.filterMaintenanceTasksBySorted',
 			{
@@ -349,7 +349,7 @@ class MaintenanceTaskPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<MaintenanceTask> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.subscribeToEvents',
 			{
@@ -398,7 +398,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 		return MaintenanceTask.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBy(String sdkId, FilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.tryAndRecover.filterMaintenanceTasksBy',
 			{
@@ -411,7 +411,7 @@ class TryAndRecoverMaintenanceTaskPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => MaintenanceTask.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, SortableFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.tryAndRecover.filterMaintenanceTasksBySorted',
 			{
@@ -524,7 +524,7 @@ class EncryptedMaintenanceTaskPlatformApi {
 		return EncryptedMaintenanceTask.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, FilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.encrypted.filterMaintenanceTasksBy',
 			{
@@ -537,7 +537,7 @@ class EncryptedMaintenanceTaskPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedMaintenanceTask.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, SortableFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskApi.encrypted.filterMaintenanceTasksBySorted',
 			{

@@ -46,28 +46,28 @@ class MedicalLocationApi {
 		);
 	}
 
-	Future<List<String>> matchMedicalLocationsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchMedicalLocationsBy(BaseFilterOptions<MedicalLocation> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.medicalLocation.matchMedicalLocationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchMedicalLocationsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchMedicalLocationsBySorted(BaseSortableFilterOptions<MedicalLocation> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.medicalLocation.matchMedicalLocationsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBy(BaseFilterOptions<MedicalLocation> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.medicalLocation.filterMedicalLocationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBySorted(BaseSortableFilterOptions<MedicalLocation> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.medicalLocation.filterMedicalLocationsBySorted(
 			_sdkId,
 			filter,

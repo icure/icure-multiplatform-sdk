@@ -215,7 +215,7 @@ class DocumentPlatformApi {
 		return parsedResJson == null ? null : base64Decode(parsedResJson as String);
 	}
 
-	Future<List<String>> matchDocumentsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchDocumentsBy(String sdkId, FilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.matchDocumentsBy',
 			{
@@ -228,7 +228,7 @@ class DocumentPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchDocumentsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchDocumentsBySorted(String sdkId, SortableFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.matchDocumentsBySorted',
 			{
@@ -435,7 +435,7 @@ class DocumentPlatformApi {
 		return DecryptedDocument.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBy(String sdkId, FilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.filterDocumentsBy',
 			{
@@ -448,7 +448,7 @@ class DocumentPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedDocument.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBySorted(String sdkId, SortableFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.filterDocumentsBySorted',
 			{
@@ -574,7 +574,7 @@ class TryAndRecoverDocumentPlatformApi {
 		return Document.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<Document>> filterDocumentsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<Document>> filterDocumentsBy(String sdkId, FilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.tryAndRecover.filterDocumentsBy',
 			{
@@ -587,7 +587,7 @@ class TryAndRecoverDocumentPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Document.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Document>> filterDocumentsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Document>> filterDocumentsBySorted(String sdkId, SortableFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.tryAndRecover.filterDocumentsBySorted',
 			{
@@ -713,7 +713,7 @@ class EncryptedDocumentPlatformApi {
 		return EncryptedDocument.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(String sdkId, FilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.encrypted.filterDocumentsBy',
 			{
@@ -726,7 +726,7 @@ class EncryptedDocumentPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedDocument.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(String sdkId, SortableFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentApi.encrypted.filterDocumentsBySorted',
 			{

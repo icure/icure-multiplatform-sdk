@@ -114,14 +114,14 @@ class PatientApi {
 		);
 	}
 
-	Future<List<String>> matchPatientsBy(FilterOptions filter) async {
+	Future<List<String>> matchPatientsBy(FilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.matchPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchPatientsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchPatientsBySorted(SortableFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.matchPatientsBySorted(
 			_sdkId,
 			filter,
@@ -210,14 +210,14 @@ class PatientApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBy(FilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.filterPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBySorted(SortableFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.filterPatientsBySorted(
 			_sdkId,
 			filter,
@@ -290,7 +290,7 @@ class PatientApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Patient> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.subscribeToEvents(
 			_sdkId,
 			events,
@@ -328,14 +328,14 @@ class TryAndRecoverPatientApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Patient>> filterPatientsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Patient>> filterPatientsBy(FilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.filterPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Patient>> filterPatientsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Patient>> filterPatientsBySorted(SortableFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.filterPatientsBySorted(
 			_sdkId,
 			filter,
@@ -437,14 +437,14 @@ class EncryptedPatientApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(FilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.filterPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(SortableFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.filterPatientsBySorted(
 			_sdkId,
 			filter,

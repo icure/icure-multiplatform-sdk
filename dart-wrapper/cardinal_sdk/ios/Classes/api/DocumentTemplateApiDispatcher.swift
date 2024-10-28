@@ -21,7 +21,6 @@ class DocumentTemplateApiDispatcher {
     case "listDocumentTemplatesByDocumentType": listDocumentTemplatesByDocumentType(parameters: parameters, resultCallback: resultCallback)
     case "listDocumentTemplatesByDocumentTypeForCurrentUser": listDocumentTemplatesByDocumentTypeForCurrentUser(parameters: parameters, resultCallback: resultCallback)
     case "listDocumentTemplates": listDocumentTemplates(parameters: parameters, resultCallback: resultCallback)
-    case "findAllDocumentTemplates": findAllDocumentTemplates(parameters: parameters, resultCallback: resultCallback)
     case "getDocumentTemplateAttachment": getDocumentTemplateAttachment(parameters: parameters, resultCallback: resultCallback)
     case "getAttachmentText": getAttachmentText(parameters: parameters, resultCallback: resultCallback)
     case "setDocumentTemplateAttachment": setDocumentTemplateAttachment(parameters: parameters, resultCallback: resultCallback)
@@ -123,20 +122,6 @@ class DocumentTemplateApiDispatcher {
     DocumentTemplateApi.shared.listDocumentTemplates(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!
-    )
-  }
-
-  private static func findAllDocumentTemplates(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    DocumentTemplateApi.shared.findAllDocumentTemplates(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	startKeyString: parameters["startKey"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
     )
   }
 

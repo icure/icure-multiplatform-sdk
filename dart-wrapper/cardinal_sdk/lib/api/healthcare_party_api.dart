@@ -87,28 +87,28 @@ class HealthcarePartyApi {
 		);
 	}
 
-	Future<List<String>> matchHealthcarePartiesBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchHealthcarePartiesBy(BaseFilterOptions<HealthcareParty> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.matchHealthcarePartiesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBy(BaseFilterOptions<HealthcareParty> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.filterHealthPartiesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchHealthcarePartiesBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchHealthcarePartiesBySorted(BaseSortableFilterOptions<HealthcareParty> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.matchHealthcarePartiesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBySorted(BaseSortableFilterOptions<HealthcareParty> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.filterHealthPartiesBySorted(
 			_sdkId,
 			filter,
@@ -226,7 +226,7 @@ class HealthcarePartyApi {
 		);
 	}
 
-	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<HealthcareParty> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.subscribeToEvents(
 			_sdkId,
 			events,

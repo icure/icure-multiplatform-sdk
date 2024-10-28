@@ -184,7 +184,7 @@ class PatientPlatformApi {
 		return (parsedResJson as bool);
 	}
 
-	Future<List<String>> matchPatientsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchPatientsBy(String sdkId, FilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.matchPatientsBy',
 			{
@@ -197,7 +197,7 @@ class PatientPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchPatientsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchPatientsBySorted(String sdkId, SortableFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.matchPatientsBySorted',
 			{
@@ -352,7 +352,7 @@ class PatientPlatformApi {
 		return DecryptedPatient.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBy(String sdkId, FilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.filterPatientsBy',
 			{
@@ -365,7 +365,7 @@ class PatientPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedPatient.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedPatient>> filterPatientsBySorted(String sdkId, SortableFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.filterPatientsBySorted',
 			{
@@ -498,7 +498,7 @@ class PatientPlatformApi {
 		return DecryptedPatient.fromJSON(parsedResJson);
 	}
 
-	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<Patient> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.subscribeToEvents',
 			{
@@ -560,7 +560,7 @@ class TryAndRecoverPatientPlatformApi {
 		return Patient.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<Patient>> filterPatientsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<Patient>> filterPatientsBy(String sdkId, FilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.tryAndRecover.filterPatientsBy',
 			{
@@ -573,7 +573,7 @@ class TryAndRecoverPatientPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Patient.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Patient>> filterPatientsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Patient>> filterPatientsBySorted(String sdkId, SortableFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.tryAndRecover.filterPatientsBySorted',
 			{
@@ -753,7 +753,7 @@ class EncryptedPatientPlatformApi {
 		return EncryptedPatient.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(String sdkId, FilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.encrypted.filterPatientsBy',
 			{
@@ -766,7 +766,7 @@ class EncryptedPatientPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedPatient.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(String sdkId, SortableFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.encrypted.filterPatientsBySorted',
 			{

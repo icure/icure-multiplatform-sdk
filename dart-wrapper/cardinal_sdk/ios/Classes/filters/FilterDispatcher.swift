@@ -30,6 +30,7 @@ func dispatchFilters(
   case "MessageFilters": return MessageFiltersDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "AgendaFilters": return AgendaFiltersDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "HealthElementFilters": return HealthElementFiltersDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
+  case "MetaFilters": return MetaFiltersDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   default: return false
   }
 }

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Classification
@@ -52,7 +52,7 @@ public object ClassificationFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Classification::class))
     ) {
@@ -93,7 +93,7 @@ public object ClassificationFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Classification::class))
     ) {
@@ -138,7 +138,7 @@ public object ClassificationFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Classification::class))
     ) {
@@ -179,7 +179,7 @@ public object ClassificationFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Classification::class))
     ) {

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -33,7 +33,7 @@ public object ContactFilters {
       String.serializer(),
       dataOwnerIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -48,7 +48,7 @@ public object ContactFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -74,7 +74,7 @@ public object ContactFilters {
       SetSerializer(String.serializer()),
       formIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -94,7 +94,7 @@ public object ContactFilters {
       SetSerializer(String.serializer()),
       formIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -136,7 +136,7 @@ public object ContactFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -177,7 +177,7 @@ public object ContactFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -222,7 +222,7 @@ public object ContactFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -263,7 +263,7 @@ public object ContactFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -285,7 +285,7 @@ public object ContactFilters {
       String.serializer(),
       externalIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -304,7 +304,7 @@ public object ContactFilters {
       ListSerializer(Identifier.serializer()),
       identifiersString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -331,7 +331,7 @@ public object ContactFilters {
       ListSerializer(Identifier.serializer()),
       identifiersString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -374,7 +374,7 @@ public object ContactFilters {
       Long.serializer().nullable,
       endOfContactOpeningDateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -415,7 +415,7 @@ public object ContactFilters {
       Long.serializer().nullable,
       endOfContactOpeningDateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -460,7 +460,7 @@ public object ContactFilters {
       Long.serializer().nullable,
       endOfContactOpeningDateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -501,7 +501,7 @@ public object ContactFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -536,7 +536,7 @@ public object ContactFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -565,7 +565,7 @@ public object ContactFilters {
       String.serializer().nullable,
       tagCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -598,7 +598,7 @@ public object ContactFilters {
       String.serializer().nullable,
       tagCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -627,7 +627,7 @@ public object ContactFilters {
       String.serializer().nullable,
       codeCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -660,7 +660,7 @@ public object ContactFilters {
       String.serializer().nullable,
       codeCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -699,7 +699,7 @@ public object ContactFilters {
       Long.serializer().nullable,
       endOfContactOpeningDateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -729,7 +729,7 @@ public object ContactFilters {
       ListSerializer(PolymorphicSerializer(Patient::class)),
       patientsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -749,7 +749,7 @@ public object ContactFilters {
       ListSerializer(PolymorphicSerializer(Patient::class)),
       patientsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -776,7 +776,7 @@ public object ContactFilters {
       ListSerializer(String.serializer()),
       secretIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -796,7 +796,7 @@ public object ContactFilters {
       ListSerializer(String.serializer()),
       secretIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {
@@ -815,7 +815,7 @@ public object ContactFilters {
       ListSerializer(String.serializer()),
       serviceIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Contact::class))
     ) {

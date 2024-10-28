@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -15,7 +15,7 @@ class MaintenanceTaskBasicPlatformApi {
 	MethodChannel _methodChannel;
 	MaintenanceTaskBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchMaintenanceTasksBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBy(String sdkId, BaseFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.matchMaintenanceTasksBy',
 			{
@@ -28,7 +28,7 @@ class MaintenanceTaskBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBySorted(String sdkId, BaseSortableFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.matchMaintenanceTasksBySorted',
 			{
@@ -41,7 +41,7 @@ class MaintenanceTaskBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(String sdkId, BaseFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.filterMaintenanceTasksBy',
 			{
@@ -54,7 +54,7 @@ class MaintenanceTaskBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedMaintenanceTask.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(String sdkId, BaseSortableFilterOptions<MaintenanceTask> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.filterMaintenanceTasksBySorted',
 			{
@@ -207,7 +207,7 @@ class MaintenanceTaskBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMaintenanceTask.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions<MaintenanceTask> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.subscribeToEvents',
 			{

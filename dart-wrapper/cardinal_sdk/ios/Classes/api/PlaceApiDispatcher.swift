@@ -17,7 +17,6 @@ class PlaceApiDispatcher {
     case "createPlace": createPlace(parameters: parameters, resultCallback: resultCallback)
     case "modifyPlace": modifyPlace(parameters: parameters, resultCallback: resultCallback)
     case "deletePlaces": deletePlaces(parameters: parameters, resultCallback: resultCallback)
-    case "getPlaces": getPlaces(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
@@ -68,19 +67,6 @@ class PlaceApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	placeIdsString: parameters["placeIds"]!
-    )
-  }
-
-  private static func getPlaces(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    PlaceApi.shared.getPlaces(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
     )
   }
 

@@ -19,6 +19,7 @@ import 'package:cardinal_sdk/plugin/filters/medical_location_platform_filters.da
 import 'package:cardinal_sdk/plugin/filters/message_platform_filters.dart';
 import 'package:cardinal_sdk/plugin/filters/agenda_platform_filters.dart';
 import 'package:cardinal_sdk/plugin/filters/health_element_platform_filters.dart';
+import 'package:cardinal_sdk/plugin/filters/platform_meta_filters.dart';
 
 
 abstract class CardinalSdkPlatformFiltersPlugin {
@@ -62,4 +63,6 @@ abstract class CardinalSdkPlatformFiltersPlugin {
 	AgendaPlatformFilters get agenda;
 
 	HealthElementPlatformFilters get healthElement;
+
+	PlatformMetaFilters get metaFilters;
 }

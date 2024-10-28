@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -54,7 +54,7 @@ public object CalendarItemFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {
@@ -95,7 +95,7 @@ public object CalendarItemFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {
@@ -140,7 +140,7 @@ public object CalendarItemFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {
@@ -181,7 +181,7 @@ public object CalendarItemFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {
@@ -221,7 +221,7 @@ public object CalendarItemFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {
@@ -256,7 +256,7 @@ public object CalendarItemFilters {
       Long.serializer(),
       toString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {
@@ -285,7 +285,7 @@ public object CalendarItemFilters {
       Long.serializer(),
       toString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {
@@ -305,7 +305,7 @@ public object CalendarItemFilters {
       String.serializer(),
       recurrenceIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class))
     ) {

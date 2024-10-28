@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'dart:typed_data';
@@ -12,28 +12,28 @@ class DocumentBasicApi {
 	final String _sdkId;
 	DocumentBasicApi(this._sdkId);
 
-	Future<List<String>> matchDocumentsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchDocumentsBy(BaseFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.documentBasic.matchDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchDocumentsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchDocumentsBySorted(BaseSortableFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.documentBasic.matchDocumentsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(BaseFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.documentBasic.filterDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(BaseSortableFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.documentBasic.filterDocumentsBySorted(
 			_sdkId,
 			filter,

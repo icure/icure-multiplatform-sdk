@@ -178,7 +178,7 @@ class UserPlatformApi {
 		return (parsedResJson as String);
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersBy(String sdkId, BaseFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.filterUsersBy',
 			{
@@ -191,7 +191,7 @@ class UserPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
 	}
 
-	Future<List<String>> matchUsersBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchUsersBy(String sdkId, BaseFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.matchUsersBy',
 			{
@@ -204,7 +204,7 @@ class UserPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersBySorted(String sdkId, BaseSortableFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.filterUsersBySorted',
 			{
@@ -217,7 +217,7 @@ class UserPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
 	}
 
-	Future<List<String>> matchUsersBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchUsersBySorted(String sdkId, BaseSortableFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.matchUsersBySorted',
 			{
@@ -373,7 +373,7 @@ class UserPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => TokenWithGroup.fromJSON(x1) ).toList();
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersInGroupBy(String sdkId, String groupId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersInGroupBy(String sdkId, String groupId, BaseFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.filterUsersInGroupBy',
 			{
@@ -387,7 +387,7 @@ class UserPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
 	}
 
-	Future<List<String>> matchUsersInGroupBy(String sdkId, String groupId, BaseFilterOptions filter) async {
+	Future<List<String>> matchUsersInGroupBy(String sdkId, String groupId, BaseFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.matchUsersInGroupBy',
 			{
@@ -401,7 +401,7 @@ class UserPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersInGroupBySorted(String sdkId, String groupId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersInGroupBySorted(String sdkId, String groupId, BaseSortableFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.filterUsersInGroupBySorted',
 			{
@@ -415,7 +415,7 @@ class UserPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
 	}
 
-	Future<List<String>> matchUsersInGroupBySorted(String sdkId, String groupId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchUsersInGroupBySorted(String sdkId, String groupId, BaseSortableFilterOptions<User> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.matchUsersInGroupBySorted',
 			{
@@ -604,7 +604,7 @@ class UserPlatformApi {
 		return User.fromJSON(parsedResJson);
 	}
 
-	Future<EntitySubscription<User>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<User>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<User> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.subscribeToEvents',
 			{

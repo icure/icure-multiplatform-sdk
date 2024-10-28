@@ -15,7 +15,6 @@ class KeywordApiDispatcher {
     switch methodName {
     case "getKeyword": getKeyword(parameters: parameters, resultCallback: resultCallback)
     case "createKeyword": createKeyword(parameters: parameters, resultCallback: resultCallback)
-    case "getKeywords": getKeywords(parameters: parameters, resultCallback: resultCallback)
     case "modifyKeyword": modifyKeyword(parameters: parameters, resultCallback: resultCallback)
     case "getKeywordsByUser": getKeywordsByUser(parameters: parameters, resultCallback: resultCallback)
     case "deleteKeywords": deleteKeywords(parameters: parameters, resultCallback: resultCallback)
@@ -45,19 +44,6 @@ class KeywordApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	frontEndMigrationString: parameters["frontEndMigration"]!
-    )
-  }
-
-  private static func getKeywords(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    KeywordApi.shared.getKeywords(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
     )
   }
 

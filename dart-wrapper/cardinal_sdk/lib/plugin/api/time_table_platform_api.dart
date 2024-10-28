@@ -129,7 +129,7 @@ class TimeTablePlatformApi {
 		return TimeTable.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchTimeTablesBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBy(String sdkId, FilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.matchTimeTablesBy',
 			{
@@ -142,7 +142,7 @@ class TimeTablePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchTimeTablesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBySorted(String sdkId, SortableFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.matchTimeTablesBySorted',
 			{
@@ -258,7 +258,7 @@ class TimeTablePlatformApi {
 		return DecryptedTimeTable.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBy(String sdkId, FilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.filterTimeTablesBy',
 			{
@@ -271,7 +271,7 @@ class TimeTablePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedTimeTable.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBySorted(String sdkId, SortableFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.filterTimeTablesBySorted',
 			{
@@ -384,7 +384,7 @@ class TryAndRecoverTimeTablePlatformApi {
 		return TimeTable.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBy(String sdkId, FilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.tryAndRecover.filterTimeTablesBy',
 			{
@@ -397,7 +397,7 @@ class TryAndRecoverTimeTablePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => TimeTable.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBySorted(String sdkId, SortableFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.tryAndRecover.filterTimeTablesBySorted',
 			{
@@ -510,7 +510,7 @@ class EncryptedTimeTablePlatformApi {
 		return EncryptedTimeTable.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(String sdkId, FilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.encrypted.filterTimeTablesBy',
 			{
@@ -523,7 +523,7 @@ class EncryptedTimeTablePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTimeTable.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(String sdkId, SortableFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableApi.encrypted.filterTimeTablesBySorted',
 			{

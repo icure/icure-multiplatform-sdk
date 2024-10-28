@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/message.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/message.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -14,28 +14,28 @@ class MessageBasicApi {
 	final String _sdkId;
 	MessageBasicApi(this._sdkId);
 
-	Future<List<String>> matchMessagesBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchMessagesBy(BaseFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.matchMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchMessagesBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchMessagesBySorted(BaseSortableFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.matchMessagesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(BaseFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.filterMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(BaseSortableFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.filterMessagesBySorted(
 			_sdkId,
 			filter,
@@ -132,7 +132,7 @@ class MessageBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Message> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.subscribeToEvents(
 			_sdkId,
 			events,

@@ -1,13 +1,13 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/contact.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
+import 'package:cardinal_sdk/model/embed/service.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
-import 'package:cardinal_sdk/model/embed/service.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -27,28 +27,28 @@ class ContactApi {
 		) : tryAndRecover = TryAndRecoverContactApi(_sdkId),
 		encrypted = EncryptedContactApi(_sdkId);
 
-	Future<List<String>> matchContactsBy(FilterOptions filter) async {
+	Future<List<String>> matchContactsBy(FilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchServicesBy(FilterOptions filter) async {
+	Future<List<String>> matchServicesBy(FilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchContactsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchContactsBySorted(SortableFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchServicesBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchServicesBySorted(SortableFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchServicesBySorted(
 			_sdkId,
 			filter,
@@ -137,7 +137,7 @@ class ContactApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(FilterOptions<Service> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.subscribeToServiceCreateOrUpdateEvents(
 			_sdkId,
 			filter,
@@ -214,28 +214,28 @@ class ContactApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedContact>> filterContactsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedContact>> filterContactsBy(FilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.filterContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedService>> filterServicesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedService>> filterServicesBy(FilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.filterServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedContact>> filterContactsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedContact>> filterContactsBySorted(SortableFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.filterContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedService>> filterServicesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedService>> filterServicesBySorted(SortableFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.filterServicesBySorted(
 			_sdkId,
 			filter,
@@ -299,7 +299,7 @@ class ContactApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Contact> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.subscribeToEvents(
 			_sdkId,
 			events,
@@ -330,28 +330,28 @@ class TryAndRecoverContactApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Contact>> filterContactsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Contact>> filterContactsBy(FilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Service>> filterServicesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Service>> filterServicesBy(FilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Contact>> filterContactsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Contact>> filterContactsBySorted(SortableFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Service>> filterServicesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Service>> filterServicesBySorted(SortableFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.filterServicesBySorted(
 			_sdkId,
 			filter,
@@ -437,28 +437,28 @@ class EncryptedContactApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedContact>> filterContactsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedContact>> filterContactsBy(FilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedService>> filterServicesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedService>> filterServicesBy(FilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedContact>> filterContactsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedContact>> filterContactsBySorted(SortableFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedService>> filterServicesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedService>> filterServicesBySorted(SortableFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.filterServicesBySorted(
 			_sdkId,
 			filter,

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -33,7 +33,7 @@ public object PatientFilters {
       String.serializer(),
       dataOwnerIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -48,7 +48,7 @@ public object PatientFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -66,7 +66,7 @@ public object PatientFilters {
       ListSerializer(String.serializer()),
       idsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -93,7 +93,7 @@ public object PatientFilters {
       ListSerializer(Identifier.serializer()),
       identifiersString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -121,7 +121,7 @@ public object PatientFilters {
       ListSerializer(String.serializer()),
       ssinsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -154,7 +154,7 @@ public object PatientFilters {
       Int.serializer(),
       toDateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -183,7 +183,7 @@ public object PatientFilters {
       String.serializer(),
       searchStringString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -221,7 +221,7 @@ public object PatientFilters {
       String.serializer().nullable,
       professionString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -251,7 +251,7 @@ public object PatientFilters {
       Boolean.serializer(),
       activeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -279,7 +279,7 @@ public object PatientFilters {
       String.serializer(),
       searchStringString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -317,7 +317,7 @@ public object PatientFilters {
       String.serializer().nullable,
       houseNumberString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -347,7 +347,7 @@ public object PatientFilters {
       String.serializer(),
       searchStringString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -375,7 +375,7 @@ public object PatientFilters {
       String.serializer(),
       externalIdPrefixString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -395,7 +395,7 @@ public object PatientFilters {
       ListSerializer(Identifier.serializer()),
       identifiersString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -414,7 +414,7 @@ public object PatientFilters {
       ListSerializer(String.serializer()),
       ssinsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -441,7 +441,7 @@ public object PatientFilters {
       Int.serializer(),
       toDateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -461,7 +461,7 @@ public object PatientFilters {
       String.serializer(),
       searchStringString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -493,7 +493,7 @@ public object PatientFilters {
       String.serializer().nullable,
       professionString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -514,7 +514,7 @@ public object PatientFilters {
       Boolean.serializer(),
       activeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -533,7 +533,7 @@ public object PatientFilters {
       String.serializer(),
       searchStringString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -565,7 +565,7 @@ public object PatientFilters {
       String.serializer().nullable,
       houseNumberString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -586,7 +586,7 @@ public object PatientFilters {
       String.serializer(),
       searchStringString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -605,7 +605,7 @@ public object PatientFilters {
       String.serializer(),
       externalIdPrefixString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -642,7 +642,7 @@ public object PatientFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {
@@ -677,7 +677,7 @@ public object PatientFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
     ) {

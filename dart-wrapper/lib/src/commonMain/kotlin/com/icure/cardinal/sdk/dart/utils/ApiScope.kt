@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.dart.utils
 
-import com.icure.cardinal.sdk.utils.Serialization
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -25,19 +24,7 @@ object ApiScope {
 		method: suspend () -> T
 	) {
 		scope.launch {
-			try {
-				resultCallback(
-					Serialization.fullJson.encodeToString(resultSerializer, method()),
-					null,
-					null
-				)
-			} catch (e: Exception) {
-				resultCallback(
-					null,
-					e::class.simpleName ?: "UnknownException",
-					e.stackTraceToString()
-				)
-			}
+			DartResult.inlineResolve(resultCallback, resultSerializer) { method() }
 		}
 	}
 }

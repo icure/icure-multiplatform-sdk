@@ -36,5 +36,6 @@ public fun dispatchFilter(
   "MessageFilters" -> MessageFiltersDispatcher.dispatch(methodName, parameters, resultCallback)
   "AgendaFilters" -> AgendaFiltersDispatcher.dispatch(methodName, parameters, resultCallback)
   "HealthElementFilters" -> HealthElementFiltersDispatcher.dispatch(methodName, parameters, resultCallback)
+  "MetaFilters" -> MetaFiltersDispatcher.dispatch(methodName, parameters, resultCallback)
   else -> false
 }

@@ -148,7 +148,7 @@ class HealthcarePartyPlatformApi {
 		return HealthcareParty.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchHealthcarePartiesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchHealthcarePartiesBy(String sdkId, BaseFilterOptions<HealthcareParty> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.matchHealthcarePartiesBy',
 			{
@@ -161,7 +161,7 @@ class HealthcarePartyPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBy(String sdkId, BaseFilterOptions<HealthcareParty> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.filterHealthPartiesBy',
 			{
@@ -174,7 +174,7 @@ class HealthcarePartyPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => HealthcareParty.fromJSON(x0));
 	}
 
-	Future<List<String>> matchHealthcarePartiesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchHealthcarePartiesBySorted(String sdkId, BaseSortableFilterOptions<HealthcareParty> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.matchHealthcarePartiesBySorted',
 			{
@@ -187,7 +187,7 @@ class HealthcarePartyPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<HealthcareParty>> filterHealthPartiesBySorted(String sdkId, BaseSortableFilterOptions<HealthcareParty> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.filterHealthPartiesBySorted',
 			{
@@ -389,7 +389,7 @@ class HealthcarePartyPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<HealthcareParty>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<HealthcareParty> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.subscribeToEvents',
 			{

@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/contact.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/embed/service.dart';
+import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -16,63 +16,63 @@ class ContactBasicApi {
 	final String _sdkId;
 	ContactBasicApi(this._sdkId);
 
-	Future<List<String>> matchContactsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchContactsBy(BaseFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.matchContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchServicesBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchServicesBy(BaseFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.matchServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchContactsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchContactsBySorted(BaseSortableFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.matchContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchServicesBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchServicesBySorted(BaseSortableFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.matchServicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedContact>> filterContactsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedContact>> filterContactsBy(BaseFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.filterContactsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedService>> filterServicesBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedService>> filterServicesBy(BaseFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.filterServicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedContact>> filterContactsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedContact>> filterContactsBySorted(BaseSortableFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.filterContactsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedService>> filterServicesBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedService>> filterServicesBySorted(BaseSortableFilterOptions<Service> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.filterServicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(BaseFilterOptions<Service> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.subscribeToServiceCreateOrUpdateEvents(
 			_sdkId,
 			filter,
@@ -189,7 +189,7 @@ class ContactBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Contact> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.subscribeToEvents(
 			_sdkId,
 			events,

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.TimeTable
@@ -27,7 +27,7 @@ public object TimeTableFilters {
       String.serializer(),
       agendaIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(TimeTable::class))
     ) {
@@ -64,7 +64,7 @@ public object TimeTableFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(TimeTable::class))
     ) {

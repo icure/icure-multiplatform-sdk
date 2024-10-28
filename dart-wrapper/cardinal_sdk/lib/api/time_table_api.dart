@@ -83,14 +83,14 @@ class TimeTableApi {
 		);
 	}
 
-	Future<List<String>> matchTimeTablesBy(FilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBy(FilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.matchTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchTimeTablesBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBySorted(SortableFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.matchTimeTablesBySorted(
 			_sdkId,
 			filter,
@@ -158,14 +158,14 @@ class TimeTableApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBy(FilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.filterTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTimeTable>> filterTimeTablesBySorted(SortableFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.filterTimeTablesBySorted(
 			_sdkId,
 			filter,
@@ -230,14 +230,14 @@ class TryAndRecoverTimeTableApi {
 		);
 	}
 
-	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBy(FilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.filterTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<TimeTable>> filterTimeTablesBySorted(SortableFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.filterTimeTablesBySorted(
 			_sdkId,
 			filter,
@@ -302,14 +302,14 @@ class EncryptedTimeTableApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(FilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.filterTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(SortableFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.filterTimeTablesBySorted(
 			_sdkId,
 			filter,

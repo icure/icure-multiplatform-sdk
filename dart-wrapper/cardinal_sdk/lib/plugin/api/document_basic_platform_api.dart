@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/document.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'dart:typed_data';
@@ -13,7 +13,7 @@ class DocumentBasicPlatformApi {
 	MethodChannel _methodChannel;
 	DocumentBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchDocumentsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchDocumentsBy(String sdkId, BaseFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentBasicApi.matchDocumentsBy',
 			{
@@ -26,7 +26,7 @@ class DocumentBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchDocumentsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchDocumentsBySorted(String sdkId, BaseSortableFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentBasicApi.matchDocumentsBySorted',
 			{
@@ -39,7 +39,7 @@ class DocumentBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(String sdkId, BaseFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentBasicApi.filterDocumentsBy',
 			{
@@ -52,7 +52,7 @@ class DocumentBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedDocument.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(String sdkId, BaseSortableFilterOptions<Document> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentBasicApi.filterDocumentsBySorted',
 			{

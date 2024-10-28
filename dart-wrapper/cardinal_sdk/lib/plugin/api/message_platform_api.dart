@@ -145,7 +145,7 @@ class MessagePlatformApi {
 		return Message.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchMessagesBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchMessagesBy(String sdkId, FilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.matchMessagesBy',
 			{
@@ -158,7 +158,7 @@ class MessagePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchMessagesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchMessagesBySorted(String sdkId, SortableFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.matchMessagesBySorted',
 			{
@@ -274,7 +274,7 @@ class MessagePlatformApi {
 		return DecryptedMessage.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBy(String sdkId, FilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.filterMessagesBy',
 			{
@@ -287,7 +287,7 @@ class MessagePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedMessage.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBySorted(String sdkId, SortableFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.filterMessagesBySorted',
 			{
@@ -382,7 +382,7 @@ class MessagePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedMessage.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<Message> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.subscribeToEvents',
 			{
@@ -431,7 +431,7 @@ class TryAndRecoverMessagePlatformApi {
 		return Message.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<Message>> filterMessagesBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<Message>> filterMessagesBy(String sdkId, FilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.tryAndRecover.filterMessagesBy',
 			{
@@ -444,7 +444,7 @@ class TryAndRecoverMessagePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Message.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Message>> filterMessagesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Message>> filterMessagesBySorted(String sdkId, SortableFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.tryAndRecover.filterMessagesBySorted',
 			{
@@ -573,7 +573,7 @@ class EncryptedMessagePlatformApi {
 		return EncryptedMessage.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(String sdkId, FilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.encrypted.filterMessagesBy',
 			{
@@ -586,7 +586,7 @@ class EncryptedMessagePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedMessage.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(String sdkId, SortableFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.encrypted.filterMessagesBySorted',
 			{

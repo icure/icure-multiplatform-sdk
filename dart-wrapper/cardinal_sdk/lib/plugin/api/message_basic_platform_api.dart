@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/message.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/message.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -15,7 +15,7 @@ class MessageBasicPlatformApi {
 	MethodChannel _methodChannel;
 	MessageBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchMessagesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchMessagesBy(String sdkId, BaseFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.matchMessagesBy',
 			{
@@ -28,7 +28,7 @@ class MessageBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchMessagesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchMessagesBySorted(String sdkId, BaseSortableFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.matchMessagesBySorted',
 			{
@@ -41,7 +41,7 @@ class MessageBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(String sdkId, BaseFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.filterMessagesBy',
 			{
@@ -54,7 +54,7 @@ class MessageBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedMessage.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(String sdkId, BaseSortableFilterOptions<Message> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.filterMessagesBySorted',
 			{
@@ -223,7 +223,7 @@ class MessageBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMessage.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions<Message> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.subscribeToEvents',
 			{

@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/calendar_item.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/calendar_item.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -14,28 +14,28 @@ class CalendarItemBasicApi {
 	final String _sdkId;
 	CalendarItemBasicApi(this._sdkId);
 
-	Future<List<String>> matchCalendarItemsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchCalendarItemsBy(BaseFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.matchCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchCalendarItemsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchCalendarItemsBySorted(BaseSortableFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.matchCalendarItemsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(BaseFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.filterCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBySorted(BaseSortableFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.filterCalendarItemsBySorted(
 			_sdkId,
 			filter,
@@ -122,7 +122,7 @@ class CalendarItemBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<CalendarItem> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.subscribeToEvents(
 			_sdkId,
 			events,

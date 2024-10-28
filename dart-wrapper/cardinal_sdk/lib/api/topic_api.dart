@@ -87,14 +87,14 @@ class TopicApi {
 		);
 	}
 
-	Future<List<String>> matchTopicsBy(FilterOptions filter) async {
+	Future<List<String>> matchTopicsBy(FilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.matchTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchTopicsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchTopicsBySorted(SortableFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.matchTopicsBySorted(
 			_sdkId,
 			filter,
@@ -162,14 +162,14 @@ class TopicApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBy(FilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.filterTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBySorted(SortableFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.filterTopicsBySorted(
 			_sdkId,
 			filter,
@@ -229,7 +229,7 @@ class TopicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Topic> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.subscribeToEvents(
 			_sdkId,
 			events,
@@ -260,14 +260,14 @@ class TryAndRecoverTopicApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Topic>> filterTopicsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Topic>> filterTopicsBy(FilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.filterTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Topic>> filterTopicsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Topic>> filterTopicsBySorted(SortableFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.filterTopicsBySorted(
 			_sdkId,
 			filter,
@@ -349,14 +349,14 @@ class EncryptedTopicApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(FilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.filterTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(SortableFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.filterTopicsBySorted(
 			_sdkId,
 			filter,

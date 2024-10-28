@@ -105,28 +105,28 @@ class UserApi {
 		);
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersBy(BaseFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchUsersBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchUsersBy(BaseFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersBySorted(BaseSortableFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchUsersBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchUsersBySorted(BaseSortableFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersBySorted(
 			_sdkId,
 			filter,
@@ -216,7 +216,7 @@ class UserApi {
 		);
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersInGroupBy(String groupId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersInGroupBy(String groupId, BaseFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersInGroupBy(
 			_sdkId,
 			groupId,
@@ -224,7 +224,7 @@ class UserApi {
 		);
 	}
 
-	Future<List<String>> matchUsersInGroupBy(String groupId, BaseFilterOptions filter) async {
+	Future<List<String>> matchUsersInGroupBy(String groupId, BaseFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersInGroupBy(
 			_sdkId,
 			groupId,
@@ -232,7 +232,7 @@ class UserApi {
 		);
 	}
 
-	Future<PaginatedListIterator<User>> filterUsersInGroupBySorted(String groupId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<User>> filterUsersInGroupBySorted(String groupId, BaseSortableFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.filterUsersInGroupBySorted(
 			_sdkId,
 			groupId,
@@ -240,7 +240,7 @@ class UserApi {
 		);
 	}
 
-	Future<List<String>> matchUsersInGroupBySorted(String groupId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchUsersInGroupBySorted(String groupId, BaseSortableFilterOptions<User> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.matchUsersInGroupBySorted(
 			_sdkId,
 			groupId,
@@ -357,7 +357,7 @@ class UserApi {
 		);
 	}
 
-	Future<EntitySubscription<User>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<User>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<User> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.subscribeToEvents(
 			_sdkId,
 			events,

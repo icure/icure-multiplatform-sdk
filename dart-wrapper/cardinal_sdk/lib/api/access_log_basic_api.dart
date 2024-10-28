@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/access_log.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/access_log.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 
@@ -11,28 +11,28 @@ class AccessLogBasicApi {
 	final String _sdkId;
 	AccessLogBasicApi(this._sdkId);
 
-	Future<List<String>> matchAccessLogsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBy(BaseFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.matchAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchAccessLogsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBySorted(BaseSortableFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.matchAccessLogsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(BaseFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(BaseSortableFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.filterAccessLogsBySorted(
 			_sdkId,
 			filter,

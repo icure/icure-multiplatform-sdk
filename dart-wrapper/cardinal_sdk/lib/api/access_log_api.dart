@@ -83,14 +83,14 @@ class AccessLogApi {
 		);
 	}
 
-	Future<List<String>> matchAccessLogsBy(FilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBy(FilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.matchAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchAccessLogsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBySorted(SortableFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.matchAccessLogsBySorted(
 			_sdkId,
 			filter,
@@ -158,14 +158,14 @@ class AccessLogApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBy(FilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBySorted(SortableFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.filterAccessLogsBySorted(
 			_sdkId,
 			filter,
@@ -230,14 +230,14 @@ class TryAndRecoverAccessLogApi {
 		);
 	}
 
-	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBy(FilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBySorted(SortableFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.filterAccessLogsBySorted(
 			_sdkId,
 			filter,
@@ -302,14 +302,14 @@ class EncryptedAccessLogApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(FilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.filterAccessLogsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(SortableFilterOptions<AccessLog> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.filterAccessLogsBySorted(
 			_sdkId,
 			filter,

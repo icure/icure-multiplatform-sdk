@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/patient.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/crypto/entities/entity_access_information.dart';
@@ -17,7 +17,7 @@ class PatientBasicPlatformApi {
 	MethodChannel _methodChannel;
 	PatientBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchPatientsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchPatientsBy(String sdkId, BaseFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientBasicApi.matchPatientsBy',
 			{
@@ -30,7 +30,7 @@ class PatientBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchPatientsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchPatientsBySorted(String sdkId, BaseSortableFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientBasicApi.matchPatientsBySorted',
 			{
@@ -43,7 +43,7 @@ class PatientBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(String sdkId, BaseFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientBasicApi.filterPatientsBy',
 			{
@@ -56,7 +56,7 @@ class PatientBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedPatient.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(String sdkId, BaseSortableFilterOptions<Patient> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientBasicApi.filterPatientsBySorted',
 			{
@@ -276,7 +276,7 @@ class PatientBasicPlatformApi {
 		return EncryptedPatient.fromJSON(parsedResJson);
 	}
 
-	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions<Patient> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientBasicApi.subscribeToEvents',
 			{

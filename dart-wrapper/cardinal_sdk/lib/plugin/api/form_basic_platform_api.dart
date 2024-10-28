@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/form.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/form.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/model/form_template.dart';
@@ -14,7 +14,7 @@ class FormBasicPlatformApi {
 	MethodChannel _methodChannel;
 	FormBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchFormsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchFormsBy(String sdkId, BaseFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormBasicApi.matchFormsBy',
 			{
@@ -27,7 +27,7 @@ class FormBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchFormsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchFormsBySorted(String sdkId, BaseSortableFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormBasicApi.matchFormsBySorted',
 			{
@@ -40,7 +40,7 @@ class FormBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(String sdkId, BaseFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormBasicApi.filterFormsBy',
 			{
@@ -53,7 +53,7 @@ class FormBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedForm.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(String sdkId, BaseSortableFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormBasicApi.filterFormsBySorted',
 			{

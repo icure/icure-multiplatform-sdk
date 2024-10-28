@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Code
@@ -21,7 +21,7 @@ public object CodeFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Code.serializer())
     ) {
@@ -39,7 +39,7 @@ public object CodeFilters {
       ListSerializer(String.serializer()),
       idsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(Code.serializer())
     ) {
@@ -66,7 +66,7 @@ public object CodeFilters {
       String.serializer().nullable,
       linkedIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Code.serializer())
     ) {
@@ -104,7 +104,7 @@ public object CodeFilters {
       String.serializer().nullable,
       versionString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Code.serializer())
     ) {
@@ -144,7 +144,7 @@ public object CodeFilters {
       String.serializer().nullable,
       regionString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Code.serializer())
     ) {
@@ -189,7 +189,7 @@ public object CodeFilters {
       String.serializer().nullable,
       versionString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Code.serializer())
     ) {

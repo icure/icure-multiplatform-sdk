@@ -77,7 +77,7 @@ class MedicalLocationPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => MedicalLocation.fromJSON(x1) ).toList();
 	}
 
-	Future<List<String>> matchMedicalLocationsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchMedicalLocationsBy(String sdkId, BaseFilterOptions<MedicalLocation> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MedicalLocationApi.matchMedicalLocationsBy',
 			{
@@ -90,7 +90,7 @@ class MedicalLocationPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchMedicalLocationsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchMedicalLocationsBySorted(String sdkId, BaseSortableFilterOptions<MedicalLocation> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MedicalLocationApi.matchMedicalLocationsBySorted',
 			{
@@ -103,7 +103,7 @@ class MedicalLocationPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBy(String sdkId, BaseFilterOptions<MedicalLocation> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MedicalLocationApi.filterMedicalLocationsBy',
 			{
@@ -116,7 +116,7 @@ class MedicalLocationPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => MedicalLocation.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<MedicalLocation>> filterMedicalLocationsBySorted(String sdkId, BaseSortableFilterOptions<MedicalLocation> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MedicalLocationApi.filterMedicalLocationsBySorted',
 			{

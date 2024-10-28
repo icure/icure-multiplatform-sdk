@@ -221,7 +221,7 @@ class CodePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
-	Future<PaginatedListIterator<Code>> filterCodesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<Code>> filterCodesBy(String sdkId, BaseFilterOptions<Code> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeApi.filterCodesBy',
 			{
@@ -234,7 +234,7 @@ class CodePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Code.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Code>> filterCodesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Code>> filterCodesBySorted(String sdkId, BaseSortableFilterOptions<Code> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeApi.filterCodesBySorted',
 			{
@@ -247,7 +247,7 @@ class CodePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Code.fromJSON(x0));
 	}
 
-	Future<List<String>> matchCodesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchCodesBy(String sdkId, BaseFilterOptions<Code> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeApi.matchCodesBy',
 			{
@@ -260,7 +260,7 @@ class CodePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchCodesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchCodesBySorted(String sdkId, BaseSortableFilterOptions<Code> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeApi.matchCodesBySorted',
 			{

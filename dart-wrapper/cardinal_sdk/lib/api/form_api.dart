@@ -92,14 +92,14 @@ class FormApi {
 		);
 	}
 
-	Future<List<String>> matchFormsBy(FilterOptions filter) async {
+	Future<List<String>> matchFormsBy(FilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.matchFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchFormsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchFormsBySorted(SortableFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.matchFormsBySorted(
 			_sdkId,
 			filter,
@@ -204,14 +204,14 @@ class FormApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedForm>> filterFormsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedForm>> filterFormsBy(FilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.filterFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedForm>> filterFormsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedForm>> filterFormsBySorted(SortableFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.filterFormsBySorted(
 			_sdkId,
 			filter,
@@ -297,14 +297,14 @@ class TryAndRecoverFormApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Form>> filterFormsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Form>> filterFormsBy(FilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.filterFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Form>> filterFormsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Form>> filterFormsBySorted(SortableFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.filterFormsBySorted(
 			_sdkId,
 			filter,
@@ -390,14 +390,14 @@ class EncryptedFormApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(FilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.filterFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(SortableFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.filterFormsBySorted(
 			_sdkId,
 			filter,

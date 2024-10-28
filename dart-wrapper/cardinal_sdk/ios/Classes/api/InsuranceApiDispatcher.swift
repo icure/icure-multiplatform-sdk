@@ -17,7 +17,6 @@ class InsuranceApiDispatcher {
     case "getInsurances": getInsurances(parameters: parameters, resultCallback: resultCallback)
     case "createInsurance": createInsurance(parameters: parameters, resultCallback: resultCallback)
     case "deleteInsurance": deleteInsurance(parameters: parameters, resultCallback: resultCallback)
-    case "getAllInsurances": getAllInsurances(parameters: parameters, resultCallback: resultCallback)
     case "listInsurancesByCode": listInsurancesByCode(parameters: parameters, resultCallback: resultCallback)
     case "listInsurancesByName": listInsurancesByName(parameters: parameters, resultCallback: resultCallback)
     case "modifyInsurance": modifyInsurance(parameters: parameters, resultCallback: resultCallback)
@@ -71,19 +70,6 @@ class InsuranceApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	insuranceIdString: parameters["insuranceId"]!
-    )
-  }
-
-  private static func getAllInsurances(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InsuranceApi.shared.getAllInsurances(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
     )
   }
 

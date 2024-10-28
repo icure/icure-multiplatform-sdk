@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/access_log.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/access_log.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 
@@ -12,7 +12,7 @@ class AccessLogBasicPlatformApi {
 	MethodChannel _methodChannel;
 	AccessLogBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchAccessLogsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBy(String sdkId, BaseFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogBasicApi.matchAccessLogsBy',
 			{
@@ -25,7 +25,7 @@ class AccessLogBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchAccessLogsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBySorted(String sdkId, BaseSortableFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogBasicApi.matchAccessLogsBySorted',
 			{
@@ -38,7 +38,7 @@ class AccessLogBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(String sdkId, BaseFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogBasicApi.filterAccessLogsBy',
 			{
@@ -51,7 +51,7 @@ class AccessLogBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedAccessLog.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(String sdkId, BaseSortableFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogBasicApi.filterAccessLogsBySorted',
 			{

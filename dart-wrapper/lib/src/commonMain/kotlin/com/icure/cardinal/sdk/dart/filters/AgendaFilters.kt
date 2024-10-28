@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -18,7 +18,7 @@ public object AgendaFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Agenda.serializer())
     ) {
@@ -36,7 +36,7 @@ public object AgendaFilters {
       String.serializer(),
       userIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Agenda.serializer())
     ) {
@@ -55,7 +55,7 @@ public object AgendaFilters {
       String.serializer(),
       userIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(Agenda.serializer())
     ) {

@@ -93,14 +93,14 @@ class MessageApi {
 		);
 	}
 
-	Future<List<String>> matchMessagesBy(FilterOptions filter) async {
+	Future<List<String>> matchMessagesBy(FilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.matchMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchMessagesBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchMessagesBySorted(SortableFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.matchMessagesBySorted(
 			_sdkId,
 			filter,
@@ -168,14 +168,14 @@ class MessageApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBy(FilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.filterMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMessage>> filterMessagesBySorted(SortableFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.filterMessagesBySorted(
 			_sdkId,
 			filter,
@@ -228,7 +228,7 @@ class MessageApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMessage>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Message> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.subscribeToEvents(
 			_sdkId,
 			events,
@@ -259,14 +259,14 @@ class TryAndRecoverMessageApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Message>> filterMessagesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Message>> filterMessagesBy(FilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.filterMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Message>> filterMessagesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Message>> filterMessagesBySorted(SortableFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.filterMessagesBySorted(
 			_sdkId,
 			filter,
@@ -341,14 +341,14 @@ class EncryptedMessageApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBy(FilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.filterMessagesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMessage>> filterMessagesBySorted(SortableFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.filterMessagesBySorted(
 			_sdkId,
 			filter,

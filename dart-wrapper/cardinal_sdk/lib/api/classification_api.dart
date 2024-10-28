@@ -82,14 +82,14 @@ class ClassificationApi {
 		);
 	}
 
-	Future<List<String>> matchClassificationsBy(FilterOptions filter) async {
+	Future<List<String>> matchClassificationsBy(FilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.matchClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchClassificationsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchClassificationsBySorted(SortableFilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.matchClassificationsBySorted(
 			_sdkId,
 			filter,
@@ -127,14 +127,14 @@ class ClassificationApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBy(FilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.filterClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBySorted(SortableFilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.filterClassificationsBySorted(
 			_sdkId,
 			filter,
@@ -184,14 +184,14 @@ class TryAndRecoverClassificationApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Classification>> filterClassificationsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Classification>> filterClassificationsBy(FilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.filterClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Classification>> filterClassificationsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Classification>> filterClassificationsBySorted(SortableFilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.filterClassificationsBySorted(
 			_sdkId,
 			filter,
@@ -241,14 +241,14 @@ class EncryptedClassificationApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(FilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.filterClassificationsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(SortableFilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.filterClassificationsBySorted(
 			_sdkId,
 			filter,

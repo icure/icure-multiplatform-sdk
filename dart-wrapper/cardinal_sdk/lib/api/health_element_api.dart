@@ -93,14 +93,14 @@ class HealthElementApi {
 		);
 	}
 
-	Future<List<String>> matchHealthElementsBy(FilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBy(FilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.matchHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchHealthElementsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBySorted(SortableFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.matchHealthElementsBySorted(
 			_sdkId,
 			filter,
@@ -168,14 +168,14 @@ class HealthElementApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBy(FilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.filterHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedHealthElement>> filterHealthElementsBySorted(SortableFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.filterHealthElementsBySorted(
 			_sdkId,
 			filter,
@@ -225,7 +225,7 @@ class HealthElementApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<HealthElement> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.subscribeToEvents(
 			_sdkId,
 			events,
@@ -256,14 +256,14 @@ class TryAndRecoverHealthElementApi {
 		);
 	}
 
-	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBy(FilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.filterHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<HealthElement>> filterHealthElementsBySorted(SortableFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.filterHealthElementsBySorted(
 			_sdkId,
 			filter,
@@ -335,14 +335,14 @@ class EncryptedHealthElementApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(FilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.filterHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(SortableFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.filterHealthElementsBySorted(
 			_sdkId,
 			filter,

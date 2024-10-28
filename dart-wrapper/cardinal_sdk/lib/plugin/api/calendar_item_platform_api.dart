@@ -132,7 +132,7 @@ class CalendarItemPlatformApi {
 		return CalendarItem.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchCalendarItemsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchCalendarItemsBy(String sdkId, FilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.matchCalendarItemsBy',
 			{
@@ -145,7 +145,7 @@ class CalendarItemPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchCalendarItemsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchCalendarItemsBySorted(String sdkId, SortableFilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.matchCalendarItemsBySorted',
 			{
@@ -276,7 +276,7 @@ class CalendarItemPlatformApi {
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBy(String sdkId, FilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.filterCalendarItemsBy',
 			{
@@ -289,7 +289,7 @@ class CalendarItemPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedCalendarItem.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBySorted(String sdkId, SortableFilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.filterCalendarItemsBySorted',
 			{
@@ -368,7 +368,7 @@ class CalendarItemPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedCalendarItem.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<CalendarItem> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.subscribeToEvents',
 			{
@@ -432,7 +432,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 		return CalendarItem.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBy(String sdkId, FilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.tryAndRecover.filterCalendarItemsBy',
 			{
@@ -445,7 +445,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => CalendarItem.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBySorted(String sdkId, SortableFilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.tryAndRecover.filterCalendarItemsBySorted',
 			{
@@ -573,7 +573,7 @@ class EncryptedCalendarItemPlatformApi {
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(String sdkId, FilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.encrypted.filterCalendarItemsBy',
 			{
@@ -586,7 +586,7 @@ class EncryptedCalendarItemPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedCalendarItem.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBySorted(String sdkId, SortableFilterOptions<CalendarItem> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CalendarItemApi.encrypted.filterCalendarItemsBySorted',
 			{

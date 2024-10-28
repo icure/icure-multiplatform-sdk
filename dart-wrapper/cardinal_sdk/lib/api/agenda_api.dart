@@ -98,28 +98,28 @@ class AgendaApi {
 		);
 	}
 
-	Future<List<String>> matchAgendasBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchAgendasBy(BaseFilterOptions<Agenda> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.agenda.matchAgendasBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchAgendasBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchAgendasBySorted(BaseSortableFilterOptions<Agenda> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.agenda.matchAgendasBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Agenda>> filterAgendasBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<Agenda>> filterAgendasBy(BaseFilterOptions<Agenda> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.agenda.filterAgendasBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Agenda>> filterAgendasBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Agenda>> filterAgendasBySorted(BaseSortableFilterOptions<Agenda> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.agenda.filterAgendasBySorted(
 			_sdkId,
 			filter,

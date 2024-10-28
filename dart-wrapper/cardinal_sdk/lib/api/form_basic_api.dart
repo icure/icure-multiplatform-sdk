@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/form.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/form.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/model/form_template.dart';
@@ -13,28 +13,28 @@ class FormBasicApi {
 	final String _sdkId;
 	FormBasicApi(this._sdkId);
 
-	Future<List<String>> matchFormsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchFormsBy(BaseFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.formBasic.matchFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchFormsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchFormsBySorted(BaseSortableFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.formBasic.matchFormsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(BaseFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.formBasic.filterFormsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(BaseSortableFilterOptions<Form> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.formBasic.filterFormsBySorted(
 			_sdkId,
 			filter,

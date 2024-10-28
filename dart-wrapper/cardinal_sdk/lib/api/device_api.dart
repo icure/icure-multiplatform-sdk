@@ -57,28 +57,28 @@ class DeviceApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Device>> filterDevicesBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<Device>> filterDevicesBy(BaseFilterOptions<Device> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.filterDevicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Device>> filterDevicesBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Device>> filterDevicesBySorted(BaseSortableFilterOptions<Device> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.filterDevicesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchDevicesBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchDevicesBy(BaseFilterOptions<Device> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.matchDevicesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchDevicesBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchDevicesBySorted(BaseSortableFilterOptions<Device> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.matchDevicesBySorted(
 			_sdkId,
 			filter,
@@ -176,7 +176,7 @@ class DeviceApi {
 		);
 	}
 
-	Future<EntitySubscription<Device>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<Device>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<Device> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.subscribeToEvents(
 			_sdkId,
 			events,

@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/crypto/entities/entity_access_information.dart';
@@ -16,28 +16,28 @@ class PatientBasicApi {
 	final String _sdkId;
 	PatientBasicApi(this._sdkId);
 
-	Future<List<String>> matchPatientsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchPatientsBy(BaseFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.matchPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchPatientsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchPatientsBySorted(BaseSortableFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.matchPatientsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBy(BaseFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.filterPatientsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedPatient>> filterPatientsBySorted(BaseSortableFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.filterPatientsBySorted(
 			_sdkId,
 			filter,
@@ -161,7 +161,7 @@ class PatientBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedPatient>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Patient> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.subscribeToEvents(
 			_sdkId,
 			events,

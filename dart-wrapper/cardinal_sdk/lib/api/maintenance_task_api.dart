@@ -82,14 +82,14 @@ class MaintenanceTaskApi {
 		);
 	}
 
-	Future<List<String>> matchMaintenanceTasksBy(FilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBy(FilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.matchMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchMaintenanceTasksBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBySorted(SortableFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.matchMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
@@ -157,14 +157,14 @@ class MaintenanceTaskApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBy(FilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.filterMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedMaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.filterMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
@@ -207,7 +207,7 @@ class MaintenanceTaskApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<MaintenanceTask> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.subscribeToEvents(
 			_sdkId,
 			events,
@@ -238,14 +238,14 @@ class TryAndRecoverMaintenanceTaskApi {
 		);
 	}
 
-	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBy(FilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<MaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.filterMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
@@ -310,14 +310,14 @@ class EncryptedMaintenanceTaskApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(FilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.filterMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(SortableFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.filterMaintenanceTasksBySorted(
 			_sdkId,
 			filter,

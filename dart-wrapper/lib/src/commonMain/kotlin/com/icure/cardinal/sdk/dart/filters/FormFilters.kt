@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -39,7 +39,7 @@ public object FormFilters {
       String.serializer(),
       parentIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {
@@ -59,7 +59,7 @@ public object FormFilters {
       String.serializer(),
       parentIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {
@@ -101,7 +101,7 @@ public object FormFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {
@@ -142,7 +142,7 @@ public object FormFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {
@@ -187,7 +187,7 @@ public object FormFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {
@@ -228,7 +228,7 @@ public object FormFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {
@@ -258,7 +258,7 @@ public object FormFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {
@@ -286,7 +286,7 @@ public object FormFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Form::class))
     ) {

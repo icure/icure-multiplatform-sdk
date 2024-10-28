@@ -144,7 +144,7 @@ class FormPlatformApi {
 		return Form.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchFormsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchFormsBy(String sdkId, FilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.matchFormsBy',
 			{
@@ -157,7 +157,7 @@ class FormPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchFormsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchFormsBySorted(String sdkId, SortableFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.matchFormsBySorted',
 			{
@@ -340,7 +340,7 @@ class FormPlatformApi {
 		return DecryptedForm.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedForm>> filterFormsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedForm>> filterFormsBy(String sdkId, FilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.filterFormsBy',
 			{
@@ -353,7 +353,7 @@ class FormPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedForm.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedForm>> filterFormsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedForm>> filterFormsBySorted(String sdkId, SortableFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.filterFormsBySorted',
 			{
@@ -505,7 +505,7 @@ class TryAndRecoverFormPlatformApi {
 		return Form.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<Form>> filterFormsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<Form>> filterFormsBy(String sdkId, FilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.tryAndRecover.filterFormsBy',
 			{
@@ -518,7 +518,7 @@ class TryAndRecoverFormPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Form.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Form>> filterFormsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Form>> filterFormsBySorted(String sdkId, SortableFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.tryAndRecover.filterFormsBySorted',
 			{
@@ -670,7 +670,7 @@ class EncryptedFormPlatformApi {
 		return EncryptedForm.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBy(String sdkId, FilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.encrypted.filterFormsBy',
 			{
@@ -683,7 +683,7 @@ class EncryptedFormPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedForm.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedForm>> filterFormsBySorted(String sdkId, SortableFilterOptions<Form> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.encrypted.filterFormsBySorted',
 			{

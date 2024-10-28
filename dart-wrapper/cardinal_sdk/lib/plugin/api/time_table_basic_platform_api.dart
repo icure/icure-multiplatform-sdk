@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/time_table.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/time_table.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 
@@ -12,7 +12,7 @@ class TimeTableBasicPlatformApi {
 	MethodChannel _methodChannel;
 	TimeTableBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchTimeTablesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBy(String sdkId, BaseFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableBasicApi.matchTimeTablesBy',
 			{
@@ -25,7 +25,7 @@ class TimeTableBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchTimeTablesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBySorted(String sdkId, BaseSortableFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableBasicApi.matchTimeTablesBySorted',
 			{
@@ -38,7 +38,7 @@ class TimeTableBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(String sdkId, BaseFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableBasicApi.filterTimeTablesBy',
 			{
@@ -51,7 +51,7 @@ class TimeTableBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTimeTable.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(String sdkId, BaseSortableFilterOptions<TimeTable> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TimeTableBasicApi.filterTimeTablesBySorted',
 			{

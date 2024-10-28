@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -24,7 +24,7 @@ public object HealthcarePartyFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -42,7 +42,7 @@ public object HealthcarePartyFilters {
       ListSerializer(Identifier.serializer()),
       identifiersString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -69,7 +69,7 @@ public object HealthcarePartyFilters {
       String.serializer().nullable,
       codeCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -97,7 +97,7 @@ public object HealthcarePartyFilters {
       String.serializer().nullable,
       tagCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -117,7 +117,7 @@ public object HealthcarePartyFilters {
       ListSerializer(String.serializer()),
       idsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -144,7 +144,7 @@ public object HealthcarePartyFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -172,7 +172,7 @@ public object HealthcarePartyFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -192,7 +192,7 @@ public object HealthcarePartyFilters {
       String.serializer(),
       parentIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(HealthcareParty.serializer())
     ) {
@@ -229,7 +229,7 @@ public object HealthcarePartyFilters {
       String.serializer(),
       endPostCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(HealthcareParty.serializer())
     ) {

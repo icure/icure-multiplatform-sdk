@@ -1,10 +1,10 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
-import 'dart:convert';
-import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/contact.dart';
+import 'dart:convert';
 import 'package:cardinal_sdk/model/embed/service.dart';
+import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -17,7 +17,7 @@ class ContactBasicPlatformApi {
 	MethodChannel _methodChannel;
 	ContactBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchContactsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchContactsBy(String sdkId, BaseFilterOptions<Contact> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.matchContactsBy',
 			{
@@ -30,7 +30,7 @@ class ContactBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchServicesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchServicesBy(String sdkId, BaseFilterOptions<Service> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.matchServicesBy',
 			{
@@ -43,7 +43,7 @@ class ContactBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchContactsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchContactsBySorted(String sdkId, BaseSortableFilterOptions<Contact> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.matchContactsBySorted',
 			{
@@ -56,7 +56,7 @@ class ContactBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchServicesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchServicesBySorted(String sdkId, BaseSortableFilterOptions<Service> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.matchServicesBySorted',
 			{
@@ -69,7 +69,7 @@ class ContactBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedContact>> filterContactsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedContact>> filterContactsBy(String sdkId, BaseFilterOptions<Contact> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.filterContactsBy',
 			{
@@ -82,7 +82,7 @@ class ContactBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedContact.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedService>> filterServicesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedService>> filterServicesBy(String sdkId, BaseFilterOptions<Service> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.filterServicesBy',
 			{
@@ -95,7 +95,7 @@ class ContactBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedService.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedContact>> filterContactsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedContact>> filterContactsBySorted(String sdkId, BaseSortableFilterOptions<Contact> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.filterContactsBySorted',
 			{
@@ -108,7 +108,7 @@ class ContactBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedContact.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedService>> filterServicesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedService>> filterServicesBySorted(String sdkId, BaseSortableFilterOptions<Service> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.filterServicesBySorted',
 			{
@@ -121,7 +121,7 @@ class ContactBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedService.fromJSON(x0));
 	}
 
-	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(String sdkId, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedService>> subscribeToServiceCreateOrUpdateEvents(String sdkId, BaseFilterOptions<Service> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.subscribeToServiceCreateOrUpdateEvents',
 			{
@@ -328,7 +328,7 @@ class ContactBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedService.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedContact>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions<Contact> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactBasicApi.subscribeToEvents',
 			{

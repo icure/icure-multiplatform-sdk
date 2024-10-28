@@ -129,7 +129,7 @@ class AccessLogPlatformApi {
 		return AccessLog.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchAccessLogsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBy(String sdkId, FilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.matchAccessLogsBy',
 			{
@@ -142,7 +142,7 @@ class AccessLogPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchAccessLogsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchAccessLogsBySorted(String sdkId, SortableFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.matchAccessLogsBySorted',
 			{
@@ -258,7 +258,7 @@ class AccessLogPlatformApi {
 		return DecryptedAccessLog.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBy(String sdkId, FilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.filterAccessLogsBy',
 			{
@@ -271,7 +271,7 @@ class AccessLogPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedAccessLog.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedAccessLog>> filterAccessLogsBySorted(String sdkId, SortableFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.filterAccessLogsBySorted',
 			{
@@ -384,7 +384,7 @@ class TryAndRecoverAccessLogPlatformApi {
 		return AccessLog.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBy(String sdkId, FilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.tryAndRecover.filterAccessLogsBy',
 			{
@@ -397,7 +397,7 @@ class TryAndRecoverAccessLogPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => AccessLog.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<AccessLog>> filterAccessLogsBySorted(String sdkId, SortableFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.tryAndRecover.filterAccessLogsBySorted',
 			{
@@ -510,7 +510,7 @@ class EncryptedAccessLogPlatformApi {
 		return EncryptedAccessLog.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBy(String sdkId, FilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.encrypted.filterAccessLogsBy',
 			{
@@ -523,7 +523,7 @@ class EncryptedAccessLogPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedAccessLog.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedAccessLog>> filterAccessLogsBySorted(String sdkId, SortableFilterOptions<AccessLog> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogApi.encrypted.filterAccessLogsBySorted',
 			{

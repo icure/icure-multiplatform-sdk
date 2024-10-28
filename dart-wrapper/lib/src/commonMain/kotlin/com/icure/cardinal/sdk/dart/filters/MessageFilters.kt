@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -32,7 +32,7 @@ public object MessageFilters {
       String.serializer(),
       dataOwnerIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -47,7 +47,7 @@ public object MessageFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -73,7 +73,7 @@ public object MessageFilters {
       String.serializer(),
       transportGuidString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -93,7 +93,7 @@ public object MessageFilters {
       String.serializer(),
       transportGuidString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -120,7 +120,7 @@ public object MessageFilters {
       String.serializer(),
       addressString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -140,7 +140,7 @@ public object MessageFilters {
       String.serializer(),
       addressString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -182,7 +182,7 @@ public object MessageFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -223,7 +223,7 @@ public object MessageFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -268,7 +268,7 @@ public object MessageFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -309,7 +309,7 @@ public object MessageFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -339,7 +339,7 @@ public object MessageFilters {
       String.serializer(),
       addressString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -359,7 +359,7 @@ public object MessageFilters {
       String.serializer(),
       addressString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -401,7 +401,7 @@ public object MessageFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -442,7 +442,7 @@ public object MessageFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -472,7 +472,7 @@ public object MessageFilters {
       String.serializer(),
       transportGuidString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -492,7 +492,7 @@ public object MessageFilters {
       String.serializer(),
       transportGuidString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -511,7 +511,7 @@ public object MessageFilters {
       SetSerializer(String.serializer()),
       invoiceIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {
@@ -530,7 +530,7 @@ public object MessageFilters {
       ListSerializer(String.serializer()),
       parentIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(Message::class))
     ) {

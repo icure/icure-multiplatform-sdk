@@ -20,6 +20,7 @@ import 'package:cardinal_sdk/plugin/filters/medical_location_platform_filters.da
 import 'package:cardinal_sdk/plugin/filters/message_platform_filters.dart';
 import 'package:cardinal_sdk/plugin/filters/agenda_platform_filters.dart';
 import 'package:cardinal_sdk/plugin/filters/health_element_platform_filters.dart';
+import 'package:cardinal_sdk/plugin/filters/platform_meta_filters.dart';
 import 'package:cardinal_sdk/plugin/filters/cardinal_sdk_platform_filters_plugin.dart';
 
 
@@ -65,4 +66,6 @@ class CardinalSdkMethodChannelFilters extends CardinalSdkPlatformFiltersPlugin {
 	@override AgendaPlatformFilters get agenda => _agenda;
 	HealthElementPlatformFilters _healthElement = HealthElementPlatformFilters(_methodChannel);
 	@override HealthElementPlatformFilters get healthElement => _healthElement;
+	PlatformMetaFilters _metaFilters = PlatformMetaFilters(_methodChannel);
+	@override PlatformMetaFilters get metaFilters => _metaFilters;
 }

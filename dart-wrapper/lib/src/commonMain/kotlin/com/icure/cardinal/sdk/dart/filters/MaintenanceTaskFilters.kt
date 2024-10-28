@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -29,7 +29,7 @@ public object MaintenanceTaskFilters {
       ListSerializer(String.serializer()),
       idsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(MaintenanceTask::class))
     ) {
@@ -56,7 +56,7 @@ public object MaintenanceTaskFilters {
       ListSerializer(Identifier.serializer()),
       identifiersString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(MaintenanceTask::class))
     ) {
@@ -76,7 +76,7 @@ public object MaintenanceTaskFilters {
       ListSerializer(Identifier.serializer()),
       identifiersString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(MaintenanceTask::class))
     ) {
@@ -103,7 +103,7 @@ public object MaintenanceTaskFilters {
       String.serializer(),
       typeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(PolymorphicSerializer(MaintenanceTask::class))
     ) {
@@ -123,7 +123,7 @@ public object MaintenanceTaskFilters {
       String.serializer(),
       typeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(MaintenanceTask::class))
     ) {
@@ -150,7 +150,7 @@ public object MaintenanceTaskFilters {
       Long.serializer(),
       dateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(MaintenanceTask::class))
     ) {
@@ -170,7 +170,7 @@ public object MaintenanceTaskFilters {
       Long.serializer(),
       dateString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(MaintenanceTask::class))
     ) {

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -54,7 +54,7 @@ public object DocumentFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {
@@ -95,7 +95,7 @@ public object DocumentFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {
@@ -140,7 +140,7 @@ public object DocumentFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {
@@ -181,7 +181,7 @@ public object DocumentFilters {
       Boolean.serializer(),
       descendingString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       SortableFilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {
@@ -216,7 +216,7 @@ public object DocumentFilters {
       ListSerializer(PolymorphicSerializer(Patient::class)),
       patientsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {
@@ -245,7 +245,7 @@ public object DocumentFilters {
       ListSerializer(PolymorphicSerializer(Patient::class)),
       patientsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {
@@ -278,7 +278,7 @@ public object DocumentFilters {
       ListSerializer(String.serializer()),
       secretIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {
@@ -307,7 +307,7 @@ public object DocumentFilters {
       ListSerializer(String.serializer()),
       secretIdsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       FilterOptions.serializer(PolymorphicSerializer(Document::class))
     ) {

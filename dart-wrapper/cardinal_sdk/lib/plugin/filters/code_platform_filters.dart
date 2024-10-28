@@ -1,3 +1,4 @@
+// auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';

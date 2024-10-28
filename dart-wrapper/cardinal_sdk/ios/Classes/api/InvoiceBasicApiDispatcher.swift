@@ -26,7 +26,6 @@ class InvoiceBasicApiDispatcher {
     case "validate": validate(parameters: parameters, resultCallback: resultCallback)
     case "appendCodes": appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "removeCodes": removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "findInvoicesByAuthor": findInvoicesByAuthor(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHCPartyAndPatientForeignKeys": listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartyAndGroupId": listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
@@ -211,23 +210,6 @@ class InvoiceBasicApiDispatcher {
     	serviceIdString: parameters["serviceId"]!,
     	secretFKeysString: parameters["secretFKeys"]!,
     	tarificationIdsString: parameters["tarificationIds"]!
-    )
-  }
-
-  private static func findInvoicesByAuthor(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceBasicApi.shared.findInvoicesByAuthor(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	fromDateString: parameters["fromDate"]!,
-    	toDateString: parameters["toDate"]!,
-    	startKeyString: parameters["startKey"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
     )
   }
 

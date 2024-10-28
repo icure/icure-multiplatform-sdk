@@ -165,7 +165,7 @@ class AgendaPlatformApi {
 		return Agenda.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchAgendasBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchAgendasBy(String sdkId, BaseFilterOptions<Agenda> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.matchAgendasBy',
 			{
@@ -178,7 +178,7 @@ class AgendaPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchAgendasBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchAgendasBySorted(String sdkId, BaseSortableFilterOptions<Agenda> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.matchAgendasBySorted',
 			{
@@ -191,7 +191,7 @@ class AgendaPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<Agenda>> filterAgendasBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<Agenda>> filterAgendasBy(String sdkId, BaseFilterOptions<Agenda> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.filterAgendasBy',
 			{
@@ -204,7 +204,7 @@ class AgendaPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Agenda.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Agenda>> filterAgendasBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Agenda>> filterAgendasBySorted(String sdkId, BaseSortableFilterOptions<Agenda> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.filterAgendasBySorted',
 			{

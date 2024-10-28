@@ -133,14 +133,14 @@ class DocumentApi {
 		);
 	}
 
-	Future<List<String>> matchDocumentsBy(FilterOptions filter) async {
+	Future<List<String>> matchDocumentsBy(FilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.matchDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchDocumentsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchDocumentsBySorted(SortableFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.matchDocumentsBySorted(
 			_sdkId,
 			filter,
@@ -263,14 +263,14 @@ class DocumentApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBy(FilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.filterDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedDocument>> filterDocumentsBySorted(SortableFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.filterDocumentsBySorted(
 			_sdkId,
 			filter,
@@ -342,14 +342,14 @@ class TryAndRecoverDocumentApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Document>> filterDocumentsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<Document>> filterDocumentsBy(FilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.filterDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Document>> filterDocumentsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Document>> filterDocumentsBySorted(SortableFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.filterDocumentsBySorted(
 			_sdkId,
 			filter,
@@ -421,14 +421,14 @@ class EncryptedDocumentApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBy(FilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.filterDocumentsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedDocument>> filterDocumentsBySorted(SortableFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.filterDocumentsBySorted(
 			_sdkId,
 			filter,

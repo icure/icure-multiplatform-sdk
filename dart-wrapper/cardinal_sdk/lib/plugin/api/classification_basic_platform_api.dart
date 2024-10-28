@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/classification.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/classification.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 
@@ -11,7 +11,7 @@ class ClassificationBasicPlatformApi {
 	MethodChannel _methodChannel;
 	ClassificationBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchClassificationsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchClassificationsBy(String sdkId, BaseFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationBasicApi.matchClassificationsBy',
 			{
@@ -24,7 +24,7 @@ class ClassificationBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchClassificationsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchClassificationsBySorted(String sdkId, BaseSortableFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationBasicApi.matchClassificationsBySorted',
 			{
@@ -37,7 +37,7 @@ class ClassificationBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(String sdkId, BaseFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationBasicApi.filterClassificationsBy',
 			{
@@ -50,7 +50,7 @@ class ClassificationBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedClassification.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(String sdkId, BaseSortableFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationBasicApi.filterClassificationsBySorted',
 			{

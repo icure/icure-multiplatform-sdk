@@ -86,14 +86,14 @@ class CalendarItemApi {
 		);
 	}
 
-	Future<List<String>> matchCalendarItemsBy(FilterOptions filter) async {
+	Future<List<String>> matchCalendarItemsBy(FilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.matchCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchCalendarItemsBySorted(SortableFilterOptions filter) async {
+	Future<List<String>> matchCalendarItemsBySorted(SortableFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.matchCalendarItemsBySorted(
 			_sdkId,
 			filter,
@@ -170,14 +170,14 @@ class CalendarItemApi {
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBy(FilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.filterCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedCalendarItem>> filterCalendarItemsBySorted(SortableFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.filterCalendarItemsBySorted(
 			_sdkId,
 			filter,
@@ -220,7 +220,7 @@ class CalendarItemApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedCalendarItem>> subscribeToEvents(Set<SubscriptionEventType> events, FilterOptions<CalendarItem> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.subscribeToEvents(
 			_sdkId,
 			events,
@@ -260,14 +260,14 @@ class TryAndRecoverCalendarItemApi {
 		);
 	}
 
-	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBy(FilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.tryAndRecover.filterCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<CalendarItem>> filterCalendarItemsBySorted(SortableFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.tryAndRecover.filterCalendarItemsBySorted(
 			_sdkId,
 			filter,
@@ -341,14 +341,14 @@ class EncryptedCalendarItemApi {
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBy(FilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.encrypted.filterCalendarItemsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBySorted(SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedCalendarItem>> filterCalendarItemsBySorted(SortableFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.encrypted.filterCalendarItemsBySorted(
 			_sdkId,
 			filter,

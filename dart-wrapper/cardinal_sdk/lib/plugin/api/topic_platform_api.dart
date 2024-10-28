@@ -133,7 +133,7 @@ class TopicPlatformApi {
 		return Topic.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchTopicsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchTopicsBy(String sdkId, FilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.matchTopicsBy',
 			{
@@ -146,7 +146,7 @@ class TopicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchTopicsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchTopicsBySorted(String sdkId, SortableFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.matchTopicsBySorted',
 			{
@@ -262,7 +262,7 @@ class TopicPlatformApi {
 		return DecryptedTopic.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBy(String sdkId, FilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.filterTopicsBy',
 			{
@@ -275,7 +275,7 @@ class TopicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedTopic.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedTopic>> filterTopicsBySorted(String sdkId, SortableFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.filterTopicsBySorted',
 			{
@@ -383,7 +383,7 @@ class TopicPlatformApi {
 		return DecryptedTopic.fromJSON(parsedResJson);
 	}
 
-	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<Topic> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.subscribeToEvents',
 			{
@@ -432,7 +432,7 @@ class TryAndRecoverTopicPlatformApi {
 		return Topic.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<Topic>> filterTopicsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<Topic>> filterTopicsBy(String sdkId, FilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.tryAndRecover.filterTopicsBy',
 			{
@@ -445,7 +445,7 @@ class TryAndRecoverTopicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Topic.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Topic>> filterTopicsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Topic>> filterTopicsBySorted(String sdkId, SortableFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.tryAndRecover.filterTopicsBySorted',
 			{
@@ -587,7 +587,7 @@ class EncryptedTopicPlatformApi {
 		return EncryptedTopic.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(String sdkId, FilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.encrypted.filterTopicsBy',
 			{
@@ -600,7 +600,7 @@ class EncryptedTopicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTopic.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(String sdkId, SortableFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.encrypted.filterTopicsBySorted',
 			{

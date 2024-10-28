@@ -18,8 +18,6 @@ class GroupApiDispatcher {
     case "createGroup": createGroup(parameters: parameters, resultCallback: resultCallback)
     case "registerNewGroupAdministrator": registerNewGroupAdministrator(parameters: parameters, resultCallback: resultCallback)
     case "listApps": listApps(parameters: parameters, resultCallback: resultCallback)
-    case "findGroups": findGroups(parameters: parameters, resultCallback: resultCallback)
-    case "findGroupsWithContent": findGroupsWithContent(parameters: parameters, resultCallback: resultCallback)
     case "getNameOfGroupParent": getNameOfGroupParent(parameters: parameters, resultCallback: resultCallback)
     case "modifyGroupName": modifyGroupName(parameters: parameters, resultCallback: resultCallback)
     case "getOperationToken": getOperationToken(parameters: parameters, resultCallback: resultCallback)
@@ -109,36 +107,6 @@ class GroupApiDispatcher {
     GroupApi.shared.listApps(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!
-    )
-  }
-
-  private static func findGroups(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    GroupApi.shared.findGroups(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	idString: parameters["id"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
-    )
-  }
-
-  private static func findGroupsWithContent(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    GroupApi.shared.findGroupsWithContent(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	idString: parameters["id"]!,
-    	searchStringString: parameters["searchString"]!,
-    	startKeyString: parameters["startKey"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
     )
   }
 

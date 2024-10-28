@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/topic.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/topic.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/model/topic_role.dart';
@@ -16,7 +16,7 @@ class TopicBasicPlatformApi {
 	MethodChannel _methodChannel;
 	TopicBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchTopicsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchTopicsBy(String sdkId, BaseFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.matchTopicsBy',
 			{
@@ -29,7 +29,7 @@ class TopicBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchTopicsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchTopicsBySorted(String sdkId, BaseSortableFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.matchTopicsBySorted',
 			{
@@ -42,7 +42,7 @@ class TopicBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(String sdkId, BaseFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.filterTopicsBy',
 			{
@@ -55,7 +55,7 @@ class TopicBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTopic.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(String sdkId, BaseSortableFilterOptions<Topic> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.filterTopicsBySorted',
 			{
@@ -237,7 +237,7 @@ class TopicBasicPlatformApi {
 		return EncryptedTopic.fromJSON(parsedResJson);
 	}
 
-	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions<Topic> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.subscribeToEvents',
 			{

@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/health_element.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/health_element.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -14,28 +14,28 @@ class HealthElementBasicApi {
 	final String _sdkId;
 	HealthElementBasicApi(this._sdkId);
 
-	Future<List<String>> matchHealthElementsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBy(BaseFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.matchHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchHealthElementsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBySorted(BaseSortableFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.matchHealthElementsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(BaseFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.filterHealthElementsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(BaseSortableFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.filterHealthElementsBySorted(
 			_sdkId,
 			filter,
@@ -129,7 +129,7 @@ class HealthElementBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<HealthElement> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.subscribeToEvents(
 			_sdkId,
 			events,

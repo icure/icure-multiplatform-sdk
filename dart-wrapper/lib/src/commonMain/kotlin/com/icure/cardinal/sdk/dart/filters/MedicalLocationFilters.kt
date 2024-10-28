@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.model.MedicalLocation
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -18,7 +18,7 @@ public object MedicalLocationFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(MedicalLocation.serializer())
     ) {
@@ -36,7 +36,7 @@ public object MedicalLocationFilters {
       String.serializer(),
       postCodeString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(MedicalLocation.serializer())
     ) {

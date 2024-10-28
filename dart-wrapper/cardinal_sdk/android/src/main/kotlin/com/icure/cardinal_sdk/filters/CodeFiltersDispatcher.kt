@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal_sdk.filters
 
-import com.icure.cardinal.sdk.dart.api.CodeFilters
+import com.icure.cardinal.sdk.dart.filters.CodeFilters
 import kotlin.Boolean
 import kotlin.String
 import kotlin.Unit

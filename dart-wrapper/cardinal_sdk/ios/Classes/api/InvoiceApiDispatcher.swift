@@ -37,7 +37,6 @@ class InvoiceApiDispatcher {
     case "validate": validate(parameters: parameters, resultCallback: resultCallback)
     case "appendCodes": appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "removeCodes": removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "findInvoicesByAuthor": findInvoicesByAuthor(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHCPartyAndPatientForeignKeys": listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartyAndGroupId": listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
@@ -61,7 +60,6 @@ class InvoiceApiDispatcher {
     case "encrypted.validate": encrypted_validate(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.appendCodes": encrypted_appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.removeCodes": encrypted_removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "encrypted.findInvoicesByAuthor": encrypted_findInvoicesByAuthor(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.listInvoicesByHCPartyAndPatientForeignKeys": encrypted_listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.listInvoicesByHcPartyAndGroupId": encrypted_listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": encrypted_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
@@ -85,7 +83,6 @@ class InvoiceApiDispatcher {
     case "tryAndRecover.validate": tryAndRecover_validate(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.appendCodes": tryAndRecover_appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.removeCodes": tryAndRecover_removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "tryAndRecover.findInvoicesByAuthor": tryAndRecover_findInvoicesByAuthor(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys": tryAndRecover_listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.listInvoicesByHcPartyAndGroupId": tryAndRecover_listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": tryAndRecover_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
@@ -414,23 +411,6 @@ class InvoiceApiDispatcher {
     )
   }
 
-  private static func findInvoicesByAuthor(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.shared.findInvoicesByAuthor(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	fromDateString: parameters["fromDate"]!,
-    	toDateString: parameters["toDate"]!,
-    	startKeyString: parameters["startKey"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
-    )
-  }
-
   private static func listInvoicesByHCPartyAndPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -735,23 +715,6 @@ class InvoiceApiDispatcher {
     )
   }
 
-  private static func encrypted_findInvoicesByAuthor(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.encrypted.shared.findInvoicesByAuthor(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	fromDateString: parameters["fromDate"]!,
-    	toDateString: parameters["toDate"]!,
-    	startKeyString: parameters["startKey"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
-    )
-  }
-
   private static func encrypted_listInvoicesByHCPartyAndPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -1053,23 +1016,6 @@ class InvoiceApiDispatcher {
     	serviceIdString: parameters["serviceId"]!,
     	secretFKeysString: parameters["secretFKeys"]!,
     	tarificationIdsString: parameters["tarificationIds"]!
-    )
-  }
-
-  private static func tryAndRecover_findInvoicesByAuthor(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.tryAndRecover.shared.findInvoicesByAuthor(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	fromDateString: parameters["fromDate"]!,
-    	toDateString: parameters["toDate"]!,
-    	startKeyString: parameters["startKey"]!,
-    	startDocumentIdString: parameters["startDocumentId"]!,
-    	limitString: parameters["limit"]!
     )
   }
 

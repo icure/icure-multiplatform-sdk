@@ -94,7 +94,7 @@ class DevicePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
 	}
 
-	Future<PaginatedListIterator<Device>> filterDevicesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<Device>> filterDevicesBy(String sdkId, BaseFilterOptions<Device> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DeviceApi.filterDevicesBy',
 			{
@@ -107,7 +107,7 @@ class DevicePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Device.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Device>> filterDevicesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Device>> filterDevicesBySorted(String sdkId, BaseSortableFilterOptions<Device> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DeviceApi.filterDevicesBySorted',
 			{
@@ -120,7 +120,7 @@ class DevicePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Device.fromJSON(x0));
 	}
 
-	Future<List<String>> matchDevicesBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchDevicesBy(String sdkId, BaseFilterOptions<Device> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DeviceApi.matchDevicesBy',
 			{
@@ -133,7 +133,7 @@ class DevicePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchDevicesBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchDevicesBySorted(String sdkId, BaseSortableFilterOptions<Device> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DeviceApi.matchDevicesBySorted',
 			{
@@ -303,7 +303,7 @@ class DevicePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<Device>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<Device>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<Device> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DeviceApi.subscribeToEvents',
 			{

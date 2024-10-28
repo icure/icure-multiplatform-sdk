@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/time_table.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/time_table.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 
@@ -11,28 +11,28 @@ class TimeTableBasicApi {
 	final String _sdkId;
 	TimeTableBasicApi(this._sdkId);
 
-	Future<List<String>> matchTimeTablesBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBy(BaseFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTableBasic.matchTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchTimeTablesBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchTimeTablesBySorted(BaseSortableFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTableBasic.matchTimeTablesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBy(BaseFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTableBasic.filterTimeTablesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTimeTable>> filterTimeTablesBySorted(BaseSortableFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTableBasic.filterTimeTablesBySorted(
 			_sdkId,
 			filter,

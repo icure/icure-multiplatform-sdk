@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/topic.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/topic.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/model/topic_role.dart';
@@ -15,28 +15,28 @@ class TopicBasicApi {
 	final String _sdkId;
 	TopicBasicApi(this._sdkId);
 
-	Future<List<String>> matchTopicsBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchTopicsBy(BaseFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.matchTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchTopicsBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchTopicsBySorted(BaseSortableFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.matchTopicsBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBy(BaseFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.filterTopicsBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedTopic>> filterTopicsBySorted(BaseSortableFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.filterTopicsBySorted(
 			_sdkId,
 			filter,
@@ -140,7 +140,7 @@ class TopicBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedTopic>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<Topic> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.subscribeToEvents(
 			_sdkId,
 			events,

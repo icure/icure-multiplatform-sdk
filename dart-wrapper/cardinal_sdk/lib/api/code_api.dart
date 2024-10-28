@@ -130,28 +130,28 @@ class CodeApi {
 		);
 	}
 
-	Future<PaginatedListIterator<Code>> filterCodesBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<Code>> filterCodesBy(BaseFilterOptions<Code> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.filterCodesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<Code>> filterCodesBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Code>> filterCodesBySorted(BaseSortableFilterOptions<Code> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.filterCodesBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchCodesBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchCodesBy(BaseFilterOptions<Code> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.matchCodesBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchCodesBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchCodesBySorted(BaseSortableFilterOptions<Code> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.matchCodesBySorted(
 			_sdkId,
 			filter,

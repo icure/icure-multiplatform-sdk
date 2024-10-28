@@ -1,9 +1,9 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/health_element.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/health_element.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -15,7 +15,7 @@ class HealthElementBasicPlatformApi {
 	MethodChannel _methodChannel;
 	HealthElementBasicPlatformApi(this._methodChannel);
 
-	Future<List<String>> matchHealthElementsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBy(String sdkId, BaseFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.matchHealthElementsBy',
 			{
@@ -28,7 +28,7 @@ class HealthElementBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchHealthElementsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchHealthElementsBySorted(String sdkId, BaseSortableFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.matchHealthElementsBySorted',
 			{
@@ -41,7 +41,7 @@ class HealthElementBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(String sdkId, BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBy(String sdkId, BaseFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.filterHealthElementsBy',
 			{
@@ -54,7 +54,7 @@ class HealthElementBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedHealthElement.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(String sdkId, BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedHealthElement>> filterHealthElementsBySorted(String sdkId, BaseSortableFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.filterHealthElementsBySorted',
 			{
@@ -220,7 +220,7 @@ class HealthElementBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
-	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedHealthElement>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, BaseFilterOptions<HealthElement> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.subscribeToEvents',
 			{

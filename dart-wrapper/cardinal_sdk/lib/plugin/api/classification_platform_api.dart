@@ -128,7 +128,7 @@ class ClassificationPlatformApi {
 		return Classification.fromJSON(parsedResJson);
 	}
 
-	Future<List<String>> matchClassificationsBy(String sdkId, FilterOptions filter) async {
+	Future<List<String>> matchClassificationsBy(String sdkId, FilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.matchClassificationsBy',
 			{
@@ -141,7 +141,7 @@ class ClassificationPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
 	}
 
-	Future<List<String>> matchClassificationsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<List<String>> matchClassificationsBySorted(String sdkId, SortableFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.matchClassificationsBySorted',
 			{
@@ -209,7 +209,7 @@ class ClassificationPlatformApi {
 		return DecryptedClassification.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBy(String sdkId, FilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.filterClassificationsBy',
 			{
@@ -222,7 +222,7 @@ class ClassificationPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedClassification.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<DecryptedClassification>> filterClassificationsBySorted(String sdkId, SortableFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.filterClassificationsBySorted',
 			{
@@ -308,7 +308,7 @@ class TryAndRecoverClassificationPlatformApi {
 		return Classification.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<Classification>> filterClassificationsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<Classification>> filterClassificationsBy(String sdkId, FilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.tryAndRecover.filterClassificationsBy',
 			{
@@ -321,7 +321,7 @@ class TryAndRecoverClassificationPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Classification.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<Classification>> filterClassificationsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<Classification>> filterClassificationsBySorted(String sdkId, SortableFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.tryAndRecover.filterClassificationsBySorted',
 			{
@@ -407,7 +407,7 @@ class EncryptedClassificationPlatformApi {
 		return EncryptedClassification.fromJSON(parsedResJson);
 	}
 
-	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(String sdkId, FilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBy(String sdkId, FilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.encrypted.filterClassificationsBy',
 			{
@@ -420,7 +420,7 @@ class EncryptedClassificationPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedClassification.fromJSON(x0));
 	}
 
-	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(String sdkId, SortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedClassification>> filterClassificationsBySorted(String sdkId, SortableFilterOptions<Classification> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.encrypted.filterClassificationsBySorted',
 			{

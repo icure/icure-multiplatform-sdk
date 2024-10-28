@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.filters
 
-import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartResult
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.User
@@ -20,7 +20,7 @@ public object UserFilters {
     String?,
     String?,
   ) -> Unit) {
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(User.serializer())
     ) {
@@ -38,7 +38,7 @@ public object UserFilters {
       ListSerializer(String.serializer()),
       idsString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseSortableFilterOptions.serializer(User.serializer())
     ) {
@@ -57,7 +57,7 @@ public object UserFilters {
       String.serializer(),
       patientIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(User.serializer())
     ) {
@@ -76,7 +76,7 @@ public object UserFilters {
       String.serializer(),
       healthcarePartyIdString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(User.serializer())
     ) {
@@ -95,7 +95,7 @@ public object UserFilters {
       String.serializer(),
       searchStringString
     )
-    ApiScope.execute(
+    DartResult.resolve(
       dartResultCallback,
       BaseFilterOptions.serializer(User.serializer())
     ) {

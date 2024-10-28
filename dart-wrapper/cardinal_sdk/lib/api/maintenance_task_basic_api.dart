@@ -1,8 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -14,28 +14,28 @@ class MaintenanceTaskBasicApi {
 	final String _sdkId;
 	MaintenanceTaskBasicApi(this._sdkId);
 
-	Future<List<String>> matchMaintenanceTasksBy(BaseFilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBy(BaseFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.matchMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<List<String>> matchMaintenanceTasksBySorted(BaseSortableFilterOptions filter) async {
+	Future<List<String>> matchMaintenanceTasksBySorted(BaseSortableFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.matchMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(BaseFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBy(BaseFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.filterMaintenanceTasksBy(
 			_sdkId,
 			filter,
 		);
 	}
 
-	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(BaseSortableFilterOptions filter) async {
+	Future<PaginatedListIterator<EncryptedMaintenanceTask>> filterMaintenanceTasksBySorted(BaseSortableFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.filterMaintenanceTasksBySorted(
 			_sdkId,
 			filter,
@@ -122,7 +122,7 @@ class MaintenanceTaskBasicApi {
 		);
 	}
 
-	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
+	Future<EntitySubscription<EncryptedMaintenanceTask>> subscribeToEvents(Set<SubscriptionEventType> events, BaseFilterOptions<MaintenanceTask> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.subscribeToEvents(
 			_sdkId,
 			events,
