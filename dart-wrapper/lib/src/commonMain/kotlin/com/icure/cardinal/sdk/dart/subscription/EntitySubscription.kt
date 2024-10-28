@@ -11,6 +11,7 @@ import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
 
+@OptIn(InternalIcureApi::class)
 object EntitySubscription {
 
 	fun close(
@@ -19,13 +20,13 @@ object EntitySubscription {
 			String?,
 			String?,
 		) -> Unit,
-		sdkId: String
+		subscriptionId: String
 	) {
 		ApiScope.execute(
 			dartResultCallback,
 			Unit.serializer()
 		) {
-			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).close()
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).close()
 		}
 	}
 
@@ -35,13 +36,13 @@ object EntitySubscription {
 			String?,
 			String?,
 		) -> Unit,
-		sdkId: String
+		subscriptionId: String
 	) {
 		ApiScope.execute(
 			dartResultCallback,
 			JsonElement.serializer()
 		) {
-			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).closeReason
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).closeReason
 		}
 	}
 
@@ -51,13 +52,13 @@ object EntitySubscription {
 			String?,
 			String?,
 		) -> Unit,
-		sdkId: String
+		subscriptionId: String
 	) {
 		ApiScope.execute(
 			dartResultCallback,
 			JsonElement.serializer()
 		) {
-			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).getEvent()
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).getEvent()
 		}
 	}
 
@@ -67,7 +68,7 @@ object EntitySubscription {
 			String?,
 			String?,
 		) -> Unit,
-		sdkId: String,
+		subscriptionId: String,
 		timeoutString: String
 	) {
 		val timeout = fullLanguageInteropJson.decodeFromString(
@@ -78,7 +79,7 @@ object EntitySubscription {
 			dartResultCallback,
 			JsonElement.serializer().nullable
 		) {
-			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(sdkId).waitForEvent(timeout)
+			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).waitForEvent(timeout)
 		}
 	}
 

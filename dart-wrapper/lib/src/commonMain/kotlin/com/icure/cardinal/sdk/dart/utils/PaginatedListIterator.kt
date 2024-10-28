@@ -14,13 +14,13 @@ object PaginatedListIterator {
 			String?,
 			String?,
 		) -> Unit,
-		sdkId: String
+		paginatedListIteratorId: String
 	) {
 		ApiScope.execute(
 			dartResultCallback,
 			Boolean.serializer()
 		) {
-			NativeReferences.get<PaginatedListIteratorWithSerializer<*>>(sdkId).hasNext()
+			NativeReferences.get<PaginatedListIteratorWithSerializer<*>>(paginatedListIteratorId).hasNext()
 		}
 	}
 
@@ -30,7 +30,7 @@ object PaginatedListIterator {
 			String?,
 			String?,
 		) -> Unit,
-		sdkId: String,
+		paginatedListIteratorId: String,
 		limitString: String
 	) {
 		val limit = fullLanguageInteropJson.decodeFromString(
@@ -41,7 +41,7 @@ object PaginatedListIterator {
 			dartResultCallback,
 			JsonElement.serializer()
 		) {
-			NativeReferences.get<PaginatedListIteratorWithSerializer<*>>(sdkId).nextAsJson(limit)
+			NativeReferences.get<PaginatedListIteratorWithSerializer<*>>(paginatedListIteratorId).nextAsJson(limit)
 		}
 	}
 }

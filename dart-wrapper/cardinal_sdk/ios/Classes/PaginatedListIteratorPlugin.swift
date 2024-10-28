@@ -1,6 +1,25 @@
+import Flutter
 import CardinalDartSdkSupportLib
 
-class PaginatedListIteratorDispatcher {
+class PaginatedListIteratorPlugin {
+
+    public static func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let args = call.arguments as! [String: String]
+        let methodName = call.method
+
+        let completed = PaginatedListIteratorPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage in
+            if (errorCode != nil){
+                result(FlutterError(code: errorCode!, message: errorMessage, details: nil))
+            }
+            else {
+                result(success)
+            }
+        }
+
+        if !completed {
+            result(FlutterMethodNotImplemented)
+        }
+    }
 
   static func dispatch(
     methodName: String,
@@ -25,7 +44,7 @@ class PaginatedListIteratorDispatcher {
 	) {
 		PaginatedListIterator.shared.hasNext(
 			dartResultCallback: resultCallback,
-			sdkId: parameters["paginatedListIteratorId"]!,
+			paginatedListIteratorId: parameters["paginatedListIteratorId"]!,
 		)
 	}
 
@@ -35,7 +54,7 @@ class PaginatedListIteratorDispatcher {
 	) {
 		PaginatedListIterator.shared.next(
 			dartResultCallback: resultCallback,
-			sdkId: parameters["paginatedListIteratorId"]!,
+			paginatedListIteratorId: parameters["paginatedListIteratorId"]!,
 			limit: parameters["limit"]!
 		)
 	}
