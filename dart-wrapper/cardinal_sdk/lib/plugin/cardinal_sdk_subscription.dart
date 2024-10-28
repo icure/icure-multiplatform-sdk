@@ -37,7 +37,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
   }
 
   @override
-  Future<Map<String, dynamic>> getEvent(String subscriptionId) async {
+  Future<Map<String, dynamic>?> getEvent(String subscriptionId) async {
     final res = await _methodChannel.invokeMethod<String>(
         'getEvent',
         {

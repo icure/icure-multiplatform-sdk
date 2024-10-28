@@ -56,7 +56,7 @@ object EntitySubscription {
 	) {
 		ApiScope.execute(
 			dartResultCallback,
-			JsonElement.serializer()
+			JsonElement.serializer().nullable
 		) {
 			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).getEvent()
 		}

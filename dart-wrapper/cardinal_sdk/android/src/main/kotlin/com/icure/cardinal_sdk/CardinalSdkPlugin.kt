@@ -11,6 +11,7 @@ class CardinalSdkPlugin: FlutterPlugin {
   private lateinit var initializersChannel : MethodChannel
   private lateinit var paginationChannel : MethodChannel
   private lateinit var subscriptionChannel : MethodChannel
+  private lateinit var utilsChannel : MethodChannel
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     ApiScope.setup()
@@ -24,6 +25,8 @@ class CardinalSdkPlugin: FlutterPlugin {
     paginationChannel.setMethodCallHandler(PaginationPlugin)
     subscriptionChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/subscription")
     subscriptionChannel.setMethodCallHandler(SubscriptionPlugin)
+    utilsChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/utils")
+    utilsChannel.setMethodCallHandler(UtilsPlugin)
   }
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
@@ -31,6 +34,7 @@ class CardinalSdkPlugin: FlutterPlugin {
     initializersChannel.setMethodCallHandler(null)
     paginationChannel.setMethodCallHandler(null)
     subscriptionChannel.setMethodCallHandler(null)
+    utilsChannel.setMethodCallHandler(null)
     ApiScope.teardown()
   }
 }

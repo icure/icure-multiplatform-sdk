@@ -28,6 +28,7 @@ class CardinalSdkPlatformInterface extends PlatformInterface {
   CardinalSdkInitializersPlugin get initializers => throw UnimplementedError();
   CardinalSdkPlatformSubscriptionPlugin get subscription => throw UnimplementedError();
   CardinalSdkPlatformFiltersPlugin get filters => throw UnimplementedError();
+  CardinalSdkPlatformUtilsPlugin get utils => throw UnimplementedError();
 }
 
 class CardinalSdkMethodChannelInterface extends CardinalSdkPlatformInterface {
@@ -36,6 +37,7 @@ class CardinalSdkMethodChannelInterface extends CardinalSdkPlatformInterface {
   final _initializers = CardinalSdkMethodChannelInitializers();
   final _subscription = CardinalSdkMethodChannelSubscription();
   final _filters = CardinalSdkMethodChannelFilters();
+  final _utils = CardinalSdkMethodChannelUtils();
 
   @override
   CardinalSdkPlatformApisPlugin get apis => _apis;
@@ -51,4 +53,7 @@ class CardinalSdkMethodChannelInterface extends CardinalSdkPlatformInterface {
 
   @override
   CardinalSdkPlatformFiltersPlugin get filters => _filters;
+
+  @override
+  CardinalSdkPlatformUtilsPlugin get utils => _utils;
 }

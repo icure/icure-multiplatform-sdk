@@ -39,6 +39,8 @@ import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:flutter/services.dart';
 
 class CardinalSdk {
+  static final _finalizer = Finalizer((resourceId) => CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId));
+
   final String _sdkId;
   final ApplicationSettingsApi applicationSettings;
   final CodeApi code;
@@ -113,6 +115,12 @@ class CardinalSdk {
     cardinalMaintenanceTask = CardinalMaintenanceTaskApi(_sdkId),
     dataOwner = DataOwnerApi(_sdkId);
 
+  factory CardinalSdk._factory(String sdkId) {
+    final sdk = CardinalSdk._(sdkId);
+    _finalizer.attach(sdk, sdkId, detach: sdk);
+    return sdk;
+  }
+
   static Future<CardinalSdk> initialize(
     String username,
     String longToken
@@ -135,6 +143,6 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
     );
     if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
     final parsedResJson = jsonDecode(res);
-    return CardinalSdk._(parsedResJson as String);
+    return CardinalSdk._factory(parsedResJson as String);
   }
 }
