@@ -15,8 +15,8 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC.10"
-project.version = version ?: "0.0.0-snapshot"
+val version = "1.0.0-RC.1"
+project.version = version
 
 kotlin {
 	configureMultiplatform(
@@ -34,7 +34,7 @@ kotlin {
 	sourceSets {
 		val commonMain by getting {
 			dependencies {
-				api("com.icure:cardinal-sdk:1.0.0-RC.10")
+				api("com.icure:cardinal-sdk:1.0.0-RC.3")
 				implementation(libs.coroutinesCore)
 				implementation(libs.kotlinSerialization)
 			}

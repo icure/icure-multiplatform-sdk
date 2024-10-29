@@ -70,5 +70,5 @@ android {
 
 dependencies {
 //    implementation files('localLibs/flutter.jar')
-    implementation 'com.icure:cardinal-dart-sdk-support-lib:1.0.0-RC.10'
+    implementation 'com.icure:cardinal-dart-sdk-support-lib:1.0.0-RC.1'
 }
