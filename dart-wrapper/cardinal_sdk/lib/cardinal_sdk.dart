@@ -38,6 +38,11 @@ import 'package:cardinal_sdk/auth/authentication_method.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_initializers.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:flutter/services.dart';
+import 'auth/authentication_process_telecom_type.dart';
+import 'auth/authentication_process_template_parameters.dart';
+import 'auth/captcha_options.dart';
+import 'options/sdk_options.dart';
+import 'options/storage_options.dart';
 
 class CardinalSdk {
   static final Finalizer<String> _finalizer = Finalizer((resourceId) =>
@@ -140,6 +145,43 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
         "initialize",
         {
           "authenticationMethod": AuthenticationMethod.encode(authenticationMethod)
+        }
+    );
+    if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
+    final parsedResJson = jsonDecode(res);
+    return CardinalSdk._factory(parsedResJson as String);
+  }
+
+  @override
+  Future<CardinalSdk> initializeWithProcess(
+      String? applicationId,
+      String baseUrl,
+      String messageGatewayUrl,
+      String externalServicesSpecId,
+      String processId,
+      AuthenticationProcessTelecomType userTelecomType,
+      String userTelecom,
+      CaptchaOptions captcha,
+      StorageOptions storageOptions,
+      {
+        AuthenticationProcessTemplateParameters authenticationProcessTemplateParameters = const AuthenticationProcessTemplateParameters(),
+        SdkOptions options = const SdkOptions()
+      }
+  ) async {
+    final res = await _methodChannel.invokeMethod<String>(
+        "initializeWithProcess",
+        {
+          "applicationId": applicationId,
+          "baseUrl": baseUrl,
+          "messageGatewayUrl": messageGatewayUrl,
+          "externalServicesSpecId": externalServicesSpecId,
+          "processId": processId,
+          "userTelecomType": AuthenticationProcessTelecomType.encode(userTelecomType),
+          "userTelecom": userTelecom,
+          "captcha": CaptchaOptions.encode(captcha),
+          "storageOptions": StorageOptions.encode(storageOptions),
+          "authenticationProcessTemplateParameters": AuthenticationProcessTemplateParameters.encode(authenticationProcessTemplateParameters),
+          "options": SdkOptions.encode(options)
         }
     );
     if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");

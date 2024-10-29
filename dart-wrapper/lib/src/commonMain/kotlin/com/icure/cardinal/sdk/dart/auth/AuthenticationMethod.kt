@@ -7,6 +7,7 @@ sealed interface AuthenticationMethod {
 
 	fun toKt(): com.icure.cardinal.sdk.options.AuthenticationMethod
 
+	@Serializable
 	data class UsingCredentials(val credentials: Credentials) : AuthenticationMethod {
 		override fun toKt() =
 			com.icure.cardinal.sdk.options.AuthenticationMethod.UsingCredentials(credentials.toKt())

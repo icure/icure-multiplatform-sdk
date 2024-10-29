@@ -44,13 +44,13 @@ class SdkOptions implements CommonSdkOptions {
   /// created.
   final bool createTransferKeys;
 
-  SdkOptions({
-    EncryptedFieldsConfiguration? encryptedFields,
+  const SdkOptions({
+    this.encryptedFields = const EncryptedFieldsConfiguration(),
     this.saltPasswordWithApplicationId = true,
     // this.groupSelector,
     this.useHierarchicalDataOwners = true,
     this.createTransferKeys = true
-  }) : encryptedFields = encryptedFields ?? EncryptedFieldsConfiguration();
+  });
 
   factory SdkOptions.fromJSON(Map<String, dynamic> data) {
     return SdkOptions(
@@ -77,11 +77,11 @@ class BasicSdkOptions implements CommonSdkOptions {
   @override final bool saltPasswordWithApplicationId;
   // @override final GroupSelector? groupSelector;
 
-  BasicSdkOptions({
-    EncryptedFieldsConfiguration? encryptedFields,
+  const BasicSdkOptions({
+    this.encryptedFields = const EncryptedFieldsConfiguration(),
     this.saltPasswordWithApplicationId = true,
     // this.groupSelector
-  }) : encryptedFields = encryptedFields ?? EncryptedFieldsConfiguration();
+  });
 
   factory BasicSdkOptions.fromJSON(Map<String, dynamic> data) {
     return BasicSdkOptions(
@@ -116,7 +116,7 @@ class EncryptedFieldsConfiguration {
   final Set<String> timeTable;
   final Set<String> invoice;
 
-  EncryptedFieldsConfiguration({
+  const EncryptedFieldsConfiguration({
     this.accessLog = const {"detail", "objectId"},
     this.calendarItem = const {"descr", "notes[].markdown"},
     this.contact = const  {"descr", "notes[].markdown"},

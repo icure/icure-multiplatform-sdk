@@ -1,7 +1,14 @@
 name: cardinal_sdk
-description: "A new Flutter plugin project."
-version: 0.0.1
-homepage:
+description: "Cardinal SDK is a multiplatform SDK for the iCure platform. "
+version: 1.0.0-rc.1
+homepage: "https://cardinalsdk.com"
+repository: "https://github.com/icure"
+documentation: "https://docs.icure.com/"
+topics:
+  - "sdk"
+  - "health"
+  - "backend"
+  - "encryption"
 
 environment:
   sdk: ^3.5.3
