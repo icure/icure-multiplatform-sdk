@@ -21,6 +21,8 @@ class MetaFiltersDispatcher {
     case "sortableDifference": sortableDifference(parameters: parameters, resultCallback: resultCallback)
     case "baseDifference": baseDifference(parameters: parameters, resultCallback: resultCallback)
     case "baseSortableDifference": baseSortableDifference(parameters: parameters, resultCallback: resultCallback)
+    case "union": union(parameters: parameters, resultCallback: resultCallback)
+    case "baseUnion": baseUnion(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true

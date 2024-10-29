@@ -56,7 +56,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
         'getEvent',
         {
           "subscriptionId": subscriptionId,
-          "timeout": timeout.inMilliseconds
+          "timeout": jsonEncode(timeout.inMilliseconds)
         }
     );
     if (res == null) throw AssertionError("received null result from platform method waitForEvent");
