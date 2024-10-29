@@ -6,8 +6,11 @@ import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
+import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.builtins.serializer
 
+@OptIn(InternalIcureApi::class)
 object Initializers {
 	fun initializeSdk(
 		dartResultCallback: (
@@ -15,9 +18,12 @@ object Initializers {
 			String?,
 			String?,
 		) -> Unit,
-		username: String,
-		longToken: String
+		authenticationMethodString: String
 	) {
+		val authenticationMethod = fullLanguageInteropJson.decodeFromString(
+			com.icure.cardinal.sdk.dart.auth.AuthenticationMethod.serializer(),
+			authenticationMethodString
+		)
 		ApiScope.execute(
 			dartResultCallback,
 			String.serializer()
@@ -25,7 +31,7 @@ object Initializers {
 			val sdk = CardinalSdk.initialize(
 				null,
 				"https://api.icure.cloud",
-				AuthenticationMethod.UsingCredentials(UsernameLongToken(username, longToken)),
+				authenticationMethod.toKt(),
 				VolatileStorageFacade()
 			)
 			NativeReferences.create(sdk)

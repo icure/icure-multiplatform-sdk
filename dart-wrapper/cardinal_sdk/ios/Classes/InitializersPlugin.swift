@@ -32,8 +32,7 @@ class InitializersPlugin {
         switch methodName {
         case "initialize": Initializers.shared.initializeSdk(
             dartResultCallback: resultCallback,
-            username: parameters["username"]!,
-            longToken: parameters["longToken"]!
+            authenticationMethodString: parameters["authenticationMethod"]!
         )
         default: return false
         }

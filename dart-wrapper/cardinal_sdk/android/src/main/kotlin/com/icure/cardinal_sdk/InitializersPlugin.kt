@@ -30,8 +30,7 @@ object InitializersPlugin : MethodChannel.MethodCallHandler {
     ): Boolean = when (methodName) {
         "initialize" -> Initializers.initializeSdk(
             resultCallback,
-            parameters.getValue("username"),
-            parameters.getValue("longToken"),
+            parameters.getValue("authenticationMethod"),
         )
         else -> null
     }?.let { true } ?: false

@@ -34,6 +34,7 @@ import 'package:cardinal_sdk/api/tarification_api.dart';
 import 'package:cardinal_sdk/api/time_table_api.dart';
 import 'package:cardinal_sdk/api/topic_api.dart';
 import 'package:cardinal_sdk/api/user_api.dart';
+import 'package:cardinal_sdk/auth/authentication_method.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_initializers.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:flutter/services.dart';
@@ -124,10 +125,9 @@ class CardinalSdk {
   }
 
   static Future<CardinalSdk> initialize(
-    String username,
-    String longToken
+      AuthenticationMethod authenticationMethod
   ) {
-    return CardinalSdkPlatformInterface.instance.initializers.initialize(username, longToken);
+    return CardinalSdkPlatformInterface.instance.initializers.initialize(authenticationMethod);
   }
 }
 
@@ -135,12 +135,11 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
   static const MethodChannel _methodChannel = MethodChannel("com.icure.cardinal.sdk/initializers");
 
   @override
-  Future<CardinalSdk> initialize(String username, String longToken) async {
+  Future<CardinalSdk> initialize(AuthenticationMethod authenticationMethod) async {
     final res = await _methodChannel.invokeMethod<String>(
         "initialize",
         {
-          "username": username,
-          "longToken": longToken
+          "authenticationMethod": AuthenticationMethod.encode(authenticationMethod)
         }
     );
     if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
