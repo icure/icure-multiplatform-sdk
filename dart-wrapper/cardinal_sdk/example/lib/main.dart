@@ -5,6 +5,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cardinal_sdk/auth/authentication_method.dart';
+import 'package:cardinal_sdk/auth/authentication_process_telecom_type.dart';
+import 'package:cardinal_sdk/auth/captcha_options.dart';
 import 'package:cardinal_sdk/auth/credentials.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/filters/meta_filters.dart';
@@ -54,49 +56,71 @@ String generateUuid() {
 }
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String display = 'Unstarted';
-
-  @override
-  void initState() {
-    super.initState();
-    initStateAsync();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Auth App')),
+        body: AuthForm(),
+      ),
+    );
   }
+}
 
-  void msg(Object obj) {
-    final msg = obj.toString();
-    print(msg);
-    display = msg;
+class AuthForm extends StatefulWidget {
+  @override
+  _AuthFormState createState() => _AuthFormState();
+}
+
+class _AuthFormState extends State<AuthForm> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController codeController = TextEditingController();
+  AuthenticationWithProcessStep? step;
+
+  void startInit(String email) async {
+    print("Starting auth");
+    step = await CardinalSdk.initializeWithProcess(
+      null,
+      "https://api.icure.cloud",
+      "https://msg-gw.icure.cloud",
+      throw UnimplementedError("Take the specId from the cockpit"),
+      throw UnimplementedError("Take the processId from the cockpit"),
+      AuthenticationProcessTelecomType.email,
+      email,
+      CaptchaOptions.KerberusDelegated(),
+      StorageOptions.PlatformDefault,
+    );
+    print("Auth process started");
   }
 
   Future<void> usePages(CardinalSdk sdk) async {
     final pages = await sdk.patient.encrypted.filterPatientsBy(await PatientFilters.allPatientsForSelf());
     while (await pages.hasNext()) {
-      msg("Got page ${(await pages.next(10)).map((e) => EncryptedPatient.encode(e)).toList()}");
+      print("Got page ${(await pages.next(10)).map((e) => EncryptedPatient.encode(e)).toList()}");
     }
   }
 
-  Future<void> initStateAsync() async {
-    msg("Started init");
-    final sdk = await CardinalSdk.initialize(
-      null,
-      "https://api.icure.cloud",
-      AuthenticationMethod.UsingCredentials(
-        Credentials.UsernameLongToken("luca+dartman@icure.com", "4a57f15e-10b3-4287-9d33-1cea74d39db3")
-      ),
-      StorageOptions.PlatformDefault,
-    );
-    msg("Sdk initialized");
+  Future<void> doFilterExample() async {
+    final simple = PatientFilters.byActiveForSelf(true);
+    final sortable = PatientFilters.byAddressForSelf("address");
+    print("Simple ${FilterOptions.encode(await simple)}");
+    print("Sortable ${FilterOptions.encode(await simple)}");
+    print("(sortable & simple) - (sortable | (simple & sortable)) ${FilterOptions.encode(await ((sortable & simple) - (sortable | (simple & sortable))))}");
+  }
+
+  void completeInitAndTry(String code) async {
+    final currStep = step;
+    if (currStep == null) {
+      print("Authentication with process step not set");
+      return;
+    }
+    print("Completing auth");
+    final sdk = await currStep.completeAuthentication(code);
+    print("Sdk initialized");
     final patient = await sdk.patient.createPatient(
       await sdk.patient.withEncryptionMetadata(DecryptedPatient(
         generateUuid(),
@@ -105,13 +129,13 @@ class _MyAppState extends State<MyApp> {
         note: "The third mario bros"
       ))
     );
-    msg("Created patient");
-    msg(patient);
-    msg("Retrieved patient");
-    msg(DecryptedPatient.encode(await sdk.patient.getPatient(patient.id)));
-    msg("Retrieved encrypted patient");
-    msg(EncryptedPatient.encode(await sdk.patient.encrypted.getPatient(patient.id)));
-    // msg("Creating more patients");
+    print("Created patient");
+    print(patient);
+    print("Retrieved patient");
+    print(DecryptedPatient.encode(await sdk.patient.getPatient(patient.id)));
+    print("Retrieved encrypted patient");
+    print(EncryptedPatient.encode(await sdk.patient.encrypted.getPatient(patient.id)));
+    // print("Creating more patients");
     // final List<DecryptedPatient> manyPatients = [];
     // for (int i = 0; i < 100; i++) {
     //   manyPatients.add(await sdk.patient.withEncryptionMetadata(DecryptedPatient(
@@ -122,55 +146,62 @@ class _MyAppState extends State<MyApp> {
     //   ), null));
     // }
     // await sdk.patient.createPatients(manyPatients);
-    // msg("Created many patients, now retrieving");
+    // print("Created many patients, now retrieving");
     final filter = await PatientFilters.allPatientsForSelf();
     await usePages(sdk);
     await forceGC();
-    msg("Subscribing");
+    print("Subscribing");
     final subscription = await sdk.patient.subscribeToEvents({SubscriptionEventType.create}, filter);
-    msg("Subscribed, get some events expecting null");
-    msg("GetEvent returned ${await subscription.getEvent()}");
-    msg("WaitForEvent 2s returned ${await subscription.waitForEvent(const Duration(seconds: 2))}");
-    msg("Create some data and get event");
+    print("Subscribed, get some events expecting null");
+    print("GetEvent returned ${await subscription.getEvent()}");
+    print("WaitForEvent 2s returned ${await subscription.waitForEvent(const Duration(seconds: 2))}");
+    print("Create some data and get event");
     for (int i = 0; i < 3; i++) {
       await sdk.patient.createPatient(await sdk.patient.withEncryptionMetadata(DecryptedPatient(
-              generateUuid(),
-              firstName: "Gino",
-              lastName: "Bros-${generateUuid()}",
-              note: "$i"
+        generateUuid(),
+        firstName: "Gino",
+        lastName: "Bros-${generateUuid()}",
+        note: "$i"
       )));
       if (i % 2 == 0) {
-        msg("WaitForEvent 1s returned ${await subscription.waitForEvent(const Duration(seconds: 1))}");
+        print("WaitForEvent 1s returned ${await subscription.waitForEvent(const Duration(seconds: 1))}");
       } else {
         sleep(const Duration(seconds: 1));
-        msg("GetEvent returned ${await subscription.getEvent()}");
+        print("GetEvent returned ${await subscription.getEvent()}");
       }
     }
-    msg("Closing");
+    print("Closing");
     await subscription.close();
-    msg("Close reason ${await subscription.getCloseReason()}");
-    msg("Done iterating");
+    print("Close reason ${await subscription.getCloseReason()}");
+    print("Done iterating");
     await doFilterExample();
-  }
-
-  Future<void> doFilterExample() async {
-    final simple = PatientFilters.byActiveForSelf(true);
-    final sortable = PatientFilters.byAddressForSelf("address");
-    msg("Simple ${FilterOptions.encode(await simple)}");
-    msg("Sortable ${FilterOptions.encode(await simple)}");
-    msg("(sortable & simple) - (sortable | (simple & sortable)) ${FilterOptions.encode(await ((sortable & simple) - (sortable | (simple & sortable))))}");
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text(display),
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            controller: emailController,
+            decoration: InputDecoration(labelText: 'Email'),
+          ),
+          TextField(
+            controller: codeController,
+            decoration: InputDecoration(labelText: 'Code'),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () => startInit(emailController.text),
+            child: Text('Start Auth'),
+          ),
+          ElevatedButton(
+            onPressed: () => completeInitAndTry(codeController.text),
+            child: Text('Try SDK'),
+          ),
+        ],
       ),
     );
   }

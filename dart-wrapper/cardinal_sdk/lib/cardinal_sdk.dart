@@ -215,7 +215,7 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
       SdkOptions options
   ) async {
     final res = await _methodChannel.invokeMethod<String>(
-        "initializeWithProcess",
+        "initializeWithAuthProcess",
         {
           "applicationId": jsonEncode(applicationId),
           "baseUrl": jsonEncode(baseUrl),
@@ -224,7 +224,7 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
           "processId": jsonEncode(processId),
           "userTelecomType": jsonEncode(AuthenticationProcessTelecomType.encode(userTelecomType)),
           "userTelecom": jsonEncode(userTelecom),
-          "captcha": jsonEncode(CaptchaOptions.encode(captcha)),
+          "captchaOptions": jsonEncode(CaptchaOptions.encode(captcha)),
           "storageOptions": jsonEncode(StorageOptions.encode(storageOptions)),
           "authenticationProcessTemplateParameters": jsonEncode(AuthenticationProcessTemplateParameters.encode(authenticationProcessTemplateParameters)),
           "options": jsonEncode(SdkOptions.encode(options))
