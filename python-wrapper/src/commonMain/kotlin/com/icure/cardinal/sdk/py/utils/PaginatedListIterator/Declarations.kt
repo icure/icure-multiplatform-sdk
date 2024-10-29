@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.py.utils.toPyJson
 import com.icure.cardinal.sdk.py.utils.toPyJsonAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.utils.InternalIcureApi
@@ -25,7 +26,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
 
-@OptIn(ExperimentalForeignApi::class, DelicateCoroutinesApi::class)
+@OptIn(ExperimentalForeignApi::class, DelicateCoroutinesApi::class, InternalIcureApi::class)
 fun hasNextAsync(
 	iteratorAndSerializerPtr: COpaquePointer,
 	resultCallback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
@@ -40,7 +41,7 @@ fun hasNextAsync(
 	}.failureToPyStringAsyncCallback(resultCallback)
 }
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 fun hasNextBlocking(
 	iteratorAndSerializerPtr: COpaquePointer
 ): String = kotlin.runCatching {
@@ -50,7 +51,7 @@ fun hasNextBlocking(
 	}
 }.toPyString(Boolean.serializer())
 
-@OptIn(ExperimentalForeignApi::class, DelicateCoroutinesApi::class)
+@OptIn(ExperimentalForeignApi::class, DelicateCoroutinesApi::class, InternalIcureApi::class)
 fun nextAsync(
 	iteratorAndSerializerPtr: COpaquePointer,
 	limit: Int,
@@ -67,7 +68,7 @@ fun nextAsync(
 	}.failureToPyStringAsyncCallback(resultCallback)
 }
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 fun nextBlocking(
 	iteratorAndSerializerPtr: COpaquePointer,
 	limit: Int
@@ -79,17 +80,6 @@ fun nextBlocking(
 	}
 }.toPyJson()
 
-internal class PaginatedListIteratorAndSerializer<T : Any>(
-	private val iterator: PaginatedListIterator<T>,
-	private val serializer: KSerializer<T>
-) {
-	suspend fun hasNext(): Boolean =
-		iterator.hasNext()
-	@OptIn(InternalIcureApi::class)
-	suspend fun nextAsJson(limit: Int): JsonElement =
-		Serialization.fullLanguageInteropJson.encodeToJsonElement(ListSerializer(serializer), iterator.next(limit))
-}
-
-@OptIn(ExperimentalForeignApi::class)
-private fun COpaquePointer.get(): PaginatedListIteratorAndSerializer<*> =
-	asStableRef<PaginatedListIteratorAndSerializer<*>>().get()
+@OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
+private fun COpaquePointer.get(): PaginatedListIteratorWithSerializer<*> =
+	asStableRef<PaginatedListIteratorWithSerializer<*>>().get()

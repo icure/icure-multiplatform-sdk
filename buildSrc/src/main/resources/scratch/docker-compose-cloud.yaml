@@ -14,7 +14,7 @@ services:
       - ERL_MAX_PORT=16384
 
   kraken-1:
-    image: docker.taktik.be/icure/icure-kraken:5.0.260-g71e0720649
+    image: docker.taktik.be/icure/icure-kraken:5.0.303-g13170ab864
     container_name: kraken-1
     ports:
       - "5005:5005"
@@ -37,7 +37,7 @@ services:
       - couchdb
 
   mock-msg-gw:
-    image: docker.taktik.be/icure/mock:0.1.31-g00d88f6290
+    image: docker.taktik.be/icure/mock:0.1.36-g26da5b065f
     container_name: mock
     ports:
       - "8081:8080"

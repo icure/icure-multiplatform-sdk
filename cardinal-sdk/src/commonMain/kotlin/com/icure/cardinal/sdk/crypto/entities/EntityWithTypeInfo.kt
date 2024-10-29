@@ -27,7 +27,7 @@ import kotlinx.serialization.Serializable
 data class EntityWithTypeInfo<T : HasEncryptionMetadata>(
 	val entity: T,
 	val type: EntityWithEncryptionMetadataTypeName
-) : HasEncryptionMetadata by entity
+)
 
 @InternalIcureApi
 @Serializable

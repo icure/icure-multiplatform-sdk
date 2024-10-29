@@ -5,6 +5,8 @@ include("ts-wrapper")
 include("python-wrapper")
 include("sdk-codegen")
 include("ktor-curl")
+include("dart-wrapper:lib")
+include("dart-wrapper:cardinal_sdk")
 
 pluginManagement {
 	repositories {

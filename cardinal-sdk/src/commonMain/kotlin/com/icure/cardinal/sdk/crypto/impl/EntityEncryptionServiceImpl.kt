@@ -77,7 +77,7 @@ class EntityEncryptionServiceImpl(
 	): E where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable {
 		val updatedEntity = ensureEncryptionKeysInitialized(unencryptedEntity)?.let { EntityWithTypeInfo(it, unencryptedEntity.type) } ?: unencryptedEntity
 		val keyInfo = tryDecryptAndImportAnyEncryptionKey(updatedEntity)
-			?: throw EntityEncryptionException("${updatedEntity.type.id} ${updatedEntity.id} has no encryption key, and can't be encrypted; entity may have not been initialized properly.")
+			?: throw EntityEncryptionException("${updatedEntity.type.id} ${updatedEntity.entity.id} has no encryption key, and can't be encrypted; entity may have not been initialized properly.")
 		val plainJson = Serialization.json.encodeToJsonElement(unencryptedEntitySerializer, updatedEntity.entity).jsonObject
 		val encryptedJson = jsonEncryptionService.encrypt(keyInfo.key, plainJson, fieldsToEncrypt)
 		return constructor(encryptedJson)
@@ -100,7 +100,7 @@ class EntityEncryptionServiceImpl(
 	): EntityDataEncryptionResult<T> {
 		val updatedEntity = ensureEncryptionKeysInitialized(entity)?.let { EntityWithTypeInfo(saveEntity(it), entity.type) }
 		val encryptionKey = tryDecryptAndImportAnyEncryptionKey(updatedEntity ?: entity)?.key
-			?: throw IllegalArgumentException("Could not decrypt any encryption key for ${entity.type.id} ${entity.id}")
+			?: throw IllegalArgumentException("Could not decrypt any encryption key for ${entity.type.id} ${entity.entity.id}")
 		return EntityDataEncryptionResult(
 			updatedEntity?.entity,
 			cryptoService.aes.encrypt(content, encryptionKey),
@@ -141,7 +141,7 @@ class EntityEncryptionServiceImpl(
 			}
 		}.firstOrNull() ?: throw EntityEncryptionException(
 			if (triedKeys.isEmpty()) {
-				"Could not extract any encryption key from ${entity.type.id} ${entity.id}"
+				"Could not extract any encryption key from ${entity.type.id} ${entity.entity.id}"
 			} else {
 				"Attachment can't be properly decrypted with any of the available keys (validator or decryption failed with available keys)"
 			}
@@ -238,19 +238,19 @@ class EntityEncryptionServiceImpl(
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = false)
 
 	private fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>, throwIfNonEmpty: Boolean): Boolean {
-		if (entity.securityMetadata != null) {
+		if (entity.entity.securityMetadata != null) {
 			if (throwIfNonEmpty) {
 				throw IllegalArgumentException("Entity already has initialized security metadata")
 			}
 			return false
 		}
-		if (entity.secretForeignKeys.isNotEmpty()) {
+		if (entity.entity.secretForeignKeys.isNotEmpty()) {
 			if (throwIfNonEmpty) {
 				throw IllegalArgumentException("Entity already has initialized secret foreign keys")
 			}
 			return false
 		}
-		if (entity.delegations.isNotEmpty() || entity.cryptedForeignKeys.isNotEmpty() || entity.encryptionKeys.isNotEmpty()) {
+		if (entity.entity.delegations.isNotEmpty() || entity.entity.cryptedForeignKeys.isNotEmpty() || entity.entity.encryptionKeys.isNotEmpty()) {
 			if (throwIfNonEmpty) {
 				throw IllegalArgumentException("Entity already has initialized legacy security metadata")
 			}
@@ -288,9 +288,9 @@ class EntityEncryptionServiceImpl(
 			}.keys
 			if (toRetryEntitiesId.isNotEmpty()) {
 				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
-					if (entity.id in toRetryEntitiesId) {
-						val updatedEntity = getUpdatedEntity(entity.id)
-						if (updatedEntity.rev != entity.rev) {
+					if (entity.entity.id in toRetryEntitiesId) {
+						val updatedEntity = getUpdatedEntity(entity.entity.id)
+						if (updatedEntity.entity.rev != entity.entity.rev) {
 							Pair(updatedEntity, request)
 						} else null
 					} else null
@@ -350,9 +350,9 @@ class EntityEncryptionServiceImpl(
 			}.keys
 			if (toRetryEntitiesId.isNotEmpty()) {
 				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
-					if (entity.id in toRetryEntitiesId) {
-						val updatedEntity = getUpdatedEntity(entity.id)
-						if (updatedEntity.rev != entity.rev) {
+					if (entity.entity.id in toRetryEntitiesId) {
+						val updatedEntity = getUpdatedEntity(entity.entity.id)
+						if (updatedEntity.entity.rev != entity.entity.rev) {
 							Pair(updatedEntity, request)
 						} else null
 					} else null
@@ -413,13 +413,13 @@ class EntityEncryptionServiceImpl(
 	private suspend fun prepareBulkShareRequests(
 		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>
 	): BulkShareRequestsDetails {
-		require (entitiesUpdates.distinctBy { it.first.id }.size == entitiesUpdates.size) {
+		require (entitiesUpdates.distinctBy { it.first.entity.id }.size == entitiesUpdates.size) {
 			"Duplicate requests: the same entity id is present more than once in the input"
 		}
 		require (entitiesUpdates.distinctBy { it.first.type }.size <= 1) {
 			"Entities of different types are not allowed in the same bulk share request"
 		}
-		require (entitiesUpdates.all { it.first.rev != null }) {
+		require (entitiesUpdates.all { it.first.entity.rev != null }) {
 			"Only existing entities can be shared"
 		}
 		val hierarchySet = dataOwnersForDecryption(null).toSet()
@@ -455,14 +455,14 @@ class EntityEncryptionServiceImpl(
 					else
 						null
 				}
-				requestsByEntityId[entity.id] = EntityShareRequestDetails(
+				requestsByEntityId[entity.entity.id] = EntityShareRequestDetails(
 					allRequests.mapIndexed { index, it ->
 						// Even though the delegate id could be a valid request id it could leak some secret information if it is a patient id.
 						index.toString() to it
 					}.toMap(),
 					potentialParentDelegations
 				)
-			} else unmodifiedEntityIds.add(entity.id)
+			} else unmodifiedEntityIds.add(entity.entity.id)
 		}
 		return BulkShareRequestsDetails(unmodifiedEntityIds, requestsByEntityId)
 	}
@@ -499,7 +499,7 @@ class EntityEncryptionServiceImpl(
 		val subHierarchy = dataOwnersForDecryption(currMember)
 		val subHierarchySet = subHierarchy.toSet()
 		val legacyAccess =
-			if (selfId == entity.id && currMember == selfId)
+			if (selfId == entity.entity.id && currMember == selfId)
 				AccessLevel.Write
 			else
 				legacyDelegationsDecryptor.getEntityAccessLevel(entity, subHierarchySet)
@@ -551,10 +551,10 @@ class EntityEncryptionServiceImpl(
 		val availableSecretIds = secretIdsOf(entity, null)
 		val extendedDelegateOptions = delegates.mapValues { (_, simpleShareOptions) ->
 			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Required) {
-				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entity.type.id} ${entity.id}, but sharing is required.")
+				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entity.type.id} ${entity.entity.id}, but sharing is required.")
 			}
 			if (availableOwningEntityIds.isEmpty() && simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Required) {
-				throw IllegalArgumentException("The current data owner can't access any owning entity id in ${entity.type.id} ${entity.id}, but sharing is required.")
+				throw IllegalArgumentException("The current data owner can't access any owning entity id in ${entity.type.id} ${entity.entity.id}, but sharing is required.")
 			}
 			DelegateShareOptions(
 				shareSecretIds = simpleShareOptions.shareSecretIds.resolve(availableSecretIds, entity),
@@ -569,7 +569,7 @@ class EntityEncryptionServiceImpl(
 			getUpdatedEntity,
 			doRequestBulkShareOrUpdate
 		)
-		if (shareResult.unmodifiedEntitiesIds.contains(entity.id)) {
+		if (shareResult.unmodifiedEntitiesIds.contains(entity.entity.id)) {
 			return SimpleShareResult.Success(entity.entity)
 		}
 		if (shareResult.updateErrors.isEmpty() && shareResult.updatedEntities.size == 1) {
@@ -581,8 +581,8 @@ class EntityEncryptionServiceImpl(
 			return SimpleShareResult.Success(shareResult.updatedEntities.first())
 		}
 		if (autoRetry && shareResult.updateErrors.all { it.shouldRetry }) {
-			val updatedEntity = getUpdatedEntity(entity.id)
-			if (updatedEntity.rev != entity.rev) {
+			val updatedEntity = getUpdatedEntity(entity.entity.id)
+			if (updatedEntity.entity.rev != entity.entity.rev) {
 				return simpleShareOrUpdateEncryptedEntityMetadata(updatedEntity, delegates, autoRetry, getUpdatedEntity, doRequestBulkShareOrUpdate)
 			}
 		}
@@ -590,13 +590,13 @@ class EntityEncryptionServiceImpl(
 	}
 
 	override suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialized(entity: EntityWithTypeInfo<T>): T? {
-		if (allDecryptors.hasAnyEncryptionKeys(entity)) {
+		if (allDecryptors.hasAnyEncryptionKeys(entity.entity)) {
 			return null
 		}
-		require(entity.rev != null) {
+		require(entity.entity.rev != null) {
 			"A new ${entity.type.id} does not have encryption keys initialized: make sure the entity was created using the `newInstance` method from the appropriate api before trying to save it."
 		}
-		if (autoCreateEncryptionKeyForExistingLegacyData && entity.delegations.isNotEmpty()) {
+		if (autoCreateEncryptionKeyForExistingLegacyData && entity.entity.delegations.isNotEmpty()) {
 			/*
 			 * Handle rare pre-2018 cases where entities was using delegation key (-> secretId) as encryption key.
 			 *
@@ -610,11 +610,11 @@ class EntityEncryptionServiceImpl(
 				secretIds = emptySet(), // Will still be available through legacy delegations
 				owningEntityIds = emptySet(), // Will still be available through legacy delegations
 				encryptionKeys = setOf(HexString(cryptoService.aes.exportKey(newKey).toHexString())),
-				owningEntitySecretIds = entity.secretForeignKeys,
+				owningEntitySecretIds = entity.entity.secretForeignKeys,
 				autoDelegations = emptyMap(),
 			)
 		} else throw IllegalEntityException(
-			"Existing ${entity.type.id} ${entity.id} does not have any recognised encryption metadata available, but encryption keys are required to perform an operation."
+			"Existing ${entity.type.id} ${entity.entity.id} does not have any recognised encryption metadata available, but encryption keys are required to perform an operation."
 		)
 	}
 
@@ -623,7 +623,7 @@ class EntityEncryptionServiceImpl(
 		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): T? {
-		if (entity.rev == null) {
+		if (entity.entity.rev == null) {
 			throw IllegalArgumentException("Entity must be an existing entity to initialize a confidential secret id")
 		}
 		if (getConfidentialSecretIdsOf(entity, null).isNotEmpty()) return null
@@ -688,14 +688,14 @@ class EntityEncryptionServiceImpl(
 	private suspend fun SecretIdShareOptions.resolve(entitySecretIds: Set<String>, entity: EntityWithTypeInfo<*>) = when (this) {
 		is SecretIdShareOptions.AllAvailable -> entitySecretIds.also {
 			require (!requireAtLeastOne || it.isNotEmpty()) {
-				"No secret id could be extracted by the current user for ${entity.type} ${entity.id}"
+				"No secret id could be extracted by the current user for ${entity.type} ${entity.entity.id}"
 			}
 		}
 		is SecretIdShareOptions.UseExactly ->
 			secretIds.also {
 				if (!createUnknownSecretIds) {
 					require (entitySecretIds.containsAll(secretIds)) {
-						"Unknown secret ids for ${entity.type} ${entity.id} and `createUnknownSecretIds` is false: ${
+						"Unknown secret ids for ${entity.type} ${entity.entity.id} and `createUnknownSecretIds` is false: ${
 							secretIds - entitySecretIds
 						}"
 					}

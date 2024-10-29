@@ -10,6 +10,7 @@ interface PlaceApi {
 	suspend fun createPlace(place: Place): Place
 	suspend fun modifyPlace(place: Place): Place
 	suspend fun deletePlaces(placeIds: List<String>): List<DocIdentifier>
+	@Deprecated("Will be replaced by filters")
 	suspend fun getPlaces(
 		@DefaultValue("null")
 		startDocumentId: String? = null,

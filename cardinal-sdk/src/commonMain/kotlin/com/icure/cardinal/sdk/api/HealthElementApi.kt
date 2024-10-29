@@ -21,7 +21,6 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface HealthElementBasicFlavourlessApi  {

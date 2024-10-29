@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.icure.cardinal.sdk.storage.StorageFacade
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.singleOrNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 /**
  * DataStorePreferenceStorage is an implementation of StorageFacade that uses AndroidX DataStore to store key-value pairs.
@@ -23,9 +23,9 @@ class DataStorePreferenceStorage(private val context: Context, dataStoreName: St
 	private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = dataStoreName)
 
 	override suspend fun getItem(key: String): String? {
-		return context.dataStore.data.mapNotNull { prefs ->
+		return context.dataStore.data.map { prefs ->
 			prefs[key.toPreferencesKey()]
-		}.singleOrNull()
+		}.first()
 	}
 
 	override suspend fun setItem(key: String, value: String) {

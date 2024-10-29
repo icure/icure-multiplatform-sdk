@@ -51,6 +51,7 @@ interface GroupApi {
 	): RegistrationSuccess
 
 	suspend fun listApps(): List<Group>
+	@Deprecated("Will be replaced by filters")
 	suspend fun findGroups(
 		id: String,
 		@DefaultValue("null")
@@ -58,7 +59,7 @@ interface GroupApi {
 		@DefaultValue("null")
 		limit: Int? = null,
 	): PaginatedList<Group>
-
+	@Deprecated("Will be replaced by filters")
 	suspend fun findGroupsWithContent(
 		id: String,
 		searchString: String,

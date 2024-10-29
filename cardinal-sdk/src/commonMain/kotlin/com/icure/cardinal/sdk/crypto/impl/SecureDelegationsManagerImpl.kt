@@ -78,7 +78,7 @@ class SecureDelegationsManagerImpl (
 			otherDelegationsInfo.mapNotNull { info -> info.encryptedExchangeDataId?.let { info.canonicalAccessControlKey to it } }.toMap()
 		))
 		@Suppress("UNCHECKED_CAST")
-		return entity.copyWithSecurityMetadata(
+		return entity.entity.copyWithSecurityMetadata(
 			securityMetadata = SecurityMetadata(
 				secureDelegations = (listOf(rootDelegationInfo) + otherDelegationsInfo).associate { it.canonicalDelegationKey to it.delegation },
 			),
@@ -100,7 +100,7 @@ class SecureDelegationsManagerImpl (
 			cryptoService
 		)
 		val secureDelegationKey = accessControlKey.toSecureDelegationKeyString(cryptoService)
-		val existingDelegation = entity.securityMetadata?.secureDelegations?.get(secureDelegationKey)
+		val existingDelegation = entity.entity.securityMetadata?.secureDelegations?.get(secureDelegationKey)
 		return if (existingDelegation != null) {
 			makeUpdateRequestParams(
 				canonicalKey = secureDelegationKey,

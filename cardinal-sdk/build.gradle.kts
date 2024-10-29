@@ -18,7 +18,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC.2"
+val version = "1.0.0-RC.3"
 project.version = version
 
 kotlin {
@@ -27,7 +27,7 @@ kotlin {
 	sourceSets {
 		val commonMain by getting {
 			dependencies {
-				implementation(libs.ktorClientCore)
+				api(libs.ktorClientCore)
 				implementation(libs.ktorContentNegotiation)
 				implementation(libs.ktorSerializationJson)
 				implementation(libs.ktorClientWebsocket)

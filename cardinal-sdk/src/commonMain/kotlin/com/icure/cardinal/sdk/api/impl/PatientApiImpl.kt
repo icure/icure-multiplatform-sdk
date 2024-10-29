@@ -608,16 +608,16 @@ internal class PatientApiImpl(
 	): String {
 		val parentIds = crypto.entity.owningEntityIdsOf(childDocument, null)
 		check(parentIds.isNotEmpty()) {
-			"Parent id is empty in CFK of child document with id ${childDocument.id}"
+			"Parent id is empty in CFK of child document with id ${childDocument.entity.id}"
 		}
 		check(parentIds.size == 1) {
-			"Child document with id ${childDocument.id} contains multiple parent ids in its CFKs"
+			"Child document with id ${childDocument.entity.id} contains multiple parent ids in its CFKs"
 		}
 
 		tailrec suspend fun findLastMergedPatientInHierarchy(patient: DecryptedPatient, maxMergeLevel: Int): DecryptedPatient {
 			return if(patient.mergeToPatientId != null) {
 				require(maxMergeLevel > 0) {
-					"Too many merged levels for parent (Patient) of child document ${childDocument.id}"
+					"Too many merged levels for parent (Patient) of child document ${childDocument.entity.id}"
 				}
 				findLastMergedPatientInHierarchy(getPatient(patient.mergeToPatientId), maxMergeLevel - 1)
 			} else patient

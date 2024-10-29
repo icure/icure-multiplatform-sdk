@@ -3,8 +3,8 @@ package com.icure.cardinal.sdk.filters
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.model.base.Identifiable
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.InternalCardinalException
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -70,7 +70,7 @@ sealed interface BaseFilterOptions<E : Identifiable<String>> : FilterOptions<E> 
 @Serializable
 sealed interface BaseSortableFilterOptions<E : Identifiable<String>> : BaseFilterOptions<E>, SortableFilterOptions<E> {
 	override infix fun and(other: FilterOptions<E>): SortableFilterOptions<E> = intersection(this, other)
-	override infix fun and(other: BaseFilterOptions<E>): BaseFilterOptions<E> = intersection(this, other)
+	override infix fun and(other: BaseFilterOptions<E>): BaseSortableFilterOptions<E> = intersection(this, other)
 	override operator fun minus(other: BaseFilterOptions<E>): BaseSortableFilterOptions<E> = difference(this, other)
 
 	companion object {
