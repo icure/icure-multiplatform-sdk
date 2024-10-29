@@ -4,10 +4,13 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cardinal_sdk/auth/authentication_method.dart';
+import 'package:cardinal_sdk/auth/credentials.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/filters/meta_filters.dart';
 import 'package:cardinal_sdk/filters/patient_filters.dart';
 import 'package:cardinal_sdk/model/patient.dart';
+import 'package:cardinal_sdk/options/storage_options.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -62,7 +65,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _res = 'Unfinished';
+  String display = 'Unstarted';
 
   @override
   void initState() {
@@ -70,17 +73,30 @@ class _MyAppState extends State<MyApp> {
     initStateAsync();
   }
 
+  void msg(Object obj) {
+    final msg = obj.toString();
+    print(msg);
+    display = msg;
+  }
+
   Future<void> usePages(CardinalSdk sdk) async {
     final pages = await sdk.patient.encrypted.filterPatientsBy(await PatientFilters.allPatientsForSelf());
     while (await pages.hasNext()) {
-      print("Got page ${(await pages.next(10)).map((e) => EncryptedPatient.encode(e)).toList()}");
+      msg("Got page ${(await pages.next(10)).map((e) => EncryptedPatient.encode(e)).toList()}");
     }
   }
 
   Future<void> initStateAsync() async {
-    print("Started init");
-    final sdk = await CardinalSdk.initialize("luca+dartman@icure.com", "4a57f15e-10b3-4287-9d33-1cea74d39db3");
-    print("Sdk initialized");
+    msg("Started init");
+    final sdk = await CardinalSdk.initialize(
+      null,
+      "https://api.icure.cloud",
+      AuthenticationMethod.UsingCredentials(
+        Credentials.UsernameLongToken("luca+dartman@icure.com", "4a57f15e-10b3-4287-9d33-1cea74d39db3")
+      ),
+      StorageOptions.PlatformDefault,
+    );
+    msg("Sdk initialized");
     final patient = await sdk.patient.createPatient(
       await sdk.patient.withEncryptionMetadata(DecryptedPatient(
         generateUuid(),
@@ -89,13 +105,13 @@ class _MyAppState extends State<MyApp> {
         note: "The third mario bros"
       ))
     );
-    print("Created patient");
-    print(patient);
-    print("Retrieved patient");
-    print(DecryptedPatient.encode(await sdk.patient.getPatient(patient.id)));
-    print("Retrieved encrypted patient");
-    print(EncryptedPatient.encode(await sdk.patient.encrypted.getPatient(patient.id)));
-    // print("Creating more patients");
+    msg("Created patient");
+    msg(patient);
+    msg("Retrieved patient");
+    msg(DecryptedPatient.encode(await sdk.patient.getPatient(patient.id)));
+    msg("Retrieved encrypted patient");
+    msg(EncryptedPatient.encode(await sdk.patient.encrypted.getPatient(patient.id)));
+    // msg("Creating more patients");
     // final List<DecryptedPatient> manyPatients = [];
     // for (int i = 0; i < 100; i++) {
     //   manyPatients.add(await sdk.patient.withEncryptionMetadata(DecryptedPatient(
@@ -106,16 +122,16 @@ class _MyAppState extends State<MyApp> {
     //   ), null));
     // }
     // await sdk.patient.createPatients(manyPatients);
-    // print("Created many patients, now retrieving");
+    // msg("Created many patients, now retrieving");
     final filter = await PatientFilters.allPatientsForSelf();
     await usePages(sdk);
     await forceGC();
-    print("Subscribing");
+    msg("Subscribing");
     final subscription = await sdk.patient.subscribeToEvents({SubscriptionEventType.create}, filter);
-    print("Subscribed, get some events expecting null");
-    print("GetEvent returned ${await subscription.getEvent()}");
-    print("WaitForEvent 2s returned ${await subscription.waitForEvent(const Duration(seconds: 2))}");
-    print("Create some data and get event");
+    msg("Subscribed, get some events expecting null");
+    msg("GetEvent returned ${await subscription.getEvent()}");
+    msg("WaitForEvent 2s returned ${await subscription.waitForEvent(const Duration(seconds: 2))}");
+    msg("Create some data and get event");
     for (int i = 0; i < 3; i++) {
       await sdk.patient.createPatient(await sdk.patient.withEncryptionMetadata(DecryptedPatient(
               generateUuid(),
@@ -124,25 +140,25 @@ class _MyAppState extends State<MyApp> {
               note: "$i"
       )));
       if (i % 2 == 0) {
-        print("WaitForEvent 1s returned ${await subscription.waitForEvent(const Duration(seconds: 1))}");
+        msg("WaitForEvent 1s returned ${await subscription.waitForEvent(const Duration(seconds: 1))}");
       } else {
         sleep(const Duration(seconds: 1));
-        print("GetEvent returned ${await subscription.getEvent()}");
+        msg("GetEvent returned ${await subscription.getEvent()}");
       }
     }
-    print("Closing");
+    msg("Closing");
     await subscription.close();
-    print("Close reason ${await subscription.getCloseReason()}");
-    print("Done iterating");
+    msg("Close reason ${await subscription.getCloseReason()}");
+    msg("Done iterating");
     await doFilterExample();
   }
 
   Future<void> doFilterExample() async {
     final simple = PatientFilters.byActiveForSelf(true);
     final sortable = PatientFilters.byAddressForSelf("address");
-    print("Simple ${FilterOptions.encode(await simple)}");
-    print("Sortable ${FilterOptions.encode(await simple)}");
-    print("(sortable & simple) - (sortable | (simple & sortable)) ${FilterOptions.encode(await ((sortable & simple) - (sortable | (simple & sortable))))}");
+    msg("Simple ${FilterOptions.encode(await simple)}");
+    msg("Sortable ${FilterOptions.encode(await simple)}");
+    msg("(sortable & simple) - (sortable | (simple & sortable)) ${FilterOptions.encode(await ((sortable & simple) - (sortable | (simple & sortable))))}");
   }
 
   @override
@@ -153,7 +169,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Example1: $_res'),
+          child: Text(display),
         ),
       ),
     );

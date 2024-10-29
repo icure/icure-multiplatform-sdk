@@ -156,21 +156,21 @@ class EncryptedFieldsConfiguration {
 
   static Map<String, dynamic> encode(EncryptedFieldsConfiguration value) {
     Map<String, dynamic> entityAsMap = {
-      "accessLog": value.accessLog,
-      "calendarItem": value.calendarItem,
-      "contact": value.contact,
-      "service": value.service,
-      "healthElement": value.healthElement,
-      "maintenanceTask": value.maintenanceTask,
-      "patient": value.patient,
-      "message": value.message,
-      "topic": value.topic,
-      "document": value.document,
-      "form": value.form,
-      "receipt": value.receipt,
-      "classification": value.classification,
-      "timeTable": value.timeTable,
-      "invoice": value.invoice
+      "accessLog": value.accessLog.toList(),
+      "calendarItem": value.calendarItem.toList(),
+      "contact": value.contact.toList(),
+      "service": value.service.toList(),
+      "healthElement": value.healthElement.toList(),
+      "maintenanceTask": value.maintenanceTask.toList(),
+      "patient": value.patient.toList(),
+      "message": value.message.toList(),
+      "topic": value.topic.toList(),
+      "document": value.document.toList(),
+      "form": value.form.toList(),
+      "receipt": value.receipt.toList(),
+      "classification": value.classification.toList(),
+      "timeTable": value.timeTable.toList(),
+      "invoice": value.invoice.toList()
     };
     return entityAsMap;
   }

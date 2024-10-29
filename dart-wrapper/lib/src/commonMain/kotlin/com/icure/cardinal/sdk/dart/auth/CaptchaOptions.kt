@@ -6,17 +6,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface CaptchaOptions {
 
-	fun toKt(): com.icure.cardinal.sdk.auth.CaptchaOptions
+	fun toMultiplatform(): com.icure.cardinal.sdk.auth.CaptchaOptions
 
 	@Serializable
 	data class Recaptcha(val solution: String) : CaptchaOptions {
-		override fun toKt() =
+		override fun toMultiplatform() =
 			com.icure.cardinal.sdk.auth.CaptchaOptions.Recaptcha(solution)
 	}
 
 	@Serializable
 	data class FriendlyCaptcha(val solution: String) : CaptchaOptions {
-		override fun toKt() =
+		override fun toMultiplatform() =
 			com.icure.cardinal.sdk.auth.CaptchaOptions.FriendlyCaptcha(solution)
 	}
 
@@ -25,13 +25,13 @@ sealed interface CaptchaOptions {
 
 		@Serializable
 		data class Computed(val solution: Solution) : Kerberus {
-			override fun toKt() =
+			override fun toMultiplatform() =
 				com.icure.cardinal.sdk.auth.CaptchaOptions.Kerberus.Computed(solution)
 		}
 
 		@Serializable
 		data object Delegated : Kerberus {
-			override fun toKt() =
+			override fun toMultiplatform() =
 				com.icure.cardinal.sdk.auth.CaptchaOptions.Kerberus.Delegated()
 		}
 

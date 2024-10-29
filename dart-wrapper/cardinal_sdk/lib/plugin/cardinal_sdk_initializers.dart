@@ -7,8 +7,14 @@ import 'package:cardinal_sdk/options/sdk_options.dart';
 import 'package:cardinal_sdk/options/storage_options.dart';
 
 abstract class CardinalSdkInitializersPlugin {
-  Future<CardinalSdk> initialize(AuthenticationMethod authenticationMethod);
-  Future<CardinalSdk> initializeWithProcess(
+  Future<CardinalSdk> initialize(
+      String? applicationId,
+      String baseUrl,
+      AuthenticationMethod authenticationMethod,
+      StorageOptions storageOptions,
+      SdkOptions options
+  );
+  Future<AuthenticationWithProcessStep> initializeWithProcess(
       String? applicationId,
       String baseUrl,
       String messageGatewayUrl,
@@ -18,9 +24,8 @@ abstract class CardinalSdkInitializersPlugin {
       String userTelecom,
       CaptchaOptions captcha,
       StorageOptions storageOptions,
-      {
-        AuthenticationProcessTemplateParameters authenticationProcessTemplateParameters = const AuthenticationProcessTemplateParameters(),
-        SdkOptions options = const SdkOptions()
-      }
+      AuthenticationProcessTemplateParameters authenticationProcessTemplateParameters,
+      SdkOptions options
   );
+  Future<CardinalSdk> completeAuthentication(String authenticationStepId, String validationCode);
 }

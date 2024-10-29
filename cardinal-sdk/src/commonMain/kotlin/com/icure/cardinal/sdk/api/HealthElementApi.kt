@@ -21,16 +21,13 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface HealthElementBasicFlavourlessApi  {
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteHealthElementUnsafe")
-	suspend fun deleteHealthElement(entityId: String): DocIdentifier
+	suspend fun deleteHealthElementUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	@JsName("deleteHealthElementsUnsafe")
-	suspend fun deleteHealthElements(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<DocIdentifier>
 	
 	/**
 	 * Deletes a healthElement. If you don't have write access to the healthElement the method will fail.

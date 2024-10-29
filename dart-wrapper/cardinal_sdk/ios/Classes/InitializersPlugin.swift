@@ -30,12 +30,68 @@ class InitializersPlugin {
         ) -> Void
     ) -> Bool {
         switch methodName {
-        case "initialize": Initializers.shared.initializeSdk(
-            dartResultCallback: resultCallback,
-            authenticationMethodString: parameters["authenticationMethod"]!
-        )
+        case "initialize": initialize(parameters: parameters, resultCallback: resultCallback)
+        case "initializeWithAuthProcess": initializeWithAuthProcess(parameters: parameters, resultCallback: resultCallback)
+        case "completeAuthentication": completeAuthentication(parameters: parameters, resultCallback: resultCallback)
         default: return false
         }
         return true
+    }
+    
+    private static func initialize(
+        parameters: [String : String],
+        resultCallback: @escaping (
+          String?,
+          String?,
+          String?
+        ) -> Void
+    ) -> Void {
+        Initializers.shared.initializeSdk(
+            dartResultCallback: resultCallback,
+            applicationIdString: parameters["applicationId"]!,
+            baseUrlString: parameters["baseUrl"]!,
+            authenticationMethodString: parameters["authenticationMethod"]!,
+            storageFacade: StorageHelper.shared.getStorage(options: parameters["storageOptions"]!),
+            optionsString: parameters["options"]!
+        )
+    }
+    
+    private static func initializeWithAuthProcess(
+        parameters: [String : String],
+        resultCallback: @escaping (
+          String?,
+          String?,
+          String?
+        ) -> Void
+    ) -> Void {
+        Initializers.shared.initializeWithAuthProcess(
+            dartResultCallback: resultCallback,
+            applicationIdString: parameters["applicationId"]!,
+            baseUrlString: parameters["baseUrl"]!,
+            messageGatewayUrlString: parameters["messageGatewayUrl"]!,
+            externalServicesSpecIdString: parameters["externalServicesSpecId"]!,
+            processIdString: parameters["processId"]!,
+            userTelecomTypeString: parameters["userTelecomType"]!,
+            userTelecomString: parameters["userTelecom"]!,
+            captchaOptionsString: parameters["captchaOptions"]!,
+            baseStorage: StorageHelper.shared.getStorage(options: parameters["storageOptions"]!),
+            authenticationProcessTemplateParametersString: parameters["authenticationProcessTemplateParameters"]!,
+            optionsString: parameters["options"]!
+        )
+    }
+    
+    private static func completeAuthentication(
+        parameters: [String : String],
+        resultCallback: @escaping (
+          String?,
+          String?,
+          String?
+        ) -> Void
+    ) -> Void {
+        Initializers.shared.completeAuthentication(
+            dartResultCallback: resultCallback,
+            authenticationStepId: parameters["authenticationStepId"]!,
+            validationCodeString: parameters["validationCode"]!
+        )
     }
 }

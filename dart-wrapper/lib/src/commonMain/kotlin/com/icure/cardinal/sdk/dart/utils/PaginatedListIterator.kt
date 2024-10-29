@@ -6,7 +6,7 @@ import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
 
-@InternalIcureApi
+@OptIn(InternalIcureApi::class)
 object PaginatedListIterator {
 	fun hasNext(
 		dartResultCallback: (

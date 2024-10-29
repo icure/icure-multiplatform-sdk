@@ -1,8 +1,5 @@
 package com.icure.cardinal_sdk
 
-import CardinalApisPlugin
-import CardinalFiltersPlugin
-import InitializersPlugin
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodChannel
@@ -22,7 +19,7 @@ class CardinalSdkPlugin: FlutterPlugin {
     filtersChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/filters")
     filtersChannel.setMethodCallHandler(CardinalFiltersPlugin)
     initializersChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/initializers")
-    initializersChannel.setMethodCallHandler(InitializersPlugin)
+    initializersChannel.setMethodCallHandler(InitializersPlugin(flutterPluginBinding.applicationContext))
     paginationChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/pagination")
     paginationChannel.setMethodCallHandler(PaginationPlugin)
     subscriptionChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/subscription")

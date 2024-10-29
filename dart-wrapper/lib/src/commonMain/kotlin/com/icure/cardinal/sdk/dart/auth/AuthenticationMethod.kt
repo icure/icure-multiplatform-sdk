@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface AuthenticationMethod {
 
-	fun toKt(): com.icure.cardinal.sdk.options.AuthenticationMethod
+	fun toMultiplatform(): com.icure.cardinal.sdk.options.AuthenticationMethod
 
 	@Serializable
 	data class UsingCredentials(val credentials: Credentials) : AuthenticationMethod {
-		override fun toKt() =
+		override fun toMultiplatform() =
 			com.icure.cardinal.sdk.options.AuthenticationMethod.UsingCredentials(credentials.toKt())
 	}
 

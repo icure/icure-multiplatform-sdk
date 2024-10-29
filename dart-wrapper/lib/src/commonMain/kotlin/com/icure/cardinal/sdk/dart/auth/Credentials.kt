@@ -13,12 +13,13 @@ sealed interface Credentials {
 		override fun toKt() = com.icure.cardinal.sdk.auth.UsernamePassword(username, password)
 	}
 
+	@Serializable
 	data class UsernameLongToken(val username: String, val token: String) : Credentials {
 		override fun toKt() = com.icure.cardinal.sdk.auth.UsernameLongToken(username, token)
 	}
 
+	@Serializable
 	data class ThirdPartyAuthentication(val token: String, val provider: ThirdPartyProvider) : Credentials {
 		override fun toKt() = com.icure.cardinal.sdk.auth.ThirdPartyAuthentication(token, provider)
 	}
-
 }

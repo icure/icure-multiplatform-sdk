@@ -1,3 +1,5 @@
+package com.icure.cardinal_sdk
+
 import com.icure.cardinal_sdk.filters.dispatchFilter
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

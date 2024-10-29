@@ -44,6 +44,25 @@ import 'auth/captcha_options.dart';
 import 'options/sdk_options.dart';
 import 'options/storage_options.dart';
 
+class AuthenticationWithProcessStep {
+  static final Finalizer<String> _finalizer = Finalizer((resourceId) =>
+      CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId)
+  );
+
+  final String _instanceId;
+  AuthenticationWithProcessStep._(this._instanceId);
+
+  factory AuthenticationWithProcessStep._factory(String instanceId) {
+    final authStep = AuthenticationWithProcessStep._(instanceId);
+    _finalizer.attach(authStep, instanceId, detach: authStep);
+    return authStep;
+  }
+
+  Future<CardinalSdk> completeAuthentication(String validationCode) {
+    return CardinalSdkPlatformInterface.instance.initializers.completeAuthentication(_instanceId, validationCode);
+  }
+}
+
 class CardinalSdk {
   static final Finalizer<String> _finalizer = Finalizer((resourceId) =>
       CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId)
@@ -129,31 +148,7 @@ class CardinalSdk {
     return sdk;
   }
 
-  static Future<CardinalSdk> initialize(
-      AuthenticationMethod authenticationMethod
-  ) {
-    return CardinalSdkPlatformInterface.instance.initializers.initialize(authenticationMethod);
-  }
-}
-
-class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin {
-  static const MethodChannel _methodChannel = MethodChannel("com.icure.cardinal.sdk/initializers");
-
-  @override
-  Future<CardinalSdk> initialize(AuthenticationMethod authenticationMethod) async {
-    final res = await _methodChannel.invokeMethod<String>(
-        "initialize",
-        {
-          "authenticationMethod": AuthenticationMethod.encode(authenticationMethod)
-        }
-    );
-    if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
-    final parsedResJson = jsonDecode(res);
-    return CardinalSdk._factory(parsedResJson as String);
-  }
-
-  @override
-  Future<CardinalSdk> initializeWithProcess(
+  static Future<AuthenticationWithProcessStep> initializeWithProcess(
       String? applicationId,
       String baseUrl,
       String messageGatewayUrl,
@@ -167,24 +162,112 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
         AuthenticationProcessTemplateParameters authenticationProcessTemplateParameters = const AuthenticationProcessTemplateParameters(),
         SdkOptions options = const SdkOptions()
       }
+  ) {
+    return CardinalSdkPlatformInterface.instance.initializers.initializeWithProcess(
+        applicationId,
+        baseUrl,
+        messageGatewayUrl,
+        externalServicesSpecId,
+        processId,
+        userTelecomType,
+        userTelecom,
+        captcha,
+        storageOptions,
+        authenticationProcessTemplateParameters,
+        options
+    );
+  }
+
+  static Future<CardinalSdk> initialize(
+      String? applicationId,
+      String baseUrl,
+      AuthenticationMethod authenticationMethod,
+      StorageOptions storageOptions,
+      {SdkOptions options = const SdkOptions()}
+  ) {
+    return CardinalSdkPlatformInterface.instance.initializers.initialize(
+        applicationId,
+        baseUrl,
+        authenticationMethod,
+        storageOptions,
+        options
+    );
+  }
+}
+
+class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin {
+  static const MethodChannel _methodChannel = MethodChannel("com.icure.cardinal.sdk/initializers");
+
+
+
+  @override
+  Future<AuthenticationWithProcessStep> initializeWithProcess(
+      String? applicationId,
+      String baseUrl,
+      String messageGatewayUrl,
+      String externalServicesSpecId,
+      String processId,
+      AuthenticationProcessTelecomType userTelecomType,
+      String userTelecom,
+      CaptchaOptions captcha,
+      StorageOptions storageOptions,
+      AuthenticationProcessTemplateParameters authenticationProcessTemplateParameters,
+      SdkOptions options
   ) async {
     final res = await _methodChannel.invokeMethod<String>(
         "initializeWithProcess",
         {
-          "applicationId": applicationId,
-          "baseUrl": baseUrl,
-          "messageGatewayUrl": messageGatewayUrl,
-          "externalServicesSpecId": externalServicesSpecId,
-          "processId": processId,
-          "userTelecomType": AuthenticationProcessTelecomType.encode(userTelecomType),
-          "userTelecom": userTelecom,
-          "captcha": CaptchaOptions.encode(captcha),
-          "storageOptions": StorageOptions.encode(storageOptions),
-          "authenticationProcessTemplateParameters": AuthenticationProcessTemplateParameters.encode(authenticationProcessTemplateParameters),
-          "options": SdkOptions.encode(options)
+          "applicationId": jsonEncode(applicationId),
+          "baseUrl": jsonEncode(baseUrl),
+          "messageGatewayUrl": jsonEncode(messageGatewayUrl),
+          "externalServicesSpecId": jsonEncode(externalServicesSpecId),
+          "processId": jsonEncode(processId),
+          "userTelecomType": jsonEncode(AuthenticationProcessTelecomType.encode(userTelecomType)),
+          "userTelecom": jsonEncode(userTelecom),
+          "captcha": jsonEncode(CaptchaOptions.encode(captcha)),
+          "storageOptions": jsonEncode(StorageOptions.encode(storageOptions)),
+          "authenticationProcessTemplateParameters": jsonEncode(AuthenticationProcessTemplateParameters.encode(authenticationProcessTemplateParameters)),
+          "options": jsonEncode(SdkOptions.encode(options))
         }
     );
-    if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
+    if (res == null) throw AssertionError("received null result from platform method initializeWithProcess");
+    final parsedResJson = jsonDecode(res);
+    return AuthenticationWithProcessStep._factory(parsedResJson as String);
+  }
+
+  @override
+  Future<CardinalSdk> completeAuthentication(String authenticationStepId, String validationCode) async {
+    final res = await _methodChannel.invokeMethod<String>(
+        "completeAuthentication",
+        {
+          "authenticationStepId": authenticationStepId,
+          "validationCode": jsonEncode(validationCode)
+        }
+    );
+    if (res == null) throw AssertionError("received null result from platform method completeAuthentication");
+    final parsedResJson = jsonDecode(res);
+    return CardinalSdk._factory(parsedResJson as String);
+  }
+
+  @override
+  Future<CardinalSdk> initialize(
+      String? applicationId,
+      String baseUrl,
+      AuthenticationMethod authenticationMethod,
+      StorageOptions storageOptions,
+      SdkOptions options
+  ) async {
+    final res = await _methodChannel.invokeMethod<String>(
+        "initialize",
+        {
+          "applicationId": jsonEncode(applicationId),
+          "baseUrl": jsonEncode(baseUrl),
+          "authenticationMethod": jsonEncode(AuthenticationMethod.encode(authenticationMethod)),
+          "storageOptions": jsonEncode(StorageOptions.encode(storageOptions)),
+          "options": jsonEncode(SdkOptions.encode(options))
+        }
+    );
+    if (res == null) throw AssertionError("received null result from platform method initialize");
     final parsedResJson = jsonDecode(res);
     return CardinalSdk._factory(parsedResJson as String);
   }

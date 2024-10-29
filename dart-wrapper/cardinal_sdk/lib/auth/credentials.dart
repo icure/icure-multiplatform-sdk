@@ -27,10 +27,10 @@ class Credentials {
   /// - [User.email]
   /// The [token] is a long-lived authentication token generated through the SDK
   /// or through the Cockpit.
-  factory Credentials.UsernameLongToken(String username, String password) {
+  factory Credentials.UsernameLongToken(String username, String token) {
     return Credentials._internal({
       "username": username,
-      "password": password,
+      "token": token,
       "kotlinType": "com.icure.cardinal.sdk.dart.auth.Credentials.UsernameLongToken"
     });
   }

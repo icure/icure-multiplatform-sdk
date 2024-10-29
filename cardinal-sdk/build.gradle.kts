@@ -27,7 +27,7 @@ kotlin {
 	sourceSets {
 		val commonMain by getting {
 			dependencies {
-				implementation(libs.ktorClientCore)
+				api(libs.ktorClientCore)
 				implementation(libs.ktorContentNegotiation)
 				implementation(libs.ktorSerializationJson)
 				implementation(libs.ktorClientWebsocket)
