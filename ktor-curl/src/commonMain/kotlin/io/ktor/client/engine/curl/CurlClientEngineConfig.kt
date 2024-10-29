@@ -4,7 +4,7 @@
 
 package io.ktor.client.engine.curl
 
-import io.ktor.client.engine.HttpClientEngineConfig
+import io.ktor.client.engine.*
 
 /**
  * A configuration for the [Curl] client engine.

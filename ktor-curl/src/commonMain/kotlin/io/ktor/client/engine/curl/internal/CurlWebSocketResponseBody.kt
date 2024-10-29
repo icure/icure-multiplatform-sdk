@@ -28,8 +28,8 @@ internal class CurlWebSocketResponseBody(
         if (closed.value) return@memScoped
 
         val sent = alloc<size_tVar>()
-        data.useMemory(0, data.size) { buffer ->
-            val status = curl_ws_send(curl, buffer.pointer, buffer.size.convert(), sent.ptr, 0, flags.convert())
+        data.usePinned { pinned ->
+            val status = curl_ws_send(curl, pinned.addressOf(0), data.size.toULong(), sent.ptr, 0, flags.convert())
             if ((flags and CURLWS_CLOSE) == 0) {
                 status.verify()
             }

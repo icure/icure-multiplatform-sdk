@@ -27,6 +27,7 @@ kotlin {
 			dependencies {
 				api(libs.ktorHttpCio)
 				api(libs.ktorClientCore)
+				implementation(libs.kotlinIo)
 			}
 		}
 	}

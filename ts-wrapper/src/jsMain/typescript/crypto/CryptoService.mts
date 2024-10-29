@@ -47,11 +47,14 @@ export enum RsaKeySize {
   Rsa2048 = 2048,
   Rsa4096 = 4096,
 }
-export enum RsaAlgorithm {
+export enum RsaEncryptionAlgorithm {
   OaepWithSha1 = "OaepWithSha1",
-  OaepWithSha256 = "OaepWithSha256",
-  PssWithSha256 = "PssWithSha256",
+  OaepWithSha256 = "OaepWithSha256"
 }
+export enum RsaSignatureAlgorithm {
+  PssWithSha256 = "PssWithSha256"
+}
+export type RsaAlgorithm = RsaEncryptionAlgorithm | RsaSignatureAlgorithm
 export interface XRsaService {
   generateKeyPair(algorithm: RsaAlgorithm, keySize: RsaKeySize): Promise<XRsaKeypair>;
   exportPrivateKeyPkcs8(key: XPrivateRsaKey): Promise<Int8Array>;

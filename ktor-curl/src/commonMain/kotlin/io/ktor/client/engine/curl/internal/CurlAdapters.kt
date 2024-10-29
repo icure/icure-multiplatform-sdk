@@ -34,16 +34,14 @@ internal val DISALLOWED_WEBSOCKET_HEADERS = setOf(
 @OptIn(ExperimentalForeignApi::class)
 internal fun CURLMcode.verify() {
     if (this != CURLM_OK) {
-        @Suppress("DEPRECATION")
-        throw CurlIllegalStateException("Unexpected curl verify: ${curl_multi_strerror(this)?.toKString()}")
+        error("Unexpected curl verify: ${curl_multi_strerror(this)?.toKString()}")
     }
 }
 
 @OptIn(ExperimentalForeignApi::class)
 internal fun CURLcode.verify() {
     if (this != CURLE_OK) {
-        @Suppress("DEPRECATION")
-        throw CurlIllegalStateException("Unexpected curl verify: ${curl_easy_strerror(this)?.toKString()}")
+        error("Unexpected curl verify: ${curl_easy_strerror(this)?.toKString()}")
     }
 }
 
