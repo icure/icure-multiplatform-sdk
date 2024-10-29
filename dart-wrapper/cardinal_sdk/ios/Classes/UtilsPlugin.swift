@@ -7,7 +7,7 @@ class UtilsPlugin {
         let args = call.arguments as! [String: String]
         let methodName = call.method
 
-        let completed = SubscriptionPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage in
+        let completed = UtilsPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage in
             if (errorCode != nil){
                 result(FlutterError(code: errorCode!, message: errorMessage, details: nil))
             }
