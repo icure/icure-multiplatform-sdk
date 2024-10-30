@@ -2,7 +2,6 @@
 .vagrant/
 .sconsign.dblite
 .svn/
-CardinalDartSdkSupportLib.xcframework
 
 .DS_Store
 *.swp

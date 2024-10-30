@@ -1,13 +1,12 @@
 Pod::Spec.new do |s|
   s.name             = 'cardinal_sdk'
-  s.version          = '1.0.0-RC.1'
-  s.summary          = 'Cardinal SDK for dart.'
+  s.version          = '1.0.0-RC.1'  s.summary          = 'Cardinal SDK is a multiplatform SDK for the iCure platform.'
   s.description      = <<-DESC
-Cardinal SDK for dart.
+Cardinal SDK is a multiplatform SDK for the iCure platform.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://cardinalsdk.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'iCure' => 'contact@icure.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
