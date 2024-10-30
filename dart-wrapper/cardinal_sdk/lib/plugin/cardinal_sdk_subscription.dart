@@ -53,7 +53,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
   @override
   Future<Map<String, dynamic>?> waitForEvent(String subscriptionId, Duration timeout) async {
     final res = await _methodChannel.invokeMethod<String>(
-        'getEvent',
+        'waitForEvent',
         {
           "subscriptionId": subscriptionId,
           "timeout": jsonEncode(timeout.inMilliseconds)
