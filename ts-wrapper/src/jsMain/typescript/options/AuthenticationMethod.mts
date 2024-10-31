@@ -297,10 +297,6 @@ export enum AuthenticationProcessTelecomType {
   Email = "Email", MobilePhone = "MobilePhone"
 }
 
-export enum AuthenticationProcessCaptchaType {
-  Recaptcha = "Recaptcha", FriendlyCaptcha = "FriendlyCaptcha"
-}
-
 /**
  * Holds information on an authentication process request done through the {@link AuthenticationProcessApi}.
  *
