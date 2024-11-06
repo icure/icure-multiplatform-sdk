@@ -1,0 +1,35 @@
+PODS:
+  - cardinal_sdk (1.0.0-RC.1):
+    - CardinalDartSdkSupportLib (~> 1.0.0-RC.1)
+    - Flutter
+  - CardinalDartSdkSupportLib (1.0.0-RC.1)
+  - Flutter (1.0.0)
+  - integration_test (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - cardinal_sdk (from `.symlinks/plugins/cardinal_sdk/ios`)
+  - Flutter (from `Flutter`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - CardinalDartSdkSupportLib
+
+EXTERNAL SOURCES:
+  cardinal_sdk:
+    :path: ".symlinks/plugins/cardinal_sdk/ios"
+  Flutter:
+    :path: Flutter
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+
+SPEC CHECKSUMS:
+  cardinal_sdk: 88334caf601aeeec4e84e58b2dc036bee4b13c7f
+  CardinalDartSdkSupportLib: 116f25373c5bad507786f5649ea9206a2bce0c18
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
+
+PODFILE CHECKSUM: f99957a8ce06ca211d55a2181ca40fdc3bdc9120
+
+COCOAPODS: 1.15.2

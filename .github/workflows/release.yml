@@ -1,9 +1,6 @@
 name: Release packages
 
 on:
-    push:
-        branches:
-            - develop
     pull_request:
         types:
             - closed
@@ -11,10 +8,20 @@ on:
             - develop
 jobs:
     release:
-        # if: github.event.pull_request.merged == true
-        # if: false
+        if: github.event.pull_request.merged == true
         runs-on: self-hosted
         steps:
+            -   name: Check if curl is installed, otherwise install it
+                run: |
+                    brew list curl || brew install curl
+
+            -   name: Set openssl and curl paths
+                id: set-paths
+                run: |
+                    openssl_lib_path=$(brew --prefix openssl)/lib
+                    curl_lib_path=$(brew --prefix curl)/lib
+                    echo "LIB_PATHS=${openssl_lib_path};${curl_lib_path}" >> $GITHUB_ENV
+
             -   name: Checkout code
                 uses: actions/checkout@v4
                 with:
@@ -77,7 +84,7 @@ jobs:
 
             -   name: Build and push
                 run: |
-                    ./gradlew -x test :icure-sdk:publishAllPublicationsToTaktikRepository
+                    ./gradlew -x test :cardinal-sdk:publishAllPublicationsToTaktikRepository --stacktrace
                 env:
                     ORG_GRADLE_PROJECT_repoUsername: ${{ secrets.REPO_USERNAME }}
                     ORG_GRADLE_PROJECT_repoPassword: ${{ secrets.REPO_PASSWORD }}
@@ -85,6 +92,7 @@ jobs:
                     ORG_GRADLE_PROJECT_mavenSnapshotsRepository: ${{ secrets.MAVEN_SNAPSHOT_REPOSITORY }}
                     ORG_GRADLE_PROJECT_mavenRepository: ${{ secrets.MAVEN_REPOSITORY }}
                     ORG_GRADLE_PROJECT_version: ${{ env.NEW_VERSION }}
+                    ORG_GRADLE_PROJECT_cinteropsLibsDir: ${{ env.LIB_PATHS }}
                     ANDROID_HOME: ~/android/sdk # The Android SDK is installed here from the setup-android action
 
             -   name: Upload Release

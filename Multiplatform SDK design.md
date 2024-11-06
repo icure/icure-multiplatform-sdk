@@ -88,7 +88,7 @@ Almost all methods of the encryptable entities api can be used in all flavours, 
 
 The methods that are not available in all flavours are:
 
-- The newInstance and entity creation methods: when creating new data it must have valid encryption metadata initialised.
+- The newInstance and entity creation methods: when creating new data it must have valid encryption metadata initialized.
   - What if the secretary creates the patient? If she creates the patient she is the owner: she can share it with the doctor and revoke later. If the doctor puts an encrypted note then she will be able to read it... Add a patient template entity? Used just to allow the doctor to be the owner of the patient (the secretary pre-fills some information that the doctor uses to create the patient).
 - For some entities there may be some update methods that require some context which can be obtained only from the decrypted entity
 - Methods that do not use the entity in the signature, such as match / find ids of methods: since the entity is never given in input / never returned as output there is no reason to have multiple versions of these methods
