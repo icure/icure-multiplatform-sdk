@@ -87,8 +87,6 @@ export interface MessageApi {
 	listMessagesByTransportGuids(hcPartyId: string,
 			transportGuids: Array<string>): Promise<Array<DecryptedMessage>>;
 
-	findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<string>): Promise<Array<DecryptedMessage>>;
-
 	findMessages(startKey: any | undefined, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<DecryptedMessage>>;
 

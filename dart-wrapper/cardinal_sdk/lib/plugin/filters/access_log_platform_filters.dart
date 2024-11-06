@@ -16,8 +16,8 @@ class AccessLogPlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -31,8 +31,8 @@ class AccessLogPlatformFilters {
 			'AccessLogFilters.byPatientsDateForSelf',
 			{
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -47,8 +47,8 @@ class AccessLogPlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -62,8 +62,8 @@ class AccessLogPlatformFilters {
 			'AccessLogFilters.byPatientSecretIdsDateForSelf',
 			{
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -76,8 +76,8 @@ class AccessLogPlatformFilters {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogFilters.byDate',
 			{
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -92,7 +92,7 @@ class AccessLogPlatformFilters {
 			{
 				"userId": jsonEncode(userId),
 				"accessType": jsonEncode(accessType),
-				"from": jsonEncode(from?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);

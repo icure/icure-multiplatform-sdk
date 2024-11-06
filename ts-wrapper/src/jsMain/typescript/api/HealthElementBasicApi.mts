@@ -1,7 +1,6 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {EncryptedHealthElement, HealthElement} from '../model/HealthElement.mjs';
-import {IcureStub} from '../model/IcureStub.mjs';
 import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
@@ -35,9 +34,6 @@ export interface HealthElementBasicApi {
 
 	purgeHealthElement(healthElement: HealthElement): Promise<void>;
 
-	findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
-
 	undeleteHealthElementById(id: string, rev: string): Promise<EncryptedHealthElement>;
 
 	undeleteHealthElement(healthElement: HealthElement): Promise<EncryptedHealthElement>;
@@ -49,9 +45,6 @@ export interface HealthElementBasicApi {
 	getHealthElement(entityId: string): Promise<EncryptedHealthElement>;
 
 	getHealthElements(entityIds: Array<string>): Promise<Array<EncryptedHealthElement>>;
-
-	findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<EncryptedHealthElement>>;
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: BaseFilterOptions<HealthElement>,
 			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedHealthElement>>;

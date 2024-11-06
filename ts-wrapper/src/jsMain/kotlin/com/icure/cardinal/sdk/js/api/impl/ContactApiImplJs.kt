@@ -30,7 +30,6 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.DecryptedContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
-import com.icure.cardinal.sdk.js.model.IcureStubJs
 import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -46,7 +45,6 @@ import com.icure.cardinal.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.cardinal.sdk.js.model.embed.ServiceJs
 import com.icure.cardinal.sdk.js.model.embed.service_fromJs
 import com.icure.cardinal.sdk.js.model.embed.service_toJs
-import com.icure.cardinal.sdk.js.model.icureStub_toJs
 import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
@@ -62,7 +60,6 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -391,50 +388,6 @@ internal class ContactApiImplJs(
 					contact_toJs(x1)
 				},
 			)
-		}
-
-		override fun listContactsByHCPartyAndPatientSecretFKeys(
-			hcPartyId: String,
-			secretPatientKeys: Array<String>,
-			options: dynamic,
-		): Promise<Array<EncryptedContactJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val hcPartyIdConverted: String = hcPartyId
-				val secretPatientKeysConverted: List<String> = arrayToList(
-					secretPatientKeys,
-					"secretPatientKeys",
-					{ x1: String ->
-						x1
-					},
-				)
-				val planOfActionsIdsConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"planOfActionsIds",
-					null
-				) { planOfActionsIds: String? ->
-					undefinedToNull(planOfActionsIds)
-				}
-				val skipClosedContactsConverted: Boolean? = convertingOptionOrDefaultNullable(
-					_options,
-					"skipClosedContacts",
-					null
-				) { skipClosedContacts: Boolean? ->
-					undefinedToNull(skipClosedContacts)
-				}
-				val result = contactApi.encrypted.listContactsByHCPartyAndPatientSecretFKeys(
-					hcPartyIdConverted,
-					secretPatientKeysConverted,
-					planOfActionsIdsConverted,
-					skipClosedContactsConverted,
-				)
-				listToArray(
-					result,
-					{ x1: EncryptedContact ->
-						contact_toJs(x1)
-					},
-				)
-			}
 		}
 
 		override fun getService(serviceId: String): Promise<EncryptedServiceJs> = GlobalScope.promise {
@@ -859,50 +812,6 @@ internal class ContactApiImplJs(
 					contact_toJs(x1)
 				},
 			)
-		}
-
-		override fun listContactsByHCPartyAndPatientSecretFKeys(
-			hcPartyId: String,
-			secretPatientKeys: Array<String>,
-			options: dynamic,
-		): Promise<Array<ContactJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val hcPartyIdConverted: String = hcPartyId
-				val secretPatientKeysConverted: List<String> = arrayToList(
-					secretPatientKeys,
-					"secretPatientKeys",
-					{ x1: String ->
-						x1
-					},
-				)
-				val planOfActionsIdsConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"planOfActionsIds",
-					null
-				) { planOfActionsIds: String? ->
-					undefinedToNull(planOfActionsIds)
-				}
-				val skipClosedContactsConverted: Boolean? = convertingOptionOrDefaultNullable(
-					_options,
-					"skipClosedContacts",
-					null
-				) { skipClosedContacts: Boolean? ->
-					undefinedToNull(skipClosedContacts)
-				}
-				val result = contactApi.tryAndRecover.listContactsByHCPartyAndPatientSecretFKeys(
-					hcPartyIdConverted,
-					secretPatientKeysConverted,
-					planOfActionsIdsConverted,
-					skipClosedContactsConverted,
-				)
-				listToArray(
-					result,
-					{ x1: Contact ->
-						contact_toJs(x1)
-					},
-				)
-			}
 		}
 
 		override fun getService(serviceId: String): Promise<ServiceJs> = GlobalScope.promise {
@@ -1395,28 +1304,6 @@ internal class ContactApiImplJs(
 
 	}
 
-	override fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = contactApi.findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
-		)
-		listToArray(
-			result,
-			{ x1: IcureStub ->
-				icureStub_toJs(x1)
-			},
-		)
-	}
-
 	override fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>> = GlobalScope.promise {
 		val codeTypeConverted: String = codeType
@@ -1726,50 +1613,6 @@ internal class ContactApiImplJs(
 				contact_toJs(x1)
 			},
 		)
-	}
-
-	override fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: Array<String>,
-		options: dynamic,
-	): Promise<Array<DecryptedContactJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val planOfActionsIdsConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"planOfActionsIds",
-				null
-			) { planOfActionsIds: String? ->
-				undefinedToNull(planOfActionsIds)
-			}
-			val skipClosedContactsConverted: Boolean? = convertingOptionOrDefaultNullable(
-				_options,
-				"skipClosedContacts",
-				null
-			) { skipClosedContacts: Boolean? ->
-				undefinedToNull(skipClosedContacts)
-			}
-			val result = contactApi.listContactsByHCPartyAndPatientSecretFKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-				planOfActionsIdsConverted,
-				skipClosedContactsConverted,
-			)
-			listToArray(
-				result,
-				{ x1: DecryptedContact ->
-					contact_toJs(x1)
-				},
-			)
-		}
 	}
 
 	override fun getService(serviceId: String): Promise<DecryptedServiceJs> = GlobalScope.promise {

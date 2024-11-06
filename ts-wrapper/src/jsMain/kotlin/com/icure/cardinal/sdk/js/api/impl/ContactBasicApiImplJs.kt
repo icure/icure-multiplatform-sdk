@@ -19,7 +19,6 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
-import com.icure.cardinal.sdk.js.model.IcureStubJs
 import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.`data`.LabelledOccurenceJs
@@ -31,7 +30,6 @@ import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.cardinal.sdk.js.model.embed.ServiceJs
 import com.icure.cardinal.sdk.js.model.embed.service_toJs
-import com.icure.cardinal.sdk.js.model.icureStub_toJs
 import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
@@ -42,7 +40,6 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -51,7 +48,6 @@ import com.icure.cardinal.sdk.model.embed.Service
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import kotlin.Array
-import kotlin.Boolean
 import kotlin.Double
 import kotlin.Int
 import kotlin.Long
@@ -316,28 +312,6 @@ internal class ContactBasicApiImplJs(
 
 	}
 
-	override fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = contactBasicApi.findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
-		)
-		listToArray(
-			result,
-			{ x1: IcureStub ->
-				icureStub_toJs(x1)
-			},
-		)
-	}
-
 	override fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>> = GlobalScope.promise {
 		val codeTypeConverted: String = codeType
@@ -497,50 +471,6 @@ internal class ContactBasicApiImplJs(
 				contact_toJs(x1)
 			},
 		)
-	}
-
-	override fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: Array<String>,
-		options: dynamic,
-	): Promise<Array<EncryptedContactJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val planOfActionsIdsConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"planOfActionsIds",
-				null
-			) { planOfActionsIds: String? ->
-				undefinedToNull(planOfActionsIds)
-			}
-			val skipClosedContactsConverted: Boolean? = convertingOptionOrDefaultNullable(
-				_options,
-				"skipClosedContacts",
-				null
-			) { skipClosedContacts: Boolean? ->
-				undefinedToNull(skipClosedContacts)
-			}
-			val result = contactBasicApi.listContactsByHCPartyAndPatientSecretFKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-				planOfActionsIdsConverted,
-				skipClosedContactsConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedContact ->
-					contact_toJs(x1)
-				},
-			)
-		}
 	}
 
 	override fun getService(serviceId: String): Promise<EncryptedServiceJs> = GlobalScope.promise {

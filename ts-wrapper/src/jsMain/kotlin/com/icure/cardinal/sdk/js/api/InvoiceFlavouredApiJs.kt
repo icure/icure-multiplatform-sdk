@@ -42,9 +42,6 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<E>>
 
-	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<E>>
-
 	public fun reassignInvoice(invoice: E): Promise<E>
 
 	public fun mergeTo(invoiceId: String, ids: Array<String>): Promise<E>
@@ -72,9 +69,6 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 	): Promise<Array<E>>
 
 	public fun findInvoicesByAuthor(hcPartyId: String, options: dynamic): Promise<PaginatedListJs<E>>
-
-	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<E>>
 
 	public fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String): Promise<Array<E>>
 

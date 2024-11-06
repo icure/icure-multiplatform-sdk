@@ -3,6 +3,10 @@
 
 package com.icure.cardinal.sdk.js.model.embed
 
+import com.icure.cardinal.sdk.js.model.base.CodeStubJs
+import com.icure.cardinal.sdk.js.model.base.HasCodesJs
+import com.icure.cardinal.sdk.js.model.base.HasTagsJs
+import com.icure.cardinal.sdk.js.model.base.IdentifierJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
@@ -10,7 +14,9 @@ import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
 @JsName("Address")
-public sealed external interface AddressJs : EncryptableJs {
+public sealed external interface AddressJs : EncryptableJs, HasTagsJs, HasCodesJs {
+	public val identifier: Array<out IdentifierJs>
+
 	public val addressType: String?
 
 	public val descr: String?
@@ -42,6 +48,12 @@ public sealed external interface AddressJs : EncryptableJs {
 public external class DecryptedAddressJs(
 	partial: dynamic,
 ) : AddressJs {
+	override val tags: Array<CodeStubJs>
+
+	override val codes: Array<CodeStubJs>
+
+	override val identifier: Array<IdentifierJs>
+
 	override val addressType: String?
 
 	override val descr: String?
@@ -75,6 +87,12 @@ public external class DecryptedAddressJs(
 public external class EncryptedAddressJs(
 	partial: dynamic,
 ) : AddressJs {
+	override val tags: Array<CodeStubJs>
+
+	override val codes: Array<CodeStubJs>
+
+	override val identifier: Array<IdentifierJs>
+
 	override val addressType: String?
 
 	override val descr: String?

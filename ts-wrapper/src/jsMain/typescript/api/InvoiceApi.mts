@@ -2,7 +2,6 @@
 import {PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {InvoiceShareOptions} from '../crypto/entities/InvoiceShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {IcureStub} from '../model/IcureStub.mjs';
 import {DecryptedInvoice, EncryptedInvoice, Invoice} from '../model/Invoice.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -44,9 +43,6 @@ export interface InvoiceApi {
 
 	deleteInvoice(entityId: string): Promise<DocIdentifier>;
 
-	findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
-
 	getTarificationsCodesOccurrences(minOccurrence: number): Promise<Array<LabelledOccurence>>;
 
 	shareWith(delegateId: string, invoice: DecryptedInvoice,
@@ -65,9 +61,6 @@ export interface InvoiceApi {
 	getInvoice(entityId: string): Promise<DecryptedInvoice>;
 
 	getInvoices(entityIds: Array<string>): Promise<Array<DecryptedInvoice>>;
-
-	findInvoicesByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<DecryptedInvoice>>;
 
 	reassignInvoice(invoice: DecryptedInvoice): Promise<DecryptedInvoice>;
 
@@ -89,9 +82,6 @@ export interface InvoiceApi {
 
 	findInvoicesByAuthor(hcPartyId: string,
 			options?: { fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<DecryptedInvoice>>;
-
-	listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<DecryptedInvoice>>;
 
 	listInvoicesByHcPartyAndGroupId(hcPartyId: string,
 			groupId: string): Promise<Array<DecryptedInvoice>>;

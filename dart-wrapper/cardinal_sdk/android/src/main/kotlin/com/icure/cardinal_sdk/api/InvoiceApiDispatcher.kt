@@ -27,7 +27,6 @@ public object InvoiceApiDispatcher {
     "decrypt" -> decrypt(parameters, resultCallback)
     "tryDecrypt" -> tryDecrypt(parameters, resultCallback)
     "deleteInvoice" -> deleteInvoice(parameters, resultCallback)
-    "findInvoicesDelegationsStubsByHcPartyPatientForeignKeys" -> findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters, resultCallback)
     "getTarificationsCodesOccurrences" -> getTarificationsCodesOccurrences(parameters, resultCallback)
     "shareWith" -> shareWith(parameters, resultCallback)
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
@@ -35,13 +34,11 @@ public object InvoiceApiDispatcher {
     "modifyInvoices" -> modifyInvoices(parameters, resultCallback)
     "getInvoice" -> getInvoice(parameters, resultCallback)
     "getInvoices" -> getInvoices(parameters, resultCallback)
-    "findInvoicesByHcPartyPatientForeignKeys" -> findInvoicesByHcPartyPatientForeignKeys(parameters, resultCallback)
     "reassignInvoice" -> reassignInvoice(parameters, resultCallback)
     "mergeTo" -> mergeTo(parameters, resultCallback)
     "validate" -> validate(parameters, resultCallback)
     "appendCodes" -> appendCodes(parameters, resultCallback)
     "removeCodes" -> removeCodes(parameters, resultCallback)
-    "listInvoicesByHCPartyAndPatientForeignKeys" -> listInvoicesByHCPartyAndPatientForeignKeys(parameters, resultCallback)
     "listInvoicesByHcPartyAndGroupId" -> listInvoicesByHcPartyAndGroupId(parameters, resultCallback)
     "listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate" -> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters, resultCallback)
     "listInvoicesByContactIds" -> listInvoicesByContactIds(parameters, resultCallback)
@@ -58,13 +55,11 @@ public object InvoiceApiDispatcher {
     "encrypted.modifyInvoices" -> encrypted_modifyInvoices(parameters, resultCallback)
     "encrypted.getInvoice" -> encrypted_getInvoice(parameters, resultCallback)
     "encrypted.getInvoices" -> encrypted_getInvoices(parameters, resultCallback)
-    "encrypted.findInvoicesByHcPartyPatientForeignKeys" -> encrypted_findInvoicesByHcPartyPatientForeignKeys(parameters, resultCallback)
     "encrypted.reassignInvoice" -> encrypted_reassignInvoice(parameters, resultCallback)
     "encrypted.mergeTo" -> encrypted_mergeTo(parameters, resultCallback)
     "encrypted.validate" -> encrypted_validate(parameters, resultCallback)
     "encrypted.appendCodes" -> encrypted_appendCodes(parameters, resultCallback)
     "encrypted.removeCodes" -> encrypted_removeCodes(parameters, resultCallback)
-    "encrypted.listInvoicesByHCPartyAndPatientForeignKeys" -> encrypted_listInvoicesByHCPartyAndPatientForeignKeys(parameters, resultCallback)
     "encrypted.listInvoicesByHcPartyAndGroupId" -> encrypted_listInvoicesByHcPartyAndGroupId(parameters, resultCallback)
     "encrypted.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate" -> encrypted_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters, resultCallback)
     "encrypted.listInvoicesByContactIds" -> encrypted_listInvoicesByContactIds(parameters, resultCallback)
@@ -81,13 +76,11 @@ public object InvoiceApiDispatcher {
     "tryAndRecover.modifyInvoices" -> tryAndRecover_modifyInvoices(parameters, resultCallback)
     "tryAndRecover.getInvoice" -> tryAndRecover_getInvoice(parameters, resultCallback)
     "tryAndRecover.getInvoices" -> tryAndRecover_getInvoices(parameters, resultCallback)
-    "tryAndRecover.findInvoicesByHcPartyPatientForeignKeys" -> tryAndRecover_findInvoicesByHcPartyPatientForeignKeys(parameters, resultCallback)
     "tryAndRecover.reassignInvoice" -> tryAndRecover_reassignInvoice(parameters, resultCallback)
     "tryAndRecover.mergeTo" -> tryAndRecover_mergeTo(parameters, resultCallback)
     "tryAndRecover.validate" -> tryAndRecover_validate(parameters, resultCallback)
     "tryAndRecover.appendCodes" -> tryAndRecover_appendCodes(parameters, resultCallback)
     "tryAndRecover.removeCodes" -> tryAndRecover_removeCodes(parameters, resultCallback)
-    "tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys" -> tryAndRecover_listInvoicesByHCPartyAndPatientForeignKeys(parameters, resultCallback)
     "tryAndRecover.listInvoicesByHcPartyAndGroupId" -> tryAndRecover_listInvoicesByHcPartyAndGroupId(parameters, resultCallback)
     "tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate" -> tryAndRecover_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters, resultCallback)
     "tryAndRecover.listInvoicesByContactIds" -> tryAndRecover_listInvoicesByContactIds(parameters, resultCallback)
@@ -228,21 +221,6 @@ public object InvoiceApiDispatcher {
     )
   }
 
-  private
-      fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
-    )
-  }
-
   private fun getTarificationsCodesOccurrences(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -330,20 +308,6 @@ public object InvoiceApiDispatcher {
     )
   }
 
-  private fun findInvoicesByHcPartyPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceApi.findInvoicesByHcPartyPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
-    )
-  }
-
   private fun reassignInvoice(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -414,20 +378,6 @@ public object InvoiceApiDispatcher {
       parameters.getValue("serviceId"),
       parameters.getValue("secretFKeys"),
       parameters.getValue("tarificationIds"),
-    )
-  }
-
-  private fun listInvoicesByHCPartyAndPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceApi.listInvoicesByHCPartyAndPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
     )
   }
 
@@ -639,20 +589,6 @@ public object InvoiceApiDispatcher {
     )
   }
 
-  private fun encrypted_findInvoicesByHcPartyPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceApi.encrypted.findInvoicesByHcPartyPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
-    )
-  }
-
   private fun encrypted_reassignInvoice(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -723,20 +659,6 @@ public object InvoiceApiDispatcher {
       parameters.getValue("serviceId"),
       parameters.getValue("secretFKeys"),
       parameters.getValue("tarificationIds"),
-    )
-  }
-
-  private fun encrypted_listInvoicesByHCPartyAndPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceApi.encrypted.listInvoicesByHCPartyAndPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
     )
   }
 
@@ -950,20 +872,6 @@ public object InvoiceApiDispatcher {
     )
   }
 
-  private fun tryAndRecover_findInvoicesByHcPartyPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceApi.tryAndRecover.findInvoicesByHcPartyPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
-    )
-  }
-
   private fun tryAndRecover_reassignInvoice(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -1034,21 +942,6 @@ public object InvoiceApiDispatcher {
       parameters.getValue("serviceId"),
       parameters.getValue("secretFKeys"),
       parameters.getValue("tarificationIds"),
-    )
-  }
-
-  private
-      fun tryAndRecover_listInvoicesByHCPartyAndPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceApi.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
     )
   }
 

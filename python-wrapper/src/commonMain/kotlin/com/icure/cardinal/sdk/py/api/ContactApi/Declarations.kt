@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -944,47 +943,6 @@ public fun purgeContactAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams(
-	public val hcPartyId: String,
-	public val secretPatientKeys: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: CardinalApis,
-		params: String): String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
-	runBlocking {
-		sdk.contact.findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-			decodedParams.hcPartyId,
-			decodedParams.secretPatientKeys,
-		)
-	}
-}.toPyString(ListSerializer(IcureStub.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.contact.findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-				decodedParams.hcPartyId,
-				decodedParams.secretPatientKeys,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(IcureStub.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class GetServiceCodesOccurrencesParams(
 	public val codeType: String,
 	public val minOccurrences: Long,
@@ -1673,53 +1631,6 @@ public fun listContactsByHCPartyAndFormIdsAsync(
 			sdk.contact.listContactsByHCPartyAndFormIds(
 				decodedParams.hcPartyId,
 				decodedParams.formIds,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(DecryptedContact.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class ListContactsByHCPartyAndPatientSecretFKeysParams(
-	public val hcPartyId: String,
-	public val secretPatientKeys: List<String>,
-	public val planOfActionsIds: String? = null,
-	public val skipClosedContacts: Boolean? = null,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun listContactsByHCPartyAndPatientSecretFKeysBlocking(sdk: CardinalApis, params: String):
-		String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListContactsByHCPartyAndPatientSecretFKeysParams>(params)
-	runBlocking {
-		sdk.contact.listContactsByHCPartyAndPatientSecretFKeys(
-			decodedParams.hcPartyId,
-			decodedParams.secretPatientKeys,
-			decodedParams.planOfActionsIds,
-			decodedParams.skipClosedContacts,
-		)
-	}
-}.toPyString(ListSerializer(DecryptedContact.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun listContactsByHCPartyAndPatientSecretFKeysAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListContactsByHCPartyAndPatientSecretFKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.contact.listContactsByHCPartyAndPatientSecretFKeys(
-				decodedParams.hcPartyId,
-				decodedParams.secretPatientKeys,
-				decodedParams.planOfActionsIds,
-				decodedParams.skipClosedContacts,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(DecryptedContact.serializer()), resultCallback)
 	}

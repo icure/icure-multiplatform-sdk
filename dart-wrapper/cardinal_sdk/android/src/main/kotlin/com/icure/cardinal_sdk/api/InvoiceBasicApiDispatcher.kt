@@ -18,19 +18,16 @@ public object InvoiceBasicApiDispatcher {
     ) -> Unit,
   ): Boolean = when(methodName) {
     "deleteInvoice" -> deleteInvoice(parameters, resultCallback)
-    "findInvoicesDelegationsStubsByHcPartyPatientForeignKeys" -> findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters, resultCallback)
     "getTarificationsCodesOccurrences" -> getTarificationsCodesOccurrences(parameters, resultCallback)
     "modifyInvoice" -> modifyInvoice(parameters, resultCallback)
     "modifyInvoices" -> modifyInvoices(parameters, resultCallback)
     "getInvoice" -> getInvoice(parameters, resultCallback)
     "getInvoices" -> getInvoices(parameters, resultCallback)
-    "findInvoicesByHcPartyPatientForeignKeys" -> findInvoicesByHcPartyPatientForeignKeys(parameters, resultCallback)
     "reassignInvoice" -> reassignInvoice(parameters, resultCallback)
     "mergeTo" -> mergeTo(parameters, resultCallback)
     "validate" -> validate(parameters, resultCallback)
     "appendCodes" -> appendCodes(parameters, resultCallback)
     "removeCodes" -> removeCodes(parameters, resultCallback)
-    "listInvoicesByHCPartyAndPatientForeignKeys" -> listInvoicesByHCPartyAndPatientForeignKeys(parameters, resultCallback)
     "listInvoicesByHcPartyAndGroupId" -> listInvoicesByHcPartyAndGroupId(parameters, resultCallback)
     "listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate" -> listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters, resultCallback)
     "listInvoicesByContactIds" -> listInvoicesByContactIds(parameters, resultCallback)
@@ -53,21 +50,6 @@ public object InvoiceBasicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("entityId"),
-    )
-  }
-
-  private
-      fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceBasicApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
     )
   }
 
@@ -128,20 +110,6 @@ public object InvoiceBasicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("entityIds"),
-    )
-  }
-
-  private fun findInvoicesByHcPartyPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceBasicApi.findInvoicesByHcPartyPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
     )
   }
 
@@ -215,20 +183,6 @@ public object InvoiceBasicApiDispatcher {
       parameters.getValue("serviceId"),
       parameters.getValue("secretFKeys"),
       parameters.getValue("tarificationIds"),
-    )
-  }
-
-  private fun listInvoicesByHCPartyAndPatientForeignKeys(parameters: Map<String, String>,
-      resultCallback: (
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    InvoiceBasicApi.listInvoicesByHCPartyAndPatientForeignKeys(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("hcPartyId"),
-      parameters.getValue("secretPatientKeys"),
     )
   }
 

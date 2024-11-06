@@ -54,9 +54,6 @@ public external interface MessageFlavouredApiJs<E : MessageJs> {
 	public fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 			Promise<Array<E>>
 
-	public fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
-			Promise<Array<E>>
-
 	public fun findMessages(
 		startKey: dynamic,
 		startDocumentId: String?,

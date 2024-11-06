@@ -41,7 +41,4 @@ export interface FormFlavouredApi<E extends Form> {
 
 	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<E>>;
 
-	listFormsByHCPartyAndPatientForeignKeys(hcPartyId: string, secretFKeys: string,
-			options?: { healthElementId?: string | undefined, planOfActionId?: string | undefined, formTemplateId?: string | undefined }): Promise<Array<E>>;
-
 }

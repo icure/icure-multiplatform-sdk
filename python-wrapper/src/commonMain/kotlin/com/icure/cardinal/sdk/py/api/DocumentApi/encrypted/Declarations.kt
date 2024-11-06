@@ -535,50 +535,6 @@ public fun modifyDocumentsAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class ListDocumentsByHcPartyMessageForeignKeysParams(
-	public val hcPartyId: String,
-	public val documentTypeCode: String?,
-	public val secretMessageKeys: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun listDocumentsByHcPartyMessageForeignKeysBlocking(sdk: CardinalApis, params: String):
-		String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
-	runBlocking {
-		sdk.document.encrypted.listDocumentsByHcPartyMessageForeignKeys(
-			decodedParams.hcPartyId,
-			decodedParams.documentTypeCode,
-			decodedParams.secretMessageKeys,
-		)
-	}
-}.toPyString(ListSerializer(EncryptedDocument.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun listDocumentsByHcPartyMessageForeignKeysAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListDocumentsByHcPartyMessageForeignKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.document.encrypted.listDocumentsByHcPartyMessageForeignKeys(
-				decodedParams.hcPartyId,
-				decodedParams.documentTypeCode,
-				decodedParams.secretMessageKeys,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(EncryptedDocument.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class FindWithoutDelegationParams(
 	public val limit: Int?,
 )

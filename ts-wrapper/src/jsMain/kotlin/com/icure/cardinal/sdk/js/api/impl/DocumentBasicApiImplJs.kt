@@ -13,7 +13,6 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
-import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
@@ -423,33 +422,6 @@ internal class DocumentBasicApiImplJs(
 		)
 		val result = documentBasicApi.modifyDocuments(
 			entitiesConverted,
-		)
-		listToArray(
-			result,
-			{ x1: EncryptedDocument ->
-				document_toJs(x1)
-			},
-		)
-	}
-
-	override fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String?,
-		secretMessageKeys: Array<String>,
-	): Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
-		val secretMessageKeysConverted: List<String> = arrayToList(
-			secretMessageKeys,
-			"secretMessageKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = documentBasicApi.listDocumentsByHcPartyMessageForeignKeys(
-			hcPartyIdConverted,
-			documentTypeCodeConverted,
-			secretMessageKeysConverted,
 		)
 		listToArray(
 			result,

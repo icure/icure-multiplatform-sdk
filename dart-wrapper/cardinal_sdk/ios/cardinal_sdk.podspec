@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'cardinal_sdk'
-  s.version          = '1.0.0-RC.1'
+  s.version          = '1.0.0-RC.4'
   s.summary          = 'Cardinal SDK is a multiplatform SDK for the iCure platform.'
   s.description      = <<-DESC
 Cardinal SDK is a multiplatform SDK for the iCure platform.

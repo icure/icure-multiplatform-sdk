@@ -27,9 +27,6 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 
 	getInvoices(entityIds: Array<string>): Promise<Array<E>>;
 
-	findInvoicesByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<E>>;
-
 	reassignInvoice(invoice: E): Promise<E>;
 
 	mergeTo(invoiceId: string, ids: Array<string>): Promise<E>;
@@ -50,9 +47,6 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 
 	findInvoicesByAuthor(hcPartyId: string,
 			options?: { fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;
-
-	listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<E>>;
 
 	listInvoicesByHcPartyAndGroupId(hcPartyId: string, groupId: string): Promise<Array<E>>;
 

@@ -32,7 +32,4 @@ export interface HealthElementFlavouredApi<E extends HealthElement> {
 
 	getHealthElements(entityIds: Array<string>): Promise<Array<E>>;
 
-	findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<E>>;
-
 }

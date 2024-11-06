@@ -28,7 +28,6 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.EncryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.HealthElementJs
-import com.icure.cardinal.sdk.js.model.IcureStubJs
 import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.UserJs
@@ -36,7 +35,6 @@ import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.healthElement_fromJs
 import com.icure.cardinal.sdk.js.model.healthElement_toJs
-import com.icure.cardinal.sdk.js.model.icureStub_toJs
 import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -51,7 +49,6 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -280,29 +277,6 @@ internal class HealthElementApiImplJs(
 				},
 			)
 		}
-
-		override fun findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<EncryptedHealthElementJs>> =
-				GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = healthElementApi.encrypted.findHealthElementsByHcPartyPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedHealthElement ->
-					healthElement_toJs(x1)
-				},
-			)
-		}
 	}
 
 	override val tryAndRecover: HealthElementFlavouredApiJs<HealthElementJs> = object :
@@ -497,28 +471,6 @@ internal class HealthElementApiImplJs(
 			)
 			val result = healthElementApi.tryAndRecover.getHealthElements(
 				entityIdsConverted,
-			)
-			listToArray(
-				result,
-				{ x1: HealthElement ->
-					healthElement_toJs(x1)
-				},
-			)
-		}
-
-		override fun findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<HealthElementJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = healthElementApi.tryAndRecover.findHealthElementsByHcPartyPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
 			)
 			listToArray(
 				result,
@@ -820,28 +772,6 @@ internal class HealthElementApiImplJs(
 
 	}
 
-	override fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = healthElementApi.findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
-		)
-		listToArray(
-			result,
-			{ x1: IcureStub ->
-				icureStub_toJs(x1)
-			},
-		)
-	}
-
 	override fun shareWith(
 		delegateId: String,
 		healthElement: DecryptedHealthElementJs,
@@ -1033,29 +963,6 @@ internal class HealthElementApiImplJs(
 		)
 		val result = healthElementApi.getHealthElements(
 			entityIdsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedHealthElement ->
-				healthElement_toJs(x1)
-			},
-		)
-	}
-
-	override fun findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<DecryptedHealthElementJs>> =
-			GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = healthElementApi.findHealthElementsByHcPartyPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
 		)
 		listToArray(
 			result,

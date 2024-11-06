@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.HealthElementJs
-import com.icure.cardinal.sdk.js.model.IcureStubJs
 import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -51,9 +50,6 @@ public external interface HealthElementBasicApiJs {
 
 	public fun purgeHealthElement(healthElement: HealthElementJs): Promise<Unit>
 
-	public fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>>
-
 	public fun undeleteHealthElementById(id: String, rev: String): Promise<EncryptedHealthElementJs>
 
 	public fun undeleteHealthElement(healthElement: HealthElementJs): Promise<EncryptedHealthElementJs>
@@ -66,9 +62,6 @@ public external interface HealthElementBasicApiJs {
 	public fun getHealthElement(entityId: String): Promise<EncryptedHealthElementJs>
 
 	public fun getHealthElements(entityIds: Array<String>): Promise<Array<EncryptedHealthElementJs>>
-
-	public fun findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<EncryptedHealthElementJs>>
 
 	public fun subscribeToEvents(
 		events: Array<String>,

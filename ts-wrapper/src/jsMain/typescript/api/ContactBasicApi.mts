@@ -1,7 +1,6 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Contact, EncryptedContact} from '../model/Contact.mjs';
-import {IcureStub} from '../model/IcureStub.mjs';
 import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -49,9 +48,6 @@ export interface ContactBasicApi {
 
 	purgeContact(contact: Contact): Promise<void>;
 
-	findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
-
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
 
@@ -77,9 +73,6 @@ export interface ContactBasicApi {
 
 	listContactsByHCPartyAndFormIds(hcPartyId: string,
 			formIds: Array<string>): Promise<Array<EncryptedContact>>;
-
-	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
-			options?: { planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<EncryptedContact>>;
 
 	getService(serviceId: string): Promise<EncryptedService>;
 

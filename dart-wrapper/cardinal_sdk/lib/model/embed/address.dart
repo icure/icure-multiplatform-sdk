@@ -1,13 +1,20 @@
 // auto-generated file
+import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:cardinal_sdk/model/base/identifier.dart';
 import 'package:cardinal_sdk/model/embed/address_type.dart';
 import 'package:cardinal_sdk/model/embed/annotation.dart';
 import 'package:cardinal_sdk/model/embed/telecom.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/address.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:cardinal_sdk/model/base/has_tags.dart';
+import 'package:cardinal_sdk/model/base/has_codes.dart';
 
 
-sealed class Address implements Encryptable {
+sealed class Address implements Encryptable, HasTags, HasCodes {
+	@override abstract Set<CodeStub> tags;
+	@override abstract Set<CodeStub> codes;
+	abstract List<Identifier> identifier;
 	abstract AddressType? addressType;
 	abstract String? descr;
 	abstract String? street;
@@ -52,6 +59,9 @@ sealed class Address implements Encryptable {
 }
 
 class EncryptedAddress implements Address {
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override List<Identifier> identifier = [];
 	@override AddressType? addressType = null;
 	@override String? descr = null;
 	@override String? street = null;
@@ -66,6 +76,9 @@ class EncryptedAddress implements Address {
 	@override List<EncryptedTelecom> telecoms = [];
 	@override Base64String? encryptedSelf = null;
 	EncryptedAddress({
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			List<Identifier>? identifier,
 			AddressType? addressType,
 			String? descr,
 			String? street,
@@ -79,7 +92,10 @@ class EncryptedAddress implements Address {
 			List<Annotation>? notes,
 			List<EncryptedTelecom>? telecoms,
 			Base64String? encryptedSelf
-		}) : addressType = addressType ?? null,
+		}) : tags = tags ?? {},
+		codes = codes ?? {},
+		identifier = identifier ?? [],
+		addressType = addressType ?? null,
 		descr = descr ?? null,
 		street = street ?? null,
 		houseNumber = houseNumber ?? null,
@@ -95,6 +111,9 @@ class EncryptedAddress implements Address {
 
 	factory EncryptedAddress.fromJSON(Map<String, dynamic> data) {
 		return EncryptedAddress(
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
 			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
 			descr: (data["descr"] as String?),
 			street: (data["street"] as String?),
@@ -113,6 +132,9 @@ class EncryptedAddress implements Address {
 
 	static Map<String, dynamic> encode(EncryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
+			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)).toList(),
 			"addressType" : value.addressType == null ? null : AddressType.encode(value.addressType!),
 			"descr" : value.descr,
 			"street" : value.street,
@@ -132,6 +154,9 @@ class EncryptedAddress implements Address {
 }
 
 class DecryptedAddress implements Address {
+	@override Set<CodeStub> tags = {};
+	@override Set<CodeStub> codes = {};
+	@override List<Identifier> identifier = [];
 	@override AddressType? addressType = null;
 	@override String? descr = null;
 	@override String? street = null;
@@ -146,6 +171,9 @@ class DecryptedAddress implements Address {
 	@override List<DecryptedTelecom> telecoms = [];
 	@override Base64String? encryptedSelf = null;
 	DecryptedAddress({
+			Set<CodeStub>? tags,
+			Set<CodeStub>? codes,
+			List<Identifier>? identifier,
 			AddressType? addressType,
 			String? descr,
 			String? street,
@@ -159,7 +187,10 @@ class DecryptedAddress implements Address {
 			List<Annotation>? notes,
 			List<DecryptedTelecom>? telecoms,
 			Base64String? encryptedSelf
-		}) : addressType = addressType ?? null,
+		}) : tags = tags ?? {},
+		codes = codes ?? {},
+		identifier = identifier ?? [],
+		addressType = addressType ?? null,
 		descr = descr ?? null,
 		street = street ?? null,
 		houseNumber = houseNumber ?? null,
@@ -175,6 +206,9 @@ class DecryptedAddress implements Address {
 
 	factory DecryptedAddress.fromJSON(Map<String, dynamic> data) {
 		return DecryptedAddress(
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
 			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
 			descr: (data["descr"] as String?),
 			street: (data["street"] as String?),
@@ -193,6 +227,9 @@ class DecryptedAddress implements Address {
 
 	static Map<String, dynamic> encode(DecryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {
+			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
+			"codes" : value.codes.map((x0) => CodeStub.encode(x0)).toList(),
+			"identifier" : value.identifier.map((x0) => Identifier.encode(x0)).toList(),
 			"addressType" : value.addressType == null ? null : AddressType.encode(value.addressType!),
 			"descr" : value.descr,
 			"street" : value.street,

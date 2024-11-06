@@ -23,7 +23,6 @@ class InvoiceApiDispatcher {
     case "decrypt": decrypt(parameters: parameters, resultCallback: resultCallback)
     case "tryDecrypt": tryDecrypt(parameters: parameters, resultCallback: resultCallback)
     case "deleteInvoice": deleteInvoice(parameters: parameters, resultCallback: resultCallback)
-    case "findInvoicesDelegationsStubsByHcPartyPatientForeignKeys": findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "getTarificationsCodesOccurrences": getTarificationsCodesOccurrences(parameters: parameters, resultCallback: resultCallback)
     case "shareWith": shareWith(parameters: parameters, resultCallback: resultCallback)
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
@@ -31,13 +30,11 @@ class InvoiceApiDispatcher {
     case "modifyInvoices": modifyInvoices(parameters: parameters, resultCallback: resultCallback)
     case "getInvoice": getInvoice(parameters: parameters, resultCallback: resultCallback)
     case "getInvoices": getInvoices(parameters: parameters, resultCallback: resultCallback)
-    case "findInvoicesByHcPartyPatientForeignKeys": findInvoicesByHcPartyPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "reassignInvoice": reassignInvoice(parameters: parameters, resultCallback: resultCallback)
     case "mergeTo": mergeTo(parameters: parameters, resultCallback: resultCallback)
     case "validate": validate(parameters: parameters, resultCallback: resultCallback)
     case "appendCodes": appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "removeCodes": removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "listInvoicesByHCPartyAndPatientForeignKeys": listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartyAndGroupId": listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByContactIds": listInvoicesByContactIds(parameters: parameters, resultCallback: resultCallback)
@@ -54,13 +51,11 @@ class InvoiceApiDispatcher {
     case "encrypted.modifyInvoices": encrypted_modifyInvoices(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.getInvoice": encrypted_getInvoice(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.getInvoices": encrypted_getInvoices(parameters: parameters, resultCallback: resultCallback)
-    case "encrypted.findInvoicesByHcPartyPatientForeignKeys": encrypted_findInvoicesByHcPartyPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.reassignInvoice": encrypted_reassignInvoice(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.mergeTo": encrypted_mergeTo(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.validate": encrypted_validate(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.appendCodes": encrypted_appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.removeCodes": encrypted_removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "encrypted.listInvoicesByHCPartyAndPatientForeignKeys": encrypted_listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.listInvoicesByHcPartyAndGroupId": encrypted_listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": encrypted_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.listInvoicesByContactIds": encrypted_listInvoicesByContactIds(parameters: parameters, resultCallback: resultCallback)
@@ -77,13 +72,11 @@ class InvoiceApiDispatcher {
     case "tryAndRecover.modifyInvoices": tryAndRecover_modifyInvoices(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getInvoice": tryAndRecover_getInvoice(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getInvoices": tryAndRecover_getInvoices(parameters: parameters, resultCallback: resultCallback)
-    case "tryAndRecover.findInvoicesByHcPartyPatientForeignKeys": tryAndRecover_findInvoicesByHcPartyPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.reassignInvoice": tryAndRecover_reassignInvoice(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.mergeTo": tryAndRecover_mergeTo(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.validate": tryAndRecover_validate(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.appendCodes": tryAndRecover_appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.removeCodes": tryAndRecover_removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys": tryAndRecover_listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.listInvoicesByHcPartyAndGroupId": tryAndRecover_listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": tryAndRecover_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.listInvoicesByContactIds": tryAndRecover_listInvoicesByContactIds(parameters: parameters, resultCallback: resultCallback)
@@ -225,19 +218,6 @@ class InvoiceApiDispatcher {
     )
   }
 
-  private static func findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.shared.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
-    )
-  }
-
   private static func getTarificationsCodesOccurrences(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -325,19 +305,6 @@ class InvoiceApiDispatcher {
     )
   }
 
-  private static func findInvoicesByHcPartyPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.shared.findInvoicesByHcPartyPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
-    )
-  }
-
   private static func reassignInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -408,19 +375,6 @@ class InvoiceApiDispatcher {
     	serviceIdString: parameters["serviceId"]!,
     	secretFKeysString: parameters["secretFKeys"]!,
     	tarificationIdsString: parameters["tarificationIds"]!
-    )
-  }
-
-  private static func listInvoicesByHCPartyAndPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.shared.listInvoicesByHCPartyAndPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
     )
   }
 
@@ -629,19 +583,6 @@ class InvoiceApiDispatcher {
     )
   }
 
-  private static func encrypted_findInvoicesByHcPartyPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.encrypted.shared.findInvoicesByHcPartyPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
-    )
-  }
-
   private static func encrypted_reassignInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -712,19 +653,6 @@ class InvoiceApiDispatcher {
     	serviceIdString: parameters["serviceId"]!,
     	secretFKeysString: parameters["secretFKeys"]!,
     	tarificationIdsString: parameters["tarificationIds"]!
-    )
-  }
-
-  private static func encrypted_listInvoicesByHCPartyAndPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.encrypted.shared.listInvoicesByHCPartyAndPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
     )
   }
 
@@ -933,19 +861,6 @@ class InvoiceApiDispatcher {
     )
   }
 
-  private static func tryAndRecover_findInvoicesByHcPartyPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.tryAndRecover.shared.findInvoicesByHcPartyPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
-    )
-  }
-
   private static func tryAndRecover_reassignInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -1016,19 +931,6 @@ class InvoiceApiDispatcher {
     	serviceIdString: parameters["serviceId"]!,
     	secretFKeysString: parameters["secretFKeys"]!,
     	tarificationIdsString: parameters["tarificationIds"]!
-    )
-  }
-
-  private static func tryAndRecover_listInvoicesByHCPartyAndPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceApi.tryAndRecover.shared.listInvoicesByHCPartyAndPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
     )
   }
 

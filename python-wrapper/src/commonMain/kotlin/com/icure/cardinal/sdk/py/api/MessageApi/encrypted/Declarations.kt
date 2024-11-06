@@ -467,44 +467,6 @@ public fun listMessagesByTransportGuidsAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class FindMessagesByHCPartyPatientForeignKeysParams(
-	public val secretPatientKeys: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun findMessagesByHCPartyPatientForeignKeysBlocking(sdk: CardinalApis, params: String):
-		String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindMessagesByHCPartyPatientForeignKeysParams>(params)
-	runBlocking {
-		sdk.message.encrypted.findMessagesByHCPartyPatientForeignKeys(
-			decodedParams.secretPatientKeys,
-		)
-	}
-}.toPyString(ListSerializer(EncryptedMessage.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun findMessagesByHCPartyPatientForeignKeysAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindMessagesByHCPartyPatientForeignKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.message.encrypted.findMessagesByHCPartyPatientForeignKeys(
-				decodedParams.secretPatientKeys,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(EncryptedMessage.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class FindMessagesParams(
 	public val startKey: JsonElement?,
 	public val startDocumentId: String?,

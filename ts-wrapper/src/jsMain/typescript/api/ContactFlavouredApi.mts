@@ -45,9 +45,6 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	listContactsByHCPartyAndFormIds(hcPartyId: string, formIds: Array<string>): Promise<Array<E>>;
 
-	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
-			options?: { planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<E>>;
-
 	getService(serviceId: string): Promise<S>;
 
 	getServices(entityIds: Array<string>): Promise<Array<S>>;

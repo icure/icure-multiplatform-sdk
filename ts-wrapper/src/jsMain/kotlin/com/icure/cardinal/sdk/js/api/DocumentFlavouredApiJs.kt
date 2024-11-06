@@ -56,11 +56,5 @@ public external interface DocumentFlavouredApiJs<E : DocumentJs> {
 
 	public fun modifyDocuments(entities: Array<E>): Promise<Array<E>>
 
-	public fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String?,
-		secretMessageKeys: Array<String>,
-	): Promise<Array<E>>
-
 	public fun findWithoutDelegation(limit: Double?): Promise<Array<E>>
 }

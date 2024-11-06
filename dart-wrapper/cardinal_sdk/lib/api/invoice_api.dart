@@ -7,7 +7,6 @@ import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/icure_stub.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/crypto/entities/invoice_share_options.dart';
 import 'package:cardinal_sdk/model/embed/invoicing_code.dart';
@@ -100,14 +99,6 @@ class InvoiceApi {
 		);
 	}
 
-	Future<List<IcureStub>> findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoice.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
-		);
-	}
-
 	Future<List<LabelledOccurence>> getTarificationsCodesOccurrences(int minOccurrence) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.getTarificationsCodesOccurrences(
 			_sdkId,
@@ -160,14 +151,6 @@ class InvoiceApi {
 		);
 	}
 
-	Future<List<DecryptedInvoice>> findInvoicesByHcPartyPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoice.findInvoicesByHcPartyPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
-		);
-	}
-
 	Future<DecryptedInvoice> reassignInvoice(DecryptedInvoice invoice) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.reassignInvoice(
 			_sdkId,
@@ -213,14 +196,6 @@ class InvoiceApi {
 			serviceId,
 			secretFKeys,
 			tarificationIds,
-		);
-	}
-
-	Future<List<DecryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoice.listInvoicesByHCPartyAndPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
 		);
 	}
 
@@ -354,14 +329,6 @@ class TryAndRecoverInvoiceApi {
 		);
 	}
 
-	Future<List<Invoice>> findInvoicesByHcPartyPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoice.tryAndRecover.findInvoicesByHcPartyPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
-		);
-	}
-
 	Future<Invoice> reassignInvoice(Invoice invoice) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.tryAndRecover.reassignInvoice(
 			_sdkId,
@@ -407,14 +374,6 @@ class TryAndRecoverInvoiceApi {
 			serviceId,
 			secretFKeys,
 			tarificationIds,
-		);
-	}
-
-	Future<List<Invoice>> listInvoicesByHCPartyAndPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoice.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
 		);
 	}
 
@@ -548,14 +507,6 @@ class EncryptedInvoiceApi {
 		);
 	}
 
-	Future<List<EncryptedInvoice>> findInvoicesByHcPartyPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoice.encrypted.findInvoicesByHcPartyPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
-		);
-	}
-
 	Future<EncryptedInvoice> reassignInvoice(EncryptedInvoice invoice) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.encrypted.reassignInvoice(
 			_sdkId,
@@ -601,14 +552,6 @@ class EncryptedInvoiceApi {
 			serviceId,
 			secretFKeys,
 			tarificationIds,
-		);
-	}
-
-	Future<List<EncryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoice.encrypted.listInvoicesByHCPartyAndPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
 		);
 	}
 

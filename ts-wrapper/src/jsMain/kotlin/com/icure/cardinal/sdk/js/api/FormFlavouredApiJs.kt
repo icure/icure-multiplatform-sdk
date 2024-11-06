@@ -58,10 +58,4 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 	public fun getFormsByUniqueId(uniqueId: String): Promise<Array<E>>
 
 	public fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<E>>
-
-	public fun listFormsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		options: dynamic,
-	): Promise<Array<E>>
 }

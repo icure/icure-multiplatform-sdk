@@ -35,9 +35,6 @@ export interface DocumentFlavouredApi<E extends Document> {
 
 	modifyDocuments(entities: Array<E>): Promise<Array<E>>;
 
-	listDocumentsByHcPartyMessageForeignKeys(hcPartyId: string, documentTypeCode: string | undefined,
-			secretMessageKeys: Array<string>): Promise<Array<E>>;
-
 	findWithoutDelegation(limit: number | undefined): Promise<Array<E>>;
 
 }

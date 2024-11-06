@@ -32,8 +32,6 @@ export interface MessageFlavouredApi<E extends Message> {
 
 	listMessagesByTransportGuids(hcPartyId: string, transportGuids: Array<string>): Promise<Array<E>>;
 
-	findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<string>): Promise<Array<E>>;
-
 	findMessages(startKey: any | undefined, startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<E>>;
 
