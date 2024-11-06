@@ -184,21 +184,6 @@ class RawAccessLogApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun listAccessLogsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedAccessLog>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "accesslog", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun listAccessLogIdsByDataOwnerPatientDate(
 		dataOwnerId: String,
 		startDate: Long?,
@@ -229,21 +214,6 @@ class RawAccessLogApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(accessLogIds)
-		}.wrap()
-
-	override suspend fun findAccessLogsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<EncryptedAccessLog>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "accesslog", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(secretPatientKeys)
 		}.wrap()
 
 	override suspend fun modifyAccessLog(accessLogDto: EncryptedAccessLog): HttpResponse<EncryptedAccessLog> =

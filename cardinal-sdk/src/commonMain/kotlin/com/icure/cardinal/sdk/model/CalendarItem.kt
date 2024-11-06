@@ -114,7 +114,6 @@ sealed interface CalendarItem :
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.CalendarItem"
 	}
-
 	// endregion
 }
 

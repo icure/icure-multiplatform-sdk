@@ -315,6 +315,17 @@ class RawCalendarItemApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
+	override suspend fun findCalendarItemsDelegationsStubsByIds(calendarItemIds: ListOfIds): HttpResponse<List<IcureStub>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "delegations")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(calendarItemIds)
+		}.wrap()
+
 	override suspend fun findCalendarItemsByRecurrenceId(
 		recurrenceId: String,
 		startKey: String?,
