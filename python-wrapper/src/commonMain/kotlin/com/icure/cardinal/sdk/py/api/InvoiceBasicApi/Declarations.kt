@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.py.api.InvoiceBasicApi
 
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.model.EncryptedInvoice
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -68,47 +67,6 @@ public fun deleteInvoiceAsync(
 				decodedParams.entityId,
 			)
 		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class FindInvoicesDelegationsStubsByHcPartyPatientForeignKeysParams(
-	public val hcPartyId: String,
-	public val secretPatientKeys: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: CardinalBaseApis,
-		params: String): String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindInvoicesDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
-	runBlocking {
-		sdk.invoice.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-			decodedParams.hcPartyId,
-			decodedParams.secretPatientKeys,
-		)
-	}
-}.toPyString(ListSerializer(IcureStub.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeysAsync(
-	sdk: CardinalBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindInvoicesDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.invoice.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-				decodedParams.hcPartyId,
-				decodedParams.secretPatientKeys,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(IcureStub.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -287,47 +245,6 @@ public fun getInvoicesAsync(
 		kotlin.runCatching {
 			sdk.invoice.getInvoices(
 				decodedParams.entityIds,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(EncryptedInvoice.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class FindInvoicesByHcPartyPatientForeignKeysParams(
-	public val hcPartyId: String,
-	public val secretPatientKeys: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun findInvoicesByHcPartyPatientForeignKeysBlocking(sdk: CardinalBaseApis, params: String):
-		String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindInvoicesByHcPartyPatientForeignKeysParams>(params)
-	runBlocking {
-		sdk.invoice.findInvoicesByHcPartyPatientForeignKeys(
-			decodedParams.hcPartyId,
-			decodedParams.secretPatientKeys,
-		)
-	}
-}.toPyString(ListSerializer(EncryptedInvoice.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun findInvoicesByHcPartyPatientForeignKeysAsync(
-	sdk: CardinalBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindInvoicesByHcPartyPatientForeignKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.invoice.findInvoicesByHcPartyPatientForeignKeys(
-				decodedParams.hcPartyId,
-				decodedParams.secretPatientKeys,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(EncryptedInvoice.serializer()), resultCallback)
 	}
@@ -596,47 +513,6 @@ public fun findInvoicesByAuthorAsync(
 				decodedParams.limit,
 			)
 		}.toPyStringAsyncCallback(PaginatedList.serializer(EncryptedInvoice.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class ListInvoicesByHCPartyAndPatientForeignKeysParams(
-	public val hcPartyId: String,
-	public val secretPatientKeys: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun listInvoicesByHCPartyAndPatientForeignKeysBlocking(sdk: CardinalBaseApis,
-		params: String): String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListInvoicesByHCPartyAndPatientForeignKeysParams>(params)
-	runBlocking {
-		sdk.invoice.listInvoicesByHCPartyAndPatientForeignKeys(
-			decodedParams.hcPartyId,
-			decodedParams.secretPatientKeys,
-		)
-	}
-}.toPyString(ListSerializer(EncryptedInvoice.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun listInvoicesByHCPartyAndPatientForeignKeysAsync(
-	sdk: CardinalBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListInvoicesByHCPartyAndPatientForeignKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.invoice.listInvoicesByHCPartyAndPatientForeignKeys(
-				decodedParams.hcPartyId,
-				decodedParams.secretPatientKeys,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(EncryptedInvoice.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

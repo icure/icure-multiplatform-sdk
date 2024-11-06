@@ -1,18 +1,28 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import DocIdentifier, IcureStub, LabelledOccurence, EncryptedInvoice, EncryptedInvoicingCode, PaginatedList, MediumType, InvoiceType
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
-from ctypes import cast, c_char_p
-from typing import List, Optional, Dict
+from DocIdentifier import cardinal_sdk.model
+from DATA_RESULT_CALLBACK_FUNC import cardinal_sdk.kotlin_types
+from symbols import cardinal_sdk.kotlin_types
+from create_result_from_json import cardinal_sdk.model.CallResult
+from cast import ctypes
+from c_char_p import ctypes
+from interpret_kt_error import cardinal_sdk.model.CallResult
+from LabelledOccurence import cardinal_sdk.model
+from List import typing
+from EncryptedInvoice import cardinal_sdk.model
+from EncryptedInvoicingCode import cardinal_sdk.model
+from Optional import typing
+from MediumType import cardinal_sdk.model
+from InvoiceType import cardinal_sdk.model
+
 
 class InvoiceBasicApi:
 
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def delete_invoice_async(self, entity_id: str) -> DocIdentifier:
+	async def delete_invoice_async(self, entity_id: str) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -20,38 +30,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.deleteInvoiceAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.deleteInvoiceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_invoice_blocking(self, entity_id: str) -> DocIdentifier:
+	def delete_invoice_blocking(self, entity_id: str) -> cardinal_sdk.model:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.deleteInvoiceBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.deleteInvoiceBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def find_invoices_delegations_stubs_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
+	async def get_tarifications_codes_occurrences_async(self, min_occurrence: int) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -59,79 +69,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [IcureStub._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_invoices_delegations_stubs_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[IcureStub]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = [IcureStub._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def get_tarifications_codes_occurrences_async(self, min_occurrence: int) -> List[LabelledOccurence]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [LabelledOccurence._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"minOccurrence": min_occurrence,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getTarificationsCodesOccurrencesAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getTarificationsCodesOccurrencesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_tarifications_codes_occurrences_blocking(self, min_occurrence: int) -> List[LabelledOccurence]:
+	def get_tarifications_codes_occurrences_blocking(self, min_occurrence: int) -> typing[cardinal_sdk.model]:
 		payload = {
 			"minOccurrence": min_occurrence,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getTarificationsCodesOccurrencesBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getTarificationsCodesOccurrencesBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_invoice_async(self, entity: EncryptedInvoice) -> EncryptedInvoice:
+	async def modify_invoice_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -139,38 +108,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoiceAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoiceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def modify_invoice_blocking(self, entity: EncryptedInvoice) -> EncryptedInvoice:
+	def modify_invoice_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoiceBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoiceBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def modify_invoices_async(self, entities: List[EncryptedInvoice]) -> List[EncryptedInvoice]:
+	async def modify_invoices_async(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -178,38 +147,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoicesAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoicesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def modify_invoices_blocking(self, entities: List[EncryptedInvoice]) -> List[EncryptedInvoice]:
+	def modify_invoices_blocking(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoicesBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.modifyInvoicesBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_invoice_async(self, entity_id: str) -> EncryptedInvoice:
+	async def get_invoice_async(self, entity_id: str) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -217,38 +186,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoiceAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoiceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_invoice_blocking(self, entity_id: str) -> EncryptedInvoice:
+	def get_invoice_blocking(self, entity_id: str) -> cardinal_sdk.model:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoiceBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoiceBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def get_invoices_async(self, entity_ids: List[str]) -> List[EncryptedInvoice]:
+	async def get_invoices_async(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -256,38 +225,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoicesAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoicesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_invoices_blocking(self, entity_ids: List[str]) -> List[EncryptedInvoice]:
+	def get_invoices_blocking(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoicesBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.getInvoicesBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def find_invoices_by_hc_party_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
+	async def reassign_invoice_async(self, invoice: cardinal_sdk.model) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -295,40 +264,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+			"invoice": invoice.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.findInvoicesByHcPartyPatientForeignKeysAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.reassignInvoiceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def find_invoices_by_hc_party_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
+	def reassign_invoice_blocking(self, invoice: cardinal_sdk.model) -> cardinal_sdk.model:
 		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
+			"invoice": invoice.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.findInvoicesByHcPartyPatientForeignKeysBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.reassignInvoiceBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def reassign_invoice_async(self, invoice: EncryptedInvoice) -> EncryptedInvoice:
+	async def merge_to_async(self, invoice_id: str, ids: typing[str]) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -336,79 +303,40 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"invoice": invoice.__serialize__(),
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.reassignInvoiceAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def reassign_invoice_blocking(self, invoice: EncryptedInvoice) -> EncryptedInvoice:
-		payload = {
-			"invoice": invoice.__serialize__(),
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.reassignInvoiceBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = EncryptedInvoice._deserialize(result_info.success)
-			return return_value
-
-	async def merge_to_async(self, invoice_id: str, ids: List[str]) -> EncryptedInvoice:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"invoiceId": invoice_id,
 			"ids": [x0 for x0 in ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.mergeToAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.mergeToAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def merge_to_blocking(self, invoice_id: str, ids: List[str]) -> EncryptedInvoice:
+	def merge_to_blocking(self, invoice_id: str, ids: typing[str]) -> cardinal_sdk.model:
 		payload = {
 			"invoiceId": invoice_id,
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.mergeToBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.mergeToBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def validate_async(self, invoice_id: str, scheme: str, forced_value: str) -> EncryptedInvoice:
+	async def validate_async(self, invoice_id: str, scheme: str, forced_value: str) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -416,42 +344,42 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = EncryptedInvoice._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"invoiceId": invoice_id,
 			"scheme": scheme,
 			"forcedValue": forced_value,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.validateAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.validateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def validate_blocking(self, invoice_id: str, scheme: str, forced_value: str) -> EncryptedInvoice:
+	def validate_blocking(self, invoice_id: str, scheme: str, forced_value: str) -> cardinal_sdk.model:
 		payload = {
 			"invoiceId": invoice_id,
 			"scheme": scheme,
 			"forcedValue": forced_value,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.validateBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.validateBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def append_codes_async(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: List[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> List[EncryptedInvoice]:
+	async def append_codes_async(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: typing[cardinal_sdk.model], insurance_id: typing[str] = None, invoice_id: typing[str] = None, grace_period: typing[int] = None) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -459,7 +387,7 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userId": user_id,
@@ -471,17 +399,17 @@ class InvoiceBasicApi:
 			"gracePeriod": grace_period,
 			"invoicingCodes": [x0.__serialize__() for x0 in invoicing_codes],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.appendCodesAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.appendCodesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def append_codes_blocking(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: List[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> List[EncryptedInvoice]:
+	def append_codes_blocking(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: typing[cardinal_sdk.model], insurance_id: typing[str] = None, invoice_id: typing[str] = None, grace_period: typing[int] = None) -> typing[cardinal_sdk.model]:
 		payload = {
 			"userId": user_id,
 			"type": type,
@@ -492,19 +420,19 @@ class InvoiceBasicApi:
 			"gracePeriod": grace_period,
 			"invoicingCodes": [x0.__serialize__() for x0 in invoicing_codes],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.appendCodesBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.appendCodesBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def remove_codes_async(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: List[str]) -> List[EncryptedInvoice]:
+	async def remove_codes_async(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -512,7 +440,7 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userId": user_id,
@@ -520,36 +448,36 @@ class InvoiceBasicApi:
 			"secretFKeys": secret_fkeys,
 			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.removeCodesAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.removeCodesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def remove_codes_blocking(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: List[str]) -> List[EncryptedInvoice]:
+	def remove_codes_blocking(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"userId": user_id,
 			"serviceId": service_id,
 			"secretFKeys": secret_fkeys,
 			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.removeCodesBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.removeCodesBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def find_invoices_by_author_async(self, hc_party_id: str, from_date: Optional[int] = None, to_date: Optional[int] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	async def list_invoices_by_hc_party_and_group_id_async(self, hc_party_id: str, group_id: str) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -557,138 +485,40 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [EncryptedInvoice._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"fromDate": from_date,
-			"toDate": to_date,
-			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.findInvoicesByAuthorAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_invoices_by_author_blocking(self, hc_party_id: str, from_date: Optional[int] = None, to_date: Optional[int] = None, start_key: Optional[Dict[str, object]] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"fromDate": from_date,
-			"toDate": to_date,
-			"startKey": {k0: v0 for k0, v0 in start_key.items()} if start_key is not None else None,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.findInvoicesByAuthorBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [EncryptedInvoice._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def list_invoices_by_hcparty_and_patient_foreign_keys_async(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHCPartyAndPatientForeignKeysAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def list_invoices_by_hcparty_and_patient_foreign_keys_blocking(self, hc_party_id: str, secret_patient_keys: List[str]) -> List[EncryptedInvoice]:
-		payload = {
-			"hcPartyId": hc_party_id,
-			"secretPatientKeys": [x0 for x0 in secret_patient_keys],
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHCPartyAndPatientForeignKeysBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
-			return return_value
-
-	async def list_invoices_by_hc_party_and_group_id_async(self, hc_party_id: str, group_id: str) -> List[EncryptedInvoice]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 			"groupId": group_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartyAndGroupIdAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartyAndGroupIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_invoices_by_hc_party_and_group_id_blocking(self, hc_party_id: str, group_id: str) -> List[EncryptedInvoice]:
+	def list_invoices_by_hc_party_and_group_id_blocking(self, hc_party_id: str, group_id: str) -> typing[cardinal_sdk.model]:
 		payload = {
 			"hcPartyId": hc_party_id,
 			"groupId": group_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartyAndGroupIdBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartyAndGroupIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: cardinal_sdk.model, invoice_type: cardinal_sdk.model, sent: bool, from_: typing[int] = None, to: typing[int] = None) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -696,7 +526,7 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
@@ -706,17 +536,17 @@ class InvoiceBasicApi:
 			"from": from_,
 			"to": to,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_blocking(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_blocking(self, hc_party_id: str, sent_medium_type: cardinal_sdk.model, invoice_type: cardinal_sdk.model, sent: bool, from_: typing[int] = None, to: typing[int] = None) -> typing[cardinal_sdk.model]:
 		payload = {
 			"hcPartyId": hc_party_id,
 			"sentMediumType": sent_medium_type.__serialize__(),
@@ -725,19 +555,19 @@ class InvoiceBasicApi:
 			"from": from_,
 			"to": to,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_contact_ids_async(self, contact_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_invoices_by_contact_ids_async(self, contact_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -745,38 +575,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"contactIds": [x0 for x0 in contact_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByContactIdsAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByContactIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_invoices_by_contact_ids_blocking(self, contact_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_invoices_by_contact_ids_blocking(self, contact_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"contactIds": [x0 for x0 in contact_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByContactIdsBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByContactIdsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_recipients_ids_async(self, recipients_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_invoices_by_recipients_ids_async(self, recipients_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -784,38 +614,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"recipientsIds": [x0 for x0 in recipients_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByRecipientsIdsAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByRecipientsIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_invoices_by_recipients_ids_blocking(self, recipients_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_invoices_by_recipients_ids_blocking(self, recipients_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"recipientsIds": [x0 for x0 in recipients_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByRecipientsIdsBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByRecipientsIdsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_insurances_async(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_to_insurances_async(self, user_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -823,38 +653,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_to_insurances_blocking(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_to_insurances_blocking(self, user_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_insurances_unsent_async(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_to_insurances_unsent_async(self, user_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -862,38 +692,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesUnsentAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesUnsentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_to_insurances_unsent_blocking(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_to_insurances_unsent_blocking(self, user_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesUnsentBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToInsurancesUnsentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_patients_async(self, hc_party_id: str) -> List[EncryptedInvoice]:
+	async def list_to_patients_async(self, hc_party_id: str) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -901,38 +731,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_to_patients_blocking(self, hc_party_id: str) -> List[EncryptedInvoice]:
+	def list_to_patients_blocking(self, hc_party_id: str) -> typing[cardinal_sdk.model]:
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_patients_unsent_async(self, hc_party_id: Optional[str]) -> List[EncryptedInvoice]:
+	async def list_to_patients_unsent_async(self, hc_party_id: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -940,38 +770,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsUnsentAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsUnsentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_to_patients_unsent_blocking(self, hc_party_id: Optional[str]) -> List[EncryptedInvoice]:
+	def list_to_patients_unsent_blocking(self, hc_party_id: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsUnsentBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listToPatientsUnsentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_ids_async(self, ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_invoices_by_ids_async(self, ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -979,38 +809,38 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByIdsAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_invoices_by_ids_blocking(self, ids: List[str]) -> List[EncryptedInvoice]:
+	def list_invoices_by_ids_blocking(self, ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByIdsBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByIdsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[EncryptedInvoice]:
+	async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1018,7 +848,7 @@ class InvoiceBasicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [EncryptedInvoice._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"hcPartyId": hc_party_id,
@@ -1027,17 +857,17 @@ class InvoiceBasicApi:
 			"from": from_,
 			"to": to,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcpartySendingModeStatusDateAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcpartySendingModeStatusDateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def list_invoices_by_hcparty_sending_mode_status_date_blocking(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[EncryptedInvoice]:
+	def list_invoices_by_hcparty_sending_mode_status_date_blocking(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> typing[cardinal_sdk.model]:
 		payload = {
 			"hcPartyId": hc_party_id,
 			"sendingMode": sending_mode,
@@ -1045,14 +875,14 @@ class InvoiceBasicApi:
 			"from": from_,
 			"to": to,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.InvoiceBasicApi.listInvoicesByHcpartySendingModeStatusDateBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value

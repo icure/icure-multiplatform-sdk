@@ -6,7 +6,6 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
@@ -26,7 +25,6 @@ import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlin.Boolean
 import kotlin.Byte
 import kotlin.Int
 import kotlin.Long
@@ -678,47 +676,6 @@ public fun purgeContactAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
-private class FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams(
-	public val hcPartyId: String,
-	public val secretPatientKeys: List<String>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking(sdk: CardinalBaseApis,
-		params: String): String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
-	runBlocking {
-		sdk.contact.findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-			decodedParams.hcPartyId,
-			decodedParams.secretPatientKeys,
-		)
-	}
-}.toPyString(ListSerializer(IcureStub.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync(
-	sdk: CardinalBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<FindContactsDelegationsStubsByHcPartyPatientForeignKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.contact.findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-				decodedParams.hcPartyId,
-				decodedParams.secretPatientKeys,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(IcureStub.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class GetServiceCodesOccurrencesParams(
 	public val codeType: String,
 	public val minOccurrences: Long,
@@ -1132,53 +1089,6 @@ public fun listContactsByHCPartyAndFormIdsAsync(
 			sdk.contact.listContactsByHCPartyAndFormIds(
 				decodedParams.hcPartyId,
 				decodedParams.formIds,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(EncryptedContact.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class ListContactsByHCPartyAndPatientSecretFKeysParams(
-	public val hcPartyId: String,
-	public val secretPatientKeys: List<String>,
-	public val planOfActionsIds: String? = null,
-	public val skipClosedContacts: Boolean? = null,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun listContactsByHCPartyAndPatientSecretFKeysBlocking(sdk: CardinalBaseApis,
-		params: String): String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListContactsByHCPartyAndPatientSecretFKeysParams>(params)
-	runBlocking {
-		sdk.contact.listContactsByHCPartyAndPatientSecretFKeys(
-			decodedParams.hcPartyId,
-			decodedParams.secretPatientKeys,
-			decodedParams.planOfActionsIds,
-			decodedParams.skipClosedContacts,
-		)
-	}
-}.toPyString(ListSerializer(EncryptedContact.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun listContactsByHCPartyAndPatientSecretFKeysAsync(
-	sdk: CardinalBaseApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ListContactsByHCPartyAndPatientSecretFKeysParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.contact.listContactsByHCPartyAndPatientSecretFKeys(
-				decodedParams.hcPartyId,
-				decodedParams.secretPatientKeys,
-				decodedParams.planOfActionsIds,
-				decodedParams.skipClosedContacts,
 			)
 		}.toPyStringAsyncCallback(ListSerializer(EncryptedContact.serializer()), resultCallback)
 	}

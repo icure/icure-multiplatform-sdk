@@ -1,18 +1,22 @@
 # auto-generated file
 import asyncio
 import json
-from cardinal_sdk.model import Tarification, PaginatedList
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
-from ctypes import cast, c_char_p
-from typing import List, Optional
+from Tarification import cardinal_sdk.model
+from DATA_RESULT_CALLBACK_FUNC import cardinal_sdk.kotlin_types
+from symbols import cardinal_sdk.kotlin_types
+from create_result_from_json import cardinal_sdk.model.CallResult
+from cast import ctypes
+from c_char_p import ctypes
+from interpret_kt_error import cardinal_sdk.model.CallResult
+from List import typing
+
 
 class TarificationApi:
 
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_tarification_async(self, tarification_id: str) -> Tarification:
+	async def get_tarification_async(self, tarification_id: str) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -20,38 +24,38 @@ class TarificationApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = Tarification._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"tarificationId": tarification_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_tarification_blocking(self, tarification_id: str) -> Tarification:
+	def get_tarification_blocking(self, tarification_id: str) -> cardinal_sdk.model:
 		payload = {
 			"tarificationId": tarification_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = Tarification._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def create_tarification_async(self, tarification: Tarification) -> Tarification:
+	async def create_tarification_async(self, tarification: cardinal_sdk.model) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -59,38 +63,38 @@ class TarificationApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = Tarification._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"tarification": tarification.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.createTarificationAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.createTarificationAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def create_tarification_blocking(self, tarification: Tarification) -> Tarification:
+	def create_tarification_blocking(self, tarification: cardinal_sdk.model) -> cardinal_sdk.model:
 		payload = {
 			"tarification": tarification.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.createTarificationBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.createTarificationBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = Tarification._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def get_tarifications_async(self, tarification_ids: List[str]) -> List[Tarification]:
+	async def get_tarifications_async(self, tarification_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -98,38 +102,38 @@ class TarificationApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [Tarification._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationsAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_tarifications_blocking(self, tarification_ids: List[str]) -> List[Tarification]:
+	def get_tarifications_blocking(self, tarification_ids: typing[str]) -> typing[cardinal_sdk.model]:
 		payload = {
 			"tarificationIds": [x0 for x0 in tarification_ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationsBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = [Tarification._deserialize(x1) for x1 in result_info.success]
+			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_tarification_async(self, tarification: Tarification) -> Tarification:
+	async def modify_tarification_async(self, tarification: cardinal_sdk.model) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -137,38 +141,38 @@ class TarificationApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = Tarification._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"tarification": tarification.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.modifyTarificationAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.modifyTarificationAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def modify_tarification_blocking(self, tarification: Tarification) -> Tarification:
+	def modify_tarification_blocking(self, tarification: cardinal_sdk.model) -> cardinal_sdk.model:
 		payload = {
 			"tarification": tarification.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.modifyTarificationBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.modifyTarificationBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = Tarification._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value
 
-	async def find_tarifications_by_label_async(self, region: Optional[str] = None, types: Optional[str] = None, language: Optional[str] = None, label: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
+	async def get_tarification_with_parts_async(self, type: str, tarification: str, version: str) -> cardinal_sdk.model:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -176,155 +180,37 @@ class TarificationApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [Tarification._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"region": region,
-			"types": types,
-			"language": language,
-			"label": label,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.findTarificationsByLabelAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_tarifications_by_label_blocking(self, region: Optional[str] = None, types: Optional[str] = None, language: Optional[str] = None, label: Optional[str] = None, start_key: Optional[str] = None, start_document_id: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"region": region,
-			"types": types,
-			"language": language,
-			"label": label,
-			"startKey": start_key,
-			"startDocumentId": start_document_id,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.findTarificationsByLabelBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [Tarification._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def find_tarifications_by_async(self, region: Optional[str] = None, type: Optional[str] = None, tarification: Optional[str] = None, version: Optional[str] = None, start_document_id: Optional[str] = None, start_key: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedList._deserialize(json.loads(success.decode('utf-8')))
-				result = PaginatedList(
-					rows = [Tarification._deserialize(item) for item in result.rows],
-					next_key_pair = result.next_key_pair,
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		payload = {
-			"region": region,
-			"type": type,
-			"tarification": tarification,
-			"version": version,
-			"startDocumentId": start_document_id,
-			"startKey": start_key,
-			"limit": limit,
-		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
-			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.findTarificationsByAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-			callback
-		)
-		return await future
-
-	def find_tarifications_by_blocking(self, region: Optional[str] = None, type: Optional[str] = None, tarification: Optional[str] = None, version: Optional[str] = None, start_document_id: Optional[str] = None, start_key: Optional[str] = None, limit: Optional[int] = None) -> PaginatedList:
-		payload = {
-			"region": region,
-			"type": type,
-			"tarification": tarification,
-			"version": version,
-			"startDocumentId": start_document_id,
-			"startKey": start_key,
-			"limit": limit,
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.findTarificationsByBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = PaginatedList._deserialize(result_info.success)
-			return_value = PaginatedList(
-				rows = [Tarification._deserialize(item) for item in return_value.rows],
-				next_key_pair = return_value.next_key_pair,
-			)
-			return return_value
-
-	async def get_tarification_with_parts_async(self, type: str, tarification: str, version: str) -> Tarification:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Tarification._deserialize(json.loads(success.decode('utf-8')))
+				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"type": type,
 			"tarification": tarification,
 			"version": version,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationWithPartsAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationWithPartsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_tarification_with_parts_blocking(self, type: str, tarification: str, version: str) -> Tarification:
+	def get_tarification_with_parts_blocking(self, type: str, tarification: str, version: str) -> cardinal_sdk.model:
 		payload = {
 			"type": type,
 			"tarification": tarification,
 			"version": version,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationWithPartsBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TarificationApi.getTarificationWithPartsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
-			return_value = Tarification._deserialize(result_info.success)
+			return_value = cardinal_sdk.model._deserialize(result_info.success)
 			return return_value

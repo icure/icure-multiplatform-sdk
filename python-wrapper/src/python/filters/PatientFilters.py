@@ -1,11 +1,15 @@
 # auto-generated file
 import json
-from cardinal_sdk.kotlin_types import symbols
-from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
-from ctypes import cast, c_char_p
+from symbols import cardinal_sdk.kotlin_types
+from create_result_from_json import cardinal_sdk.model.CallResult
+from cast import ctypes
+from c_char_p import ctypes
+from interpret_kt_error import cardinal_sdk.model.CallResult
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.model import Patient, Identifier, Gender
-from typing import List, Optional
+from List import typing
+from Optional import typing
+
 
 class PatientFilters:
 
@@ -14,75 +18,75 @@ class PatientFilters:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.allPatientsForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.allPatientsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
 	def all_patients_for_self(cls) -> FilterOptions[Patient]:
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.allPatientsForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.allPatientsForSelf(
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = FilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_ids(cls, ids: List[str]) -> SortableFilterOptions[Patient]:
+	def by_ids(cls, ids: typing[str]) -> SortableFilterOptions[Patient]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIds(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIds(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: List[Identifier]) -> BaseSortableFilterOptions[Patient]:
+	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: typing[Identifier]) -> BaseSortableFilterOptions[Patient]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIdentifiersForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIdentifiersForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_ssins_for_data_owner(cls, data_owner_id: str, ssins: List[str]) -> BaseSortableFilterOptions[Patient]:
+	def by_ssins_for_data_owner(cls, data_owner_id: str, ssins: typing[str]) -> BaseSortableFilterOptions[Patient]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"ssins": [x0 for x0 in ssins],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.bySsinsForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.bySsinsForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
@@ -94,13 +98,13 @@ class PatientFilters:
 			"fromDate": from_date,
 			"toDate": to_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
@@ -111,32 +115,32 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byFuzzyNameForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byFuzzyNameForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_gender_education_profession_for_data_owner(cls, data_owner_id: str, gender: Gender, education: Optional[str] = None, profession: Optional[str] = None) -> BaseSortableFilterOptions[Patient]:
+	def by_gender_education_profession_for_data_owner(cls, data_owner_id: str, gender: Gender, education: typing[str] = None, profession: typing[str] = None) -> BaseSortableFilterOptions[Patient]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"gender": gender.__serialize__(),
 			"education": education,
 			"profession": profession,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byGenderEducationProfessionForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byGenderEducationProfessionForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
@@ -147,13 +151,13 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"active": active,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byActiveForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byActiveForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseFilterOptions(result_info.success)
 			return return_value
@@ -164,32 +168,32 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byTelecomForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byTelecomForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_address_postal_code_house_number_for_data_owner(cls, data_owner_id: str, search_string: str, postal_code: str, house_number: Optional[str] = None) -> BaseSortableFilterOptions[Patient]:
+	def by_address_postal_code_house_number_for_data_owner(cls, data_owner_id: str, search_string: str, postal_code: str, house_number: typing[str] = None) -> BaseSortableFilterOptions[Patient]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"searchString": search_string,
 			"postalCode": postal_code,
 			"houseNumber": house_number,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
@@ -200,13 +204,13 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
@@ -217,45 +221,45 @@ class PatientFilters:
 			"dataOwnerId": data_owner_id,
 			"externalIdPrefix": external_id_prefix,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byExternalIdForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byExternalIdForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_self(cls, identifiers: List[Identifier]) -> SortableFilterOptions[Patient]:
+	def by_identifiers_for_self(cls, identifiers: typing[Identifier]) -> SortableFilterOptions[Patient]:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIdentifiersForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byIdentifiersForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_ssins_for_self(cls, ssins: List[str]) -> SortableFilterOptions[Patient]:
+	def by_ssins_for_self(cls, ssins: typing[str]) -> SortableFilterOptions[Patient]:
 		payload = {
 			"ssins": [x0 for x0 in ssins],
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.bySsinsForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.bySsinsForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
@@ -266,13 +270,13 @@ class PatientFilters:
 			"fromDate": from_date,
 			"toDate": to_date,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byDateOfBirthBetweenForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
@@ -282,31 +286,31 @@ class PatientFilters:
 		payload = {
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byNameForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byNameForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = FilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_gender_education_profession_for_self(cls, gender: Gender, education: Optional[str] = None, profession: Optional[str] = None) -> SortableFilterOptions[Patient]:
+	def by_gender_education_profession_for_self(cls, gender: Gender, education: typing[str] = None, profession: typing[str] = None) -> SortableFilterOptions[Patient]:
 		payload = {
 			"gender": gender.__serialize__(),
 			"education": education,
 			"profession": profession,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byGenderEducationProfessionForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byGenderEducationProfessionForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
@@ -316,13 +320,13 @@ class PatientFilters:
 		payload = {
 			"active": active,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byActiveForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byActiveForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = FilterOptions(result_info.success)
 			return return_value
@@ -332,31 +336,31 @@ class PatientFilters:
 		payload = {
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byTelecomForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byTelecomForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_address_postal_code_house_number_for_self(cls, search_string: str, postal_code: str, house_number: Optional[str] = None) -> SortableFilterOptions[Patient]:
+	def by_address_postal_code_house_number_for_self(cls, search_string: str, postal_code: str, house_number: typing[str] = None) -> SortableFilterOptions[Patient]:
 		payload = {
 			"searchString": search_string,
 			"postalCode": postal_code,
 			"houseNumber": house_number,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressPostalCodeHouseNumberForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
@@ -366,13 +370,13 @@ class PatientFilters:
 		payload = {
 			"searchString": search_string,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byAddressForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
@@ -382,50 +386,50 @@ class PatientFilters:
 		payload = {
 			"externalIdPrefix": external_id_prefix,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byExternalIdForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byExternalIdForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_modification_date_for_data_owner(cls, data_owner_id: str, from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Patient]:
+	def by_modification_date_for_data_owner(cls, data_owner_id: str, from_: typing[int] = None, to: typing[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Patient]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"from": from_,
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byModificationDateForDataOwner(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byModificationDateForDataOwner(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = BaseSortableFilterOptions(result_info.success)
 			return return_value
 
 	@classmethod
-	def by_modification_date_for_self(cls, from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Patient]:
+	def by_modification_date_for_self(cls, from_: typing[int] = None, to: typing[int] = None, descending: bool = False) -> SortableFilterOptions[Patient]:
 		payload = {
 			"from": from_,
 			"to": to,
 			"descending": descending,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byModificationDateForSelf(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.filters.PatientFilters.byModificationDateForSelf(
 			json.dumps(payload).encode('utf-8')
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = SortableFilterOptions(result_info.success)
 			return return_value
