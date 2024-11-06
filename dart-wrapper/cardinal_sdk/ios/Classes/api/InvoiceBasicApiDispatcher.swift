@@ -14,19 +14,16 @@ class InvoiceBasicApiDispatcher {
   ) -> Bool {
     switch methodName {
     case "deleteInvoice": deleteInvoice(parameters: parameters, resultCallback: resultCallback)
-    case "findInvoicesDelegationsStubsByHcPartyPatientForeignKeys": findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "getTarificationsCodesOccurrences": getTarificationsCodesOccurrences(parameters: parameters, resultCallback: resultCallback)
     case "modifyInvoice": modifyInvoice(parameters: parameters, resultCallback: resultCallback)
     case "modifyInvoices": modifyInvoices(parameters: parameters, resultCallback: resultCallback)
     case "getInvoice": getInvoice(parameters: parameters, resultCallback: resultCallback)
     case "getInvoices": getInvoices(parameters: parameters, resultCallback: resultCallback)
-    case "findInvoicesByHcPartyPatientForeignKeys": findInvoicesByHcPartyPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "reassignInvoice": reassignInvoice(parameters: parameters, resultCallback: resultCallback)
     case "mergeTo": mergeTo(parameters: parameters, resultCallback: resultCallback)
     case "validate": validate(parameters: parameters, resultCallback: resultCallback)
     case "appendCodes": appendCodes(parameters: parameters, resultCallback: resultCallback)
     case "removeCodes": removeCodes(parameters: parameters, resultCallback: resultCallback)
-    case "listInvoicesByHCPartyAndPatientForeignKeys": listInvoicesByHCPartyAndPatientForeignKeys(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartyAndGroupId": listInvoicesByHcPartyAndGroupId(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate": listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: parameters, resultCallback: resultCallback)
     case "listInvoicesByContactIds": listInvoicesByContactIds(parameters: parameters, resultCallback: resultCallback)
@@ -51,19 +48,6 @@ class InvoiceBasicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityIdString: parameters["entityId"]!
-    )
-  }
-
-  private static func findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceBasicApi.shared.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
     )
   }
 
@@ -124,19 +108,6 @@ class InvoiceBasicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityIdsString: parameters["entityIds"]!
-    )
-  }
-
-  private static func findInvoicesByHcPartyPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceBasicApi.shared.findInvoicesByHcPartyPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
     )
   }
 
@@ -210,19 +181,6 @@ class InvoiceBasicApiDispatcher {
     	serviceIdString: parameters["serviceId"]!,
     	secretFKeysString: parameters["secretFKeys"]!,
     	tarificationIdsString: parameters["tarificationIds"]!
-    )
-  }
-
-  private static func listInvoicesByHCPartyAndPatientForeignKeys(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    InvoiceBasicApi.shared.listInvoicesByHCPartyAndPatientForeignKeys(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	hcPartyIdString: parameters["hcPartyId"]!,
-    	secretPatientKeysString: parameters["secretPatientKeys"]!
     )
   }
 

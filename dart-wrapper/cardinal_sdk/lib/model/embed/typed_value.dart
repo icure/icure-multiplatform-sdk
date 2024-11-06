@@ -74,7 +74,7 @@ class DecryptedTypedValue implements TypedValue {
 			integerValue: (data["integerValue"] as int?),
 			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
 			stringValue: (data["stringValue"] as String?),
-			dateValue: data["dateValue"] == null ? null : DateTime.parse(data["dateValue"] as String),
+			dateValue: data["dateValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["dateValue"] as int),
 			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
@@ -86,7 +86,7 @@ class DecryptedTypedValue implements TypedValue {
 			"integerValue" : value.integerValue,
 			"doubleValue" : value.doubleValue,
 			"stringValue" : value.stringValue,
-			"dateValue" : value.dateValue?.toIso8601String(),
+			"dateValue" : value.dateValue?.millisecondsSinceEpoch,
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
@@ -124,7 +124,7 @@ class EncryptedTypedValue implements TypedValue {
 			integerValue: (data["integerValue"] as int?),
 			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
 			stringValue: (data["stringValue"] as String?),
-			dateValue: data["dateValue"] == null ? null : DateTime.parse(data["dateValue"] as String),
+			dateValue: data["dateValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["dateValue"] as int),
 			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
@@ -136,7 +136,7 @@ class EncryptedTypedValue implements TypedValue {
 			"integerValue" : value.integerValue,
 			"doubleValue" : value.doubleValue,
 			"stringValue" : value.stringValue,
-			"dateValue" : value.dateValue?.toIso8601String(),
+			"dateValue" : value.dateValue?.millisecondsSinceEpoch,
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
