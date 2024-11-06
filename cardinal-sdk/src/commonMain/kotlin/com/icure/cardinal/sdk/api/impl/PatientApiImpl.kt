@@ -481,7 +481,8 @@ internal class PatientApiImpl(
 			}
 
 			val retrievedHealthElements = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
-				rawHealthElementApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+				val heIds = rawHealthElementApi.listHealthElementIdsByDataOwnerPatientOpeningDate(dataOwnerId = doId, secretPatientKeys = ListOfIds(delSecKeys)).successBody()
+				rawHealthElementApi.listHealthElementsDelegationsStubById(ListOfIds(heIds)).successBody()
 			}
 			val shareHealthElementsResult = doShareEntitiesAndUpdateStatus(
 				entities = retrievedHealthElements.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.HealthElement) },
@@ -492,7 +493,8 @@ internal class PatientApiImpl(
 			)
 
 			val retrievedForms = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
-				rawFormApi.findFormsDelegationsStubsByHCPartyAndPatientForeignKeys(doId, delSecKeys).successBody()
+				val formIds =  rawFormApi.listFormIdsByDataOwnerPatientOpeningDate(dataOwnerId = doId, secretPatientKeys = ListOfIds(delSecKeys)).successBody()
+				rawFormApi.findFormsDelegationsStubsByIds(ListOfIds(formIds)).successBody()
 			}
 			val shareFormsResult = doShareEntitiesAndUpdateStatus(
 				entities = retrievedForms.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Form) },
@@ -503,7 +505,8 @@ internal class PatientApiImpl(
 			)
 
 			val retrievedContacts = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
-				rawContactApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+				val contactIds = rawContactApi.listContactIdsByDataOwnerPatientOpeningDate(dataOwnerId = doId, secretPatientKeys = ListOfIds(delSecKeys)).successBody()
+				rawContactApi.findContactsDelegationsStubsByIds(ListOfIds(contactIds)).successBody()
 			}
 			val shareContactsResult = doShareEntitiesAndUpdateStatus(
 				entities = retrievedContacts.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Contact) },
@@ -514,7 +517,8 @@ internal class PatientApiImpl(
 			)
 
 			val retrievedInvoices = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
-				rawInvoiceApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+				val invoiceIds = rawInvoiceApi.listInvoiceIdsByDataOwnerPatientInvoiceDate(dataOwnerId = doId, secretPatientKeys = ListOfIds(delSecKeys)).successBody()
+				rawInvoiceApi.listInvoicesDelegationsStubsByIds(ListOfIds(invoiceIds)).successBody()
 			}
 			val shareInvoicesResult = doShareEntitiesAndUpdateStatus(
 				entities = retrievedInvoices.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Invoice) },
@@ -536,7 +540,8 @@ internal class PatientApiImpl(
 			)
 
 			val retrievedClassifications = findDelegationStubsForHcPartyAndParent(delegationSecretKeys.toList(), hcp.id, parentId) { doId, delSecKeys ->
-				rawClassificationApi.findClassificationsDelegationsStubsByHCPartyPatientForeignKeys(doId, delSecKeys).successBody()
+				val classificationIds = rawClassificationApi.listClassificationIdsByDataOwnerPatientCreated(dataOwnerId = doId, secretPatientKeys = ListOfIds(delSecKeys)).successBody()
+				rawClassificationApi.findClassificationsDelegationsStubsByIds(ListOfIds(classificationIds)).successBody()
 			}
 			val shareClassificationResult = doShareEntitiesAndUpdateStatus(
 				entities = retrievedClassifications.map { EntityWithTypeInfo(it, EntityWithEncryptionMetadataTypeName.Classification) },

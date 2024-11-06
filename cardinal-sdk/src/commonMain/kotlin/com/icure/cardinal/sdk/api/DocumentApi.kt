@@ -259,13 +259,6 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	suspend fun modifyDocuments(entities: List<E>): List<E>
 
 	@Deprecated("Use filter instead")
-	suspend fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String?,
-		secretMessageKeys: List<String>,
-	): List<E>
-
-	@Deprecated("Use filter instead")
 	suspend fun findWithoutDelegation(limit: Int?): List<E>
 }
 

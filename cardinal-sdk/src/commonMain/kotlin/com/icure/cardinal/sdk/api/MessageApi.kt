@@ -139,9 +139,6 @@ interface MessageBasicFlavouredApi<E : Message> {
 	suspend fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: List<String>): List<E>
 
 	@Deprecated("Use filter instead")
-	suspend fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: List<String>): List<E>
-
-	@Deprecated("Use filter instead")
 	suspend fun findMessages(startKey: JsonElement?, startDocumentId: String?, limit: Int?): PaginatedList<E>
 
 	@Deprecated("Use filter instead")

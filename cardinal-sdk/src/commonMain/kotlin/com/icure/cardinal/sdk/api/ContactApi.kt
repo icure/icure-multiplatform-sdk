@@ -93,12 +93,6 @@ interface ContactBasicFlavourlessApi {
 		purgeContactById(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
 	}
 
-	@Deprecated("Use filter instead")
-	suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): List<IcureStub>
-
 	/**
 	 * Gives an approximation of the amount of times each code of type [codeType] is used in services where the current
 	 * data owner is a direct delegate (does not count situations where the data owner has access to the service through
@@ -177,16 +171,6 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 
 	@Deprecated("Use filter instead")
 	suspend fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: List<String>): List<E>
-
-	@Deprecated("Use filter instead")
-	suspend fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-		@DefaultValue("null")
-		planOfActionsIds: String? = null,
-		@DefaultValue("null")
-		skipClosedContacts: Boolean? = null,
-	): List<E>
 
 	/**
 	 * Get a service by its id. You must have read access to the entity. Fails if the id does not correspond to any

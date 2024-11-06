@@ -83,12 +83,6 @@ interface HealthElementBasicFlavourlessApi  {
 	suspend fun purgeHealthElement(healthElement: HealthElement) {
 		purgeHealthElementById(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
 	}
-
-	@Deprecated("Use filter instead")
-	suspend fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): List<IcureStub>
 }
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
@@ -145,9 +139,6 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	 * @return all health elements that you can access with one of the provided ids.
 	 */
 	suspend fun getHealthElements(entityIds: List<String>): List<E>
-
-	@Deprecated("Use filter instead")
-	suspend fun findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */

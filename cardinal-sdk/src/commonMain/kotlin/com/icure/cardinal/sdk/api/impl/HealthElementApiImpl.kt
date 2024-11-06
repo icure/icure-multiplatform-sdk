@@ -63,10 +63,6 @@ private abstract class AbstractHealthElementBasicFlavouredApi<E : HealthElement>
 	override suspend fun getHealthElements(entityIds: List<String>): List<E> =
 		rawApi.getHealthElements(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	@Deprecated("Use filter instead")
-	override suspend fun findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
-		rawApi.findHealthElementsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedHealthElement
 	abstract suspend fun maybeDecrypt(entity: EncryptedHealthElement): E
 
@@ -154,12 +150,6 @@ private class AbstractHealthElementBasicFlavourlessApi(
 	override suspend fun purgeHealthElementById(id: String, rev: String) {
 		rawApi.purgeHealthElement(id, rev).successBodyOrThrowRevisionConflict()
 	}
-
-	@Deprecated("Use filter instead")
-	override suspend fun findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	) = rawApi.findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody()
 }
 
 @InternalIcureApi
