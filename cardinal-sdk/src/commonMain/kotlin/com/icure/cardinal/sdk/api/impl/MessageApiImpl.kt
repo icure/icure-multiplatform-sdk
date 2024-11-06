@@ -70,11 +70,6 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 		rawApi.listMessagesByTransportGuids(hcPartyId, ListOfIds(transportGuids)).successBody().map { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
-	override suspend fun findMessagesByHCPartyPatientForeignKeys(
-		secretPatientKeys: List<String>,
-	) = rawApi.findMessagesByHCPartyPatientForeignKeys(secretPatientKeys).successBody().map { maybeDecrypt(it) }
-
-	@Deprecated("Use filter instead")
 	override suspend fun findMessages(
 		startKey: JsonElement?,
 		startDocumentId: String?,

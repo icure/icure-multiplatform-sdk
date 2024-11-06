@@ -69,15 +69,6 @@ private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val raw
 	@Deprecated("Use filter instead")
 	override suspend fun getChildrenForms(hcPartyId: String, parentId: String) = rawApi.getChildrenForms(parentId, hcPartyId).successBody().map { maybeDecrypt(it) }
 
-	@Deprecated("Use filter instead")
-	override suspend fun listFormsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		healthElementId: String?,
-		planOfActionId: String?,
-		formTemplateId: String?,
-		) = rawApi.listFormsByHCPartyAndPatientForeignKeys(hcPartyId, secretFKeys, healthElementId, planOfActionId, formTemplateId).successBody().map { maybeDecrypt(it) }
-
 	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedForm
 	abstract suspend fun maybeDecrypt(entity: EncryptedForm): E
 }

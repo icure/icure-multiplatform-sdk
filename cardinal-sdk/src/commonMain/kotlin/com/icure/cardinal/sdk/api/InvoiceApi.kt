@@ -31,8 +31,6 @@ interface InvoiceBasicFlavourlessApi {
 	 */
 	suspend fun deleteInvoice(entityId: String): DocIdentifier
 
-	suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<IcureStub>
-
 	/**
 	 * Gives an approximation of the amount of times each tarification code ([Invoice.invoicingCodes] ->
 	 * [InvoicingCode.tarificationId]) is used in invoices where the current data owner is a direct delegate (does not
@@ -83,8 +81,6 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	 */
 	suspend fun getInvoices(entityIds: List<String>): List<E>
 
-	suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
-
 	suspend fun reassignInvoice(invoice: E): E
 
 	suspend fun mergeTo(invoiceId: String, ids: List<String>): E
@@ -120,8 +116,6 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 		@DefaultValue("null")
 		limit: Int? = null
 	): PaginatedList<E>
-
-	suspend fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E>
 
 	suspend fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String): List<E>
 

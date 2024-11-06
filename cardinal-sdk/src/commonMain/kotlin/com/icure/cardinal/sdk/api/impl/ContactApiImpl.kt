@@ -31,6 +31,7 @@ import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.model.data.LabelledOccurence
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.DelegationTag
@@ -102,16 +103,6 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	@Deprecated("Use filter instead")
 	override suspend fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: List<String>): List<E> =
 		rawApi.listContactsByHCPartyAndFormIds(hcPartyId, ListOfIds(formIds)).successBody().map { maybeDecrypt(it) }
-
-	@Deprecated("Use filter instead")
-	override suspend fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-		planOfActionsIds: String?,
-		skipClosedContacts: Boolean?,
-	): List<E> =
-		rawApi.listContactsByHCPartyAndPatientSecretFKeys(hcPartyId, secretPatientKeys, planOfActionsIds, skipClosedContacts).successBody()
-			.map { maybeDecrypt(it) }
 
 	override suspend fun getService(serviceId: String): S = rawApi.getService(serviceId).successBody().let { maybeDecryptService(it) }
 
@@ -370,14 +361,9 @@ private class AbstractContactBasicFlavourlessApi(
 		rawApi.purgeContact(id, rev).successBodyOrThrowRevisionConflict()
 	}
 
-	@Deprecated("Use filter instead")
-	override suspend fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	) = rawApi.findContactsDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody()
-
-	override suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long) =
-		rawApi.getServiceCodesOccurrences(codeType, minOccurrences).successBody()
+	override suspend fun getServiceCodesOccurrences(codeType: String, minOccurrences: Long): List<LabelledOccurence> {
+		return rawApi.getServiceCodesOccurrences(codeType, minOccurrences).successBody()
+	}
 }
 
 @InternalIcureApi

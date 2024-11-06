@@ -54,9 +54,6 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 	override suspend fun getInvoices(entityIds: List<String>): List<E> =
 		rawApi.getInvoices(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
 
-	override suspend fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
-		rawApi.findInvoicesByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody().map { maybeDecrypt(it) }
-
 	override suspend fun reassignInvoice(invoice: E): E =
 		rawApi.reassignInvoice(validateAndMaybeEncrypt(invoice)).successBody().let { maybeDecrypt(it) }
 
@@ -101,10 +98,6 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		startDocumentId: String?,
 		limit: Int?,
 		) = rawApi.findInvoicesByAuthor(hcPartyId, fromDate, toDate, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
-
-	@Deprecated("Use filter instead")
-	override suspend fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String, secretPatientKeys: List<String>): List<E> =
-		rawApi.listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId, secretPatientKeys.joinToString(",")).successBody().map { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String): List<E> =
@@ -227,10 +220,6 @@ private class AbstractInvoiceBasicFlavourlessApi(
 ) : InvoiceBasicFlavourlessApi {
 	override suspend fun deleteInvoice(entityId: String) = rawApi.deleteInvoice(entityId).successBody()
 	@Deprecated("Use filter instead")
-	override suspend fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	) = rawApi.findInvoicesDelegationsStubsByHCPartyPatientForeignKeys(hcPartyId, secretPatientKeys).successBody()
 
 	override suspend fun getTarificationsCodesOccurrences(
 		minOccurrence: Int,

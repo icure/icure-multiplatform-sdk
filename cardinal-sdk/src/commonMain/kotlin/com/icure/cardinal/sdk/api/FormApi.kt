@@ -225,18 +225,6 @@ interface FormBasicFlavouredApi<E : Form> {
 
 	@Deprecated("Use filter instead") // listFormsByHcPartyAndParentId
 	suspend fun getChildrenForms(hcPartyId: String, parentId: String): List<E>
-
-	@Deprecated("Use filter instead")
-	suspend fun listFormsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		@DefaultValue("null")
-		healthElementId: String? = null,
-		@DefaultValue("null")
-		planOfActionId: String? = null,
-		@DefaultValue("null")
-		formTemplateId: String? = null
-	): List<E>
 }
 
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */

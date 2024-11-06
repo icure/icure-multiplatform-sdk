@@ -67,15 +67,6 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(protected
 		rawApi.modifyDocuments(entities.map { validateAndMaybeEncrypt(it) }).successBody().map { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
-	override suspend fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String?,
-		secretMessageKeys: List<String>,
-	) =
-		rawApi.listDocumentsByHcPartyMessageForeignKeys(hcPartyId, documentTypeCode, ListOfIds(secretMessageKeys)).successBody()
-			.map { maybeDecrypt(it) }
-
-	@Deprecated("Use filter instead")
 	override suspend fun findWithoutDelegation(
 		limit: Int?,
 	) =
