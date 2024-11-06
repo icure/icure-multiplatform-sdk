@@ -23,7 +23,6 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedInvoiceJs
 import com.icure.cardinal.sdk.js.model.EncryptedInvoiceJs
-import com.icure.cardinal.sdk.js.model.IcureStubJs
 import com.icure.cardinal.sdk.js.model.InvoiceJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -34,7 +33,6 @@ import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.cardinal.sdk.js.model.embed.invoicingCode_fromJs
-import com.icure.cardinal.sdk.js.model.icureStub_toJs
 import com.icure.cardinal.sdk.js.model.invoice_fromJs
 import com.icure.cardinal.sdk.js.model.invoice_toJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
@@ -46,7 +44,6 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -221,28 +218,6 @@ internal class InvoiceApiImplJs(
 			)
 			val result = invoiceApi.encrypted.getInvoices(
 				entityIdsConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedInvoice ->
-					invoice_toJs(x1)
-				},
-			)
-		}
-
-		override fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = invoiceApi.encrypted.findInvoicesByHcPartyPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
 			)
 			listToArray(
 				result,
@@ -440,28 +415,6 @@ internal class InvoiceApiImplJs(
 					},
 				)
 			}
-		}
-
-		override fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<EncryptedInvoiceJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = invoiceApi.encrypted.listInvoicesByHCPartyAndPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedInvoice ->
-					invoice_toJs(x1)
-				},
-			)
 		}
 
 		override fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
@@ -895,28 +848,6 @@ internal class InvoiceApiImplJs(
 			)
 		}
 
-		override fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<InvoiceJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = invoiceApi.tryAndRecover.findInvoicesByHcPartyPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: Invoice ->
-					invoice_toJs(x1)
-				},
-			)
-		}
-
 		override fun reassignInvoice(invoice: InvoiceJs): Promise<InvoiceJs> = GlobalScope.promise {
 			val invoiceConverted: Invoice = invoice_fromJs(invoice)
 			val result = invoiceApi.tryAndRecover.reassignInvoice(
@@ -1104,28 +1035,6 @@ internal class InvoiceApiImplJs(
 					},
 				)
 			}
-		}
-
-		override fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
-				secretPatientKeys: Array<String>): Promise<Array<InvoiceJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = invoiceApi.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys(
-				hcPartyIdConverted,
-				secretPatientKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: Invoice ->
-					invoice_toJs(x1)
-				},
-			)
 		}
 
 		override fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
@@ -1571,28 +1480,6 @@ internal class InvoiceApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = invoiceApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
-		)
-		listToArray(
-			result,
-			{ x1: IcureStub ->
-				icureStub_toJs(x1)
-			},
-		)
-	}
-
 	override fun getTarificationsCodesOccurrences(minOccurrence: Double):
 			Promise<Array<LabelledOccurenceJs>> = GlobalScope.promise {
 		val minOccurrenceConverted: Int = numberToInt(minOccurrence, "minOccurrence")
@@ -1749,28 +1636,6 @@ internal class InvoiceApiImplJs(
 		)
 		val result = invoiceApi.getInvoices(
 			entityIdsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)
-	}
-
-	override fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = invoiceApi.findInvoicesByHcPartyPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
 		)
 		listToArray(
 			result,
@@ -1968,28 +1833,6 @@ internal class InvoiceApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = invoiceApi.listInvoicesByHCPartyAndPatientForeignKeys(
-			hcPartyIdConverted,
-			secretPatientKeysConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedInvoice ->
-				invoice_toJs(x1)
-			},
-		)
 	}
 
 	override fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):

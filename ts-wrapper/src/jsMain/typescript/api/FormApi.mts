@@ -112,7 +112,4 @@ export interface FormApi {
 
 	getChildrenForms(hcPartyId: string, parentId: string): Promise<Array<DecryptedForm>>;
 
-	listFormsByHCPartyAndPatientForeignKeys(hcPartyId: string, secretFKeys: string,
-			options?: { healthElementId?: string | undefined, planOfActionId?: string | undefined, formTemplateId?: string | undefined }): Promise<Array<DecryptedForm>>;
-
 }

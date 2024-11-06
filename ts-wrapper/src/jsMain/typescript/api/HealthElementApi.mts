@@ -3,7 +3,6 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {HealthElementShareOptions} from '../crypto/entities/HealthElementShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {DecryptedHealthElement, EncryptedHealthElement, HealthElement} from '../model/HealthElement.mjs';
-import {IcureStub} from '../model/IcureStub.mjs';
 import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
@@ -62,9 +61,6 @@ export interface HealthElementApi {
 
 	purgeHealthElement(healthElement: HealthElement): Promise<void>;
 
-	findHealthElementsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
-
 	shareWith(delegateId: string, healthElement: DecryptedHealthElement,
 			options?: { options?: HealthElementShareOptions | undefined }): Promise<DecryptedHealthElement>;
 
@@ -89,9 +85,6 @@ export interface HealthElementApi {
 	getHealthElement(entityId: string): Promise<DecryptedHealthElement>;
 
 	getHealthElements(entityIds: Array<string>): Promise<Array<DecryptedHealthElement>>;
-
-	findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<DecryptedHealthElement>>;
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<HealthElement>,
 			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<EncryptedHealthElement>>;

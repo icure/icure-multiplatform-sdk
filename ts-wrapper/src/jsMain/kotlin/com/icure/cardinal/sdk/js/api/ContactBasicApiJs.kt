@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
-import com.icure.cardinal.sdk.js.model.IcureStubJs
 import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.`data`.LabelledOccurenceJs
@@ -68,9 +67,6 @@ public external interface ContactBasicApiJs {
 
 	public fun purgeContact(contact: ContactJs): Promise<Unit>
 
-	public fun findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>>
-
 	public fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>>
 
@@ -96,12 +92,6 @@ public external interface ContactBasicApiJs {
 
 	public fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: Array<String>):
 			Promise<Array<EncryptedContactJs>>
-
-	public fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: Array<String>,
-		options: dynamic,
-	): Promise<Array<EncryptedContactJs>>
 
 	public fun getService(serviceId: String): Promise<EncryptedServiceJs>
 

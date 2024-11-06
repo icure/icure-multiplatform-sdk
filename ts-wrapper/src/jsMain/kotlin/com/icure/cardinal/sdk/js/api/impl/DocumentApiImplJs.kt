@@ -303,33 +303,6 @@ internal class DocumentApiImplJs(
 			)
 		}
 
-		override fun listDocumentsByHcPartyMessageForeignKeys(
-			hcPartyId: String,
-			documentTypeCode: String?,
-			secretMessageKeys: Array<String>,
-		): Promise<Array<EncryptedDocumentJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
-			val secretMessageKeysConverted: List<String> = arrayToList(
-				secretMessageKeys,
-				"secretMessageKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = documentApi.encrypted.listDocumentsByHcPartyMessageForeignKeys(
-				hcPartyIdConverted,
-				documentTypeCodeConverted,
-				secretMessageKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedDocument ->
-					document_toJs(x1)
-				},
-			)
-		}
-
 		override fun findWithoutDelegation(limit: Double?): Promise<Array<EncryptedDocumentJs>> =
 				GlobalScope.promise {
 			val limitConverted: Int? = numberToInt(limit, "limit")
@@ -557,33 +530,6 @@ internal class DocumentApiImplJs(
 			)
 			val result = documentApi.tryAndRecover.modifyDocuments(
 				entitiesConverted,
-			)
-			listToArray(
-				result,
-				{ x1: Document ->
-					document_toJs(x1)
-				},
-			)
-		}
-
-		override fun listDocumentsByHcPartyMessageForeignKeys(
-			hcPartyId: String,
-			documentTypeCode: String?,
-			secretMessageKeys: Array<String>,
-		): Promise<Array<DocumentJs>> = GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
-			val secretMessageKeysConverted: List<String> = arrayToList(
-				secretMessageKeys,
-				"secretMessageKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = documentApi.tryAndRecover.listDocumentsByHcPartyMessageForeignKeys(
-				hcPartyIdConverted,
-				documentTypeCodeConverted,
-				secretMessageKeysConverted,
 			)
 			listToArray(
 				result,
@@ -1427,33 +1373,6 @@ internal class DocumentApiImplJs(
 		)
 		val result = documentApi.modifyDocuments(
 			entitiesConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedDocument ->
-				document_toJs(x1)
-			},
-		)
-	}
-
-	override fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String?,
-		secretMessageKeys: Array<String>,
-	): Promise<Array<DecryptedDocumentJs>> = GlobalScope.promise {
-		val hcPartyIdConverted: String = hcPartyId
-		val documentTypeCodeConverted: String? = undefinedToNull(documentTypeCode)
-		val secretMessageKeysConverted: List<String> = arrayToList(
-			secretMessageKeys,
-			"secretMessageKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = documentApi.listDocumentsByHcPartyMessageForeignKeys(
-			hcPartyIdConverted,
-			documentTypeCodeConverted,
-			secretMessageKeysConverted,
 		)
 		listToArray(
 			result,

@@ -3,7 +3,6 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {ContactShareOptions} from '../crypto/entities/ContactShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../model/Contact.mjs';
-import {IcureStub} from '../model/IcureStub.mjs';
 import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -75,9 +74,6 @@ export interface ContactApi {
 
 	purgeContact(contact: Contact): Promise<void>;
 
-	findContactsDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
-
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
 
@@ -120,9 +116,6 @@ export interface ContactApi {
 
 	listContactsByHCPartyAndFormIds(hcPartyId: string,
 			formIds: Array<string>): Promise<Array<DecryptedContact>>;
-
-	listContactsByHCPartyAndPatientSecretFKeys(hcPartyId: string, secretPatientKeys: Array<string>,
-			options?: { planOfActionsIds?: string | undefined, skipClosedContacts?: boolean | undefined }): Promise<Array<DecryptedContact>>;
 
 	getService(serviceId: string): Promise<DecryptedService>;
 

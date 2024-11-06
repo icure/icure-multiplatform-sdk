@@ -334,52 +334,6 @@ internal class FormApiImplJs(
 				},
 			)
 		}
-
-		override fun listFormsByHCPartyAndPatientForeignKeys(
-			hcPartyId: String,
-			secretFKeys: String,
-			options: dynamic,
-		): Promise<Array<EncryptedFormJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val hcPartyIdConverted: String = hcPartyId
-				val secretFKeysConverted: String = secretFKeys
-				val healthElementIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"healthElementId",
-					null
-				) { healthElementId: String? ->
-					undefinedToNull(healthElementId)
-				}
-				val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"planOfActionId",
-					null
-				) { planOfActionId: String? ->
-					undefinedToNull(planOfActionId)
-				}
-				val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"formTemplateId",
-					null
-				) { formTemplateId: String? ->
-					undefinedToNull(formTemplateId)
-				}
-				val result = formApi.encrypted.listFormsByHCPartyAndPatientForeignKeys(
-					hcPartyIdConverted,
-					secretFKeysConverted,
-					healthElementIdConverted,
-					planOfActionIdConverted,
-					formTemplateIdConverted,
-				)
-				listToArray(
-					result,
-					{ x1: EncryptedForm ->
-						form_toJs(x1)
-					},
-				)
-			}
-		}
 	}
 
 	override val tryAndRecover: FormFlavouredApiJs<FormJs> = object : FormFlavouredApiJs<FormJs> {
@@ -634,52 +588,6 @@ internal class FormApiImplJs(
 					form_toJs(x1)
 				},
 			)
-		}
-
-		override fun listFormsByHCPartyAndPatientForeignKeys(
-			hcPartyId: String,
-			secretFKeys: String,
-			options: dynamic,
-		): Promise<Array<FormJs>> {
-			val _options = options ?: js("{}")
-			return GlobalScope.promise {
-				val hcPartyIdConverted: String = hcPartyId
-				val secretFKeysConverted: String = secretFKeys
-				val healthElementIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"healthElementId",
-					null
-				) { healthElementId: String? ->
-					undefinedToNull(healthElementId)
-				}
-				val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"planOfActionId",
-					null
-				) { planOfActionId: String? ->
-					undefinedToNull(planOfActionId)
-				}
-				val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
-					_options,
-					"formTemplateId",
-					null
-				) { formTemplateId: String? ->
-					undefinedToNull(formTemplateId)
-				}
-				val result = formApi.tryAndRecover.listFormsByHCPartyAndPatientForeignKeys(
-					hcPartyIdConverted,
-					secretFKeysConverted,
-					healthElementIdConverted,
-					planOfActionIdConverted,
-					formTemplateIdConverted,
-				)
-				listToArray(
-					result,
-					{ x1: Form ->
-						form_toJs(x1)
-					},
-				)
-			}
 		}
 	}
 
@@ -1354,51 +1262,5 @@ internal class FormApiImplJs(
 				form_toJs(x1)
 			},
 		)
-	}
-
-	override fun listFormsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		options: dynamic,
-	): Promise<Array<DecryptedFormJs>> {
-		val _options = options ?: js("{}")
-		return GlobalScope.promise {
-			val hcPartyIdConverted: String = hcPartyId
-			val secretFKeysConverted: String = secretFKeys
-			val healthElementIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"healthElementId",
-				null
-			) { healthElementId: String? ->
-				undefinedToNull(healthElementId)
-			}
-			val planOfActionIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"planOfActionId",
-				null
-			) { planOfActionId: String? ->
-				undefinedToNull(planOfActionId)
-			}
-			val formTemplateIdConverted: String? = convertingOptionOrDefaultNullable(
-				_options,
-				"formTemplateId",
-				null
-			) { formTemplateId: String? ->
-				undefinedToNull(formTemplateId)
-			}
-			val result = formApi.listFormsByHCPartyAndPatientForeignKeys(
-				hcPartyIdConverted,
-				secretFKeysConverted,
-				healthElementIdConverted,
-				planOfActionIdConverted,
-				formTemplateIdConverted,
-			)
-			listToArray(
-				result,
-				{ x1: DecryptedForm ->
-					form_toJs(x1)
-				},
-			)
-		}
 	}
 }

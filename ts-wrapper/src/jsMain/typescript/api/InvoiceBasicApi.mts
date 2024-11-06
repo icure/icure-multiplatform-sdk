@@ -1,5 +1,4 @@
 // auto-generated file
-import {IcureStub} from '../model/IcureStub.mjs';
 import {EncryptedInvoice} from '../model/Invoice.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -13,9 +12,6 @@ export interface InvoiceBasicApi {
 
 	deleteInvoice(entityId: string): Promise<DocIdentifier>;
 
-	findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<IcureStub>>;
-
 	getTarificationsCodesOccurrences(minOccurrence: number): Promise<Array<LabelledOccurence>>;
 
 	modifyInvoice(entity: EncryptedInvoice): Promise<EncryptedInvoice>;
@@ -25,9 +21,6 @@ export interface InvoiceBasicApi {
 	getInvoice(entityId: string): Promise<EncryptedInvoice>;
 
 	getInvoices(entityIds: Array<string>): Promise<Array<EncryptedInvoice>>;
-
-	findInvoicesByHcPartyPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<EncryptedInvoice>>;
 
 	reassignInvoice(invoice: EncryptedInvoice): Promise<EncryptedInvoice>;
 
@@ -49,9 +42,6 @@ export interface InvoiceBasicApi {
 
 	findInvoicesByAuthor(hcPartyId: string,
 			options?: { fromDate?: number | undefined, toDate?: number | undefined, startKey?: any | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedInvoice>>;
-
-	listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: string,
-			secretPatientKeys: Array<string>): Promise<Array<EncryptedInvoice>>;
 
 	listInvoicesByHcPartyAndGroupId(hcPartyId: string,
 			groupId: string): Promise<Array<EncryptedInvoice>>;

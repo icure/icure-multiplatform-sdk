@@ -1,4 +1,8 @@
 // auto-generated file
+import {CodeStub} from '../base/CodeStub.mjs';
+import {HasCodes} from '../base/HasCodes.mjs';
+import {HasTags} from '../base/HasTags.mjs';
+import {Identifier} from '../base/Identifier.mjs';
 import {Base64String} from '../specializations/Base64String.mjs';
 import {AddressType} from './AddressType.mjs';
 import {Annotation} from './Annotation.mjs';
@@ -6,7 +10,9 @@ import {Encryptable} from './Encryptable.mjs';
 import {DecryptedTelecom, EncryptedTelecom, Telecom} from './Telecom.mjs';
 
 
-export interface Address extends Encryptable {
+export interface Address extends Encryptable, HasTags, HasCodes {
+
+	identifier: Array<Identifier>;
 
 	addressType: AddressType | undefined;
 
@@ -38,6 +44,12 @@ export interface Address extends Encryptable {
 
 export class DecryptedAddress {
 
+	tags: Array<CodeStub> = [];
+
+	codes: Array<CodeStub> = [];
+
+	identifier: Array<Identifier> = [];
+
 	addressType: AddressType | undefined = undefined;
 
 	descr: string | undefined = undefined;
@@ -68,6 +80,9 @@ export class DecryptedAddress {
 
 	constructor(partial: Partial<DecryptedAddress>) {
 		if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
+		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
+		if ('codes' in partial && partial.codes !== undefined) this.codes = partial.codes;
+		if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
 		if ('addressType' in partial) this.addressType = partial.addressType;
 		if ('descr' in partial) this.descr = partial.descr;
 		if ('street' in partial) this.street = partial.street;
@@ -86,6 +101,12 @@ export class DecryptedAddress {
 }
 
 export class EncryptedAddress {
+
+	tags: Array<CodeStub> = [];
+
+	codes: Array<CodeStub> = [];
+
+	identifier: Array<Identifier> = [];
 
 	addressType: AddressType | undefined = undefined;
 
@@ -117,6 +138,9 @@ export class EncryptedAddress {
 
 	constructor(partial: Partial<EncryptedAddress>) {
 		if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
+		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
+		if ('codes' in partial && partial.codes !== undefined) this.codes = partial.codes;
+		if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
 		if ('addressType' in partial) this.addressType = partial.addressType;
 		if ('descr' in partial) this.descr = partial.descr;
 		if ('street' in partial) this.street = partial.street;

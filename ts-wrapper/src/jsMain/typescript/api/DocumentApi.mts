@@ -139,9 +139,6 @@ export interface DocumentApi {
 
 	modifyDocuments(entities: Array<DecryptedDocument>): Promise<Array<DecryptedDocument>>;
 
-	listDocumentsByHcPartyMessageForeignKeys(hcPartyId: string, documentTypeCode: string | undefined,
-			secretMessageKeys: Array<string>): Promise<Array<DecryptedDocument>>;
-
 	findWithoutDelegation(limit: number | undefined): Promise<Array<DecryptedDocument>>;
 
 }

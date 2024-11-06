@@ -6,7 +6,6 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.crypto.entities.InvoiceShareOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedInvoiceJs
 import com.icure.cardinal.sdk.js.model.EncryptedInvoiceJs
-import com.icure.cardinal.sdk.js.model.IcureStubJs
 import com.icure.cardinal.sdk.js.model.InvoiceJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -55,9 +54,6 @@ public external interface InvoiceApiJs {
 
 	public fun deleteInvoice(entityId: String): Promise<DocIdentifierJs>
 
-	public fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<IcureStubJs>>
-
 	public fun getTarificationsCodesOccurrences(minOccurrence: Double):
 			Promise<Array<LabelledOccurenceJs>>
 
@@ -83,9 +79,6 @@ public external interface InvoiceApiJs {
 	public fun getInvoice(entityId: String): Promise<DecryptedInvoiceJs>
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<DecryptedInvoiceJs>>
-
-	public fun findInvoicesByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>>
 
 	public fun reassignInvoice(invoice: DecryptedInvoiceJs): Promise<DecryptedInvoiceJs>
 
@@ -115,9 +108,6 @@ public external interface InvoiceApiJs {
 
 	public fun findInvoicesByAuthor(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedInvoiceJs>>
-
-	public fun listInvoicesByHCPartyAndPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<DecryptedInvoiceJs>>
 
 	public fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String):
 			Promise<Array<DecryptedInvoiceJs>>
