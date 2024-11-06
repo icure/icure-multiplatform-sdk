@@ -51,11 +51,12 @@ class RawUserApiImpl(
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawUserApi {
 	// region common endpoints
 
-	override suspend fun getCurrentUser(): HttpResponse<User> =
+	override suspend fun getCurrentUser(includeMetadataFromGlobalUser: Boolean): HttpResponse<User> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", "current")
+				parameter("includeMetadataFromGlobalUser", includeMetadataFromGlobalUser)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -91,11 +92,15 @@ class RawUserApiImpl(
 			setBody(userDto)
 		}.wrap()
 
-	override suspend fun getUser(userId: String): HttpResponse<User> =
+	override suspend fun getUser(
+		userId: String,
+		includeMetadataFromGlobalUser: Boolean,
+	): HttpResponse<User> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", userId)
+				parameter("includeMetadataFromGlobalUser", includeMetadataFromGlobalUser)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -203,11 +208,15 @@ class RawUserApiImpl(
 			setBody(userDto)
 		}.wrap()
 
-	override suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User> =
+	override suspend fun assignHealthcareParty(
+		healthcarePartyId: String,
+		includeMetadataFromGlobalUser: Boolean,
+	): HttpResponse<User> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "user", "current", "hcparty", healthcarePartyId)
+				parameter("includeMetadataFromGlobalUser", includeMetadataFromGlobalUser)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
@@ -291,6 +300,7 @@ class RawUserApiImpl(
 		startKey: String?,
 		startDocumentId: String?,
 		limit: Int?,
+		includeMetadataFromGlobalUser: Boolean,
 	): HttpResponse<PaginatedList<User>> =
 		get(authProvider) {
 			url {
@@ -299,6 +309,7 @@ class RawUserApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
+				parameter("includeMetadataFromGlobalUser", includeMetadataFromGlobalUser)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -455,6 +466,7 @@ class RawUserApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 		filterChain: FilterChain<User>,
+		includeMetadataFromGlobalUser: Boolean,
 	): HttpResponse<PaginatedList<User>> =
 		post(authProvider) {
 			url {
@@ -462,6 +474,7 @@ class RawUserApiImpl(
 				appendPathSegments("rest", "v2", "user", "filter", "inGroup", groupId)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
+				parameter("includeMetadataFromGlobalUser", includeMetadataFromGlobalUser)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)

@@ -89,21 +89,6 @@ class RawHealthElementApiImpl(
 			setBody(healthElementIds)
 		}.wrap()
 
-	override suspend fun listHealthElementsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<EncryptedHealthElement>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun listHealthElementIdsByDataOwnerPatientOpeningDate(
 		dataOwnerId: String,
 		startDate: Long?,
@@ -125,49 +110,15 @@ class RawHealthElementApiImpl(
 			setBody(secretPatientKeys)
 		}.wrap()
 
-	override suspend fun findHealthElementsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<EncryptedHealthElement>> =
+	override suspend fun listHealthElementsDelegationsStubById(healthElementIds: ListOfIds): HttpResponse<List<IcureStub>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys")
-				parameter("hcPartyId", hcPartyId)
+				appendPathSegments("rest", "v2", "helement", "delegations")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
-			setBody(secretPatientKeys)
-		}.wrap()
-
-	override suspend fun listHealthElementsDelegationsStubsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-	): HttpResponse<List<IcureStub>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
-				parameter("secretFKeys", secretFKeys)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun findHealthElementsDelegationsStubsByHCPartyPatientForeignKeys(
-		hcPartyId: String,
-		secretPatientKeys: List<String>,
-	): HttpResponse<List<IcureStub>> =
-		post(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "helement", "byHcPartySecretForeignKeys", "delegations")
-				parameter("hcPartyId", hcPartyId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(secretPatientKeys)
+			setBody(healthElementIds)
 		}.wrap()
 
 	override suspend fun deleteHealthElements(healthElementIds: ListOfIds): HttpResponse<List<DocIdentifier>> =

@@ -24,7 +24,7 @@ import kotlin.collections.List
 public interface RawUserApi {
 	// region common endpoints
 
-	suspend fun getCurrentUser(): HttpResponse<User>
+	suspend fun getCurrentUser(includeMetadataFromGlobalUser: Boolean = false): HttpResponse<User>
 
 	suspend fun listUsersBy(
 		startKey: String? = null,
@@ -35,7 +35,10 @@ public interface RawUserApi {
 
 	suspend fun createUser(userDto: User): HttpResponse<User>
 
-	suspend fun getUser(userId: String): HttpResponse<User>
+	suspend fun getUser(
+		userId: String,
+		includeMetadataFromGlobalUser: Boolean = false,
+	): HttpResponse<User>
 
 	suspend fun getUsers(userIds: ListOfIds): HttpResponse<List<User>>
 
@@ -64,7 +67,10 @@ public interface RawUserApi {
 
 	suspend fun modifyUser(userDto: User): HttpResponse<User>
 
-	suspend fun assignHealthcareParty(healthcarePartyId: String): HttpResponse<User>
+	suspend fun assignHealthcareParty(
+		healthcarePartyId: String,
+		includeMetadataFromGlobalUser: Boolean = false,
+	): HttpResponse<User>
 
 	suspend fun modifyProperties(
 		userId: String,
@@ -96,6 +102,7 @@ public interface RawUserApi {
 		startKey: String? = null,
 		startDocumentId: String? = null,
 		limit: Int? = null,
+		includeMetadataFromGlobalUser: Boolean = false,
 	): HttpResponse<PaginatedList<User>>
 
 	suspend fun listUsersInAllGroups(
@@ -158,6 +165,7 @@ public interface RawUserApi {
 		startDocumentId: String? = null,
 		limit: Int? = null,
 		filterChain: FilterChain<User>,
+		includeMetadataFromGlobalUser: Boolean = false,
 	): HttpResponse<PaginatedList<User>>
 
 	suspend fun getUsersInGroup(

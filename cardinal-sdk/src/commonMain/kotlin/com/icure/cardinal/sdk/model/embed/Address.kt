@@ -1,14 +1,25 @@
 package com.icure.cardinal.sdk.model.embed
 
+import com.icure.cardinal.sdk.model.base.CodeStub
+import com.icure.cardinal.sdk.model.base.HasCodes
+import com.icure.cardinal.sdk.model.base.HasTags
+import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 import kotlin.String
 import kotlin.collections.List
+import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-sealed interface Address : Encryptable {
+sealed interface Address : Encryptable, HasTags, HasCodes {
+	override val tags: Set<CodeStub>
+
+	override val codes: Set<CodeStub>
+
+	public val identifier: List<Identifier>
+
 	public val addressType: AddressType?
 
 	public val descr: String?
@@ -41,6 +52,12 @@ sealed interface Address : Encryptable {
 
 @Serializable
 data class DecryptedAddress(
+	@DefaultValue("emptySet()")
+	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
+	override val codes: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptyList()")
+	override val identifier: List<Identifier> = emptyList(),
 	override val addressType: AddressType? = null,
 	override val descr: String? = null,
 	override val street: String? = null,
@@ -64,6 +81,12 @@ data class DecryptedAddress(
 
 @Serializable
 data class EncryptedAddress(
+	@DefaultValue("emptySet()")
+	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
+	override val codes: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptyList()")
+	override val identifier: List<Identifier> = emptyList(),
 	override val addressType: AddressType? = null,
 	override val descr: String? = null,
 	override val street: String? = null,
