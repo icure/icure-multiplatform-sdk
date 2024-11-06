@@ -284,26 +284,6 @@ internal class MessageApiImplJs(
 			)
 		}
 
-		override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
-				Promise<Array<EncryptedMessageJs>> = GlobalScope.promise {
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = messageApi.encrypted.findMessagesByHCPartyPatientForeignKeys(
-				secretPatientKeysConverted,
-			)
-			listToArray(
-				result,
-				{ x1: EncryptedMessage ->
-					message_toJs(x1)
-				},
-			)
-		}
-
 		override fun findMessages(
 			startKey: dynamic,
 			startDocumentId: String?,
@@ -742,26 +722,6 @@ internal class MessageApiImplJs(
 			val result = messageApi.tryAndRecover.listMessagesByTransportGuids(
 				hcPartyIdConverted,
 				transportGuidsConverted,
-			)
-			listToArray(
-				result,
-				{ x1: Message ->
-					message_toJs(x1)
-				},
-			)
-		}
-
-		override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
-				Promise<Array<MessageJs>> = GlobalScope.promise {
-			val secretPatientKeysConverted: List<String> = arrayToList(
-				secretPatientKeys,
-				"secretPatientKeys",
-				{ x1: String ->
-					x1
-				},
-			)
-			val result = messageApi.tryAndRecover.findMessagesByHCPartyPatientForeignKeys(
-				secretPatientKeysConverted,
 			)
 			listToArray(
 				result,
@@ -1486,26 +1446,6 @@ internal class MessageApiImplJs(
 		val result = messageApi.listMessagesByTransportGuids(
 			hcPartyIdConverted,
 			transportGuidsConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedMessage ->
-				message_toJs(x1)
-			},
-		)
-	}
-
-	override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
-			Promise<Array<DecryptedMessageJs>> = GlobalScope.promise {
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = messageApi.findMessagesByHCPartyPatientForeignKeys(
-			secretPatientKeysConverted,
 		)
 		listToArray(
 			result,

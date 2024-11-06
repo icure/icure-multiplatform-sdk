@@ -50,7 +50,4 @@ public external interface HealthElementFlavouredApiJs<E : HealthElementJs> {
 	public fun getHealthElement(entityId: String): Promise<E>
 
 	public fun getHealthElements(entityIds: Array<String>): Promise<Array<E>>
-
-	public fun findHealthElementsByHcPartyPatientForeignKeys(hcPartyId: String,
-			secretPatientKeys: Array<String>): Promise<Array<E>>
 }

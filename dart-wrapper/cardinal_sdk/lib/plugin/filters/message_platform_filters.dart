@@ -89,8 +89,8 @@ class MessagePlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -104,8 +104,8 @@ class MessagePlatformFilters {
 			'MessageFilters.byPatientsSentDateForSelf',
 			{
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -120,8 +120,8 @@ class MessagePlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -135,8 +135,8 @@ class MessagePlatformFilters {
 			'MessageFilters.byPatientSecretIdsSentDateForSelf',
 			{
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -176,8 +176,8 @@ class MessagePlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"transportGuid": jsonEncode(transportGuid),
-				"from": jsonEncode(from.toIso8601String()),
-				"to": jsonEncode(to.toIso8601String()),
+				"from": jsonEncode(from.millisecondsSinceEpoch),
+				"to": jsonEncode(to.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -191,8 +191,8 @@ class MessagePlatformFilters {
 			'MessageFilters.byTransportGuidSentDateForSelf',
 			{
 				"transportGuid": jsonEncode(transportGuid),
-				"from": jsonEncode(from.toIso8601String()),
-				"to": jsonEncode(to.toIso8601String()),
+				"from": jsonEncode(from.millisecondsSinceEpoch),
+				"to": jsonEncode(to.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);

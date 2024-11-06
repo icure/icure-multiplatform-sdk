@@ -181,11 +181,5 @@ public external interface DocumentApiJs {
 	public fun modifyDocuments(entities: Array<DecryptedDocumentJs>):
 			Promise<Array<DecryptedDocumentJs>>
 
-	public fun listDocumentsByHcPartyMessageForeignKeys(
-		hcPartyId: String,
-		documentTypeCode: String?,
-		secretMessageKeys: Array<String>,
-	): Promise<Array<DecryptedDocumentJs>>
-
 	public fun findWithoutDelegation(limit: Double?): Promise<Array<DecryptedDocumentJs>>
 }

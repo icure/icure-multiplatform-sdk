@@ -2,7 +2,6 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'dart:convert';
-import 'package:cardinal_sdk/model/icure_stub.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/model/invoice.dart';
 import 'package:cardinal_sdk/model/embed/invoicing_code.dart';
@@ -25,20 +24,6 @@ class InvoiceBasicPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method deleteInvoice");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
-	}
-
-	Future<List<IcureStub>> findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InvoiceBasicApi.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys',
-			{
-				"sdkId": sdkId,
-				"hcPartyId": jsonEncode(hcPartyId),
-				"secretPatientKeys": jsonEncode(secretPatientKeys.map((x0) => x0).toList()),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findInvoicesDelegationsStubsByHcPartyPatientForeignKeys");
-		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => IcureStub.fromJSON(x1) ).toList();
 	}
 
 	Future<List<LabelledOccurence>> getTarificationsCodesOccurrences(String sdkId, int minOccurrence) async {
@@ -102,20 +87,6 @@ class InvoiceBasicPlatformApi {
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method getInvoices");
-		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
-	}
-
-	Future<List<EncryptedInvoice>> findInvoicesByHcPartyPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InvoiceBasicApi.findInvoicesByHcPartyPatientForeignKeys',
-			{
-				"sdkId": sdkId,
-				"hcPartyId": jsonEncode(hcPartyId),
-				"secretPatientKeys": jsonEncode(secretPatientKeys.map((x0) => x0).toList()),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method findInvoicesByHcPartyPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
@@ -194,20 +165,6 @@ class InvoiceBasicPlatformApi {
 			}
 		);
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
-		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
-	}
-
-	Future<List<EncryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String sdkId, String hcPartyId, List<String> secretPatientKeys) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'InvoiceBasicApi.listInvoicesByHCPartyAndPatientForeignKeys',
-			{
-				"sdkId": sdkId,
-				"hcPartyId": jsonEncode(hcPartyId),
-				"secretPatientKeys": jsonEncode(secretPatientKeys.map((x0) => x0).toList()),
-			}
-		);
-		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHCPartyAndPatientForeignKeys");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}

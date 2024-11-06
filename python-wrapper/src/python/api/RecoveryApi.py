@@ -2,9 +2,13 @@
 import asyncio
 import json
 from cardinal_sdk.model import RecoveryDataKey
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
-from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
-from ctypes import cast, c_char_p
+from DATA_RESULT_CALLBACK_FUNC import cardinal_sdk.kotlin_types
+from symbols import cardinal_sdk.kotlin_types
+from create_result_from_json import cardinal_sdk.model.CallResult
+from cast import ctypes
+from c_char_p import ctypes
+from interpret_kt_error import cardinal_sdk.model.CallResult
+
 
 class RecoveryApi:
 
@@ -24,10 +28,10 @@ class RecoveryApi:
 		payload = {
 			"recoveryKey": recovery_key.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -38,14 +42,14 @@ class RecoveryApi:
 		payload = {
 			"recoveryKey": recovery_key.__serialize__(),
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeRecoveryInfoBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 
 	async def purge_all_recovery_info_for_async(self, data_owner_id: str) -> int:
 		loop = asyncio.get_running_loop()
@@ -60,10 +64,10 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllRecoveryInfoForAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllRecoveryInfoForAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -74,14 +78,14 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllRecoveryInfoForBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllRecoveryInfoForBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -99,10 +103,10 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllKeyPairRecoveryInfoForAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllKeyPairRecoveryInfoForAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -113,14 +117,14 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllKeyPairRecoveryInfoForBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllKeyPairRecoveryInfoForBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
@@ -138,10 +142,10 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
+		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllExchangeDataRecoveryInfoForAsync,
+			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllExchangeDataRecoveryInfoForAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -152,14 +156,14 @@ class RecoveryApi:
 		payload = {
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllExchangeDataRecoveryInfoForBlocking(
+		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.RecoveryApi.purgeAllExchangeDataRecoveryInfoForBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
+		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
+		cardinal_sdk.kotlin_types.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
+			raise cardinal_sdk.model.CallResult(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value

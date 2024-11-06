@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -292,34 +291,6 @@ public object InvoiceApi {
     }
   }
 
-  public fun findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    hcPartyIdString: String,
-    secretPatientKeysString: String,
-  ) {
-    val hcPartyId = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      hcPartyIdString
-    )
-    val secretPatientKeys = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(String.serializer()),
-      secretPatientKeysString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      ListSerializer(IcureStub.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).invoice.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-        hcPartyId,
-        secretPatientKeys,
-      )
-    }
-  }
-
   public fun getTarificationsCodesOccurrences(
     dartResultCallback: (
       String?,
@@ -488,34 +459,6 @@ public object InvoiceApi {
       ListSerializer(DecryptedInvoice.serializer())) {
       NativeReferences.get<CardinalSdk>(sdkId).invoice.getInvoices(
         entityIds,
-      )
-    }
-  }
-
-  public fun findInvoicesByHcPartyPatientForeignKeys(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    hcPartyIdString: String,
-    secretPatientKeysString: String,
-  ) {
-    val hcPartyId = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      hcPartyIdString
-    )
-    val secretPatientKeys = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(String.serializer()),
-      secretPatientKeysString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      ListSerializer(DecryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).invoice.findInvoicesByHcPartyPatientForeignKeys(
-        hcPartyId,
-        secretPatientKeys,
       )
     }
   }
@@ -704,34 +647,6 @@ public object InvoiceApi {
         serviceId,
         secretFKeys,
         tarificationIds,
-      )
-    }
-  }
-
-  public fun listInvoicesByHCPartyAndPatientForeignKeys(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    hcPartyIdString: String,
-    secretPatientKeysString: String,
-  ) {
-    val hcPartyId = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      hcPartyIdString
-    )
-    val secretPatientKeys = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(String.serializer()),
-      secretPatientKeysString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      ListSerializer(DecryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).invoice.listInvoicesByHCPartyAndPatientForeignKeys(
-        hcPartyId,
-        secretPatientKeys,
       )
     }
   }
@@ -1168,34 +1083,6 @@ public object InvoiceApi {
       }
     }
 
-    public fun findInvoicesByHcPartyPatientForeignKeys(
-      dartResultCallback: (
-        String?,
-        String?,
-        String?,
-      ) -> Unit,
-      sdkId: String,
-      hcPartyIdString: String,
-      secretPatientKeysString: String,
-    ) {
-      val hcPartyId = fullLanguageInteropJson.decodeFromString(
-        String.serializer(),
-        hcPartyIdString
-      )
-      val secretPatientKeys = fullLanguageInteropJson.decodeFromString(
-        ListSerializer(String.serializer()),
-        secretPatientKeysString
-      )
-      ApiScope.execute(
-        dartResultCallback,
-        ListSerializer(EncryptedInvoice.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).invoice.encrypted.findInvoicesByHcPartyPatientForeignKeys(
-          hcPartyId,
-          secretPatientKeys,
-        )
-      }
-    }
-
     public fun reassignInvoice(
       dartResultCallback: (
         String?,
@@ -1380,34 +1267,6 @@ public object InvoiceApi {
           serviceId,
           secretFKeys,
           tarificationIds,
-        )
-      }
-    }
-
-    public fun listInvoicesByHCPartyAndPatientForeignKeys(
-      dartResultCallback: (
-        String?,
-        String?,
-        String?,
-      ) -> Unit,
-      sdkId: String,
-      hcPartyIdString: String,
-      secretPatientKeysString: String,
-    ) {
-      val hcPartyId = fullLanguageInteropJson.decodeFromString(
-        String.serializer(),
-        hcPartyIdString
-      )
-      val secretPatientKeys = fullLanguageInteropJson.decodeFromString(
-        ListSerializer(String.serializer()),
-        secretPatientKeysString
-      )
-      ApiScope.execute(
-        dartResultCallback,
-        ListSerializer(EncryptedInvoice.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).invoice.encrypted.listInvoicesByHCPartyAndPatientForeignKeys(
-          hcPartyId,
-          secretPatientKeys,
         )
       }
     }
@@ -1845,34 +1704,6 @@ public object InvoiceApi {
       }
     }
 
-    public fun findInvoicesByHcPartyPatientForeignKeys(
-      dartResultCallback: (
-        String?,
-        String?,
-        String?,
-      ) -> Unit,
-      sdkId: String,
-      hcPartyIdString: String,
-      secretPatientKeysString: String,
-    ) {
-      val hcPartyId = fullLanguageInteropJson.decodeFromString(
-        String.serializer(),
-        hcPartyIdString
-      )
-      val secretPatientKeys = fullLanguageInteropJson.decodeFromString(
-        ListSerializer(String.serializer()),
-        secretPatientKeysString
-      )
-      ApiScope.execute(
-        dartResultCallback,
-        ListSerializer(PolymorphicSerializer(Invoice::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).invoice.tryAndRecover.findInvoicesByHcPartyPatientForeignKeys(
-          hcPartyId,
-          secretPatientKeys,
-        )
-      }
-    }
-
     public fun reassignInvoice(
       dartResultCallback: (
         String?,
@@ -2057,34 +1888,6 @@ public object InvoiceApi {
           serviceId,
           secretFKeys,
           tarificationIds,
-        )
-      }
-    }
-
-    public fun listInvoicesByHCPartyAndPatientForeignKeys(
-      dartResultCallback: (
-        String?,
-        String?,
-        String?,
-      ) -> Unit,
-      sdkId: String,
-      hcPartyIdString: String,
-      secretPatientKeysString: String,
-    ) {
-      val hcPartyId = fullLanguageInteropJson.decodeFromString(
-        String.serializer(),
-        hcPartyIdString
-      )
-      val secretPatientKeys = fullLanguageInteropJson.decodeFromString(
-        ListSerializer(String.serializer()),
-        secretPatientKeysString
-      )
-      ApiScope.execute(
-        dartResultCallback,
-        ListSerializer(PolymorphicSerializer(Invoice::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).invoice.tryAndRecover.listInvoicesByHCPartyAndPatientForeignKeys(
-          hcPartyId,
-          secretPatientKeys,
         )
       }
     }

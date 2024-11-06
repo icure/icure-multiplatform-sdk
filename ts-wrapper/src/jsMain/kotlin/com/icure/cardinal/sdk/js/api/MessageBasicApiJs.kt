@@ -64,9 +64,6 @@ public external interface MessageBasicApiJs {
 	public fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 			Promise<Array<EncryptedMessageJs>>
 
-	public fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
-			Promise<Array<EncryptedMessageJs>>
-
 	public fun findMessages(
 		startKey: dynamic,
 		startDocumentId: String?,

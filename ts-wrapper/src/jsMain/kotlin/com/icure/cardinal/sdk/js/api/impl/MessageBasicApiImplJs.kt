@@ -299,26 +299,6 @@ internal class MessageBasicApiImplJs(
 		)
 	}
 
-	override fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
-			Promise<Array<EncryptedMessageJs>> = GlobalScope.promise {
-		val secretPatientKeysConverted: List<String> = arrayToList(
-			secretPatientKeys,
-			"secretPatientKeys",
-			{ x1: String ->
-				x1
-			},
-		)
-		val result = messageBasicApi.findMessagesByHCPartyPatientForeignKeys(
-			secretPatientKeysConverted,
-		)
-		listToArray(
-			result,
-			{ x1: EncryptedMessage ->
-				message_toJs(x1)
-			},
-		)
-	}
-
 	override fun findMessages(
 		startKey: dynamic,
 		startDocumentId: String?,

@@ -91,10 +91,4 @@ public external interface FormBasicApiJs {
 	public fun getFormsByUniqueId(uniqueId: String): Promise<Array<EncryptedFormJs>>
 
 	public fun getChildrenForms(hcPartyId: String, parentId: String): Promise<Array<EncryptedFormJs>>
-
-	public fun listFormsByHCPartyAndPatientForeignKeys(
-		hcPartyId: String,
-		secretFKeys: String,
-		options: dynamic,
-	): Promise<Array<EncryptedFormJs>>
 }

@@ -1,7 +1,6 @@
 // auto-generated file
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/icure_stub.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/model/invoice.dart';
 import 'package:cardinal_sdk/model/embed/invoicing_code.dart';
@@ -17,14 +16,6 @@ class InvoiceBasicApi {
 		return await CardinalSdkPlatformInterface.instance.apis.invoiceBasic.deleteInvoice(
 			_sdkId,
 			entityId,
-		);
-	}
-
-	Future<List<IcureStub>> findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoiceBasic.findInvoicesDelegationsStubsByHcPartyPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
 		);
 	}
 
@@ -60,14 +51,6 @@ class InvoiceBasicApi {
 		return await CardinalSdkPlatformInterface.instance.apis.invoiceBasic.getInvoices(
 			_sdkId,
 			entityIds,
-		);
-	}
-
-	Future<List<EncryptedInvoice>> findInvoicesByHcPartyPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoiceBasic.findInvoicesByHcPartyPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
 		);
 	}
 
@@ -116,14 +99,6 @@ class InvoiceBasicApi {
 			serviceId,
 			secretFKeys,
 			tarificationIds,
-		);
-	}
-
-	Future<List<EncryptedInvoice>> listInvoicesByHCPartyAndPatientForeignKeys(String hcPartyId, List<String> secretPatientKeys) async {
-		return await CardinalSdkPlatformInterface.instance.apis.invoiceBasic.listInvoicesByHCPartyAndPatientForeignKeys(
-			_sdkId,
-			hcPartyId,
-			secretPatientKeys,
 		);
 	}
 

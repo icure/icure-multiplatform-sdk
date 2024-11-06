@@ -110,9 +110,6 @@ public external interface MessageApiJs {
 	public fun listMessagesByTransportGuids(hcPartyId: String, transportGuids: Array<String>):
 			Promise<Array<DecryptedMessageJs>>
 
-	public fun findMessagesByHCPartyPatientForeignKeys(secretPatientKeys: Array<String>):
-			Promise<Array<DecryptedMessageJs>>
-
 	public fun findMessages(
 		startKey: dynamic,
 		startDocumentId: String?,

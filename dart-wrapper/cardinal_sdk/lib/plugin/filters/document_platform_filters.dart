@@ -17,8 +17,8 @@ class DocumentPlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -32,8 +32,8 @@ class DocumentPlatformFilters {
 			'DocumentFilters.byPatientsCreatedForSelf',
 			{
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -48,8 +48,8 @@ class DocumentPlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);
@@ -63,8 +63,8 @@ class DocumentPlatformFilters {
 			'DocumentFilters.byPatientSecretIdsCreatedForSelf',
 			{
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
-				"from": jsonEncode(from?.toIso8601String()),
-				"to": jsonEncode(to?.toIso8601String()),
+				"from": jsonEncode(from?.millisecondsSinceEpoch),
+				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
 		);

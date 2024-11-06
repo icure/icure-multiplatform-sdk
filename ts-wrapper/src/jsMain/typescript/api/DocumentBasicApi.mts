@@ -77,9 +77,6 @@ export interface DocumentBasicApi {
 
 	modifyDocuments(entities: Array<EncryptedDocument>): Promise<Array<EncryptedDocument>>;
 
-	listDocumentsByHcPartyMessageForeignKeys(hcPartyId: string, documentTypeCode: string | undefined,
-			secretMessageKeys: Array<string>): Promise<Array<EncryptedDocument>>;
-
 	findWithoutDelegation(limit: number | undefined): Promise<Array<EncryptedDocument>>;
 
 }

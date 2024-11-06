@@ -68,12 +68,6 @@ public external interface ContactFlavouredApiJs<E : ContactJs, S : ServiceJs> {
 	public fun listContactsByHCPartyAndFormIds(hcPartyId: String, formIds: Array<String>):
 			Promise<Array<E>>
 
-	public fun listContactsByHCPartyAndPatientSecretFKeys(
-		hcPartyId: String,
-		secretPatientKeys: Array<String>,
-		options: dynamic,
-	): Promise<Array<E>>
-
 	public fun getService(serviceId: String): Promise<S>
 
 	public fun getServices(entityIds: Array<String>): Promise<Array<S>>

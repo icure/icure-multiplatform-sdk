@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.CryptoActorAsStubDeserializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Byte
@@ -32,6 +33,7 @@ import kotlinx.serialization.builtins.serializer
 
 @Serializable
 private class GetExistingSplitsInfoParams(
+	@Serializable(CryptoActorAsStubDeserializer::class)
 	public val dataOwner: CryptoActor,
 )
 
