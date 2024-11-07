@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.PluginDependenciesSpecScope
+import org.gradle.kotlin.dsl.version
 
 fun PluginDependenciesSpecScope.kotlinMultiplatform(apply: Boolean = true) {
 	id("org.jetbrains.kotlin.multiplatform").apply(apply)
@@ -14,4 +15,8 @@ fun PluginDependenciesSpecScope.kotestMultiplatform(apply: Boolean = true) {
 
 fun PluginDependenciesSpecScope.androidLibrary(apply: Boolean = true) {
 	id("com.android.library").apply(apply)
+}
+
+fun PluginDependenciesSpecScope.licenseReportPlugin(apply: Boolean = true) {
+	id("com.github.jk1.dependency-license-report").version("2.0").apply(apply)
 }
