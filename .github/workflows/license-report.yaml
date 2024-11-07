@@ -1,7 +1,7 @@
 on:
     push:
         branches:
-            - "ci/fix-license-probe-workflow "
+            - "ci/fix-license-probe-workflow"
     pull_request:
         types:
             - closed
