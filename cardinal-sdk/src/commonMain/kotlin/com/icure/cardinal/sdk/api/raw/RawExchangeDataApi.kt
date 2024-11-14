@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.ExchangeData
+import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.utils.InternalIcureApi
 import kotlin.Int
@@ -18,6 +19,8 @@ public interface RawExchangeDataApi {
 	suspend fun modifyExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData>
 
 	suspend fun getExchangeDataById(exchangeDataId: String): HttpResponse<ExchangeData>
+
+	suspend fun getExchangeDataByIds(exchangeDataIds: ListOfIds): HttpResponse<List<ExchangeData>>
 
 	suspend fun getExchangeDataByParticipant(
 		dataOwnerId: String,
