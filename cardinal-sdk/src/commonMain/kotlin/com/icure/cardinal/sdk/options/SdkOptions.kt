@@ -161,7 +161,7 @@ data class BasicSdkOptions(
 
 		if (lenientJson) {
 			require(httpClient == null) {
-				"lenientJson should be false if httpClient is provided"
+				"Cannot use lenientJson with a custom httpClient"
 			}
 		}
 	}
