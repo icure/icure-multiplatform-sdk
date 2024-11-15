@@ -213,7 +213,7 @@ interface CardinalSdk : CardinalApis {
 		private fun createHttpClient(json: Json): HttpClient {
 			return newPlatformHttpClient {
 				install(ContentNegotiation) {
-					json(json = Serialization.json)
+					json(json = json)
 				}
 				install(HttpTimeout) {
 					requestTimeoutMillis = 60_000
