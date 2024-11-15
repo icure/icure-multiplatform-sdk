@@ -76,6 +76,12 @@ export interface SdkOptions {
    * of the entity.
    */
   readonly jsonPatcher?: JsonPatcher
+  /**
+   * If true the sdk will use and httpClient that use a lenient json parser.
+   *
+   * This may be useful in some cases
+   */
+  readonly lenientJson?: boolean
 }
 
 export interface BasicSdkOptions {
@@ -107,6 +113,12 @@ export interface BasicSdkOptions {
    * In single-group applications this parameter won't be used, so it can be left as null.
    */
   readonly groupSelector?: (availableGroups: Array<UserGroup>) => Promise<string>
+  /**
+   * If true the sdk will use and httpClient that use a lenient json parser.
+   *
+   * This may be useful in some cases
+   */
+  readonly lenientJson?: boolean
 }
 
 export interface EncryptedFieldsConfiguration {

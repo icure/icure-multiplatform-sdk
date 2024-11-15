@@ -52,6 +52,13 @@ interface CommonSdkOptions {
 	 * In single-group applications this parameter won't be used, so it can be left as null.
 	 */
 	val groupSelector: GroupSelector?
+
+	/**
+	 * If true the sdk will use and httpClient that use a lenient json parser.
+	 *
+	 * This may be useful in some cases
+	 */
+	val lenientJson: Boolean
 }
 
 /**
@@ -109,7 +116,14 @@ data class SdkOptions(
 	 * This allows adapting to changes in the data model of entities even if the changes are done to the encrypted part
 	 * of the entity.
 	 */
-	val jsonPatcher: JsonPatcher? = null
+	val jsonPatcher: JsonPatcher? = null,
+
+	/**
+	 * If true the sdk will use and httpClient that use a lenient json parser.
+	 *
+	 * This may be useful in some cases
+	 */
+	override val lenientJson: Boolean = false,
 ): CommonSdkOptions
 
 data class BasicSdkOptions(
@@ -119,6 +133,7 @@ data class BasicSdkOptions(
 	override val cryptoService: CryptoService = defaultCryptoService,
 	override val saltPasswordWithApplicationId: Boolean = true,
 	override val groupSelector: GroupSelector? = null,
+	override val lenientJson: Boolean = false,
 ): CommonSdkOptions
 
 @Serializable

@@ -122,7 +122,9 @@ import com.icure.cardinal.sdk.js.options.external.SdkOptionsJs
 import com.icure.cardinal.sdk.js.options.toKt
 import com.icure.cardinal.sdk.js.storage.loadStorageOptions
 import com.icure.cardinal.sdk.options.BasicSdkOptions
+import com.icure.cardinal.sdk.options.CommonSdkOptions
 import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.cardinal.sdk.utils.Serialization
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
@@ -142,7 +144,7 @@ object InternalSdkInitializers {
 			baseUrl,
 			authenticationMethod.toKt(),
 			loadStorageOptions(storageFacade),
-			options?.toKt() ?: SdkOptions(),
+			options?.toKt()?.applyLenientJson() ?: SdkOptions(),
 		))
 	}
 
@@ -170,7 +172,7 @@ object InternalSdkInitializers {
 			captchaOptions_fromJs(captchaOptions),
 			loadStorageOptions(baseStorage),
 			authenticationProcessTemplateParameters?.toKt() ?: AuthenticationProcessTemplateParameters(),
-			options?.toKt() ?: SdkOptions()
+			options?.toKt()?.applyLenientJson() ?: SdkOptions()
 		)
 		object : AuthenticationWithProcessStepJs {
 			override fun completeAuthentication(validationCode: String): Promise<CardinalSdkJs> = GlobalScope.promise {
@@ -179,7 +181,8 @@ object InternalSdkInitializers {
 		}
 	}
 
-	fun initializeBase(
+	fun
+			initializeBase(
 		applicationId: String?,
 		baseUrl: String,
 		authenticationMethod: AuthenticationMethodJs,
@@ -189,8 +192,28 @@ object InternalSdkInitializers {
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
-			options?.toKt() ?: BasicSdkOptions()
+			options?.toKt()?.let { options ->
+				if (options.lenientJson) {
+					options.copy(
+						httpClientJson = Serialization.lenientJson
+					)
+				}
+				else {
+					options
+				}
+			} ?: BasicSdkOptions()
 		))
+	}
+
+	private fun SdkOptions.applyLenientJson(): SdkOptions = this.let { options ->
+		if (options.lenientJson) {
+			options.copy(
+				httpClientJson = Serialization.lenientJson
+			)
+		}
+		else {
+			options
+		}
 	}
 }
 
