@@ -181,8 +181,7 @@ object InternalSdkInitializers {
 		}
 	}
 
-	fun
-			initializeBase(
+	fun initializeBase(
 		applicationId: String?,
 		baseUrl: String,
 		authenticationMethod: AuthenticationMethodJs,
