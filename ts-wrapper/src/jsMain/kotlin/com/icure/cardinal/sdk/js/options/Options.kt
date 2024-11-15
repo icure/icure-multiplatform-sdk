@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.js.options
 
-import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesBridge
+ import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesBridge
 import com.icure.cardinal.sdk.js.model.userGroup_toJs
 import com.icure.cardinal.sdk.js.options.external.BasicSdkOptionsJs
 import com.icure.cardinal.sdk.js.options.external.EncryptedFieldsConfigurationJs

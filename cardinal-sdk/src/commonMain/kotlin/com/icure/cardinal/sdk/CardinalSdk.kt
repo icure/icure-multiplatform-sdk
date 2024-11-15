@@ -371,10 +371,6 @@ interface CardinalSdk : CardinalApis {
 	}
 }
 
-private fun SdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) sharedHttpClientUsingLenientJson else sharedHttpClient)
-
-private fun SdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)
-
 @InternalIcureApi
 private class AuthenticationWithProcessStepImpl(
 	private val applicationId: String?,

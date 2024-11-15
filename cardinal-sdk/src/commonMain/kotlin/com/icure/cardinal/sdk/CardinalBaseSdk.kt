@@ -1,7 +1,5 @@
 package com.icure.cardinal.sdk
 
-import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClient
-import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClientUsingLenientJson
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
 import com.icure.cardinal.sdk.api.DocumentTemplateApi
@@ -98,7 +96,6 @@ import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.options.getAuthProviderInGroup
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.Json
 
@@ -164,11 +161,6 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 		}
 	}
 }
-
-private fun BasicSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) sharedHttpClientUsingLenientJson else sharedHttpClient)
-
-private fun BasicSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)
-
 
 interface CardinalBaseSdk : CardinalBaseApis {
 	/**
