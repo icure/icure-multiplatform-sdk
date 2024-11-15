@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.model.ExchangeData
+import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -67,6 +68,17 @@ class RawExchangeDataApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getExchangeDataByIds(exchangeDataIds: ListOfIds): HttpResponse<List<ExchangeData>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(exchangeDataIds)
 		}.wrap()
 
 	override suspend fun getExchangeDataByParticipant(
