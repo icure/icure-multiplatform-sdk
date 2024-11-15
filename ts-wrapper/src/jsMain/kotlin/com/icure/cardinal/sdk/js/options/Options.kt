@@ -13,7 +13,6 @@ import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.kryptom.crypto.external.adaptCryptoServiceForExternal
 import com.icure.kryptom.crypto.external.adaptExternalCryptoService
-import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.await
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -21,7 +20,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 
-@OptIn(InternalIcureApi::class)
 suspend fun SdkOptionsJs.toKt(): SdkOptions {
 	val defaultSdkOptions = SdkOptions()
 	return SdkOptions(
@@ -45,7 +43,6 @@ suspend fun SdkOptionsJs.toKt(): SdkOptions {
 	)
 }
 
-@OptIn(InternalIcureApi::class)
 suspend fun BasicSdkOptionsJs.toKt(): BasicSdkOptions {
 	val defaultApiOptions = BasicSdkOptions()
 	return BasicSdkOptions(
