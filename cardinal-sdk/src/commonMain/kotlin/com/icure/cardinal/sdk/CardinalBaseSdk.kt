@@ -128,29 +128,24 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 		): CardinalUnboundBaseSdk {
 			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
 
-			val sdkOptions = if (options.lenientJson) {
-				options.copy(
-					httpClient = sharedHttpClientUsingLenientJson,
-					httpClientJson = Serialization.lenientJson
-				)
-			} else {
-				options
-			}
-
-			val client = sdkOptions.httpClient ?: sharedHttpClient
-			val json = sdkOptions.httpClientJson ?: Serialization.json
-			val cryptoService = sdkOptions.cryptoService
+			val client = options.configuredClientOrDefault()
+			val json = options.configuredJsonOrDefault()
+			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, client, json = Serialization.json)
+			val rawAuthApi = RawAnonymousAuthApiImpl(
+				apiUrl = apiUrl,
+				httpClient = client,
+				json = json,
+			)
 			val authProvider = authenticationMethod.getAuthProvider(
 				rawAuthApi,
 				cryptoService,
 				null,
-				sdkOptions,
+				options,
 				RawMessageGatewayApi(client, cryptoService)
 			)
 
-			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(sdkOptions.encryptedFields)
+			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val config = BasicApiConfigurationImpl(
@@ -169,6 +164,11 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 		}
 	}
 }
+
+private fun BasicSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) sharedHttpClientUsingLenientJson else sharedHttpClient)
+
+private fun BasicSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)
+
 
 interface CardinalBaseSdk : CardinalBaseApis {
 	/**
@@ -200,8 +200,8 @@ interface CardinalBaseSdk : CardinalBaseApis {
 			authenticationMethod: AuthenticationMethod,
 			options: BasicSdkOptions = BasicSdkOptions()
 		): CardinalBaseSdk {
-			val client = options.httpClient ?: sharedHttpClient
-			val json = options.httpClientJson ?: Serialization.json
+			val client = options.configuredClientOrDefault()
+			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
 			val authProvider = authenticationMethod.getAuthProviderInGroup(

@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk
 
 import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClient
+import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClientUsingLenientJson
 import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
@@ -276,21 +277,12 @@ interface CardinalSdk : CardinalApis {
 			baseStorage: StorageFacade,
 			options: SdkOptions = SdkOptions()
 		): CardinalSdk {
-			val sdkOptions = if (options.lenientJson) {
-				options.copy(
-					httpClient = sharedHttpClientUsingLenientJson,
-					httpClientJson = Serialization.lenientJson
-				)
-			} else {
-				options
-			}
-
-			val cryptoStrategies = sdkOptions.cryptoStrategies ?: BasicCryptoStrategies
-			val client = sdkOptions.httpClient ?: sharedHttpClient
-			val json = sdkOptions.httpClientJson ?: Serialization.json
-			val cryptoService = sdkOptions.cryptoService
+			val cryptoStrategies = options.cryptoStrategies ?: BasicCryptoStrategies
+			val client = options.configuredClientOrDefault()
+			val json = options.configuredJsonOrDefault()
+			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val keysStorage = sdkOptions.keyStorage ?: JsonAndBase64KeyStorage(baseStorage)
+			val keysStorage = options.keyStorage ?: JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage =
 				CardinalStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authProvider = authenticationMethod.getAuthProviderInGroup(
@@ -298,8 +290,8 @@ interface CardinalSdk : CardinalApis {
 				client,
 				cryptoService,
 				applicationId,
-				sdkOptions,
-				sdkOptions.groupSelector
+				options,
+				options.groupSelector
 			)
 			val (initializedCrypto, newKey) = initializeApiCrypto(
 				apiUrl,
@@ -309,13 +301,13 @@ interface CardinalSdk : CardinalApis {
 				cryptoStrategies,
 				cryptoService,
 				iCureStorage,
-				sdkOptions,
+				options,
 			)
 			return CardinalApiImpl(
 				authProvider,
 				json,
 				initializedCrypto,
-				sdkOptions
+				options
 			).also { initializedCrypto.notifyNewKeyIfAny(it, newKey) }
 		}
 
@@ -353,16 +345,7 @@ interface CardinalSdk : CardinalApis {
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
 			options: SdkOptions = SdkOptions()
 		): AuthenticationWithProcessStep {
-			val sdkOptions = if (options.lenientJson) {
-				options.copy(
-					httpClient = sharedHttpClientUsingLenientJson,
-					httpClientJson = Serialization.lenientJson
-				)
-			} else {
-				options
-			}
-
-			val api = RawMessageGatewayApi(sdkOptions.httpClient ?: sharedHttpClient, sdkOptions.cryptoService)
+			val api = RawMessageGatewayApi(options.configuredClientOrDefault(), options.cryptoService)
 			val requestId = api.startProcess(
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,
@@ -377,16 +360,20 @@ interface CardinalSdk : CardinalApis {
 				applicationId = applicationId,
 				baseUrl = baseUrl,
 				baseStorage = baseStorage,
-				options = sdkOptions,
+				options = options,
 				api = api,
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,
 				requestId = requestId,
-				userTelecom = userTelecom
+				userTelecom = userTelecom,
 			)
 		}
 	}
 }
+
+private fun SdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) sharedHttpClientUsingLenientJson else sharedHttpClient)
+
+private fun SdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)
 
 @InternalIcureApi
 private class AuthenticationWithProcessStepImpl(
@@ -398,7 +385,7 @@ private class AuthenticationWithProcessStepImpl(
 	private val messageGatewayUrl: String,
 	private val externalServicesSpecId: String,
 	private val requestId: String,
-	private val userTelecom: String
+	private val userTelecom: String,
 ) : CardinalSdk.AuthenticationWithProcessStep {
 	override suspend fun completeAuthentication(validationCode: String): CardinalSdk {
 		api.completeProcess(
@@ -408,9 +395,9 @@ private class AuthenticationWithProcessStepImpl(
 			validationCode = validationCode
 		)
 		val rawAuthApi: RawAnonymousAuthApi = RawAnonymousAuthApiImpl(
-			baseUrl,
-			options.httpClient ?: sharedHttpClient,
-			json = options.httpClientJson ?: Serialization.json
+			apiUrl = baseUrl,
+			httpClient = options.configuredClientOrDefault(),
+			json = options.configuredJsonOrDefault()
 		)
 		val loginResult = retryWithDelays(
 			listOf(100.milliseconds, 500.milliseconds, 1.seconds)
