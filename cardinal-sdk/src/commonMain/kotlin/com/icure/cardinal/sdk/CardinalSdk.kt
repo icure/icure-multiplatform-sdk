@@ -209,15 +209,8 @@ interface CardinalSdk : CardinalApis {
 	suspend fun switchGroup(groupId: String): CardinalSdk
 
 	companion object {
-		/**
-		 * A shared http client to use as the default across all instances of iCure.
-		 * Initialized only when needed.
-		 * Previous versions of the icure SDK (in different languages) did not need explicit disposal, but this is
-		 * necessary in the multiplatform sdk. The use of this shared client allows to minimise the resource leaking
-		 * when creating multiple instances of the iCure API without proper disposal of the client.
-		 */
-		internal val sharedHttpClient by lazy {
-			newPlatformHttpClient {
+		private fun createHttpClient(json: Json): HttpClient {
+			return newPlatformHttpClient {
 				install(ContentNegotiation) {
 					json(json = Serialization.json)
 				}
@@ -235,16 +228,19 @@ interface CardinalSdk : CardinalApis {
 		 * necessary in the multiplatform sdk. The use of this shared client allows to minimise the resource leaking
 		 * when creating multiple instances of the iCure API without proper disposal of the client.
 		 */
+		internal val sharedHttpClient by lazy {
+			createHttpClient(Serialization.json)
+		}
+
+		/**
+		 * A shared http client to use as the default across all instances of iCure.
+		 * Initialized only when needed.
+		 * Previous versions of the icure SDK (in different languages) did not need explicit disposal, but this is
+		 * necessary in the multiplatform sdk. The use of this shared client allows to minimise the resource leaking
+		 * when creating multiple instances of the iCure API without proper disposal of the client.
+		 */
 		internal val sharedHttpClientUsingLenientJson by lazy {
-			newPlatformHttpClient {
-				install(ContentNegotiation) {
-					json(json = Serialization.lenientJson)
-				}
-				install(HttpTimeout) {
-					requestTimeoutMillis = 60_000
-				}
-				install(WebSockets)
-			}
+			createHttpClient(Serialization.lenientJson)
 		}
 
 		/**
