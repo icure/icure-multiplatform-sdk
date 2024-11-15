@@ -11,9 +11,9 @@ import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EncryptedFieldsConfiguration
 import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.options.SdkOptions
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.external.adaptCryptoServiceForExternal
 import com.icure.kryptom.crypto.external.adaptExternalCryptoService
+import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.await
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -21,6 +21,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 
+@OptIn(InternalIcureApi::class)
 suspend fun SdkOptionsJs.toKt(): SdkOptions {
 	val defaultSdkOptions = SdkOptions()
 	return SdkOptions(
@@ -40,10 +41,11 @@ suspend fun SdkOptionsJs.toKt(): SdkOptions {
 			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultSdkOptions.cryptoService))
 		} ?: defaultSdkOptions.cryptoStrategies,
 		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultSdkOptions.jsonPatcher,
-		httpClientJson = if (this.lenientJson == true) Serialization.lenientJson else null
+		lenientJson = this.lenientJson ?: defaultSdkOptions.lenientJson
 	)
 }
 
+@OptIn(InternalIcureApi::class)
 suspend fun BasicSdkOptionsJs.toKt(): BasicSdkOptions {
 	val defaultApiOptions = BasicSdkOptions()
 	return BasicSdkOptions(
@@ -55,7 +57,7 @@ suspend fun BasicSdkOptionsJs.toKt(): BasicSdkOptions {
 				groupSelectorJs(ktGroups.map { userGroup_toJs(it) }.toTypedArray()).await()
 			}
 		} ?: defaultApiOptions.groupSelector,
-		httpClientJson = if (this.lenientJson == true) Serialization.lenientJson else null
+		lenientJson = this.lenientJson ?: defaultApiOptions.lenientJson
 	)
 }
 

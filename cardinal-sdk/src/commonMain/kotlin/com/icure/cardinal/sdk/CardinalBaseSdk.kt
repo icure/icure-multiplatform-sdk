@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk
 
 import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClient
+import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClientUsingLenientJson
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
 import com.icure.cardinal.sdk.api.DocumentTemplateApi
@@ -126,20 +127,30 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 			options: BasicSdkOptions = BasicSdkOptions()
 		): CardinalUnboundBaseSdk {
 			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
-			val client = options.httpClient ?: sharedHttpClient
-			val json = options.httpClientJson ?: Serialization.json
-			val cryptoService = options.cryptoService
+
+			val sdkOptions = if (options.lenientJson) {
+				options.copy(
+					httpClient = sharedHttpClientUsingLenientJson,
+					httpClientJson = Serialization.lenientJson
+				)
+			} else {
+				options
+			}
+
+			val client = sdkOptions.httpClient ?: sharedHttpClient
+			val json = sdkOptions.httpClientJson ?: Serialization.json
+			val cryptoService = sdkOptions.cryptoService
 			val apiUrl = baseUrl
 			val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, client, json = Serialization.json)
 			val authProvider = authenticationMethod.getAuthProvider(
 				rawAuthApi,
 				cryptoService,
 				null,
-				options,
+				sdkOptions,
 				RawMessageGatewayApi(client, cryptoService)
 			)
 
-			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
+			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(sdkOptions.encryptedFields)
 
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val config = BasicApiConfigurationImpl(

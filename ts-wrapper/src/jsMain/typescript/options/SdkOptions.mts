@@ -77,9 +77,11 @@ export interface SdkOptions {
    */
   readonly jsonPatcher?: JsonPatcher
   /**
-   * If true the sdk will use and httpClient that use a lenient json parser.
+   * If true the SDK will use lenient deserialization of the entities coming from the backend.
    *
-   * This may be useful in some cases
+   * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+   *
+   * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
    */
   readonly lenientJson?: boolean
 }
@@ -114,9 +116,11 @@ export interface BasicSdkOptions {
    */
   readonly groupSelector?: (availableGroups: Array<UserGroup>) => Promise<string>
   /**
-   * If true the sdk will use and httpClient that use a lenient json parser.
+   * If true the SDK will use lenient deserialization of the entities coming from the backend.
    *
-   * This may be useful in some cases
+   * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+   *
+   * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
    */
   readonly lenientJson?: boolean
 }

@@ -221,7 +221,28 @@ interface CardinalSdk : CardinalApis {
 				install(ContentNegotiation) {
 					json(json = Serialization.json)
 				}
-				install(HttpTimeout)
+				install(HttpTimeout) {
+					requestTimeoutMillis = 60_000
+				}
+				install(WebSockets)
+			}
+		}
+
+		/**
+		 * A shared http client to use as the default across all instances of iCure.
+		 * Initialized only when needed.
+		 * Previous versions of the icure SDK (in different languages) did not need explicit disposal, but this is
+		 * necessary in the multiplatform sdk. The use of this shared client allows to minimise the resource leaking
+		 * when creating multiple instances of the iCure API without proper disposal of the client.
+		 */
+		internal val sharedHttpClientUsingLenientJson by lazy {
+			newPlatformHttpClient {
+				install(ContentNegotiation) {
+					json(json = Serialization.lenientJson)
+				}
+				install(HttpTimeout) {
+					requestTimeoutMillis = 60_000
+				}
 				install(WebSockets)
 			}
 		}
@@ -238,6 +259,7 @@ interface CardinalSdk : CardinalApis {
 		 */
 		fun closeSharedClient() {
 			sharedHttpClient.close()
+			sharedHttpClientUsingLenientJson.close()
 		}
 
 		/**
@@ -258,12 +280,21 @@ interface CardinalSdk : CardinalApis {
 			baseStorage: StorageFacade,
 			options: SdkOptions = SdkOptions()
 		): CardinalSdk {
-			val cryptoStrategies = options.cryptoStrategies ?: BasicCryptoStrategies
-			val client = options.httpClient ?: sharedHttpClient
-			val json = options.httpClientJson ?: Serialization.json
-			val cryptoService = options.cryptoService
+			val sdkOptions = if (options.lenientJson) {
+				options.copy(
+					httpClient = sharedHttpClientUsingLenientJson,
+					httpClientJson = Serialization.lenientJson
+				)
+			} else {
+				options
+			}
+
+			val cryptoStrategies = sdkOptions.cryptoStrategies ?: BasicCryptoStrategies
+			val client = sdkOptions.httpClient ?: sharedHttpClient
+			val json = sdkOptions.httpClientJson ?: Serialization.json
+			val cryptoService = sdkOptions.cryptoService
 			val apiUrl = baseUrl
-			val keysStorage = options.keyStorage ?: JsonAndBase64KeyStorage(baseStorage)
+			val keysStorage = sdkOptions.keyStorage ?: JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage =
 				CardinalStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val authProvider = authenticationMethod.getAuthProviderInGroup(
@@ -271,8 +302,8 @@ interface CardinalSdk : CardinalApis {
 				client,
 				cryptoService,
 				applicationId,
-				options,
-				options.groupSelector
+				sdkOptions,
+				sdkOptions.groupSelector
 			)
 			val (initializedCrypto, newKey) = initializeApiCrypto(
 				apiUrl,
@@ -282,13 +313,13 @@ interface CardinalSdk : CardinalApis {
 				cryptoStrategies,
 				cryptoService,
 				iCureStorage,
-				options,
+				sdkOptions,
 			)
 			return CardinalApiImpl(
 				authProvider,
 				json,
 				initializedCrypto,
-				options
+				sdkOptions
 			).also { initializedCrypto.notifyNewKeyIfAny(it, newKey) }
 		}
 
@@ -326,7 +357,16 @@ interface CardinalSdk : CardinalApis {
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
 			options: SdkOptions = SdkOptions()
 		): AuthenticationWithProcessStep {
-			val api = RawMessageGatewayApi(options.httpClient ?: sharedHttpClient, options.cryptoService)
+			val sdkOptions = if (options.lenientJson) {
+				options.copy(
+					httpClient = sharedHttpClientUsingLenientJson,
+					httpClientJson = Serialization.lenientJson
+				)
+			} else {
+				options
+			}
+
+			val api = RawMessageGatewayApi(sdkOptions.httpClient ?: sharedHttpClient, sdkOptions.cryptoService)
 			val requestId = api.startProcess(
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,
@@ -341,7 +381,7 @@ interface CardinalSdk : CardinalApis {
 				applicationId = applicationId,
 				baseUrl = baseUrl,
 				baseStorage = baseStorage,
-				options = options,
+				options = sdkOptions,
 				api = api,
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,
