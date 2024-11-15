@@ -8,8 +8,8 @@ import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -131,7 +131,7 @@ public fun filterMaintenanceTasksByBlocking(sdk: CardinalBaseApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -150,7 +150,7 @@ public fun filterMaintenanceTasksByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -170,7 +170,7 @@ public fun filterMaintenanceTasksBySortedBlocking(sdk: CardinalBaseApis, params:
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -189,7 +189,7 @@ public fun filterMaintenanceTasksBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

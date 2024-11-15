@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.cardinal.sdk.model.embed.InvoiceType
 import com.icure.cardinal.sdk.model.embed.MediumType
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -144,7 +144,7 @@ public fun findInvoicesByHcPartyPatientBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedInvoice.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedInvoice.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -167,7 +167,7 @@ public fun findInvoicesByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedInvoice.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedInvoice.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

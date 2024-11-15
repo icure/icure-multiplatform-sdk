@@ -11,8 +11,8 @@ import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -731,7 +731,7 @@ public fun filterHealthPartiesByBlocking(sdk: CardinalNonCryptoApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
+	PaginatedListIteratorWithSerializer(it, HealthcareParty.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -749,7 +749,7 @@ public fun filterHealthPartiesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
+			PaginatedListIteratorWithSerializer(it, HealthcareParty.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -807,7 +807,7 @@ public fun filterHealthPartiesBySortedBlocking(sdk: CardinalNonCryptoApis, param
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
+	PaginatedListIteratorWithSerializer(it, HealthcareParty.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -826,7 +826,7 @@ public fun filterHealthPartiesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, HealthcareParty.serializer())}
+			PaginatedListIteratorWithSerializer(it, HealthcareParty.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

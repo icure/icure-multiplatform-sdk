@@ -9,8 +9,8 @@ import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -133,7 +133,7 @@ public fun filterMessagesByBlocking(sdk: CardinalBaseApis, params: String): PyRe
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -151,7 +151,7 @@ public fun filterMessagesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -170,7 +170,7 @@ public fun filterMessagesBySortedBlocking(sdk: CardinalBaseApis, params: String)
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -188,7 +188,7 @@ public fun filterMessagesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

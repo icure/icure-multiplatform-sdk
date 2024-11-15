@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.MedicalLocation
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -346,7 +346,7 @@ public fun filterMedicalLocationsByBlocking(sdk: CardinalNonCryptoApis, params: 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, MedicalLocation.serializer())}
+	PaginatedListIteratorWithSerializer(it, MedicalLocation.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -365,7 +365,7 @@ public fun filterMedicalLocationsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, MedicalLocation.serializer())}
+			PaginatedListIteratorWithSerializer(it, MedicalLocation.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -385,7 +385,7 @@ public fun filterMedicalLocationsBySortedBlocking(sdk: CardinalNonCryptoApis, pa
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, MedicalLocation.serializer())}
+	PaginatedListIteratorWithSerializer(it, MedicalLocation.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -404,6 +404,6 @@ public fun filterMedicalLocationsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, MedicalLocation.serializer())}
+			PaginatedListIteratorWithSerializer(it, MedicalLocation.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)

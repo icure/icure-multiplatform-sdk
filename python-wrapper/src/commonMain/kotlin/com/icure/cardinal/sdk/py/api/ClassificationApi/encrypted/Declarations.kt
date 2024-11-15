@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.EncryptedClassification
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -141,7 +141,7 @@ public fun findClassificationsByHcPartyPatientBlocking(sdk: CardinalApis, params
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedClassification.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -164,7 +164,7 @@ public fun findClassificationsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedClassification.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -183,7 +183,7 @@ public fun filterClassificationsByBlocking(sdk: CardinalApis, params: String): P
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedClassification.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -201,7 +201,7 @@ public fun filterClassificationsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedClassification.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -221,7 +221,7 @@ public fun filterClassificationsBySortedBlocking(sdk: CardinalApis, params: Stri
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedClassification.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -240,7 +240,7 @@ public fun filterClassificationsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedClassification.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedClassification.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

@@ -16,7 +16,7 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyCallbackResultHolder
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -1700,7 +1700,7 @@ public fun findDocumentsByHcPartyPatientBlocking(sdk: CardinalApis, params: Stri
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedDocument.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedDocument.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1723,7 +1723,7 @@ public fun findDocumentsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedDocument.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedDocument.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1742,7 +1742,7 @@ public fun filterDocumentsByBlocking(sdk: CardinalApis, params: String): PyResul
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedDocument.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedDocument.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1760,7 +1760,7 @@ public fun filterDocumentsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedDocument.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedDocument.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1779,7 +1779,7 @@ public fun filterDocumentsBySortedBlocking(sdk: CardinalApis, params: String): P
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedDocument.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedDocument.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1797,7 +1797,7 @@ public fun filterDocumentsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedDocument.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedDocument.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

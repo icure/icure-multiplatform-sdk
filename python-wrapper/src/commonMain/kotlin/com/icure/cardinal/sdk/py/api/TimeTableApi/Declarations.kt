@@ -15,7 +15,7 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -809,7 +809,7 @@ public fun filterTimeTablesByBlocking(sdk: CardinalApis, params: String): PyResu
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedTimeTable.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedTimeTable.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -827,7 +827,7 @@ public fun filterTimeTablesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedTimeTable.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedTimeTable.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -847,7 +847,7 @@ public fun filterTimeTablesBySortedBlocking(sdk: CardinalApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedTimeTable.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedTimeTable.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -866,7 +866,7 @@ public fun filterTimeTablesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedTimeTable.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedTimeTable.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

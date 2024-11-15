@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -128,7 +128,7 @@ public fun filterDocumentsByBlocking(sdk: CardinalBaseApis, params: String): PyR
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedDocument.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedDocument.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -146,7 +146,7 @@ public fun filterDocumentsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedDocument.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedDocument.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -165,7 +165,7 @@ public fun filterDocumentsBySortedBlocking(sdk: CardinalBaseApis, params: String
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedDocument.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedDocument.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -183,7 +183,7 @@ public fun filterDocumentsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedDocument.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedDocument.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

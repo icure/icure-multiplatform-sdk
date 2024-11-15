@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.BooleanResponse
 import com.icure.cardinal.sdk.model.Code
 import com.icure.cardinal.sdk.model.PaginatedList
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -800,7 +800,7 @@ public fun filterCodesByBlocking(sdk: CardinalNonCryptoApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, Code.serializer())}
+	PaginatedListIteratorWithSerializer(it, Code.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -818,7 +818,7 @@ public fun filterCodesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, Code.serializer())}
+			PaginatedListIteratorWithSerializer(it, Code.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -837,7 +837,7 @@ public fun filterCodesBySortedBlocking(sdk: CardinalNonCryptoApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, Code.serializer())}
+	PaginatedListIteratorWithSerializer(it, Code.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -855,7 +855,7 @@ public fun filterCodesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, Code.serializer())}
+			PaginatedListIteratorWithSerializer(it, Code.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

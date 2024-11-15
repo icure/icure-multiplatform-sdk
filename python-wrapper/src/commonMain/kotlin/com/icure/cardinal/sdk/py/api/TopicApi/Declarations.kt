@@ -16,8 +16,8 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -808,7 +808,7 @@ public fun filterTopicsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedTopic.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedTopic.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -826,7 +826,7 @@ public fun filterTopicsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedTopic.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedTopic.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -845,7 +845,7 @@ public fun filterTopicsBySortedBlocking(sdk: CardinalApis, params: String): PyRe
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedTopic.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedTopic.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -863,7 +863,7 @@ public fun filterTopicsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedTopic.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedTopic.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

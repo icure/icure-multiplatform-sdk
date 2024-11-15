@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.model.EncryptedMessage
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -145,7 +145,7 @@ public fun findMessagesByHcPartyPatientBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -168,7 +168,7 @@ public fun findMessagesByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -187,7 +187,7 @@ public fun filterMessagesByBlocking(sdk: CardinalApis, params: String): PyResult
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -205,7 +205,7 @@ public fun filterMessagesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -224,7 +224,7 @@ public fun filterMessagesBySortedBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -242,7 +242,7 @@ public fun filterMessagesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMessage.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMessage.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

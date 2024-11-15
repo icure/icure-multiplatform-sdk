@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.MaintenanceTask
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -130,7 +130,7 @@ public fun filterMaintenanceTasksByBlocking(sdk: CardinalApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -149,7 +149,7 @@ public fun filterMaintenanceTasksByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -169,7 +169,7 @@ public fun filterMaintenanceTasksBySortedBlocking(sdk: CardinalApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -188,7 +188,7 @@ public fun filterMaintenanceTasksBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(MaintenanceTask::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

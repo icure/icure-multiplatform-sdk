@@ -13,8 +13,8 @@ import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -569,7 +569,7 @@ public fun filterUsersByBlocking(sdk: CardinalNonCryptoApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, User.serializer())}
+	PaginatedListIteratorWithSerializer(it, User.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -587,7 +587,7 @@ public fun filterUsersByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, User.serializer())}
+			PaginatedListIteratorWithSerializer(it, User.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -642,7 +642,7 @@ public fun filterUsersBySortedBlocking(sdk: CardinalNonCryptoApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, User.serializer())}
+	PaginatedListIteratorWithSerializer(it, User.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -660,7 +660,7 @@ public fun filterUsersBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, User.serializer())}
+			PaginatedListIteratorWithSerializer(it, User.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1145,7 +1145,7 @@ public fun filterUsersInGroupByBlocking(sdk: CardinalNonCryptoApis, params: Stri
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, User.serializer())}
+	PaginatedListIteratorWithSerializer(it, User.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1164,7 +1164,7 @@ public fun filterUsersInGroupByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, User.serializer())}
+			PaginatedListIteratorWithSerializer(it, User.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1225,7 +1225,7 @@ public fun filterUsersInGroupBySortedBlocking(sdk: CardinalNonCryptoApis, params
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, User.serializer())}
+	PaginatedListIteratorWithSerializer(it, User.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1245,7 +1245,7 @@ public fun filterUsersInGroupBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, User.serializer())}
+			PaginatedListIteratorWithSerializer(it, User.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

@@ -8,8 +8,8 @@ import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -129,7 +129,7 @@ public fun filterHealthElementsByBlocking(sdk: CardinalBaseApis, params: String)
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedHealthElement.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedHealthElement.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -147,7 +147,7 @@ public fun filterHealthElementsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedHealthElement.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedHealthElement.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -167,7 +167,7 @@ public fun filterHealthElementsBySortedBlocking(sdk: CardinalBaseApis, params: S
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedHealthElement.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedHealthElement.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -186,7 +186,7 @@ public fun filterHealthElementsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedHealthElement.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedHealthElement.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

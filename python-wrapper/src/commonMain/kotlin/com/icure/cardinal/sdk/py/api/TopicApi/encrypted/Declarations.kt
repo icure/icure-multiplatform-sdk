@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedTopic
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -131,7 +131,7 @@ public fun filterTopicsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -149,7 +149,7 @@ public fun filterTopicsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -168,7 +168,7 @@ public fun filterTopicsBySortedBlocking(sdk: CardinalApis, params: String): PyRe
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -186,7 +186,7 @@ public fun filterTopicsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

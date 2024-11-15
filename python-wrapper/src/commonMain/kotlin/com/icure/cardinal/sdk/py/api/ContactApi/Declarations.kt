@@ -20,8 +20,8 @@ import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.model.embed.Service
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -1086,7 +1086,7 @@ public fun findContactsByHcPartyPatientBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1109,7 +1109,7 @@ public fun findContactsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1128,7 +1128,7 @@ public fun filterContactsByBlocking(sdk: CardinalApis, params: String): PyResult
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1146,7 +1146,7 @@ public fun filterContactsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1165,7 +1165,7 @@ public fun filterServicesByBlocking(sdk: CardinalApis, params: String): PyResult
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedService.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedService.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1183,7 +1183,7 @@ public fun filterServicesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedService.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedService.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1202,7 +1202,7 @@ public fun filterContactsBySortedBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1220,7 +1220,7 @@ public fun filterContactsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1239,7 +1239,7 @@ public fun filterServicesBySortedBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedService.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedService.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1257,7 +1257,7 @@ public fun filterServicesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedService.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedService.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

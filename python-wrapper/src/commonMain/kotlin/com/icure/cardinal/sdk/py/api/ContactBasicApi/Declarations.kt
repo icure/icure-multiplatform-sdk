@@ -12,8 +12,8 @@ import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.model.embed.Service
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -206,7 +206,7 @@ public fun filterContactsByBlocking(sdk: CardinalBaseApis, params: String): PyRe
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -224,7 +224,7 @@ public fun filterContactsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -243,7 +243,7 @@ public fun filterServicesByBlocking(sdk: CardinalBaseApis, params: String): PyRe
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -261,7 +261,7 @@ public fun filterServicesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -280,7 +280,7 @@ public fun filterContactsBySortedBlocking(sdk: CardinalBaseApis, params: String)
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -298,7 +298,7 @@ public fun filterContactsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -317,7 +317,7 @@ public fun filterServicesBySortedBlocking(sdk: CardinalBaseApis, params: String)
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -335,7 +335,7 @@ public fun filterServicesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
