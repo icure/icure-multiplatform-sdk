@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EncryptedFieldsConfiguration
 import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.external.adaptCryptoServiceForExternal
 import com.icure.kryptom.crypto.external.adaptExternalCryptoService
 import kotlinx.coroutines.await
@@ -38,7 +39,8 @@ suspend fun SdkOptionsJs.toKt(): SdkOptions {
 		cryptoStrategies = this.cryptoStrategies?.let {
 			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultSdkOptions.cryptoService))
 		} ?: defaultSdkOptions.cryptoStrategies,
-		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultSdkOptions.jsonPatcher
+		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultSdkOptions.jsonPatcher,
+		httpClientJson = if (this.lenientJson == true) Serialization.lenientJson else null
 	)
 }
 
@@ -53,6 +55,7 @@ suspend fun BasicSdkOptionsJs.toKt(): BasicSdkOptions {
 				groupSelectorJs(ktGroups.map { userGroup_toJs(it) }.toTypedArray()).await()
 			}
 		} ?: defaultApiOptions.groupSelector,
+		httpClientJson = if (this.lenientJson == true) Serialization.lenientJson else null
 	)
 }
 

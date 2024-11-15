@@ -144,7 +144,7 @@ object InternalSdkInitializers {
 			baseUrl,
 			authenticationMethod.toKt(),
 			loadStorageOptions(storageFacade),
-			options?.toKt()?.applyLenientJson() ?: SdkOptions(),
+			options?.toKt() ?: SdkOptions(),
 		))
 	}
 
@@ -172,7 +172,7 @@ object InternalSdkInitializers {
 			captchaOptions_fromJs(captchaOptions),
 			loadStorageOptions(baseStorage),
 			authenticationProcessTemplateParameters?.toKt() ?: AuthenticationProcessTemplateParameters(),
-			options?.toKt()?.applyLenientJson() ?: SdkOptions()
+			options?.toKt() ?: SdkOptions()
 		)
 		object : AuthenticationWithProcessStepJs {
 			override fun completeAuthentication(validationCode: String): Promise<CardinalSdkJs> = GlobalScope.promise {
@@ -192,28 +192,8 @@ object InternalSdkInitializers {
 			applicationId,
 			baseUrl,
 			authenticationMethod.toKt(),
-			options?.toKt()?.let { options ->
-				if (options.lenientJson) {
-					options.copy(
-						httpClientJson = Serialization.lenientJson
-					)
-				}
-				else {
-					options
-				}
-			} ?: BasicSdkOptions()
+			options?.toKt() ?: BasicSdkOptions()
 		))
-	}
-
-	private fun SdkOptions.applyLenientJson(): SdkOptions = this.let { options ->
-		if (options.lenientJson) {
-			options.copy(
-				httpClientJson = Serialization.lenientJson
-			)
-		}
-		else {
-			options
-		}
 	}
 }
 
