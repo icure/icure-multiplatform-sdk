@@ -1,46 +1,40 @@
 import json
 import base64
 from cardinal_sdk.model.RecoveryDataKey import RecoveryDataKey
-from Optional import typing
-from List import typing
-from field import dataclasses
-from Union import typing
-from Dict import typing
-from dataclass import dataclasses
+from typing import Optional
+from typing import List
+from dataclasses import field
+from typing import Union
+from typing import Dict
+from dataclasses import dataclass
 from cardinal_sdk.model.specializations import HexString
 from cardinal_sdk.model.specializations import SpkiHexString
 from cardinal_sdk.model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
-from Enum import enum
-from timedelta import datetime
-from serialize_timedelta import cardinal_sdk.model.serialization
-from deserialize_timedelta import cardinal_sdk.model.serialization
+from enum import Enum
+from datetime import timedelta
+from cardinal_sdk.model.serialization import serialize_timedelta
+from cardinal_sdk.model.serialization import deserialize_timedelta
 from cardinal_sdk.model.specializations import Base64String
-from SingletonMeta import cardinal_sdk.model.SingletonMeta
-from serialize_secret_id_share_options import cardinal_sdk.model
-from deserialize_secret_id_share_options import cardinal_sdk.model
-from serialize_permission_item import cardinal_sdk.model
-from deserialize_permission_item import cardinal_sdk.model
+from cardinal_sdk.model.SingletonMeta import SingletonMeta
 from cardinal_sdk.model.specializations import SecureDelegationKeyString
 from cardinal_sdk.model.specializations import Sha256HexString
-from serialize_structure_element import cardinal_sdk.model
-from deserialize_structure_element import cardinal_sdk.model
 
 @dataclass
 class Keyword:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	value: typing[str] = None
-	sub_words: typing['KeywordSubword'] = dataclasses(default_factory=list)
-	user_id: typing[str] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	value: Optional[str] = None
+	sub_words: List['KeywordSubword'] = field(default_factory=list)
+	user_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -61,7 +55,7 @@ class Keyword:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Keyword':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Keyword':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -86,8 +80,8 @@ class Keyword:
 
 @dataclass
 class PaginatedList:
-	rows: typing[object] = dataclasses(default_factory=list)
-	next_key_pair: typing['PaginatedDocumentKeyIdPair'] = None
+	rows: List[object] = field(default_factory=list)
+	next_key_pair: Optional['PaginatedDocumentKeyIdPair'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -96,7 +90,7 @@ class PaginatedList:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PaginatedList':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PaginatedList':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -109,8 +103,8 @@ class PaginatedList:
 
 @dataclass
 class DocIdentifier:
-	id: typing[str] = None
-	rev: typing[str] = None
+	id: Optional[str] = None
+	rev: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -119,7 +113,7 @@ class DocIdentifier:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DocIdentifier':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocIdentifier':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -133,32 +127,32 @@ class DocIdentifier:
 @dataclass
 class Device:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	identifiers: typing['Identifier'] = dataclasses(default_factory=list)
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	medical_location_id: typing[str] = None
-	external_id: typing[str] = None
-	name: typing[str] = None
-	type: typing[str] = None
-	brand: typing[str] = None
-	model: typing[str] = None
-	serial_number: typing[str] = None
-	parent_id: typing[str] = None
-	picture: typing[bytearray] = None
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
-	hc_party_keys: typing[str, typing['HexString']] = dataclasses(default_factory=dict)
-	aes_exchange_keys: typing['SpkiHexString', typing[str, typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = dataclasses(default_factory=dict)
-	transfer_keys: typing['AesExchangeKeyEncryptionKeypairIdentifier', typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = dataclasses(default_factory=dict)
-	private_key_shamir_partitions: typing[str, 'HexString'] = dataclasses(default_factory=dict)
-	public_key: typing['SpkiHexString'] = None
-	public_keys_for_oaep_with_sha256: typing['SpkiHexString'] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	identifiers: List['Identifier'] = field(default_factory=list)
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	medical_location_id: Optional[str] = None
+	external_id: Optional[str] = None
+	name: Optional[str] = None
+	type: Optional[str] = None
+	brand: Optional[str] = None
+	model: Optional[str] = None
+	serial_number: Optional[str] = None
+	parent_id: Optional[str] = None
+	picture: Optional[bytearray] = None
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
+	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
+	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
+	public_key: Optional['SpkiHexString'] = None
+	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -192,7 +186,7 @@ class Device:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Device':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Device':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -231,7 +225,7 @@ class Device:
 @dataclass
 class IdWithRev:
 	id: str
-	rev: typing[str] = None
+	rev: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -240,7 +234,7 @@ class IdWithRev:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'IdWithRev':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IdWithRev':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -263,7 +257,7 @@ class IdWithMandatoryRev:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'IdWithMandatoryRev':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IdWithMandatoryRev':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -274,7 +268,7 @@ class IdWithMandatoryRev:
 			rev=deserialized_dict["rev"],
 		)
 
-class SubscriptionEventType(enum):
+class SubscriptionEventType(Enum):
 	Create = "Create"
 	Update = "Update"
 
@@ -282,7 +276,7 @@ class SubscriptionEventType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SubscriptionEventType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SubscriptionEventType':
 		if data == "Create":
 			return SubscriptionEventType.Create
 		elif data == "Update":
@@ -293,12 +287,12 @@ class SubscriptionEventType(enum):
 @dataclass
 class EntitySubscriptionConfiguration:
 	channel_buffer_capacity: int = 100
-	on_buffer_full: 'EntitySubscriptionConfiguration.FullBufferBehaviour' = dataclasses(default_factory=lambda: EntitySubscriptionConfiguration.FullBufferBehaviour.Close)
-	reconnection_delay: datetime = datetime(seconds=2)
+	on_buffer_full: 'EntitySubscriptionConfiguration.FullBufferBehaviour' = field(default_factory=lambda: EntitySubscriptionConfiguration.FullBufferBehaviour.Close)
+	reconnection_delay: timedelta = timedelta(seconds=2)
 	retry_delay_exponent_factor: float = 2.0
 	connection_max_retries: int = 5
 
-	class FullBufferBehaviour(enum):
+	class FullBufferBehaviour(Enum):
 		Close = "Close"
 		DropOldest = "DropOldest"
 		Ignore = "Ignore"
@@ -307,7 +301,7 @@ class EntitySubscriptionConfiguration:
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntitySubscriptionConfiguration.FullBufferBehaviour':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration.FullBufferBehaviour':
 			if data == "Close":
 				return EntitySubscriptionConfiguration.FullBufferBehaviour.Close
 			elif data == "DropOldest":
@@ -321,13 +315,13 @@ class EntitySubscriptionConfiguration:
 		return {
 			"channelBufferCapacity": self.channel_buffer_capacity,
 			"onBufferFull": self.on_buffer_full.__serialize__(),
-			"reconnectionDelay": cardinal_sdk.model.serialization(self.reconnection_delay),
+			"reconnectionDelay": serialize_timedelta(self.reconnection_delay),
 			"retryDelayExponentFactor": self.retry_delay_exponent_factor,
 			"connectionMaxRetries": self.connection_max_retries,
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntitySubscriptionConfiguration':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionConfiguration':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -336,7 +330,7 @@ class EntitySubscriptionConfiguration:
 		return cls(
 			channel_buffer_capacity=deserialized_dict["channelBufferCapacity"],
 			on_buffer_full=EntitySubscriptionConfiguration.FullBufferBehaviour._deserialize(deserialized_dict["onBufferFull"]),
-			reconnection_delay=cardinal_sdk.model.serialization(deserialized_dict["reconnectionDelay"]),
+			reconnection_delay=deserialize_timedelta(deserialized_dict["reconnectionDelay"]),
 			retry_delay_exponent_factor=deserialized_dict["retryDelayExponentFactor"],
 			connection_max_retries=deserialized_dict["connectionMaxRetries"],
 		)
@@ -344,28 +338,28 @@ class EntitySubscriptionConfiguration:
 @dataclass
 class DecryptedAccessLog:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	object_id: typing[str] = None
-	access_type: typing[str] = None
-	user: typing[str] = None
-	detail: typing[str] = None
-	date: typing[int] = None
-	patient_id: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	object_id: Optional[str] = None
+	access_type: Optional[str] = None
+	user: Optional[str] = None
+	detail: Optional[str] = None
+	date: Optional[int] = None
+	patient_id: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -395,7 +389,7 @@ class DecryptedAccessLog:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedAccessLog':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedAccessLog':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -430,28 +424,28 @@ class DecryptedAccessLog:
 @dataclass
 class EncryptedAccessLog:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	object_id: typing[str] = None
-	access_type: typing[str] = None
-	user: typing[str] = None
-	detail: typing[str] = None
-	date: typing[int] = None
-	patient_id: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	object_id: Optional[str] = None
+	access_type: Optional[str] = None
+	user: Optional[str] = None
+	detail: Optional[str] = None
+	date: Optional[int] = None
+	patient_id: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -481,7 +475,7 @@ class EncryptedAccessLog:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedAccessLog':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedAccessLog':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -513,7 +507,7 @@ class EncryptedAccessLog:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-AccessLog = typing['DecryptedAccessLog', 'EncryptedAccessLog']
+AccessLog = Union['DecryptedAccessLog', 'EncryptedAccessLog']
 
 def serialize_access_log(access_log: AccessLog) -> object:
 	if isinstance(access_log, DecryptedAccessLog):
@@ -527,7 +521,7 @@ def serialize_access_log(access_log: AccessLog) -> object:
 	else:
 		raise Exception(f"{type(access_log)} is not a known subclass of AccessLog")
 
-def deserialize_access_log(data: typing[str, typing[str, object]]) -> 'AccessLog':
+def deserialize_access_log(data: Union[str, Dict[str, object]]) -> 'AccessLog':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -546,10 +540,10 @@ def deserialize_access_log(data: typing[str, typing[str, object]]) -> 'AccessLog
 @dataclass
 class Place:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	address: typing['DecryptedAddress'] = None
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	address: Optional['DecryptedAddress'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -561,7 +555,7 @@ class Place:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Place':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Place':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -578,21 +572,21 @@ class Place:
 @dataclass
 class MedicalLocation:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	description: typing[str] = None
-	responsible: typing[str] = None
-	guard_post: typing[bool] = None
-	cbe: typing[str] = None
-	bic: typing[str] = None
-	bank_account: typing[str] = None
-	nihii: typing[str] = None
-	ssin: typing[str] = None
-	address: typing['DecryptedAddress'] = None
-	agenda_ids: typing[str] = dataclasses(default_factory=list)
-	options: typing[str, str] = dataclasses(default_factory=dict)
-	public_informations: typing[str, str] = dataclasses(default_factory=dict)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	description: Optional[str] = None
+	responsible: Optional[str] = None
+	guard_post: Optional[bool] = None
+	cbe: Optional[str] = None
+	bic: Optional[str] = None
+	bank_account: Optional[str] = None
+	nihii: Optional[str] = None
+	ssin: Optional[str] = None
+	address: Optional['DecryptedAddress'] = None
+	agenda_ids: List[str] = field(default_factory=list)
+	options: Dict[str, str] = field(default_factory=dict)
+	public_informations: Dict[str, str] = field(default_factory=dict)
 
 	def __serialize__(self) -> object:
 		return {
@@ -615,7 +609,7 @@ class MedicalLocation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MedicalLocation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MedicalLocation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -642,7 +636,7 @@ class MedicalLocation:
 
 @dataclass
 class ListOfIds:
-	ids: typing[str] = dataclasses(default_factory=list)
+	ids: List[str] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -650,7 +644,7 @@ class ListOfIds:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ListOfIds':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ListOfIds':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -663,27 +657,27 @@ class ListOfIds:
 @dataclass
 class EncryptedTimeTable:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	agenda_id: typing[str] = None
-	start_time: typing[int] = None
-	end_time: typing[int] = None
-	items: typing['TimeTableItem'] = dataclasses(default_factory=list)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	agenda_id: Optional[str] = None
+	start_time: Optional[int] = None
+	end_time: Optional[int] = None
+	items: List['TimeTableItem'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -712,7 +706,7 @@ class EncryptedTimeTable:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedTimeTable':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedTimeTable':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -746,27 +740,27 @@ class EncryptedTimeTable:
 @dataclass
 class DecryptedTimeTable:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	agenda_id: typing[str] = None
-	start_time: typing[int] = None
-	end_time: typing[int] = None
-	items: typing['TimeTableItem'] = dataclasses(default_factory=list)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	agenda_id: Optional[str] = None
+	start_time: Optional[int] = None
+	end_time: Optional[int] = None
+	items: List['TimeTableItem'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -795,7 +789,7 @@ class DecryptedTimeTable:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedTimeTable':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedTimeTable':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -826,7 +820,7 @@ class DecryptedTimeTable:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-TimeTable = typing['EncryptedTimeTable', 'DecryptedTimeTable']
+TimeTable = Union['EncryptedTimeTable', 'DecryptedTimeTable']
 
 def serialize_time_table(time_table: TimeTable) -> object:
 	if isinstance(time_table, EncryptedTimeTable):
@@ -840,7 +834,7 @@ def serialize_time_table(time_table: TimeTable) -> object:
 	else:
 		raise Exception(f"{type(time_table)} is not a known subclass of TimeTable")
 
-def deserialize_time_table(data: typing[str, typing[str, object]]) -> 'TimeTable':
+def deserialize_time_table(data: Union[str, Dict[str, object]]) -> 'TimeTable':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -859,85 +853,85 @@ def deserialize_time_table(data: typing[str, typing[str, object]]) -> 'TimeTable
 @dataclass
 class EncryptedPatient:
 	id: str
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	first_name: typing[str] = None
-	last_name: typing[str] = None
-	names: typing['PersonName'] = dataclasses(default_factory=list)
-	company_name: typing[str] = None
-	languages: typing[str] = dataclasses(default_factory=list)
-	addresses: typing['EncryptedAddress'] = dataclasses(default_factory=list)
-	civility: typing[str] = None
-	gender: typing['Gender'] = dataclasses(default_factory=lambda: Gender.Unknown)
-	birth_sex: typing['Gender'] = dataclasses(default_factory=lambda: Gender.Unknown)
-	merge_to_patient_id: typing[str] = None
-	merged_ids: typing[str] = dataclasses(default_factory=list)
-	alias: typing[str] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	first_name: Optional[str] = None
+	last_name: Optional[str] = None
+	names: List['PersonName'] = field(default_factory=list)
+	company_name: Optional[str] = None
+	languages: List[str] = field(default_factory=list)
+	addresses: List['EncryptedAddress'] = field(default_factory=list)
+	civility: Optional[str] = None
+	gender: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	birth_sex: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	merge_to_patient_id: Optional[str] = None
+	merged_ids: List[str] = field(default_factory=list)
+	alias: Optional[str] = None
 	active: bool = True
-	deactivation_reason: 'DeactivationReason' = dataclasses(default_factory=lambda: DeactivationReason.Nothing)
-	deactivation_date: typing[int] = None
-	ssin: typing[str] = None
-	maiden_name: typing[str] = None
-	spouse_name: typing[str] = None
-	partner_name: typing[str] = None
-	personal_status: typing['PersonalStatus'] = dataclasses(default_factory=lambda: PersonalStatus.Unknown)
-	date_of_birth: typing[int] = None
-	date_of_death: typing[int] = None
-	timestamp_of_latest_eid_reading: typing[int] = None
-	place_of_birth: typing[str] = None
-	place_of_death: typing[str] = None
-	deceased: typing[bool] = None
-	education: typing[str] = None
-	profession: typing[str] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
-	note: typing[str] = None
-	administrative_note: typing[str] = None
-	nationality: typing[str] = None
-	race: typing[str] = None
-	ethnicity: typing[str] = None
-	preferred_user_id: typing[str] = None
-	picture: typing[bytearray] = None
-	external_id: typing[str] = None
-	insurabilities: typing['EncryptedInsurability'] = dataclasses(default_factory=list)
-	partnerships: typing['Partnership'] = dataclasses(default_factory=list)
-	patient_health_care_parties: typing['EncryptedPatientHealthCareParty'] = dataclasses(default_factory=list)
-	financial_institution_information: typing['EncryptedFinancialInstitutionInformation'] = dataclasses(default_factory=list)
-	medical_house_contracts: typing['EncryptedMedicalHouseContract'] = dataclasses(default_factory=list)
-	patient_professions: typing['CodeStub'] = dataclasses(default_factory=list)
-	parameters: typing[str, typing[str]] = dataclasses(default_factory=dict)
-	properties: typing['EncryptedPropertyStub'] = dataclasses(default_factory=list)
-	hc_party_keys: typing[str, typing['HexString']] = dataclasses(default_factory=dict)
-	aes_exchange_keys: typing['SpkiHexString', typing[str, typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = dataclasses(default_factory=dict)
-	transfer_keys: typing['AesExchangeKeyEncryptionKeypairIdentifier', typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = dataclasses(default_factory=dict)
-	private_key_shamir_partitions: typing[str, 'HexString'] = dataclasses(default_factory=dict)
-	public_key: typing['SpkiHexString'] = None
-	public_keys_for_oaep_with_sha256: typing['SpkiHexString'] = dataclasses(default_factory=list)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
-	medical_location_id: typing[str] = None
-	non_duplicate_ids: typing[str] = dataclasses(default_factory=list)
-	encrypted_administratives_documents: typing[str] = dataclasses(default_factory=list)
-	comment: typing[str] = None
-	warning: typing[str] = None
-	father_birth_country: typing['CodeStub'] = None
-	birth_country: typing['CodeStub'] = None
-	native_country: typing['CodeStub'] = None
-	social_status: typing['CodeStub'] = None
-	main_source_of_income: typing['CodeStub'] = None
-	schooling_infos: typing['SchoolingInfo'] = dataclasses(default_factory=list)
-	employement_infos: typing['EmploymentInfo'] = dataclasses(default_factory=list)
+	deactivation_reason: 'DeactivationReason' = field(default_factory=lambda: DeactivationReason.Nothing)
+	deactivation_date: Optional[int] = None
+	ssin: Optional[str] = None
+	maiden_name: Optional[str] = None
+	spouse_name: Optional[str] = None
+	partner_name: Optional[str] = None
+	personal_status: Optional['PersonalStatus'] = field(default_factory=lambda: PersonalStatus.Unknown)
+	date_of_birth: Optional[int] = None
+	date_of_death: Optional[int] = None
+	timestamp_of_latest_eid_reading: Optional[int] = None
+	place_of_birth: Optional[str] = None
+	place_of_death: Optional[str] = None
+	deceased: Optional[bool] = None
+	education: Optional[str] = None
+	profession: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
+	note: Optional[str] = None
+	administrative_note: Optional[str] = None
+	nationality: Optional[str] = None
+	race: Optional[str] = None
+	ethnicity: Optional[str] = None
+	preferred_user_id: Optional[str] = None
+	picture: Optional[bytearray] = None
+	external_id: Optional[str] = None
+	insurabilities: List['EncryptedInsurability'] = field(default_factory=list)
+	partnerships: List['Partnership'] = field(default_factory=list)
+	patient_health_care_parties: List['EncryptedPatientHealthCareParty'] = field(default_factory=list)
+	financial_institution_information: List['EncryptedFinancialInstitutionInformation'] = field(default_factory=list)
+	medical_house_contracts: List['EncryptedMedicalHouseContract'] = field(default_factory=list)
+	patient_professions: List['CodeStub'] = field(default_factory=list)
+	parameters: Dict[str, List[str]] = field(default_factory=dict)
+	properties: List['EncryptedPropertyStub'] = field(default_factory=list)
+	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
+	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
+	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
+	public_key: Optional['SpkiHexString'] = None
+	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
+	medical_location_id: Optional[str] = None
+	non_duplicate_ids: List[str] = field(default_factory=list)
+	encrypted_administratives_documents: List[str] = field(default_factory=list)
+	comment: Optional[str] = None
+	warning: Optional[str] = None
+	father_birth_country: Optional['CodeStub'] = None
+	birth_country: Optional['CodeStub'] = None
+	native_country: Optional['CodeStub'] = None
+	social_status: Optional['CodeStub'] = None
+	main_source_of_income: Optional['CodeStub'] = None
+	schooling_infos: List['SchoolingInfo'] = field(default_factory=list)
+	employement_infos: List['EmploymentInfo'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -1024,7 +1018,7 @@ class EncryptedPatient:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedPatient':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedPatient':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1116,85 +1110,85 @@ class EncryptedPatient:
 @dataclass
 class DecryptedPatient:
 	id: str
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	first_name: typing[str] = None
-	last_name: typing[str] = None
-	names: typing['PersonName'] = dataclasses(default_factory=list)
-	company_name: typing[str] = None
-	languages: typing[str] = dataclasses(default_factory=list)
-	addresses: typing['DecryptedAddress'] = dataclasses(default_factory=list)
-	civility: typing[str] = None
-	gender: typing['Gender'] = dataclasses(default_factory=lambda: Gender.Unknown)
-	birth_sex: typing['Gender'] = dataclasses(default_factory=lambda: Gender.Unknown)
-	merge_to_patient_id: typing[str] = None
-	merged_ids: typing[str] = dataclasses(default_factory=list)
-	alias: typing[str] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	first_name: Optional[str] = None
+	last_name: Optional[str] = None
+	names: List['PersonName'] = field(default_factory=list)
+	company_name: Optional[str] = None
+	languages: List[str] = field(default_factory=list)
+	addresses: List['DecryptedAddress'] = field(default_factory=list)
+	civility: Optional[str] = None
+	gender: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	birth_sex: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	merge_to_patient_id: Optional[str] = None
+	merged_ids: List[str] = field(default_factory=list)
+	alias: Optional[str] = None
 	active: bool = True
-	deactivation_reason: 'DeactivationReason' = dataclasses(default_factory=lambda: DeactivationReason.Nothing)
-	deactivation_date: typing[int] = None
-	ssin: typing[str] = None
-	maiden_name: typing[str] = None
-	spouse_name: typing[str] = None
-	partner_name: typing[str] = None
-	personal_status: typing['PersonalStatus'] = dataclasses(default_factory=lambda: PersonalStatus.Unknown)
-	date_of_birth: typing[int] = None
-	date_of_death: typing[int] = None
-	timestamp_of_latest_eid_reading: typing[int] = None
-	place_of_birth: typing[str] = None
-	place_of_death: typing[str] = None
-	deceased: typing[bool] = None
-	education: typing[str] = None
-	profession: typing[str] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
-	note: typing[str] = None
-	administrative_note: typing[str] = None
-	nationality: typing[str] = None
-	race: typing[str] = None
-	ethnicity: typing[str] = None
-	preferred_user_id: typing[str] = None
-	picture: typing[bytearray] = None
-	external_id: typing[str] = None
-	insurabilities: typing['DecryptedInsurability'] = dataclasses(default_factory=list)
-	partnerships: typing['Partnership'] = dataclasses(default_factory=list)
-	patient_health_care_parties: typing['DecryptedPatientHealthCareParty'] = dataclasses(default_factory=list)
-	financial_institution_information: typing['DecryptedFinancialInstitutionInformation'] = dataclasses(default_factory=list)
-	medical_house_contracts: typing['DecryptedMedicalHouseContract'] = dataclasses(default_factory=list)
-	patient_professions: typing['CodeStub'] = dataclasses(default_factory=list)
-	parameters: typing[str, typing[str]] = dataclasses(default_factory=dict)
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
-	hc_party_keys: typing[str, typing['HexString']] = dataclasses(default_factory=dict)
-	aes_exchange_keys: typing['SpkiHexString', typing[str, typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = dataclasses(default_factory=dict)
-	transfer_keys: typing['AesExchangeKeyEncryptionKeypairIdentifier', typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = dataclasses(default_factory=dict)
-	private_key_shamir_partitions: typing[str, 'HexString'] = dataclasses(default_factory=dict)
-	public_key: typing['SpkiHexString'] = None
-	public_keys_for_oaep_with_sha256: typing['SpkiHexString'] = dataclasses(default_factory=list)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
-	medical_location_id: typing[str] = None
-	non_duplicate_ids: typing[str] = dataclasses(default_factory=list)
-	encrypted_administratives_documents: typing[str] = dataclasses(default_factory=list)
-	comment: typing[str] = None
-	warning: typing[str] = None
-	father_birth_country: typing['CodeStub'] = None
-	birth_country: typing['CodeStub'] = None
-	native_country: typing['CodeStub'] = None
-	social_status: typing['CodeStub'] = None
-	main_source_of_income: typing['CodeStub'] = None
-	schooling_infos: typing['SchoolingInfo'] = dataclasses(default_factory=list)
-	employement_infos: typing['EmploymentInfo'] = dataclasses(default_factory=list)
+	deactivation_reason: 'DeactivationReason' = field(default_factory=lambda: DeactivationReason.Nothing)
+	deactivation_date: Optional[int] = None
+	ssin: Optional[str] = None
+	maiden_name: Optional[str] = None
+	spouse_name: Optional[str] = None
+	partner_name: Optional[str] = None
+	personal_status: Optional['PersonalStatus'] = field(default_factory=lambda: PersonalStatus.Unknown)
+	date_of_birth: Optional[int] = None
+	date_of_death: Optional[int] = None
+	timestamp_of_latest_eid_reading: Optional[int] = None
+	place_of_birth: Optional[str] = None
+	place_of_death: Optional[str] = None
+	deceased: Optional[bool] = None
+	education: Optional[str] = None
+	profession: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
+	note: Optional[str] = None
+	administrative_note: Optional[str] = None
+	nationality: Optional[str] = None
+	race: Optional[str] = None
+	ethnicity: Optional[str] = None
+	preferred_user_id: Optional[str] = None
+	picture: Optional[bytearray] = None
+	external_id: Optional[str] = None
+	insurabilities: List['DecryptedInsurability'] = field(default_factory=list)
+	partnerships: List['Partnership'] = field(default_factory=list)
+	patient_health_care_parties: List['DecryptedPatientHealthCareParty'] = field(default_factory=list)
+	financial_institution_information: List['DecryptedFinancialInstitutionInformation'] = field(default_factory=list)
+	medical_house_contracts: List['DecryptedMedicalHouseContract'] = field(default_factory=list)
+	patient_professions: List['CodeStub'] = field(default_factory=list)
+	parameters: Dict[str, List[str]] = field(default_factory=dict)
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
+	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
+	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
+	public_key: Optional['SpkiHexString'] = None
+	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
+	medical_location_id: Optional[str] = None
+	non_duplicate_ids: List[str] = field(default_factory=list)
+	encrypted_administratives_documents: List[str] = field(default_factory=list)
+	comment: Optional[str] = None
+	warning: Optional[str] = None
+	father_birth_country: Optional['CodeStub'] = None
+	birth_country: Optional['CodeStub'] = None
+	native_country: Optional['CodeStub'] = None
+	social_status: Optional['CodeStub'] = None
+	main_source_of_income: Optional['CodeStub'] = None
+	schooling_infos: List['SchoolingInfo'] = field(default_factory=list)
+	employement_infos: List['EmploymentInfo'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -1281,7 +1275,7 @@ class DecryptedPatient:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedPatient':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedPatient':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1370,7 +1364,7 @@ class DecryptedPatient:
 			employement_infos=[EmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
 		)
 
-Patient = typing['EncryptedPatient', 'DecryptedPatient']
+Patient = Union['EncryptedPatient', 'DecryptedPatient']
 
 def serialize_patient(patient: Patient) -> object:
 	if isinstance(patient, EncryptedPatient):
@@ -1384,7 +1378,7 @@ def serialize_patient(patient: Patient) -> object:
 	else:
 		raise Exception(f"{type(patient)} is not a known subclass of Patient")
 
-def deserialize_patient(data: typing[str, typing[str, object]]) -> 'Patient':
+def deserialize_patient(data: Union[str, Dict[str, object]]) -> 'Patient':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -1403,34 +1397,34 @@ def deserialize_patient(data: typing[str, typing[str, object]]) -> 'Patient':
 @dataclass
 class User:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	created: typing[int] = None
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	name: typing[str] = None
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
-	permissions: typing['Permission'] = dataclasses(default_factory=list)
-	roles: typing[str] = dataclasses(default_factory=list)
-	type: typing['UsersType'] = None
-	status: typing['UsersStatus'] = None
-	login: typing[str] = None
-	password_hash: typing[str] = None
-	group_id: typing[str] = None
-	healthcare_party_id: typing[str] = None
-	patient_id: typing[str] = None
-	device_id: typing[str] = None
-	auto_delegations: typing['DelegationTag', typing[str]] = dataclasses(default_factory=dict)
-	created_date: typing[int] = None
-	terms_of_use_date: typing[int] = None
-	email: typing[str] = None
-	mobile_phone: typing[str] = None
-	application_tokens: typing[str, str] = dataclasses(default_factory=dict)
-	authentication_tokens: typing[str, 'AuthenticationToken'] = dataclasses(default_factory=dict)
-	system_metadata: typing['User.SystemMetadata'] = None
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	created: Optional[int] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	name: Optional[str] = None
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	permissions: List['Permission'] = field(default_factory=list)
+	roles: List[str] = field(default_factory=list)
+	type: Optional['UsersType'] = None
+	status: Optional['UsersStatus'] = None
+	login: Optional[str] = None
+	password_hash: Optional[str] = None
+	group_id: Optional[str] = None
+	healthcare_party_id: Optional[str] = None
+	patient_id: Optional[str] = None
+	device_id: Optional[str] = None
+	auto_delegations: Dict['DelegationTag', List[str]] = field(default_factory=dict)
+	created_date: Optional[int] = None
+	terms_of_use_date: Optional[int] = None
+	email: Optional[str] = None
+	mobile_phone: Optional[str] = None
+	application_tokens: Dict[str, str] = field(default_factory=dict)
+	authentication_tokens: Dict[str, 'AuthenticationToken'] = field(default_factory=dict)
+	system_metadata: Optional['User.SystemMetadata'] = None
 
 	@dataclass
 	class SystemMetadata:
-		roles: typing[str]
+		roles: List[str]
 		is_admin: bool
 		inherits_roles: bool
 
@@ -1442,7 +1436,7 @@ class User:
 			}
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'User.SystemMetadata':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'User.SystemMetadata':
 			deserialized_dict: dict[str, object]
 			if isinstance(data, str):
 				deserialized_dict = json.loads(data)
@@ -1484,7 +1478,7 @@ class User:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'User':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'User':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1518,7 +1512,7 @@ class User:
 			system_metadata=User.SystemMetadata._deserialize(deserialized_dict.get("systemMetadata")) if deserialized_dict.get("systemMetadata") is not None else None,
 		)
 
-class AccessLevel(enum):
+class AccessLevel(Enum):
 	Read = "READ"
 	Write = "WRITE"
 
@@ -1526,7 +1520,7 @@ class AccessLevel(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AccessLevel':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AccessLevel':
 		if data == "READ":
 			return AccessLevel.Read
 		elif data == "WRITE":
@@ -1534,27 +1528,27 @@ class AccessLevel(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for AccessLevel enum.")
 
-class SecretIdUseOptionUseAnyConfidential(metaclass=cardinal_sdk.model.SingletonMeta):
+class SecretIdUseOptionUseAnyConfidential(metaclass=SingletonMeta):
 
 	def __serialize__(self) -> object:
 		return {}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'UseAnyConfidential':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAnyConfidential':
 		return cls()
 
-class SecretIdUseOptionUseAnySharedWithParent(metaclass=cardinal_sdk.model.SingletonMeta):
+class SecretIdUseOptionUseAnySharedWithParent(metaclass=SingletonMeta):
 
 	def __serialize__(self) -> object:
 		return {}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'UseAnySharedWithParent':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAnySharedWithParent':
 		return cls()
 
 @dataclass
 class SecretIdUseOptionUse:
-	secret_ids: typing[str]
+	secret_ids: List[str]
 
 	def __serialize__(self) -> object:
 		return {
@@ -1562,7 +1556,7 @@ class SecretIdUseOptionUse:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SecretIdUseOptionUse':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SecretIdUseOptionUse':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1572,7 +1566,7 @@ class SecretIdUseOptionUse:
 			secret_ids=[x0 for x0 in deserialized_dict["secretIds"]],
 		)
 
-SecretIdUseOption = typing['SecretIdUseOptionUseAnyConfidential', 'SecretIdUseOptionUseAnySharedWithParent', 'SecretIdUseOptionUse']
+SecretIdUseOption = Union['SecretIdUseOptionUseAnyConfidential', 'SecretIdUseOptionUseAnySharedWithParent', 'SecretIdUseOptionUse']
 
 def serialize_secret_id_use_option(secret_id_use_option: SecretIdUseOption) -> object:
 	if isinstance(secret_id_use_option, SecretIdUseOptionUseAnyConfidential):
@@ -1590,7 +1584,7 @@ def serialize_secret_id_use_option(secret_id_use_option: SecretIdUseOption) -> o
 	else:
 		raise Exception(f"{type(secret_id_use_option)} is not a known subclass of SecretIdUseOption")
 
-def deserialize_secret_id_use_option(data: typing[str, typing[str, object]]) -> 'SecretIdUseOption':
+def deserialize_secret_id_use_option(data: Union[str, Dict[str, object]]) -> 'SecretIdUseOption':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -1610,19 +1604,19 @@ def deserialize_secret_id_use_option(data: typing[str, typing[str, object]]) -> 
 
 @dataclass
 class TimeTableShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TimeTableShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeTableShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1631,47 +1625,47 @@ class TimeTableShareOptions:
 		return cls(
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class EncryptedDocument:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	document_location: typing['DocumentLocation'] = None
-	document_type: typing['DocumentType'] = None
-	document_status: typing['DocumentStatus'] = None
-	external_uri: typing[str] = None
-	name: typing[str] = None
-	version: typing[str] = None
-	stored_icure_document_id: typing[str] = None
-	external_uuid: typing[str] = None
-	size: typing[int] = None
-	hash: typing[str] = None
-	opening_contact_id: typing[str] = None
-	attachment_id: typing[str] = None
-	object_store_reference: typing[str] = None
-	main_uti: typing[str] = None
-	other_utis: typing[str] = dataclasses(default_factory=list)
-	secondary_attachments: typing[str, 'DataAttachment'] = dataclasses(default_factory=dict)
-	deleted_attachments: typing['DeletedAttachment'] = dataclasses(default_factory=list)
-	encrypted_attachment: typing[bytearray] = None
-	decrypted_attachment: typing[bytearray] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	document_location: Optional['DocumentLocation'] = None
+	document_type: Optional['DocumentType'] = None
+	document_status: Optional['DocumentStatus'] = None
+	external_uri: Optional[str] = None
+	name: Optional[str] = None
+	version: Optional[str] = None
+	stored_icure_document_id: Optional[str] = None
+	external_uuid: Optional[str] = None
+	size: Optional[int] = None
+	hash: Optional[str] = None
+	opening_contact_id: Optional[str] = None
+	attachment_id: Optional[str] = None
+	object_store_reference: Optional[str] = None
+	main_uti: Optional[str] = None
+	other_utis: List[str] = field(default_factory=list)
+	secondary_attachments: Dict[str, 'DataAttachment'] = field(default_factory=dict)
+	deleted_attachments: List['DeletedAttachment'] = field(default_factory=list)
+	encrypted_attachment: Optional[bytearray] = None
+	decrypted_attachment: Optional[bytearray] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -1714,7 +1708,7 @@ class EncryptedDocument:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedDocument':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedDocument':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1762,41 +1756,41 @@ class EncryptedDocument:
 @dataclass
 class DecryptedDocument:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	document_location: typing['DocumentLocation'] = None
-	document_type: typing['DocumentType'] = None
-	document_status: typing['DocumentStatus'] = None
-	external_uri: typing[str] = None
-	name: typing[str] = None
-	version: typing[str] = None
-	stored_icure_document_id: typing[str] = None
-	external_uuid: typing[str] = None
-	size: typing[int] = None
-	hash: typing[str] = None
-	opening_contact_id: typing[str] = None
-	attachment_id: typing[str] = None
-	object_store_reference: typing[str] = None
-	main_uti: typing[str] = None
-	other_utis: typing[str] = dataclasses(default_factory=list)
-	secondary_attachments: typing[str, 'DataAttachment'] = dataclasses(default_factory=dict)
-	deleted_attachments: typing['DeletedAttachment'] = dataclasses(default_factory=list)
-	encrypted_attachment: typing[bytearray] = None
-	decrypted_attachment: typing[bytearray] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	document_location: Optional['DocumentLocation'] = None
+	document_type: Optional['DocumentType'] = None
+	document_status: Optional['DocumentStatus'] = None
+	external_uri: Optional[str] = None
+	name: Optional[str] = None
+	version: Optional[str] = None
+	stored_icure_document_id: Optional[str] = None
+	external_uuid: Optional[str] = None
+	size: Optional[int] = None
+	hash: Optional[str] = None
+	opening_contact_id: Optional[str] = None
+	attachment_id: Optional[str] = None
+	object_store_reference: Optional[str] = None
+	main_uti: Optional[str] = None
+	other_utis: List[str] = field(default_factory=list)
+	secondary_attachments: Dict[str, 'DataAttachment'] = field(default_factory=dict)
+	deleted_attachments: List['DeletedAttachment'] = field(default_factory=list)
+	encrypted_attachment: Optional[bytearray] = None
+	decrypted_attachment: Optional[bytearray] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -1839,7 +1833,7 @@ class DecryptedDocument:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedDocument':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedDocument':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1884,7 +1878,7 @@ class DecryptedDocument:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-Document = typing['EncryptedDocument', 'DecryptedDocument']
+Document = Union['EncryptedDocument', 'DecryptedDocument']
 
 def serialize_document(document: Document) -> object:
 	if isinstance(document, EncryptedDocument):
@@ -1898,7 +1892,7 @@ def serialize_document(document: Document) -> object:
 	else:
 		raise Exception(f"{type(document)} is not a known subclass of Document")
 
-def deserialize_document(data: typing[str, typing[str, object]]) -> 'Document':
+def deserialize_document(data: Union[str, Dict[str, object]]) -> 'Document':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -1916,7 +1910,7 @@ def deserialize_document(data: typing[str, typing[str, object]]) -> 'Document':
 
 @dataclass
 class EntityAccessInformation:
-	permissions_by_data_owner_id: typing[str, 'AccessLevel']
+	permissions_by_data_owner_id: Dict[str, 'AccessLevel']
 	has_unknown_anonymous_data_owners: bool
 
 	def __serialize__(self) -> object:
@@ -1926,7 +1920,7 @@ class EntityAccessInformation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntityAccessInformation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntityAccessInformation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -1937,7 +1931,7 @@ class EntityAccessInformation:
 			has_unknown_anonymous_data_owners=deserialized_dict["hasUnknownAnonymousDataOwners"],
 		)
 
-class SortDirection(enum):
+class SortDirection(Enum):
 	Asc = "asc"
 	Desc = "desc"
 
@@ -1945,7 +1939,7 @@ class SortDirection(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SortDirection':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SortDirection':
 		if data == "asc":
 			return SortDirection.Asc
 		elif data == "desc":
@@ -1956,25 +1950,25 @@ class SortDirection(enum):
 @dataclass
 class EncryptedClassification:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	parent_id: typing[str] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	parent_id: Optional[str] = None
 	label: str = ""
-	template_id: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	template_id: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2001,7 +1995,7 @@ class EncryptedClassification:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedClassification':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedClassification':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2033,25 +2027,25 @@ class EncryptedClassification:
 @dataclass
 class DecryptedClassification:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	parent_id: typing[str] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	parent_id: Optional[str] = None
 	label: str = ""
-	template_id: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	template_id: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2078,7 +2072,7 @@ class DecryptedClassification:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedClassification':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedClassification':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2107,7 +2101,7 @@ class DecryptedClassification:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-Classification = typing['EncryptedClassification', 'DecryptedClassification']
+Classification = Union['EncryptedClassification', 'DecryptedClassification']
 
 def serialize_classification(classification: Classification) -> object:
 	if isinstance(classification, EncryptedClassification):
@@ -2121,7 +2115,7 @@ def serialize_classification(classification: Classification) -> object:
 	else:
 		raise Exception(f"{type(classification)} is not a known subclass of Classification")
 
-def deserialize_classification(data: typing[str, typing[str, object]]) -> 'Classification':
+def deserialize_classification(data: Union[str, Dict[str, object]]) -> 'Classification':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -2139,21 +2133,21 @@ def deserialize_classification(data: typing[str, typing[str, object]]) -> 'Class
 
 @dataclass
 class ClassificationShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ClassificationShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ClassificationShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2163,52 +2157,52 @@ class ClassificationShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class DecryptedCalendarItem:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	title: typing[str] = None
-	calendar_item_type_id: typing[str] = None
-	master_calendar_item_id: typing[str] = None
-	patient_id: typing[str] = None
-	important: typing[bool] = None
-	home_visit: typing[bool] = None
-	phone_number: typing[str] = None
-	place_id: typing[str] = None
-	address: typing['DecryptedAddress'] = None
-	address_text: typing[str] = None
-	start_time: typing[int] = None
-	end_time: typing[int] = None
-	confirmation_time: typing[int] = None
-	cancellation_timestamp: typing[int] = None
-	confirmation_id: typing[str] = None
-	duration: typing[int] = None
-	all_day: typing[bool] = None
-	details: typing[str] = None
-	was_migrated: typing[bool] = None
-	agenda_id: typing[str] = None
-	hcp_id: typing[str] = None
-	recurrence_id: typing[str] = None
-	meeting_tags: typing['CalendarItemTag'] = dataclasses(default_factory=list)
-	flow_item: typing['FlowItem'] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	title: Optional[str] = None
+	calendar_item_type_id: Optional[str] = None
+	master_calendar_item_id: Optional[str] = None
+	patient_id: Optional[str] = None
+	important: Optional[bool] = None
+	home_visit: Optional[bool] = None
+	phone_number: Optional[str] = None
+	place_id: Optional[str] = None
+	address: Optional['DecryptedAddress'] = None
+	address_text: Optional[str] = None
+	start_time: Optional[int] = None
+	end_time: Optional[int] = None
+	confirmation_time: Optional[int] = None
+	cancellation_timestamp: Optional[int] = None
+	confirmation_id: Optional[str] = None
+	duration: Optional[int] = None
+	all_day: Optional[bool] = None
+	details: Optional[str] = None
+	was_migrated: Optional[bool] = None
+	agenda_id: Optional[str] = None
+	hcp_id: Optional[str] = None
+	recurrence_id: Optional[str] = None
+	meeting_tags: List['CalendarItemTag'] = field(default_factory=list)
+	flow_item: Optional['FlowItem'] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2256,7 +2250,7 @@ class DecryptedCalendarItem:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedCalendarItem':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedCalendarItem':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2309,46 +2303,46 @@ class DecryptedCalendarItem:
 @dataclass
 class EncryptedCalendarItem:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	title: typing[str] = None
-	calendar_item_type_id: typing[str] = None
-	master_calendar_item_id: typing[str] = None
-	patient_id: typing[str] = None
-	important: typing[bool] = None
-	home_visit: typing[bool] = None
-	phone_number: typing[str] = None
-	place_id: typing[str] = None
-	address: typing['EncryptedAddress'] = None
-	address_text: typing[str] = None
-	start_time: typing[int] = None
-	end_time: typing[int] = None
-	confirmation_time: typing[int] = None
-	cancellation_timestamp: typing[int] = None
-	confirmation_id: typing[str] = None
-	duration: typing[int] = None
-	all_day: typing[bool] = None
-	details: typing[str] = None
-	was_migrated: typing[bool] = None
-	agenda_id: typing[str] = None
-	hcp_id: typing[str] = None
-	recurrence_id: typing[str] = None
-	meeting_tags: typing['CalendarItemTag'] = dataclasses(default_factory=list)
-	flow_item: typing['FlowItem'] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	title: Optional[str] = None
+	calendar_item_type_id: Optional[str] = None
+	master_calendar_item_id: Optional[str] = None
+	patient_id: Optional[str] = None
+	important: Optional[bool] = None
+	home_visit: Optional[bool] = None
+	phone_number: Optional[str] = None
+	place_id: Optional[str] = None
+	address: Optional['EncryptedAddress'] = None
+	address_text: Optional[str] = None
+	start_time: Optional[int] = None
+	end_time: Optional[int] = None
+	confirmation_time: Optional[int] = None
+	cancellation_timestamp: Optional[int] = None
+	confirmation_id: Optional[str] = None
+	duration: Optional[int] = None
+	all_day: Optional[bool] = None
+	details: Optional[str] = None
+	was_migrated: Optional[bool] = None
+	agenda_id: Optional[str] = None
+	hcp_id: Optional[str] = None
+	recurrence_id: Optional[str] = None
+	meeting_tags: List['CalendarItemTag'] = field(default_factory=list)
+	flow_item: Optional['FlowItem'] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2396,7 +2390,7 @@ class EncryptedCalendarItem:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedCalendarItem':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedCalendarItem':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2446,7 +2440,7 @@ class EncryptedCalendarItem:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-CalendarItem = typing['DecryptedCalendarItem', 'EncryptedCalendarItem']
+CalendarItem = Union['DecryptedCalendarItem', 'EncryptedCalendarItem']
 
 def serialize_calendar_item(calendar_item: CalendarItem) -> object:
 	if isinstance(calendar_item, DecryptedCalendarItem):
@@ -2460,7 +2454,7 @@ def serialize_calendar_item(calendar_item: CalendarItem) -> object:
 	else:
 		raise Exception(f"{type(calendar_item)} is not a known subclass of CalendarItem")
 
-def deserialize_calendar_item(data: typing[str, typing[str, object]]) -> 'CalendarItem':
+def deserialize_calendar_item(data: Union[str, Dict[str, object]]) -> 'CalendarItem':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -2479,26 +2473,26 @@ def deserialize_calendar_item(data: typing[str, typing[str, object]]) -> 'Calend
 @dataclass
 class DecryptedMaintenanceTask:
 	id: str
-	rev: typing[str] = None
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	task_type: typing[str] = None
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
-	status: 'TaskStatus' = dataclasses(default_factory=lambda: TaskStatus.Pending)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	task_type: Optional[str] = None
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	status: 'TaskStatus' = field(default_factory=lambda: TaskStatus.Pending)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2526,7 +2520,7 @@ class DecryptedMaintenanceTask:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedMaintenanceTask':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedMaintenanceTask':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2559,26 +2553,26 @@ class DecryptedMaintenanceTask:
 @dataclass
 class EncryptedMaintenanceTask:
 	id: str
-	rev: typing[str] = None
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	task_type: typing[str] = None
-	properties: typing['EncryptedPropertyStub'] = dataclasses(default_factory=list)
-	status: 'TaskStatus' = dataclasses(default_factory=lambda: TaskStatus.Pending)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	task_type: Optional[str] = None
+	properties: List['EncryptedPropertyStub'] = field(default_factory=list)
+	status: 'TaskStatus' = field(default_factory=lambda: TaskStatus.Pending)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2606,7 +2600,7 @@ class EncryptedMaintenanceTask:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedMaintenanceTask':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedMaintenanceTask':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2636,7 +2630,7 @@ class EncryptedMaintenanceTask:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-MaintenanceTask = typing['DecryptedMaintenanceTask', 'EncryptedMaintenanceTask']
+MaintenanceTask = Union['DecryptedMaintenanceTask', 'EncryptedMaintenanceTask']
 
 def serialize_maintenance_task(maintenance_task: MaintenanceTask) -> object:
 	if isinstance(maintenance_task, DecryptedMaintenanceTask):
@@ -2650,7 +2644,7 @@ def serialize_maintenance_task(maintenance_task: MaintenanceTask) -> object:
 	else:
 		raise Exception(f"{type(maintenance_task)} is not a known subclass of MaintenanceTask")
 
-def deserialize_maintenance_task(data: typing[str, typing[str, object]]) -> 'MaintenanceTask':
+def deserialize_maintenance_task(data: Union[str, Dict[str, object]]) -> 'MaintenanceTask':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -2668,19 +2662,19 @@ def deserialize_maintenance_task(data: typing[str, typing[str, object]]) -> 'Mai
 
 @dataclass
 class MaintenanceTaskShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MaintenanceTaskShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MaintenanceTaskShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2689,39 +2683,39 @@ class MaintenanceTaskShareOptions:
 		return cls(
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class EncryptedForm:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	opening_date: typing[int] = None
-	status: typing[str] = None
-	version: typing[int] = None
-	logical_uuid: typing[str] = None
-	descr: typing[str] = None
-	unique_id: typing[str] = None
-	form_template_id: typing[str] = None
-	contact_id: typing[str] = None
-	health_element_id: typing[str] = None
-	plan_of_action_id: typing[str] = None
-	parent: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	status: Optional[str] = None
+	version: Optional[int] = None
+	logical_uuid: Optional[str] = None
+	descr: Optional[str] = None
+	unique_id: Optional[str] = None
+	form_template_id: Optional[str] = None
+	contact_id: Optional[str] = None
+	health_element_id: Optional[str] = None
+	plan_of_action_id: Optional[str] = None
+	parent: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2756,7 +2750,7 @@ class EncryptedForm:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedForm':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedForm':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2796,33 +2790,33 @@ class EncryptedForm:
 @dataclass
 class DecryptedForm:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	opening_date: typing[int] = None
-	status: typing[str] = None
-	version: typing[int] = None
-	logical_uuid: typing[str] = None
-	descr: typing[str] = None
-	unique_id: typing[str] = None
-	form_template_id: typing[str] = None
-	contact_id: typing[str] = None
-	health_element_id: typing[str] = None
-	plan_of_action_id: typing[str] = None
-	parent: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	status: Optional[str] = None
+	version: Optional[int] = None
+	logical_uuid: Optional[str] = None
+	descr: Optional[str] = None
+	unique_id: Optional[str] = None
+	form_template_id: Optional[str] = None
+	contact_id: Optional[str] = None
+	health_element_id: Optional[str] = None
+	plan_of_action_id: Optional[str] = None
+	parent: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2857,7 +2851,7 @@ class DecryptedForm:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedForm':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedForm':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -2894,7 +2888,7 @@ class DecryptedForm:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-Form = typing['EncryptedForm', 'DecryptedForm']
+Form = Union['EncryptedForm', 'DecryptedForm']
 
 def serialize_form(form: Form) -> object:
 	if isinstance(form, EncryptedForm):
@@ -2908,7 +2902,7 @@ def serialize_form(form: Form) -> object:
 	else:
 		raise Exception(f"{type(form)} is not a known subclass of Form")
 
-def deserialize_form(data: typing[str, typing[str, object]]) -> 'Form':
+def deserialize_form(data: Union[str, Dict[str, object]]) -> 'Form':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -2927,26 +2921,26 @@ def deserialize_form(data: typing[str, typing[str, object]]) -> 'Form':
 @dataclass
 class FormTemplate:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	template_layout: typing['FormTemplateLayout'] = None
-	raw_template_layout: typing[bytearray] = None
-	name: typing[str] = None
-	guid: typing[str] = None
-	group: typing['DocumentGroup'] = None
-	descr: typing[str] = None
-	disabled: typing[str] = None
-	specialty: typing['CodeStub'] = None
-	author: typing[str] = None
-	form_instance_preferred_location: typing[str] = None
-	keyboard_shortcut: typing[str] = None
-	short_report: typing[str] = None
-	medium_report: typing[str] = None
-	long_report: typing[str] = None
-	reports: typing[str] = dataclasses(default_factory=list)
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	layout_attachment_id: typing[str] = None
-	template_layout_attachment_id: typing[str] = None
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	template_layout: Optional['FormTemplateLayout'] = None
+	raw_template_layout: Optional[bytearray] = None
+	name: Optional[str] = None
+	guid: Optional[str] = None
+	group: Optional['DocumentGroup'] = None
+	descr: Optional[str] = None
+	disabled: Optional[str] = None
+	specialty: Optional['CodeStub'] = None
+	author: Optional[str] = None
+	form_instance_preferred_location: Optional[str] = None
+	keyboard_shortcut: Optional[str] = None
+	short_report: Optional[str] = None
+	medium_report: Optional[str] = None
+	long_report: Optional[str] = None
+	reports: List[str] = field(default_factory=list)
+	tags: List['CodeStub'] = field(default_factory=list)
+	layout_attachment_id: Optional[str] = None
+	template_layout_attachment_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -2974,7 +2968,7 @@ class FormTemplate:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FormTemplate':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FormTemplate':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3004,9 +2998,9 @@ class FormTemplate:
 			template_layout_attachment_id=deserialized_dict.get("templateLayoutAttachmentId"),
 		)
 
-class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
+class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 
-	class Tag(enum):
+	class Tag(Enum):
 		All = "All"
 		MedicalInformation = "MedicalInformation"
 		FinancialInformation = "FinancialInformation"
@@ -3015,7 +3009,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShareAllPatientDataOptions.Tag':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.Tag':
 			if data == "All":
 				return ShareAllPatientDataOptions.Tag.All
 			elif data == "MedicalInformation":
@@ -3025,7 +3019,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 			else:
 				raise Exception(f"{data} is not a valid value for Tag enum.")
 
-	class ShareableEntity(enum):
+	class ShareableEntity(Enum):
 		CalendarItem = "CalendarItem"
 		Contact = "Contact"
 		Classification = "Classification"
@@ -3039,7 +3033,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShareAllPatientDataOptions.ShareableEntity':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.ShareableEntity':
 			if data == "CalendarItem":
 				return ShareAllPatientDataOptions.ShareableEntity.CalendarItem
 			elif data == "Contact":
@@ -3062,8 +3056,8 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 	@dataclass
 	class EntityResult:
 		modified: int
-		success: typing[bool] = None
-		error: typing['ShareAllPatientDataOptions.SharePatientDataError'] = None
+		success: Optional[bool] = None
+		error: Optional['ShareAllPatientDataOptions.SharePatientDataError'] = None
 
 		def __serialize__(self) -> object:
 			return {
@@ -3073,7 +3067,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 			}
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShareAllPatientDataOptions.EntityResult':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.EntityResult':
 			deserialized_dict: dict[str, object]
 			if isinstance(data, str):
 				deserialized_dict = json.loads(data)
@@ -3088,7 +3082,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 	@dataclass
 	class Result:
 		patient: 'EncryptedPatient'
-		statuses: typing['ShareAllPatientDataOptions.ShareableEntity', 'ShareAllPatientDataOptions.EntityResult']
+		statuses: Dict['ShareAllPatientDataOptions.ShareableEntity', 'ShareAllPatientDataOptions.EntityResult']
 
 		def __serialize__(self) -> object:
 			return {
@@ -3097,7 +3091,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 			}
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShareAllPatientDataOptions.Result':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.Result':
 			deserialized_dict: dict[str, object]
 			if isinstance(data, str):
 				deserialized_dict = json.loads(data)
@@ -3108,11 +3102,11 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 				statuses=dict(map(lambda kv0: (ShareAllPatientDataOptions.ShareableEntity._deserialize(kv0[0]), ShareAllPatientDataOptions.EntityResult._deserialize(kv0[1])), deserialized_dict["statuses"].items())),
 			)
 
-	SharePatientDataError = typing['ShareAllPatientDataOptions.BulkShareFailure', 'ShareAllPatientDataOptions.FailedRequest']
+	SharePatientDataError = Union['ShareAllPatientDataOptions.BulkShareFailure', 'ShareAllPatientDataOptions.FailedRequest']
 
 	@dataclass
 	class BulkShareFailure:
-		errors: typing['FailedRequestDetails']
+		errors: List['FailedRequestDetails']
 		message: str
 
 		def __serialize__(self) -> object:
@@ -3122,7 +3116,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 			}
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShareAllPatientDataOptions.BulkShareFailure':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.BulkShareFailure':
 			deserialized_dict: dict[str, object]
 			if isinstance(data, str):
 				deserialized_dict = json.loads(data)
@@ -3143,7 +3137,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 			}
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShareAllPatientDataOptions.FailedRequest':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.FailedRequest':
 			deserialized_dict: dict[str, object]
 			if isinstance(data, str):
 				deserialized_dict = json.loads(data)
@@ -3166,7 +3160,7 @@ class ShareAllPatientDataOptions(metaclass=cardinal_sdk.model.SingletonMeta):
 		else:
 			raise Exception(f"{type(share_patient_data_error)} is not a known subclass of SharePatientDataError")
 
-	def deserialize_share_patient_data_error(data: typing[str, typing[str, object]]) -> 'ShareAllPatientDataOptions.SharePatientDataError':
+	def deserialize_share_patient_data_error(data: Union[str, Dict[str, object]]) -> 'ShareAllPatientDataOptions.SharePatientDataError':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3194,7 +3188,7 @@ class EntityWithTypeInfo:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntityWithTypeInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntityWithTypeInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3207,19 +3201,19 @@ class EntityWithTypeInfo:
 
 @dataclass
 class PatientShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PatientShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3228,38 +3222,38 @@ class PatientShareOptions:
 		return cls(
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class Tarification:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	label: typing[typing[str, str]] = None
-	context: typing[str] = None
-	type: typing[str] = None
-	code: typing[str] = None
-	version: typing[str] = None
-	author: typing[str] = None
-	regions: typing[str] = dataclasses(default_factory=list)
-	periodicity: typing['Periodicity'] = dataclasses(default_factory=list)
-	level: typing[int] = None
-	links: typing[str] = dataclasses(default_factory=list)
-	qualified_links: typing['LinkQualification', typing[str]] = dataclasses(default_factory=dict)
-	flags: typing['CodeFlag'] = dataclasses(default_factory=list)
-	search_terms: typing[str, typing[str]] = dataclasses(default_factory=dict)
-	data: typing[str] = None
-	appendices: typing['AppendixType', str] = dataclasses(default_factory=dict)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	label: Optional[Dict[str, str]] = None
+	context: Optional[str] = None
+	type: Optional[str] = None
+	code: Optional[str] = None
+	version: Optional[str] = None
+	author: Optional[str] = None
+	regions: List[str] = field(default_factory=list)
+	periodicity: List['Periodicity'] = field(default_factory=list)
+	level: Optional[int] = None
+	links: List[str] = field(default_factory=list)
+	qualified_links: Dict['LinkQualification', List[str]] = field(default_factory=dict)
+	flags: List['CodeFlag'] = field(default_factory=list)
+	search_terms: Dict[str, List[str]] = field(default_factory=dict)
+	data: Optional[str] = None
+	appendices: Dict['AppendixType', str] = field(default_factory=dict)
 	disabled: bool = False
-	valorisations: typing['DecryptedValorisation'] = dataclasses(default_factory=list)
-	category: typing[str, str] = dataclasses(default_factory=dict)
-	consultation_code: typing[bool] = None
-	has_related_code: typing[bool] = None
-	needs_prescriber: typing[bool] = None
-	related_codes: typing[str] = dataclasses(default_factory=list)
-	ngroup: typing[str] = None
-	letter_values: typing['LetterValue'] = dataclasses(default_factory=list)
+	valorisations: List['DecryptedValorisation'] = field(default_factory=list)
+	category: Dict[str, str] = field(default_factory=dict)
+	consultation_code: Optional[bool] = None
+	has_related_code: Optional[bool] = None
+	needs_prescriber: Optional[bool] = None
+	related_codes: List[str] = field(default_factory=list)
+	ngroup: Optional[str] = None
+	letter_values: List['LetterValue'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -3293,7 +3287,7 @@ class Tarification:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Tarification':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Tarification':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3332,37 +3326,37 @@ class Tarification:
 @dataclass
 class DecryptedContact:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	group_id: typing[str] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	descr: typing[str] = None
-	location: typing[str] = None
-	external_id: typing[str] = None
-	encounter_type: typing['CodeStub'] = None
-	encounter_location: typing['DecryptedAddress'] = None
-	sub_contacts: typing['DecryptedSubContact'] = dataclasses(default_factory=list)
-	services: typing['DecryptedService'] = dataclasses(default_factory=list)
-	participants: typing['ParticipantType', str] = dataclasses(default_factory=dict)
-	healthcare_party_id: typing[str] = None
-	modified_contact_id: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	identifier: List['Identifier'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	group_id: Optional[str] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	descr: Optional[str] = None
+	location: Optional[str] = None
+	external_id: Optional[str] = None
+	encounter_type: Optional['CodeStub'] = None
+	encounter_location: Optional['DecryptedAddress'] = None
+	sub_contacts: List['DecryptedSubContact'] = field(default_factory=list)
+	services: List['DecryptedService'] = field(default_factory=list)
+	participants: Dict['ParticipantType', str] = field(default_factory=dict)
+	healthcare_party_id: Optional[str] = None
+	modified_contact_id: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
+	notes: List['Annotation'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -3401,7 +3395,7 @@ class DecryptedContact:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedContact':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedContact':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3445,37 +3439,37 @@ class DecryptedContact:
 @dataclass
 class EncryptedContact:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	group_id: typing[str] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	descr: typing[str] = None
-	location: typing[str] = None
-	external_id: typing[str] = None
-	encounter_type: typing['CodeStub'] = None
-	encounter_location: typing['EncryptedAddress'] = None
-	sub_contacts: typing['EncryptedSubContact'] = dataclasses(default_factory=list)
-	services: typing['EncryptedService'] = dataclasses(default_factory=list)
-	participants: typing['ParticipantType', str] = dataclasses(default_factory=dict)
-	healthcare_party_id: typing[str] = None
-	modified_contact_id: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	identifier: List['Identifier'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	group_id: Optional[str] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	descr: Optional[str] = None
+	location: Optional[str] = None
+	external_id: Optional[str] = None
+	encounter_type: Optional['CodeStub'] = None
+	encounter_location: Optional['EncryptedAddress'] = None
+	sub_contacts: List['EncryptedSubContact'] = field(default_factory=list)
+	services: List['EncryptedService'] = field(default_factory=list)
+	participants: Dict['ParticipantType', str] = field(default_factory=dict)
+	healthcare_party_id: Optional[str] = None
+	modified_contact_id: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
+	notes: List['Annotation'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -3514,7 +3508,7 @@ class EncryptedContact:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedContact':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedContact':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3555,7 +3549,7 @@ class EncryptedContact:
 			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
 		)
 
-Contact = typing['DecryptedContact', 'EncryptedContact']
+Contact = Union['DecryptedContact', 'EncryptedContact']
 
 def serialize_contact(contact: Contact) -> object:
 	if isinstance(contact, DecryptedContact):
@@ -3569,7 +3563,7 @@ def serialize_contact(contact: Contact) -> object:
 	else:
 		raise Exception(f"{type(contact)} is not a known subclass of Contact")
 
-def deserialize_contact(data: typing[str, typing[str, object]]) -> 'Contact':
+def deserialize_contact(data: Union[str, Dict[str, object]]) -> 'Contact':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -3588,41 +3582,41 @@ def deserialize_contact(data: typing[str, typing[str, object]]) -> 'Contact':
 @dataclass
 class DecryptedService:
 	id: str
-	transaction_id: typing[str] = None
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	contact_id: typing[str] = None
-	sub_contact_ids: typing[typing[str]] = None
-	plans_of_action_ids: typing[typing[str]] = None
-	health_elements_ids: typing[typing[str]] = None
-	form_ids: typing[typing[str]] = None
-	secret_foreign_keys: typing[typing[str]] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	label: typing[str] = None
-	index: typing[int] = None
-	content: typing[str, 'DecryptedContent'] = dataclasses(default_factory=dict)
-	encrypted_content: typing[str] = None
-	text_indexes: typing[str, str] = dataclasses(default_factory=dict)
-	value_date: typing[int] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	form_id: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	end_of_life: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	comment: typing[str] = None
-	status: typing[int] = None
-	invoicing_codes: typing[str] = dataclasses(default_factory=list)
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
-	qualified_links: typing['LinkQualification', typing[str, str]] = dataclasses(default_factory=dict)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	transaction_id: Optional[str] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	contact_id: Optional[str] = None
+	sub_contact_ids: Optional[List[str]] = None
+	plans_of_action_ids: Optional[List[str]] = None
+	health_elements_ids: Optional[List[str]] = None
+	form_ids: Optional[List[str]] = None
+	secret_foreign_keys: Optional[List[str]] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	label: Optional[str] = None
+	index: Optional[int] = None
+	content: Dict[str, 'DecryptedContent'] = field(default_factory=dict)
+	encrypted_content: Optional[str] = None
+	text_indexes: Dict[str, str] = field(default_factory=dict)
+	value_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	form_id: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	end_of_life: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	comment: Optional[str] = None
+	status: Optional[int] = None
+	invoicing_codes: List[str] = field(default_factory=list)
+	notes: List['Annotation'] = field(default_factory=list)
+	qualified_links: Dict['LinkQualification', Dict[str, str]] = field(default_factory=dict)
+	codes: List['CodeStub'] = field(default_factory=list)
+	tags: List['CodeStub'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -3665,7 +3659,7 @@ class DecryptedService:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedService':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedService':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3713,41 +3707,41 @@ class DecryptedService:
 @dataclass
 class EncryptedService:
 	id: str
-	transaction_id: typing[str] = None
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	contact_id: typing[str] = None
-	sub_contact_ids: typing[typing[str]] = None
-	plans_of_action_ids: typing[typing[str]] = None
-	health_elements_ids: typing[typing[str]] = None
-	form_ids: typing[typing[str]] = None
-	secret_foreign_keys: typing[typing[str]] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	label: typing[str] = None
-	index: typing[int] = None
-	content: typing[str, 'EncryptedContent'] = dataclasses(default_factory=dict)
-	encrypted_content: typing[str] = None
-	text_indexes: typing[str, str] = dataclasses(default_factory=dict)
-	value_date: typing[int] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	form_id: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	end_of_life: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	comment: typing[str] = None
-	status: typing[int] = None
-	invoicing_codes: typing[str] = dataclasses(default_factory=list)
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
-	qualified_links: typing['LinkQualification', typing[str, str]] = dataclasses(default_factory=dict)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	transaction_id: Optional[str] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	contact_id: Optional[str] = None
+	sub_contact_ids: Optional[List[str]] = None
+	plans_of_action_ids: Optional[List[str]] = None
+	health_elements_ids: Optional[List[str]] = None
+	form_ids: Optional[List[str]] = None
+	secret_foreign_keys: Optional[List[str]] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	label: Optional[str] = None
+	index: Optional[int] = None
+	content: Dict[str, 'EncryptedContent'] = field(default_factory=dict)
+	encrypted_content: Optional[str] = None
+	text_indexes: Dict[str, str] = field(default_factory=dict)
+	value_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	form_id: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	end_of_life: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	comment: Optional[str] = None
+	status: Optional[int] = None
+	invoicing_codes: List[str] = field(default_factory=list)
+	notes: List['Annotation'] = field(default_factory=list)
+	qualified_links: Dict['LinkQualification', Dict[str, str]] = field(default_factory=dict)
+	codes: List['CodeStub'] = field(default_factory=list)
+	tags: List['CodeStub'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -3790,7 +3784,7 @@ class EncryptedService:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedService':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedService':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3835,7 +3829,7 @@ class EncryptedService:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-Service = typing['DecryptedService', 'EncryptedService']
+Service = Union['DecryptedService', 'EncryptedService']
 
 def serialize_service(service: Service) -> object:
 	if isinstance(service, DecryptedService):
@@ -3849,7 +3843,7 @@ def serialize_service(service: Service) -> object:
 	else:
 		raise Exception(f"{type(service)} is not a known subclass of Service")
 
-def deserialize_service(data: typing[str, typing[str, object]]) -> 'Service':
+def deserialize_service(data: Union[str, Dict[str, object]]) -> 'Service':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -3877,7 +3871,7 @@ class LabelledOccurence:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'LabelledOccurence':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'LabelledOccurence':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3890,21 +3884,21 @@ class LabelledOccurence:
 
 @dataclass
 class ContactShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ContactShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ContactShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -3914,33 +3908,33 @@ class ContactShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class DecryptedReceipt:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	attachment_ids: typing['ReceiptBlobType', str] = dataclasses(default_factory=dict)
-	references: typing[str] = dataclasses(default_factory=list)
-	document_id: typing[str] = None
-	category: typing[str] = None
-	sub_category: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	attachment_ids: Dict['ReceiptBlobType', str] = field(default_factory=dict)
+	references: List[str] = field(default_factory=list)
+	document_id: Optional[str] = None
+	category: Optional[str] = None
+	sub_category: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -3969,7 +3963,7 @@ class DecryptedReceipt:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedReceipt':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedReceipt':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4003,27 +3997,27 @@ class DecryptedReceipt:
 @dataclass
 class EncryptedReceipt:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	attachment_ids: typing['ReceiptBlobType', str] = dataclasses(default_factory=dict)
-	references: typing[str] = dataclasses(default_factory=list)
-	document_id: typing[str] = None
-	category: typing[str] = None
-	sub_category: typing[str] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	attachment_ids: Dict['ReceiptBlobType', str] = field(default_factory=dict)
+	references: List[str] = field(default_factory=list)
+	document_id: Optional[str] = None
+	category: Optional[str] = None
+	sub_category: Optional[str] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -4052,7 +4046,7 @@ class EncryptedReceipt:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedReceipt':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedReceipt':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4083,7 +4077,7 @@ class EncryptedReceipt:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-Receipt = typing['DecryptedReceipt', 'EncryptedReceipt']
+Receipt = Union['DecryptedReceipt', 'EncryptedReceipt']
 
 def serialize_receipt(receipt: Receipt) -> object:
 	if isinstance(receipt, DecryptedReceipt):
@@ -4097,7 +4091,7 @@ def serialize_receipt(receipt: Receipt) -> object:
 	else:
 		raise Exception(f"{type(receipt)} is not a known subclass of Receipt")
 
-def deserialize_receipt(data: typing[str, typing[str, object]]) -> 'Receipt':
+def deserialize_receipt(data: Union[str, Dict[str, object]]) -> 'Receipt':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -4115,19 +4109,19 @@ def deserialize_receipt(data: typing[str, typing[str, object]]) -> 'Receipt':
 
 @dataclass
 class ReceiptShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReceiptShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReceiptShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4136,65 +4130,65 @@ class ReceiptShareOptions:
 		return cls(
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class HealthcareParty:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	deletion_date: typing[int] = None
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	name: typing[str] = None
-	last_name: typing[str] = None
-	first_name: typing[str] = None
-	names: typing['PersonName'] = dataclasses(default_factory=list)
-	gender: typing['Gender'] = None
-	civility: typing[str] = None
-	company_name: typing[str] = None
-	speciality: typing[str] = None
-	bank_account: typing[str] = None
-	bic: typing[str] = None
-	proxy_bank_account: typing[str] = None
-	proxy_bic: typing[str] = None
-	invoice_header: typing[str] = None
-	cbe: typing[str] = None
-	ehp: typing[str] = None
-	user_id: typing[str] = None
-	parent_id: typing[str] = None
-	convention: typing[int] = None
-	nihii: typing[str] = None
-	nihii_spec_code: typing[str] = None
-	ssin: typing[str] = None
-	addresses: typing['DecryptedAddress'] = dataclasses(default_factory=list)
-	languages: typing[str] = dataclasses(default_factory=list)
-	picture: typing[bytearray] = None
-	statuses: typing['HealthcarePartyStatus'] = dataclasses(default_factory=list)
-	status_history: typing['HealthcarePartyHistoryStatus'] = dataclasses(default_factory=list)
-	speciality_codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	send_formats: typing['TelecomType', str] = dataclasses(default_factory=dict)
-	notes: typing[str] = None
-	financial_institution_information: typing['DecryptedFinancialInstitutionInformation'] = dataclasses(default_factory=list)
-	descr: typing[typing[str, str]] = dataclasses(default_factory=dict)
-	billing_type: typing[str] = None
-	type: typing[str] = None
-	contact_person: typing[str] = None
-	contact_person_hcp_id: typing[str] = None
-	supervisor_id: typing[str] = None
-	flat_rate_tarifications: typing['DecryptedFlatRateTarification'] = dataclasses(default_factory=list)
-	imported_data: typing[str, str] = dataclasses(default_factory=dict)
-	options: typing[str, str] = dataclasses(default_factory=dict)
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
-	hc_party_keys: typing[str, typing['HexString']] = dataclasses(default_factory=dict)
-	aes_exchange_keys: typing['SpkiHexString', typing[str, typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = dataclasses(default_factory=dict)
-	transfer_keys: typing['AesExchangeKeyEncryptionKeypairIdentifier', typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = dataclasses(default_factory=dict)
-	private_key_shamir_partitions: typing[str, 'HexString'] = dataclasses(default_factory=dict)
-	public_key: typing['SpkiHexString'] = None
-	public_keys_for_oaep_with_sha256: typing['SpkiHexString'] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	deletion_date: Optional[int] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	name: Optional[str] = None
+	last_name: Optional[str] = None
+	first_name: Optional[str] = None
+	names: List['PersonName'] = field(default_factory=list)
+	gender: Optional['Gender'] = None
+	civility: Optional[str] = None
+	company_name: Optional[str] = None
+	speciality: Optional[str] = None
+	bank_account: Optional[str] = None
+	bic: Optional[str] = None
+	proxy_bank_account: Optional[str] = None
+	proxy_bic: Optional[str] = None
+	invoice_header: Optional[str] = None
+	cbe: Optional[str] = None
+	ehp: Optional[str] = None
+	user_id: Optional[str] = None
+	parent_id: Optional[str] = None
+	convention: Optional[int] = None
+	nihii: Optional[str] = None
+	nihii_spec_code: Optional[str] = None
+	ssin: Optional[str] = None
+	addresses: List['DecryptedAddress'] = field(default_factory=list)
+	languages: List[str] = field(default_factory=list)
+	picture: Optional[bytearray] = None
+	statuses: List['HealthcarePartyStatus'] = field(default_factory=list)
+	status_history: List['HealthcarePartyHistoryStatus'] = field(default_factory=list)
+	speciality_codes: List['CodeStub'] = field(default_factory=list)
+	send_formats: Dict['TelecomType', str] = field(default_factory=dict)
+	notes: Optional[str] = None
+	financial_institution_information: List['DecryptedFinancialInstitutionInformation'] = field(default_factory=list)
+	descr: Optional[Dict[str, str]] = field(default_factory=dict)
+	billing_type: Optional[str] = None
+	type: Optional[str] = None
+	contact_person: Optional[str] = None
+	contact_person_hcp_id: Optional[str] = None
+	supervisor_id: Optional[str] = None
+	flat_rate_tarifications: List['DecryptedFlatRateTarification'] = field(default_factory=list)
+	imported_data: Dict[str, str] = field(default_factory=dict)
+	options: Dict[str, str] = field(default_factory=dict)
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
+	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
+	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
+	public_key: Optional['SpkiHexString'] = None
+	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -4255,7 +4249,7 @@ class HealthcareParty:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'HealthcareParty':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthcareParty':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4320,8 +4314,8 @@ class HealthcareParty:
 
 @dataclass
 class PublicKey:
-	hc_party_id: typing[str] = None
-	hex_string: typing[str] = None
+	hc_party_id: Optional[str] = None
+	hex_string: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -4330,7 +4324,7 @@ class PublicKey:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PublicKey':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PublicKey':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4355,7 +4349,7 @@ class DataOwnerRegistrationSuccess:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DataOwnerRegistrationSuccess':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataOwnerRegistrationSuccess':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4369,21 +4363,21 @@ class DataOwnerRegistrationSuccess:
 
 @dataclass
 class AccessLogShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AccessLogShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AccessLogShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4393,52 +4387,52 @@ class AccessLogShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class Permission:
-	grants: typing['PermissionItem'] = dataclasses(default_factory=list)
-	revokes: typing['PermissionItem'] = dataclasses(default_factory=list)
+	grants: List['PermissionItem'] = field(default_factory=list)
+	revokes: List['PermissionItem'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
-			"grants": [cardinal_sdk.model(x0) for x0 in self.grants],
-			"revokes": [cardinal_sdk.model(x0) for x0 in self.revokes],
+			"grants": [serialize_permission_item(x0) for x0 in self.grants],
+			"revokes": [serialize_permission_item(x0) for x0 in self.revokes],
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Permission':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Permission':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
 		else:
 			deserialized_dict = data
 		return cls(
-			grants=[cardinal_sdk.model(x0) for x0 in deserialized_dict["grants"]],
-			revokes=[cardinal_sdk.model(x0) for x0 in deserialized_dict["revokes"]],
+			grants=[deserialize_permission_item(x0) for x0 in deserialized_dict["grants"]],
+			revokes=[deserialize_permission_item(x0) for x0 in deserialized_dict["revokes"]],
 		)
 
 @dataclass
 class Code:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	context: typing[str] = None
-	type: typing[str] = None
-	code: typing[str] = None
-	version: typing[str] = None
-	label: typing[typing[str, str]] = None
-	author: typing[str] = None
-	regions: typing[str] = dataclasses(default_factory=list)
-	periodicity: typing['Periodicity'] = dataclasses(default_factory=list)
-	level: typing[int] = None
-	links: typing[str] = dataclasses(default_factory=list)
-	qualified_links: typing[str, typing[str]] = dataclasses(default_factory=dict)
-	flags: typing['CodeFlag'] = dataclasses(default_factory=list)
-	search_terms: typing[str, typing[str]] = dataclasses(default_factory=dict)
-	data: typing[str] = None
-	appendices: typing['AppendixType', str] = dataclasses(default_factory=dict)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	context: Optional[str] = None
+	type: Optional[str] = None
+	code: Optional[str] = None
+	version: Optional[str] = None
+	label: Optional[Dict[str, str]] = None
+	author: Optional[str] = None
+	regions: List[str] = field(default_factory=list)
+	periodicity: List['Periodicity'] = field(default_factory=list)
+	level: Optional[int] = None
+	links: List[str] = field(default_factory=list)
+	qualified_links: Dict[str, List[str]] = field(default_factory=dict)
+	flags: List['CodeFlag'] = field(default_factory=list)
+	search_terms: Dict[str, List[str]] = field(default_factory=dict)
+	data: Optional[str] = None
+	appendices: Dict['AppendixType', str] = field(default_factory=dict)
 	disabled: bool = False
 
 	def __serialize__(self) -> object:
@@ -4465,7 +4459,7 @@ class Code:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Code':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Code':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4503,7 +4497,7 @@ class BooleanResponse:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'BooleanResponse':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'BooleanResponse':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4516,18 +4510,18 @@ class BooleanResponse:
 @dataclass
 class FrontEndMigration:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	status: typing['FrontEndMigrationStatus'] = None
-	logs: typing[str] = None
-	user_id: typing[str] = None
-	start_key: typing[str] = None
-	start_key_doc_id: typing[str] = None
-	process_count: typing[int] = None
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	status: Optional['FrontEndMigrationStatus'] = None
+	logs: Optional[str] = None
+	user_id: Optional[str] = None
+	start_key: Optional[str] = None
+	start_key_doc_id: Optional[str] = None
+	process_count: Optional[int] = None
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -4547,7 +4541,7 @@ class FrontEndMigration:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FrontEndMigration':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FrontEndMigration':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4572,28 +4566,28 @@ class FrontEndMigration:
 @dataclass
 class DecryptedTopic:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	health_element_id: typing[str] = None
-	contact_id: typing[str] = None
-	description: typing[str] = None
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	active_participants: typing[str, 'TopicRole'] = dataclasses(default_factory=dict)
-	security_metadata: typing['SecurityMetadata'] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	linked_health_elements: typing[str] = dataclasses(default_factory=list)
-	linked_services: typing[str] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	health_element_id: Optional[str] = None
+	contact_id: Optional[str] = None
+	description: Optional[str] = None
+	codes: List['CodeStub'] = field(default_factory=list)
+	tags: List['CodeStub'] = field(default_factory=list)
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	active_participants: Dict[str, 'TopicRole'] = field(default_factory=dict)
+	security_metadata: Optional['SecurityMetadata'] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	linked_health_elements: List[str] = field(default_factory=list)
+	linked_services: List[str] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -4623,7 +4617,7 @@ class DecryptedTopic:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedTopic':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedTopic':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4658,28 +4652,28 @@ class DecryptedTopic:
 @dataclass
 class EncryptedTopic:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	health_element_id: typing[str] = None
-	contact_id: typing[str] = None
-	description: typing[str] = None
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	active_participants: typing[str, 'TopicRole'] = dataclasses(default_factory=dict)
-	security_metadata: typing['SecurityMetadata'] = None
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	linked_health_elements: typing[str] = dataclasses(default_factory=list)
-	linked_services: typing[str] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	health_element_id: Optional[str] = None
+	contact_id: Optional[str] = None
+	description: Optional[str] = None
+	codes: List['CodeStub'] = field(default_factory=list)
+	tags: List['CodeStub'] = field(default_factory=list)
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	active_participants: Dict[str, 'TopicRole'] = field(default_factory=dict)
+	security_metadata: Optional['SecurityMetadata'] = None
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	linked_health_elements: List[str] = field(default_factory=list)
+	linked_services: List[str] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -4709,7 +4703,7 @@ class EncryptedTopic:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedTopic':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedTopic':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4741,7 +4735,7 @@ class EncryptedTopic:
 			linked_services=[x0 for x0 in deserialized_dict["linkedServices"]],
 		)
 
-Topic = typing['DecryptedTopic', 'EncryptedTopic']
+Topic = Union['DecryptedTopic', 'EncryptedTopic']
 
 def serialize_topic(topic: Topic) -> object:
 	if isinstance(topic, DecryptedTopic):
@@ -4755,7 +4749,7 @@ def serialize_topic(topic: Topic) -> object:
 	else:
 		raise Exception(f"{type(topic)} is not a known subclass of Topic")
 
-def deserialize_topic(data: typing[str, typing[str, object]]) -> 'Topic':
+def deserialize_topic(data: Union[str, Dict[str, object]]) -> 'Topic':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -4773,21 +4767,21 @@ def deserialize_topic(data: typing[str, typing[str, object]]) -> 'Topic':
 
 @dataclass
 class TopicShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TopicShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TopicShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4797,10 +4791,10 @@ class TopicShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
-class TopicRole(enum):
+class TopicRole(Enum):
 	Participant = "PARTICIPANT"
 	Admin = "ADMIN"
 	Owner = "OWNER"
@@ -4809,7 +4803,7 @@ class TopicRole(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TopicRole':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TopicRole':
 		if data == "PARTICIPANT":
 			return TopicRole.Participant
 		elif data == "ADMIN":
@@ -4822,29 +4816,29 @@ class TopicRole(enum):
 @dataclass
 class DocumentTemplate:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	attachment: typing[bytearray] = None
-	document_type: typing['DocumentType'] = None
-	main_uti: typing[str] = None
-	name: typing[str] = None
-	other_utis: typing[str] = dataclasses(default_factory=list)
-	attachment_id: typing[str] = None
-	version: typing['ReportVersion'] = None
-	owner: typing[str] = None
-	guid: typing[str] = None
-	group: typing['DocumentGroup'] = None
-	descr: typing[str] = None
-	disabled: typing[str] = None
-	specialty: typing['CodeStub'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	attachment: Optional[bytearray] = None
+	document_type: Optional['DocumentType'] = None
+	main_uti: Optional[str] = None
+	name: Optional[str] = None
+	other_utis: List[str] = field(default_factory=list)
+	attachment_id: Optional[str] = None
+	version: Optional['ReportVersion'] = None
+	owner: Optional[str] = None
+	guid: Optional[str] = None
+	group: Optional['DocumentGroup'] = None
+	descr: Optional[str] = None
+	disabled: Optional[str] = None
+	specialty: Optional['CodeStub'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -4875,7 +4869,7 @@ class DocumentTemplate:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DocumentTemplate':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentTemplate':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -4911,39 +4905,39 @@ class DocumentTemplate:
 @dataclass
 class EncryptedHealthElement:
 	id: str
-	identifiers: typing['Identifier'] = dataclasses(default_factory=list)
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	health_element_id: typing[str] = None
-	value_date: typing[int] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	descr: typing[str] = None
-	note: typing[str] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
+	identifiers: List['Identifier'] = field(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	health_element_id: Optional[str] = None
+	value_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	descr: Optional[str] = None
+	note: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
 	relevant: bool = True
-	id_opening_contact: typing[str] = None
-	id_closing_contact: typing[str] = None
-	id_service: typing[str] = None
+	id_opening_contact: Optional[str] = None
+	id_closing_contact: Optional[str] = None
+	id_service: Optional[str] = None
 	status: int = 0
-	laterality: typing['Laterality'] = None
-	plans_of_action: typing['EncryptedPlanOfAction'] = dataclasses(default_factory=list)
-	episodes: typing['EncryptedEpisode'] = dataclasses(default_factory=list)
-	care_team: typing['EncryptedCareTeamMember'] = dataclasses(default_factory=list)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	laterality: Optional['Laterality'] = None
+	plans_of_action: List['EncryptedPlanOfAction'] = field(default_factory=list)
+	episodes: List['EncryptedEpisode'] = field(default_factory=list)
+	care_team: List['EncryptedCareTeamMember'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -4984,7 +4978,7 @@ class EncryptedHealthElement:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedHealthElement':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedHealthElement':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5030,39 +5024,39 @@ class EncryptedHealthElement:
 @dataclass
 class DecryptedHealthElement:
 	id: str
-	identifiers: typing['Identifier'] = dataclasses(default_factory=list)
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	health_element_id: typing[str] = None
-	value_date: typing[int] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	descr: typing[str] = None
-	note: typing[str] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
+	identifiers: List['Identifier'] = field(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	health_element_id: Optional[str] = None
+	value_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	descr: Optional[str] = None
+	note: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
 	relevant: bool = True
-	id_opening_contact: typing[str] = None
-	id_closing_contact: typing[str] = None
-	id_service: typing[str] = None
+	id_opening_contact: Optional[str] = None
+	id_closing_contact: Optional[str] = None
+	id_service: Optional[str] = None
 	status: int = 0
-	laterality: typing['Laterality'] = None
-	plans_of_action: typing['DecryptedPlanOfAction'] = dataclasses(default_factory=list)
-	episodes: typing['DecryptedEpisode'] = dataclasses(default_factory=list)
-	care_team: typing['DecryptedCareTeamMember'] = dataclasses(default_factory=list)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	laterality: Optional['Laterality'] = None
+	plans_of_action: List['DecryptedPlanOfAction'] = field(default_factory=list)
+	episodes: List['DecryptedEpisode'] = field(default_factory=list)
+	care_team: List['DecryptedCareTeamMember'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5103,7 +5097,7 @@ class DecryptedHealthElement:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedHealthElement':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedHealthElement':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5146,7 +5140,7 @@ class DecryptedHealthElement:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-HealthElement = typing['EncryptedHealthElement', 'DecryptedHealthElement']
+HealthElement = Union['EncryptedHealthElement', 'DecryptedHealthElement']
 
 def serialize_health_element(health_element: HealthElement) -> object:
 	if isinstance(health_element, EncryptedHealthElement):
@@ -5160,7 +5154,7 @@ def serialize_health_element(health_element: HealthElement) -> object:
 	else:
 		raise Exception(f"{type(health_element)} is not a known subclass of HealthElement")
 
-def deserialize_health_element(data: typing[str, typing[str, object]]) -> 'HealthElement':
+def deserialize_health_element(data: Union[str, Dict[str, object]]) -> 'HealthElement':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -5178,7 +5172,7 @@ def deserialize_health_element(data: typing[str, typing[str, object]]) -> 'Healt
 
 @dataclass
 class IndexingInfo:
-	statuses: typing[typing[str, int]] = None
+	statuses: Optional[Dict[str, int]] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5186,7 +5180,7 @@ class IndexingInfo:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'IndexingInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IndexingInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5200,8 +5194,8 @@ class IndexingInfo:
 class ReplicationInfo:
 	active: bool = False
 	running: bool = False
-	pending_from: typing[int] = None
-	pending_to: typing[int] = None
+	pending_from: Optional[int] = None
+	pending_to: Optional[int] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5212,7 +5206,7 @@ class ReplicationInfo:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReplicationInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicationInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5228,19 +5222,19 @@ class ReplicationInfo:
 @dataclass
 class ReplicatorDocument:
 	id: str
-	rev: typing[str] = None
-	source: typing['Remote'] = None
-	target: typing['Remote'] = None
-	owner: typing[str] = None
-	create_target: typing[bool] = None
-	continuous: typing[bool] = None
-	doc_ids: typing[typing[str]] = None
-	replication_state: typing[str] = None
-	replication_state_time: typing[str] = None
-	replication_stats: typing['ReplicationStats'] = None
-	error_count: typing[int] = None
-	revs_info: typing[typing[typing[str, str]]] = None
-	rev_history: typing[typing[str, str]] = None
+	rev: Optional[str] = None
+	source: Optional['Remote'] = None
+	target: Optional['Remote'] = None
+	owner: Optional[str] = None
+	create_target: Optional[bool] = None
+	continuous: Optional[bool] = None
+	doc_ids: Optional[List[str]] = None
+	replication_state: Optional[str] = None
+	replication_state_time: Optional[str] = None
+	replication_stats: Optional['ReplicationStats'] = None
+	error_count: Optional[int] = None
+	revs_info: Optional[List[Dict[str, str]]] = None
+	rev_history: Optional[Dict[str, str]] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5261,7 +5255,7 @@ class ReplicatorDocument:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReplicatorDocument':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicatorDocument':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5286,21 +5280,21 @@ class ReplicatorDocument:
 
 @dataclass
 class CalendarItemShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CalendarItemShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CalendarItemShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5310,23 +5304,23 @@ class CalendarItemShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class ApplicationSettings:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	settings: typing[str, str] = dataclasses(default_factory=dict)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	settings: Dict[str, str] = field(default_factory=dict)
 
 	def __serialize__(self) -> object:
 		return {
@@ -5345,7 +5339,7 @@ class ApplicationSettings:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ApplicationSettings':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ApplicationSettings':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5369,9 +5363,9 @@ class ApplicationSettings:
 @dataclass
 class EntityReference:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	doc_id: typing[str] = None
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	doc_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5382,7 +5376,7 @@ class EntityReference:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntityReference':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntityReference':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5399,13 +5393,13 @@ class EntityReference:
 class CryptoActorStub:
 	id: str
 	rev: str
-	public_keys_for_oaep_with_sha256: typing['SpkiHexString']
-	hc_party_keys: typing[str, typing['HexString']] = dataclasses(default_factory=dict)
-	aes_exchange_keys: typing['SpkiHexString', typing[str, typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = dataclasses(default_factory=dict)
-	transfer_keys: typing['AesExchangeKeyEncryptionKeypairIdentifier', typing['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = dataclasses(default_factory=dict)
-	private_key_shamir_partitions: typing[str, 'HexString'] = dataclasses(default_factory=dict)
-	public_key: typing['SpkiHexString'] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
+	public_keys_for_oaep_with_sha256: List['SpkiHexString']
+	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
+	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
+	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
+	public_key: Optional['SpkiHexString'] = None
+	tags: List['CodeStub'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -5421,7 +5415,7 @@ class CryptoActorStub:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CryptoActorStub':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CryptoActorStub':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5439,7 +5433,7 @@ class CryptoActorStub:
 			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
 		)
 
-CryptoActor = typing['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', 'Device', 'HealthcareParty']
+CryptoActor = Union['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', 'Device', 'HealthcareParty']
 
 def serialize_crypto_actor(crypto_actor: CryptoActor) -> object:
 	if isinstance(crypto_actor, CryptoActorStub):
@@ -5465,7 +5459,7 @@ def serialize_crypto_actor(crypto_actor: CryptoActor) -> object:
 	else:
 		raise Exception(f"{type(crypto_actor)} is not a known subclass of CryptoActor")
 
-def deserialize_crypto_actor(data: typing[str, typing[str, object]]) -> 'CryptoActor':
+def deserialize_crypto_actor(data: Union[str, Dict[str, object]]) -> 'CryptoActor':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -5499,7 +5493,7 @@ class CryptoActorStubWithType:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CryptoActorStubWithType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CryptoActorStubWithType':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5512,7 +5506,7 @@ class CryptoActorStubWithType:
 
 @dataclass
 class ShamirUpdateRequest:
-	notaries_ids: typing[str]
+	notaries_ids: List[str]
 	min_shares: int
 
 	def __serialize__(self) -> object:
@@ -5522,7 +5516,7 @@ class ShamirUpdateRequest:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShamirUpdateRequest':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShamirUpdateRequest':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5536,44 +5530,44 @@ class ShamirUpdateRequest:
 @dataclass
 class DecryptedMessage:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	from_address: typing[str] = None
-	from_healthcare_party_id: typing[str] = None
-	form_id: typing[str] = None
-	status: typing[int] = None
-	recipients_type: typing[str] = None
-	recipients: typing[str] = dataclasses(default_factory=list)
-	to_addresses: typing[str] = dataclasses(default_factory=list)
-	received: typing[int] = None
-	sent: typing[int] = None
-	metas: typing[str, str] = dataclasses(default_factory=dict)
-	read_status: typing[str, 'MessageReadStatus'] = dataclasses(default_factory=dict)
-	message_attachments: typing['MessageAttachment'] = dataclasses(default_factory=list)
-	transport_guid: typing[str] = None
-	remark: typing[str] = None
-	conversation_guid: typing[str] = None
-	subject: typing[str] = None
-	invoice_ids: typing[str] = dataclasses(default_factory=list)
-	parent_id: typing[str] = None
-	external_ref: typing[str] = None
-	unassigned_results: typing[str] = dataclasses(default_factory=list)
-	assigned_results: typing[str, str] = dataclasses(default_factory=dict)
-	sender_references: typing[str, str] = dataclasses(default_factory=dict)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	from_address: Optional[str] = None
+	from_healthcare_party_id: Optional[str] = None
+	form_id: Optional[str] = None
+	status: Optional[int] = None
+	recipients_type: Optional[str] = None
+	recipients: List[str] = field(default_factory=list)
+	to_addresses: List[str] = field(default_factory=list)
+	received: Optional[int] = None
+	sent: Optional[int] = None
+	metas: Dict[str, str] = field(default_factory=dict)
+	read_status: Dict[str, 'MessageReadStatus'] = field(default_factory=dict)
+	message_attachments: List['MessageAttachment'] = field(default_factory=list)
+	transport_guid: Optional[str] = None
+	remark: Optional[str] = None
+	conversation_guid: Optional[str] = None
+	subject: Optional[str] = None
+	invoice_ids: List[str] = field(default_factory=list)
+	parent_id: Optional[str] = None
+	external_ref: Optional[str] = None
+	unassigned_results: List[str] = field(default_factory=list)
+	assigned_results: Dict[str, str] = field(default_factory=dict)
+	sender_references: Dict[str, str] = field(default_factory=dict)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5619,7 +5613,7 @@ class DecryptedMessage:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedMessage':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedMessage':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5670,44 +5664,44 @@ class DecryptedMessage:
 @dataclass
 class EncryptedMessage:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	from_address: typing[str] = None
-	from_healthcare_party_id: typing[str] = None
-	form_id: typing[str] = None
-	status: typing[int] = None
-	recipients_type: typing[str] = None
-	recipients: typing[str] = dataclasses(default_factory=list)
-	to_addresses: typing[str] = dataclasses(default_factory=list)
-	received: typing[int] = None
-	sent: typing[int] = None
-	metas: typing[str, str] = dataclasses(default_factory=dict)
-	read_status: typing[str, 'MessageReadStatus'] = dataclasses(default_factory=dict)
-	message_attachments: typing['MessageAttachment'] = dataclasses(default_factory=list)
-	transport_guid: typing[str] = None
-	remark: typing[str] = None
-	conversation_guid: typing[str] = None
-	subject: typing[str] = None
-	invoice_ids: typing[str] = dataclasses(default_factory=list)
-	parent_id: typing[str] = None
-	external_ref: typing[str] = None
-	unassigned_results: typing[str] = dataclasses(default_factory=list)
-	assigned_results: typing[str, str] = dataclasses(default_factory=dict)
-	sender_references: typing[str, str] = dataclasses(default_factory=dict)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	from_address: Optional[str] = None
+	from_healthcare_party_id: Optional[str] = None
+	form_id: Optional[str] = None
+	status: Optional[int] = None
+	recipients_type: Optional[str] = None
+	recipients: List[str] = field(default_factory=list)
+	to_addresses: List[str] = field(default_factory=list)
+	received: Optional[int] = None
+	sent: Optional[int] = None
+	metas: Dict[str, str] = field(default_factory=dict)
+	read_status: Dict[str, 'MessageReadStatus'] = field(default_factory=dict)
+	message_attachments: List['MessageAttachment'] = field(default_factory=list)
+	transport_guid: Optional[str] = None
+	remark: Optional[str] = None
+	conversation_guid: Optional[str] = None
+	subject: Optional[str] = None
+	invoice_ids: List[str] = field(default_factory=list)
+	parent_id: Optional[str] = None
+	external_ref: Optional[str] = None
+	unassigned_results: List[str] = field(default_factory=list)
+	assigned_results: Dict[str, str] = field(default_factory=dict)
+	sender_references: Dict[str, str] = field(default_factory=dict)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5753,7 +5747,7 @@ class EncryptedMessage:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedMessage':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedMessage':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5801,7 +5795,7 @@ class EncryptedMessage:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-Message = typing['DecryptedMessage', 'EncryptedMessage']
+Message = Union['DecryptedMessage', 'EncryptedMessage']
 
 def serialize_message(message: Message) -> object:
 	if isinstance(message, DecryptedMessage):
@@ -5815,7 +5809,7 @@ def serialize_message(message: Message) -> object:
 	else:
 		raise Exception(f"{type(message)} is not a known subclass of Message")
 
-def deserialize_message(data: typing[str, typing[str, object]]) -> 'Message':
+def deserialize_message(data: Union[str, Dict[str, object]]) -> 'Message':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -5833,21 +5827,21 @@ def deserialize_message(data: typing[str, typing[str, object]]) -> 'Message':
 
 @dataclass
 class DocumentShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_message_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_message_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"shareMessageId": self.share_message_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DocumentShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5857,21 +5851,21 @@ class DocumentShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_message_id=ShareMetadataBehaviour._deserialize(deserialized_dict["shareMessageId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class EntityTemplate:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	user_id: typing[str] = None
-	descr: typing[str] = None
-	keywords: typing[typing[str]] = None
-	entity_type: typing[str] = None
-	sub_type: typing[str] = None
-	default_template: typing[bool] = None
-	entity: typing[typing[str, object]] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	user_id: Optional[str] = None
+	descr: Optional[str] = None
+	keywords: Optional[List[str]] = None
+	entity_type: Optional[str] = None
+	sub_type: Optional[str] = None
+	default_template: Optional[bool] = None
+	entity: List[Dict[str, object]] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -5888,7 +5882,7 @@ class EntityTemplate:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntityTemplate':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntityTemplate':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5917,7 +5911,7 @@ class DataOwnerWithTypeHcpDataOwner:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DataOwnerWithTypeHcpDataOwner':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataOwnerWithTypeHcpDataOwner':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5937,7 +5931,7 @@ class DataOwnerWithTypePatientDataOwner:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DataOwnerWithTypePatientDataOwner':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataOwnerWithTypePatientDataOwner':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5957,7 +5951,7 @@ class DataOwnerWithTypeDeviceDataOwner:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DataOwnerWithTypeDeviceDataOwner':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataOwnerWithTypeDeviceDataOwner':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -5967,7 +5961,7 @@ class DataOwnerWithTypeDeviceDataOwner:
 			data_owner=Device._deserialize(deserialized_dict["dataOwner"]),
 		)
 
-DataOwnerWithType = typing['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePatientDataOwner', 'DataOwnerWithTypeDeviceDataOwner']
+DataOwnerWithType = Union['DataOwnerWithTypeHcpDataOwner', 'DataOwnerWithTypePatientDataOwner', 'DataOwnerWithTypeDeviceDataOwner']
 
 def serialize_data_owner_with_type(data_owner_with_type: DataOwnerWithType) -> object:
 	if isinstance(data_owner_with_type, DataOwnerWithTypeHcpDataOwner):
@@ -5985,7 +5979,7 @@ def serialize_data_owner_with_type(data_owner_with_type: DataOwnerWithType) -> o
 	else:
 		raise Exception(f"{type(data_owner_with_type)} is not a known subclass of DataOwnerWithType")
 
-def deserialize_data_owner_with_type(data: typing[str, typing[str, object]]) -> 'DataOwnerWithType':
+def deserialize_data_owner_with_type(data: Union[str, Dict[str, object]]) -> 'DataOwnerWithType':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -6003,7 +5997,7 @@ def deserialize_data_owner_with_type(data: typing[str, typing[str, object]]) -> 
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of DataOwnerWithType")
 
-class DataOwnerType(enum):
+class DataOwnerType(Enum):
 	Hcp = "hcp"
 	Device = "device"
 	Patient = "patient"
@@ -6012,7 +6006,7 @@ class DataOwnerType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DataOwnerType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataOwnerType':
 		if data == "hcp":
 			return DataOwnerType.Hcp
 		elif data == "device":
@@ -6024,11 +6018,11 @@ class DataOwnerType(enum):
 
 @dataclass
 class EncryptedPropertyStub:
-	id: typing[str] = None
-	type: typing['PropertyTypeStub'] = None
-	typed_value: typing['EncryptedTypedValue'] = None
-	deletion_date: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	id: Optional[str] = None
+	type: Optional['PropertyTypeStub'] = None
+	typed_value: Optional['EncryptedTypedValue'] = None
+	deletion_date: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -6040,7 +6034,7 @@ class EncryptedPropertyStub:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedPropertyStub':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedPropertyStub':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6056,11 +6050,11 @@ class EncryptedPropertyStub:
 
 @dataclass
 class DecryptedPropertyStub:
-	id: typing[str] = None
-	type: typing['PropertyTypeStub'] = None
-	typed_value: typing['DecryptedTypedValue'] = None
-	deletion_date: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	id: Optional[str] = None
+	type: Optional['PropertyTypeStub'] = None
+	typed_value: Optional['DecryptedTypedValue'] = None
+	deletion_date: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -6072,7 +6066,7 @@ class DecryptedPropertyStub:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedPropertyStub':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedPropertyStub':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6086,7 +6080,7 @@ class DecryptedPropertyStub:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-PropertyStub = typing['EncryptedPropertyStub', 'DecryptedPropertyStub']
+PropertyStub = Union['EncryptedPropertyStub', 'DecryptedPropertyStub']
 
 def serialize_property_stub(property_stub: PropertyStub) -> object:
 	if isinstance(property_stub, EncryptedPropertyStub):
@@ -6100,7 +6094,7 @@ def serialize_property_stub(property_stub: PropertyStub) -> object:
 	else:
 		raise Exception(f"{type(property_stub)} is not a known subclass of PropertyStub")
 
-def deserialize_property_stub(data: typing[str, typing[str, object]]) -> 'PropertyStub':
+def deserialize_property_stub(data: Union[str, Dict[str, object]]) -> 'PropertyStub':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -6118,18 +6112,18 @@ def deserialize_property_stub(data: typing[str, typing[str, object]]) -> 'Proper
 
 @dataclass
 class UserGroup:
-	group_id: typing[str] = None
-	group_name: typing[str] = None
-	groups_hierarchy: typing['Group'] = dataclasses(default_factory=list)
-	user_id: typing[str] = None
-	login: typing[str] = None
-	name: typing[str] = None
-	email: typing[str] = None
-	phone: typing[str] = None
-	patient_id: typing[str] = None
-	healthcare_party_id: typing[str] = None
-	device_id: typing[str] = None
-	name_of_parent_of_topmost_group_in_hierarchy: typing[str] = None
+	group_id: Optional[str] = None
+	group_name: Optional[str] = None
+	groups_hierarchy: List['Group'] = field(default_factory=list)
+	user_id: Optional[str] = None
+	login: Optional[str] = None
+	name: Optional[str] = None
+	email: Optional[str] = None
+	phone: Optional[str] = None
+	patient_id: Optional[str] = None
+	healthcare_party_id: Optional[str] = None
+	device_id: Optional[str] = None
+	name_of_parent_of_topmost_group_in_hierarchy: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -6148,7 +6142,7 @@ class UserGroup:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'UserGroup':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UserGroup':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6173,7 +6167,7 @@ class UserGroup:
 class TokenWithGroup:
 	token: str
 	group_id: str
-	group_name: typing[str] = None
+	group_name: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -6183,7 +6177,7 @@ class TokenWithGroup:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TokenWithGroup':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TokenWithGroup':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6207,7 +6201,7 @@ class Enable2faRequest:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Enable2faRequest':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Enable2faRequest':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6221,10 +6215,10 @@ class Enable2faRequest:
 @dataclass
 class Role:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	permissions: typing[str] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	permissions: List[str] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -6236,7 +6230,7 @@ class Role:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Role':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Role':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6252,21 +6246,21 @@ class Role:
 
 @dataclass
 class FormShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FormShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FormShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6276,82 +6270,82 @@ class FormShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class DecryptedInvoice:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	invoice_date: typing[int] = None
-	sent_date: typing[int] = None
-	printed_date: typing[int] = None
-	invoicing_codes: typing['DecryptedInvoicingCode'] = dataclasses(default_factory=list)
-	receipts: typing[str, str] = dataclasses(default_factory=dict)
-	recipient_type: typing[str] = None
-	recipient_id: typing[str] = None
-	invoice_reference: typing[str] = None
-	third_party_reference: typing[str] = None
-	third_party_payment_justification: typing[str] = None
-	third_party_payment_reason: typing[str] = None
-	reason: typing[str] = None
-	invoice_type: typing['InvoiceType'] = None
-	sent_medium_type: typing['MediumType'] = None
-	intervention_type: typing['InvoiceInterventionType'] = None
-	group_id: typing[str] = None
-	payment_type: typing['PaymentType'] = None
-	paid: typing[float] = None
-	payments: typing[typing['Payment']] = None
-	gnotion_nihii: typing[str] = None
-	gnotion_ssin: typing[str] = None
-	gnotion_last_name: typing[str] = None
-	gnotion_first_name: typing[str] = None
-	gnotion_cd_hc_party: typing[str] = None
-	invoice_period: typing[int] = None
-	care_provider_type: typing[str] = None
-	internship_nihii: typing[str] = None
-	internship_ssin: typing[str] = None
-	internship_last_name: typing[str] = None
-	internship_first_name: typing[str] = None
-	internship_cd_hc_party: typing[str] = None
-	internship_cbe: typing[str] = None
-	supervisor_nihii: typing[str] = None
-	supervisor_ssin: typing[str] = None
-	supervisor_last_name: typing[str] = None
-	supervisor_first_name: typing[str] = None
-	supervisor_cd_hc_party: typing[str] = None
-	supervisor_cbe: typing[str] = None
-	error: typing[str] = None
-	encounter_location_name: typing[str] = None
-	encounter_location_nihii: typing[str] = None
-	encounter_location_norm: typing[int] = None
-	long_delay_justification: typing[int] = None
-	corrective_invoice_id: typing[str] = None
-	corrected_invoice_id: typing[str] = None
-	credit_note: typing[bool] = None
-	credit_note_related_invoice_id: typing[str] = None
-	id_document: typing['IdentityDocumentReader'] = None
-	admission_date: typing[int] = None
-	location_nihii: typing[str] = None
-	location_service: typing[int] = None
-	cancel_reason: typing[str] = None
-	cancel_date: typing[int] = None
-	options: typing[str, str] = dataclasses(default_factory=dict)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	invoice_date: Optional[int] = None
+	sent_date: Optional[int] = None
+	printed_date: Optional[int] = None
+	invoicing_codes: List['DecryptedInvoicingCode'] = field(default_factory=list)
+	receipts: Dict[str, str] = field(default_factory=dict)
+	recipient_type: Optional[str] = None
+	recipient_id: Optional[str] = None
+	invoice_reference: Optional[str] = None
+	third_party_reference: Optional[str] = None
+	third_party_payment_justification: Optional[str] = None
+	third_party_payment_reason: Optional[str] = None
+	reason: Optional[str] = None
+	invoice_type: Optional['InvoiceType'] = None
+	sent_medium_type: Optional['MediumType'] = None
+	intervention_type: Optional['InvoiceInterventionType'] = None
+	group_id: Optional[str] = None
+	payment_type: Optional['PaymentType'] = None
+	paid: Optional[float] = None
+	payments: Optional[List['Payment']] = None
+	gnotion_nihii: Optional[str] = None
+	gnotion_ssin: Optional[str] = None
+	gnotion_last_name: Optional[str] = None
+	gnotion_first_name: Optional[str] = None
+	gnotion_cd_hc_party: Optional[str] = None
+	invoice_period: Optional[int] = None
+	care_provider_type: Optional[str] = None
+	internship_nihii: Optional[str] = None
+	internship_ssin: Optional[str] = None
+	internship_last_name: Optional[str] = None
+	internship_first_name: Optional[str] = None
+	internship_cd_hc_party: Optional[str] = None
+	internship_cbe: Optional[str] = None
+	supervisor_nihii: Optional[str] = None
+	supervisor_ssin: Optional[str] = None
+	supervisor_last_name: Optional[str] = None
+	supervisor_first_name: Optional[str] = None
+	supervisor_cd_hc_party: Optional[str] = None
+	supervisor_cbe: Optional[str] = None
+	error: Optional[str] = None
+	encounter_location_name: Optional[str] = None
+	encounter_location_nihii: Optional[str] = None
+	encounter_location_norm: Optional[int] = None
+	long_delay_justification: Optional[int] = None
+	corrective_invoice_id: Optional[str] = None
+	corrected_invoice_id: Optional[str] = None
+	credit_note: Optional[bool] = None
+	credit_note_related_invoice_id: Optional[str] = None
+	id_document: Optional['IdentityDocumentReader'] = None
+	admission_date: Optional[int] = None
+	location_nihii: Optional[str] = None
+	location_service: Optional[int] = None
+	cancel_reason: Optional[str] = None
+	cancel_date: Optional[int] = None
+	options: Dict[str, str] = field(default_factory=dict)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -6429,7 +6423,7 @@ class DecryptedInvoice:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedInvoice':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedInvoice':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6512,76 +6506,76 @@ class DecryptedInvoice:
 @dataclass
 class EncryptedInvoice:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	invoice_date: typing[int] = None
-	sent_date: typing[int] = None
-	printed_date: typing[int] = None
-	invoicing_codes: typing['EncryptedInvoicingCode'] = dataclasses(default_factory=list)
-	receipts: typing[str, str] = dataclasses(default_factory=dict)
-	recipient_type: typing[str] = None
-	recipient_id: typing[str] = None
-	invoice_reference: typing[str] = None
-	third_party_reference: typing[str] = None
-	third_party_payment_justification: typing[str] = None
-	third_party_payment_reason: typing[str] = None
-	reason: typing[str] = None
-	invoice_type: typing['InvoiceType'] = None
-	sent_medium_type: typing['MediumType'] = None
-	intervention_type: typing['InvoiceInterventionType'] = None
-	group_id: typing[str] = None
-	payment_type: typing['PaymentType'] = None
-	paid: typing[float] = None
-	payments: typing[typing['Payment']] = None
-	gnotion_nihii: typing[str] = None
-	gnotion_ssin: typing[str] = None
-	gnotion_last_name: typing[str] = None
-	gnotion_first_name: typing[str] = None
-	gnotion_cd_hc_party: typing[str] = None
-	invoice_period: typing[int] = None
-	care_provider_type: typing[str] = None
-	internship_nihii: typing[str] = None
-	internship_ssin: typing[str] = None
-	internship_last_name: typing[str] = None
-	internship_first_name: typing[str] = None
-	internship_cd_hc_party: typing[str] = None
-	internship_cbe: typing[str] = None
-	supervisor_nihii: typing[str] = None
-	supervisor_ssin: typing[str] = None
-	supervisor_last_name: typing[str] = None
-	supervisor_first_name: typing[str] = None
-	supervisor_cd_hc_party: typing[str] = None
-	supervisor_cbe: typing[str] = None
-	error: typing[str] = None
-	encounter_location_name: typing[str] = None
-	encounter_location_nihii: typing[str] = None
-	encounter_location_norm: typing[int] = None
-	long_delay_justification: typing[int] = None
-	corrective_invoice_id: typing[str] = None
-	corrected_invoice_id: typing[str] = None
-	credit_note: typing[bool] = None
-	credit_note_related_invoice_id: typing[str] = None
-	id_document: typing['IdentityDocumentReader'] = None
-	admission_date: typing[int] = None
-	location_nihii: typing[str] = None
-	location_service: typing[int] = None
-	cancel_reason: typing[str] = None
-	cancel_date: typing[int] = None
-	options: typing[str, str] = dataclasses(default_factory=dict)
-	secret_foreign_keys: typing[str] = dataclasses(default_factory=list)
-	crypted_foreign_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	delegations: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encryption_keys: typing[str, typing['Delegation']] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
-	security_metadata: typing['SecurityMetadata'] = None
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	invoice_date: Optional[int] = None
+	sent_date: Optional[int] = None
+	printed_date: Optional[int] = None
+	invoicing_codes: List['EncryptedInvoicingCode'] = field(default_factory=list)
+	receipts: Dict[str, str] = field(default_factory=dict)
+	recipient_type: Optional[str] = None
+	recipient_id: Optional[str] = None
+	invoice_reference: Optional[str] = None
+	third_party_reference: Optional[str] = None
+	third_party_payment_justification: Optional[str] = None
+	third_party_payment_reason: Optional[str] = None
+	reason: Optional[str] = None
+	invoice_type: Optional['InvoiceType'] = None
+	sent_medium_type: Optional['MediumType'] = None
+	intervention_type: Optional['InvoiceInterventionType'] = None
+	group_id: Optional[str] = None
+	payment_type: Optional['PaymentType'] = None
+	paid: Optional[float] = None
+	payments: Optional[List['Payment']] = None
+	gnotion_nihii: Optional[str] = None
+	gnotion_ssin: Optional[str] = None
+	gnotion_last_name: Optional[str] = None
+	gnotion_first_name: Optional[str] = None
+	gnotion_cd_hc_party: Optional[str] = None
+	invoice_period: Optional[int] = None
+	care_provider_type: Optional[str] = None
+	internship_nihii: Optional[str] = None
+	internship_ssin: Optional[str] = None
+	internship_last_name: Optional[str] = None
+	internship_first_name: Optional[str] = None
+	internship_cd_hc_party: Optional[str] = None
+	internship_cbe: Optional[str] = None
+	supervisor_nihii: Optional[str] = None
+	supervisor_ssin: Optional[str] = None
+	supervisor_last_name: Optional[str] = None
+	supervisor_first_name: Optional[str] = None
+	supervisor_cd_hc_party: Optional[str] = None
+	supervisor_cbe: Optional[str] = None
+	error: Optional[str] = None
+	encounter_location_name: Optional[str] = None
+	encounter_location_nihii: Optional[str] = None
+	encounter_location_norm: Optional[int] = None
+	long_delay_justification: Optional[int] = None
+	corrective_invoice_id: Optional[str] = None
+	corrected_invoice_id: Optional[str] = None
+	credit_note: Optional[bool] = None
+	credit_note_related_invoice_id: Optional[str] = None
+	id_document: Optional['IdentityDocumentReader'] = None
+	admission_date: Optional[int] = None
+	location_nihii: Optional[str] = None
+	location_service: Optional[int] = None
+	cancel_reason: Optional[str] = None
+	cancel_date: Optional[int] = None
+	options: Dict[str, str] = field(default_factory=dict)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -6659,7 +6653,7 @@ class EncryptedInvoice:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedInvoice':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedInvoice':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6739,7 +6733,7 @@ class EncryptedInvoice:
 			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
 		)
 
-Invoice = typing['DecryptedInvoice', 'EncryptedInvoice']
+Invoice = Union['DecryptedInvoice', 'EncryptedInvoice']
 
 def serialize_invoice(invoice: Invoice) -> object:
 	if isinstance(invoice, DecryptedInvoice):
@@ -6753,7 +6747,7 @@ def serialize_invoice(invoice: Invoice) -> object:
 	else:
 		raise Exception(f"{type(invoice)} is not a known subclass of Invoice")
 
-def deserialize_invoice(data: typing[str, typing[str, object]]) -> 'Invoice':
+def deserialize_invoice(data: Union[str, Dict[str, object]]) -> 'Invoice':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -6771,21 +6765,21 @@ def deserialize_invoice(data: typing[str, typing[str, object]]) -> 'Invoice':
 
 @dataclass
 class InvoiceShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'InvoiceShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'InvoiceShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6795,63 +6789,63 @@ class InvoiceShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class DecryptedInvoicingCode:
-	id: typing[str]
-	date_code: typing[int] = None
-	logical_id: typing[str] = None
-	label: typing[str] = None
-	user_id: typing[str] = None
-	contact_id: typing[str] = None
-	service_id: typing[str] = None
-	tarification_id: typing[str] = None
-	code: typing[str] = None
-	payment_type: typing['PaymentType'] = None
-	paid: typing[float] = None
-	total_amount: typing[float] = None
-	reimbursement: typing[float] = None
-	patient_intervention: typing[float] = None
-	doctor_supplement: typing[float] = None
-	convention_amount: typing[float] = None
-	vat: typing[float] = None
-	error: typing[str] = None
-	contract: typing[str] = None
-	contract_date: typing[int] = None
-	units: typing[int] = None
-	side: typing[int] = None
-	time_of_day: typing[int] = None
-	eid_reading_hour: typing[int] = None
-	eid_reading_value: typing[str] = None
-	override3rd_payer_code: typing[int] = None
-	override3rd_payer_reason: typing[str] = None
-	transplantation_code: typing[int] = None
-	prescriber_norm: typing[int] = None
-	percent_norm: typing[int] = None
-	prescriber_nihii: typing[str] = None
-	related_code: typing[str] = None
-	prescription_date: typing[int] = None
-	derogation_max_number: typing[int] = None
-	prescriber_ssin: typing[str] = None
-	prescriber_last_name: typing[str] = None
-	prescriber_first_name: typing[str] = None
-	prescriber_cd_hc_party: typing[str] = None
-	location_nihii: typing[str] = None
-	location_cd_hc_party: typing[str] = None
-	location_service: typing[int] = None
-	admission_date: typing[int] = None
-	canceled: typing[bool] = None
-	accepted: typing[bool] = None
-	pending: typing[bool] = None
-	resent: typing[bool] = None
-	archived: typing[bool] = None
-	lost: typing[bool] = None
-	insurance_justification: typing[int] = None
-	cancel_patient_intervention_reason: typing[int] = None
-	status: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	id: Optional[str]
+	date_code: Optional[int] = None
+	logical_id: Optional[str] = None
+	label: Optional[str] = None
+	user_id: Optional[str] = None
+	contact_id: Optional[str] = None
+	service_id: Optional[str] = None
+	tarification_id: Optional[str] = None
+	code: Optional[str] = None
+	payment_type: Optional['PaymentType'] = None
+	paid: Optional[float] = None
+	total_amount: Optional[float] = None
+	reimbursement: Optional[float] = None
+	patient_intervention: Optional[float] = None
+	doctor_supplement: Optional[float] = None
+	convention_amount: Optional[float] = None
+	vat: Optional[float] = None
+	error: Optional[str] = None
+	contract: Optional[str] = None
+	contract_date: Optional[int] = None
+	units: Optional[int] = None
+	side: Optional[int] = None
+	time_of_day: Optional[int] = None
+	eid_reading_hour: Optional[int] = None
+	eid_reading_value: Optional[str] = None
+	override3rd_payer_code: Optional[int] = None
+	override3rd_payer_reason: Optional[str] = None
+	transplantation_code: Optional[int] = None
+	prescriber_norm: Optional[int] = None
+	percent_norm: Optional[int] = None
+	prescriber_nihii: Optional[str] = None
+	related_code: Optional[str] = None
+	prescription_date: Optional[int] = None
+	derogation_max_number: Optional[int] = None
+	prescriber_ssin: Optional[str] = None
+	prescriber_last_name: Optional[str] = None
+	prescriber_first_name: Optional[str] = None
+	prescriber_cd_hc_party: Optional[str] = None
+	location_nihii: Optional[str] = None
+	location_cd_hc_party: Optional[str] = None
+	location_service: Optional[int] = None
+	admission_date: Optional[int] = None
+	canceled: Optional[bool] = None
+	accepted: Optional[bool] = None
+	pending: Optional[bool] = None
+	resent: Optional[bool] = None
+	archived: Optional[bool] = None
+	lost: Optional[bool] = None
+	insurance_justification: Optional[int] = None
+	cancel_patient_intervention_reason: Optional[int] = None
+	status: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -6910,7 +6904,7 @@ class DecryptedInvoicingCode:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedInvoicingCode':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedInvoicingCode':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -6973,58 +6967,58 @@ class DecryptedInvoicingCode:
 
 @dataclass
 class EncryptedInvoicingCode:
-	id: typing[str]
-	date_code: typing[int] = None
-	logical_id: typing[str] = None
-	label: typing[str] = None
-	user_id: typing[str] = None
-	contact_id: typing[str] = None
-	service_id: typing[str] = None
-	tarification_id: typing[str] = None
-	code: typing[str] = None
-	payment_type: typing['PaymentType'] = None
-	paid: typing[float] = None
-	total_amount: typing[float] = None
-	reimbursement: typing[float] = None
-	patient_intervention: typing[float] = None
-	doctor_supplement: typing[float] = None
-	convention_amount: typing[float] = None
-	vat: typing[float] = None
-	error: typing[str] = None
-	contract: typing[str] = None
-	contract_date: typing[int] = None
-	units: typing[int] = None
-	side: typing[int] = None
-	time_of_day: typing[int] = None
-	eid_reading_hour: typing[int] = None
-	eid_reading_value: typing[str] = None
-	override3rd_payer_code: typing[int] = None
-	override3rd_payer_reason: typing[str] = None
-	transplantation_code: typing[int] = None
-	prescriber_norm: typing[int] = None
-	percent_norm: typing[int] = None
-	prescriber_nihii: typing[str] = None
-	related_code: typing[str] = None
-	prescription_date: typing[int] = None
-	derogation_max_number: typing[int] = None
-	prescriber_ssin: typing[str] = None
-	prescriber_last_name: typing[str] = None
-	prescriber_first_name: typing[str] = None
-	prescriber_cd_hc_party: typing[str] = None
-	location_nihii: typing[str] = None
-	location_cd_hc_party: typing[str] = None
-	location_service: typing[int] = None
-	admission_date: typing[int] = None
-	canceled: typing[bool] = None
-	accepted: typing[bool] = None
-	pending: typing[bool] = None
-	resent: typing[bool] = None
-	archived: typing[bool] = None
-	lost: typing[bool] = None
-	insurance_justification: typing[int] = None
-	cancel_patient_intervention_reason: typing[int] = None
-	status: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	id: Optional[str]
+	date_code: Optional[int] = None
+	logical_id: Optional[str] = None
+	label: Optional[str] = None
+	user_id: Optional[str] = None
+	contact_id: Optional[str] = None
+	service_id: Optional[str] = None
+	tarification_id: Optional[str] = None
+	code: Optional[str] = None
+	payment_type: Optional['PaymentType'] = None
+	paid: Optional[float] = None
+	total_amount: Optional[float] = None
+	reimbursement: Optional[float] = None
+	patient_intervention: Optional[float] = None
+	doctor_supplement: Optional[float] = None
+	convention_amount: Optional[float] = None
+	vat: Optional[float] = None
+	error: Optional[str] = None
+	contract: Optional[str] = None
+	contract_date: Optional[int] = None
+	units: Optional[int] = None
+	side: Optional[int] = None
+	time_of_day: Optional[int] = None
+	eid_reading_hour: Optional[int] = None
+	eid_reading_value: Optional[str] = None
+	override3rd_payer_code: Optional[int] = None
+	override3rd_payer_reason: Optional[str] = None
+	transplantation_code: Optional[int] = None
+	prescriber_norm: Optional[int] = None
+	percent_norm: Optional[int] = None
+	prescriber_nihii: Optional[str] = None
+	related_code: Optional[str] = None
+	prescription_date: Optional[int] = None
+	derogation_max_number: Optional[int] = None
+	prescriber_ssin: Optional[str] = None
+	prescriber_last_name: Optional[str] = None
+	prescriber_first_name: Optional[str] = None
+	prescriber_cd_hc_party: Optional[str] = None
+	location_nihii: Optional[str] = None
+	location_cd_hc_party: Optional[str] = None
+	location_service: Optional[int] = None
+	admission_date: Optional[int] = None
+	canceled: Optional[bool] = None
+	accepted: Optional[bool] = None
+	pending: Optional[bool] = None
+	resent: Optional[bool] = None
+	archived: Optional[bool] = None
+	lost: Optional[bool] = None
+	insurance_justification: Optional[int] = None
+	cancel_patient_intervention_reason: Optional[int] = None
+	status: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7083,7 +7077,7 @@ class EncryptedInvoicingCode:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedInvoicingCode':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedInvoicingCode':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7144,7 +7138,7 @@ class EncryptedInvoicingCode:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-InvoicingCode = typing['DecryptedInvoicingCode', 'EncryptedInvoicingCode']
+InvoicingCode = Union['DecryptedInvoicingCode', 'EncryptedInvoicingCode']
 
 def serialize_invoicing_code(invoicing_code: InvoicingCode) -> object:
 	if isinstance(invoicing_code, DecryptedInvoicingCode):
@@ -7158,7 +7152,7 @@ def serialize_invoicing_code(invoicing_code: InvoicingCode) -> object:
 	else:
 		raise Exception(f"{type(invoicing_code)} is not a known subclass of InvoicingCode")
 
-def deserialize_invoicing_code(data: typing[str, typing[str, object]]) -> 'InvoicingCode':
+def deserialize_invoicing_code(data: Union[str, Dict[str, object]]) -> 'InvoicingCode':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -7174,7 +7168,7 @@ def deserialize_invoicing_code(data: typing[str, typing[str, object]]) -> 'Invoi
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of InvoicingCode")
 
-class MediumType(enum):
+class MediumType(Enum):
 	Cdrom = "cdrom"
 	Eattest = "eattest"
 	Efact = "efact"
@@ -7187,7 +7181,7 @@ class MediumType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MediumType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MediumType':
 		if data == "cdrom":
 			return MediumType.Cdrom
 		elif data == "eattest":
@@ -7205,7 +7199,7 @@ class MediumType(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for MediumType enum.")
 
-class InvoiceType(enum):
+class InvoiceType(Enum):
 	Patient = "patient"
 	Mutualfund = "mutualfund"
 	Payingagency = "payingagency"
@@ -7217,7 +7211,7 @@ class InvoiceType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'InvoiceType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'InvoiceType':
 		if data == "patient":
 			return InvoiceType.Patient
 		elif data == "mutualfund":
@@ -7235,21 +7229,21 @@ class InvoiceType(enum):
 
 @dataclass
 class MessageShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MessageShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MessageShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7259,26 +7253,26 @@ class MessageShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class HealthElementShareOptions:
-	requested_permissions: 'RequestedPermission' = dataclasses(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_patient_id: 'ShareMetadataBehaviour' = dataclasses(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = dataclasses(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
+	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
+	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_patient_id: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
+	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
 
 	def __serialize__(self) -> object:
 		return {
 			"requestedPermissions": self.requested_permissions.__serialize__(),
 			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
 			"sharePatientId": self.share_patient_id.__serialize__(),
-			"shareSecretIds": cardinal_sdk.model(self.share_secret_ids),
+			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'HealthElementShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthElementShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7288,22 +7282,22 @@ class HealthElementShareOptions:
 			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
 			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
 			share_patient_id=ShareMetadataBehaviour._deserialize(deserialized_dict["sharePatientId"]),
-			share_secret_ids=cardinal_sdk.model(deserialized_dict["shareSecretIds"]),
+			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
 class Insurance:
 	id: str
 	address: 'DecryptedAddress'
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	name: typing[str, str] = dataclasses(default_factory=dict)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	name: Dict[str, str] = field(default_factory=dict)
 	private_insurance: bool = False
 	hospitalisation_insurance: bool = False
 	ambulatory_insurance: bool = False
-	code: typing[str] = None
-	agreement_number: typing[str] = None
-	parent: typing[str] = None
+	code: Optional[str] = None
+	agreement_number: Optional[str] = None
+	parent: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7321,7 +7315,7 @@ class Insurance:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Insurance':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Insurance':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7344,19 +7338,19 @@ class Insurance:
 @dataclass
 class Agenda:
 	id: str
-	rev: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	user_id: typing[str] = None
-	rights: typing['Right'] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	user_id: Optional[str] = None
+	rights: List['Right'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7377,7 +7371,7 @@ class Agenda:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Agenda':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Agenda':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7404,20 +7398,20 @@ class Agenda:
 class Group:
 	id: str
 	minimum_authentication_class_for_elevated_privileges: 'AuthenticationClass'
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	name: typing[str] = None
-	password: typing[str] = None
-	servers: typing[typing[str]] = None
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	name: Optional[str] = None
+	password: Optional[str] = None
+	servers: Optional[List[str]] = None
 	super_admin: bool = False
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
-	default_user_roles: typing['UserType', typing[str]] = dataclasses(default_factory=dict)
-	operation_tokens: typing[str, 'OperationToken'] = dataclasses(default_factory=dict)
-	shared_entities: typing[str, str] = dataclasses(default_factory=dict)
-	minimum_kraken_version: typing[str] = None
-	super_group: typing[str] = None
-	application_id: typing[str] = None
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	default_user_roles: Dict['UserType', List[str]] = field(default_factory=dict)
+	operation_tokens: Dict[str, 'OperationToken'] = field(default_factory=dict)
+	shared_entities: Dict[str, str] = field(default_factory=dict)
+	minimum_kraken_version: Optional[str] = None
+	super_group: Optional[str] = None
+	application_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7440,7 +7434,7 @@ class Group:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Group':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Group':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7465,7 +7459,7 @@ class Group:
 			application_id=deserialized_dict.get("applicationId"),
 		)
 
-class GroupType(enum):
+class GroupType(Enum):
 	Root = "root"
 	App = "app"
 	Database = "database"
@@ -7474,7 +7468,7 @@ class GroupType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'GroupType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'GroupType':
 		if data == "root":
 			return GroupType.Root
 		elif data == "app":
@@ -7486,10 +7480,10 @@ class GroupType(enum):
 
 @dataclass
 class DatabaseInitialisation:
-	users: typing[typing['User']] = dataclasses(default_factory=list)
-	healthcare_parties: typing[typing['HealthcareParty']] = dataclasses(default_factory=list)
-	replication: typing['Replication'] = None
-	minimum_kraken_version: typing[str] = None
+	users: Optional[List['User']] = field(default_factory=list)
+	healthcare_parties: Optional[List['HealthcareParty']] = field(default_factory=list)
+	replication: Optional['Replication'] = None
+	minimum_kraken_version: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7500,7 +7494,7 @@ class DatabaseInitialisation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DatabaseInitialisation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DatabaseInitialisation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7527,7 +7521,7 @@ class RegistrationSuccess:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RegistrationSuccess':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RegistrationSuccess':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7539,7 +7533,7 @@ class RegistrationSuccess:
 			token=deserialized_dict["token"],
 		)
 
-class PermissionType(enum):
+class PermissionType(Enum):
 	Authenticate = "AUTHENTICATE"
 	Hcp = "HCP"
 	Physician = "PHYSICIAN"
@@ -7559,7 +7553,7 @@ class PermissionType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PermissionType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PermissionType':
 		if data == "AUTHENTICATE":
 			return PermissionType.Authenticate
 		elif data == "HCP":
@@ -7596,9 +7590,9 @@ class RegistrationInformation:
 	first_name: str
 	last_name: str
 	email_address: str
-	user_options: typing[str] = None
-	user_roles: typing[str] = dataclasses(default_factory=list)
-	minimum_kraken_version: typing[str] = None
+	user_options: Optional[str] = None
+	user_roles: List[str] = field(default_factory=list)
+	minimum_kraken_version: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7611,7 +7605,7 @@ class RegistrationInformation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RegistrationInformation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RegistrationInformation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7626,20 +7620,20 @@ class RegistrationInformation:
 			minimum_kraken_version=deserialized_dict.get("minimumKrakenVersion"),
 		)
 
-class Operation(enum):
+class Operation(Enum):
 	TransferGroup = "TRANSFER_GROUP"
 
 	def __serialize__(self) -> object:
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Operation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Operation':
 		if data == "TRANSFER_GROUP":
 			return Operation.TransferGroup
 		else:
 			raise Exception(f"{data} is not a valid value for Operation enum.")
 
-class UserType(enum):
+class UserType(Enum):
 	Hcp = "HCP"
 	Patient = "PATIENT"
 	Device = "DEVICE"
@@ -7649,7 +7643,7 @@ class UserType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'UserType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UserType':
 		if data == "HCP":
 			return UserType.Hcp
 		elif data == "PATIENT":
@@ -7664,9 +7658,9 @@ class UserType(enum):
 @dataclass
 class RoleConfiguration:
 	source: 'RoleConfiguration.Source'
-	roles: typing[str] = dataclasses(default_factory=list)
+	roles: List[str] = field(default_factory=list)
 
-	class Source(enum):
+	class Source(Enum):
 		Configuration = "CONFIGURATION"
 		Inherited = "INHERITED"
 		Default = "DEFAULT"
@@ -7675,7 +7669,7 @@ class RoleConfiguration:
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RoleConfiguration.Source':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RoleConfiguration.Source':
 			if data == "CONFIGURATION":
 				return RoleConfiguration.Source.Configuration
 			elif data == "INHERITED":
@@ -7692,7 +7686,7 @@ class RoleConfiguration:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RoleConfiguration':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RoleConfiguration':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7717,7 +7711,7 @@ class GroupDeletionReport:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'GroupDeletionReport':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'GroupDeletionReport':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7731,7 +7725,7 @@ class GroupDeletionReport:
 
 @dataclass
 class ListOfProperties:
-	properties: typing['DecryptedPropertyStub'] = dataclasses(default_factory=list)
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7739,7 +7733,7 @@ class ListOfProperties:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ListOfProperties':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ListOfProperties':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7752,14 +7746,14 @@ class ListOfProperties:
 @dataclass
 class DesignDocument:
 	id: str
-	rev: typing[str] = None
-	rev_history: typing[str, str] = dataclasses(default_factory=dict)
-	language: typing[str] = None
-	views: typing[str, 'View'] = dataclasses(default_factory=dict)
-	lists: typing[str, str] = dataclasses(default_factory=dict)
-	shows: typing[str, str] = dataclasses(default_factory=dict)
-	update_handlers: typing[typing[str, str]] = None
-	filters: typing[str, str] = dataclasses(default_factory=dict)
+	rev: Optional[str] = None
+	rev_history: Dict[str, str] = field(default_factory=dict)
+	language: Optional[str] = None
+	views: Dict[str, 'View'] = field(default_factory=dict)
+	lists: Dict[str, str] = field(default_factory=dict)
+	shows: Dict[str, str] = field(default_factory=dict)
+	update_handlers: Optional[Dict[str, str]] = None
+	filters: Dict[str, str] = field(default_factory=dict)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7775,7 +7769,7 @@ class DesignDocument:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DesignDocument':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DesignDocument':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7796,7 +7790,7 @@ class DesignDocument:
 @dataclass
 class GroupDatabasesInfo:
 	group_id: str
-	databases_info: typing['DatabaseInfo']
+	databases_info: List['DatabaseInfo']
 	gcp_storage_size: int
 
 	def __serialize__(self) -> object:
@@ -7807,7 +7801,7 @@ class GroupDatabasesInfo:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'GroupDatabasesInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'GroupDatabasesInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7819,7 +7813,7 @@ class GroupDatabasesInfo:
 			gcp_storage_size=deserialized_dict["gcpStorageSize"],
 		)
 
-class EntitySubscriptionCloseReason(enum):
+class EntitySubscriptionCloseReason(Enum):
 	ChannelFull = "ChannelFull"
 	ConnectionLost = "ConnectionLost"
 	IntentionallyClosed = "IntentionallyClosed"
@@ -7828,7 +7822,7 @@ class EntitySubscriptionCloseReason(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntitySubscriptionCloseReason':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntitySubscriptionCloseReason':
 		if data == "ChannelFull":
 			return EntitySubscriptionCloseReason.ChannelFull
 		elif data == "ConnectionLost":
@@ -7840,13 +7834,13 @@ class EntitySubscriptionCloseReason(enum):
 
 @dataclass
 class CodeStub:
-	id: typing[str] = None
-	context: typing[str] = None
-	type: typing[str] = None
-	code: typing[str] = None
-	version: typing[str] = None
-	context_label: typing[str] = None
-	label: typing[typing[str, str]] = None
+	id: Optional[str] = None
+	context: Optional[str] = None
+	type: Optional[str] = None
+	code: Optional[str] = None
+	version: Optional[str] = None
+	context_label: Optional[str] = None
+	label: Optional[Dict[str, str]] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7860,7 +7854,7 @@ class CodeStub:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CodeStub':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CodeStub':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7878,8 +7872,8 @@ class CodeStub:
 
 @dataclass
 class KeywordSubword:
-	value: typing[str] = None
-	sub_words: typing[typing['KeywordSubword']] = None
+	value: Optional[str] = None
+	sub_words: Optional[List['KeywordSubword']] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7888,7 +7882,7 @@ class KeywordSubword:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'KeywordSubword':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'KeywordSubword':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7901,8 +7895,8 @@ class KeywordSubword:
 
 @dataclass
 class PaginatedDocumentKeyIdPair:
-	start_key: typing[typing[str, object]] = None
-	start_key_doc_id: typing[str] = None
+	start_key: Optional[Dict[str, object]] = None
+	start_key_doc_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7911,7 +7905,7 @@ class PaginatedDocumentKeyIdPair:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PaginatedDocumentKeyIdPair':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PaginatedDocumentKeyIdPair':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7924,14 +7918,14 @@ class PaginatedDocumentKeyIdPair:
 
 @dataclass
 class Identifier:
-	id: typing[str] = None
-	assigner: typing[str] = None
-	start: typing[str] = None
-	end: typing[str] = None
-	system: typing[str] = None
-	type: typing['CodeStub'] = None
-	use: typing[str] = None
-	value: typing[str] = None
+	id: Optional[str] = None
+	assigner: Optional[str] = None
+	start: Optional[str] = None
+	end: Optional[str] = None
+	system: Optional[str] = None
+	type: Optional['CodeStub'] = None
+	use: Optional[str] = None
+	value: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -7946,7 +7940,7 @@ class Identifier:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Identifier':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Identifier':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7965,10 +7959,10 @@ class Identifier:
 
 @dataclass
 class Delegation:
-	owner: typing[str] = None
-	delegated_to: typing[str] = None
-	key: typing['HexString'] = None
-	tags: typing[str] = dataclasses(default_factory=list)
+	owner: Optional[str] = None
+	delegated_to: Optional[str] = None
+	key: Optional['HexString'] = None
+	tags: List[str] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -7979,7 +7973,7 @@ class Delegation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Delegation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Delegation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -7994,8 +7988,8 @@ class Delegation:
 
 @dataclass
 class SecurityMetadata:
-	secure_delegations: typing['SecureDelegationKeyString', 'SecureDelegation']
-	keys_equivalences: typing['Sha256HexString', 'Sha256HexString'] = dataclasses(default_factory=dict)
+	secure_delegations: Dict['SecureDelegationKeyString', 'SecureDelegation']
+	keys_equivalences: Dict['Sha256HexString', 'Sha256HexString'] = field(default_factory=dict)
 
 	def __serialize__(self) -> object:
 		return {
@@ -8004,7 +7998,7 @@ class SecurityMetadata:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SecurityMetadata':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SecurityMetadata':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8017,22 +8011,22 @@ class SecurityMetadata:
 
 @dataclass
 class EncryptedAddress:
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	address_type: typing['AddressType'] = None
-	descr: typing[str] = None
-	street: typing[str] = None
-	house_number: typing[str] = None
-	postbox_number: typing[str] = None
-	postal_code: typing[str] = None
-	city: typing[str] = None
-	state: typing[str] = None
-	country: typing[str] = None
-	note: typing[str] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
-	telecoms: typing['EncryptedTelecom'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	identifier: List['Identifier'] = field(default_factory=list)
+	address_type: Optional['AddressType'] = None
+	descr: Optional[str] = None
+	street: Optional[str] = None
+	house_number: Optional[str] = None
+	postbox_number: Optional[str] = None
+	postal_code: Optional[str] = None
+	city: Optional[str] = None
+	state: Optional[str] = None
+	country: Optional[str] = None
+	note: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
+	telecoms: List['EncryptedTelecom'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8055,7 +8049,7 @@ class EncryptedAddress:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedAddress':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedAddress':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8082,22 +8076,22 @@ class EncryptedAddress:
 
 @dataclass
 class DecryptedAddress:
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	identifier: typing['Identifier'] = dataclasses(default_factory=list)
-	address_type: typing['AddressType'] = None
-	descr: typing[str] = None
-	street: typing[str] = None
-	house_number: typing[str] = None
-	postbox_number: typing[str] = None
-	postal_code: typing[str] = None
-	city: typing[str] = None
-	state: typing[str] = None
-	country: typing[str] = None
-	note: typing[str] = None
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
-	telecoms: typing['DecryptedTelecom'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	identifier: List['Identifier'] = field(default_factory=list)
+	address_type: Optional['AddressType'] = None
+	descr: Optional[str] = None
+	street: Optional[str] = None
+	house_number: Optional[str] = None
+	postbox_number: Optional[str] = None
+	postal_code: Optional[str] = None
+	city: Optional[str] = None
+	state: Optional[str] = None
+	country: Optional[str] = None
+	note: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
+	telecoms: List['DecryptedTelecom'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8120,7 +8114,7 @@ class DecryptedAddress:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedAddress':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedAddress':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8145,7 +8139,7 @@ class DecryptedAddress:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-Address = typing['EncryptedAddress', 'DecryptedAddress']
+Address = Union['EncryptedAddress', 'DecryptedAddress']
 
 def serialize_address(address: Address) -> object:
 	if isinstance(address, EncryptedAddress):
@@ -8159,7 +8153,7 @@ def serialize_address(address: Address) -> object:
 	else:
 		raise Exception(f"{type(address)} is not a known subclass of Address")
 
-def deserialize_address(data: typing[str, typing[str, object]]) -> 'Address':
+def deserialize_address(data: Union[str, Dict[str, object]]) -> 'Address':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -8177,17 +8171,17 @@ def deserialize_address(data: typing[str, typing[str, object]]) -> 'Address':
 
 @dataclass
 class TimeTableItem:
-	rrule_start_date: typing[int] = None
-	rrule: typing[str] = None
-	not_before_in_minutes: typing[int] = None
-	not_after_in_minutes: typing[int] = None
-	zone_id: typing[str] = None
-	days: typing[str] = dataclasses(default_factory=list)
-	recurrence_types: typing[str] = dataclasses(default_factory=list)
-	hours: typing['TimeTableHour'] = dataclasses(default_factory=list)
-	calendar_item_type_id: typing[str] = None
+	rrule_start_date: Optional[int] = None
+	rrule: Optional[str] = None
+	not_before_in_minutes: Optional[int] = None
+	not_after_in_minutes: Optional[int] = None
+	zone_id: Optional[str] = None
+	days: List[str] = field(default_factory=list)
+	recurrence_types: List[str] = field(default_factory=list)
+	hours: List['TimeTableHour'] = field(default_factory=list)
+	calendar_item_type_id: Optional[str] = None
 	home_visit: bool = False
-	place_id: typing[str] = None
+	place_id: Optional[str] = None
 	public_time_table_item: bool = False
 	accepts_new_patient: bool = True
 	unavailable: bool = False
@@ -8211,7 +8205,7 @@ class TimeTableItem:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TimeTableItem':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeTableItem':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8236,14 +8230,14 @@ class TimeTableItem:
 
 @dataclass
 class PersonName:
-	last_name: typing[str] = None
-	first_names: typing[str] = dataclasses(default_factory=list)
-	start: typing[int] = None
-	end: typing[int] = None
-	prefix: typing[str] = dataclasses(default_factory=list)
-	suffix: typing[str] = dataclasses(default_factory=list)
-	text: typing[str] = None
-	use: typing['PersonNameUse'] = None
+	last_name: Optional[str] = None
+	first_names: List[str] = field(default_factory=list)
+	start: Optional[int] = None
+	end: Optional[int] = None
+	prefix: List[str] = field(default_factory=list)
+	suffix: List[str] = field(default_factory=list)
+	text: Optional[str] = None
+	use: Optional['PersonNameUse'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8258,7 +8252,7 @@ class PersonName:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PersonName':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PersonName':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8275,7 +8269,7 @@ class PersonName:
 			use=PersonNameUse._deserialize(deserialized_dict.get("use")) if deserialized_dict.get("use") is not None else None,
 		)
 
-class Gender(enum):
+class Gender(Enum):
 	Male = "male"
 	Female = "female"
 	Indeterminate = "indeterminate"
@@ -8288,7 +8282,7 @@ class Gender(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Gender':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Gender':
 		if data == "male":
 			return Gender.Male
 		elif data == "female":
@@ -8306,7 +8300,7 @@ class Gender(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for Gender enum.")
 
-class DeactivationReason(enum):
+class DeactivationReason(Enum):
 	Deceased = "deceased"
 	Moved = "moved"
 	OtherDoctor = "other_doctor"
@@ -8319,7 +8313,7 @@ class DeactivationReason(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DeactivationReason':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeactivationReason':
 		if data == "deceased":
 			return DeactivationReason.Deceased
 		elif data == "moved":
@@ -8337,7 +8331,7 @@ class DeactivationReason(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for DeactivationReason enum.")
 
-class PersonalStatus(enum):
+class PersonalStatus(Enum):
 	Single = "single"
 	InCouple = "in_couple"
 	Married = "married"
@@ -8357,7 +8351,7 @@ class PersonalStatus(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PersonalStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PersonalStatus':
 		if data == "single":
 			return PersonalStatus.Single
 		elif data == "in_couple":
@@ -8392,15 +8386,15 @@ class PersonalStatus(enum):
 @dataclass
 class Annotation:
 	id: str
-	author: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	text: typing[str] = None
-	markdown: typing[str, str] = dataclasses(default_factory=dict)
-	location: typing[str] = None
-	confidential: typing[bool] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	encrypted_self: typing[str] = None
+	author: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	text: Optional[str] = None
+	markdown: Dict[str, str] = field(default_factory=dict)
+	location: Optional[str] = None
+	confidential: Optional[bool] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	encrypted_self: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8417,7 +8411,7 @@ class Annotation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Annotation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Annotation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8438,16 +8432,16 @@ class Annotation:
 
 @dataclass
 class DecryptedInsurability:
-	parameters: typing[str, str] = dataclasses(default_factory=dict)
-	hospitalisation: typing[bool] = None
-	ambulatory: typing[bool] = None
-	dental: typing[bool] = None
-	identification_number: typing[str] = None
-	insurance_id: typing[str] = None
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	titulary_id: typing[str] = None
-	encrypted_self: typing['Base64String'] = None
+	parameters: Dict[str, str] = field(default_factory=dict)
+	hospitalisation: Optional[bool] = None
+	ambulatory: Optional[bool] = None
+	dental: Optional[bool] = None
+	identification_number: Optional[str] = None
+	insurance_id: Optional[str] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	titulary_id: Optional[str] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8464,7 +8458,7 @@ class DecryptedInsurability:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedInsurability':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedInsurability':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8485,16 +8479,16 @@ class DecryptedInsurability:
 
 @dataclass
 class EncryptedInsurability:
-	parameters: typing[str, str] = dataclasses(default_factory=dict)
-	hospitalisation: typing[bool] = None
-	ambulatory: typing[bool] = None
-	dental: typing[bool] = None
-	identification_number: typing[str] = None
-	insurance_id: typing[str] = None
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	titulary_id: typing[str] = None
-	encrypted_self: typing['Base64String'] = None
+	parameters: Dict[str, str] = field(default_factory=dict)
+	hospitalisation: Optional[bool] = None
+	ambulatory: Optional[bool] = None
+	dental: Optional[bool] = None
+	identification_number: Optional[str] = None
+	insurance_id: Optional[str] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	titulary_id: Optional[str] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8511,7 +8505,7 @@ class EncryptedInsurability:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedInsurability':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedInsurability':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8530,7 +8524,7 @@ class EncryptedInsurability:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-Insurability = typing['DecryptedInsurability', 'EncryptedInsurability']
+Insurability = Union['DecryptedInsurability', 'EncryptedInsurability']
 
 def serialize_insurability(insurability: Insurability) -> object:
 	if isinstance(insurability, DecryptedInsurability):
@@ -8544,7 +8538,7 @@ def serialize_insurability(insurability: Insurability) -> object:
 	else:
 		raise Exception(f"{type(insurability)} is not a known subclass of Insurability")
 
-def deserialize_insurability(data: typing[str, typing[str, object]]) -> 'Insurability':
+def deserialize_insurability(data: Union[str, Dict[str, object]]) -> 'Insurability':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -8562,11 +8556,11 @@ def deserialize_insurability(data: typing[str, typing[str, object]]) -> 'Insurab
 
 @dataclass
 class Partnership:
-	type: typing['PartnershipType'] = None
-	status: typing['PartnershipStatus'] = None
-	partner_id: typing[str] = None
-	me_to_other_relationship_description: typing[str] = None
-	other_to_me_relationship_description: typing[str] = None
+	type: Optional['PartnershipType'] = None
+	status: Optional['PartnershipStatus'] = None
+	partner_id: Optional[str] = None
+	me_to_other_relationship_description: Optional[str] = None
+	other_to_me_relationship_description: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8578,7 +8572,7 @@ class Partnership:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Partnership':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Partnership':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8594,12 +8588,12 @@ class Partnership:
 
 @dataclass
 class EncryptedPatientHealthCareParty:
-	type: typing['PatientHealthCarePartyType'] = None
-	healthcare_party_id: typing[str] = None
-	send_formats: typing['TelecomType', str] = dataclasses(default_factory=dict)
-	referral_periods: typing['ReferralPeriod'] = dataclasses(default_factory=list)
+	type: Optional['PatientHealthCarePartyType'] = None
+	healthcare_party_id: Optional[str] = None
+	send_formats: Dict['TelecomType', str] = field(default_factory=dict)
+	referral_periods: List['ReferralPeriod'] = field(default_factory=list)
 	referral: bool = False
-	encrypted_self: typing['Base64String'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8612,7 +8606,7 @@ class EncryptedPatientHealthCareParty:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedPatientHealthCareParty':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedPatientHealthCareParty':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8629,12 +8623,12 @@ class EncryptedPatientHealthCareParty:
 
 @dataclass
 class DecryptedPatientHealthCareParty:
-	type: typing['PatientHealthCarePartyType'] = None
-	healthcare_party_id: typing[str] = None
-	send_formats: typing['TelecomType', str] = dataclasses(default_factory=dict)
-	referral_periods: typing['ReferralPeriod'] = dataclasses(default_factory=list)
+	type: Optional['PatientHealthCarePartyType'] = None
+	healthcare_party_id: Optional[str] = None
+	send_formats: Dict['TelecomType', str] = field(default_factory=dict)
+	referral_periods: List['ReferralPeriod'] = field(default_factory=list)
 	referral: bool = False
-	encrypted_self: typing['Base64String'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8647,7 +8641,7 @@ class DecryptedPatientHealthCareParty:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedPatientHealthCareParty':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedPatientHealthCareParty':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8662,7 +8656,7 @@ class DecryptedPatientHealthCareParty:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-PatientHealthCareParty = typing['EncryptedPatientHealthCareParty', 'DecryptedPatientHealthCareParty']
+PatientHealthCareParty = Union['EncryptedPatientHealthCareParty', 'DecryptedPatientHealthCareParty']
 
 def serialize_patient_health_care_party(patient_health_care_party: PatientHealthCareParty) -> object:
 	if isinstance(patient_health_care_party, EncryptedPatientHealthCareParty):
@@ -8676,7 +8670,7 @@ def serialize_patient_health_care_party(patient_health_care_party: PatientHealth
 	else:
 		raise Exception(f"{type(patient_health_care_party)} is not a known subclass of PatientHealthCareParty")
 
-def deserialize_patient_health_care_party(data: typing[str, typing[str, object]]) -> 'PatientHealthCareParty':
+def deserialize_patient_health_care_party(data: Union[str, Dict[str, object]]) -> 'PatientHealthCareParty':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -8694,14 +8688,14 @@ def deserialize_patient_health_care_party(data: typing[str, typing[str, object]]
 
 @dataclass
 class EncryptedFinancialInstitutionInformation:
-	name: typing[str] = None
-	key: typing[str] = None
-	bank_account: typing[str] = None
-	bic: typing[str] = None
-	proxy_bank_account: typing[str] = None
-	proxy_bic: typing[str] = None
-	preferred_fii_for_partners: typing[str] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	name: Optional[str] = None
+	key: Optional[str] = None
+	bank_account: Optional[str] = None
+	bic: Optional[str] = None
+	proxy_bank_account: Optional[str] = None
+	proxy_bic: Optional[str] = None
+	preferred_fii_for_partners: List[str] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8716,7 +8710,7 @@ class EncryptedFinancialInstitutionInformation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedFinancialInstitutionInformation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedFinancialInstitutionInformation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8735,14 +8729,14 @@ class EncryptedFinancialInstitutionInformation:
 
 @dataclass
 class DecryptedFinancialInstitutionInformation:
-	name: typing[str] = None
-	key: typing[str] = None
-	bank_account: typing[str] = None
-	bic: typing[str] = None
-	proxy_bank_account: typing[str] = None
-	proxy_bic: typing[str] = None
-	preferred_fii_for_partners: typing[str] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	name: Optional[str] = None
+	key: Optional[str] = None
+	bank_account: Optional[str] = None
+	bic: Optional[str] = None
+	proxy_bank_account: Optional[str] = None
+	proxy_bic: Optional[str] = None
+	preferred_fii_for_partners: List[str] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8757,7 +8751,7 @@ class DecryptedFinancialInstitutionInformation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedFinancialInstitutionInformation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedFinancialInstitutionInformation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8774,7 +8768,7 @@ class DecryptedFinancialInstitutionInformation:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-FinancialInstitutionInformation = typing['EncryptedFinancialInstitutionInformation', 'DecryptedFinancialInstitutionInformation']
+FinancialInstitutionInformation = Union['EncryptedFinancialInstitutionInformation', 'DecryptedFinancialInstitutionInformation']
 
 def serialize_financial_institution_information(financial_institution_information: FinancialInstitutionInformation) -> object:
 	if isinstance(financial_institution_information, EncryptedFinancialInstitutionInformation):
@@ -8788,7 +8782,7 @@ def serialize_financial_institution_information(financial_institution_informatio
 	else:
 		raise Exception(f"{type(financial_institution_information)} is not a known subclass of FinancialInstitutionInformation")
 
-def deserialize_financial_institution_information(data: typing[str, typing[str, object]]) -> 'FinancialInstitutionInformation':
+def deserialize_financial_institution_information(data: Union[str, Dict[str, object]]) -> 'FinancialInstitutionInformation':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -8806,18 +8800,18 @@ def deserialize_financial_institution_information(data: typing[str, typing[str, 
 
 @dataclass
 class DecryptedMedicalHouseContract:
-	contract_id: typing[str] = None
-	valid_from: typing[int] = None
-	valid_to: typing[int] = None
-	mm_nihii: typing[str] = None
-	hcp_id: typing[str] = None
-	change_type: typing['ContractChangeType'] = None
-	parent_contract_id: typing[str] = None
-	changed_by: typing[str] = None
-	start_of_contract: typing[int] = None
-	start_of_coverage: typing[int] = None
-	end_of_contract: typing[int] = None
-	end_of_coverage: typing[int] = None
+	contract_id: Optional[str] = None
+	valid_from: Optional[int] = None
+	valid_to: Optional[int] = None
+	mm_nihii: Optional[str] = None
+	hcp_id: Optional[str] = None
+	change_type: Optional['ContractChangeType'] = None
+	parent_contract_id: Optional[str] = None
+	changed_by: Optional[str] = None
+	start_of_contract: Optional[int] = None
+	start_of_coverage: Optional[int] = None
+	end_of_contract: Optional[int] = None
+	end_of_coverage: Optional[int] = None
 	kine: bool = False
 	gp: bool = False
 	ptd: bool = False
@@ -8825,20 +8819,20 @@ class DecryptedMedicalHouseContract:
 	no_kine: bool = False
 	no_gp: bool = False
 	no_nurse: bool = False
-	unsubscription_reason_id: typing[int] = None
-	ptd_start: typing[int] = None
-	ptd_end: typing[int] = None
-	ptd_last_invoiced: typing[int] = None
-	start_of_suspension: typing[int] = None
-	end_of_suspension: typing[int] = None
-	suspension_reason: typing['SuspensionReason'] = None
-	suspension_source: typing[str] = None
+	unsubscription_reason_id: Optional[int] = None
+	ptd_start: Optional[int] = None
+	ptd_end: Optional[int] = None
+	ptd_last_invoiced: Optional[int] = None
+	start_of_suspension: Optional[int] = None
+	end_of_suspension: Optional[int] = None
+	suspension_reason: Optional['SuspensionReason'] = None
+	suspension_source: Optional[str] = None
 	forced_suspension: bool = False
-	signature_type: typing['MhcSignatureType'] = None
-	status: typing[int] = None
-	options: typing[str, str] = dataclasses(default_factory=dict)
-	receipts: typing[str, str] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
+	signature_type: Optional['MhcSignatureType'] = None
+	status: Optional[int] = None
+	options: Dict[str, str] = field(default_factory=dict)
+	receipts: Dict[str, str] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8878,7 +8872,7 @@ class DecryptedMedicalHouseContract:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedMedicalHouseContract':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedMedicalHouseContract':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -8922,18 +8916,18 @@ class DecryptedMedicalHouseContract:
 
 @dataclass
 class EncryptedMedicalHouseContract:
-	contract_id: typing[str] = None
-	valid_from: typing[int] = None
-	valid_to: typing[int] = None
-	mm_nihii: typing[str] = None
-	hcp_id: typing[str] = None
-	change_type: typing['ContractChangeType'] = None
-	parent_contract_id: typing[str] = None
-	changed_by: typing[str] = None
-	start_of_contract: typing[int] = None
-	start_of_coverage: typing[int] = None
-	end_of_contract: typing[int] = None
-	end_of_coverage: typing[int] = None
+	contract_id: Optional[str] = None
+	valid_from: Optional[int] = None
+	valid_to: Optional[int] = None
+	mm_nihii: Optional[str] = None
+	hcp_id: Optional[str] = None
+	change_type: Optional['ContractChangeType'] = None
+	parent_contract_id: Optional[str] = None
+	changed_by: Optional[str] = None
+	start_of_contract: Optional[int] = None
+	start_of_coverage: Optional[int] = None
+	end_of_contract: Optional[int] = None
+	end_of_coverage: Optional[int] = None
 	kine: bool = False
 	gp: bool = False
 	ptd: bool = False
@@ -8941,20 +8935,20 @@ class EncryptedMedicalHouseContract:
 	no_kine: bool = False
 	no_gp: bool = False
 	no_nurse: bool = False
-	unsubscription_reason_id: typing[int] = None
-	ptd_start: typing[int] = None
-	ptd_end: typing[int] = None
-	ptd_last_invoiced: typing[int] = None
-	start_of_suspension: typing[int] = None
-	end_of_suspension: typing[int] = None
-	suspension_reason: typing['SuspensionReason'] = None
-	suspension_source: typing[str] = None
+	unsubscription_reason_id: Optional[int] = None
+	ptd_start: Optional[int] = None
+	ptd_end: Optional[int] = None
+	ptd_last_invoiced: Optional[int] = None
+	start_of_suspension: Optional[int] = None
+	end_of_suspension: Optional[int] = None
+	suspension_reason: Optional['SuspensionReason'] = None
+	suspension_source: Optional[str] = None
 	forced_suspension: bool = False
-	signature_type: typing['MhcSignatureType'] = None
-	status: typing[int] = None
-	options: typing[str, str] = dataclasses(default_factory=dict)
-	receipts: typing[str, str] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
+	signature_type: Optional['MhcSignatureType'] = None
+	status: Optional[int] = None
+	options: Dict[str, str] = field(default_factory=dict)
+	receipts: Dict[str, str] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -8994,7 +8988,7 @@ class EncryptedMedicalHouseContract:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedMedicalHouseContract':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedMedicalHouseContract':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9036,7 +9030,7 @@ class EncryptedMedicalHouseContract:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-MedicalHouseContract = typing['DecryptedMedicalHouseContract', 'EncryptedMedicalHouseContract']
+MedicalHouseContract = Union['DecryptedMedicalHouseContract', 'EncryptedMedicalHouseContract']
 
 def serialize_medical_house_contract(medical_house_contract: MedicalHouseContract) -> object:
 	if isinstance(medical_house_contract, DecryptedMedicalHouseContract):
@@ -9050,7 +9044,7 @@ def serialize_medical_house_contract(medical_house_contract: MedicalHouseContrac
 	else:
 		raise Exception(f"{type(medical_house_contract)} is not a known subclass of MedicalHouseContract")
 
-def deserialize_medical_house_contract(data: typing[str, typing[str, object]]) -> 'MedicalHouseContract':
+def deserialize_medical_house_contract(data: Union[str, Dict[str, object]]) -> 'MedicalHouseContract':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -9068,10 +9062,10 @@ def deserialize_medical_house_contract(data: typing[str, typing[str, object]]) -
 
 @dataclass
 class SchoolingInfo:
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	school: typing[str] = None
-	type_of_education: typing['CodeStub'] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	school: Optional[str] = None
+	type_of_education: Optional['CodeStub'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9082,7 +9076,7 @@ class SchoolingInfo:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SchoolingInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SchoolingInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9097,10 +9091,10 @@ class SchoolingInfo:
 
 @dataclass
 class EmploymentInfo:
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	profession_type: typing['CodeStub'] = None
-	employer: typing['Employer'] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	profession_type: Optional['CodeStub'] = None
+	employer: Optional['Employer'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9111,7 +9105,7 @@ class EmploymentInfo:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EmploymentInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EmploymentInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9124,7 +9118,7 @@ class EmploymentInfo:
 			employer=Employer._deserialize(deserialized_dict.get("employer")) if deserialized_dict.get("employer") is not None else None,
 		)
 
-class UsersType(enum):
+class UsersType(Enum):
 	Database = "database"
 	Ldap = "ldap"
 	Token = "token"
@@ -9133,7 +9127,7 @@ class UsersType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'UsersType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UsersType':
 		if data == "database":
 			return UsersType.Database
 		elif data == "ldap":
@@ -9143,7 +9137,7 @@ class UsersType(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for UsersType enum.")
 
-class UsersStatus(enum):
+class UsersStatus(Enum):
 	Active = "ACTIVE"
 	Disabled = "DISABLED"
 	Registering = "REGISTERING"
@@ -9152,7 +9146,7 @@ class UsersStatus(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'UsersStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UsersStatus':
 		if data == "ACTIVE":
 			return UsersStatus.Active
 		elif data == "DISABLED":
@@ -9162,7 +9156,7 @@ class UsersStatus(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for UsersStatus enum.")
 
-class DelegationTag(enum):
+class DelegationTag(Enum):
 	All = "all"
 	AdministrativeData = "administrativeData"
 	AnonymousMedicalInformation = "anonymousMedicalInformation"
@@ -9188,7 +9182,7 @@ class DelegationTag(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DelegationTag':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DelegationTag':
 		if data == "all":
 			return DelegationTag.All
 		elif data == "administrativeData":
@@ -9236,8 +9230,8 @@ class DelegationTag(enum):
 class AuthenticationToken:
 	creation_time: int
 	validity: int
-	token: typing[str] = None
-	deletion_date: typing[int] = None
+	token: Optional[str] = None
+	deletion_date: Optional[int] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9248,7 +9242,7 @@ class AuthenticationToken:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AuthenticationToken':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AuthenticationToken':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9261,7 +9255,7 @@ class AuthenticationToken:
 			deletion_date=deserialized_dict.get("deletionDate"),
 		)
 
-class RequestedPermission(enum):
+class RequestedPermission(Enum):
 	MaxRead = "MAX_READ"
 	FullRead = "FULL_READ"
 	MaxWrite = "MAX_WRITE"
@@ -9272,7 +9266,7 @@ class RequestedPermission(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RequestedPermission':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RequestedPermission':
 		if data == "MAX_READ":
 			return RequestedPermission.MaxRead
 		elif data == "FULL_READ":
@@ -9286,7 +9280,7 @@ class RequestedPermission(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for RequestedPermission enum.")
 
-class ShareMetadataBehaviour(enum):
+class ShareMetadataBehaviour(Enum):
 	Required = "REQUIRED"
 	IfAvailable = "IF_AVAILABLE"
 	Never = "NEVER"
@@ -9295,7 +9289,7 @@ class ShareMetadataBehaviour(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ShareMetadataBehaviour':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ShareMetadataBehaviour':
 		if data == "REQUIRED":
 			return ShareMetadataBehaviour.Required
 		elif data == "IF_AVAILABLE":
@@ -9315,7 +9309,7 @@ class SecretIdShareOptionsAllAvailable:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SecretIdShareOptionsAllAvailable':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SecretIdShareOptionsAllAvailable':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9327,7 +9321,7 @@ class SecretIdShareOptionsAllAvailable:
 
 @dataclass
 class SecretIdShareOptionsUseExactly:
-	secret_ids: typing[str]
+	secret_ids: List[str]
 	create_unknown_secret_ids: bool
 
 	def __serialize__(self) -> object:
@@ -9337,7 +9331,7 @@ class SecretIdShareOptionsUseExactly:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SecretIdShareOptionsUseExactly':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SecretIdShareOptionsUseExactly':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9348,7 +9342,7 @@ class SecretIdShareOptionsUseExactly:
 			create_unknown_secret_ids=deserialized_dict["createUnknownSecretIds"],
 		)
 
-SecretIdShareOptions = typing['SecretIdShareOptionsAllAvailable', 'SecretIdShareOptionsUseExactly']
+SecretIdShareOptions = Union['SecretIdShareOptionsAllAvailable', 'SecretIdShareOptionsUseExactly']
 
 def serialize_secret_id_share_options(secret_id_share_options: SecretIdShareOptions) -> object:
 	if isinstance(secret_id_share_options, SecretIdShareOptionsAllAvailable):
@@ -9362,7 +9356,7 @@ def serialize_secret_id_share_options(secret_id_share_options: SecretIdShareOpti
 	else:
 		raise Exception(f"{type(secret_id_share_options)} is not a known subclass of SecretIdShareOptions")
 
-def deserialize_secret_id_share_options(data: typing[str, typing[str, object]]) -> 'SecretIdShareOptions':
+def deserialize_secret_id_share_options(data: Union[str, Dict[str, object]]) -> 'SecretIdShareOptions':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -9378,7 +9372,7 @@ def deserialize_secret_id_share_options(data: typing[str, typing[str, object]]) 
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SecretIdShareOptions")
 
-class DocumentLocation(enum):
+class DocumentLocation(Enum):
 	Annex = "annex"
 	Body = "body"
 
@@ -9386,7 +9380,7 @@ class DocumentLocation(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DocumentLocation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentLocation':
 		if data == "annex":
 			return DocumentLocation.Annex
 		elif data == "body":
@@ -9394,7 +9388,7 @@ class DocumentLocation(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for DocumentLocation enum.")
 
-class DocumentType(enum):
+class DocumentType(Enum):
 	Admission = "admission"
 	Alert = "alert"
 	BvtSample = "bvt_sample"
@@ -9439,7 +9433,7 @@ class DocumentType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DocumentType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentType':
 		if data == "admission":
 			return DocumentType.Admission
 		elif data == "alert":
@@ -9521,7 +9515,7 @@ class DocumentType(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for DocumentType enum.")
 
-class DocumentStatus(enum):
+class DocumentStatus(Enum):
 	Draft = "draft"
 	Finalized = "finalized"
 	PendingReview = "pending_review"
@@ -9536,7 +9530,7 @@ class DocumentStatus(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DocumentStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentStatus':
 		if data == "draft":
 			return DocumentStatus.Draft
 		elif data == "finalized":
@@ -9560,9 +9554,9 @@ class DocumentStatus(enum):
 
 @dataclass
 class DataAttachment:
-	couch_db_attachment_id: typing[str] = None
-	object_store_attachment_id: typing[str] = None
-	utis: typing[str] = dataclasses(default_factory=list)
+	couch_db_attachment_id: Optional[str] = None
+	object_store_attachment_id: Optional[str] = None
+	utis: List[str] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -9572,7 +9566,7 @@ class DataAttachment:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DataAttachment':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataAttachment':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9586,10 +9580,10 @@ class DataAttachment:
 
 @dataclass
 class DeletedAttachment:
-	couch_db_attachment_id: typing[str] = None
-	object_store_attachment_id: typing[str] = None
-	key: typing[str] = None
-	deletion_time: typing[int] = None
+	couch_db_attachment_id: Optional[str] = None
+	object_store_attachment_id: Optional[str] = None
+	key: Optional[str] = None
+	deletion_time: Optional[int] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9600,7 +9594,7 @@ class DeletedAttachment:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DeletedAttachment':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeletedAttachment':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9615,10 +9609,10 @@ class DeletedAttachment:
 
 @dataclass
 class CalendarItemTag:
-	code: typing[str] = None
-	date: typing[int] = None
-	user_id: typing[str] = None
-	user_name: typing[str] = None
+	code: Optional[str] = None
+	date: Optional[int] = None
+	user_id: Optional[str] = None
+	user_name: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9629,7 +9623,7 @@ class CalendarItemTag:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CalendarItemTag':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CalendarItemTag':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9644,39 +9638,39 @@ class CalendarItemTag:
 
 @dataclass
 class FlowItem:
-	id: typing[str] = None
-	title: typing[str] = None
-	comment: typing[str] = None
-	reception_date: typing[int] = None
-	processing_date: typing[int] = None
-	processer: typing[str] = None
-	cancellation_date: typing[int] = None
-	canceller: typing[str] = None
-	cancellation_reason: typing[str] = None
-	cancellation_note: typing[str] = None
-	status: typing[str] = None
-	home_visit: typing[bool] = None
-	municipality: typing[str] = None
-	town: typing[str] = None
-	zip_code: typing[str] = None
-	street: typing[str] = None
-	building: typing[str] = None
-	building_number: typing[str] = None
-	doorbell_name: typing[str] = None
-	floor: typing[str] = None
-	letter_box: typing[str] = None
-	notes_ops: typing[str] = None
-	notes_contact: typing[str] = None
-	latitude: typing[str] = None
-	longitude: typing[str] = None
-	type: typing[str] = None
-	emergency: typing[bool] = None
-	phone_number: typing[str] = None
-	patient_id: typing[str] = None
-	patient_last_name: typing[str] = None
-	patient_first_name: typing[str] = None
-	description: typing[str] = None
-	intervention_code: typing[str] = None
+	id: Optional[str] = None
+	title: Optional[str] = None
+	comment: Optional[str] = None
+	reception_date: Optional[int] = None
+	processing_date: Optional[int] = None
+	processer: Optional[str] = None
+	cancellation_date: Optional[int] = None
+	canceller: Optional[str] = None
+	cancellation_reason: Optional[str] = None
+	cancellation_note: Optional[str] = None
+	status: Optional[str] = None
+	home_visit: Optional[bool] = None
+	municipality: Optional[str] = None
+	town: Optional[str] = None
+	zip_code: Optional[str] = None
+	street: Optional[str] = None
+	building: Optional[str] = None
+	building_number: Optional[str] = None
+	doorbell_name: Optional[str] = None
+	floor: Optional[str] = None
+	letter_box: Optional[str] = None
+	notes_ops: Optional[str] = None
+	notes_contact: Optional[str] = None
+	latitude: Optional[str] = None
+	longitude: Optional[str] = None
+	type: Optional[str] = None
+	emergency: Optional[bool] = None
+	phone_number: Optional[str] = None
+	patient_id: Optional[str] = None
+	patient_last_name: Optional[str] = None
+	patient_first_name: Optional[str] = None
+	description: Optional[str] = None
+	intervention_code: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9716,7 +9710,7 @@ class FlowItem:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FlowItem':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FlowItem':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9758,7 +9752,7 @@ class FlowItem:
 			intervention_code=deserialized_dict.get("interventionCode"),
 		)
 
-class TaskStatus(enum):
+class TaskStatus(Enum):
 	Pending = "pending"
 	Ongoing = "ongoing"
 	Cancelled = "cancelled"
@@ -9768,7 +9762,7 @@ class TaskStatus(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TaskStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TaskStatus':
 		if data == "pending":
 			return TaskStatus.Pending
 		elif data == "ongoing":
@@ -9783,10 +9777,10 @@ class TaskStatus(enum):
 @dataclass
 class FormTemplateLayout:
 	form: str
-	actions: typing['Action'] = dataclasses(default_factory=list)
-	sections: typing['Section'] = dataclasses(default_factory=list)
-	description: typing[str] = None
-	keywords: typing[typing[str]] = None
+	actions: List['Action'] = field(default_factory=list)
+	sections: List['Section'] = field(default_factory=list)
+	description: Optional[str] = None
+	keywords: Optional[List[str]] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9798,7 +9792,7 @@ class FormTemplateLayout:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FormTemplateLayout':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FormTemplateLayout':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9814,8 +9808,8 @@ class FormTemplateLayout:
 
 @dataclass
 class DocumentGroup:
-	guid: typing[str] = None
-	name: typing[str] = None
+	guid: Optional[str] = None
+	name: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9824,7 +9818,7 @@ class DocumentGroup:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DocumentGroup':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentGroup':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9840,9 +9834,9 @@ class FailedRequestDetails:
 	entity_id: str
 	delegate_id: str
 	updated_for_migration: bool
-	code: typing[int]
-	reason: typing[str]
-	request: typing['DelegateShareOptions']
+	code: Optional[int]
+	reason: Optional[str]
+	request: Optional['DelegateShareOptions']
 	should_retry: bool
 
 	def __serialize__(self) -> object:
@@ -9857,7 +9851,7 @@ class FailedRequestDetails:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FailedRequestDetails':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FailedRequestDetails':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9873,7 +9867,7 @@ class FailedRequestDetails:
 			should_retry=deserialized_dict["shouldRetry"],
 		)
 
-class EntityWithEncryptionMetadataTypeName(enum):
+class EntityWithEncryptionMetadataTypeName(Enum):
 	Article = "Article"
 	AccessLog = "AccessLog"
 	CalendarItem = "CalendarItem"
@@ -9896,7 +9890,7 @@ class EntityWithEncryptionMetadataTypeName(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EntityWithEncryptionMetadataTypeName':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EntityWithEncryptionMetadataTypeName':
 		if data == "Article":
 			return EntityWithEncryptionMetadataTypeName.Article
 		elif data == "AccessLog":
@@ -9936,8 +9930,8 @@ class EntityWithEncryptionMetadataTypeName(enum):
 
 @dataclass
 class Periodicity:
-	related_code: typing['CodeStub'] = None
-	related_periodicity: typing['CodeStub'] = None
+	related_code: Optional['CodeStub'] = None
+	related_periodicity: Optional['CodeStub'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -9946,7 +9940,7 @@ class Periodicity:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Periodicity':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Periodicity':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9957,7 +9951,7 @@ class Periodicity:
 			related_periodicity=CodeStub._deserialize(deserialized_dict.get("relatedPeriodicity")) if deserialized_dict.get("relatedPeriodicity") is not None else None,
 		)
 
-class LinkQualification(enum):
+class LinkQualification(Enum):
 	Exact = "exact"
 	Narrower = "narrower"
 	Broader = "broader"
@@ -9987,7 +9981,7 @@ class LinkQualification(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'LinkQualification':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'LinkQualification':
 		if data == "exact":
 			return LinkQualification.Exact
 		elif data == "narrower":
@@ -10039,7 +10033,7 @@ class LinkQualification(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for LinkQualification enum.")
 
-class CodeFlag(enum):
+class CodeFlag(Enum):
 	MaleOnly = "male_only"
 	FemaleOnly = "female_only"
 	Deptkinesitherapy = "deptkinesitherapy"
@@ -10123,7 +10117,7 @@ class CodeFlag(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CodeFlag':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CodeFlag':
 		if data == "male_only":
 			return CodeFlag.MaleOnly
 		elif data == "female_only":
@@ -10283,7 +10277,7 @@ class CodeFlag(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for CodeFlag enum.")
 
-class AppendixType(enum):
+class AppendixType(Enum):
 	ExternalLink = "externalLink"
 	Video = "video"
 	Description = "description"
@@ -10292,7 +10286,7 @@ class AppendixType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AppendixType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AppendixType':
 		if data == "externalLink":
 			return AppendixType.ExternalLink
 		elif data == "video":
@@ -10304,17 +10298,17 @@ class AppendixType(enum):
 
 @dataclass
 class EncryptedValorisation:
-	start_of_validity: typing[int] = None
-	end_of_validity: typing[int] = None
-	predicate: typing[str] = None
-	reference: typing[typing[int]] = None
-	total_amount: typing[float] = None
-	reimbursement: typing[float] = None
-	patient_intervention: typing[float] = None
-	doctor_supplement: typing[float] = None
-	vat: typing[float] = None
-	label: typing[typing[str, str]] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
+	start_of_validity: Optional[int] = None
+	end_of_validity: Optional[int] = None
+	predicate: Optional[str] = None
+	reference: Optional[List[int]] = None
+	total_amount: Optional[float] = None
+	reimbursement: Optional[float] = None
+	patient_intervention: Optional[float] = None
+	doctor_supplement: Optional[float] = None
+	vat: Optional[float] = None
+	label: Optional[Dict[str, str]] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10332,7 +10326,7 @@ class EncryptedValorisation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedValorisation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedValorisation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10354,17 +10348,17 @@ class EncryptedValorisation:
 
 @dataclass
 class DecryptedValorisation:
-	start_of_validity: typing[int] = None
-	end_of_validity: typing[int] = None
-	predicate: typing[str] = None
-	reference: typing[typing[int]] = None
-	total_amount: typing[float] = None
-	reimbursement: typing[float] = None
-	patient_intervention: typing[float] = None
-	doctor_supplement: typing[float] = None
-	vat: typing[float] = None
-	label: typing[typing[str, str]] = dataclasses(default_factory=dict)
-	encrypted_self: typing['Base64String'] = None
+	start_of_validity: Optional[int] = None
+	end_of_validity: Optional[int] = None
+	predicate: Optional[str] = None
+	reference: Optional[List[int]] = None
+	total_amount: Optional[float] = None
+	reimbursement: Optional[float] = None
+	patient_intervention: Optional[float] = None
+	doctor_supplement: Optional[float] = None
+	vat: Optional[float] = None
+	label: Optional[Dict[str, str]] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10382,7 +10376,7 @@ class DecryptedValorisation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedValorisation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedValorisation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10402,7 +10396,7 @@ class DecryptedValorisation:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-Valorisation = typing['EncryptedValorisation', 'DecryptedValorisation']
+Valorisation = Union['EncryptedValorisation', 'DecryptedValorisation']
 
 def serialize_valorisation(valorisation: Valorisation) -> object:
 	if isinstance(valorisation, EncryptedValorisation):
@@ -10416,7 +10410,7 @@ def serialize_valorisation(valorisation: Valorisation) -> object:
 	else:
 		raise Exception(f"{type(valorisation)} is not a known subclass of Valorisation")
 
-def deserialize_valorisation(data: typing[str, typing[str, object]]) -> 'Valorisation':
+def deserialize_valorisation(data: Union[str, Dict[str, object]]) -> 'Valorisation':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -10434,10 +10428,10 @@ def deserialize_valorisation(data: typing[str, typing[str, object]]) -> 'Valoris
 
 @dataclass
 class LetterValue:
-	letter: typing[str] = None
-	index: typing[str] = None
-	coefficient: typing[float] = None
-	value: typing[float] = None
+	letter: Optional[str] = None
+	index: Optional[str] = None
+	coefficient: Optional[float] = None
+	value: Optional[float] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10448,7 +10442,7 @@ class LetterValue:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'LetterValue':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'LetterValue':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10463,24 +10457,24 @@ class LetterValue:
 
 @dataclass
 class EncryptedSubContact:
-	id: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	descr: typing[str] = None
-	protocol: typing[str] = None
-	status: typing[int] = None
-	form_id: typing[str] = None
-	plan_of_action_id: typing[str] = None
-	health_element_id: typing[str] = None
-	classification_id: typing[str] = None
-	services: typing['ServiceLink'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	id: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	descr: Optional[str] = None
+	protocol: Optional[str] = None
+	status: Optional[int] = None
+	form_id: Optional[str] = None
+	plan_of_action_id: Optional[str] = None
+	health_element_id: Optional[str] = None
+	classification_id: Optional[str] = None
+	services: List['ServiceLink'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10505,7 +10499,7 @@ class EncryptedSubContact:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedSubContact':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedSubContact':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10534,24 +10528,24 @@ class EncryptedSubContact:
 
 @dataclass
 class DecryptedSubContact:
-	id: typing[str] = None
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	descr: typing[str] = None
-	protocol: typing[str] = None
-	status: typing[int] = None
-	form_id: typing[str] = None
-	plan_of_action_id: typing[str] = None
-	health_element_id: typing[str] = None
-	classification_id: typing[str] = None
-	services: typing['ServiceLink'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	id: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	descr: Optional[str] = None
+	protocol: Optional[str] = None
+	status: Optional[int] = None
+	form_id: Optional[str] = None
+	plan_of_action_id: Optional[str] = None
+	health_element_id: Optional[str] = None
+	classification_id: Optional[str] = None
+	services: List['ServiceLink'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10576,7 +10570,7 @@ class DecryptedSubContact:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedSubContact':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedSubContact':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10603,7 +10597,7 @@ class DecryptedSubContact:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-SubContact = typing['EncryptedSubContact', 'DecryptedSubContact']
+SubContact = Union['EncryptedSubContact', 'DecryptedSubContact']
 
 def serialize_sub_contact(sub_contact: SubContact) -> object:
 	if isinstance(sub_contact, EncryptedSubContact):
@@ -10617,7 +10611,7 @@ def serialize_sub_contact(sub_contact: SubContact) -> object:
 	else:
 		raise Exception(f"{type(sub_contact)} is not a known subclass of SubContact")
 
-def deserialize_sub_contact(data: typing[str, typing[str, object]]) -> 'SubContact':
+def deserialize_sub_contact(data: Union[str, Dict[str, object]]) -> 'SubContact':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -10633,7 +10627,7 @@ def deserialize_sub_contact(data: typing[str, typing[str, object]]) -> 'SubConta
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SubContact")
 
-class ParticipantType(enum):
+class ParticipantType(Enum):
 	Admitter = "admitter"
 	Attender = "attender"
 	CallbackContact = "callback"
@@ -10652,7 +10646,7 @@ class ParticipantType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ParticipantType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ParticipantType':
 		if data == "admitter":
 			return ParticipantType.Admitter
 		elif data == "attender":
@@ -10684,19 +10678,19 @@ class ParticipantType(enum):
 
 @dataclass
 class EncryptedContent:
-	string_value: typing[str] = None
-	number_value: typing[float] = None
-	boolean_value: typing[bool] = None
-	instant_value: typing[int] = None
-	fuzzy_date_value: typing[int] = None
-	binary_value: typing[bytearray] = None
-	document_id: typing[str] = None
-	measure_value: typing['Measure'] = None
-	medication_value: typing['Medication'] = None
-	time_series: typing['TimeSeries'] = None
-	compound_value: typing[typing['EncryptedService']] = None
-	ratio: typing[typing['Measure']] = None
-	range: typing[typing['Measure']] = None
+	string_value: Optional[str] = None
+	number_value: Optional[float] = None
+	boolean_value: Optional[bool] = None
+	instant_value: Optional[int] = None
+	fuzzy_date_value: Optional[int] = None
+	binary_value: Optional[bytearray] = None
+	document_id: Optional[str] = None
+	measure_value: Optional['Measure'] = None
+	medication_value: Optional['Medication'] = None
+	time_series: Optional['TimeSeries'] = None
+	compound_value: Optional[List['EncryptedService']] = None
+	ratio: Optional[List['Measure']] = None
+	range: Optional[List['Measure']] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10716,7 +10710,7 @@ class EncryptedContent:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedContent':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedContent':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10740,19 +10734,19 @@ class EncryptedContent:
 
 @dataclass
 class DecryptedContent:
-	string_value: typing[str] = None
-	number_value: typing[float] = None
-	boolean_value: typing[bool] = None
-	instant_value: typing[int] = None
-	fuzzy_date_value: typing[int] = None
-	binary_value: typing[bytearray] = None
-	document_id: typing[str] = None
-	measure_value: typing['Measure'] = None
-	medication_value: typing['Medication'] = None
-	time_series: typing['TimeSeries'] = None
-	compound_value: typing[typing['DecryptedService']] = None
-	ratio: typing[typing['Measure']] = None
-	range: typing[typing['Measure']] = None
+	string_value: Optional[str] = None
+	number_value: Optional[float] = None
+	boolean_value: Optional[bool] = None
+	instant_value: Optional[int] = None
+	fuzzy_date_value: Optional[int] = None
+	binary_value: Optional[bytearray] = None
+	document_id: Optional[str] = None
+	measure_value: Optional['Measure'] = None
+	medication_value: Optional['Medication'] = None
+	time_series: Optional['TimeSeries'] = None
+	compound_value: Optional[List['DecryptedService']] = None
+	ratio: Optional[List['Measure']] = None
+	range: Optional[List['Measure']] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10772,7 +10766,7 @@ class DecryptedContent:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedContent':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedContent':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10794,7 +10788,7 @@ class DecryptedContent:
 			range=[Measure._deserialize(x0) for x0 in deserialized_dict.get("range")] if deserialized_dict.get("range") is not None else None,
 		)
 
-Content = typing['EncryptedContent', 'DecryptedContent']
+Content = Union['EncryptedContent', 'DecryptedContent']
 
 def serialize_content(content: Content) -> object:
 	if isinstance(content, EncryptedContent):
@@ -10808,7 +10802,7 @@ def serialize_content(content: Content) -> object:
 	else:
 		raise Exception(f"{type(content)} is not a known subclass of Content")
 
-def deserialize_content(data: typing[str, typing[str, object]]) -> 'Content':
+def deserialize_content(data: Union[str, Dict[str, object]]) -> 'Content':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -10824,7 +10818,7 @@ def deserialize_content(data: typing[str, typing[str, object]]) -> 'Content':
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Content")
 
-class ReceiptBlobType(enum):
+class ReceiptBlobType(Enum):
 	Xades = "xades"
 	KmehrRequest = "kmehrRequest"
 	KmehrResponse = "kmehrResponse"
@@ -10837,7 +10831,7 @@ class ReceiptBlobType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReceiptBlobType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReceiptBlobType':
 		if data == "xades":
 			return ReceiptBlobType.Xades
 		elif data == "kmehrRequest":
@@ -10855,7 +10849,7 @@ class ReceiptBlobType(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for ReceiptBlobType enum.")
 
-class HealthcarePartyStatus(enum):
+class HealthcarePartyStatus(Enum):
 	Trainee = "trainee"
 	Withconvention = "withconvention"
 	Accreditated = "accreditated"
@@ -10864,7 +10858,7 @@ class HealthcarePartyStatus(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'HealthcarePartyStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthcarePartyStatus':
 		if data == "trainee":
 			return HealthcarePartyStatus.Trainee
 		elif data == "withconvention":
@@ -10890,7 +10884,7 @@ class HealthcarePartyHistoryStatus:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'HealthcarePartyHistoryStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'HealthcarePartyHistoryStatus':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10903,7 +10897,7 @@ class HealthcarePartyHistoryStatus:
 			active=deserialized_dict["active"],
 		)
 
-class TelecomType(enum):
+class TelecomType(Enum):
 	Mobile = "mobile"
 	Phone = "phone"
 	Email = "email"
@@ -10923,7 +10917,7 @@ class TelecomType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TelecomType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TelecomType':
 		if data == "mobile":
 			return TelecomType.Mobile
 		elif data == "phone":
@@ -10957,11 +10951,11 @@ class TelecomType(enum):
 
 @dataclass
 class EncryptedFlatRateTarification:
-	code: typing[str] = None
-	flat_rate_type: typing['FlatRateType'] = None
-	label: typing[typing[str, str]] = None
-	valorisations: typing['EncryptedValorisation'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	code: Optional[str] = None
+	flat_rate_type: Optional['FlatRateType'] = None
+	label: Optional[Dict[str, str]] = None
+	valorisations: List['EncryptedValorisation'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -10973,7 +10967,7 @@ class EncryptedFlatRateTarification:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedFlatRateTarification':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedFlatRateTarification':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -10989,11 +10983,11 @@ class EncryptedFlatRateTarification:
 
 @dataclass
 class DecryptedFlatRateTarification:
-	code: typing[str] = None
-	flat_rate_type: typing['FlatRateType'] = None
-	label: typing[typing[str, str]] = None
-	valorisations: typing['DecryptedValorisation'] = dataclasses(default_factory=list)
-	encrypted_self: typing['Base64String'] = None
+	code: Optional[str] = None
+	flat_rate_type: Optional['FlatRateType'] = None
+	label: Optional[Dict[str, str]] = None
+	valorisations: List['DecryptedValorisation'] = field(default_factory=list)
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11005,7 +10999,7 @@ class DecryptedFlatRateTarification:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedFlatRateTarification':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedFlatRateTarification':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11019,7 +11013,7 @@ class DecryptedFlatRateTarification:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-FlatRateTarification = typing['EncryptedFlatRateTarification', 'DecryptedFlatRateTarification']
+FlatRateTarification = Union['EncryptedFlatRateTarification', 'DecryptedFlatRateTarification']
 
 def serialize_flat_rate_tarification(flat_rate_tarification: FlatRateTarification) -> object:
 	if isinstance(flat_rate_tarification, EncryptedFlatRateTarification):
@@ -11033,7 +11027,7 @@ def serialize_flat_rate_tarification(flat_rate_tarification: FlatRateTarificatio
 	else:
 		raise Exception(f"{type(flat_rate_tarification)} is not a known subclass of FlatRateTarification")
 
-def deserialize_flat_rate_tarification(data: typing[str, typing[str, object]]) -> 'FlatRateTarification':
+def deserialize_flat_rate_tarification(data: Union[str, Dict[str, object]]) -> 'FlatRateTarification':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -11059,7 +11053,7 @@ class AlwaysPermissionItem:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AlwaysPermissionItem':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AlwaysPermissionItem':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11069,7 +11063,7 @@ class AlwaysPermissionItem:
 			type=PermissionType._deserialize(deserialized_dict["type"]),
 		)
 
-PermissionItem = typing['AlwaysPermissionItem']
+PermissionItem = Union['AlwaysPermissionItem']
 
 def serialize_permission_item(permission_item: PermissionItem) -> object:
 	if isinstance(permission_item, AlwaysPermissionItem):
@@ -11079,7 +11073,7 @@ def serialize_permission_item(permission_item: PermissionItem) -> object:
 	else:
 		raise Exception(f"{type(permission_item)} is not a known subclass of PermissionItem")
 
-def deserialize_permission_item(data: typing[str, typing[str, object]]) -> 'PermissionItem':
+def deserialize_permission_item(data: Union[str, Dict[str, object]]) -> 'PermissionItem':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -11093,7 +11087,7 @@ def deserialize_permission_item(data: typing[str, typing[str, object]]) -> 'Perm
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of PermissionItem")
 
-class FrontEndMigrationStatus(enum):
+class FrontEndMigrationStatus(Enum):
 	Started = "STARTED"
 	Paused = "PAUSED"
 	Error = "ERROR"
@@ -11103,7 +11097,7 @@ class FrontEndMigrationStatus(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FrontEndMigrationStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FrontEndMigrationStatus':
 		if data == "STARTED":
 			return FrontEndMigrationStatus.Started
 		elif data == "PAUSED":
@@ -11115,20 +11109,20 @@ class FrontEndMigrationStatus(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for FrontEndMigrationStatus enum.")
 
-class ReportVersion(enum):
+class ReportVersion(Enum):
 	V1_0_0 = "V1_0_0"
 
 	def __serialize__(self) -> object:
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReportVersion':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReportVersion':
 		if data == "V1_0_0":
 			return ReportVersion.V1_0_0
 		else:
 			raise Exception(f"{data} is not a valid value for ReportVersion enum.")
 
-class Laterality(enum):
+class Laterality(Enum):
 	Left = "left"
 	Right = "right"
 
@@ -11136,7 +11130,7 @@ class Laterality(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Laterality':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Laterality':
 		if data == "left":
 			return Laterality.Left
 		elif data == "right":
@@ -11147,30 +11141,30 @@ class Laterality(enum):
 @dataclass
 class EncryptedPlanOfAction:
 	id: str
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	prescriber_id: typing[str] = None
-	value_date: typing[int] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	deadline_date: typing[int] = None
-	name: typing[str] = None
-	descr: typing[str] = None
-	note: typing[str] = None
-	id_opening_contact: typing[str] = None
-	id_closing_contact: typing[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	prescriber_id: Optional[str] = None
+	value_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	deadline_date: Optional[int] = None
+	name: Optional[str] = None
+	descr: Optional[str] = None
+	note: Optional[str] = None
+	id_opening_contact: Optional[str] = None
+	id_closing_contact: Optional[str] = None
 	status: int = 0
-	document_ids: typing[str] = dataclasses(default_factory=list)
-	number_of_cares: typing[int] = None
-	care_team_memberships: typing[typing['EncryptedCareTeamMembership']] = dataclasses(default_factory=list)
+	document_ids: List[str] = field(default_factory=list)
+	number_of_cares: Optional[int] = None
+	care_team_memberships: List[Optional['EncryptedCareTeamMembership']] = field(default_factory=list)
 	relevant: bool = True
-	encrypted_self: typing['Base64String'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11202,7 +11196,7 @@ class EncryptedPlanOfAction:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedPlanOfAction':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedPlanOfAction':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11239,30 +11233,30 @@ class EncryptedPlanOfAction:
 @dataclass
 class DecryptedPlanOfAction:
 	id: str
-	created: typing[int] = None
-	modified: typing[int] = None
-	author: typing[str] = None
-	responsible: typing[str] = None
-	medical_location_id: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	end_of_life: typing[int] = None
-	prescriber_id: typing[str] = None
-	value_date: typing[int] = None
-	opening_date: typing[int] = None
-	closing_date: typing[int] = None
-	deadline_date: typing[int] = None
-	name: typing[str] = None
-	descr: typing[str] = None
-	note: typing[str] = None
-	id_opening_contact: typing[str] = None
-	id_closing_contact: typing[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	medical_location_id: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	prescriber_id: Optional[str] = None
+	value_date: Optional[int] = None
+	opening_date: Optional[int] = None
+	closing_date: Optional[int] = None
+	deadline_date: Optional[int] = None
+	name: Optional[str] = None
+	descr: Optional[str] = None
+	note: Optional[str] = None
+	id_opening_contact: Optional[str] = None
+	id_closing_contact: Optional[str] = None
 	status: int = 0
-	document_ids: typing[str] = dataclasses(default_factory=list)
-	number_of_cares: typing[int] = None
-	care_team_memberships: typing[typing['DecryptedCareTeamMembership']] = dataclasses(default_factory=list)
+	document_ids: List[str] = field(default_factory=list)
+	number_of_cares: Optional[int] = None
+	care_team_memberships: List[Optional['DecryptedCareTeamMembership']] = field(default_factory=list)
 	relevant: bool = True
-	encrypted_self: typing['Base64String'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11294,7 +11288,7 @@ class DecryptedPlanOfAction:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedPlanOfAction':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedPlanOfAction':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11328,7 +11322,7 @@ class DecryptedPlanOfAction:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-PlanOfAction = typing['EncryptedPlanOfAction', 'DecryptedPlanOfAction']
+PlanOfAction = Union['EncryptedPlanOfAction', 'DecryptedPlanOfAction']
 
 def serialize_plan_of_action(plan_of_action: PlanOfAction) -> object:
 	if isinstance(plan_of_action, EncryptedPlanOfAction):
@@ -11342,7 +11336,7 @@ def serialize_plan_of_action(plan_of_action: PlanOfAction) -> object:
 	else:
 		raise Exception(f"{type(plan_of_action)} is not a known subclass of PlanOfAction")
 
-def deserialize_plan_of_action(data: typing[str, typing[str, object]]) -> 'PlanOfAction':
+def deserialize_plan_of_action(data: Union[str, Dict[str, object]]) -> 'PlanOfAction':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -11361,11 +11355,11 @@ def deserialize_plan_of_action(data: typing[str, typing[str, object]]) -> 'PlanO
 @dataclass
 class DecryptedEpisode:
 	id: str
-	name: typing[str] = None
-	comment: typing[str] = None
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	name: Optional[str] = None
+	comment: Optional[str] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11378,7 +11372,7 @@ class DecryptedEpisode:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedEpisode':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedEpisode':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11396,11 +11390,11 @@ class DecryptedEpisode:
 @dataclass
 class EncryptedEpisode:
 	id: str
-	name: typing[str] = None
-	comment: typing[str] = None
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	name: Optional[str] = None
+	comment: Optional[str] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11413,7 +11407,7 @@ class EncryptedEpisode:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedEpisode':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedEpisode':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11428,7 +11422,7 @@ class EncryptedEpisode:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-Episode = typing['DecryptedEpisode', 'EncryptedEpisode']
+Episode = Union['DecryptedEpisode', 'EncryptedEpisode']
 
 def serialize_episode(episode: Episode) -> object:
 	if isinstance(episode, DecryptedEpisode):
@@ -11442,7 +11436,7 @@ def serialize_episode(episode: Episode) -> object:
 	else:
 		raise Exception(f"{type(episode)} is not a known subclass of Episode")
 
-def deserialize_episode(data: typing[str, typing[str, object]]) -> 'Episode':
+def deserialize_episode(data: Union[str, Dict[str, object]]) -> 'Episode':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -11461,10 +11455,10 @@ def deserialize_episode(data: typing[str, typing[str, object]]) -> 'Episode':
 @dataclass
 class EncryptedCareTeamMember:
 	id: str
-	care_team_member_type: typing['CareTeamMemberType'] = None
-	healthcare_party_id: typing[str] = None
-	quality: typing['CodeStub'] = None
-	encrypted_self: typing['Base64String'] = None
+	care_team_member_type: Optional['CareTeamMemberType'] = None
+	healthcare_party_id: Optional[str] = None
+	quality: Optional['CodeStub'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11476,7 +11470,7 @@ class EncryptedCareTeamMember:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedCareTeamMember':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedCareTeamMember':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11493,10 +11487,10 @@ class EncryptedCareTeamMember:
 @dataclass
 class DecryptedCareTeamMember:
 	id: str
-	care_team_member_type: typing['CareTeamMemberType'] = None
-	healthcare_party_id: typing[str] = None
-	quality: typing['CodeStub'] = None
-	encrypted_self: typing['Base64String'] = None
+	care_team_member_type: Optional['CareTeamMemberType'] = None
+	healthcare_party_id: Optional[str] = None
+	quality: Optional['CodeStub'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11508,7 +11502,7 @@ class DecryptedCareTeamMember:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedCareTeamMember':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedCareTeamMember':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11522,7 +11516,7 @@ class DecryptedCareTeamMember:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-CareTeamMember = typing['EncryptedCareTeamMember', 'DecryptedCareTeamMember']
+CareTeamMember = Union['EncryptedCareTeamMember', 'DecryptedCareTeamMember']
 
 def serialize_care_team_member(care_team_member: CareTeamMember) -> object:
 	if isinstance(care_team_member, EncryptedCareTeamMember):
@@ -11536,7 +11530,7 @@ def serialize_care_team_member(care_team_member: CareTeamMember) -> object:
 	else:
 		raise Exception(f"{type(care_team_member)} is not a known subclass of CareTeamMember")
 
-def deserialize_care_team_member(data: typing[str, typing[str, object]]) -> 'CareTeamMember':
+def deserialize_care_team_member(data: Union[str, Dict[str, object]]) -> 'CareTeamMember':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -11555,7 +11549,7 @@ def deserialize_care_team_member(data: typing[str, typing[str, object]]) -> 'Car
 @dataclass
 class Remote:
 	url: str
-	auth: typing['RemoteAuthentication'] = None
+	auth: Optional['RemoteAuthentication'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11564,7 +11558,7 @@ class Remote:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Remote':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Remote':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11577,15 +11571,15 @@ class Remote:
 
 @dataclass
 class ReplicationStats:
-	revisions_checked: typing[int] = None
-	missing_revisions_found: typing[int] = None
-	docs_read: typing[int] = None
-	docs_written: typing[int] = None
-	changes_pending: typing[int] = None
-	doc_write_failures: typing[int] = None
-	checkpointed_source_seq: typing[str] = None
-	start_time: typing[str] = None
-	error: typing[str] = None
+	revisions_checked: Optional[int] = None
+	missing_revisions_found: Optional[int] = None
+	docs_read: Optional[int] = None
+	docs_written: Optional[int] = None
+	changes_pending: Optional[int] = None
+	doc_write_failures: Optional[int] = None
+	checkpointed_source_seq: Optional[str] = None
+	start_time: Optional[str] = None
+	error: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11601,7 +11595,7 @@ class ReplicationStats:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReplicationStats':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReplicationStats':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11621,7 +11615,7 @@ class ReplicationStats:
 
 @dataclass
 class MessageReadStatus:
-	time: typing[int] = None
+	time: Optional[int] = None
 	read: bool = False
 
 	def __serialize__(self) -> object:
@@ -11631,7 +11625,7 @@ class MessageReadStatus:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MessageReadStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MessageReadStatus':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11644,8 +11638,8 @@ class MessageReadStatus:
 
 @dataclass
 class MessageAttachment:
-	type: typing['DocumentLocation'] = None
-	ids: typing[str] = dataclasses(default_factory=list)
+	type: Optional['DocumentLocation'] = None
+	ids: List[str] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -11654,7 +11648,7 @@ class MessageAttachment:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MessageAttachment':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MessageAttachment':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11667,8 +11661,8 @@ class MessageAttachment:
 
 @dataclass
 class PropertyTypeStub:
-	identifier: typing[str] = None
-	type: typing['TypedValuesType'] = None
+	identifier: Optional[str] = None
+	type: Optional['TypedValuesType'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11677,7 +11671,7 @@ class PropertyTypeStub:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PropertyTypeStub':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PropertyTypeStub':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11690,13 +11684,13 @@ class PropertyTypeStub:
 
 @dataclass
 class DecryptedTypedValue:
-	type: typing['TypedValuesType'] = None
-	boolean_value: typing[bool] = None
-	integer_value: typing[int] = None
-	double_value: typing[float] = None
-	string_value: typing[str] = None
-	date_value: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	type: Optional['TypedValuesType'] = None
+	boolean_value: Optional[bool] = None
+	integer_value: Optional[int] = None
+	double_value: Optional[float] = None
+	string_value: Optional[str] = None
+	date_value: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11710,7 +11704,7 @@ class DecryptedTypedValue:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedTypedValue':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedTypedValue':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11728,13 +11722,13 @@ class DecryptedTypedValue:
 
 @dataclass
 class EncryptedTypedValue:
-	type: typing['TypedValuesType'] = None
-	boolean_value: typing[bool] = None
-	integer_value: typing[int] = None
-	double_value: typing[float] = None
-	string_value: typing[str] = None
-	date_value: typing[int] = None
-	encrypted_self: typing['Base64String'] = None
+	type: Optional['TypedValuesType'] = None
+	boolean_value: Optional[bool] = None
+	integer_value: Optional[int] = None
+	double_value: Optional[float] = None
+	string_value: Optional[str] = None
+	date_value: Optional[int] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11748,7 +11742,7 @@ class EncryptedTypedValue:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedTypedValue':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedTypedValue':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11764,7 +11758,7 @@ class EncryptedTypedValue:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-TypedValue = typing['DecryptedTypedValue', 'EncryptedTypedValue']
+TypedValue = Union['DecryptedTypedValue', 'EncryptedTypedValue']
 
 def serialize_typed_value(typed_value: TypedValue) -> object:
 	if isinstance(typed_value, DecryptedTypedValue):
@@ -11778,7 +11772,7 @@ def serialize_typed_value(typed_value: TypedValue) -> object:
 	else:
 		raise Exception(f"{type(typed_value)} is not a known subclass of TypedValue")
 
-def deserialize_typed_value(data: typing[str, typing[str, object]]) -> 'TypedValue':
+def deserialize_typed_value(data: Union[str, Dict[str, object]]) -> 'TypedValue':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -11794,7 +11788,7 @@ def deserialize_typed_value(data: typing[str, typing[str, object]]) -> 'TypedVal
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of TypedValue")
 
-class InvoiceInterventionType(enum):
+class InvoiceInterventionType(Enum):
 	Total = "total"
 	Userfees = "userfees"
 
@@ -11802,7 +11796,7 @@ class InvoiceInterventionType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'InvoiceInterventionType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'InvoiceInterventionType':
 		if data == "total":
 			return InvoiceInterventionType.Total
 		elif data == "userfees":
@@ -11810,7 +11804,7 @@ class InvoiceInterventionType(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for InvoiceInterventionType enum.")
 
-class PaymentType(enum):
+class PaymentType(Enum):
 	Cash = "cash"
 	Wired = "wired"
 	Insurance = "insurance"
@@ -11824,7 +11818,7 @@ class PaymentType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PaymentType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PaymentType':
 		if data == "cash":
 			return PaymentType.Cash
 		elif data == "wired":
@@ -11847,8 +11841,8 @@ class PaymentType(enum):
 @dataclass
 class Payment:
 	payment_date: int = 0
-	payment_type: typing['PaymentType'] = None
-	paid: typing[float] = None
+	payment_type: Optional['PaymentType'] = None
+	paid: Optional[float] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11858,7 +11852,7 @@ class Payment:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Payment':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Payment':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11872,9 +11866,9 @@ class Payment:
 
 @dataclass
 class IdentityDocumentReader:
-	justificatif_document_number: typing[str] = None
-	support_serial_number: typing[str] = None
-	time_reading_eid_document: typing[int] = None
+	justificatif_document_number: Optional[str] = None
+	support_serial_number: Optional[str] = None
+	time_reading_eid_document: Optional[int] = None
 	eid_document_support_type: int = 0
 	reason_manual_encoding: int = 0
 	reason_using_vignette: int = 0
@@ -11890,7 +11884,7 @@ class IdentityDocumentReader:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'IdentityDocumentReader':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'IdentityDocumentReader':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11907,7 +11901,7 @@ class IdentityDocumentReader:
 
 @dataclass
 class Right:
-	user_id: typing[str] = None
+	user_id: Optional[str] = None
 	read: bool = False
 	write: bool = False
 	administration: bool = False
@@ -11921,7 +11915,7 @@ class Right:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Right':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Right':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11940,7 +11934,7 @@ class OperationToken:
 	creation_time: int
 	validity: int
 	operation: 'Operation'
-	description: typing[str] = None
+	description: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -11952,7 +11946,7 @@ class OperationToken:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'OperationToken':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'OperationToken':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -11966,7 +11960,7 @@ class OperationToken:
 			description=deserialized_dict.get("description"),
 		)
 
-class AuthenticationClass(enum):
+class AuthenticationClass(Enum):
 	DigitalId = "DIGITAL_ID"
 	TwoFactorAuthentication = "TWO_FACTOR_AUTHENTICATION"
 	ShortLivedToken = "SHORT_LIVED_TOKEN"
@@ -11978,7 +11972,7 @@ class AuthenticationClass(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AuthenticationClass':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AuthenticationClass':
 		if data == "DIGITAL_ID":
 			return AuthenticationClass.DigitalId
 		elif data == "TWO_FACTOR_AUTHENTICATION":
@@ -11997,11 +11991,11 @@ class AuthenticationClass(enum):
 @dataclass
 class Replication:
 	id: str
-	rev: typing[str] = None
-	deletion_date: typing[int] = None
-	name: typing[str] = None
-	context: typing[str] = None
-	database_synchronizations: typing['DatabaseSynchronization'] = dataclasses(default_factory=list)
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	name: Optional[str] = None
+	context: Optional[str] = None
+	database_synchronizations: List['DatabaseSynchronization'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -12014,7 +12008,7 @@ class Replication:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Replication':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Replication':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12032,7 +12026,7 @@ class Replication:
 @dataclass
 class View:
 	map: str
-	reduce: typing[str] = None
+	reduce: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12041,7 +12035,7 @@ class View:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'View':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'View':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12055,15 +12049,15 @@ class View:
 @dataclass
 class DatabaseInfo:
 	id: str
-	update_seq: typing[str] = None
-	file_size: typing[int] = None
-	external_size: typing[int] = None
-	active_size: typing[int] = None
-	docs: typing[int] = None
-	q: typing[int] = None
-	n: typing[int] = None
-	w: typing[int] = None
-	r: typing[int] = None
+	update_seq: Optional[str] = None
+	file_size: Optional[int] = None
+	external_size: Optional[int] = None
+	active_size: Optional[int] = None
+	docs: Optional[int] = None
+	q: Optional[int] = None
+	n: Optional[int] = None
+	w: Optional[int] = None
+	r: Optional[int] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12080,7 +12074,7 @@ class DatabaseInfo:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DatabaseInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DatabaseInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12102,13 +12096,13 @@ class DatabaseInfo:
 @dataclass
 class SecureDelegation:
 	permissions: 'AccessLevel'
-	delegator: typing[str] = None
-	delegate: typing[str] = None
-	secret_ids: typing['Base64String'] = dataclasses(default_factory=list)
-	encryption_keys: typing['Base64String'] = dataclasses(default_factory=list)
-	owning_entity_ids: typing['Base64String'] = dataclasses(default_factory=list)
-	parent_delegations: typing['SecureDelegationKeyString'] = dataclasses(default_factory=list)
-	exchange_data_id: typing[str] = None
+	delegator: Optional[str] = None
+	delegate: Optional[str] = None
+	secret_ids: List['Base64String'] = field(default_factory=list)
+	encryption_keys: List['Base64String'] = field(default_factory=list)
+	owning_entity_ids: List['Base64String'] = field(default_factory=list)
+	parent_delegations: List['SecureDelegationKeyString'] = field(default_factory=list)
+	exchange_data_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12123,7 +12117,7 @@ class SecureDelegation:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SecureDelegation':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SecureDelegation':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12140,7 +12134,7 @@ class SecureDelegation:
 			permissions=AccessLevel._deserialize(deserialized_dict["permissions"]),
 		)
 
-class AddressType(enum):
+class AddressType(Enum):
 	Home = "home"
 	Work = "work"
 	Vacation = "vacation"
@@ -12158,7 +12152,7 @@ class AddressType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AddressType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AddressType':
 		if data == "home":
 			return AddressType.Home
 		elif data == "work":
@@ -12188,10 +12182,10 @@ class AddressType(enum):
 
 @dataclass
 class EncryptedTelecom:
-	telecom_type: typing['TelecomType'] = None
-	telecom_number: typing[str] = None
-	telecom_description: typing[str] = None
-	encrypted_self: typing['Base64String'] = None
+	telecom_type: Optional['TelecomType'] = None
+	telecom_number: Optional[str] = None
+	telecom_description: Optional[str] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12202,7 +12196,7 @@ class EncryptedTelecom:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedTelecom':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedTelecom':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12217,10 +12211,10 @@ class EncryptedTelecom:
 
 @dataclass
 class DecryptedTelecom:
-	telecom_type: typing['TelecomType'] = None
-	telecom_number: typing[str] = None
-	telecom_description: typing[str] = None
-	encrypted_self: typing['Base64String'] = None
+	telecom_type: Optional['TelecomType'] = None
+	telecom_number: Optional[str] = None
+	telecom_description: Optional[str] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12231,7 +12225,7 @@ class DecryptedTelecom:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedTelecom':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedTelecom':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12244,7 +12238,7 @@ class DecryptedTelecom:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-Telecom = typing['EncryptedTelecom', 'DecryptedTelecom']
+Telecom = Union['EncryptedTelecom', 'DecryptedTelecom']
 
 def serialize_telecom(telecom: Telecom) -> object:
 	if isinstance(telecom, EncryptedTelecom):
@@ -12258,7 +12252,7 @@ def serialize_telecom(telecom: Telecom) -> object:
 	else:
 		raise Exception(f"{type(telecom)} is not a known subclass of Telecom")
 
-def deserialize_telecom(data: typing[str, typing[str, object]]) -> 'Telecom':
+def deserialize_telecom(data: Union[str, Dict[str, object]]) -> 'Telecom':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -12276,8 +12270,8 @@ def deserialize_telecom(data: typing[str, typing[str, object]]) -> 'Telecom':
 
 @dataclass
 class TimeTableHour:
-	start_hour: typing[int] = None
-	end_hour: typing[int] = None
+	start_hour: Optional[int] = None
+	end_hour: Optional[int] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12286,7 +12280,7 @@ class TimeTableHour:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TimeTableHour':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeTableHour':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12297,7 +12291,7 @@ class TimeTableHour:
 			end_hour=deserialized_dict.get("endHour"),
 		)
 
-class PersonNameUse(enum):
+class PersonNameUse(Enum):
 	Usual = "usual"
 	Official = "official"
 	Temp = "temp"
@@ -12311,7 +12305,7 @@ class PersonNameUse(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PersonNameUse':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PersonNameUse':
 		if data == "usual":
 			return PersonNameUse.Usual
 		elif data == "official":
@@ -12331,7 +12325,7 @@ class PersonNameUse(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for PersonNameUse enum.")
 
-class PartnershipType(enum):
+class PartnershipType(Enum):
 	PrimaryContact = "primary_contact"
 	PrimaryContactFor = "primary_contact_for"
 	Family = "family"
@@ -12375,7 +12369,7 @@ class PartnershipType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PartnershipType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PartnershipType':
 		if data == "primary_contact":
 			return PartnershipType.PrimaryContact
 		elif data == "primary_contact_for":
@@ -12455,7 +12449,7 @@ class PartnershipType(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for PartnershipType enum.")
 
-class PartnershipStatus(enum):
+class PartnershipStatus(Enum):
 	Active = "active"
 	Complicated = "complicated"
 	Past = "past"
@@ -12464,7 +12458,7 @@ class PartnershipStatus(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PartnershipStatus':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PartnershipStatus':
 		if data == "active":
 			return PartnershipStatus.Active
 		elif data == "complicated":
@@ -12474,7 +12468,7 @@ class PartnershipStatus(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for PartnershipStatus enum.")
 
-class PatientHealthCarePartyType(enum):
+class PatientHealthCarePartyType(Enum):
 	Doctor = "doctor"
 	Referral = "referral"
 	Medicalhouse = "medicalhouse"
@@ -12488,7 +12482,7 @@ class PatientHealthCarePartyType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'PatientHealthCarePartyType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'PatientHealthCarePartyType':
 		if data == "doctor":
 			return PatientHealthCarePartyType.Doctor
 		elif data == "referral":
@@ -12510,9 +12504,9 @@ class PatientHealthCarePartyType(enum):
 
 @dataclass
 class ReferralPeriod:
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	comment: typing[str] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	comment: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12522,7 +12516,7 @@ class ReferralPeriod:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReferralPeriod':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReferralPeriod':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12534,7 +12528,7 @@ class ReferralPeriod:
 			comment=deserialized_dict.get("comment"),
 		)
 
-class ContractChangeType(enum):
+class ContractChangeType(Enum):
 	InscriptionStart = "inscriptionStart"
 	InscriptionEnd = "inscriptionEnd"
 	Suspension = "suspension"
@@ -12544,7 +12538,7 @@ class ContractChangeType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ContractChangeType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ContractChangeType':
 		if data == "inscriptionStart":
 			return ContractChangeType.InscriptionStart
 		elif data == "inscriptionEnd":
@@ -12556,7 +12550,7 @@ class ContractChangeType(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for ContractChangeType enum.")
 
-class SuspensionReason(enum):
+class SuspensionReason(Enum):
 	NotInsured = "notInsured"
 	NoReasonGiven = "noReasonGiven"
 	IsHospitalized = "isHospitalized"
@@ -12567,7 +12561,7 @@ class SuspensionReason(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'SuspensionReason':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SuspensionReason':
 		if data == "notInsured":
 			return SuspensionReason.NotInsured
 		elif data == "noReasonGiven":
@@ -12581,7 +12575,7 @@ class SuspensionReason(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for SuspensionReason enum.")
 
-class MhcSignatureType(enum):
+class MhcSignatureType(Enum):
 	HolderEid = "holderEid"
 	HolderPaper = "holderPaper"
 	LegalrepresentativeEid = "legalrepresentativeEid"
@@ -12591,7 +12585,7 @@ class MhcSignatureType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MhcSignatureType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MhcSignatureType':
 		if data == "holderEid":
 			return MhcSignatureType.HolderEid
 		elif data == "holderPaper":
@@ -12605,8 +12599,8 @@ class MhcSignatureType(enum):
 
 @dataclass
 class Employer:
-	name: typing[str] = None
-	addresse: typing['DecryptedAddress'] = None
+	name: Optional[str] = None
+	addresse: Optional['DecryptedAddress'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12615,7 +12609,7 @@ class Employer:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Employer':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Employer':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12628,9 +12622,9 @@ class Employer:
 
 @dataclass
 class Action:
-	launchers: typing[typing['Launcher']] = dataclasses(default_factory=list)
-	expression: typing[str] = None
-	states: typing[typing['State']] = dataclasses(default_factory=list)
+	launchers: Optional[List['Launcher']] = field(default_factory=list)
+	expression: Optional[str] = None
+	states: Optional[List['State']] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -12640,7 +12634,7 @@ class Action:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Action':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Action':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12655,20 +12649,20 @@ class Action:
 @dataclass
 class Section:
 	section: str
-	fields: typing['StructureElement']
-	description: typing[str] = None
-	keywords: typing[typing[str]] = None
+	fields: List['StructureElement']
+	description: Optional[str] = None
+	keywords: Optional[List[str]] = None
 
 	def __serialize__(self) -> object:
 		return {
 			"section": self.section,
-			"fields": [cardinal_sdk.model(x0) for x0 in self.fields],
+			"fields": [serialize_structure_element(x0) for x0 in self.fields],
 			"description": self.description,
 			"keywords": [x0 for x0 in self.keywords] if self.keywords is not None else None,
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Section':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Section':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12676,16 +12670,16 @@ class Section:
 			deserialized_dict = data
 		return cls(
 			section=deserialized_dict["section"],
-			fields=[cardinal_sdk.model(x0) for x0 in deserialized_dict["fields"]],
+			fields=[deserialize_structure_element(x0) for x0 in deserialized_dict["fields"]],
 			description=deserialized_dict.get("description"),
 			keywords=[x0 for x0 in deserialized_dict.get("keywords")] if deserialized_dict.get("keywords") is not None else None,
 		)
 
 @dataclass
 class DelegateShareOptions:
-	share_secret_ids: typing[str]
-	share_encryption_keys: typing['HexString']
-	share_owning_entity_ids: typing[str]
+	share_secret_ids: List[str]
+	share_encryption_keys: List['HexString']
+	share_owning_entity_ids: List[str]
 	requested_permissions: 'RequestedPermission'
 
 	def __serialize__(self) -> object:
@@ -12697,7 +12691,7 @@ class DelegateShareOptions:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DelegateShareOptions':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DelegateShareOptions':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12712,7 +12706,7 @@ class DelegateShareOptions:
 
 @dataclass
 class ServiceLink:
-	service_id: typing[str] = None
+	service_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12720,7 +12714,7 @@ class ServiceLink:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ServiceLink':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ServiceLink':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12732,17 +12726,17 @@ class ServiceLink:
 
 @dataclass
 class Measure:
-	value: typing[float] = None
-	ref: typing[float] = None
-	severity: typing[int] = None
-	severity_code: typing[str] = None
-	evolution: typing[int] = None
-	unit: typing[str] = None
-	unit_codes: typing[typing['CodeStub']] = None
-	comment: typing[str] = None
-	comparator: typing[str] = None
-	sign: typing[str] = None
-	reference_ranges: typing['ReferenceRange'] = dataclasses(default_factory=list)
+	value: Optional[float] = None
+	ref: Optional[float] = None
+	severity: Optional[int] = None
+	severity_code: Optional[str] = None
+	evolution: Optional[int] = None
+	unit: Optional[str] = None
+	unit_codes: Optional[List['CodeStub']] = None
+	comment: Optional[str] = None
+	comparator: Optional[str] = None
+	sign: Optional[str] = None
+	reference_ranges: List['ReferenceRange'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -12760,7 +12754,7 @@ class Measure:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Measure':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Measure':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12782,48 +12776,48 @@ class Measure:
 
 @dataclass
 class Medication:
-	compound_prescription: typing[str] = None
-	substance_product: typing['Substanceproduct'] = None
-	medicinal_product: typing['Medicinalproduct'] = None
-	number_of_packages: typing[int] = None
-	batch: typing[str] = None
-	expiration_date: typing[int] = None
-	instruction_for_patient: typing[str] = None
-	instruction_for_reimbursement: typing[str] = None
-	comment_for_delivery: typing[str] = None
-	drug_route: typing[str] = None
-	temporality: typing[str] = None
-	frequency: typing['CodeStub'] = None
-	reimbursement_reason: typing['CodeStub'] = None
-	substitution_allowed: typing[bool] = None
-	begin_moment: typing[int] = None
-	end_moment: typing[int] = None
-	delivery_moment: typing[int] = None
-	end_execution_moment: typing[int] = None
-	duration: typing['Duration'] = None
-	renewal: typing['Renewal'] = None
-	known_usage: typing[bool] = None
-	regimen: typing[typing['RegimenItem']] = None
-	posology: typing[str] = None
-	agreements: typing[typing[str, 'ParagraphAgreement']] = None
-	medication_scheme_id_on_safe: typing[str] = None
-	medication_scheme_safe_version: typing[int] = None
-	medication_scheme_time_stamp_on_safe: typing[int] = None
-	medication_scheme_document_id: typing[str] = None
-	safe_id_name: typing[str] = None
-	id_on_safes: typing[str] = None
-	timestamp_on_safe: typing[int] = None
-	change_validated: typing[bool] = None
-	new_safe_medication: typing[bool] = None
-	medication_use: typing[str] = None
-	begin_condition: typing[str] = None
-	end_condition: typing[str] = None
-	origin: typing[str] = None
-	medication_changed: typing[bool] = None
-	posology_changed: typing[bool] = None
-	suspension: typing[typing['Suspension']] = None
-	prescription_rid: typing[str] = None
-	status: typing[int] = None
+	compound_prescription: Optional[str] = None
+	substance_product: Optional['Substanceproduct'] = None
+	medicinal_product: Optional['Medicinalproduct'] = None
+	number_of_packages: Optional[int] = None
+	batch: Optional[str] = None
+	expiration_date: Optional[int] = None
+	instruction_for_patient: Optional[str] = None
+	instruction_for_reimbursement: Optional[str] = None
+	comment_for_delivery: Optional[str] = None
+	drug_route: Optional[str] = None
+	temporality: Optional[str] = None
+	frequency: Optional['CodeStub'] = None
+	reimbursement_reason: Optional['CodeStub'] = None
+	substitution_allowed: Optional[bool] = None
+	begin_moment: Optional[int] = None
+	end_moment: Optional[int] = None
+	delivery_moment: Optional[int] = None
+	end_execution_moment: Optional[int] = None
+	duration: Optional['Duration'] = None
+	renewal: Optional['Renewal'] = None
+	known_usage: Optional[bool] = None
+	regimen: Optional[List['RegimenItem']] = None
+	posology: Optional[str] = None
+	agreements: Optional[Dict[str, 'ParagraphAgreement']] = None
+	medication_scheme_id_on_safe: Optional[str] = None
+	medication_scheme_safe_version: Optional[int] = None
+	medication_scheme_time_stamp_on_safe: Optional[int] = None
+	medication_scheme_document_id: Optional[str] = None
+	safe_id_name: Optional[str] = None
+	id_on_safes: Optional[str] = None
+	timestamp_on_safe: Optional[int] = None
+	change_validated: Optional[bool] = None
+	new_safe_medication: Optional[bool] = None
+	medication_use: Optional[str] = None
+	begin_condition: Optional[str] = None
+	end_condition: Optional[str] = None
+	origin: Optional[str] = None
+	medication_changed: Optional[bool] = None
+	posology_changed: Optional[bool] = None
+	suspension: Optional[List['Suspension']] = None
+	prescription_rid: Optional[str] = None
+	status: Optional[int] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -12872,7 +12866,7 @@ class Medication:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Medication':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Medication':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12925,13 +12919,13 @@ class Medication:
 
 @dataclass
 class TimeSeries:
-	fields: typing[str] = dataclasses(default_factory=list)
-	samples: typing[typing[float]] = dataclasses(default_factory=list)
-	min: typing[float] = dataclasses(default_factory=list)
-	max: typing[float] = dataclasses(default_factory=list)
-	mean: typing[float] = dataclasses(default_factory=list)
-	median: typing[float] = dataclasses(default_factory=list)
-	variance: typing[float] = dataclasses(default_factory=list)
+	fields: List[str] = field(default_factory=list)
+	samples: List[List[float]] = field(default_factory=list)
+	min: List[float] = field(default_factory=list)
+	max: List[float] = field(default_factory=list)
+	mean: List[float] = field(default_factory=list)
+	median: List[float] = field(default_factory=list)
+	variance: List[float] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -12945,7 +12939,7 @@ class TimeSeries:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TimeSeries':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeSeries':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -12961,7 +12955,7 @@ class TimeSeries:
 			variance=[x0 for x0 in deserialized_dict["variance"]],
 		)
 
-class FlatRateType(enum):
+class FlatRateType(Enum):
 	Physician = "physician"
 	Physiotherapist = "physiotherapist"
 	Nurse = "nurse"
@@ -12971,7 +12965,7 @@ class FlatRateType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FlatRateType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FlatRateType':
 		if data == "physician":
 			return FlatRateType.Physician
 		elif data == "physiotherapist":
@@ -12991,7 +12985,7 @@ class AlwaysPredicate:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AlwaysPredicate':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AlwaysPredicate':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13002,11 +12996,11 @@ class AlwaysPredicate:
 
 @dataclass
 class DecryptedCareTeamMembership:
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	care_team_member_id: typing[str] = None
-	membership_type: typing['MembershipType'] = None
-	encrypted_self: typing['Base64String'] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	care_team_member_id: Optional[str] = None
+	membership_type: Optional['MembershipType'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13018,7 +13012,7 @@ class DecryptedCareTeamMembership:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DecryptedCareTeamMembership':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedCareTeamMembership':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13034,11 +13028,11 @@ class DecryptedCareTeamMembership:
 
 @dataclass
 class EncryptedCareTeamMembership:
-	start_date: typing[int] = None
-	end_date: typing[int] = None
-	care_team_member_id: typing[str] = None
-	membership_type: typing['MembershipType'] = None
-	encrypted_self: typing['Base64String'] = None
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	care_team_member_id: Optional[str] = None
+	membership_type: Optional['MembershipType'] = None
+	encrypted_self: Optional['Base64String'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13050,7 +13044,7 @@ class EncryptedCareTeamMembership:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'EncryptedCareTeamMembership':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedCareTeamMembership':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13064,7 +13058,7 @@ class EncryptedCareTeamMembership:
 			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
-CareTeamMembership = typing['DecryptedCareTeamMembership', 'EncryptedCareTeamMembership']
+CareTeamMembership = Union['DecryptedCareTeamMembership', 'EncryptedCareTeamMembership']
 
 def serialize_care_team_membership(care_team_membership: CareTeamMembership) -> object:
 	if isinstance(care_team_membership, DecryptedCareTeamMembership):
@@ -13078,7 +13072,7 @@ def serialize_care_team_membership(care_team_membership: CareTeamMembership) -> 
 	else:
 		raise Exception(f"{type(care_team_membership)} is not a known subclass of CareTeamMembership")
 
-def deserialize_care_team_membership(data: typing[str, typing[str, object]]) -> 'CareTeamMembership':
+def deserialize_care_team_membership(data: Union[str, Dict[str, object]]) -> 'CareTeamMembership':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -13094,7 +13088,7 @@ def deserialize_care_team_membership(data: typing[str, typing[str, object]]) -> 
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of CareTeamMembership")
 
-class CareTeamMemberType(enum):
+class CareTeamMemberType(Enum):
 	Physician = "physician"
 	Specialist = "specialist"
 	Other = "other"
@@ -13103,7 +13097,7 @@ class CareTeamMemberType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CareTeamMemberType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CareTeamMemberType':
 		if data == "physician":
 			return CareTeamMemberType.Physician
 		elif data == "specialist":
@@ -13115,7 +13109,7 @@ class CareTeamMemberType(enum):
 
 @dataclass
 class RemoteAuthentication:
-	basic: typing['Basic'] = None
+	basic: Optional['Basic'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13123,7 +13117,7 @@ class RemoteAuthentication:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RemoteAuthentication':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RemoteAuthentication':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13133,7 +13127,7 @@ class RemoteAuthentication:
 			basic=Basic._deserialize(deserialized_dict.get("basic")) if deserialized_dict.get("basic") is not None else None,
 		)
 
-class TypedValuesType(enum):
+class TypedValuesType(Enum):
 	Boolean = "BOOLEAN"
 	Integer = "INTEGER"
 	Double = "DOUBLE"
@@ -13146,7 +13140,7 @@ class TypedValuesType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TypedValuesType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TypedValuesType':
 		if data == "BOOLEAN":
 			return TypedValuesType.Boolean
 		elif data == "INTEGER":
@@ -13166,12 +13160,12 @@ class TypedValuesType(enum):
 
 @dataclass
 class DatabaseSynchronization:
-	source: typing[str] = None
-	target: typing[str] = None
-	filter: typing[str] = None
-	local_target: typing['DatabaseSynchronization.Target'] = None
+	source: Optional[str] = None
+	target: Optional[str] = None
+	filter: Optional[str] = None
+	local_target: Optional['DatabaseSynchronization.Target'] = None
 
-	class Target(enum):
+	class Target(Enum):
 		Base = "base"
 		Healthdata = "healthdata"
 		Patient = "patient"
@@ -13180,7 +13174,7 @@ class DatabaseSynchronization:
 			return self.value
 
 		@classmethod
-		def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DatabaseSynchronization.Target':
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DatabaseSynchronization.Target':
 			if data == "base":
 				return DatabaseSynchronization.Target.Base
 			elif data == "healthdata":
@@ -13199,7 +13193,7 @@ class DatabaseSynchronization:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DatabaseSynchronization':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DatabaseSynchronization':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13226,7 +13220,7 @@ class Launcher:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Launcher':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Launcher':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13252,7 +13246,7 @@ class State:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'State':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'State':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13267,22 +13261,22 @@ class State:
 @dataclass
 class DropdownField:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13306,7 +13300,7 @@ class DropdownField:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DropdownField':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DropdownField':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13335,22 +13329,22 @@ class DropdownField:
 @dataclass
 class RadioButton:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13374,7 +13368,7 @@ class RadioButton:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RadioButton':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RadioButton':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13403,22 +13397,22 @@ class RadioButton:
 @dataclass
 class DatePicker:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13442,7 +13436,7 @@ class DatePicker:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DatePicker':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DatePicker':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13471,22 +13465,22 @@ class DatePicker:
 @dataclass
 class TimePicker:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13510,7 +13504,7 @@ class TimePicker:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TimePicker':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimePicker':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13539,22 +13533,22 @@ class TimePicker:
 @dataclass
 class DateTimePicker:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13578,7 +13572,7 @@ class DateTimePicker:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'DateTimePicker':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DateTimePicker':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13607,22 +13601,22 @@ class DateTimePicker:
 @dataclass
 class NumberField:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13646,7 +13640,7 @@ class NumberField:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'NumberField':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'NumberField':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13675,22 +13669,22 @@ class NumberField:
 @dataclass
 class TextField:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13714,7 +13708,7 @@ class TextField:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'TextField':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TextField':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13743,22 +13737,22 @@ class TextField:
 @dataclass
 class CheckBox:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13782,7 +13776,7 @@ class CheckBox:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'CheckBox':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CheckBox':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13811,22 +13805,22 @@ class CheckBox:
 @dataclass
 class MultipleChoice:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13850,7 +13844,7 @@ class MultipleChoice:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MultipleChoice':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MultipleChoice':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13879,22 +13873,22 @@ class MultipleChoice:
 @dataclass
 class MeasureField:
 	field: str
-	short_label: typing[str] = None
-	rows: typing[int] = None
-	columns: typing[int] = None
-	grows: typing[bool] = None
-	multiline: typing[bool] = None
-	schema: typing[str] = None
-	tags: typing[typing[str]] = None
-	codifications: typing[typing[str]] = None
-	options: typing[typing[str, str]] = None
-	labels: typing[typing[str, str]] = None
-	value: typing[str] = None
-	unit: typing[str] = None
-	required: typing[bool] = None
-	hide_condition: typing[str] = None
-	now: typing[bool] = None
-	translate: typing[bool] = None
+	short_label: Optional[str] = None
+	rows: Optional[int] = None
+	columns: Optional[int] = None
+	grows: Optional[bool] = None
+	multiline: Optional[bool] = None
+	schema: Optional[str] = None
+	tags: Optional[List[str]] = None
+	codifications: Optional[List[str]] = None
+	options: Optional[Dict[str, str]] = None
+	labels: Optional[Dict[str, str]] = None
+	value: Optional[str] = None
+	unit: Optional[str] = None
+	required: Optional[bool] = None
+	hide_condition: Optional[str] = None
+	now: Optional[bool] = None
+	translate: Optional[bool] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -13918,7 +13912,7 @@ class MeasureField:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MeasureField':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MeasureField':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13947,16 +13941,16 @@ class MeasureField:
 @dataclass
 class FieldsGroup:
 	group: str
-	fields: typing[typing['StructureElement']] = None
+	fields: Optional[List['StructureElement']] = None
 
 	def __serialize__(self) -> object:
 		return {
 			"group": self.group,
-			"fields": [cardinal_sdk.model(x0) for x0 in self.fields] if self.fields is not None else None,
+			"fields": [serialize_structure_element(x0) for x0 in self.fields] if self.fields is not None else None,
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'FieldsGroup':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'FieldsGroup':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -13964,10 +13958,10 @@ class FieldsGroup:
 			deserialized_dict = data
 		return cls(
 			group=deserialized_dict["group"],
-			fields=[cardinal_sdk.model(x0) for x0 in deserialized_dict.get("fields")] if deserialized_dict.get("fields") is not None else None,
+			fields=[deserialize_structure_element(x0) for x0 in deserialized_dict.get("fields")] if deserialized_dict.get("fields") is not None else None,
 		)
 
-StructureElement = typing['DropdownField', 'RadioButton', 'DatePicker', 'TimePicker', 'DateTimePicker', 'NumberField', 'TextField', 'CheckBox', 'MultipleChoice', 'MeasureField', 'FieldsGroup']
+StructureElement = Union['DropdownField', 'RadioButton', 'DatePicker', 'TimePicker', 'DateTimePicker', 'NumberField', 'TextField', 'CheckBox', 'MultipleChoice', 'MeasureField', 'FieldsGroup']
 
 def serialize_structure_element(structure_element: StructureElement) -> object:
 	if isinstance(structure_element, DropdownField):
@@ -14017,7 +14011,7 @@ def serialize_structure_element(structure_element: StructureElement) -> object:
 	else:
 		raise Exception(f"{type(structure_element)} is not a known subclass of StructureElement")
 
-def deserialize_structure_element(data: typing[str, typing[str, object]]) -> 'StructureElement':
+def deserialize_structure_element(data: Union[str, Dict[str, object]]) -> 'StructureElement':
 	deserialized_dict: dict[str, object]
 	if isinstance(data, str):
 		deserialized_dict = json.loads(data)
@@ -14053,13 +14047,13 @@ def deserialize_structure_element(data: typing[str, typing[str, object]]) -> 'St
 
 @dataclass
 class ReferenceRange:
-	low: typing[float] = None
-	high: typing[float] = None
-	string_value: typing[str] = None
-	tags: typing['CodeStub'] = dataclasses(default_factory=list)
-	codes: typing['CodeStub'] = dataclasses(default_factory=list)
-	notes: typing['Annotation'] = dataclasses(default_factory=list)
-	age: typing['Range'] = None
+	low: Optional[float] = None
+	high: Optional[float] = None
+	string_value: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	notes: List['Annotation'] = field(default_factory=list)
+	age: Optional['Range'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14073,7 +14067,7 @@ class ReferenceRange:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ReferenceRange':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ReferenceRange':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14091,11 +14085,11 @@ class ReferenceRange:
 
 @dataclass
 class Substanceproduct:
-	intendedcds: typing['CodeStub'] = dataclasses(default_factory=list)
-	deliveredcds: typing['CodeStub'] = dataclasses(default_factory=list)
-	intendedname: typing[str] = None
-	deliveredname: typing[str] = None
-	product_id: typing[str] = None
+	intendedcds: List['CodeStub'] = field(default_factory=list)
+	deliveredcds: List['CodeStub'] = field(default_factory=list)
+	intendedname: Optional[str] = None
+	deliveredname: Optional[str] = None
+	product_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14107,7 +14101,7 @@ class Substanceproduct:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Substanceproduct':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Substanceproduct':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14123,11 +14117,11 @@ class Substanceproduct:
 
 @dataclass
 class Medicinalproduct:
-	intendedcds: typing['CodeStub'] = dataclasses(default_factory=list)
-	deliveredcds: typing['CodeStub'] = dataclasses(default_factory=list)
-	intendedname: typing[str] = None
-	deliveredname: typing[str] = None
-	product_id: typing[str] = None
+	intendedcds: List['CodeStub'] = field(default_factory=list)
+	deliveredcds: List['CodeStub'] = field(default_factory=list)
+	intendedname: Optional[str] = None
+	deliveredname: Optional[str] = None
+	product_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14139,7 +14133,7 @@ class Medicinalproduct:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Medicinalproduct':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Medicinalproduct':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14155,8 +14149,8 @@ class Medicinalproduct:
 
 @dataclass
 class Duration:
-	value: typing[float] = None
-	unit: typing['CodeStub'] = None
+	value: Optional[float] = None
+	unit: Optional['CodeStub'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14165,7 +14159,7 @@ class Duration:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Duration':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Duration':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14178,8 +14172,8 @@ class Duration:
 
 @dataclass
 class Renewal:
-	decimal: typing[int] = None
-	duration: typing['Duration'] = None
+	decimal: Optional[int] = None
+	duration: Optional['Duration'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14188,7 +14182,7 @@ class Renewal:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Renewal':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Renewal':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14201,12 +14195,12 @@ class Renewal:
 
 @dataclass
 class RegimenItem:
-	date: typing[int] = None
-	day_number: typing[int] = None
-	weekday: typing['Weekday'] = None
-	day_period: typing['CodeStub'] = None
-	time_of_day: typing[int] = None
-	administrated_quantity: typing['AdministrationQuantity'] = None
+	date: Optional[int] = None
+	day_number: Optional[int] = None
+	weekday: Optional['Weekday'] = None
+	day_period: Optional['CodeStub'] = None
+	time_of_day: Optional[int] = None
+	administrated_quantity: Optional['AdministrationQuantity'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14219,7 +14213,7 @@ class RegimenItem:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'RegimenItem':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RegimenItem':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14236,28 +14230,28 @@ class RegimenItem:
 
 @dataclass
 class ParagraphAgreement:
-	timestamp: typing[int] = None
-	paragraph: typing[str] = None
-	accepted: typing[bool] = None
-	in_treatment: typing[bool] = None
-	canceled: typing[bool] = None
-	care_provider_reference: typing[str] = None
-	decision_reference: typing[str] = None
-	start: typing[int] = None
-	end: typing[int] = None
-	cancelation_date: typing[int] = None
-	quantity_value: typing[float] = None
-	quantity_unit: typing[str] = None
-	io_request_reference: typing[str] = None
-	response_type: typing[str] = None
-	refusal_justification: typing[typing[str, str]] = None
-	verses: typing[typing[int]] = None
-	coverage_type: typing[str] = None
-	unit_number: typing[float] = None
-	strength: typing[float] = None
-	strength_unit: typing[str] = None
-	agreement_appendices: typing[typing['AgreementAppendix']] = None
-	document_id: typing[str] = None
+	timestamp: Optional[int] = None
+	paragraph: Optional[str] = None
+	accepted: Optional[bool] = None
+	in_treatment: Optional[bool] = None
+	canceled: Optional[bool] = None
+	care_provider_reference: Optional[str] = None
+	decision_reference: Optional[str] = None
+	start: Optional[int] = None
+	end: Optional[int] = None
+	cancelation_date: Optional[int] = None
+	quantity_value: Optional[float] = None
+	quantity_unit: Optional[str] = None
+	io_request_reference: Optional[str] = None
+	response_type: Optional[str] = None
+	refusal_justification: Optional[Dict[str, str]] = None
+	verses: Optional[List[int]] = None
+	coverage_type: Optional[str] = None
+	unit_number: Optional[float] = None
+	strength: Optional[float] = None
+	strength_unit: Optional[str] = None
+	agreement_appendices: Optional[List['AgreementAppendix']] = None
+	document_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14286,7 +14280,7 @@ class ParagraphAgreement:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'ParagraphAgreement':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ParagraphAgreement':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14319,10 +14313,10 @@ class ParagraphAgreement:
 
 @dataclass
 class Suspension:
-	begin_moment: typing[int] = None
-	end_moment: typing[int] = None
-	suspension_reason: typing[str] = None
-	lifecycle: typing[str] = None
+	begin_moment: Optional[int] = None
+	end_moment: Optional[int] = None
+	suspension_reason: Optional[str] = None
+	lifecycle: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14333,7 +14327,7 @@ class Suspension:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Suspension':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Suspension':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14346,7 +14340,7 @@ class Suspension:
 			lifecycle=deserialized_dict.get("lifecycle"),
 		)
 
-class MembershipType(enum):
+class MembershipType(Enum):
 	Doctor = "doctor"
 	Mutuality = "mutuality"
 	Patient = "patient"
@@ -14357,7 +14351,7 @@ class MembershipType(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'MembershipType':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'MembershipType':
 		if data == "doctor":
 			return MembershipType.Doctor
 		elif data == "mutuality":
@@ -14383,7 +14377,7 @@ class Basic:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Basic':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Basic':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14394,7 +14388,7 @@ class Basic:
 			password=deserialized_dict["password"],
 		)
 
-class Trigger(enum):
+class Trigger(Enum):
 	Init = "INIT"
 	Change = "CHANGE"
 	Click = "CLICK"
@@ -14407,7 +14401,7 @@ class Trigger(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Trigger':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Trigger':
 		if data == "INIT":
 			return Trigger.Init
 		elif data == "CHANGE":
@@ -14425,7 +14419,7 @@ class Trigger(enum):
 		else:
 			raise Exception(f"{data} is not a valid value for Trigger enum.")
 
-class StateToUpdate(enum):
+class StateToUpdate(Enum):
 	Value = "VALUE"
 	Visible = "VISIBLE"
 	Readonly = "READONLY"
@@ -14436,7 +14430,7 @@ class StateToUpdate(enum):
 		return self.value
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'StateToUpdate':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'StateToUpdate':
 		if data == "VALUE":
 			return StateToUpdate.Value
 		elif data == "VISIBLE":
@@ -14452,8 +14446,8 @@ class StateToUpdate(enum):
 
 @dataclass
 class Range:
-	low: typing[float] = None
-	high: typing[float] = None
+	low: Optional[float] = None
+	high: Optional[float] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14462,7 +14456,7 @@ class Range:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Range':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Range':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14475,8 +14469,8 @@ class Range:
 
 @dataclass
 class Weekday:
-	weekday: typing['CodeStub'] = None
-	week_number: typing[int] = None
+	weekday: Optional['CodeStub'] = None
+	week_number: Optional[int] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14485,7 +14479,7 @@ class Weekday:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'Weekday':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'Weekday':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14498,9 +14492,9 @@ class Weekday:
 
 @dataclass
 class AdministrationQuantity:
-	quantity: typing[float] = None
-	administration_unit: typing['CodeStub'] = None
-	unit: typing[str] = None
+	quantity: Optional[float] = None
+	administration_unit: Optional['CodeStub'] = None
+	unit: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14510,7 +14504,7 @@ class AdministrationQuantity:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AdministrationQuantity':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AdministrationQuantity':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -14524,10 +14518,10 @@ class AdministrationQuantity:
 
 @dataclass
 class AgreementAppendix:
-	doc_seq: typing[int] = None
-	verse_seq: typing[int] = None
-	document_id: typing[str] = None
-	path: typing[str] = None
+	doc_seq: Optional[int] = None
+	verse_seq: Optional[int] = None
+	document_id: Optional[str] = None
+	path: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -14538,7 +14532,7 @@ class AgreementAppendix:
 		}
 
 	@classmethod
-	def _deserialize(cls, data: typing[str, typing[str, object]]) -> 'AgreementAppendix':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AgreementAppendix':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)

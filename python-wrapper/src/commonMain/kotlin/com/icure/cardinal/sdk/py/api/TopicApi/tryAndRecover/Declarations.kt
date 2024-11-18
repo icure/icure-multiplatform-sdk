@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -15,6 +14,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Byte
@@ -130,7 +130,7 @@ public fun filterTopicsByBlocking(sdk: CardinalApis, params: String): PyResult =
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Topic::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Topic::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -148,7 +148,7 @@ public fun filterTopicsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Topic::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Topic::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -167,7 +167,7 @@ public fun filterTopicsBySortedBlocking(sdk: CardinalApis, params: String): PyRe
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Topic::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Topic::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -185,7 +185,7 @@ public fun filterTopicsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Topic::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Topic::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

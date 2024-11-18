@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.model.Agenda
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -16,6 +15,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Byte
@@ -750,7 +750,7 @@ public fun filterAgendasByBlocking(sdk: CardinalNonCryptoApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, Agenda.serializer())}
+	PaginatedListIteratorWithSerializer(it, Agenda.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -768,7 +768,7 @@ public fun filterAgendasByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, Agenda.serializer())}
+			PaginatedListIteratorWithSerializer(it, Agenda.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -787,7 +787,7 @@ public fun filterAgendasBySortedBlocking(sdk: CardinalNonCryptoApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, Agenda.serializer())}
+	PaginatedListIteratorWithSerializer(it, Agenda.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -805,6 +805,6 @@ public fun filterAgendasBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, Agenda.serializer())}
+			PaginatedListIteratorWithSerializer(it, Agenda.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)

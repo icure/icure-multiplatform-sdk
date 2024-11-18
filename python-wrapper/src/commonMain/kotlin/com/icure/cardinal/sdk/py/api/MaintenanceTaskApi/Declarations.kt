@@ -13,8 +13,6 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -22,6 +20,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -818,7 +818,7 @@ public fun filterMaintenanceTasksByBlocking(sdk: CardinalApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedMaintenanceTask.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedMaintenanceTask.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -837,7 +837,7 @@ public fun filterMaintenanceTasksByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedMaintenanceTask.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedMaintenanceTask.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -857,7 +857,7 @@ public fun filterMaintenanceTasksBySortedBlocking(sdk: CardinalApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedMaintenanceTask.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedMaintenanceTask.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -876,7 +876,7 @@ public fun filterMaintenanceTasksBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedMaintenanceTask.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedMaintenanceTask.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

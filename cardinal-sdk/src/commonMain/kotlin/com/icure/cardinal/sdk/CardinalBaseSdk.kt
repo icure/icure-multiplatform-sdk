@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk
 
-import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClient
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
 import com.icure.cardinal.sdk.api.DocumentTemplateApi
@@ -97,7 +96,6 @@ import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.options.getAuthProviderInGroup
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.Json
 
@@ -126,11 +124,16 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 			options: BasicSdkOptions = BasicSdkOptions()
 		): CardinalUnboundBaseSdk {
 			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
-			val client = options.httpClient ?: sharedHttpClient
-			val json = options.httpClientJson ?: Serialization.json
+
+			val client = options.configuredClientOrDefault()
+			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, client, json = Serialization.json)
+			val rawAuthApi = RawAnonymousAuthApiImpl(
+				apiUrl = apiUrl,
+				httpClient = client,
+				json = json,
+			)
 			val authProvider = authenticationMethod.getAuthProvider(
 				rawAuthApi,
 				cryptoService,
@@ -189,8 +192,8 @@ interface CardinalBaseSdk : CardinalBaseApis {
 			authenticationMethod: AuthenticationMethod,
 			options: BasicSdkOptions = BasicSdkOptions()
 		): CardinalBaseSdk {
-			val client = options.httpClient ?: sharedHttpClient
-			val json = options.httpClientJson ?: Serialization.json
+			val client = options.configuredClientOrDefault()
+			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
 			val authProvider = authenticationMethod.getAuthProviderInGroup(

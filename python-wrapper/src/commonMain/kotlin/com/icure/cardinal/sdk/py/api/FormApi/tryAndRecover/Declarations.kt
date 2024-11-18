@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -15,6 +14,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -141,7 +141,7 @@ public fun findFormsByHcPartyPatientBlocking(sdk: CardinalApis, params: String):
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Form::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Form::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -164,7 +164,7 @@ public fun findFormsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Form::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Form::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -182,7 +182,7 @@ public fun filterFormsByBlocking(sdk: CardinalApis, params: String): PyResult = 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Form::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Form::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -200,7 +200,7 @@ public fun filterFormsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Form::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Form::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -219,7 +219,7 @@ public fun filterFormsBySortedBlocking(sdk: CardinalApis, params: String): PyRes
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Form::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Form::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -237,7 +237,7 @@ public fun filterFormsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Form::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Form::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

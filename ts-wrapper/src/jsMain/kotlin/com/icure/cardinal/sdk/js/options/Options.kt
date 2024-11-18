@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.js.options
 
-import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesBridge
+ import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesBridge
 import com.icure.cardinal.sdk.js.model.userGroup_toJs
 import com.icure.cardinal.sdk.js.options.external.BasicSdkOptionsJs
 import com.icure.cardinal.sdk.js.options.external.EncryptedFieldsConfigurationJs
@@ -38,7 +38,8 @@ suspend fun SdkOptionsJs.toKt(): SdkOptions {
 		cryptoStrategies = this.cryptoStrategies?.let {
 			CryptoStrategiesBridge(it, this.cryptoService ?: adaptCryptoServiceForExternal(defaultSdkOptions.cryptoService))
 		} ?: defaultSdkOptions.cryptoStrategies,
-		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultSdkOptions.jsonPatcher
+		jsonPatcher = this.jsonPatcher?.let { JsonPatcherBridge(it) } ?: defaultSdkOptions.jsonPatcher,
+		lenientJson = this.lenientJson ?: defaultSdkOptions.lenientJson
 	)
 }
 
@@ -53,6 +54,7 @@ suspend fun BasicSdkOptionsJs.toKt(): BasicSdkOptions {
 				groupSelectorJs(ktGroups.map { userGroup_toJs(it) }.toTypedArray()).await()
 			}
 		} ?: defaultApiOptions.groupSelector,
+		lenientJson = this.lenientJson ?: defaultApiOptions.lenientJson
 	)
 }
 

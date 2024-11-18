@@ -3,22 +3,30 @@ import platform
 from ctypes import c_void_p, Structure, CFUNCTYPE, c_char_p, c_int32, POINTER
 from cardinal_sdk.kotlin_dll_loader import kdll
 
+
 class AnyKtRef(Structure):
 	_fields_ = [
 		("pinned", c_void_p),
 	]
 
+
 UNUSED_C_FUNC = CFUNCTYPE(None)
+
 DATA_RESULT_CALLBACK_FUNC = CFUNCTYPE(None, c_char_p, c_char_p)
+
 PTR_RESULT_CALLBACK_FUNC = CFUNCTYPE(None, c_void_p, c_char_p)
+
 CALLBACK_PARAM_NO_INPUT = CFUNCTYPE(None, c_void_p)
+
 CALLBACK_PARAM_DATA_INPUT = CFUNCTYPE(None, c_void_p, c_char_p)
+
 class SdkInitializationResult(Structure):
 	_fields_ = [
 		("_type", CFUNCTYPE(c_void_p)),
 		("get_failure", CFUNCTYPE(c_void_p, AnyKtRef)),
 		("get_success", CFUNCTYPE(AnyKtRef, AnyKtRef)),
 	]
+
 
 class BaseSdkInitializationResult(Structure):
 	_fields_ = [
@@ -27,15 +35,18 @@ class BaseSdkInitializationResult(Structure):
 		("get_success", CFUNCTYPE(AnyKtRef, AnyKtRef)),
 	]
 
+
 class PyCryptoStrategies(Structure):
 	_fields_ = [
 		("create", CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p)),
 	]
 
+
 class PyStorage(Structure):
 	_fields_ = [
 		("createCustomStorageFacade", CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p)),
 	]
+
 
 class encrypted(Structure):
 	_fields_ = [
@@ -67,6 +78,7 @@ class encrypted(Structure):
 		("undeleteAccessLogByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterAccessLogsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -96,6 +108,7 @@ class tryAndRecover(Structure):
 		("undeleteAccessLogByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteAccessLogByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class AccessLogApi(Structure):
 	_fields_ = [
@@ -165,6 +178,7 @@ class AccessLogApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class AccessLogBasicApi(Structure):
 	_fields_ = [
 		("deleteAccessLogAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -208,6 +222,7 @@ class AccessLogBasicApi(Structure):
 		("undeleteAccessLogByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteAccessLogByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class AgendaApi(Structure):
 	_fields_ = [
@@ -255,6 +270,7 @@ class AgendaApi(Structure):
 		("undeleteAgendaByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class ApplicationSettingsApi(Structure):
 	_fields_ = [
 		("createApplicationSettingsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -264,6 +280,7 @@ class ApplicationSettingsApi(Structure):
 		("updateApplicationSettingsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("updateApplicationSettingsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class encrypted(Structure):
 	_fields_ = [
@@ -297,6 +314,7 @@ class encrypted(Structure):
 		("undeleteCalendarItemByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterCalendarItemsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -328,6 +346,7 @@ class tryAndRecover(Structure):
 		("undeleteCalendarItemByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteCalendarItemByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class CalendarItemApi(Structure):
 	_fields_ = [
@@ -401,6 +420,7 @@ class CalendarItemApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class CalendarItemBasicApi(Structure):
 	_fields_ = [
 		("deleteCalendarItemAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -447,6 +467,7 @@ class CalendarItemBasicApi(Structure):
 		("undeleteCalendarItemByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("filterClassificationsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -467,6 +488,7 @@ class encrypted(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterClassificationsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -486,6 +508,7 @@ class tryAndRecover(Structure):
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class ClassificationApi(Structure):
 	_fields_ = [
@@ -533,6 +556,7 @@ class ClassificationApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class ClassificationBasicApi(Structure):
 	_fields_ = [
 		("deleteClassificationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -554,6 +578,7 @@ class ClassificationBasicApi(Structure):
 		("modifyClassificationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyClassificationBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class CodeApi(Structure):
 	_fields_ = [
@@ -605,6 +630,7 @@ class CodeApi(Structure):
 		("modifyCodesInGroupBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("filterContactsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -637,8 +663,6 @@ class encrypted(Structure):
 		("listContactsByHCPartyAndFormIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listContactsByHCPartyAndFormIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listContactsByHCPartyAndFormIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listContactsByHCPartyAndPatientSecretFKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listContactsByHCPartyAndPatientSecretFKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByAssociationIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listServicesByAssociationIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByHealthElementIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -656,6 +680,7 @@ class encrypted(Structure):
 		("undeleteContactByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteContactByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class tryAndRecover(Structure):
 	_fields_ = [
@@ -689,8 +714,6 @@ class tryAndRecover(Structure):
 		("listContactsByHCPartyAndFormIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listContactsByHCPartyAndFormIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listContactsByHCPartyAndFormIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listContactsByHCPartyAndPatientSecretFKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listContactsByHCPartyAndPatientSecretFKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByAssociationIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listServicesByAssociationIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByHealthElementIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -708,6 +731,7 @@ class tryAndRecover(Structure):
 		("undeleteContactByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteContactByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class ContactApi(Structure):
 	_fields_ = [
@@ -749,8 +773,6 @@ class ContactApi(Structure):
 		("findContactsByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findContactsByOpeningDateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findContactsByOpeningDateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getContactAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getContactBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getContactsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -775,8 +797,6 @@ class ContactApi(Structure):
 		("listContactsByHCPartyAndFormIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listContactsByHCPartyAndFormIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listContactsByHCPartyAndFormIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listContactsByHCPartyAndPatientSecretFKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listContactsByHCPartyAndPatientSecretFKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByAssociationIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listServicesByAssociationIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByHealthElementIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -817,6 +837,7 @@ class ContactApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class ContactBasicApi(Structure):
 	_fields_ = [
 		("deleteContactAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -841,8 +862,6 @@ class ContactBasicApi(Structure):
 		("filterServicesBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findContactsByOpeningDateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findContactsByOpeningDateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findContactsDelegationsStubsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findContactsDelegationsStubsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getContactAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getContactBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getContactsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -863,8 +882,6 @@ class ContactBasicApi(Structure):
 		("listContactsByHCPartyAndFormIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listContactsByHCPartyAndFormIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listContactsByHCPartyAndFormIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listContactsByHCPartyAndPatientSecretFKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listContactsByHCPartyAndPatientSecretFKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByAssociationIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listServicesByAssociationIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listServicesByHealthElementIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -895,12 +912,14 @@ class ContactBasicApi(Structure):
 		("undeleteContactByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class shamirKeysManager(Structure):
 	_fields_ = [
 		("getExistingSplitsInfo", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("updateSelfSplitsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("updateSelfSplitsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class CryptoApi(Structure):
 	_fields_ = [
@@ -910,6 +929,7 @@ class CryptoApi(Structure):
 		("forceReloadAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
 		("forceReloadBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
 	]
+
 
 class DataOwnerApi(Structure):
 	_fields_ = [
@@ -935,6 +955,7 @@ class DataOwnerApi(Structure):
 		("modifyDataOwnerStubAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyDataOwnerStubBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class DeviceApi(Structure):
 	_fields_ = [
@@ -990,6 +1011,7 @@ class DeviceApi(Structure):
 		("undeleteDeviceByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("filterDocumentsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -1008,8 +1030,6 @@ class encrypted(Structure):
 		("getDocumentsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getDocumentsByExternalUuidAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getDocumentsByExternalUuidBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listDocumentsByHcPartyMessageForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listDocumentsByHcPartyMessageForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyDocumentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyDocumentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyDocumentsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1023,6 +1043,7 @@ class encrypted(Structure):
 		("undeleteDocumentByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteDocumentByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class tryAndRecover(Structure):
 	_fields_ = [
@@ -1042,8 +1063,6 @@ class tryAndRecover(Structure):
 		("getDocumentsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getDocumentsByExternalUuidAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getDocumentsByExternalUuidBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listDocumentsByHcPartyMessageForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listDocumentsByHcPartyMessageForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyDocumentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyDocumentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyDocumentsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1057,6 +1076,7 @@ class tryAndRecover(Structure):
 		("undeleteDocumentByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteDocumentByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class DocumentApi(Structure):
 	_fields_ = [
@@ -1128,8 +1148,6 @@ class DocumentApi(Structure):
 		("getRawSecondaryAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("hasWriteAccessAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("hasWriteAccessBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listDocumentsByHcPartyMessageForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listDocumentsByHcPartyMessageForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchDocumentsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("matchDocumentsByBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchDocumentsBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1161,6 +1179,7 @@ class DocumentApi(Structure):
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class DocumentBasicApi(Structure):
 	_fields_ = [
@@ -1202,8 +1221,6 @@ class DocumentBasicApi(Structure):
 		("getRawMainAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getRawSecondaryAttachmentAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getRawSecondaryAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listDocumentsByHcPartyMessageForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listDocumentsByHcPartyMessageForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchDocumentsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("matchDocumentsByBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchDocumentsBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1225,6 +1242,7 @@ class DocumentBasicApi(Structure):
 		("undeleteDocumentByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteDocumentByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class DocumentTemplateApi(Structure):
 	_fields_ = [
@@ -1255,6 +1273,7 @@ class DocumentTemplateApi(Structure):
 		("setDocumentTemplateAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class EntityReferenceApi(Structure):
 	_fields_ = [
 		("createEntityReferenceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1262,6 +1281,7 @@ class EntityReferenceApi(Structure):
 		("getLatestAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getLatestBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class EntityTemplateApi(Structure):
 	_fields_ = [
@@ -1289,6 +1309,7 @@ class EntityTemplateApi(Structure):
 		("modifyEntityTemplatesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("filterFormsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -1311,8 +1332,6 @@ class encrypted(Structure):
 		("getLatestFormByLogicalUuidBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getLatestFormByUniqueIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getLatestFormByUniqueIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listFormsByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listFormsByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyFormAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyFormBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyFormsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1326,6 +1345,7 @@ class encrypted(Structure):
 		("undeleteFormByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteFormByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class tryAndRecover(Structure):
 	_fields_ = [
@@ -1349,8 +1369,6 @@ class tryAndRecover(Structure):
 		("getLatestFormByLogicalUuidBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getLatestFormByUniqueIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getLatestFormByUniqueIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listFormsByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listFormsByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyFormAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyFormBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("modifyFormsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1364,6 +1382,7 @@ class tryAndRecover(Structure):
 		("undeleteFormByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteFormByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class FormApi(Structure):
 	_fields_ = [
@@ -1427,8 +1446,6 @@ class FormApi(Structure):
 		("hasWriteAccessBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listFormTemplatesBySpecialityAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listFormTemplatesBySpecialityBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listFormsByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listFormsByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchFormsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("matchFormsByBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchFormsBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1458,6 +1475,7 @@ class FormApi(Structure):
 		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class FormBasicApi(Structure):
 	_fields_ = [
@@ -1503,8 +1521,6 @@ class FormBasicApi(Structure):
 		("getLatestFormByUniqueIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listFormTemplatesBySpecialityAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listFormTemplatesBySpecialityBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listFormsByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listFormsByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchFormsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("matchFormsByBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("matchFormsBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1527,6 +1543,7 @@ class FormBasicApi(Structure):
 		("updateFormTemplateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class FrontEndMigrationApi(Structure):
 	_fields_ = [
 		("createFrontEndMigrationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1542,6 +1559,7 @@ class FrontEndMigrationApi(Structure):
 		("modifyFrontEndMigrationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyFrontEndMigrationBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class GroupApi(Structure):
 	_fields_ = [
@@ -1597,6 +1615,7 @@ class GroupApi(Structure):
 		("solveConflictsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("filterHealthElementsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -1605,8 +1624,6 @@ class encrypted(Structure):
 		("filterHealthElementsBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findHealthElementsByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findHealthElementsByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("findHealthElementsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findHealthElementsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getHealthElementAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getHealthElementBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getHealthElementsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1625,6 +1642,7 @@ class encrypted(Structure):
 		("undeleteHealthElementByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterHealthElementsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -1633,8 +1651,6 @@ class tryAndRecover(Structure):
 		("filterHealthElementsBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findHealthElementsByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findHealthElementsByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("findHealthElementsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findHealthElementsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getHealthElementAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getHealthElementBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getHealthElementsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1652,6 +1668,7 @@ class tryAndRecover(Structure):
 		("undeleteHealthElementByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteHealthElementByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class HealthElementApi(Structure):
 	_fields_ = [
@@ -1685,10 +1702,6 @@ class HealthElementApi(Structure):
 		("filterHealthElementsBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findHealthElementsByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findHealthElementsByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("findHealthElementsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findHealthElementsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getEncryptionKeysOfAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getEncryptionKeysOfBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getHealthElementAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1725,6 +1738,7 @@ class HealthElementApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class HealthElementBasicApi(Structure):
 	_fields_ = [
 		("deleteHealthElementAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1743,10 +1757,6 @@ class HealthElementBasicApi(Structure):
 		("filterHealthElementsByBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("filterHealthElementsBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("filterHealthElementsBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("findHealthElementsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findHealthElementsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findHealthElementsDelegationsStubsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getHealthElementAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getHealthElementBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getHealthElementsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1770,6 +1780,7 @@ class HealthElementBasicApi(Structure):
 		("undeleteHealthElementByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteHealthElementByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class HealthcarePartyApi(Structure):
 	_fields_ = [
@@ -1845,6 +1856,7 @@ class HealthcarePartyApi(Structure):
 		("undeleteHealthcarePartyByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class InsuranceApi(Structure):
 	_fields_ = [
 		("createInsuranceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1865,6 +1877,7 @@ class InsuranceApi(Structure):
 		("modifyInsuranceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("appendCodesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1873,8 +1886,6 @@ class encrypted(Structure):
 		("findInvoicesByAuthorBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findInvoicesByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findInvoicesByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("findInvoicesByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findInvoicesByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getInvoiceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getInvoiceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getInvoicesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1883,8 +1894,6 @@ class encrypted(Structure):
 		("listAllHcpsByStatusBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByContactIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByContactIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listInvoicesByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listInvoicesByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartyAndGroupIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByHcPartyAndGroupIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1923,6 +1932,7 @@ class encrypted(Structure):
 		("validateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("appendCodesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1931,8 +1941,6 @@ class tryAndRecover(Structure):
 		("findInvoicesByAuthorBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findInvoicesByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findInvoicesByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("findInvoicesByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findInvoicesByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getInvoiceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getInvoiceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getInvoicesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1941,8 +1949,6 @@ class tryAndRecover(Structure):
 		("listAllHcpsByStatusBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByContactIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByContactIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listInvoicesByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listInvoicesByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartyAndGroupIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByHcPartyAndGroupIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -1980,6 +1986,7 @@ class tryAndRecover(Structure):
 		("validateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("validateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class InvoiceApi(Structure):
 	_fields_ = [
@@ -2003,10 +2010,6 @@ class InvoiceApi(Structure):
 		("findInvoicesByAuthorBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findInvoicesByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findInvoicesByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("findInvoicesByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findInvoicesByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findInvoicesDelegationsStubsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getEncryptionKeysOfAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getEncryptionKeysOfBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getInvoiceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2021,8 +2024,6 @@ class InvoiceApi(Structure):
 		("listAllHcpsByStatusBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByContactIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByContactIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listInvoicesByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listInvoicesByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartyAndGroupIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByHcPartyAndGroupIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2065,6 +2066,7 @@ class InvoiceApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class InvoiceBasicApi(Structure):
 	_fields_ = [
 		("appendCodesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2073,10 +2075,6 @@ class InvoiceBasicApi(Structure):
 		("deleteInvoiceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findInvoicesByAuthorAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findInvoicesByAuthorBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findInvoicesByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findInvoicesByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findInvoicesDelegationsStubsByHcPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findInvoicesDelegationsStubsByHcPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getInvoiceAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("getInvoiceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("getInvoicesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2087,8 +2085,6 @@ class InvoiceBasicApi(Structure):
 		("listAllHcpsByStatusBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByContactIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByContactIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("listInvoicesByHCPartyAndPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("listInvoicesByHCPartyAndPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartyAndGroupIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("listInvoicesByHcPartyAndGroupIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDateAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2123,6 +2119,7 @@ class InvoiceBasicApi(Structure):
 		("validateBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class KeywordApi(Structure):
 	_fields_ = [
 		("createKeywordAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2138,6 +2135,7 @@ class KeywordApi(Structure):
 		("modifyKeywordAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyKeywordBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class encrypted(Structure):
 	_fields_ = [
@@ -2161,6 +2159,7 @@ class encrypted(Structure):
 		("undeleteMaintenanceTaskByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterMaintenanceTasksByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -2182,6 +2181,7 @@ class tryAndRecover(Structure):
 		("undeleteMaintenanceTaskByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteMaintenanceTaskByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class MaintenanceTaskApi(Structure):
 	_fields_ = [
@@ -2245,6 +2245,7 @@ class MaintenanceTaskApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class MaintenanceTaskBasicApi(Structure):
 	_fields_ = [
 		("deleteMaintenanceTaskAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2285,6 +2286,7 @@ class MaintenanceTaskBasicApi(Structure):
 		("undeleteMaintenanceTaskByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class MedicalLocationApi(Structure):
 	_fields_ = [
 		("createMedicalLocationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2309,6 +2311,7 @@ class MedicalLocationApi(Structure):
 		("modifyMedicalLocationBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("filterMessagesByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -2319,8 +2322,6 @@ class encrypted(Structure):
 		("findMessagesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByFromAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findMessagesByFromAddressBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findMessagesByHCPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findMessagesByHCPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findMessagesByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findMessagesByToAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2357,6 +2358,7 @@ class encrypted(Structure):
 		("undeleteMessageByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterMessagesByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -2367,8 +2369,6 @@ class tryAndRecover(Structure):
 		("findMessagesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByFromAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findMessagesByFromAddressBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findMessagesByHCPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findMessagesByHCPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findMessagesByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findMessagesByToAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2404,6 +2404,7 @@ class tryAndRecover(Structure):
 		("undeleteMessageByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteMessageByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class MessageApi(Structure):
 	_fields_ = [
@@ -2439,8 +2440,6 @@ class MessageApi(Structure):
 		("findMessagesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByFromAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findMessagesByFromAddressBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findMessagesByHCPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findMessagesByHCPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByHcPartyPatientAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
 		("findMessagesByHcPartyPatientBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
 		("findMessagesByToAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2495,6 +2494,7 @@ class MessageApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class MessageBasicApi(Structure):
 	_fields_ = [
 		("deleteMessageAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2517,8 +2517,6 @@ class MessageBasicApi(Structure):
 		("findMessagesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByFromAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findMessagesByFromAddressBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("findMessagesByHCPartyPatientForeignKeysAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("findMessagesByHCPartyPatientForeignKeysBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByToAddressAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("findMessagesByToAddressBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("findMessagesByTransportGuidAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2558,6 +2556,7 @@ class MessageBasicApi(Structure):
 		("undeleteMessageByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteMessageByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class encrypted(Structure):
 	_fields_ = [
@@ -2619,6 +2618,7 @@ class encrypted(Structure):
 		("undeletePatientsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterPatientsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -2678,6 +2678,7 @@ class tryAndRecover(Structure):
 		("undeletePatientsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeletePatientsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class PatientApi(Structure):
 	_fields_ = [
@@ -2795,6 +2796,7 @@ class PatientApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class PatientBasicApi(Structure):
 	_fields_ = [
 		("countOfPatientsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2875,11 +2877,13 @@ class PatientBasicApi(Structure):
 		("undeletePatientsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class PermissionApi(Structure):
 	_fields_ = [
 		("modifyUserPermissionsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyUserPermissionsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class PlaceApi(Structure):
 	_fields_ = [
@@ -2895,6 +2899,7 @@ class PlaceApi(Structure):
 		("modifyPlaceBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("getReceiptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2909,6 +2914,7 @@ class encrypted(Structure):
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("getReceiptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2922,6 +2928,7 @@ class tryAndRecover(Structure):
 		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class ReceiptApi(Structure):
 	_fields_ = [
@@ -2969,6 +2976,7 @@ class ReceiptApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class ReceiptBasicApi(Structure):
 	_fields_ = [
 		("deleteReceiptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2987,6 +2995,7 @@ class ReceiptBasicApi(Structure):
 		("setRawReceiptAttachmentBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class RecoveryApi(Structure):
 	_fields_ = [
 		("purgeAllExchangeDataRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -2999,11 +3008,13 @@ class RecoveryApi(Structure):
 		("purgeRecoveryInfoBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class RoleApi(Structure):
 	_fields_ = [
 		("getAllRolesAsync", CFUNCTYPE(None, AnyKtRef, DATA_RESULT_CALLBACK_FUNC)),
 		("getAllRolesBlocking", CFUNCTYPE(c_void_p, AnyKtRef)),
 	]
+
 
 class SystemApi(Structure):
 	_fields_ = [
@@ -3041,6 +3052,7 @@ class SystemApi(Structure):
 		("updateDesignDocBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class TarificationApi(Structure):
 	_fields_ = [
 		("createTarificationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3058,6 +3070,7 @@ class TarificationApi(Structure):
 		("modifyTarificationAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("modifyTarificationBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class encrypted(Structure):
 	_fields_ = [
@@ -3085,6 +3098,7 @@ class encrypted(Structure):
 		("undeleteTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("filterTimeTablesByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -3110,6 +3124,7 @@ class tryAndRecover(Structure):
 		("undeleteTimeTableByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class TimeTableApi(Structure):
 	_fields_ = [
@@ -3175,6 +3190,7 @@ class TimeTableApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class TimeTableBasicApi(Structure):
 	_fields_ = [
 		("deleteTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3217,6 +3233,7 @@ class TimeTableBasicApi(Structure):
 		("undeleteTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class encrypted(Structure):
 	_fields_ = [
 		("addParticipantAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3243,6 +3260,7 @@ class encrypted(Structure):
 		("undeleteTopicByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class tryAndRecover(Structure):
 	_fields_ = [
 		("addParticipantAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3268,6 +3286,7 @@ class tryAndRecover(Structure):
 		("undeleteTopicByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteTopicByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class TopicApi(Structure):
 	_fields_ = [
@@ -3335,6 +3354,7 @@ class TopicApi(Structure):
 		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class TopicBasicApi(Structure):
 	_fields_ = [
 		("addParticipantAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3378,6 +3398,7 @@ class TopicBasicApi(Structure):
 		("undeleteTopicByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("undeleteTopicByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
+
 
 class UserApi(Structure):
 	_fields_ = [
@@ -3479,6 +3500,7 @@ class UserApi(Structure):
 		("undeleteUserByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 	]
 
+
 class api(Structure):
 	_fields_ = [
 		("AccessLogApi", AccessLogApi),
@@ -3533,6 +3555,7 @@ class api(Structure):
 		("UserApi", UserApi),
 	]
 
+
 class AccessLogFilters(Structure):
 	_fields_ = [
 		("byDate", CFUNCTYPE(c_void_p, c_char_p)),
@@ -3543,12 +3566,14 @@ class AccessLogFilters(Structure):
 		("byUserTypeDate", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class AgendaFilters(Structure):
 	_fields_ = [
 		("all", CFUNCTYPE(c_void_p)),
 		("byUser", CFUNCTYPE(c_void_p, c_char_p)),
 		("readableByUser", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class CalendarItemFilters(Structure):
 	_fields_ = [
@@ -3562,6 +3587,7 @@ class CalendarItemFilters(Structure):
 		("byRecurrenceId", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class ClassificationFilters(Structure):
 	_fields_ = [
 		("byPatientSecretIdsCreatedForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
@@ -3569,6 +3595,7 @@ class ClassificationFilters(Structure):
 		("byPatientsCreatedForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
 		("byPatientsCreatedForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class CodeFilters(Structure):
 	_fields_ = [
@@ -3579,6 +3606,7 @@ class CodeFilters(Structure):
 		("byQualifiedLink", CFUNCTYPE(c_void_p, c_char_p)),
 		("byRegionTypeCodeVersion", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class ContactFilters(Structure):
 	_fields_ = [
@@ -3610,12 +3638,14 @@ class ContactFilters(Structure):
 		("byTagAndOpeningDateForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class DeviceFilters(Structure):
 	_fields_ = [
 		("all", CFUNCTYPE(c_void_p)),
 		("byIds", CFUNCTYPE(c_void_p, c_char_p)),
 		("byResponsible", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class DocumentFilters(Structure):
 	_fields_ = [
@@ -3629,6 +3659,7 @@ class DocumentFilters(Structure):
 		("byPatientsCreatedForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class FormFilters(Structure):
 	_fields_ = [
 		("byLogicalUuid", CFUNCTYPE(c_void_p, c_char_p)),
@@ -3641,12 +3672,14 @@ class FormFilters(Structure):
 		("byUniqueId", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class GroupFilters(Structure):
 	_fields_ = [
 		("all", CFUNCTYPE(c_void_p)),
 		("bySuperGroup", CFUNCTYPE(c_void_p, c_char_p)),
 		("withContent", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class HealthElementFilters(Structure):
 	_fields_ = [
@@ -3671,6 +3704,7 @@ class HealthElementFilters(Structure):
 		("byTagForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class HealthcarePartyFilters(Structure):
 	_fields_ = [
 		("all", CFUNCTYPE(c_void_p)),
@@ -3684,6 +3718,7 @@ class HealthcarePartyFilters(Structure):
 		("byTypeSpecialtyPostCode", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class MaintenanceTaskFilters(Structure):
 	_fields_ = [
 		("afterDateForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
@@ -3695,11 +3730,13 @@ class MaintenanceTaskFilters(Structure):
 		("byTypeForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class MedicalLocationFilters(Structure):
 	_fields_ = [
 		("all", CFUNCTYPE(c_void_p)),
 		("byPostCode", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class MessageFilters(Structure):
 	_fields_ = [
@@ -3723,12 +3760,14 @@ class MessageFilters(Structure):
 		("toAddressForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class MetaFilters(Structure):
 	_fields_ = [
 		("difference", CFUNCTYPE(c_void_p, c_char_p)),
 		("intersection", CFUNCTYPE(c_void_p, c_char_p)),
 		("union_", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class PatientFilters(Structure):
 	_fields_ = [
@@ -3759,6 +3798,7 @@ class PatientFilters(Structure):
 		("byTelecomForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class ServiceFilters(Structure):
 	_fields_ = [
 		("allServicesForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
@@ -3784,11 +3824,13 @@ class ServiceFilters(Structure):
 		("byTagAndValueDateForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
+
 class TimeTableFilters(Structure):
 	_fields_ = [
 		("byAgendaId", CFUNCTYPE(c_void_p, c_char_p)),
 		("byPeriodAndAgendaId", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class TopicFilters(Structure):
 	_fields_ = [
@@ -3796,6 +3838,7 @@ class TopicFilters(Structure):
 		("allTopicsForSelf", CFUNCTYPE(c_void_p)),
 		("byParticipant", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class UserFilters(Structure):
 	_fields_ = [
@@ -3805,6 +3848,7 @@ class UserFilters(Structure):
 		("byNameEmailOrPhone", CFUNCTYPE(c_void_p, c_char_p)),
 		("byPatientId", CFUNCTYPE(c_void_p, c_char_p)),
 	]
+
 
 class filters(Structure):
 	_fields_ = [
@@ -3831,29 +3875,18 @@ class filters(Structure):
 		("UserFilters", UserFilters),
 	]
 
+
 class PyJsonPatcher(Structure):
 	_fields_ = [
 		("createJsonPatcher", CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p, c_void_p)),
 	]
+
 
 class options(Structure):
 	_fields_ = [
 		("PyJsonPatcher", PyJsonPatcher),
 	]
 
-class RsaEncryptionAlgorithmSerializer(Structure):
-	_fields_ = [
-		("_type", CFUNCTYPE(c_void_p)),
-		("_instance", CFUNCTYPE(AnyKtRef)),
-		("get_descriptor", CFUNCTYPE(AnyKtRef, AnyKtRef)),
-		("deserialize", CFUNCTYPE(AnyKtRef, AnyKtRef, AnyKtRef)),
-		("serialize", CFUNCTYPE(None, AnyKtRef, AnyKtRef, AnyKtRef)),
-	]
-
-class serialization(Structure):
-	_fields_ = [
-		("RsaEncryptionAlgorithmSerializer", RsaEncryptionAlgorithmSerializer),
-	]
 
 class EntitySubscription(Structure):
 	_fields_ = [
@@ -3864,10 +3897,12 @@ class EntitySubscription(Structure):
 		("waitForEventBlocking", CFUNCTYPE(c_void_p, c_void_p, c_int32)),
 	]
 
+
 class subscription(Structure):
 	_fields_ = [
 		("EntitySubscription", EntitySubscription),
 	]
+
 
 class PyResult(Structure):
 	_fields_ = [
@@ -3876,6 +3911,7 @@ class PyResult(Structure):
 		("get_success", CFUNCTYPE(c_void_p, AnyKtRef)),
 	]
 
+
 class PaginatedListIterator(Structure):
 	_fields_ = [
 		("hasNextAsync", CFUNCTYPE(None, c_void_p, c_void_p)),
@@ -3883,6 +3919,7 @@ class PaginatedListIterator(Structure):
 		("nextAsync", CFUNCTYPE(None, c_void_p, c_int32, c_void_p)),
 		("nextBlocking", CFUNCTYPE(c_void_p, c_void_p, c_int32)),
 	]
+
 
 class utils(Structure):
 	_fields_ = [
@@ -3893,6 +3930,7 @@ class utils(Structure):
 		("disposeStablePtr", CFUNCTYPE(None, c_void_p)),
 	]
 
+
 class py(Structure):
 	_fields_ = [
 		("SdkInitializationResult", SdkInitializationResult),
@@ -3902,42 +3940,48 @@ class py(Structure):
 		("api", api),
 		("filters", filters),
 		("options", options),
-		("serialization", serialization),
 		("subscription", subscription),
 		("utils", utils),
 		("initializeBaseSdk", CFUNCTYPE(AnyKtRef, c_char_p)),
 		("initializeSdk", CFUNCTYPE(AnyKtRef, c_char_p, c_void_p, c_void_p, c_void_p, c_void_p)),
 	]
 
+
 class sdk(Structure):
 	_fields_ = [
 		("py", py),
 	]
+
 
 class cardinal(Structure):
 	_fields_ = [
 		("sdk", sdk),
 	]
 
+
 class icure(Structure):
 	_fields_ = [
 		("cardinal", cardinal),
 	]
+
 
 class com(Structure):
 	_fields_ = [
 		("icure", icure),
 	]
 
+
 class root(Structure):
 	_fields_ = [
 		("com", com),
 	]
 
+
 class kotlin(Structure):
 	_fields_ = [
 		("root", root),
 	]
+
 
 class Symbols(Structure):
 	_fields_ = [
@@ -3972,6 +4016,7 @@ class Symbols(Structure):
 		("kotlin", kotlin),
 	]
 
+
 def __loadSymbols():
 	if platform.system().lower() == 'windows':
 		kdll.cardinal_sdk_native_pylib_symbols.restype = POINTER(Symbols)
@@ -3979,5 +4024,6 @@ def __loadSymbols():
 	else:
 		kdll.libcardinal_sdk_native_pylib_symbols.restype = POINTER(Symbols)
 		return kdll.libcardinal_sdk_native_pylib_symbols().contents
+
 
 symbols: Symbols = __loadSymbols()

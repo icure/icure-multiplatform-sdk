@@ -76,6 +76,14 @@ export interface SdkOptions {
    * of the entity.
    */
   readonly jsonPatcher?: JsonPatcher
+  /**
+   * If true the SDK will use lenient deserialization of the entities coming from the backend.
+   *
+   * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+   *
+   * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+   */
+  readonly lenientJson?: boolean
 }
 
 export interface BasicSdkOptions {
@@ -107,6 +115,14 @@ export interface BasicSdkOptions {
    * In single-group applications this parameter won't be used, so it can be left as null.
    */
   readonly groupSelector?: (availableGroups: Array<UserGroup>) => Promise<string>
+  /**
+   * If true the SDK will use lenient deserialization of the entities coming from the backend.
+   *
+   * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+   *
+   * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+   */
+  readonly lenientJson?: boolean
 }
 
 export interface EncryptedFieldsConfiguration {

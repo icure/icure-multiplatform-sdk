@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.MaintenanceTask
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -15,6 +14,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Byte
@@ -131,7 +131,7 @@ public fun filterMaintenanceTasksByBlocking(sdk: CardinalApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -150,7 +150,7 @@ public fun filterMaintenanceTasksByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -170,7 +170,7 @@ public fun filterMaintenanceTasksBySortedBlocking(sdk: CardinalApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -189,7 +189,7 @@ public fun filterMaintenanceTasksBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedMaintenanceTask.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedMaintenanceTask.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

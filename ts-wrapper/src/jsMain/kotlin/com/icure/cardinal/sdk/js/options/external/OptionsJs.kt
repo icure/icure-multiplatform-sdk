@@ -74,6 +74,7 @@ external interface SdkOptionsJs {
 	val keyStorage: KeyStorageFacadeJs?
 	val cryptoStrategies: CryptoStrategiesJs?
 	val jsonPatcher: JsonPatcherJs?
+	val lenientJson: Boolean?
 }
 
 @JsName("BasicSdkOptions")
@@ -82,6 +83,7 @@ external interface BasicSdkOptionsJs {
 	val cryptoService: XCryptoService?
 	val saltPasswordWithApplicationId: Boolean?
 	val groupSelector: ((availableGroups: Array<UserGroupJs>) -> Promise<String>)?
+	val lenientJson: Boolean?
 }
 
 @JsName("EncryptedFieldsConfiguration")

@@ -122,7 +122,9 @@ import com.icure.cardinal.sdk.js.options.external.SdkOptionsJs
 import com.icure.cardinal.sdk.js.options.toKt
 import com.icure.cardinal.sdk.js.storage.loadStorageOptions
 import com.icure.cardinal.sdk.options.BasicSdkOptions
+import com.icure.cardinal.sdk.options.CommonSdkOptions
 import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.cardinal.sdk.utils.Serialization
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise

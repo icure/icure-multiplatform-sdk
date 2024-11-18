@@ -231,7 +231,7 @@ tasks.register("prepareDistributionPackage") {
 			replacing = listOf(
 				Replacement("$moduleName.d.ts", with = "$moduleName.d.mts"),
 				Replacement("\"name\": \"$moduleName\"", with = "\"name\": \"@icure/cardinal-sdk\""),
-				Replacement("\"ws\": \"8.5.0\"", with = "\"ws\": \"8.17.0\"") // Version 8.5.0 has some issues with bun
+				Replacement("\"ws\": \"8.5.0\"", with = "\"ws\": \"8.17.1\"") // Version 8.5.0 has some issues with bun
 			)
 		)
 		copyJsPatching(

@@ -21,8 +21,8 @@ import {CardinalMaintenanceTaskApi} from "../api/CardinalMaintenanceTaskApi.mjs"
 import {RecoveryApi} from "../api/RecoveryApi.mjs";
 import {
   AuthenticationMethod,
-  AuthenticationProcessCaptchaType,
-  AuthenticationProcessTelecomType, AuthenticationProcessTemplateParameters
+  AuthenticationProcessTelecomType,
+  AuthenticationProcessTemplateParameters
 } from "../options/AuthenticationMethod.mjs";
 import {StorageFacade} from "../storage/StorageFacade.mjs";
 import {CardinalStorageOptions, InternalSdkInitializers} from "../cardinal-sdk-ts.mjs";

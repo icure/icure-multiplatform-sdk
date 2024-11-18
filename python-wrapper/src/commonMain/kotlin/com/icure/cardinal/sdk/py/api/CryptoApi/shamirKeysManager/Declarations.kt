@@ -34,6 +34,7 @@ import kotlinx.serialization.builtins.serializer
 @Serializable
 private class GetExistingSplitsInfoParams(
 	@Serializable(CryptoActorAsStubDeserializer::class)
+	@OptIn(InternalIcureApi::class)
 	public val dataOwner: CryptoActor,
 )
 

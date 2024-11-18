@@ -11,7 +11,6 @@ import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.model.embed.Service
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -19,6 +18,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -146,7 +146,7 @@ public fun findContactsByHcPartyPatientBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -169,7 +169,7 @@ public fun findContactsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -188,7 +188,7 @@ public fun filterContactsByBlocking(sdk: CardinalApis, params: String): PyResult
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -206,7 +206,7 @@ public fun filterContactsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -225,7 +225,7 @@ public fun filterServicesByBlocking(sdk: CardinalApis, params: String): PyResult
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -243,7 +243,7 @@ public fun filterServicesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -262,7 +262,7 @@ public fun filterContactsBySortedBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -280,7 +280,7 @@ public fun filterContactsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedContact.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedContact.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -299,7 +299,7 @@ public fun filterServicesBySortedBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -317,7 +317,7 @@ public fun filterServicesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedService.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedService.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

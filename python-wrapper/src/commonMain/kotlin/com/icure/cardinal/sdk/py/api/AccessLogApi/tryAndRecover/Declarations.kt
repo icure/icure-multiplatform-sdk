@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -16,6 +15,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -143,7 +143,7 @@ public fun findAccessLogsByHcPartyPatientBlocking(sdk: CardinalApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(AccessLog::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -166,7 +166,7 @@ public fun findAccessLogsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(AccessLog::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -185,7 +185,7 @@ public fun filterAccessLogsByBlocking(sdk: CardinalApis, params: String): PyResu
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(AccessLog::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -203,7 +203,7 @@ public fun filterAccessLogsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(AccessLog::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -223,7 +223,7 @@ public fun filterAccessLogsBySortedBlocking(sdk: CardinalApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(AccessLog::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -242,7 +242,7 @@ public fun filterAccessLogsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(AccessLog::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(AccessLog::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

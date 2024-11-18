@@ -23,11 +23,19 @@ abstract interface class CommonSdkOptions {
   /// If this parameter is null and the user credentials match multiple users the api initialisation will fail.
   /// In single-group applications this parameter won't be used, so it can be left as null.
   // GroupSelector? get groupSelector;
+
+  /// If true the SDK will use lenient deserialization of the entities coming from the backend.
+  //
+  // This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+  //
+  // This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+  bool get lenientJson;
 }
 
 class SdkOptions implements CommonSdkOptions {
   @override final EncryptedFieldsConfiguration encryptedFields;
   @override final bool saltPasswordWithApplicationId;
+  @override final bool lenientJson;
   // @override final GroupSelector? groupSelector;
   /// Has only effect when logging in as an hcp user.
   ///
@@ -49,7 +57,8 @@ class SdkOptions implements CommonSdkOptions {
     this.saltPasswordWithApplicationId = true,
     // this.groupSelector,
     this.useHierarchicalDataOwners = true,
-    this.createTransferKeys = true
+    this.createTransferKeys = true,
+    this.lenientJson = false,
   });
 
   factory SdkOptions.fromJSON(Map<String, dynamic> data) {
@@ -57,7 +66,8 @@ class SdkOptions implements CommonSdkOptions {
         encryptedFields: EncryptedFieldsConfiguration.fromJSON(data["encryptedFields"]),
         saltPasswordWithApplicationId: data["saltPasswordWithApplicationId"] as bool,
         useHierarchicalDataOwners: data["useHierarchicalDataOwners"] as bool,
-        createTransferKeys: data["createTransferKeys"] as bool
+        createTransferKeys: data["createTransferKeys"] as bool,
+        lenientJson: data["lenientJson"] as bool,
     );
   }
 
@@ -66,7 +76,8 @@ class SdkOptions implements CommonSdkOptions {
       "encryptedFields": EncryptedFieldsConfiguration.encode(value.encryptedFields),
       "saltPasswordWithApplicationId": value.saltPasswordWithApplicationId,
       "useHierarchicalDataOwners": value.useHierarchicalDataOwners,
-      "createTransferKeys": value.createTransferKeys
+      "createTransferKeys": value.createTransferKeys,
+      "lenientJson": value.lenientJson
     };
     return entityAsMap;
   }
@@ -75,25 +86,29 @@ class SdkOptions implements CommonSdkOptions {
 class BasicSdkOptions implements CommonSdkOptions {
   @override final EncryptedFieldsConfiguration encryptedFields;
   @override final bool saltPasswordWithApplicationId;
+  @override final bool lenientJson;
   // @override final GroupSelector? groupSelector;
 
   const BasicSdkOptions({
     this.encryptedFields = const EncryptedFieldsConfiguration(),
     this.saltPasswordWithApplicationId = true,
+    this.lenientJson = false,
     // this.groupSelector
   });
 
   factory BasicSdkOptions.fromJSON(Map<String, dynamic> data) {
     return BasicSdkOptions(
         encryptedFields: EncryptedFieldsConfiguration.fromJSON(data["encryptedFields"]),
-        saltPasswordWithApplicationId: data["saltPasswordWithApplicationId"] as bool
+        saltPasswordWithApplicationId: data["saltPasswordWithApplicationId"] as bool,
+        lenientJson: data["lenientJson"] as bool,
     );
   }
 
   static Map<String, dynamic> encode(BasicSdkOptions value) {
     Map<String, dynamic> entityAsMap = {
       "encryptedFields": EncryptedFieldsConfiguration.encode(value.encryptedFields),
-      "saltPasswordWithApplicationId": value.saltPasswordWithApplicationId
+      "saltPasswordWithApplicationId": value.saltPasswordWithApplicationId,
+      "lenientJson": value.lenientJson
     };
     return entityAsMap;
   }

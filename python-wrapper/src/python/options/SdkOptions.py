@@ -32,6 +32,7 @@ class SdkOptions:
     salt_password_with_application_id: bool = True
     crypto_strategies: Optional[CryptoStrategies] = None
     json_patcher: Optional[JsonPatcher] = None
+    lenient_json: bool = False
 
 
 def _serialize_encrypted_fields(fields: EncryptedFieldsConfiguration):

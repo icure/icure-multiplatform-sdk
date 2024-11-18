@@ -15,8 +15,6 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -24,6 +22,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -868,7 +868,7 @@ public fun findHealthElementsByHcPartyPatientBlocking(sdk: CardinalApis, params:
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedHealthElement.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -891,7 +891,7 @@ public fun findHealthElementsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedHealthElement.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -910,7 +910,7 @@ public fun filterHealthElementsByBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedHealthElement.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -928,7 +928,7 @@ public fun filterHealthElementsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedHealthElement.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -948,7 +948,7 @@ public fun filterHealthElementsBySortedBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedHealthElement.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -967,7 +967,7 @@ public fun filterHealthElementsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedHealthElement.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedHealthElement.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
