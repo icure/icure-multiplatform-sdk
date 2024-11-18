@@ -16,7 +16,6 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.py.utils.PyCallbackResultHolder
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -26,6 +25,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -440,6 +440,7 @@ private class EncryptAndSetMainAttachmentParams(
 	public val document: Document,
 	public val utis: List<String>?,
 	@Serializable(ByteArraySerializer::class)
+	@OptIn(InternalIcureApi::class)
 	public val attachment: ByteArray,
 )
 
@@ -562,6 +563,7 @@ private class EncryptAndSetSecondaryAttachmentParams(
 	public val key: String,
 	public val utis: List<String>?,
 	@Serializable(ByteArraySerializer::class)
+	@OptIn(InternalIcureApi::class)
 	public val attachment: ByteArray,
 )
 
@@ -826,6 +828,7 @@ public fun tryDecryptAsync(
 private class TryDecryptAttachmentParams(
 	public val document: Document,
 	@Serializable(ByteArraySerializer::class)
+	@OptIn(InternalIcureApi::class)
 	public val encryptedAttachment: ByteArray,
 )
 
@@ -1417,6 +1420,7 @@ private class SetRawMainAttachmentParams(
 	public val rev: String,
 	public val utis: List<String>?,
 	@Serializable(ByteArraySerializer::class)
+	@OptIn(InternalIcureApi::class)
 	public val attachment: ByteArray,
 	public val encrypted: Boolean,
 )
@@ -1467,6 +1471,7 @@ private class SetRawSecondaryAttachmentParams(
 	public val rev: String,
 	public val utis: List<String>?,
 	@Serializable(ByteArraySerializer::class)
+	@OptIn(InternalIcureApi::class)
 	public val attachment: ByteArray,
 	public val encrypted: Boolean,
 )

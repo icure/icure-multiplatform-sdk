@@ -3,36 +3,15 @@ import asyncio
 import json
 import base64
 import traceback
-from DecryptedDocument import cardinal_sdk.model
-from DATA_RESULT_CALLBACK_FUNC import cardinal_sdk.kotlin_types
-from symbols import cardinal_sdk.kotlin_types
-from create_result_from_json import cardinal_sdk.model.CallResult
-from cast import ctypes
-from c_char_p import ctypes
-from interpret_kt_error import cardinal_sdk.model.CallResult
-from Optional import typing
-from Message import cardinal_sdk.model
-from User import cardinal_sdk.model
-from Dict import typing
-from AccessLevel import cardinal_sdk.model
-from SecretIdUseOption import cardinal_sdk.model
-from SecretIdUseOptionUseAnySharedWithParent import cardinal_sdk.model
-from serialize_message import cardinal_sdk.model
-from serialize_secret_id_use_option import cardinal_sdk.model
-from Document import cardinal_sdk.model
+from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_use_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, IdWithMandatoryRev, DocumentShareOptions
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, CALLBACK_PARAM_DATA_INPUT, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
+from ctypes import cast, c_char_p
+from typing import Optional, Dict, List
 from collections.abc import Callable
-from serialize_document import cardinal_sdk.model
-from CALLBACK_PARAM_DATA_INPUT import cardinal_sdk.kotlin_types
-from List import typing
-from EncryptedDocument import cardinal_sdk.model
-from HexString import cardinal_sdk.model.specializations
-from deserialize_cardinal_sdk.model import Document
+from cardinal_sdk.model.specializations import HexString
 from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
-from DocIdentifier import cardinal_sdk.model
-from IdWithMandatoryRev import cardinal_sdk.model
-from DocumentShareOptions import cardinal_sdk.model
-from PaginatedListIterator import cardinal_sdk.pagination.PaginatedListIterator
-from PTR_RESULT_CALLBACK_FUNC import cardinal_sdk.kotlin_types
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
 
 class DocumentApi:
@@ -42,7 +21,7 @@ class DocumentApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, document: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		async def share_with_async(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -50,42 +29,42 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"document": document.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, document: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		def share_with_blocking(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
 			payload = {
 				"delegateId": delegate_id,
 				"document": document.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
-		async def share_with_many_async(self, document: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		async def share_with_many_async(self, document: EncryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -93,40 +72,40 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_many_blocking(self, document: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		def share_with_many_blocking(self, document: EncryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> EncryptedDocument:
 			payload = {
 				"document": document.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
-		async def filter_documents_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_documents_by_async(self, filter: FilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -134,49 +113,49 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[EncryptedDocument](
 						producer = success,
-						deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+						deserializer = lambda x: EncryptedDocument._deserialize(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_documents_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_documents_by_blocking(self, filter: FilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedDocument](
 					producer = class_pointer,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: EncryptedDocument._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -184,49 +163,49 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[EncryptedDocument](
 						producer = success,
-						deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+						deserializer = lambda x: EncryptedDocument._deserialize(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedDocument](
 					producer = class_pointer,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: EncryptedDocument._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def undelete_document_by_id_async(self, id: str, rev: str) -> cardinal_sdk.model:
+		async def undelete_document_by_id_async(self, id: str, rev: str) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -234,40 +213,40 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_document_by_id_blocking(self, id: str, rev: str) -> cardinal_sdk.model:
+		def undelete_document_by_id_blocking(self, id: str, rev: str) -> EncryptedDocument:
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
-		async def undelete_document_async(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def undelete_document_async(self, document: Document) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -275,38 +254,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_document_blocking(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+		def undelete_document_blocking(self, document: Document) -> EncryptedDocument:
 			payload = {
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
-		async def modify_document_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def modify_document_async(self, entity: EncryptedDocument) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -314,38 +293,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def modify_document_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		def modify_document_blocking(self, entity: EncryptedDocument) -> EncryptedDocument:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
-		async def get_document_async(self, entity_id: str) -> cardinal_sdk.model:
+		async def get_document_async(self, entity_id: str) -> EncryptedDocument:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -353,38 +332,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_document_blocking(self, entity_id: str) -> cardinal_sdk.model:
+		def get_document_blocking(self, entity_id: str) -> EncryptedDocument:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedDocument._deserialize(result_info.success)
 				return return_value
 
-		async def get_documents_async(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		async def get_documents_async(self, entity_ids: List[str]) -> List[EncryptedDocument]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -392,38 +371,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [EncryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_documents_blocking(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		def get_documents_blocking(self, entity_ids: List[str]) -> List[EncryptedDocument]:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+				return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def modify_documents_async(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+		async def modify_documents_async(self, entities: List[EncryptedDocument]) -> List[EncryptedDocument]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -431,35 +410,35 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [EncryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def modify_documents_blocking(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+		def modify_documents_blocking(self, entities: List[EncryptedDocument]) -> List[EncryptedDocument]:
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+				return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
 	class DocumentFlavouredApi:
@@ -467,7 +446,7 @@ class DocumentApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, document: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		async def share_with_async(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -475,42 +454,42 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, document: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		def share_with_blocking(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
 			payload = {
 				"delegateId": delegate_id,
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Document(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
-		async def share_with_many_async(self, document: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		async def share_with_many_async(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -518,40 +497,40 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_many_blocking(self, document: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		def share_with_many_blocking(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> Document:
 			payload = {
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Document(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
-		async def filter_documents_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_documents_by_async(self, filter: FilterOptions[Document]) -> PaginatedListIterator[Document]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -559,49 +538,49 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[Document](
 						producer = success,
-						deserializer = lambda x: Document(x),
+						deserializer = lambda x: deserialize_document(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_documents_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_documents_by_blocking(self, filter: FilterOptions[Document]) -> PaginatedListIterator[Document]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[Document](
 					producer = class_pointer,
-					deserializer = lambda x: Document(x),
+					deserializer = lambda x: deserialize_document(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[Document]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -609,49 +588,49 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[Document](
 						producer = success,
-						deserializer = lambda x: Document(x),
+						deserializer = lambda x: deserialize_document(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[Document]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[Document](
 					producer = class_pointer,
-					deserializer = lambda x: Document(x),
+					deserializer = lambda x: deserialize_document(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def undelete_document_by_id_async(self, id: str, rev: str) -> cardinal_sdk.model:
+		async def undelete_document_by_id_async(self, id: str, rev: str) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -659,40 +638,40 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_document_by_id_blocking(self, id: str, rev: str) -> cardinal_sdk.model:
+		def undelete_document_by_id_blocking(self, id: str, rev: str) -> Document:
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Document(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
-		async def undelete_document_async(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def undelete_document_async(self, document: Document) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -700,38 +679,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_document_blocking(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+		def undelete_document_blocking(self, document: Document) -> Document:
 			payload = {
-				"document": cardinal_sdk.model(document),
+				"document": serialize_document(document),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Document(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
-		async def modify_document_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def modify_document_async(self, entity: Document) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -739,38 +718,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": cardinal_sdk.model(entity),
+				"entity": serialize_document(entity),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def modify_document_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		def modify_document_blocking(self, entity: Document) -> Document:
 			payload = {
-				"entity": cardinal_sdk.model(entity),
+				"entity": serialize_document(entity),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Document(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
-		async def get_document_async(self, entity_id: str) -> cardinal_sdk.model:
+		async def get_document_async(self, entity_id: str) -> Document:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -778,38 +757,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Document(json.loads(success.decode('utf-8')))
+					result = deserialize_document(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_document_blocking(self, entity_id: str) -> cardinal_sdk.model:
+		def get_document_blocking(self, entity_id: str) -> Document:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Document(result_info.success)
+				return_value = deserialize_document(result_info.success)
 				return return_value
 
-		async def get_documents_async(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		async def get_documents_async(self, entity_ids: List[str]) -> List[Document]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -817,38 +796,38 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Document(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_document(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_documents_blocking(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		def get_documents_blocking(self, entity_ids: List[str]) -> List[Document]:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = [Document(x1) for x1 in result_info.success]
+				return_value = [deserialize_document(x1) for x1 in result_info.success]
 				return return_value
 
-		async def modify_documents_async(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+		async def modify_documents_async(self, entities: List[Document]) -> List[Document]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -856,35 +835,35 @@ class DocumentApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Document(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_document(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entities": [cardinal_sdk.model(x0) for x0 in entities],
+				"entities": [serialize_document(x0) for x0 in entities],
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def modify_documents_blocking(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+		def modify_documents_blocking(self, entities: List[Document]) -> List[Document]:
 			payload = {
-				"entities": [cardinal_sdk.model(x0) for x0 in entities],
+				"entities": [serialize_document(x0) for x0 in entities],
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = [Document(x1) for x1 in result_info.success]
+				return_value = [deserialize_document(x1) for x1 in result_info.success]
 				return return_value
 
 	def __init__(self, cardinal_sdk):
@@ -892,7 +871,7 @@ class DocumentApi:
 		self.encrypted = DocumentApi.DocumentFlavouredEncryptedApi(self.cardinal_sdk)
 		self.try_and_recover = DocumentApi.DocumentFlavouredApi(self.cardinal_sdk)
 
-	async def create_document_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def create_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -900,38 +879,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def create_document_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	def create_document_blocking(self, entity: DecryptedDocument) -> DecryptedDocument:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: typing[cardinal_sdk.model], message: typing[cardinal_sdk.model], user: typing[cardinal_sdk.model] = None, delegates: typing[str, cardinal_sdk.model] = {}, secret_id: cardinal_sdk.model = cardinal_sdk.model()) -> cardinal_sdk.model:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -939,46 +918,46 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
-			"message": cardinal_sdk.model(message) if message is not None else None,
+			"message": serialize_message(message) if message is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": cardinal_sdk.model(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.withEncryptionMetadataAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.withEncryptionMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: typing[cardinal_sdk.model], message: typing[cardinal_sdk.model], user: typing[cardinal_sdk.model] = None, delegates: typing[str, cardinal_sdk.model] = {}, secret_id: cardinal_sdk.model = cardinal_sdk.model()) -> cardinal_sdk.model:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedDocument:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
-			"message": cardinal_sdk.model(message) if message is not None else None,
+			"message": serialize_message(message) if message is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": cardinal_sdk.model(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.withEncryptionMetadataBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.withEncryptionMetadataBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_and_try_decrypt_main_attachment_async(self, document: cardinal_sdk.model, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> typing[bytearray]:
+	async def get_and_try_decrypt_main_attachment_async(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -989,22 +968,22 @@ class DocumentApi:
 				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8')))) if json.loads(success.decode('utf-8')) is not None else None
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
@@ -1012,9 +991,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def get_and_try_decrypt_main_attachment_blocking(self, document: cardinal_sdk.model, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> typing[bytearray]:
+	def get_and_try_decrypt_main_attachment_blocking(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
@@ -1022,24 +1001,24 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentBlocking(
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndTryDecryptMainAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success)) if result_info.success is not None else None
 			return return_value
 
-	async def get_and_decrypt_main_attachment_async(self, document: cardinal_sdk.model, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> bytearray:
+	async def get_and_decrypt_main_attachment_async(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1050,22 +1029,22 @@ class DocumentApi:
 				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
@@ -1073,9 +1052,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def get_and_decrypt_main_attachment_blocking(self, document: cardinal_sdk.model, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> bytearray:
+	def get_and_decrypt_main_attachment_blocking(self, document: Document, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
@@ -1083,24 +1062,24 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentBlocking(
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptMainAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def encrypt_and_set_main_attachment_async(self, document: cardinal_sdk.model, utis: typing[typing[str]], attachment: bytearray) -> cardinal_sdk.model:
+	async def encrypt_and_set_main_attachment_async(self, document: Document, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1108,42 +1087,42 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"utis": [x0 for x0 in utis] if utis is not None else None,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def encrypt_and_set_main_attachment_blocking(self, document: cardinal_sdk.model, utis: typing[typing[str]], attachment: bytearray) -> cardinal_sdk.model:
+	def encrypt_and_set_main_attachment_blocking(self, document: Document, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"utis": [x0 for x0 in utis] if utis is not None else None,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetMainAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_and_decrypt_secondary_attachment_async(self, document: cardinal_sdk.model, key: str, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> bytearray:
+	async def get_and_decrypt_secondary_attachment_async(self, document: Document, key: str, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1154,23 +1133,23 @@ class DocumentApi:
 				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"key": key,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
@@ -1178,9 +1157,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def get_and_decrypt_secondary_attachment_blocking(self, document: cardinal_sdk.model, key: str, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> bytearray:
+	def get_and_decrypt_secondary_attachment_blocking(self, document: Document, key: str, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> bytearray:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"key": key,
 		}
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
@@ -1189,24 +1168,24 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentBlocking(
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getAndDecryptSecondaryAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def encrypt_and_set_secondary_attachment_async(self, document: cardinal_sdk.model, key: str, utis: typing[typing[str]], attachment: bytearray) -> cardinal_sdk.model:
+	async def encrypt_and_set_secondary_attachment_async(self, document: Document, key: str, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1214,44 +1193,44 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"key": key,
 			"utis": [x0 for x0 in utis] if utis is not None else None,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def encrypt_and_set_secondary_attachment_blocking(self, document: cardinal_sdk.model, key: str, utis: typing[typing[str]], attachment: bytearray) -> cardinal_sdk.model:
+	def encrypt_and_set_secondary_attachment_blocking(self, document: Document, key: str, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"key": key,
 			"utis": [x0 for x0 in utis] if utis is not None else None,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encryptAndSetSecondaryAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_encryption_keys_of_async(self, document: cardinal_sdk.model) -> typing[cardinal_sdk.model.specializations]:
+	async def get_encryption_keys_of_async(self, document: Document) -> List[HexString]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1262,35 +1241,35 @@ class DocumentApi:
 				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getEncryptionKeysOfAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getEncryptionKeysOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_encryption_keys_of_blocking(self, document: cardinal_sdk.model) -> typing[cardinal_sdk.model.specializations]:
+	def get_encryption_keys_of_blocking(self, document: Document) -> List[HexString]:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getEncryptionKeysOfBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getEncryptionKeysOfBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def has_write_access_async(self, document: cardinal_sdk.model) -> bool:
+	async def has_write_access_async(self, document: Document) -> bool:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1301,35 +1280,35 @@ class DocumentApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.hasWriteAccessAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.hasWriteAccessAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def has_write_access_blocking(self, document: cardinal_sdk.model) -> bool:
+	def has_write_access_blocking(self, document: Document) -> bool:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.hasWriteAccessBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.hasWriteAccessBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
 
-	async def decrypt_patient_id_of_async(self, document: cardinal_sdk.model) -> typing[str]:
+	async def decrypt_patient_id_of_async(self, document: Document) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1340,35 +1319,35 @@ class DocumentApi:
 				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptPatientIdOfAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptPatientIdOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def decrypt_patient_id_of_blocking(self, document: cardinal_sdk.model) -> typing[str]:
+	def decrypt_patient_id_of_blocking(self, document: Document) -> List[str]:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptPatientIdOfBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptPatientIdOfBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def create_delegation_de_anonymization_metadata_async(self, entity: cardinal_sdk.model, delegates: typing[str]) -> None:
+	async def create_delegation_de_anonymization_metadata_async(self, entity: Document, delegates: List[str]) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1379,34 +1358,34 @@ class DocumentApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity": cardinal_sdk.model(entity),
+			"entity": serialize_document(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def create_delegation_de_anonymization_metadata_blocking(self, entity: cardinal_sdk.model, delegates: typing[str]) -> None:
+	def create_delegation_de_anonymization_metadata_blocking(self, entity: Document, delegates: List[str]) -> None:
 		payload = {
-			"entity": cardinal_sdk.model(entity),
+			"entity": serialize_document(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
-	async def decrypt_async(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def decrypt_async(self, document: EncryptedDocument) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1414,38 +1393,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": document.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def decrypt_blocking(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	def decrypt_blocking(self, document: EncryptedDocument) -> DecryptedDocument:
 		payload = {
 			"document": document.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.decryptBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def try_decrypt_async(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def try_decrypt_async(self, document: EncryptedDocument) -> Document:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1453,38 +1432,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = Document(json.loads(success.decode('utf-8')))
+				result = deserialize_document(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": document.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def try_decrypt_blocking(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	def try_decrypt_blocking(self, document: EncryptedDocument) -> Document:
 		payload = {
 			"document": document.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Document(result_info.success)
+			return_value = deserialize_document(result_info.success)
 			return return_value
 
-	async def try_decrypt_attachment_async(self, document: cardinal_sdk.model, encrypted_attachment: bytearray, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> typing[bytearray]:
+	async def try_decrypt_attachment_async(self, document: Document, encrypted_attachment: bytearray, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1495,23 +1474,23 @@ class DocumentApi:
 				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8')))) if json.loads(success.decode('utf-8')) is not None else None
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"encryptedAttachment": base64.b64encode(encrypted_attachment).decode('utf-8'),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
 			try:
 				jsonInput = json.loads(encodedInput)
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
@@ -1519,9 +1498,9 @@ class DocumentApi:
 		)
 		return await future
 
-	def try_decrypt_attachment_blocking(self, document: cardinal_sdk.model, encrypted_attachment: bytearray, decrypted_attachment_validator: typing[Callable[[bytearray], bool]] = None) -> typing[bytearray]:
+	def try_decrypt_attachment_blocking(self, document: Document, encrypted_attachment: bytearray, decrypted_attachment_validator: Optional[Callable[[bytearray], bool]] = None) -> Optional[bytearray]:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 			"encryptedAttachment": base64.b64encode(encrypted_attachment).decode('utf-8'),
 		}
 		def decryptedAttachmentValidator_fun(resultHolder, encodedInput):
@@ -1530,24 +1509,24 @@ class DocumentApi:
 				result = decrypted_attachment_validator(
 					bytearray(base64.b64decode(jsonInput[0])),
 				)
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(resultHolder, json.dumps(result).encode('utf-8'))
 			except Exception:
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
-		decryptedAttachmentValidator_callback = cardinal_sdk.kotlin_types(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAttachmentBlocking(
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(resultHolder, traceback.format_exc())
+		decryptedAttachmentValidator_callback = CALLBACK_PARAM_DATA_INPUT(decryptedAttachmentValidator_fun) if decrypted_attachment_validator is not None else None
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryDecryptAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			decryptedAttachmentValidator_callback,
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success)) if result_info.success is not None else None
 			return return_value
 
-	async def match_documents_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> typing[str]:
+	async def match_documents_by_async(self, filter: FilterOptions[Document]) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1560,33 +1539,33 @@ class DocumentApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsByAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def match_documents_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> typing[str]:
+	def match_documents_by_blocking(self, filter: FilterOptions[Document]) -> List[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsByBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_documents_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> typing[str]:
+	async def match_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1599,33 +1578,33 @@ class DocumentApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsBySortedAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def match_documents_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> typing[str]:
+	def match_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> List[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsBySortedBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.matchDocumentsBySortedBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def delete_document_by_id_async(self, entity_id: str, rev: str) -> cardinal_sdk.model:
+	async def delete_document_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1633,40 +1612,40 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentByIdAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_document_by_id_blocking(self, entity_id: str, rev: str) -> cardinal_sdk.model:
+	def delete_document_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentByIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_documents_by_ids_async(self, entity_ids: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	async def delete_documents_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1674,35 +1653,35 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsByIdsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsByIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_documents_by_ids_blocking(self, entity_ids: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	def delete_documents_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsByIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsByIdsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def purge_document_by_id_async(self, id: str, rev: str) -> None:
@@ -1719,10 +1698,10 @@ class DocumentApi:
 			"id": id,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentByIdAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -1734,16 +1713,16 @@ class DocumentApi:
 			"id": id,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentByIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
-	async def delete_document_async(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def delete_document_async(self, document: Document) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1751,38 +1730,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_document_blocking(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	def delete_document_blocking(self, document: Document) -> DocIdentifier:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_documents_async(self, documents: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	async def delete_documents_async(self, documents: List[Document]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1790,38 +1769,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"documents": [cardinal_sdk.model(x0) for x0 in documents],
+			"documents": [serialize_document(x0) for x0 in documents],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_documents_blocking(self, documents: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	def delete_documents_blocking(self, documents: List[Document]) -> List[DocIdentifier]:
 		payload = {
-			"documents": [cardinal_sdk.model(x0) for x0 in documents],
+			"documents": [serialize_document(x0) for x0 in documents],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteDocumentsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def purge_document_async(self, document: cardinal_sdk.model) -> None:
+	async def purge_document_async(self, document: Document) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1832,30 +1811,30 @@ class DocumentApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def purge_document_blocking(self, document: cardinal_sdk.model) -> None:
+	def purge_document_blocking(self, document: Document) -> None:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.purgeDocumentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
 	async def get_raw_main_attachment_async(self, document_id: str) -> bytearray:
 		loop = asyncio.get_running_loop()
@@ -1870,10 +1849,10 @@ class DocumentApi:
 		payload = {
 			"documentId": document_id,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawMainAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawMainAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -1884,14 +1863,14 @@ class DocumentApi:
 		payload = {
 			"documentId": document_id,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawMainAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawMainAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
@@ -1910,10 +1889,10 @@ class DocumentApi:
 			"documentId": document_id,
 			"key": key,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawSecondaryAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawSecondaryAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -1925,19 +1904,19 @@ class DocumentApi:
 			"documentId": document_id,
 			"key": key,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawSecondaryAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getRawSecondaryAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def set_raw_main_attachment_async(self, document_id: str, rev: str, utis: typing[typing[str]], attachment: bytearray, encrypted: bool) -> cardinal_sdk.model:
+	async def set_raw_main_attachment_async(self, document_id: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1945,7 +1924,7 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
@@ -1954,17 +1933,17 @@ class DocumentApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawMainAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawMainAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def set_raw_main_attachment_blocking(self, document_id: str, rev: str, utis: typing[typing[str]], attachment: bytearray, encrypted: bool) -> cardinal_sdk.model:
+	def set_raw_main_attachment_blocking(self, document_id: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		payload = {
 			"documentId": document_id,
 			"rev": rev,
@@ -1972,19 +1951,19 @@ class DocumentApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawMainAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawMainAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def set_raw_secondary_attachment_async(self, document_id: str, key: str, rev: str, utis: typing[typing[str]], attachment: bytearray, encrypted: bool) -> cardinal_sdk.model:
+	async def set_raw_secondary_attachment_async(self, document_id: str, key: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1992,7 +1971,7 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
@@ -2002,17 +1981,17 @@ class DocumentApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawSecondaryAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawSecondaryAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def set_raw_secondary_attachment_blocking(self, document_id: str, key: str, rev: str, utis: typing[typing[str]], attachment: bytearray, encrypted: bool) -> cardinal_sdk.model:
+	def set_raw_secondary_attachment_blocking(self, document_id: str, key: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		payload = {
 			"documentId": document_id,
 			"key": key,
@@ -2021,19 +2000,19 @@ class DocumentApi:
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 			"encrypted": encrypted,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawSecondaryAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.setRawSecondaryAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def delete_main_attachment_async(self, entity_id: str, rev: str) -> cardinal_sdk.model:
+	async def delete_main_attachment_async(self, entity_id: str, rev: str) -> EncryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2041,40 +2020,40 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteMainAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteMainAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_main_attachment_blocking(self, entity_id: str, rev: str) -> cardinal_sdk.model:
+	def delete_main_attachment_blocking(self, entity_id: str, rev: str) -> EncryptedDocument:
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteMainAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteMainAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def delete_secondary_attachment_async(self, document_id: str, key: str, rev: str) -> cardinal_sdk.model:
+	async def delete_secondary_attachment_async(self, document_id: str, key: str, rev: str) -> EncryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2082,42 +2061,42 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = EncryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"documentId": document_id,
 			"key": key,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteSecondaryAttachmentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteSecondaryAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_secondary_attachment_blocking(self, document_id: str, key: str, rev: str) -> cardinal_sdk.model:
+	def delete_secondary_attachment_blocking(self, document_id: str, key: str, rev: str) -> EncryptedDocument:
 		payload = {
 			"documentId": document_id,
 			"key": key,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteSecondaryAttachmentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.deleteSecondaryAttachmentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_async(self, delegate_id: str, document: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+	async def share_with_async(self, delegate_id: str, document: DecryptedDocument, options: Optional[DocumentShareOptions] = None) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2125,42 +2104,42 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"document": document.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, document: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+	def share_with_blocking(self, delegate_id: str, document: DecryptedDocument, options: Optional[DocumentShareOptions] = None) -> DecryptedDocument:
 		payload = {
 			"delegateId": delegate_id,
 			"document": document.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_many_async(self, document: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+	async def share_with_many_async(self, document: DecryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2168,40 +2147,40 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"document": document.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithManyAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithManyAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def share_with_many_blocking(self, document: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+	def share_with_many_blocking(self, document: DecryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> DecryptedDocument:
 		payload = {
 			"document": document.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.shareWithManyBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def filter_documents_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	async def filter_documents_by_async(self, filter: FilterOptions[Document]) -> PaginatedListIterator[DecryptedDocument]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2209,49 +2188,49 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				result = PaginatedListIterator[DecryptedDocument](
 					producer = success,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: DecryptedDocument._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsByAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def filter_documents_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	def filter_documents_by_blocking(self, filter: FilterOptions[Document]) -> PaginatedListIterator[DecryptedDocument]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsByBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-			cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
-			class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedDocument](
 				producer = class_pointer,
-				deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+				deserializer = lambda x: DecryptedDocument._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[DecryptedDocument]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2259,49 +2238,49 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				result = PaginatedListIterator[DecryptedDocument](
 					producer = success,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: DecryptedDocument._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsBySortedAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[DecryptedDocument]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsBySortedBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.filterDocumentsBySortedBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-			cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
-			class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedDocument](
 				producer = class_pointer,
-				deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+				deserializer = lambda x: DecryptedDocument._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def undelete_document_by_id_async(self, id: str, rev: str) -> cardinal_sdk.model:
+	async def undelete_document_by_id_async(self, id: str, rev: str) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2309,40 +2288,40 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentByIdAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def undelete_document_by_id_blocking(self, id: str, rev: str) -> cardinal_sdk.model:
+	def undelete_document_by_id_blocking(self, id: str, rev: str) -> DecryptedDocument:
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentByIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def undelete_document_async(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def undelete_document_async(self, document: Document) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2350,38 +2329,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def undelete_document_blocking(self, document: cardinal_sdk.model) -> cardinal_sdk.model:
+	def undelete_document_blocking(self, document: Document) -> DecryptedDocument:
 		payload = {
-			"document": cardinal_sdk.model(document),
+			"document": serialize_document(document),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.undeleteDocumentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def modify_document_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def modify_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2389,38 +2368,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def modify_document_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	def modify_document_blocking(self, entity: DecryptedDocument) -> DecryptedDocument:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_document_async(self, entity_id: str) -> cardinal_sdk.model:
+	async def get_document_async(self, entity_id: str) -> DecryptedDocument:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2428,38 +2407,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedDocument._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_document_blocking(self, entity_id: str) -> cardinal_sdk.model:
+	def get_document_blocking(self, entity_id: str) -> DecryptedDocument:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_documents_async(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+	async def get_documents_async(self, entity_ids: List[str]) -> List[DecryptedDocument]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2467,38 +2446,38 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [DecryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_documents_blocking(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+	def get_documents_blocking(self, entity_ids: List[str]) -> List[DecryptedDocument]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.getDocumentsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+			return_value = [DecryptedDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_documents_async(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	async def modify_documents_async(self, entities: List[DecryptedDocument]) -> List[DecryptedDocument]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2506,33 +2485,33 @@ class DocumentApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [DecryptedDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def modify_documents_blocking(self, entities: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	def modify_documents_blocking(self, entities: List[DecryptedDocument]) -> List[DecryptedDocument]:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.modifyDocumentsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+			return_value = [DecryptedDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value
