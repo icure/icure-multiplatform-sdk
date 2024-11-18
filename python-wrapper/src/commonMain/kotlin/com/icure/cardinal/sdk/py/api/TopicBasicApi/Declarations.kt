@@ -9,8 +9,6 @@ import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -18,6 +16,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -129,7 +129,7 @@ public fun filterTopicsByBlocking(sdk: CardinalBaseApis, params: String): PyResu
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -147,7 +147,7 @@ public fun filterTopicsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -166,7 +166,7 @@ public fun filterTopicsBySortedBlocking(sdk: CardinalBaseApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -184,7 +184,7 @@ public fun filterTopicsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedTopic.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedTopic.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.model.EncryptedAccessLog
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -17,6 +16,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -127,7 +127,7 @@ public fun filterAccessLogsByBlocking(sdk: CardinalBaseApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedAccessLog.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedAccessLog.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -145,7 +145,7 @@ public fun filterAccessLogsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedAccessLog.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedAccessLog.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -165,7 +165,7 @@ public fun filterAccessLogsBySortedBlocking(sdk: CardinalBaseApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, EncryptedAccessLog.serializer())}
+	PaginatedListIteratorWithSerializer(it, EncryptedAccessLog.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -184,7 +184,7 @@ public fun filterAccessLogsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, EncryptedAccessLog.serializer())}
+			PaginatedListIteratorWithSerializer(it, EncryptedAccessLog.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

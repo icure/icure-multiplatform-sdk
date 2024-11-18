@@ -9,8 +9,6 @@ import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -18,6 +16,8 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -344,7 +344,7 @@ public fun filterDevicesByBlocking(sdk: CardinalNonCryptoApis, params: String): 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, Device.serializer())}
+	PaginatedListIteratorWithSerializer(it, Device.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -362,7 +362,7 @@ public fun filterDevicesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, Device.serializer())}
+			PaginatedListIteratorWithSerializer(it, Device.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -381,7 +381,7 @@ public fun filterDevicesBySortedBlocking(sdk: CardinalNonCryptoApis, params: Str
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, Device.serializer())}
+	PaginatedListIteratorWithSerializer(it, Device.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -399,7 +399,7 @@ public fun filterDevicesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, Device.serializer())}
+			PaginatedListIteratorWithSerializer(it, Device.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

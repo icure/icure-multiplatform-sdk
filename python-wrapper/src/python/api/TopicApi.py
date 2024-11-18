@@ -1,38 +1,15 @@
 # auto-generated file
 import asyncio
 import json
-from DecryptedTopic import cardinal_sdk.model
-from DATA_RESULT_CALLBACK_FUNC import cardinal_sdk.kotlin_types
-from symbols import cardinal_sdk.kotlin_types
-from create_result_from_json import cardinal_sdk.model.CallResult
-from cast import ctypes
-from c_char_p import ctypes
-from interpret_kt_error import cardinal_sdk.model.CallResult
-from Optional import typing
-from Patient import cardinal_sdk.model
-from User import cardinal_sdk.model
-from Dict import typing
-from AccessLevel import cardinal_sdk.model
-from SecretIdUseOption import cardinal_sdk.model
-from SecretIdUseOptionUseAnySharedWithParent import cardinal_sdk.model
-from serialize_patient import cardinal_sdk.model
-from serialize_secret_id_use_option import cardinal_sdk.model
-from Topic import cardinal_sdk.model
-from serialize_topic import cardinal_sdk.model
-from List import typing
-from HexString import cardinal_sdk.model.specializations
-from EncryptedTopic import cardinal_sdk.model
-from deserialize_cardinal_sdk.model import Topic
+from cardinal_sdk.model import DecryptedTopic, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Topic, serialize_topic, EncryptedTopic, deserialize_topic, DocIdentifier, IdWithMandatoryRev, TopicShareOptions, TopicRole, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
+from ctypes import cast, c_char_p
+from typing import Optional, Dict, List
+from cardinal_sdk.model.specializations import HexString
 from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
-from DocIdentifier import cardinal_sdk.model
-from IdWithMandatoryRev import cardinal_sdk.model
-from TopicShareOptions import cardinal_sdk.model
-from PaginatedListIterator import cardinal_sdk.pagination.PaginatedListIterator
-from PTR_RESULT_CALLBACK_FUNC import cardinal_sdk.kotlin_types
-from TopicRole import cardinal_sdk.model
-from SubscriptionEventType import cardinal_sdk.model
-from EntitySubscriptionConfiguration import cardinal_sdk.model
-from EntitySubscription import cardinal_sdk.subscription.EntitySubscription
+from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 
 class TopicApi:
@@ -42,7 +19,7 @@ class TopicApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, topic: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		async def share_with_async(self, delegate_id: str, topic: EncryptedTopic, options: Optional[TopicShareOptions] = None) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -50,42 +27,42 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, topic: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		def share_with_blocking(self, delegate_id: str, topic: EncryptedTopic, options: Optional[TopicShareOptions] = None) -> EncryptedTopic:
 			payload = {
 				"delegateId": delegate_id,
 				"topic": topic.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedTopic._deserialize(result_info.success)
 				return return_value
 
-		async def share_with_many_async(self, topic: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		async def share_with_many_async(self, topic: EncryptedTopic, delegates: Dict[str, TopicShareOptions]) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -93,40 +70,40 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"topic": topic.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_many_blocking(self, topic: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		def share_with_many_blocking(self, topic: EncryptedTopic, delegates: Dict[str, TopicShareOptions]) -> EncryptedTopic:
 			payload = {
 				"topic": topic.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.shareWithManyBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedTopic._deserialize(result_info.success)
 				return return_value
 
-		async def filter_topics_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_topics_by_async(self, filter: FilterOptions[Topic]) -> PaginatedListIterator[EncryptedTopic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -134,49 +111,49 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[EncryptedTopic](
 						producer = success,
-						deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+						deserializer = lambda x: EncryptedTopic._deserialize(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsByAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_topics_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_topics_by_blocking(self, filter: FilterOptions[Topic]) -> PaginatedListIterator[EncryptedTopic]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsByBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedTopic](
 					producer = class_pointer,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: EncryptedTopic._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def filter_topics_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_topics_by_sorted_async(self, filter: SortableFilterOptions[Topic]) -> PaginatedListIterator[EncryptedTopic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -184,49 +161,49 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[EncryptedTopic](
 						producer = success,
-						deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+						deserializer = lambda x: EncryptedTopic._deserialize(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsBySortedAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_topics_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_topics_by_sorted_blocking(self, filter: SortableFilterOptions[Topic]) -> PaginatedListIterator[EncryptedTopic]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsBySortedBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.filterTopicsBySortedBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[EncryptedTopic](
 					producer = class_pointer,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: EncryptedTopic._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def undelete_topic_async(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def undelete_topic_async(self, topic: Topic) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -234,38 +211,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_topic_blocking(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+		def undelete_topic_blocking(self, topic: Topic) -> Topic:
 			payload = {
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def modify_topic_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def modify_topic_async(self, entity: EncryptedTopic) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -273,38 +250,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.modifyTopicAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.modifyTopicAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def modify_topic_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		def modify_topic_blocking(self, entity: EncryptedTopic) -> EncryptedTopic:
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.modifyTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.modifyTopicBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedTopic._deserialize(result_info.success)
 				return return_value
 
-		async def undelete_topic_by_id_async(self, id: str, rev: str) -> cardinal_sdk.model:
+		async def undelete_topic_by_id_async(self, id: str, rev: str) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -312,40 +289,40 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicByIdAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_topic_by_id_blocking(self, id: str, rev: str) -> cardinal_sdk.model:
+		def undelete_topic_by_id_blocking(self, id: str, rev: str) -> EncryptedTopic:
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicByIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.undeleteTopicByIdBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedTopic._deserialize(result_info.success)
 				return return_value
 
-		async def get_topic_async(self, entity_id: str) -> cardinal_sdk.model:
+		async def get_topic_async(self, entity_id: str) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -353,38 +330,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_topic_blocking(self, entity_id: str) -> cardinal_sdk.model:
+		def get_topic_blocking(self, entity_id: str) -> EncryptedTopic:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedTopic._deserialize(result_info.success)
 				return return_value
 
-		async def get_topics_async(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		async def get_topics_async(self, entity_ids: List[str]) -> List[EncryptedTopic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -392,38 +369,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [EncryptedTopic._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicsAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_topics_blocking(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		def get_topics_blocking(self, entity_ids: List[str]) -> List[EncryptedTopic]:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicsBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.getTopicsBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+				return_value = [EncryptedTopic._deserialize(x1) for x1 in result_info.success]
 				return return_value
 
-		async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -431,42 +408,42 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 				"topicRole": topic_role.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.addParticipantAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.addParticipantAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: cardinal_sdk.model) -> cardinal_sdk.model:
+		def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> EncryptedTopic:
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 				"topicRole": topic_role.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.addParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.addParticipantBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedTopic._deserialize(result_info.success)
 				return return_value
 
-		async def remove_participant_async(self, entity_id: str, data_owner_id: str) -> cardinal_sdk.model:
+		async def remove_participant_async(self, entity_id: str, data_owner_id: str) -> EncryptedTopic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -474,37 +451,37 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+					result = EncryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.removeParticipantAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.removeParticipantAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> cardinal_sdk.model:
+		def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> EncryptedTopic:
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.removeParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.encrypted.removeParticipantBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = cardinal_sdk.model._deserialize(result_info.success)
+				return_value = EncryptedTopic._deserialize(result_info.success)
 				return return_value
 
 	class TopicFlavouredApi:
@@ -512,7 +489,7 @@ class TopicApi:
 		def __init__(self, cardinal_sdk):
 			self.cardinal_sdk = cardinal_sdk
 
-		async def share_with_async(self, delegate_id: str, topic: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		async def share_with_async(self, delegate_id: str, topic: Topic, options: Optional[TopicShareOptions] = None) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -520,42 +497,42 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"delegateId": delegate_id,
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_blocking(self, delegate_id: str, topic: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+		def share_with_blocking(self, delegate_id: str, topic: Topic, options: Optional[TopicShareOptions] = None) -> Topic:
 			payload = {
 				"delegateId": delegate_id,
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def share_with_many_async(self, topic: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		async def share_with_many_async(self, topic: Topic, delegates: Dict[str, TopicShareOptions]) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -563,40 +540,40 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithManyAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def share_with_many_blocking(self, topic: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+		def share_with_many_blocking(self, topic: Topic, delegates: Dict[str, TopicShareOptions]) -> Topic:
 			payload = {
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithManyBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.shareWithManyBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def filter_topics_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_topics_by_async(self, filter: FilterOptions[Topic]) -> PaginatedListIterator[Topic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -604,49 +581,49 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[Topic](
 						producer = success,
-						deserializer = lambda x: Topic(x),
+						deserializer = lambda x: deserialize_topic(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsByAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_topics_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_topics_by_blocking(self, filter: FilterOptions[Topic]) -> PaginatedListIterator[Topic]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsByBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsByBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[Topic](
 					producer = class_pointer,
-					deserializer = lambda x: Topic(x),
+					deserializer = lambda x: deserialize_topic(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def filter_topics_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		async def filter_topics_by_sorted_async(self, filter: SortableFilterOptions[Topic]) -> PaginatedListIterator[Topic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -654,49 +631,49 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+					result = PaginatedListIterator[Topic](
 						producer = success,
-						deserializer = lambda x: Topic(x),
+						deserializer = lambda x: deserialize_topic(x),
 						executor = self.cardinal_sdk._executor
 					)
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsBySortedAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def filter_topics_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+		def filter_topics_by_sorted_blocking(self, filter: SortableFilterOptions[Topic]) -> PaginatedListIterator[Topic]:
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsBySortedBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.filterTopicsBySortedBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 			if error_str_pointer is not None:
-				error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-				cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+				symbols.DisposeString(error_str_pointer)
+				symbols.DisposeStablePointer(call_result.pinned)
+				raise interpret_kt_error(json.loads(error_data_str))
 			else:
-				class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-				return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+				symbols.DisposeStablePointer(call_result.pinned)
+				return PaginatedListIterator[Topic](
 					producer = class_pointer,
-					deserializer = lambda x: Topic(x),
+					deserializer = lambda x: deserialize_topic(x),
 					executor = self.cardinal_sdk._executor
 				)
 
-		async def undelete_topic_async(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def undelete_topic_async(self, topic: Topic) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -704,38 +681,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_topic_blocking(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+		def undelete_topic_blocking(self, topic: Topic) -> Topic:
 			payload = {
-				"topic": cardinal_sdk.model(topic),
+				"topic": serialize_topic(topic),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def modify_topic_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def modify_topic_async(self, entity: Topic) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -743,38 +720,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
-				"entity": cardinal_sdk.model(entity),
+				"entity": serialize_topic(entity),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.modifyTopicAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.modifyTopicAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def modify_topic_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+		def modify_topic_blocking(self, entity: Topic) -> Topic:
 			payload = {
-				"entity": cardinal_sdk.model(entity),
+				"entity": serialize_topic(entity),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.modifyTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.modifyTopicBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def undelete_topic_by_id_async(self, id: str, rev: str) -> cardinal_sdk.model:
+		async def undelete_topic_by_id_async(self, id: str, rev: str) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -782,40 +759,40 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicByIdAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def undelete_topic_by_id_blocking(self, id: str, rev: str) -> cardinal_sdk.model:
+		def undelete_topic_by_id_blocking(self, id: str, rev: str) -> Topic:
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicByIdBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.undeleteTopicByIdBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def get_topic_async(self, entity_id: str) -> cardinal_sdk.model:
+		async def get_topic_async(self, entity_id: str) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -823,38 +800,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_topic_blocking(self, entity_id: str) -> cardinal_sdk.model:
+		def get_topic_blocking(self, entity_id: str) -> Topic:
 			payload = {
 				"entityId": entity_id,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def get_topics_async(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		async def get_topics_async(self, entity_ids: List[str]) -> List[Topic]:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -862,38 +839,38 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = [Topic(x1) for x1 in json.loads(success.decode('utf-8'))]
+					result = [deserialize_topic(x1) for x1 in json.loads(success.decode('utf-8'))]
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicsAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def get_topics_blocking(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+		def get_topics_blocking(self, entity_ids: List[str]) -> List[Topic]:
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicsBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.getTopicsBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = [Topic(x1) for x1 in result_info.success]
+				return_value = [deserialize_topic(x1) for x1 in result_info.success]
 				return return_value
 
-		async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: cardinal_sdk.model) -> cardinal_sdk.model:
+		async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -901,42 +878,42 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 				"topicRole": topic_role.__serialize__(),
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.addParticipantAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.addParticipantAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: cardinal_sdk.model) -> cardinal_sdk.model:
+		def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> Topic:
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 				"topicRole": topic_role.__serialize__(),
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.addParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.addParticipantBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
-		async def remove_participant_async(self, entity_id: str, data_owner_id: str) -> cardinal_sdk.model:
+		async def remove_participant_async(self, entity_id: str, data_owner_id: str) -> Topic:
 			loop = asyncio.get_running_loop()
 			future = loop.create_future()
 			def make_result_and_complete(success, failure):
@@ -944,37 +921,37 @@ class TopicApi:
 					result = Exception(failure.decode('utf-8'))
 					loop.call_soon_threadsafe(lambda: future.set_exception(result))
 				else:
-					result = Topic(json.loads(success.decode('utf-8')))
+					result = deserialize_topic(json.loads(success.decode('utf-8')))
 					loop.call_soon_threadsafe(lambda: future.set_result(result))
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 			}
-			callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 			loop.run_in_executor(
 				self.cardinal_sdk._executor,
-				cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.removeParticipantAsync,
+				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.removeParticipantAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 				callback
 			)
 			return await future
 
-		def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> cardinal_sdk.model:
+		def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> Topic:
 			payload = {
 				"entityId": entity_id,
 				"dataOwnerId": data_owner_id,
 			}
-			call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.removeParticipantBlocking(
+			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryAndRecover.removeParticipantBlocking(
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
 			)
-			result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-			cardinal_sdk.kotlin_types.DisposeString(call_result)
+			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+			symbols.DisposeString(call_result)
 			if result_info.failure is not None:
-				raise cardinal_sdk.model.CallResult(result_info.failure)
+				raise interpret_kt_error(result_info.failure)
 			else:
-				return_value = Topic(result_info.success)
+				return_value = deserialize_topic(result_info.success)
 				return return_value
 
 	def __init__(self, cardinal_sdk):
@@ -982,7 +959,7 @@ class TopicApi:
 		self.encrypted = TopicApi.TopicFlavouredEncryptedApi(self.cardinal_sdk)
 		self.try_and_recover = TopicApi.TopicFlavouredApi(self.cardinal_sdk)
 
-	async def create_topic_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def create_topic_async(self, entity: DecryptedTopic) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -990,38 +967,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createTopicAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createTopicAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def create_topic_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	def create_topic_blocking(self, entity: DecryptedTopic) -> DecryptedTopic:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createTopicBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def with_encryption_metadata_async(self, base: typing[cardinal_sdk.model], patient: typing[cardinal_sdk.model], user: typing[cardinal_sdk.model] = None, delegates: typing[str, cardinal_sdk.model] = {}, secret_id: cardinal_sdk.model = cardinal_sdk.model()) -> cardinal_sdk.model:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1029,46 +1006,46 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
-			"patient": cardinal_sdk.model(patient) if patient is not None else None,
+			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": cardinal_sdk.model(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.withEncryptionMetadataAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.withEncryptionMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def with_encryption_metadata_blocking(self, base: typing[cardinal_sdk.model], patient: typing[cardinal_sdk.model], user: typing[cardinal_sdk.model] = None, delegates: typing[str, cardinal_sdk.model] = {}, secret_id: cardinal_sdk.model = cardinal_sdk.model()) -> cardinal_sdk.model:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedTopic], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedTopic:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
-			"patient": cardinal_sdk.model(patient) if patient is not None else None,
+			"patient": serialize_patient(patient) if patient is not None else None,
 			"user": user.__serialize__() if user is not None else None,
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			"secretId": cardinal_sdk.model(secret_id),
+			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.withEncryptionMetadataBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.withEncryptionMetadataBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def get_encryption_keys_of_async(self, topic: cardinal_sdk.model) -> typing[cardinal_sdk.model.specializations]:
+	async def get_encryption_keys_of_async(self, topic: Topic) -> List[HexString]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1079,35 +1056,35 @@ class TopicApi:
 				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getEncryptionKeysOfAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getEncryptionKeysOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_encryption_keys_of_blocking(self, topic: cardinal_sdk.model) -> typing[cardinal_sdk.model.specializations]:
+	def get_encryption_keys_of_blocking(self, topic: Topic) -> List[HexString]:
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getEncryptionKeysOfBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getEncryptionKeysOfBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def has_write_access_async(self, topic: cardinal_sdk.model) -> bool:
+	async def has_write_access_async(self, topic: Topic) -> bool:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1118,35 +1095,35 @@ class TopicApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.hasWriteAccessAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.hasWriteAccessAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def has_write_access_blocking(self, topic: cardinal_sdk.model) -> bool:
+	def has_write_access_blocking(self, topic: Topic) -> bool:
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.hasWriteAccessBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.hasWriteAccessBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = result_info.success
 			return return_value
 
-	async def decrypt_patient_id_of_async(self, topic: cardinal_sdk.model) -> typing[str]:
+	async def decrypt_patient_id_of_async(self, topic: Topic) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1157,35 +1134,35 @@ class TopicApi:
 				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptPatientIdOfAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptPatientIdOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def decrypt_patient_id_of_blocking(self, topic: cardinal_sdk.model) -> typing[str]:
+	def decrypt_patient_id_of_blocking(self, topic: Topic) -> List[str]:
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptPatientIdOfBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptPatientIdOfBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def create_delegation_de_anonymization_metadata_async(self, entity: cardinal_sdk.model, delegates: typing[str]) -> None:
+	async def create_delegation_de_anonymization_metadata_async(self, entity: Topic, delegates: List[str]) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1196,34 +1173,34 @@ class TopicApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"entity": cardinal_sdk.model(entity),
+			"entity": serialize_topic(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createDelegationDeAnonymizationMetadataAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createDelegationDeAnonymizationMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def create_delegation_de_anonymization_metadata_blocking(self, entity: cardinal_sdk.model, delegates: typing[str]) -> None:
+	def create_delegation_de_anonymization_metadata_blocking(self, entity: Topic, delegates: List[str]) -> None:
 		payload = {
-			"entity": cardinal_sdk.model(entity),
+			"entity": serialize_topic(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createDelegationDeAnonymizationMetadataBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.createDelegationDeAnonymizationMetadataBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
-	async def decrypt_async(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def decrypt_async(self, topic: EncryptedTopic) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1231,38 +1208,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"topic": topic.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def decrypt_blocking(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	def decrypt_blocking(self, topic: EncryptedTopic) -> DecryptedTopic:
 		payload = {
 			"topic": topic.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.decryptBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def try_decrypt_async(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def try_decrypt_async(self, topic: EncryptedTopic) -> Topic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1270,38 +1247,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = Topic(json.loads(success.decode('utf-8')))
+				result = deserialize_topic(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"topic": topic.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryDecryptAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryDecryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def try_decrypt_blocking(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	def try_decrypt_blocking(self, topic: EncryptedTopic) -> Topic:
 		payload = {
 			"topic": topic.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryDecryptBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.tryDecryptBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Topic(result_info.success)
+			return_value = deserialize_topic(result_info.success)
 			return return_value
 
-	async def match_topics_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> typing[str]:
+	async def match_topics_by_async(self, filter: FilterOptions[Topic]) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1314,33 +1291,33 @@ class TopicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsByAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def match_topics_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> typing[str]:
+	def match_topics_by_blocking(self, filter: FilterOptions[Topic]) -> List[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsByBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_topics_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> typing[str]:
+	async def match_topics_by_sorted_async(self, filter: SortableFilterOptions[Topic]) -> List[str]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1353,33 +1330,33 @@ class TopicApi:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsBySortedAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def match_topics_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> typing[str]:
+	def match_topics_by_sorted_blocking(self, filter: SortableFilterOptions[Topic]) -> List[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsBySortedBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.matchTopicsBySortedBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def delete_topic_by_id_async(self, entity_id: str, rev: str) -> cardinal_sdk.model:
+	async def delete_topic_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1387,40 +1364,40 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicByIdAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_topic_by_id_blocking(self, entity_id: str, rev: str) -> cardinal_sdk.model:
+	def delete_topic_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicByIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_topics_by_ids_async(self, entity_ids: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	async def delete_topics_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1428,35 +1405,35 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsByIdsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsByIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_topics_by_ids_blocking(self, entity_ids: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	def delete_topics_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsByIdsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsByIdsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def purge_topic_by_id_async(self, id: str, rev: str) -> None:
@@ -1473,10 +1450,10 @@ class TopicApi:
 			"id": id,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicByIdAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
@@ -1488,16 +1465,16 @@ class TopicApi:
 			"id": id,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicByIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
-	async def delete_topic_async(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def delete_topic_async(self, topic: Topic) -> DocIdentifier:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1505,38 +1482,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_topic_blocking(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	def delete_topic_blocking(self, topic: Topic) -> DocIdentifier:
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_topics_async(self, topics: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	async def delete_topics_async(self, topics: List[Topic]) -> List[DocIdentifier]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1544,38 +1521,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"topics": [cardinal_sdk.model(x0) for x0 in topics],
+			"topics": [serialize_topic(x0) for x0 in topics],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def delete_topics_blocking(self, topics: typing[cardinal_sdk.model]) -> typing[cardinal_sdk.model]:
+	def delete_topics_blocking(self, topics: List[Topic]) -> List[DocIdentifier]:
 		payload = {
-			"topics": [cardinal_sdk.model(x0) for x0 in topics],
+			"topics": [serialize_topic(x0) for x0 in topics],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.deleteTopicsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def purge_topic_async(self, topic: cardinal_sdk.model) -> None:
+	async def purge_topic_async(self, topic: Topic) -> None:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1586,32 +1563,32 @@ class TopicApi:
 				result = json.loads(success.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def purge_topic_blocking(self, topic: cardinal_sdk.model) -> None:
+	def purge_topic_blocking(self, topic: Topic) -> None:
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.purgeTopicBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 
-	async def share_with_async(self, delegate_id: str, topic: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+	async def share_with_async(self, delegate_id: str, topic: DecryptedTopic, options: Optional[TopicShareOptions] = None) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1619,42 +1596,42 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"delegateId": delegate_id,
 			"topic": topic.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def share_with_blocking(self, delegate_id: str, topic: cardinal_sdk.model, options: typing[cardinal_sdk.model] = None) -> cardinal_sdk.model:
+	def share_with_blocking(self, delegate_id: str, topic: DecryptedTopic, options: Optional[TopicShareOptions] = None) -> DecryptedTopic:
 		payload = {
 			"delegateId": delegate_id,
 			"topic": topic.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_many_async(self, topic: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+	async def share_with_many_async(self, topic: DecryptedTopic, delegates: Dict[str, TopicShareOptions]) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1662,40 +1639,40 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"topic": topic.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithManyAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithManyAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def share_with_many_blocking(self, topic: cardinal_sdk.model, delegates: typing[str, cardinal_sdk.model]) -> cardinal_sdk.model:
+	def share_with_many_blocking(self, topic: DecryptedTopic, delegates: Dict[str, TopicShareOptions]) -> DecryptedTopic:
 		payload = {
 			"topic": topic.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithManyBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.shareWithManyBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def filter_topics_by_async(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	async def filter_topics_by_async(self, filter: FilterOptions[Topic]) -> PaginatedListIterator[DecryptedTopic]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1703,49 +1680,49 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				result = PaginatedListIterator[DecryptedTopic](
 					producer = success,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: DecryptedTopic._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsByAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def filter_topics_by_blocking(self, filter: FilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	def filter_topics_by_blocking(self, filter: FilterOptions[Topic]) -> PaginatedListIterator[DecryptedTopic]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsByBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsByBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-			cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
-			class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedTopic](
 				producer = class_pointer,
-				deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+				deserializer = lambda x: DecryptedTopic._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def filter_topics_by_sorted_async(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	async def filter_topics_by_sorted_async(self, filter: SortableFilterOptions[Topic]) -> PaginatedListIterator[DecryptedTopic]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1753,49 +1730,49 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+				result = PaginatedListIterator[DecryptedTopic](
 					producer = success,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: DecryptedTopic._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsBySortedAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def filter_topics_by_sorted_blocking(self, filter: SortableFilterOptions[cardinal_sdk.model]) -> cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model]:
+	def filter_topics_by_sorted_blocking(self, filter: SortableFilterOptions[Topic]) -> PaginatedListIterator[DecryptedTopic]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsBySortedBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.filterTopicsBySortedBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-			cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
-			class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			return cardinal_sdk.pagination.PaginatedListIterator[cardinal_sdk.model](
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[DecryptedTopic](
 				producer = class_pointer,
-				deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+				deserializer = lambda x: DecryptedTopic._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def undelete_topic_async(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def undelete_topic_async(self, topic: Topic) -> Topic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1803,38 +1780,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = Topic(json.loads(success.decode('utf-8')))
+				result = deserialize_topic(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def undelete_topic_blocking(self, topic: cardinal_sdk.model) -> cardinal_sdk.model:
+	def undelete_topic_blocking(self, topic: Topic) -> Topic:
 		payload = {
-			"topic": cardinal_sdk.model(topic),
+			"topic": serialize_topic(topic),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Topic(result_info.success)
+			return_value = deserialize_topic(result_info.success)
 			return return_value
 
-	async def modify_topic_async(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def modify_topic_async(self, entity: DecryptedTopic) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1842,38 +1819,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.modifyTopicAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.modifyTopicAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def modify_topic_blocking(self, entity: cardinal_sdk.model) -> cardinal_sdk.model:
+	def modify_topic_blocking(self, entity: DecryptedTopic) -> DecryptedTopic:
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.modifyTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.modifyTopicBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def undelete_topic_by_id_async(self, id: str, rev: str) -> cardinal_sdk.model:
+	async def undelete_topic_by_id_async(self, id: str, rev: str) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1881,40 +1858,40 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicByIdAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def undelete_topic_by_id_blocking(self, id: str, rev: str) -> cardinal_sdk.model:
+	def undelete_topic_by_id_blocking(self, id: str, rev: str) -> DecryptedTopic:
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicByIdBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.undeleteTopicByIdBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def get_topic_async(self, entity_id: str) -> cardinal_sdk.model:
+	async def get_topic_async(self, entity_id: str) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1922,38 +1899,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_topic_blocking(self, entity_id: str) -> cardinal_sdk.model:
+	def get_topic_blocking(self, entity_id: str) -> DecryptedTopic:
 		payload = {
 			"entityId": entity_id,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def get_topics_async(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+	async def get_topics_async(self, entity_ids: List[str]) -> List[DecryptedTopic]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -1961,38 +1938,38 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = [cardinal_sdk.model._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
+				result = [DecryptedTopic._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def get_topics_blocking(self, entity_ids: typing[str]) -> typing[cardinal_sdk.model]:
+	def get_topics_blocking(self, entity_ids: List[str]) -> List[DecryptedTopic]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.getTopicsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [cardinal_sdk.model._deserialize(x1) for x1 in result_info.success]
+			return_value = [DecryptedTopic._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: cardinal_sdk.model) -> cardinal_sdk.model:
+	async def add_participant_async(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2000,42 +1977,42 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 			"dataOwnerId": data_owner_id,
 			"topicRole": topic_role.__serialize__(),
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.addParticipantAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.addParticipantAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: cardinal_sdk.model) -> cardinal_sdk.model:
+	def add_participant_blocking(self, entity_id: str, data_owner_id: str, topic_role: TopicRole) -> DecryptedTopic:
 		payload = {
 			"entityId": entity_id,
 			"dataOwnerId": data_owner_id,
 			"topicRole": topic_role.__serialize__(),
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.addParticipantBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.addParticipantBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def remove_participant_async(self, entity_id: str, data_owner_id: str) -> cardinal_sdk.model:
+	async def remove_participant_async(self, entity_id: str, data_owner_id: str) -> DecryptedTopic:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2043,40 +2020,40 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.model._deserialize(json.loads(success.decode('utf-8')))
+				result = DecryptedTopic._deserialize(json.loads(success.decode('utf-8')))
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
 		payload = {
 			"entityId": entity_id,
 			"dataOwnerId": data_owner_id,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.removeParticipantAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.removeParticipantAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> cardinal_sdk.model:
+	def remove_participant_blocking(self, entity_id: str, data_owner_id: str) -> DecryptedTopic:
 		payload = {
 			"entityId": entity_id,
 			"dataOwnerId": data_owner_id,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.removeParticipantBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.removeParticipantBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		result_info = cardinal_sdk.model.CallResult(ctypes(call_result, ctypes).value.decode('utf-8'))
-		cardinal_sdk.kotlin_types.DisposeString(call_result)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
-			raise cardinal_sdk.model.CallResult(result_info.failure)
+			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = cardinal_sdk.model._deserialize(result_info.success)
+			return_value = DecryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def subscribe_to_events_async(self, events: typing[cardinal_sdk.model], filter: FilterOptions[cardinal_sdk.model], subscription_config: typing[cardinal_sdk.model] = None) -> cardinal_sdk.subscription.EntitySubscription[cardinal_sdk.model]:
+	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[Topic], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
 		loop = asyncio.get_running_loop()
 		future = loop.create_future()
 		def make_result_and_complete(success, failure):
@@ -2084,9 +2061,9 @@ class TopicApi:
 				result = Exception(failure.decode('utf-8'))
 				loop.call_soon_threadsafe(lambda: future.set_exception(result))
 			else:
-				result = cardinal_sdk.subscription.EntitySubscription[cardinal_sdk.model](
+				result = EntitySubscription[EncryptedTopic](
 					producer = success,
-					deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+					deserializer = lambda x: EncryptedTopic._deserialize(x),
 					executor = self.cardinal_sdk._executor
 				)
 				loop.call_soon_threadsafe(lambda: future.set_result(result))
@@ -2095,37 +2072,37 @@ class TopicApi:
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		callback = cardinal_sdk.kotlin_types(make_result_and_complete)
+		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
 		loop.run_in_executor(
 			self.cardinal_sdk._executor,
-			cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.subscribeToEventsAsync,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.subscribeToEventsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 			callback
 		)
 		return await future
 
-	def subscribe_to_events_blocking(self, events: typing[cardinal_sdk.model], filter: FilterOptions[cardinal_sdk.model], subscription_config: typing[cardinal_sdk.model] = None) -> cardinal_sdk.subscription.EntitySubscription[cardinal_sdk.model]:
+	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[Topic], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		call_result = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.subscribeToEventsBlocking(
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicApi.subscribeToEventsBlocking(
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
 		)
-		error_str_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
 		if error_str_pointer is not None:
-			error_data_str = ctypes(error_str_pointer, ctypes).value.decode('utf_8')
-			cardinal_sdk.kotlin_types.DisposeString(error_str_pointer)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			raise cardinal_sdk.model.CallResult(json.loads(error_data_str))
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
 		else:
-			class_pointer = cardinal_sdk.kotlin_types.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-			cardinal_sdk.kotlin_types.DisposeStablePointer(call_result.pinned)
-			return cardinal_sdk.subscription.EntitySubscription[cardinal_sdk.model](
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return EntitySubscription[EncryptedTopic](
 				producer = class_pointer,
-				deserializer = lambda x: cardinal_sdk.model._deserialize(x),
+				deserializer = lambda x: EncryptedTopic._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)

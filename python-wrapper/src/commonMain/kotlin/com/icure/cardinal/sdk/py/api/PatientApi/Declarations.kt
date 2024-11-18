@@ -19,8 +19,6 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.SortDirection
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.py.subscription.EntitySubscription.EntitySubscriptionWithSerializer
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -28,7 +26,9 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.serialization.EntityWithTypeInfoAsStubDeserializer
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -429,6 +429,7 @@ public fun shareAllDataOfPatientAsync(
 @Serializable
 private class GetPatientIdOfChildDocumentForHcpAndHcpParentsParams(
 	@Serializable(EntityWithTypeInfoAsStubDeserializer::class)
+	@OptIn(InternalIcureApi::class)
 	public val childDocument: EntityWithTypeInfo<*>,
 )
 
@@ -1146,7 +1147,7 @@ public fun filterPatientsByBlocking(sdk: CardinalApis, params: String): PyResult
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedPatient.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedPatient.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1164,7 +1165,7 @@ public fun filterPatientsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedPatient.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedPatient.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -1183,7 +1184,7 @@ public fun filterPatientsBySortedBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, DecryptedPatient.serializer())}
+	PaginatedListIteratorWithSerializer(it, DecryptedPatient.serializer())}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -1201,7 +1202,7 @@ public fun filterPatientsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, DecryptedPatient.serializer())}
+			PaginatedListIteratorWithSerializer(it, DecryptedPatient.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

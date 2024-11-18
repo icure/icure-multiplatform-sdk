@@ -72,6 +72,7 @@ class CardinalSdk:
             'useHierarchicalDataOwners': options.use_hierarchical_data_owners,
             'createTransferKeys': options.create_transfer_keys,
             'keyStorage': key_storage_info[0],
+            'lenientJson': options.lenient_json,
         }
 
         # need to keep a reference to avoid GC

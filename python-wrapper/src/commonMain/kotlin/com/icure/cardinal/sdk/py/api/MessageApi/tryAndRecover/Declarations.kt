@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -16,6 +15,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -144,7 +144,7 @@ public fun findMessagesByHcPartyPatientBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Message::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Message::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -167,7 +167,7 @@ public fun findMessagesByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Message::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Message::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -186,7 +186,7 @@ public fun filterMessagesByBlocking(sdk: CardinalApis, params: String): PyResult
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Message::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Message::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -204,7 +204,7 @@ public fun filterMessagesByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Message::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Message::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -223,7 +223,7 @@ public fun filterMessagesBySortedBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Message::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Message::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -241,7 +241,7 @@ public fun filterMessagesBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(Message::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(Message::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

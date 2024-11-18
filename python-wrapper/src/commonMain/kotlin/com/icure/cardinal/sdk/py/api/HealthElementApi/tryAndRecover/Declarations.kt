@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -15,6 +14,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -141,7 +141,7 @@ public fun findHealthElementsByHcPartyPatientBlocking(sdk: CardinalApis, params:
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(HealthElement::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(HealthElement::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -164,7 +164,7 @@ public fun findHealthElementsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(HealthElement::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(HealthElement::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -183,7 +183,7 @@ public fun filterHealthElementsByBlocking(sdk: CardinalApis, params: String): Py
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(HealthElement::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(HealthElement::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -201,7 +201,7 @@ public fun filterHealthElementsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(HealthElement::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(HealthElement::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -221,7 +221,7 @@ public fun filterHealthElementsBySortedBlocking(sdk: CardinalApis, params: Strin
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(HealthElement::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(HealthElement::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -240,7 +240,7 @@ public fun filterHealthElementsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(HealthElement::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(HealthElement::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

@@ -52,6 +52,14 @@ interface CommonSdkOptions {
 	 * In single-group applications this parameter won't be used, so it can be left as null.
 	 */
 	val groupSelector: GroupSelector?
+	/**
+	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
+	 *
+	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+	 *
+	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+	 */
+	val lenientJson: Boolean
 }
 
 /**
@@ -109,8 +117,31 @@ data class SdkOptions(
 	 * This allows adapting to changes in the data model of entities even if the changes are done to the encrypted part
 	 * of the entity.
 	 */
-	val jsonPatcher: JsonPatcher? = null
-): CommonSdkOptions
+	val jsonPatcher: JsonPatcher? = null,
+
+	/**
+	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
+	 *
+	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+	 *
+	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+	 */
+	override val lenientJson: Boolean = false,
+): CommonSdkOptions {
+	init {
+		if (httpClientJson != null) {
+			require(httpClient != null) {
+				"httpClient should be provided if httpClientJson is provided"
+			}
+		}
+
+		if (lenientJson) {
+			require(httpClient == null) {
+				"Cannot use lenientJson with a custom httpClient"
+			}
+		}
+	}
+}
 
 data class BasicSdkOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
@@ -119,7 +150,22 @@ data class BasicSdkOptions(
 	override val cryptoService: CryptoService = defaultCryptoService,
 	override val saltPasswordWithApplicationId: Boolean = true,
 	override val groupSelector: GroupSelector? = null,
-): CommonSdkOptions
+	override val lenientJson: Boolean = false,
+): CommonSdkOptions {
+	init {
+		if (httpClientJson != null) {
+			require(httpClient != null) {
+				"httpClient should be provided if httpClientJson is provided"
+			}
+		}
+
+		if (lenientJson) {
+			require(httpClient == null) {
+				"Cannot use lenientJson with a custom httpClient"
+			}
+		}
+	}
+}
 
 @Serializable
 data class EncryptedFieldsConfiguration(

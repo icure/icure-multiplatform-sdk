@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.py.utils.PaginatedListIterator.PaginatedListIteratorAndSerializer
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -16,6 +15,7 @@ import com.icure.cardinal.sdk.py.utils.toPyResult
 import com.icure.cardinal.sdk.py.utils.toPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
+import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -144,7 +144,7 @@ public fun findCalendarItemsByHcPartyPatientBlocking(sdk: CardinalApis, params: 
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(CalendarItem::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(CalendarItem::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -167,7 +167,7 @@ public fun findCalendarItemsByHcPartyPatientAsync(
 				decodedParams.descending,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(CalendarItem::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(CalendarItem::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -227,7 +227,7 @@ public fun filterCalendarItemsByBlocking(sdk: CardinalApis, params: String): PyR
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(CalendarItem::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(CalendarItem::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -245,7 +245,7 @@ public fun filterCalendarItemsByAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(CalendarItem::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(CalendarItem::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 
@@ -265,7 +265,7 @@ public fun filterCalendarItemsBySortedBlocking(sdk: CardinalApis, params: String
 		)
 	}
 }.toPyResult {
-	PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(CalendarItem::class))}
+	PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(CalendarItem::class))}
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -284,7 +284,7 @@ public fun filterCalendarItemsBySortedAsync(
 				decodedParams.filter,
 			)
 		}.toPyResultAsyncCallback(resultCallback) {
-			PaginatedListIteratorAndSerializer(it, PolymorphicSerializer(CalendarItem::class))}
+			PaginatedListIteratorWithSerializer(it, PolymorphicSerializer(CalendarItem::class))}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
 

@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk
 
 import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClient
+import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClientUsingLenientJson
 import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
@@ -209,6 +210,18 @@ interface CardinalSdk : CardinalApis {
 	suspend fun switchGroup(groupId: String): CardinalSdk
 
 	companion object {
+		private fun createHttpClient(json: Json): HttpClient {
+			return newPlatformHttpClient {
+				install(ContentNegotiation) {
+					json(json = json)
+				}
+				install(HttpTimeout) {
+					requestTimeoutMillis = 60_000
+				}
+				install(WebSockets)
+			}
+		}
+
 		/**
 		 * A shared http client to use as the default across all instances of iCure.
 		 * Initialized only when needed.
@@ -217,13 +230,18 @@ interface CardinalSdk : CardinalApis {
 		 * when creating multiple instances of the iCure API without proper disposal of the client.
 		 */
 		internal val sharedHttpClient by lazy {
-			newPlatformHttpClient {
-				install(ContentNegotiation) {
-					json(json = Serialization.json)
-				}
-				install(HttpTimeout)
-				install(WebSockets)
-			}
+			createHttpClient(Serialization.json)
+		}
+
+		/**
+		 * A shared http client to use as the default across all instances of iCure.
+		 * Initialized only when needed.
+		 * Previous versions of the icure SDK (in different languages) did not need explicit disposal, but this is
+		 * necessary in the multiplatform sdk. The use of this shared client allows to minimise the resource leaking
+		 * when creating multiple instances of the iCure API without proper disposal of the client.
+		 */
+		internal val sharedHttpClientUsingLenientJson by lazy {
+			createHttpClient(Serialization.lenientJson)
 		}
 
 		/**
@@ -238,6 +256,7 @@ interface CardinalSdk : CardinalApis {
 		 */
 		fun closeSharedClient() {
 			sharedHttpClient.close()
+			sharedHttpClientUsingLenientJson.close()
 		}
 
 		/**
@@ -259,8 +278,8 @@ interface CardinalSdk : CardinalApis {
 			options: SdkOptions = SdkOptions()
 		): CardinalSdk {
 			val cryptoStrategies = options.cryptoStrategies ?: BasicCryptoStrategies
-			val client = options.httpClient ?: sharedHttpClient
-			val json = options.httpClientJson ?: Serialization.json
+			val client = options.configuredClientOrDefault()
+			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
 			val keysStorage = options.keyStorage ?: JsonAndBase64KeyStorage(baseStorage)
@@ -326,7 +345,7 @@ interface CardinalSdk : CardinalApis {
 			authenticationProcessTemplateParameters: AuthenticationProcessTemplateParameters = AuthenticationProcessTemplateParameters(),
 			options: SdkOptions = SdkOptions()
 		): AuthenticationWithProcessStep {
-			val api = RawMessageGatewayApi(options.httpClient ?: sharedHttpClient, options.cryptoService)
+			val api = RawMessageGatewayApi(options.configuredClientOrDefault(), options.cryptoService)
 			val requestId = api.startProcess(
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,
@@ -346,7 +365,7 @@ interface CardinalSdk : CardinalApis {
 				messageGatewayUrl = messageGatewayUrl,
 				externalServicesSpecId = externalServicesSpecId,
 				requestId = requestId,
-				userTelecom = userTelecom
+				userTelecom = userTelecom,
 			)
 		}
 	}
@@ -362,7 +381,7 @@ private class AuthenticationWithProcessStepImpl(
 	private val messageGatewayUrl: String,
 	private val externalServicesSpecId: String,
 	private val requestId: String,
-	private val userTelecom: String
+	private val userTelecom: String,
 ) : CardinalSdk.AuthenticationWithProcessStep {
 	override suspend fun completeAuthentication(validationCode: String): CardinalSdk {
 		api.completeProcess(
@@ -372,9 +391,9 @@ private class AuthenticationWithProcessStepImpl(
 			validationCode = validationCode
 		)
 		val rawAuthApi: RawAnonymousAuthApi = RawAnonymousAuthApiImpl(
-			baseUrl,
-			options.httpClient ?: sharedHttpClient,
-			json = options.httpClientJson ?: Serialization.json
+			apiUrl = baseUrl,
+			httpClient = options.configuredClientOrDefault(),
+			json = options.configuredJsonOrDefault()
 		)
 		val loginResult = retryWithDelays(
 			listOf(100.milliseconds, 500.milliseconds, 1.seconds)

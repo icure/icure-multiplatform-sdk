@@ -36,6 +36,7 @@ private data class PySdkParams(
 	val createTransferKeys: Boolean = true,
 	val keyStorage: StorageFacadeOptions? = null,
 	val saltPasswordWithApplicationId: Boolean = true,
+	val lenientJson: Boolean = true,
 ) {
 	@OptIn(ExperimentalForeignApi::class)
 	suspend fun getStorageAndApiOptions(
@@ -68,7 +69,8 @@ private data class PySdkParams(
 				createTransferKeys = createTransferKeys,
 				keyStorage = keyStorage,
 				cryptoStrategies = strategies,
-				jsonPatcher = customJsonPatcher?.asStableRef<JsonPatcher>()?.get()
+				jsonPatcher = customJsonPatcher?.asStableRef<JsonPatcher>()?.get(),
+				lenientJson = lenientJson
 			),
 			loadedStorageFacade,
 			authenticationMethod.toKt()
