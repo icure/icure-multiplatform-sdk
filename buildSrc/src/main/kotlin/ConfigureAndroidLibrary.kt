@@ -6,7 +6,7 @@ fun LibraryExtension.configureAndroidLibrary() {
 	compileSdk = 34
 	sourceSets.getByName("main").manifest.srcFile("src/androidMain/AndroidManifest.xml")
 	defaultConfig {
-		minSdk = 26
+		minSdk = 30
 	}
 	compileOptions {
 		sourceCompatibility = JavaVersion.VERSION_1_8
