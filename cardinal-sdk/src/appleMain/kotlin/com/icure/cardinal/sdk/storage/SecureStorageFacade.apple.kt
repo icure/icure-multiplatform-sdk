@@ -7,14 +7,12 @@ import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.ULongVar
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.value
 import platform.CoreFoundation.CFDictionaryAddValue
 import platform.CoreFoundation.CFDictionaryCreateMutable
-import platform.CoreFoundation.CFErrorRef
 import platform.CoreFoundation.CFTypeRefVar
 import platform.CoreFoundation.kCFAllocatorDefault
 import platform.CoreFoundation.kCFBooleanTrue
@@ -24,21 +22,21 @@ import platform.Foundation.CFBridgingRetain
 import platform.Foundation.NSData
 import platform.Security.SecAccessControlCreateFlags
 import platform.Security.SecAccessControlCreateWithFlags
-import platform.Security.SecItemCopyMatching
 import platform.Security.SecItemAdd
-import platform.Security.errSecSuccess
+import platform.Security.SecItemCopyMatching
 import platform.Security.errSecItemNotFound
+import platform.Security.errSecSuccess
 import platform.Security.kSecAccessControlBiometryAny
 import platform.Security.kSecAccessControlDevicePasscode
+import platform.Security.kSecAttrAccessControl
 import platform.Security.kSecAttrAccessibleWhenUnlockedThisDeviceOnly
 import platform.Security.kSecAttrApplicationTag
 import platform.Security.kSecClass
 import platform.Security.kSecClassKey
-import platform.Security.kSecValueData
-import platform.Security.kSecAttrAccessControl
 import platform.Security.kSecMatchLimit
 import platform.Security.kSecMatchLimitOne
 import platform.Security.kSecReturnData
+import platform.Security.kSecValueData
 
 actual suspend fun getOrCreateSecretKey(storageFacade: StorageFacade, key: String, accessLevel: Set<SecureKeyAccessLevel>, cryptoService: CryptoService): AesKey<AesAlgorithm.CbcWithPkcs7Padding> {
 	return getSecretKey(cryptoService, key) ?: createSecretKey(accessLevel, cryptoService, key)
