@@ -4,6 +4,9 @@ import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.kryptom.utils.base64Decode
+import com.icure.kryptom.utils.base64Encode
+import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 
 class SecureStorageFacade private constructor (
@@ -16,19 +19,20 @@ class SecureStorageFacade private constructor (
 		const val SECRET_KEY = "com.icure.cardinal.sdk.storage.SecureStorageFacade.encryptionKey"
 
 		suspend operator fun invoke(storage: StorageFacade, cryptoService: CryptoService = defaultCryptoService, accessLevel: Set<SecureKeyAccessLevel>): SecureStorageFacade {
-			val encryptionKey = getOrCreateSecretKey(storage, SECRET_KEY, accessLevel)
+			val encryptionKey = getOrCreateSecretKey(storage, SECRET_KEY, accessLevel, cryptoService)
 			return SecureStorageFacade(storage, encryptionKey, cryptoService)
 		}
 	}
 
+	@OptIn(ExperimentalStdlibApi::class)
 	override suspend fun getItem(key: String): String? {
 		return storage.getItem(key)?.let { encryptedValue ->
-			cryptoService.aes.decrypt(encryptedValue.toByteArray(), encryptionKey).toString()
+			cryptoService.aes.decrypt(base64Decode(encryptedValue), encryptionKey).decodeToString()
 		}
 	}
 
 	override suspend fun setItem(key: String, value: String) {
-		storage.setItem(key, cryptoService.aes.encrypt(value.toByteArray(), encryptionKey).toString())
+		storage.setItem(key, base64Encode(cryptoService.aes.encrypt(value.toByteArray(Charsets.UTF_8), encryptionKey)))
 	}
 
 	override suspend fun removeItem(key: String) {

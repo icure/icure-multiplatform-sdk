@@ -10,16 +10,16 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
+import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.value
+import platform.CoreFoundation.CFDataRefVar
 import platform.CoreFoundation.CFDictionaryAddValue
 import platform.CoreFoundation.CFDictionaryCreateMutable
-import platform.CoreFoundation.CFTypeRefVar
 import platform.CoreFoundation.kCFAllocatorDefault
 import platform.CoreFoundation.kCFBooleanTrue
 import platform.CoreFoundation.kCFTypeDictionaryKeyCallBacks
 import platform.CoreFoundation.kCFTypeDictionaryValueCallBacks
 import platform.Foundation.CFBridgingRetain
-import platform.Foundation.NSData
 import platform.Security.SecAccessControlCreateFlags
 import platform.Security.SecAccessControlCreateWithFlags
 import platform.Security.SecItemAdd
@@ -57,12 +57,12 @@ private suspend fun getSecretKey(cryptoService: CryptoService, key: String): Aes
 	}
 
 	return memScoped {
-		var item = alloc<CFTypeRefVar>()
-		val status = SecItemCopyMatching(query, item.ptr)
+		var item = alloc<CFDataRefVar>()
+		val status = SecItemCopyMatching(query, item.ptr.reinterpret())
 
 		if (status == errSecSuccess) {
-			val data = item.value as? NSData
-			val bytes = data?.toByteArray() ?: throw IllegalStateException("Failed to get key data or cast to NSData went wrong")
+			val data = item.value ?: throw IllegalStateException("Failed to get key data from CFDataRefVar")
+			val bytes = data.toByteArray()
 			cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, bytes)
 		} else {
 			if (status == errSecItemNotFound) {
