@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.storage
 
-import com.icure.cardinal.sdk.storage.SecureStorageFacade.Companion.SECRET_KEY
+import com.icure.cardinal.sdk.storage.EncryptedStorageFacade.Companion.SECRET_KEY
 import com.icure.kryptom.apple.toByteArray
 import com.icure.kryptom.apple.toNSData
 import com.icure.kryptom.crypto.AesAlgorithm
@@ -48,12 +48,13 @@ import platform.Security.kSecValueData
  *
  * @return A secure storage facade.
  */
-suspend fun appleSecureStorageFacade(
+@Suppress("FunctionName")
+suspend fun AppleSecureStorageFacade(
 	storage: StorageFacade,
 	accessLevel: Set<SecureKeyAccessLevel>,
 ): StorageFacade {
 	val encryptionKey = getOrCreateSecretKey(SECRET_KEY, accessLevel)
-	return SecureStorageFacade(storage, encryptionKey)
+	return EncryptedStorageFacade(storage, encryptionKey)
 }
 
 private suspend fun getOrCreateSecretKey(key: String, accessLevel: Set<SecureKeyAccessLevel>): AesKey<AesAlgorithm.CbcWithPkcs7Padding> {

@@ -4,7 +4,7 @@ import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.annotation.RequiresApi
-import com.icure.cardinal.sdk.storage.SecureStorageFacade.Companion.SECRET_KEY
+import com.icure.cardinal.sdk.storage.EncryptedStorageFacade.Companion.SECRET_KEY
 import com.icure.kryptom.crypto.AesAlgorithm.CbcWithPkcs7Padding
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.defaultCryptoService
@@ -28,13 +28,14 @@ import javax.crypto.spec.IvParameterSpec
  * @throws UnsupportedOperationException If the device is not running Android 11 or above.
  */
 @RequiresApi(Build.VERSION_CODES.R)
-suspend fun androidSecureStorageFacade(
+@Suppress("FunctionName")
+suspend fun AndroidSecureStorageFacade(
 	storage: StorageFacade,
 	accessLevel: Set<SecureKeyAccessLevel>,
 	authorizationTimeoutSeconds: Int = 0
-): SecureStorageFacade {
+): EncryptedStorageFacade {
 	val encryptionKey = getOrCreateSecretKey(storage, SECRET_KEY, accessLevel, authorizationTimeoutSeconds)
-	return SecureStorageFacade(storage, encryptionKey)
+	return EncryptedStorageFacade(storage, encryptionKey)
 }
 
 /**

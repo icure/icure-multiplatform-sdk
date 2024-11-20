@@ -13,7 +13,7 @@ enum class SecureKeyAccessLevel {
 	Biometric,
 }
 
-class SecureStorageFacade(
+class EncryptedStorageFacade(
 	val storage: StorageFacade,
 	val encryptionKey: AesKey<CbcWithPkcs7Padding>,
 ): StorageFacade {
