@@ -4,63 +4,37 @@ import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.annotation.RequiresApi
+import com.icure.cardinal.sdk.storage.SecureStorageFacade.Companion.SECRET_KEY
 import com.icure.kryptom.crypto.AesAlgorithm.CbcWithPkcs7Padding
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.base64Encode
-import io.ktor.utils.io.charsets.Charsets
-import io.ktor.utils.io.core.toByteArray
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 
+/**
+ * Create a secure storage facade for Android.
+ *
+ * @param storage The storage facade to use to store the encrypted values.
+ * @param accessLevel The access level required to access the secure key.
+ * @param authorizationTimeoutSeconds Duration in seconds or 0 if user authentication must take place for every use of the key.
+ *
+ * @return A secure storage facade.
+ *
+ * @throws UnsupportedOperationException If the device is not running Android 11 or above.
+ */
 @RequiresApi(Build.VERSION_CODES.R)
-class AndroidSecureStorageFacade private constructor (
-	val storage: StorageFacade,
-	val encryptionKey: AesKey<CbcWithPkcs7Padding>,
-): StorageFacade {
-
-	companion object {
-		const val SECRET_KEY = "com.icure.cardinal.sdk.storage.SecureStorageFacade.encryptionKey"
-
-		/**
-		 * Create a secure storage facade for Android.
-		 *
-		 * @param storage The storage facade to use to store the encrypted values.
-		 * @param accessLevel The access level required to access the secure key.
-		 * @param authorizationTimeoutSeconds Duration in seconds or 0 if user authentication must take place for every use of the key.
-		 *
-		 * @return A secure storage facade.
-		 *
-		 * @throws UnsupportedOperationException If the device is not running Android 11 or above.
-		 */
-		suspend operator fun invoke(
-			storage: StorageFacade,
-			accessLevel: Set<SecureKeyAccessLevel>,
-			authorizationTimeoutSeconds: Int = 0
-		): AndroidSecureStorageFacade {
-			val encryptionKey = getOrCreateSecretKey(storage, SECRET_KEY, accessLevel, authorizationTimeoutSeconds)
-			return AndroidSecureStorageFacade(storage, encryptionKey)
-		}
-	}
-
-	@OptIn(ExperimentalStdlibApi::class)
-	override suspend fun getItem(key: String): String? {
-		return storage.getItem(key)?.let { encryptedValue ->
-			defaultCryptoService.aes.decrypt(base64Decode(encryptedValue), encryptionKey).decodeToString()
-		}
-	}
-
-	override suspend fun setItem(key: String, value: String) {
-		storage.setItem(key, base64Encode(defaultCryptoService.aes.encrypt(value.toByteArray(Charsets.UTF_8), encryptionKey)))
-	}
-
-	override suspend fun removeItem(key: String) {
-		storage.removeItem(key)
-	}
+suspend fun androidSecureStorageFacade(
+	storage: StorageFacade,
+	accessLevel: Set<SecureKeyAccessLevel>,
+	authorizationTimeoutSeconds: Int = 0
+): SecureStorageFacade {
+	val encryptionKey = getOrCreateSecretKey(storage, SECRET_KEY, accessLevel, authorizationTimeoutSeconds)
+	return SecureStorageFacade(storage, encryptionKey)
 }
 
 /**
@@ -69,6 +43,7 @@ class AndroidSecureStorageFacade private constructor (
  * @param storageFacade The storage facade to use to store the secret key.
  * @param key The key to use to store/access the AES key.
  */
+@RequiresApi(Build.VERSION_CODES.R)
 private suspend fun getOrCreateSecretKey(
 	storageFacade: StorageFacade,
 	key: String,

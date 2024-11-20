@@ -1,14 +1,12 @@
 package com.icure.cardinal.sdk.storage
 
+import com.icure.cardinal.sdk.storage.SecureStorageFacade.Companion.SECRET_KEY
 import com.icure.kryptom.apple.toByteArray
 import com.icure.kryptom.apple.toNSData
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesAlgorithm.CbcWithPkcs7Padding
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.kryptom.utils.base64Decode
-import com.icure.kryptom.utils.base64Encode
-import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
@@ -42,45 +40,20 @@ import platform.Security.kSecMatchLimitOne
 import platform.Security.kSecReturnData
 import platform.Security.kSecValueData
 
-class AppleSecureStorageFacade private constructor (
-	val storage: StorageFacade,
-	val encryptionKey: AesKey<CbcWithPkcs7Padding>,
+/**
+ * Create a secure storage facade for Apple OSes.
+ *
+ * @param storage The storage facade to use to store the encrypted values.
+ * @param accessLevel The access level required to access the secure key.
+ *
+ * @return A secure storage facade.
+ */
+suspend fun appleSecureStorageFacade(
+	storage: StorageFacade,
+	accessLevel: Set<SecureKeyAccessLevel>,
 ): StorageFacade {
-
-	companion object {
-		const val SECRET_KEY = "com.icure.cardinal.sdk.storage.SecureStorageFacade.encryptionKey"
-
-		/**
-		 * Create a secure storage facade for Apple OSes.
-		 *
-		 * @param storage The storage facade to use to store the encrypted values.
-		 * @param accessLevel The access level required to access the secure key.
-		 *
-		 * @return A secure storage facade.
-		 */
-		suspend operator fun invoke(
-			storage: StorageFacade,
-			accessLevel: Set<SecureKeyAccessLevel>,
-		): AppleSecureStorageFacade {
-			val encryptionKey = getOrCreateSecretKey(SECRET_KEY, accessLevel)
-			return AppleSecureStorageFacade(storage, encryptionKey)
-		}
-	}
-
-	@OptIn(ExperimentalStdlibApi::class)
-	override suspend fun getItem(key: String): String? {
-		return storage.getItem(key)?.let { encryptedValue ->
-			defaultCryptoService.aes.decrypt(base64Decode(encryptedValue), encryptionKey).decodeToString()
-		}
-	}
-
-	override suspend fun setItem(key: String, value: String) {
-		storage.setItem(key, base64Encode(defaultCryptoService.aes.encrypt(value.toByteArray(Charsets.UTF_8), encryptionKey)))
-	}
-
-	override suspend fun removeItem(key: String) {
-		storage.removeItem(key)
-	}
+	val encryptionKey = getOrCreateSecretKey(SECRET_KEY, accessLevel)
+	return SecureStorageFacade(storage, encryptionKey)
 }
 
 private suspend fun getOrCreateSecretKey(key: String, accessLevel: Set<SecureKeyAccessLevel>): AesKey<AesAlgorithm.CbcWithPkcs7Padding> {
