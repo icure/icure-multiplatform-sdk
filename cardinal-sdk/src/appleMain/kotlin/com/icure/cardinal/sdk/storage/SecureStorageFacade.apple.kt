@@ -17,6 +17,7 @@ import kotlinx.cinterop.value
 import platform.CoreFoundation.CFDataRefVar
 import platform.CoreFoundation.CFDictionaryAddValue
 import platform.CoreFoundation.CFDictionaryCreateMutable
+import platform.CoreFoundation.CFRelease
 import platform.CoreFoundation.kCFAllocatorDefault
 import platform.CoreFoundation.kCFBooleanTrue
 import platform.CoreFoundation.kCFTypeDictionaryKeyCallBacks
@@ -67,28 +68,31 @@ private suspend fun getSecretKey(key: String): AesKey<CbcWithPkcs7Padding>? {
 		allocator = kCFAllocatorDefault,
 		capacity = 4,
 		keyCallBacks = kCFTypeDictionaryKeyCallBacks.ptr,
-		valueCallBacks = kCFTypeDictionaryValueCallBacks.ptr
-	).also {
-		CFDictionaryAddValue(it, kSecClass, kSecClassKey)
-		CFDictionaryAddValue(it, kSecAttrApplicationTag, CFBridgingRetain(key.toByteArray().toNSData()))
-		CFDictionaryAddValue(it, kSecReturnData, kCFBooleanTrue)
-		CFDictionaryAddValue(it, kSecMatchLimit, kSecMatchLimitOne)
-	}
+		valueCallBacks = kCFTypeDictionaryValueCallBacks.ptr,
+	)
 
-	return memScoped {
-		var item = alloc<CFDataRefVar>()
-		val status = SecItemCopyMatching(query, item.ptr.reinterpret())
+	try {
+		CFDictionaryAddValue(query, kSecClass, kSecClassKey)
+		CFDictionaryAddValue(query, kSecAttrApplicationTag, CFBridgingRetain(key.toByteArray().toNSData()))
+		CFDictionaryAddValue(query, kSecReturnData, kCFBooleanTrue)
+		CFDictionaryAddValue(query, kSecMatchLimit, kSecMatchLimitOne)
 
-		if (status == errSecSuccess) {
-			val data = item.value ?: throw IllegalStateException("Failed to get key data from CFDataRefVar")
-			val bytes = data.toByteArray()
-			defaultCryptoService.aes.loadKey(CbcWithPkcs7Padding, bytes)
-		} else {
-			if (status == errSecItemNotFound) {
-				return null
+		return memScoped {
+			var item = alloc<CFDataRefVar>()
+			val status = SecItemCopyMatching(query, item.ptr.reinterpret())
+
+			when(status) {
+				errSecSuccess -> {
+					val data = item.value ?: throw IllegalStateException("Failed to get key data from CFDataRefVar")
+					val bytes = data.toByteArray()
+					defaultCryptoService.aes.loadKey(CbcWithPkcs7Padding, bytes)
+				}
+				errSecItemNotFound -> null
+				else -> throw IllegalStateException("Failed to get key data")
 			}
-			throw IllegalStateException("Failed to get key data")
 		}
+	} finally {
+		CFRelease(query)
 	}
 }
 
@@ -98,34 +102,43 @@ private suspend fun createSecretKey(accessLevel: Set<SecureKeyAccessLevel>, key:
 	val aesKey = defaultCryptoService.aes.generateKey(CbcWithPkcs7Padding)
 	val bytes = defaultCryptoService.aes.exportKey(aesKey)
 
-	val accessControlFlags: SecAccessControlCreateFlags = accessLevel.fold(0.toULong()) { acc, level -> acc or level.toSecAccessControlCreateFlags() }
+	val accessControlFlags: SecAccessControlCreateFlags =
+		accessLevel.fold(0.toULong()) { acc, level -> acc or level.toSecAccessControlCreateFlags() }
 
 	val accessControl = SecAccessControlCreateWithFlags(
 		allocator = kCFAllocatorDefault,
 		protection = kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
 		flags = accessControlFlags,
-		error = null
+		error = null,
 	)
 
 	val query = CFDictionaryCreateMutable(
 		allocator = kCFAllocatorDefault,
 		capacity = 4,
 		keyCallBacks = kCFTypeDictionaryKeyCallBacks.ptr,
-		valueCallBacks = kCFTypeDictionaryValueCallBacks.ptr
-	).also {
-		CFDictionaryAddValue(it, kSecClass, kSecClassKey)
-		CFDictionaryAddValue(it, kSecAttrApplicationTag, CFBridgingRetain(key.toByteArray().toNSData()))
-		CFDictionaryAddValue(it, kSecValueData, CFBridgingRetain(bytes.toNSData()))
-		CFDictionaryAddValue(it, kSecAttrAccessControl, accessControl)
+		valueCallBacks = kCFTypeDictionaryValueCallBacks.ptr,
+	)
+	try {
+		CFDictionaryAddValue(query, kSecClass, kSecClassKey)
+		CFDictionaryAddValue(query, kSecAttrApplicationTag, CFBridgingRetain(key.toByteArray().toNSData()))
+		CFDictionaryAddValue(query, kSecValueData, CFBridgingRetain(bytes.toNSData()))
+		CFDictionaryAddValue(query, kSecAttrAccessControl, accessControl)
+
+		val status = SecItemAdd(query, null)
+
+		CFRelease(query)
+
+		if (status == errSecSuccess) {
+			return aesKey
+		} else {
+			throw IllegalStateException("Failed to generate key data")
+		}
+	} finally {
+		CFRelease(accessControl)
+		CFRelease(query)
 	}
 
-	val status = SecItemAdd(query, null)
 
-	if (status == errSecSuccess) {
-		return aesKey
-	} else {
-		throw IllegalStateException("Failed to generate key data")
-	}
 }
 
 private fun SecureKeyAccessLevel.toSecAccessControlCreateFlags(): SecAccessControlCreateFlags {
