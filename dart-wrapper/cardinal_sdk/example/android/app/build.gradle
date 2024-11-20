@@ -45,6 +45,6 @@ flutter {
 
 android {
     defaultConfig {
-        minSdkVersion 30
+        minSdkVersion 26
     }
 }
