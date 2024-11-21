@@ -1,7 +1,5 @@
 package com.icure.cardinal.sdk
 
-import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClient
-import com.icure.cardinal.sdk.CardinalSdk.Companion.sharedHttpClientUsingLenientJson
 import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
@@ -151,7 +149,6 @@ import com.icure.cardinal.sdk.crypto.impl.SecureDelegationsManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.cardinal.sdk.crypto.impl.TransferKeysManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.UserEncryptionKeysManagerImpl
-import com.icure.cardinal.sdk.crypto.impl.UserSignatureKeysManagerImpl
 import com.icure.cardinal.sdk.model.LoginCredentials
 import com.icure.cardinal.sdk.model.extensions.toStub
 import com.icure.cardinal.sdk.options.ApiConfiguration
@@ -471,16 +468,10 @@ private suspend fun initializeApiCrypto(
 		!options.useHierarchicalDataOwners,
 	).initialize()
 	val userEncryptionKeys = userEncryptionKeysInitInfo.manager
-	val userSignatureKeysManager = UserSignatureKeysManagerImpl(
-		iCureStorage,
-		dataOwnerApi,
-		cryptoService
-	)
 	val exchangeDataManager = if (selfIsAnonymous)
 		FullyCachedExchangeDataManager(
 			baseExchangeDataManager,
 			userEncryptionKeys,
-			userSignatureKeysManager,
 			cryptoStrategies,
 			dataOwnerApi,
 			cryptoService,
@@ -490,7 +481,6 @@ private suspend fun initializeApiCrypto(
 		CachedLruExchangeDataManager(
 			baseExchangeDataManager,
 			userEncryptionKeys,
-			userSignatureKeysManager,
 			cryptoStrategies,
 			dataOwnerApi,
 			cryptoService,

@@ -1,11 +1,9 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
-import com.icure.cardinal.sdk.crypto.UserSignatureKeysManager
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -13,16 +11,16 @@ import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.model.ExchangeData
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.LruCacheWithAsyncRetrieve
 import com.icure.cardinal.sdk.utils.ResourceNotFoundException
 import com.icure.cardinal.sdk.utils.SynchronisedLruCache
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 class CachedLruExchangeDataManager(
 	base: BaseExchangeDataManager,
 	userEncryptionKeys: UserEncryptionKeysManager,
-	signatureKeys: UserSignatureKeysManager,
 	cryptoStrategies: CryptoStrategies,
 	dataOwnerApi: DataOwnerApi,
 	cryptoService: CryptoService,
@@ -31,7 +29,6 @@ class CachedLruExchangeDataManager(
 ) : AbstractExchangeDataManager(
 	base,
 	userEncryptionKeys,
-	signatureKeys,
 	cryptoStrategies,
 	dataOwnerApi,
 	cryptoService,
