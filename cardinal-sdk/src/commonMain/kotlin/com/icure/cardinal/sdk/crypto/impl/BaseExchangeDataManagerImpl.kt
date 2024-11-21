@@ -1,35 +1,36 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.HmacAlgorithm
-import com.icure.kryptom.crypto.HmacKey
-import com.icure.kryptom.utils.hexToByteArray
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
-import com.icure.cardinal.sdk.crypto.RsaVerificationKeyProvider
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
-import com.icure.cardinal.sdk.crypto.entities.RsaSignatureKeysSet
+import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.model.ExchangeData
 import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.decode
 import com.icure.cardinal.sdk.utils.ensure
 import com.icure.cardinal.sdk.utils.getLogger
 import com.icure.cardinal.sdk.utils.pagination.exhaustPaginatedRequest
 import com.icure.cardinal.sdk.utils.validateResponseContent
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.HmacAlgorithm
+import com.icure.kryptom.crypto.HmacKey
+import com.icure.kryptom.crypto.PrivateRsaKey
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.utils.hexToByteArray
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.flow.toList
@@ -69,13 +70,13 @@ class BaseExchangeDataManagerImpl(
 
 	override suspend fun verifyExchangeData(
 		data: ExchangeDataWithUnencryptedContent,
-		rsaVerificationKeyProvider: RsaVerificationKeyProvider,
+		delegatorSignatureKeys: SelfVerifiedKeysSet,
 		verifyAsDelegator: Boolean
 	): Boolean {
 		if (
 			verifyAsDelegator && (
 				data.exchangeData.delegator !== dataOwnerApi.getCurrentDataOwnerId()
-				|| !(verifyDelegatorSignature(data.exchangeData, data.unencryptedContent.sharedSignatureKey, rsaVerificationKeyProvider))
+				|| !(verifyDelegatorSignature(data.exchangeData, data.unencryptedContent.sharedSignatureKey, delegatorSignatureKeys))
 			)
 		) return false
 		val sharedSignatureData = bytesToSignForSharedSignature(
@@ -131,7 +132,7 @@ class BaseExchangeDataManagerImpl(
 
 	override suspend fun createExchangeData(
 		delegateId: String,
-		signatureKeys: RsaSignatureKeysSet,
+		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String?
 	): ExchangeDataWithUnencryptedContent {
@@ -155,11 +156,13 @@ class BaseExchangeDataManagerImpl(
 			),
 			sharedSignatureKey
 		).base64Encode()
-		val delegatorSignature = cryptoService.signDataWithKeys(
-			bytesToSignForDelegatorSignature(sharedSignatureKey = sharedSignatureKey),
-			signatureKeys,
-			KeyIdentifierFormat.FingerprintV2
-		)
+		val delegatorSignatureBytes = bytesToSignForDelegatorSignature(sharedSignatureKey = sharedSignatureKey)
+		val delegatorSignature = signatureKeys.allKeys.associate { keyInfo ->
+			keyInfo.pubSpkiHexString.fingerprintV2() to cryptoService.hmac.sign(
+				delegatorSignatureBytes,
+				selfEncryptionKeyToHmac(keyInfo.key)
+			).base64Encode()
+		}
 		val exchangeData = ExchangeData(
 			id = exchangeDataId ?: cryptoService.strongRandom.randomUUID(),
 			delegator = delegator,
@@ -282,7 +285,7 @@ class BaseExchangeDataManagerImpl(
 						sharedSignatureKey = unencryptedExchangeDataContent.sharedSignatureKey
 					)
 				),
-				rsaVerificationKeyProvider = { null },
+				delegatorSignatureKeys = SelfVerifiedKeysSet.empty,
 				verifyAsDelegator = false
 			)
 			if (isVerified) it.copy(
@@ -333,22 +336,29 @@ class BaseExchangeDataManagerImpl(
 	): ByteArray? =
 		cryptoService.decryptDataWithKeys(encryptedData, decryptionKeys, KeyIdentifierFormat.FingerprintV2, EncodedDataFormat.Base64)
 
+	private suspend fun selfEncryptionKeyToHmac(
+		key: PrivateRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>
+	): HmacKey<HmacAlgorithm.HmacSha512> {
+		val keyBytes = cryptoService.digest.sha512(cryptoService.rsa.exportPrivateKeyPkcs8(key))
+		return cryptoService.hmac.loadKey(HmacAlgorithm.HmacSha512, keyBytes)
+	}
+
 	private suspend fun verifyDelegatorSignature(
 		exchangeData: ExchangeData,
 		sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>,
-		verificationKeyProvider: RsaVerificationKeyProvider
+		delegatorSignatureKeys: SelfVerifiedKeysSet
 	): Boolean {
 		val delegatorSignatureData = bytesToSignForDelegatorSignature(sharedSignatureKey = sharedSignatureKey)
 		/*
 		 * Have access to at least a signature key and all the available keys validate the signature
 		 */
 		return exchangeData.delegatorSignature.mapNotNull { (fp, signature) ->
-			verificationKeyProvider.getByFingerprint(fp)?.let { it to signature }
+			delegatorSignatureKeys.getByFingerprintV2(fp)?.let { it to signature }
 		}.takeIf { it.isNotEmpty() }?.all { (key, signature) ->
-			cryptoService.rsa.verifySignature(
+			cryptoService.hmac.verify(
 				signature = signature.decode(),
 				data = delegatorSignatureData,
-				publicKey = key
+				key = selfEncryptionKeyToHmac(key)
 			)
 		} == true
 	}

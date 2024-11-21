@@ -1,19 +1,19 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
-import com.icure.kryptom.crypto.HmacAlgorithm
-import com.icure.kryptom.crypto.HmacKey
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
-import com.icure.cardinal.sdk.crypto.entities.RsaSignatureKeysSet
+import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.model.ExchangeData
 import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.HmacAlgorithm
+import com.icure.kryptom.crypto.HmacKey
 import com.icure.utils.InternalIcureApi
 
 /**
@@ -55,7 +55,8 @@ interface BaseExchangeDataManager {
 	 * Note that all exchange data created by data owners other than the current data owner (including members of his hierarchy)
 	 * will always be unverified.
 	 * @param data information about the exchange data to verify.
-	 * @param rsaVerificationKeyProvider provides the rsa verification keys of the current data owenr, used only if verifyAsDelegator is true.
+	 * @param delegatorSignatureKeys verified keys used to ensure the authenticity of exchange data created by the current
+	 * data owner.
 	 * @param verifyAsDelegator if true the method will also verify that the hmac key used for the signature was created by the delegator of the
 	 * exchange data. If true and the data was not created by the current data owner this method will return false.
 	 * @return the exchange data which could be verified given his signature and the available verification keys.
@@ -63,7 +64,7 @@ interface BaseExchangeDataManager {
 	 */
 	suspend fun verifyExchangeData(
 		data: ExchangeDataWithUnencryptedContent,
-		rsaVerificationKeyProvider: RsaVerificationKeyProvider,
+		delegatorSignatureKeys: SelfVerifiedKeysSet,
 		verifyAsDelegator: Boolean
 	): Boolean
 
@@ -120,7 +121,7 @@ interface BaseExchangeDataManager {
 	 */
 	suspend fun createExchangeData(
 		delegateId: String,
-		signatureKeys: RsaSignatureKeysSet,
+		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String? = null
 	): ExchangeDataWithUnencryptedContent

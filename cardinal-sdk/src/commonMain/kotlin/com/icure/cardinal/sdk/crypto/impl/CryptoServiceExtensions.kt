@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
-import com.icure.cardinal.sdk.crypto.entities.RsaSignatureKeysSet
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.model.base.CryptoActor
 import com.icure.cardinal.sdk.model.extensions.publicKeysWithSha1Spki
@@ -57,16 +56,6 @@ sealed interface EncodedDataFormat<T> {
 		override fun decode(encoded: HexString) = encoded.decodedBytes()
 	}
 }
-
-@InternalIcureApi
-suspend fun <T> CryptoService.signDataWithKeys(
-	data: ByteArray,
-	signatureKeysSet: RsaSignatureKeysSet,
-	keyIdentifierFormat: KeyIdentifierFormat<T>
-): Map<T, Base64String> =
-	signatureKeysSet.allKeys.associate { keyInfo ->
-		keyIdentifierFormat.format(keyInfo) to rsa.sign(data, keyInfo.key).base64Encode()
-	}
 
 @InternalIcureApi
 suspend fun <T> CryptoService.encryptDataWithKeys(

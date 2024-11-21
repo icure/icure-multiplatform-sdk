@@ -1,15 +1,14 @@
 package com.icure.cardinal.sdk.crypto.entities
 
+import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
+import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.kryptom.crypto.PrivateRsaKey
 import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
-import com.icure.kryptom.crypto.RsaAlgorithm.RsaSignatureAlgorithm
 import com.icure.kryptom.crypto.RsaKey
 import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
-import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
-import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.utils.InternalIcureApi
 
 /**
@@ -97,7 +96,7 @@ open class RsaKeysSet<KeyType : RsaKey>(
 }
 
 /**
- * Container for the decryption keys available to a data owner. This usually includes both personal and organisational
+ * Container for the decryption keys available to a data owner. This usually includes both personal and organizational
  * private keys available to the current data owner. The keys in this container (or part of them) MAY BE UNVERIFIED.
  */
 @InternalIcureApi
@@ -106,8 +105,9 @@ class RsaDecryptionKeysSet(
 ) : RsaKeysSet<PrivateRsaKey<RsaEncryptionAlgorithm>>(keys)
 
 /**
- * Container for encryption keys. Usually these include keys of the current data owner and keys of a "delegate" data
- * owner. This is generally used to support the sharing of data between the two.
+ * Container for encryption keys. Usually these include keys of the current data owner (excludes organization keys) and
+ * keys of a "delegate" data owner.
+ * This is generally used to support the sharing of data between the two.
  * Important: this container must contain ONLY VERIFIED KEYS.
  */
 @InternalIcureApi
@@ -115,11 +115,16 @@ class VerifiedRsaEncryptionKeysSet(
 	keys: Collection<CardinalKeyInfo<PublicRsaKey<RsaEncryptionAlgorithm>>>
 ) : RsaKeysSet<PublicRsaKey<RsaEncryptionAlgorithm>>(keys)
 
+
 /**
- * Container for signature keys. Usually these are the keys of the current data owner.
- * Important: this container must contain ONLY VERIFIED KEYS.
+ * Container for the verified keys of the current data owner (excludes organization keys).
+ * Used for signing and verifying exchange data created by the current data owner.
  */
 @InternalIcureApi
-class RsaSignatureKeysSet(
-	keys: List<CardinalKeyInfo<PrivateRsaKey<RsaSignatureAlgorithm.PssWithSha256>>>
-) : RsaKeysSet<PrivateRsaKey<RsaSignatureAlgorithm.PssWithSha256>>(keys)
+class SelfVerifiedKeysSet(
+	keys: Collection<CardinalKeyInfo<PrivateRsaKey<RsaEncryptionAlgorithm>>>
+) : RsaKeysSet<PrivateRsaKey<RsaEncryptionAlgorithm>>(keys) {
+	companion object {
+		val empty = SelfVerifiedKeysSet(emptyList())
+	}
+}
