@@ -14,7 +14,6 @@ import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Int
-import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.collections.List
@@ -356,43 +355,5 @@ public fun byExternalIdForSelf(params: String): String = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ByExternalIdForSelfParams>(params)
 	PatientFilters.byExternalIdForSelf(
 		decodedParams.externalIdPrefix,
-	)
-}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class)))
-
-@Serializable
-private class ByModificationDateForDataOwnerParams(
-	public val dataOwnerId: String,
-	public val from: Long? = null,
-	public val to: Long? = null,
-	public val descending: Boolean = false,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun byModificationDateForDataOwner(params: String): String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ByModificationDateForDataOwnerParams>(params)
-	PatientFilters.byModificationDateForDataOwner(
-		decodedParams.dataOwnerId,
-		decodedParams.from,
-		decodedParams.to,
-		decodedParams.descending,
-	)
-}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class)))
-
-@Serializable
-private class ByModificationDateForSelfParams(
-	public val from: Long? = null,
-	public val to: Long? = null,
-	public val descending: Boolean = false,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun byModificationDateForSelf(params: String): String = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<ByModificationDateForSelfParams>(params)
-	PatientFilters.byModificationDateForSelf(
-		decodedParams.from,
-		decodedParams.to,
-		decodedParams.descending,
 	)
 }.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class)))

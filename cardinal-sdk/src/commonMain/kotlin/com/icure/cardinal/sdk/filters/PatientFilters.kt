@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.Gender
 import com.icure.cardinal.sdk.model.embed.Telecom
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
-import com.icure.cardinal.sdk.model.filter.patient.PatientByDataOwnerModifiedAfterFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndActiveFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndAddressFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndExternalIdFilter
@@ -22,8 +21,8 @@ import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyGenderEducati
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyNameFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByIdsFilter
 import com.icure.cardinal.sdk.utils.DefaultValue
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.requireUniqueElements
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
 object PatientFilters {
@@ -410,54 +409,6 @@ object PatientFilters {
         externalIdPrefix: String
     ) : SortableFilterOptions<Patient> = ByExternalIdForSelf(externalIdPrefix = externalIdPrefix)
 
-	/**
-	 * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner
-	 * where the modification timestamp is between [from] (inclusive) and [to] (inclusive).
-	 * If [from] is not provided, all the patients modified before [to] will be returned.
-	 * If [to] is not provided, all the patients modified after [from] will be returned.
-	 * If a patient was never modified (i.e. [Patient.modified] is null), the [Patient.created] timestamp will be used instead.
-	 *
-	 * These options are sortable. When sorting using these options the patients will be ordered by [Patient.modified] (or [Patient.created]
-	 * if modified is null).
-	 *
-	 * @param dataOwnerId a data owner id.
-	 * @param from the minimum timestamp for the last modification (default: no minimum).
-	 * @param to the maximum timestamp for the last modification (default: no maximum).
-	 * @param descending whether to sort the results in ascending or descending order by [Patient.modified] (default: ascending).
- 	 */
-	fun byModificationDateForDataOwner(
-		dataOwnerId: String,
-		@DefaultValue("null")
-		from: Long? = null,
-		@DefaultValue("null")
-		to: Long? = null,
-		@DefaultValue("false")
-		descending: Boolean = false
-	): BaseSortableFilterOptions<Patient> = ByModificationDateForDataOwner(dataOwnerId, from, to, descending)
-
-	/**
-	 * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner
-	 * where the modification timestamp is between [from] (inclusive) and [to] (inclusive).
-	 * If [from] is not provided, all the patients modified before [to] will be returned.
-	 * If [to] is not provided, all the patients modified after [from] will be returned.
-	 * If a patient was never modified (i.e. [Patient.modified] is null), the [Patient.created] timestamp will be used instead.
-	 *
-	 * These options are sortable. When sorting using these options the patients will be ordered by [Patient.modified] (or [Patient.created]
-	 * if modified is null).
-	 *
-	 * @param from the minimum timestamp for the last modification (default: no minimum).
-	 * @param to the maximum timestamp for the last modification (default: no maximum).
-	 * @param descending whether to sort the results in ascending or descending order by [Patient.modified] (default: ascending).
-	 */
-	fun byModificationDateForSelf(
-		@DefaultValue("null")
-		from: Long? = null,
-		@DefaultValue("null")
-		to: Long? = null,
-		@DefaultValue("false")
-		descending: Boolean = false
-	): SortableFilterOptions<Patient> = ByModificationDateForSelf(from, to, descending)
-
     @Serializable
     internal class ByIds(
         val ids: List<String>
@@ -606,21 +557,6 @@ object PatientFilters {
     internal class ByExternalIdForSelf(
         val externalIdPrefix: String
     ) : SortableFilterOptions<Patient>
-
-	@Serializable
-	internal class ByModificationDateForDataOwner(
-		val dataOwnerId: String,
-		val from: Long?,
-		val to: Long?,
-		val descending: Boolean
-	): BaseSortableFilterOptions<Patient>
-
-	@Serializable
-	internal class ByModificationDateForSelf(
-		val from: Long?,
-		val to: Long?,
-		val descending: Boolean
-	): SortableFilterOptions<Patient>
 }
 
 
@@ -817,22 +753,5 @@ internal suspend fun mapPatientFilterOptions(
             healthcarePartyId = selfDataOwnerId
         )
     }
-	is PatientFilters.ByModificationDateForDataOwner -> PatientByDataOwnerModifiedAfterFilter(
-		dataOwnerId = filterOptions.dataOwnerId,
-		startDate = filterOptions.from,
-		endDate = filterOptions.to,
-		descending = filterOptions.descending,
-		desc = null
-	)
-	is PatientFilters.ByModificationDateForSelf -> {
-		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
-		PatientByDataOwnerModifiedAfterFilter(
-			dataOwnerId = selfDataOwnerId,
-			startDate = filterOptions.from,
-			endDate = filterOptions.to,
-			descending = filterOptions.descending,
-			desc = null
-		)
-	}
 	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
 }
