@@ -169,13 +169,72 @@ data class BasicSdkOptions(
 
 @Serializable
 data class EncryptedFieldsConfiguration(
-	val accessLog: Set<String> = setOf("detail", "objectId"),
-	val calendarItem: Set<String> = setOf("details", "title", "patientId"),
-	val contact: Set<String> = setOf("descr", "notes[].markdown"),
-	val service: Set<String> = setOf("notes[].markdown"),
-	val healthElement: Set<String> = setOf("descr", "note", "notes[].markdown"),
+	val accessLog: Set<String> = setOf(
+		"detail",
+		"objectId",
+		"patientId"
+	),
+	val calendarItem: Set<String> = setOf(
+		"details",
+		"title",
+		"patientId",
+		"phoneNumber",
+		"address",
+		"addressText",
+		"meetingTags",
+		"flowItem"
+	),
+	val contact: Set<String> = setOf(
+		"descr",
+		"notes[].markdown",
+		"location",
+		"encounterLocation",
+		"participants",
+	),
+	val service: Set<String> = setOf(
+		"notes[].markdown",
+		"comment",
+	),
+	val healthElement: Set<String> = setOf(
+		"descr",
+		"note",
+		"notes[].markdown",
+	),
 	val maintenanceTask: Set<String> = setOf("properties"),
-	val patient: Set<String> = setOf("note", "notes[].markdown"),
+	val patient: Set<String> = setOf(
+		"note",
+		"notes[].markdown",
+		"created",
+		"modified",
+		"companyName",
+		"languages",
+		"civility",
+		"birthSex",
+		"personalStatus",
+		"administrativeNote",
+		"nationality",
+		"race",
+		"ethnicity",
+		"picture",
+		"insurabilities",
+		//TODO Partnerships could be useful to have it decrypted if for example the app logic dictates that when a user
+		// shares with a child they should also share with parent; if we don't want this to be the preferred
+		// method we should encrypt by default
+		//"partnerships",
+		"patientHealthCareParties",
+		"financialInstitutionInformation",
+		"medicalHouseContracts",
+		"patientProfessions",
+		"comment",
+		"warning",
+		"fatherBirthCountry",
+		"birthCountry",
+		"nativeCountry",
+		"socialStatus",
+		"mainSourceOfIncome",
+		"schoolingInfos",
+		"employementInfos",
+	),
 	val message: Set<String> = setOf("subject"),
 	val topic: Set<String> = setOf("description", "linkedServices", "linkedHealthElements"),
 	val document: Set<String> = emptySet(),
