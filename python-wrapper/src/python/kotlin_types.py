@@ -3789,8 +3789,6 @@ class PatientFilters(Structure):
 		("byIdentifiersForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
 		("byIdentifiersForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 		("byIds", CFUNCTYPE(c_void_p, c_char_p)),
-		("byModificationDateForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
-		("byModificationDateForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 		("byNameForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 		("bySsinsForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
 		("bySsinsForSelf", CFUNCTYPE(c_void_p, c_char_p)),
