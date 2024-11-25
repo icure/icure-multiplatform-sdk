@@ -11,18 +11,22 @@ import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.Annotation
 import com.icure.cardinal.sdk.model.embed.DeactivationReason
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
+import com.icure.cardinal.sdk.model.embed.DecryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.DecryptedInsurability
 import com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty
+import com.icure.cardinal.sdk.model.embed.DecryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.Delegation
 import com.icure.cardinal.sdk.model.embed.EmploymentInfo
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.EncryptedAddress
+import com.icure.cardinal.sdk.model.embed.EncryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.EncryptedInsurability
 import com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty
+import com.icure.cardinal.sdk.model.embed.EncryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.FinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.Gender
 import com.icure.cardinal.sdk.model.embed.Insurability
@@ -343,9 +347,9 @@ data class DecryptedPatient(
 	override val socialStatus: CodeStub? = null,
 	override val mainSourceOfIncome: CodeStub? = null,
 	@DefaultValue("emptyList()")
-	override val schoolingInfos: List<SchoolingInfo> = emptyList(),
+	override val schoolingInfos: List<DecryptedSchoolingInfo> = emptyList(),
 	@DefaultValue("emptyList()")
-	override val employementInfos: List<EmploymentInfo> = emptyList(),
+	override val employementInfos: List<DecryptedEmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-DecryptedPatient
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
@@ -470,9 +474,9 @@ data class EncryptedPatient(
 	override val socialStatus: CodeStub? = null,
 	override val mainSourceOfIncome: CodeStub? = null,
 	@DefaultValue("emptyList()")
-	override val schoolingInfos: List<SchoolingInfo> = emptyList(),
+	override val schoolingInfos: List<EncryptedSchoolingInfo> = emptyList(),
 	@DefaultValue("emptyList()")
-	override val employementInfos: List<EmploymentInfo> = emptyList(),
+	override val employementInfos: List<EncryptedEmploymentInfo> = emptyList(),
 ) : Patient {
 	// region Patient-EncryptedPatient
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =

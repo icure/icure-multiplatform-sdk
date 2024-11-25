@@ -7,9 +7,11 @@ import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.CalendarItemTag
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
+import com.icure.cardinal.sdk.model.embed.DecryptedCalendarItemTag
 import com.icure.cardinal.sdk.model.embed.Delegation
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.EncryptedAddress
+import com.icure.cardinal.sdk.model.embed.EncryptedCalendarItemTag
 import com.icure.cardinal.sdk.model.embed.FlowItem
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
@@ -155,7 +157,7 @@ data class DecryptedCalendarItem(
 	override val hcpId: String? = null,
 	override val recurrenceId: String? = null,
 	@DefaultValue("emptySet()")
-	override val meetingTags: Set<CalendarItemTag> = emptySet(),
+	override val meetingTags: Set<DecryptedCalendarItemTag> = emptySet(),
 	override val flowItem: FlowItem? = null,
 	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
@@ -226,7 +228,7 @@ data class EncryptedCalendarItem(
 	override val hcpId: String? = null,
 	override val recurrenceId: String? = null,
 	@DefaultValue("emptySet()")
-	override val meetingTags: Set<CalendarItemTag> = emptySet(),
+	override val meetingTags: Set<EncryptedCalendarItemTag> = emptySet(),
 	override val flowItem: FlowItem? = null,
 	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
