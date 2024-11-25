@@ -201,7 +201,7 @@ data class EncryptedFieldsConfiguration(
 		"notes[].markdown",
 	),
 	val maintenanceTask: Set<String> = setOf(
-		"properties[].*",
+		"properties",
 	),
 	val patient: Set<String> = setOf(
 		"note",

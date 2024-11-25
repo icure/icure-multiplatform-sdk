@@ -7,7 +7,11 @@ from cardinal_sdk.options.JsonPatcher import JsonPatcher
 
 @dataclass
 class EncryptedFieldsConfiguration:
-    access_log: List[str] = field(default_factory=lambda: ["detail", "objectId", "patientId"])
+    access_log: List[str] = field(default_factory=lambda: [
+        "detail",
+        "objectId",
+        "patientId"
+    ])
     calendar_item: List[str] = field(default_factory=lambda: [
         "details",
         "title",
@@ -15,7 +19,7 @@ class EncryptedFieldsConfiguration:
         "phoneNumber",
         "address",
         "addressText",
-        "meetingTags",
+        "meetingTags[].*",
         "flowItem"
     ])
     contact: List[str] = field(default_factory=lambda: [
@@ -29,8 +33,14 @@ class EncryptedFieldsConfiguration:
         "notes[].markdown",
         "comment",
     ])
-    health_element: List[str] = field(default_factory=lambda: ["descr", "note", "notes[].markdown"])
-    maintenance_task: List[str] = field(default_factory=lambda: ["properties"])
+    health_element: List[str] = field(default_factory=lambda: [
+        "descr",
+        "note",
+        "notes[].markdown"
+    ])
+    maintenance_task: List[str] = field(default_factory=lambda: [
+        "properties"
+    ])
     patient: List[str] = field(default_factory=lambda: [
         "note",
         "notes[].markdown",
@@ -46,10 +56,11 @@ class EncryptedFieldsConfiguration:
         "race",
         "ethnicity",
         "picture",
-        "insurabilities",
-        "patientHealthCareParties",
-        "financialInstitutionInformation",
-        "medicalHouseContracts",
+        "insurabilities[].*",
+        "partnerships[].*",
+        "patientHealthCareParties[].*",
+        "financialInstitutionInformation[].*",
+        "medicalHouseContracts[].*",
         "patientProfessions",
         "comment",
         "warning",
@@ -58,11 +69,17 @@ class EncryptedFieldsConfiguration:
         "nativeCountry",
         "socialStatus",
         "mainSourceOfIncome",
-        "schoolingInfos",
-        "employementInfos",
+        "schoolingInfos[].*",
+        "employementInfos[].*",
     ])
-    message: List[str] = field(default_factory=lambda: ["subject"])
-    topic: List[str] = field(default_factory=lambda: ["description", "linkedServices", "linkedHealthElements"])
+    message: List[str] = field(default_factory=lambda: [
+        "subject"
+    ])
+    topic: List[str] = field(default_factory=lambda: [
+        "description",
+        "linkedServices",
+        "linkedHealthElements"
+    ])
     document: List[str] = field(default_factory=lambda: [])
     form: List[str] = field(default_factory=lambda: [])
     receipt: List[str] = field(default_factory=lambda: [])

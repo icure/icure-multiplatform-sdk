@@ -144,7 +144,7 @@ class EncryptedFieldsConfiguration {
       "phoneNumber",
       "address",
       "addressText",
-      "meetingTags",
+      "meetingTags[].*",
       "flowItem"
     },
     this.contact = const  {
@@ -154,9 +154,18 @@ class EncryptedFieldsConfiguration {
       "encounterLocation",
       "participants",
     },
-    this.service = const {"notes[].markdown", "comment"},
-    this.healthElement = const {"descr", "note", "notes[].markdown"},
-    this.maintenanceTask = const {"properties"},
+    this.service = const {
+      "notes[].markdown",
+      "comment"
+    },
+    this.healthElement = const {
+      "descr",
+      "note",
+      "notes[].markdown"
+    },
+    this.maintenanceTask = const {
+      "properties"
+    },
     this.patient = const {
       "note",
       "notes[].markdown",
@@ -172,10 +181,11 @@ class EncryptedFieldsConfiguration {
       "race",
       "ethnicity",
       "picture",
-      "insurabilities",
-      "patientHealthCareParties",
-      "financialInstitutionInformation",
-      "medicalHouseContracts",
+      "insurabilities[].*",
+      "partnerships[].*",
+      "patientHealthCareParties[].*",
+      "financialInstitutionInformation[].*",
+      "medicalHouseContracts[].*",
       "patientProfessions",
       "comment",
       "warning",
@@ -184,11 +194,17 @@ class EncryptedFieldsConfiguration {
       "nativeCountry",
       "socialStatus",
       "mainSourceOfIncome",
-      "schoolingInfos",
-      "employementInfos",
+      "schoolingInfos[].*",
+      "employementInfos[].*",
     },
-    this.message = const {"subject"},
-    this.topic = const {"description", "linkedServices", "linkedHealthElements"},
+    this.message = const {
+      "subject"
+    },
+    this.topic = const {
+      "description",
+      "linkedServices",
+      "linkedHealthElements"
+    },
     this.document = const {},
     this.form = const {},
     this.receipt = const {},
