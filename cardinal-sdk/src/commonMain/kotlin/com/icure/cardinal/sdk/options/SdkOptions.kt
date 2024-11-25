@@ -181,7 +181,7 @@ data class EncryptedFieldsConfiguration(
 		"phoneNumber",
 		"address",
 		"addressText",
-		"meetingTags",
+		"meetingTags[].*",
 		"flowItem"
 	),
 	val contact: Set<String> = setOf(
@@ -200,7 +200,9 @@ data class EncryptedFieldsConfiguration(
 		"note",
 		"notes[].markdown",
 	),
-	val maintenanceTask: Set<String> = setOf("properties"),
+	val maintenanceTask: Set<String> = setOf(
+		"properties[].*",
+	),
 	val patient: Set<String> = setOf(
 		"note",
 		"notes[].markdown",
@@ -216,14 +218,11 @@ data class EncryptedFieldsConfiguration(
 		"race",
 		"ethnicity",
 		"picture",
-		"insurabilities",
-		//TODO Partnerships could be useful to have it decrypted if for example the app logic dictates that when a user
-		// shares with a child they should also share with parent; if we don't want this to be the preferred
-		// method we should encrypt by default
-		//"partnerships",
-		"patientHealthCareParties",
-		"financialInstitutionInformation",
-		"medicalHouseContracts",
+		"insurabilities[].*",
+		"partnerships[].*",
+		"patientHealthCareParties[].*",
+		"financialInstitutionInformation[].*",
+		"medicalHouseContracts[].*",
 		"patientProfessions",
 		"comment",
 		"warning",
@@ -232,11 +231,17 @@ data class EncryptedFieldsConfiguration(
 		"nativeCountry",
 		"socialStatus",
 		"mainSourceOfIncome",
-		"schoolingInfos",
-		"employementInfos",
+		"schoolingInfos[].*",
+		"employementInfos[].*",
 	),
-	val message: Set<String> = setOf("subject"),
-	val topic: Set<String> = setOf("description", "linkedServices", "linkedHealthElements"),
+	val message: Set<String> = setOf(
+		"subject"
+	),
+	val topic: Set<String> = setOf(
+		"description",
+		"linkedServices",
+		"linkedHealthElements"
+	),
 	val document: Set<String> = emptySet(),
 	val form: Set<String> = emptySet(),
 	val receipt: Set<String> = emptySet(),
