@@ -5,11 +5,13 @@ import com.icure.cardinal.sdk.crypto.RecoveryDataEncryption
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.RecoveryData
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.utils.LongPollingUtils
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.decode
@@ -64,7 +66,7 @@ class RecoveryDataEncryptionImpl(
 		recipient: String,
 		keyPairs: Map<String, List<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>,
 		lifetimeSeconds: Int?,
-		recoveryKeySize: RecoveryKeySize
+		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey {
 		val content: Map<String, List<DelegateKeyPairInfo>> = keyPairs.mapValues { (_, delegateKeypairs) ->
 			delegateKeypairs.map { keypair ->
@@ -80,52 +82,65 @@ class RecoveryDataEncryptionImpl(
 				)
 			}
 		}
-		return createRecoveryData(recipient, RecoveryData.Type.KeypairRecovery, lifetimeSeconds, Json.encodeToJsonElement(content), recoveryKeySize)
+		return createRecoveryData(recipient, RecoveryData.Type.KeypairRecovery, lifetimeSeconds, Json.encodeToJsonElement(content), recoveryKeyOptions)
 	}
 
 	override suspend fun getAndDecryptKeyPairsRecoveryData(
 		recoveryKey: RecoveryDataKey,
 		autoDelete: Boolean
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>> =
-		getRecoveryDataAndDecrypt(recoveryKey, RecoveryData.Type.KeypairRecovery) {
-			val decoded: Map<String, List<DelegateKeyPairInfo>> = Json.decodeFromJsonElement(it)
-			decoded.mapValues { (_, delegateKeypairs) ->
-				delegateKeypairs.map { delegateKeyPairInfo ->
-					val algorithm = when (delegateKeyPairInfo.algorithm) {
-						DelegateKeyPairInfo.ShaVersion.SHA256 -> RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
-						DelegateKeyPairInfo.ShaVersion.SHA1 -> RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1
-					}
-					val declaredSpki = delegateKeyPairInfo.pair.publicKey.decode()
-					val keypair = primitives.rsa.loadKeyPairPkcs8(algorithm, delegateKeyPairInfo.pair.privateKey.decode())
-					val obtainedSpki = primitives.rsa.exportPublicKeySpki(keypair.public).toList()
-					if (declaredSpki.toList() != obtainedSpki) throw SerializationException(
-						"Deserialized public key does not match the private key."
-					)
-					SpkiHexString(declaredSpki.toHexString()) to keypair
-				}.toMap()
-			}
-		}.also {
-			if (autoDelete && it.isSuccess) raw.deleteRecoveryData(recoveryKeyToId(recoveryKey))
+		doGetAndDecryptKeyPairsRecoveryData(recoveryKey, autoDelete, null)
+
+	override suspend fun waitAndDecryptKeyPairsRecoveryData(
+		recoveryKey: RecoveryDataKey,
+		autoDelete: Boolean,
+		waitSeconds: Int
+	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>> =
+		doGetAndDecryptKeyPairsRecoveryData(recoveryKey, autoDelete, waitSeconds)
+
+	private suspend fun doGetAndDecryptKeyPairsRecoveryData(
+		recoveryKey: RecoveryDataKey,
+		autoDelete: Boolean,
+		waitingSeconds: Int?
+	) = getRecoveryDataAndDecrypt(recoveryKey, RecoveryData.Type.KeypairRecovery, waitingSeconds) {
+		val decoded: Map<String, List<DelegateKeyPairInfo>> = Json.decodeFromJsonElement(it)
+		decoded.mapValues { (_, delegateKeypairs) ->
+			delegateKeypairs.map { delegateKeyPairInfo ->
+				val algorithm = when (delegateKeyPairInfo.algorithm) {
+					DelegateKeyPairInfo.ShaVersion.SHA256 -> RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
+					DelegateKeyPairInfo.ShaVersion.SHA1 -> RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha1
+				}
+				val declaredSpki = delegateKeyPairInfo.pair.publicKey.decode()
+				val keypair = primitives.rsa.loadKeyPairPkcs8(algorithm, delegateKeyPairInfo.pair.privateKey.decode())
+				val obtainedSpki = primitives.rsa.exportPublicKeySpki(keypair.public).toList()
+				if (declaredSpki.toList() != obtainedSpki) throw SerializationException(
+					"Deserialized public key does not match the private key."
+				)
+				SpkiHexString(declaredSpki.toHexString()) to keypair
+			}.toMap()
 		}
+	}.also {
+		if (autoDelete && it.isSuccess) raw.deleteRecoveryData(recoveryKeyToId(recoveryKey))
+	}
 
 	override suspend fun createAndSaveExchangeDataRecoveryData(
 		recipient: String,
 		exchangeDataInfo: List<ExchangeDataRecoveryDetails>,
 		lifetimeSeconds: Int?,
-		recoveryKeySize: RecoveryKeySize
+		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey =
 		createRecoveryData(
 			recipient,
 			RecoveryData.Type.ExchangeKeyRecovery,
 			lifetimeSeconds,
 			Json.encodeToJsonElement(exchangeDataInfo),
-			recoveryKeySize
+			recoveryKeyOptions
 		)
 
 	override suspend fun getAndDecryptExchangeDataRecoveryData(
 		recoveryKey: RecoveryDataKey
 	): RecoveryResult<List<ExchangeDataRecoveryDetails>> =
-		getRecoveryDataAndDecrypt(recoveryKey, RecoveryData.Type.ExchangeKeyRecovery) {
+		getRecoveryDataAndDecrypt(recoveryKey, RecoveryData.Type.ExchangeKeyRecovery, null) {
 			Json.decodeFromJsonElement(it)
 		}
 
@@ -134,15 +149,21 @@ class RecoveryDataEncryptionImpl(
 		type: RecoveryData.Type,
 		lifetimeSeconds: Int?,
 		content: JsonElement,
-		recoveryKeySize: RecoveryKeySize
+		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey {
-		val recoveryKeyAes = primitives.aes.generateKey(
-			AesAlgorithm.CbcWithPkcs7Padding,
-			when (recoveryKeySize) {
-				RecoveryKeySize.Bytes16 -> AesService.KeySize.Aes128
-				RecoveryKeySize.Bytes32 -> AesService.KeySize.Aes256
-			}
-		)
+		val recoveryKeyAes = when (val options = recoveryKeyOptions ?: RecoveryKeyOptions.Generate(recoveryKeySize = RecoveryKeySize.Bytes32)) {
+			is RecoveryKeyOptions.Generate -> primitives.aes.generateKey(
+				AesAlgorithm.CbcWithPkcs7Padding,
+				when (options.recoveryKeySize) {
+					RecoveryKeySize.Bytes16 -> AesService.KeySize.Aes128
+					RecoveryKeySize.Bytes32 -> AesService.KeySize.Aes256
+				}
+			)
+			is RecoveryKeyOptions.Use -> primitives.aes.loadKey(
+				AesAlgorithm.CbcWithPkcs7Padding,
+				options.key.asRawBytes()
+			)
+		}
 		val recoveryKey = RecoveryDataKey.fromRawBytes(primitives.aes.exportKey(recoveryKeyAes))
 		val id = recoveryKeyToId(recoveryKey)
 		val encryptedSelf =
@@ -158,24 +179,41 @@ class RecoveryDataEncryptionImpl(
 			recipient = recipient,
 			type = type
 		)
-		raw.createRecoveryData(data)
+		val createResult = raw.createRecoveryData(data)
+		if (createResult.status.value == 409 && recoveryKeyOptions is RecoveryKeyOptions.Use) throw IllegalArgumentException(
+			"Invalid RecoveryKeyOptions.Use value; key is already in use"
+		)
+		createResult.successBody() // ensure successful
 		return recoveryKey
 	}
 
 	private suspend fun <T: Any> getRecoveryDataAndDecrypt(
 		recoveryKey: RecoveryDataKey,
 		expectedType: RecoveryData.Type,
+		waitingSeconds: Int?,
 		decode: suspend (JsonElement) -> T
-	): RecoveryResult<T> =
-		raw.getRecoveryData(recoveryKeyToId(recoveryKey)).run {
-			when (status.value) {
-				404 -> return RecoveryResult.Failure(RecoveryDataUseFailureReason.Missing)
-				403 -> return RecoveryResult.Failure(RecoveryDataUseFailureReason.Unauthorized)
-				else -> successBody().let {
-					if (it.type != expectedType) return RecoveryResult.Failure(RecoveryDataUseFailureReason.InvalidType)
-					val decrypted = primitives.aes.decrypt(it.encryptedSelf.decode(), recoveryKey.loadAesKey(primitives))
+	): RecoveryResult<T> {
+		val id = recoveryKeyToId(recoveryKey)
+		val getResult =
+			if (waitingSeconds == null)
+				raw.getRecoveryData(id)
+			else
+				LongPollingUtils.doLongPoll(
+					LongPollingUtils.splitForRequestsDuration(waitingSeconds, MAX_WAIT_DURATION_S),
+					request = { raw.getRecoveryDataWaiting(id, it) },
+					shouldRetry = { it.status.value == 404 }
+				)
+		return when (getResult.status.value) {
+			404 -> RecoveryResult.Failure(RecoveryDataUseFailureReason.Missing)
+			403 -> RecoveryResult.Failure(RecoveryDataUseFailureReason.Unauthorized)
+			else -> getResult.successBody().let {
+				if (it.type != expectedType) {
+					RecoveryResult.Failure(RecoveryDataUseFailureReason.InvalidType)
+				} else {
+					val decrypted =
+						primitives.aes.decrypt(it.encryptedSelf.decode(), recoveryKey.loadAesKey(primitives))
 					val decryptedUtf8 = decrypted.decodeToString()
-					return try {
+					try {
 						RecoveryResult.Success(decode(Json.parseToJsonElement(decryptedUtf8)))
 					} catch (e: SerializationException) {
 						RecoveryResult.Failure(RecoveryDataUseFailureReason.InvalidContent)
@@ -183,4 +221,20 @@ class RecoveryDataEncryptionImpl(
 				}
 			}
 		}
+	}
+
+	override suspend fun generateNewKey(size: RecoveryKeySize): RecoveryDataKey =
+		RecoveryDataKey.fromRawBytes(
+			primitives.strongRandom.randomBytes(
+				when (size) {
+					RecoveryKeySize.Bytes16 -> 16
+					RecoveryKeySize.Bytes32 -> 32
+				}
+			)
+		)
+
+	companion object {
+		// As configured on backend
+		private const val MAX_WAIT_DURATION_S = 30
+	}
 }

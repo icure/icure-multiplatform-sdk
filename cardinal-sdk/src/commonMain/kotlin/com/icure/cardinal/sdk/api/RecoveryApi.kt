@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api
 import com.icure.cardinal.sdk.crypto.KeyPairRecoverer
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
@@ -29,14 +30,15 @@ interface RecoveryApi {
 	 *
 	 * # Important
 	 *
-	 * A malicious user that can login as the creator of the recovery data or that can access directly the database
-	 * containing the recovery data will be able to get the private key of the data owner from the recovery key returned
-	 * by this method. Therefore, the resulting recovery key must be kept secret, just like a private key.
+	 * The recovery key must be kept secret can give access to the private key of the user, therefore it must be kept
+	 * private.
 	 *
-	 * @param options optional parameters:
-	 * - `includeParentsKeys` if true, the recovery data will also contain any available keypairs for parents data owners.
-	 * - `lifetimeSeconds` the amount of seconds the recovery data will be available. If not provided, the recovery data will be available until it is
-	 *   explicitly deleted.
+	 * @param includeParentsKeys if true, the recovery data will also contain any available keypairs for parents data
+	 * owners.
+	 * @param lifetimeSeconds the amount of seconds the recovery data will be available. If not provided, the recovery
+	 * data will be available until it is explicitly deleted.
+	 * @param recoveryKeyOptions specifies the size of the recovery key to generate, or if it should use a precomputed
+	 * key.
 	 * @return an hexadecimal string that is the `recoveryKey` which will allow the user to recover his keypair later or
 	 * from another device. This value must be kept secret from other users. You can use this value with {@link recoverKeyPairs}
 	 */
@@ -45,8 +47,8 @@ interface RecoveryApi {
 		includeParentsKeys: Boolean = false,
 		@DefaultValue("null")
 		lifetimeSeconds: Int? = null,
-		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32")
-		recoveryKeySize: RecoveryKeySize = RecoveryKeySize.Bytes32,
+		@DefaultValue("null")
+		recoveryKeyOptions: RecoveryKeyOptions? = null,
 	): RecoveryDataKey
 
 	/**
@@ -54,7 +56,16 @@ interface RecoveryApi {
 	 */
 	suspend fun recoverKeyPairs(
 		recoveryKey: RecoveryDataKey,
-		autoDelete: Boolean
+		autoDelete: Boolean,
+	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
+
+	/**
+	 * Equivalent to [KeyPairRecoverer.waitForRecoveryKey]
+	 */
+	suspend fun recoverKeyPairsWaitingForCreation(
+		recoveryKey: RecoveryDataKey,
+		autoDelete: Boolean,
+		waitSeconds: Int
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
 
 	/**
@@ -74,9 +85,10 @@ interface RecoveryApi {
 	 *
 	 * @param delegateId id of the delegate that needs access to his exchange data from the current data owner. This can't
 	 * be the id of the current data owner (you should instead recover the keypair).
-	 * @param options optional parameters:
-	 * - `lifetimeSeconds` the amount of seconds the recovery data will be available. If not provided, the recovery data will be available until it is
-	 *   explicitly deleted.
+	 * @param lifetimeSeconds the amount of seconds the recovery data will be available. If not provided, the recovery
+	 * data will be available until it is explicitly deleted.
+	 * @param recoveryKeyOptions specifies the size of the recovery key to generate, or if it should use a precomputed
+	 * key.
 	 * @return an hexadecimal string that is the `recoveryKey` which will allow the delegate to gain access to the exchange data.
 	 * This value must be kept secret from users other than the current data owner and the delegate.
 	 * You can use this value with {@link recoverExchangeData}
@@ -85,8 +97,8 @@ interface RecoveryApi {
 		delegateId: String,
 		@DefaultValue("null")
 		lifetimeSeconds: Int? = null,
-		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize.Bytes32")
-		recoveryKeySize: RecoveryKeySize = RecoveryKeySize.Bytes32,
+		@DefaultValue("null")
+		recoveryKeyOptions: RecoveryKeyOptions? = null,
 	): RecoveryDataKey
 
 	/**
@@ -130,5 +142,15 @@ interface RecoveryApi {
 	 * @return the number of deleted exchange data recovery information.
 	 */
 	suspend fun purgeAllExchangeDataRecoveryInfoFor(dataOwnerId: String): Int
+
+	/**
+	 * Generate a recovery key.
+	 * Allows generating a recovery key on this device and pass it to another device that will actually create the
+	 * recovery data.
+	 * @param keySize the size of the key to generate
+	 */
+	suspend fun preGenerateRecoveryKey(
+		keySize: RecoveryKeySize = RecoveryKeySize.Bytes32
+	): RecoveryDataKey
 }
 

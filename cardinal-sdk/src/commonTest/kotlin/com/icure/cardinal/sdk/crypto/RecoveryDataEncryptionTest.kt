@@ -3,6 +3,9 @@ package com.icure.cardinal.sdk.crypto
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
+import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.crypto.impl.BasicCryptoStrategies
@@ -30,9 +33,16 @@ import io.kotest.assertions.fail
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeSingleton
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.maps.shouldNotBeEmpty
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.utils.io.core.toByteArray
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.random.Random
 
 @OptIn(InternalIcureApi::class)
 class RecoveryDataEncryptionTest : StringSpec({
@@ -226,5 +236,75 @@ class RecoveryDataEncryptionTest : StringSpec({
 			rawSharedSignatureKey = Base64String(rawSharedSignatureKey),
 			rawExchangeKey = Base64String(rawExchangeKey)
 		)
+	}
+
+	"Recovery data key options should be respected" {
+		val hcp = createHcpUser()
+		val api = hcp.api()
+		val recoveryKey1 = api.recovery.createRecoveryInfoForAvailableKeyPairs(
+			recoveryKeyOptions = RecoveryKeyOptions.Generate(RecoveryKeySize.Bytes16)
+		)
+		recoveryKey1.asRawBytes() shouldHaveSize 16
+		val recoveryKey2 = api.recovery.createRecoveryInfoForAvailableKeyPairs(
+			recoveryKeyOptions = RecoveryKeyOptions.Generate(RecoveryKeySize.Bytes32)
+		)
+		recoveryKey2.asRawBytes() shouldHaveSize 32
+		val precomputedKey1 = RecoveryDataKey.fromRawBytes(Random.nextBytes(16))
+		val recoveryKey3 = api.recovery.createRecoveryInfoForAvailableKeyPairs(
+			recoveryKeyOptions = RecoveryKeyOptions.Use(precomputedKey1)
+		)
+		recoveryKey3.asRawBytes().toList() shouldBe precomputedKey1.asRawBytes().toList()
+		val precomputedKey2 = RecoveryDataKey.fromRawBytes(Random.nextBytes(32))
+		val recoveryKey4 = api.recovery.createRecoveryInfoForAvailableKeyPairs(
+			recoveryKeyOptions = RecoveryKeyOptions.Use(precomputedKey2)
+		)
+		recoveryKey4.asRawBytes().toList() shouldBe precomputedKey2.asRawBytes().toList()
+		listOf(
+			recoveryKey1,
+			recoveryKey2,
+			recoveryKey3,
+			recoveryKey4,
+		).forEach { recoveryKey ->
+			api.recovery.recoverKeyPairs(recoveryKey, true).apply {
+				isSuccess shouldBe true
+				value.shouldNotBeEmpty()
+			}
+		}
+	}
+
+	"Attempting to create recovery data with an already used key should fail" {
+		val hcp = createHcpUser()
+		val api = hcp.api()
+		val existingRecoveryKey = api.recovery.createRecoveryInfoForAvailableKeyPairs()
+		shouldThrow<IllegalArgumentException> {
+			api.recovery.createRecoveryInfoForAvailableKeyPairs(
+				recoveryKeyOptions = RecoveryKeyOptions.Use(existingRecoveryKey)
+			)
+		}
+		api.recovery.purgeAllRecoveryInfoFor(hcp.dataOwnerId)
+		api.recovery.createRecoveryInfoForAvailableKeyPairs(
+			recoveryKeyOptions = RecoveryKeyOptions.Use(existingRecoveryKey)
+		) // after purging should be ok
+	}
+
+	"Should be able to wait for recovery data to be created" {
+		val hcp = createHcpUser()
+		val api = hcp.api()
+		val precomputedKey = api.recovery.preGenerateRecoveryKey(RecoveryKeySize.Bytes32)
+		precomputedKey.asRawBytes() shouldHaveSize 32
+		withTimeoutOrNull(6000) {
+			api.recovery.recoverKeyPairsWaitingForCreation(precomputedKey, true, 4)
+		}.shouldNotBeNull().shouldBeInstanceOf<RecoveryResult.Failure>().reason shouldBe RecoveryDataUseFailureReason.Missing
+		val resultDeferred = async {
+			withTimeoutOrNull(6000) {
+				api.recovery.recoverKeyPairsWaitingForCreation(precomputedKey, true, 100)
+			}
+		}
+		delay(2000)
+		api.recovery.createRecoveryInfoForAvailableKeyPairs(recoveryKeyOptions = RecoveryKeyOptions.Use(precomputedKey))
+		resultDeferred.await().shouldNotBeNull().also {
+			it.isSuccess shouldBe true
+			it.value.shouldNotBeEmpty()
+		}
 	}
 })
