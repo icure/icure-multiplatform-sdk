@@ -1,6 +1,7 @@
 import {Identifiable} from "../model/base/Identifiable.mjs";
 import {EntitySubscriptionCloseReason} from "./EntitySubscriptionCloseReason.mjs";
 import {EntitySubscriptionEvent} from "./EntitySubscriptionEvent.mjs";
+import {CancellablePromise} from "../utils/CancellablePromise";
 
 export interface EntitySubscription<E extends Identifiable<string>> {
   /**
@@ -30,5 +31,5 @@ export interface EntitySubscription<E extends Identifiable<string>> {
    * Waits for the next event in the subscription event queue and consumes it, or return null if no new event is produced
    * within the provided timeout or if the subscription gets closed while waiting.
    */
-  waitForEvent(timeoutMs: number): Promise<EntitySubscriptionEvent<E> | null>
+  waitForEvent(timeoutMs: number): CancellablePromise<EntitySubscriptionEvent<E> | null>
 }

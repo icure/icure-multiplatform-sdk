@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.utils.CancellableApi
 
 interface RecoveryApi {
 	/**
@@ -62,6 +63,7 @@ interface RecoveryApi {
 	/**
 	 * Equivalent to [KeyPairRecoverer.waitForRecoveryKey]
 	 */
+	@CancellableApi
 	suspend fun recoverKeyPairsWaitingForCreation(
 		recoveryKey: RecoveryDataKey,
 		autoDelete: Boolean,

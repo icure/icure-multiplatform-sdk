@@ -1,6 +1,8 @@
 package com.icure.cardinal.sdk.js.subscription
 
 import com.icure.cardinal.sdk.js.model.base.IdentifiableJs
+import com.icure.cardinal.sdk.js.utils.CancellablePromise
+import com.icure.cardinal.sdk.js.utils.cancellablePromise
 import com.icure.cardinal.sdk.model.base.Identifiable
 import com.icure.cardinal.sdk.subscription.EntitySubscription
 import kotlinx.coroutines.GlobalScope
@@ -38,7 +40,7 @@ external interface EntitySubscriptionJs<E : IdentifiableJs<String>> {
 	 * Waits for the next event in the subscription event queue and consumes it, or return null if no new event is produced
 	 * within the provided timeout or if the subscription gets closed while waiting.
 	 */
-	fun waitForEvent(timeoutMs: Int): Promise<EntitySubscriptionEventJs<E>?>
+	fun waitForEvent(timeoutMs: Int): CancellablePromise<EntitySubscriptionEventJs<E>?>
 }
 
 fun <EKT : Identifiable<String>, EJS : IdentifiableJs<String>> entitySubscription_toJs(
@@ -64,9 +66,10 @@ private class EntitySubscriptionWrapper<EKT : Identifiable<String>, EJS : Identi
 	override fun getEvent(): EntitySubscriptionEventJs<EJS>? =
 		delegate.eventChannel.tryReceive().getOrNull()?.let { entitySubscriptionEvent_toJs(it, converter) }
 
-	override fun waitForEvent(timeoutMs: Int): Promise<EntitySubscriptionEventJs<EJS>?> = GlobalScope.promise {
-		withTimeoutOrNull(timeoutMs.milliseconds) {
-			delegate.eventChannel.receiveCatching().getOrNull()
-		}?.let { entitySubscriptionEvent_toJs(it, converter) }
-	}
+	override fun waitForEvent(timeoutMs: Int): CancellablePromise<EntitySubscriptionEventJs<EJS>?> =
+		GlobalScope.cancellablePromise {
+			withTimeoutOrNull(timeoutMs.milliseconds) {
+				delegate.eventChannel.receiveCatching().getOrNull()
+			}?.let { entitySubscriptionEvent_toJs(it, converter) }
+		}
 }

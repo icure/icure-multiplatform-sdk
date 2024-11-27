@@ -5,6 +5,7 @@ package com.icure.utils
  * but are not part of any public iCure API and should not be used by the end user.
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.TYPEALIAS, AnnotationTarget.PROPERTY, AnnotationTarget.CONSTRUCTOR)
+@Retention(AnnotationRetention.BINARY)
 @RequiresOptIn(
 	level = RequiresOptIn.Level.ERROR,
 	message = "This API is meant to be used internally only by iCure. The signature and semantics of this API may change without notice."
