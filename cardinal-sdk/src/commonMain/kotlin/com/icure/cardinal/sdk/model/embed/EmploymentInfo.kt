@@ -31,6 +31,7 @@ data class DecryptedEmploymentInfo(
 	override val encryptedSelf: String?,
 ) : EmploymentInfo {
 	// region EmploymentInfo-DecryptedEmploymentInfo
+
 	// endregion
 }
 
@@ -43,5 +44,6 @@ data class EncryptedEmploymentInfo(
 	override val encryptedSelf: String?,
 ) : EmploymentInfo {
 	// region EmploymentInfo-EncryptedEmploymentInfo
+
 	// endregion
 }
