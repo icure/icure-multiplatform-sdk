@@ -31,6 +31,7 @@ data class DecryptedSchoolingInfo(
 	override val encryptedSelf: String?,
 ) : SchoolingInfo {
 	// region SchoolingInfo-DecryptedSchoolingInfo
+
 	// endregion
 }
 
@@ -43,5 +44,6 @@ data class EncryptedSchoolingInfo(
 	override val encryptedSelf: String?,
 ) : SchoolingInfo {
 	// region SchoolingInfo-EncryptedSchoolingInfo
+
 	// endregion
 }

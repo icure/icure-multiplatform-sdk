@@ -19,6 +19,7 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import kotlin.Int
 import kotlin.String
 import kotlin.collections.Map
 import kotlin.time.Duration
@@ -70,7 +71,7 @@ class RawRecoveryDataApiImpl(
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId)
+				appendPathSegments("rest", "v2", "recoverydata", "forRecipient", recipientId)
 			}
 			accept(Application.Json)
 		}.wrap()
@@ -82,7 +83,21 @@ class RawRecoveryDataApiImpl(
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "recoverydataforRecipient", recipientId, "ofType", "$type")
+				appendPathSegments("rest", "v2", "recoverydata", "forRecipient", recipientId, "ofType", "$type")
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getRecoveryDataWaiting(
+		id: String,
+		timeoutSeconds: Int?,
+	): HttpResponse<RecoveryData> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "recoverydata", "waiting", id)
+				parameter("timeoutSeconds", timeoutSeconds)
+				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
 		}.wrap()
