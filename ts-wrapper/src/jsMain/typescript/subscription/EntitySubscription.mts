@@ -1,7 +1,7 @@
 import {Identifiable} from "../model/base/Identifiable.mjs";
 import {EntitySubscriptionCloseReason} from "./EntitySubscriptionCloseReason.mjs";
 import {EntitySubscriptionEvent} from "./EntitySubscriptionEvent.mjs";
-import {CancellablePromise} from "../utils/CancellablePromise";
+import {CancellablePromise} from "../utils/CancellablePromise.mjs";
 
 export interface EntitySubscription<E extends Identifiable<string>> {
   /**
