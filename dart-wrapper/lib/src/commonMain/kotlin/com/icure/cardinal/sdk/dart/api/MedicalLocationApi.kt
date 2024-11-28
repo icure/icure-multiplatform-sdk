@@ -25,6 +25,7 @@ public object MedicalLocationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     medicalLocationDtoString: String,
@@ -44,6 +45,7 @@ public object MedicalLocationApi {
 
   public fun deleteMedicalLocations(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -69,6 +71,7 @@ public object MedicalLocationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     locationIdString: String,
@@ -88,6 +91,7 @@ public object MedicalLocationApi {
 
   public fun modifyMedicalLocation(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -113,6 +117,7 @@ public object MedicalLocationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     medicalLocationIdsString: String,
@@ -132,6 +137,7 @@ public object MedicalLocationApi {
 
   public fun matchMedicalLocationsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -157,6 +163,7 @@ public object MedicalLocationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -176,6 +183,7 @@ public object MedicalLocationApi {
 
   public fun filterMedicalLocationsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -203,6 +211,7 @@ public object MedicalLocationApi {
 
   public fun filterMedicalLocationsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

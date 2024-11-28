@@ -25,6 +25,7 @@ object Initializers {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		applicationIdString: String,
 		baseUrlString: String,
@@ -78,6 +79,7 @@ object Initializers {
 
 	fun initializeWithAuthProcess(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -157,6 +159,7 @@ object Initializers {
 
 	fun completeAuthentication(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,

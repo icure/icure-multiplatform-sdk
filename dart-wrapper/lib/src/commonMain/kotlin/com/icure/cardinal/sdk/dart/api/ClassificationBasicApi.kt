@@ -26,6 +26,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -48,6 +49,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -67,6 +69,7 @@ public object ClassificationBasicApi {
 
   public fun filterClassificationsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -97,6 +100,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -124,6 +128,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -143,6 +148,7 @@ public object ClassificationBasicApi {
 
   public fun deleteClassifications(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -168,6 +174,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -190,6 +197,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -209,6 +217,7 @@ public object ClassificationBasicApi {
 
   public fun getClassifications(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

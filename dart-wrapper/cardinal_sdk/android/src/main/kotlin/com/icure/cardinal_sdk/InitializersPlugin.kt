@@ -15,9 +15,9 @@ class InitializersPlugin(
             !dispatch(
                 methodName = call.method,
                 parameters = (call.arguments as Map<String, String>?).orEmpty()
-            ) { success, errorCode, errorMessage ->
+            ) { success, errorCode, errorMessage, errorDetail ->
                 if (errorCode != null)
-                    result.error(errorCode, errorMessage, null)
+                    result.error(errorCode, errorMessage, errorDetail)
                 else
                     result.success(success)
             }
@@ -28,6 +28,7 @@ class InitializersPlugin(
         methodName: String,
         parameters: Map<String, String>,
         resultCallback: (
+            String?,
             String?,
             String?,
             String?,
@@ -42,6 +43,7 @@ class InitializersPlugin(
     private fun initialize(
         parameters: Map<String, String>,
         resultCallback: (
+            String?,
             String?,
             String?,
             String?,
@@ -63,6 +65,7 @@ class InitializersPlugin(
     private fun initializeWithAuthProcess(
         parameters: Map<String, String>,
         resultCallback: (
+            String?,
             String?,
             String?,
             String?,
@@ -90,6 +93,7 @@ class InitializersPlugin(
     private fun completeAuthentication(
         parameters: Map<String, String>,
         resultCallback: (
+            String?,
             String?,
             String?,
             String?,

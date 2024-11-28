@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/device.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/id_with_rev.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
@@ -23,7 +24,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"deviceId": jsonEncode(deviceId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDevice");
 		final parsedResJson = jsonDecode(res);
 		return Device.fromJSON(parsedResJson);
@@ -36,7 +37,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"deviceIds": jsonEncode(deviceIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDevices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Device.fromJSON(x1) ).toList();
@@ -49,7 +50,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"p": jsonEncode(Device.encode(p)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createDevice");
 		final parsedResJson = jsonDecode(res);
 		return Device.fromJSON(parsedResJson);
@@ -62,7 +63,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"device": jsonEncode(Device.encode(device)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyDevice");
 		final parsedResJson = jsonDecode(res);
 		return Device.fromJSON(parsedResJson);
@@ -75,7 +76,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"devices": jsonEncode(devices.map((x0) => Device.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createDevices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -88,7 +89,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"devices": jsonEncode(devices.map((x0) => Device.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyDevices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -101,7 +102,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterDevicesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Device.fromJSON(x0));
@@ -114,7 +115,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterDevicesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Device.fromJSON(x0));
@@ -127,7 +128,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchDevicesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -140,7 +141,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchDevicesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -154,7 +155,7 @@ class DevicePlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDeviceById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -167,7 +168,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevicesByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -181,7 +182,7 @@ class DevicePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Device> undeleteDeviceById(String sdkId, String id, String rev) async {
@@ -192,7 +193,7 @@ class DevicePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteDeviceById");
 		final parsedResJson = jsonDecode(res);
 		return Device.fromJSON(parsedResJson);
@@ -205,7 +206,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"device": jsonEncode(Device.encode(device)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevice");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -218,7 +219,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"devices": jsonEncode(devices.map((x0) => Device.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -231,7 +232,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"device": jsonEncode(Device.encode(device)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Device> undeleteDevice(String sdkId, Device device) async {
@@ -241,7 +242,7 @@ class DevicePlatformApi {
 				"sdkId": sdkId,
 				"device": jsonEncode(Device.encode(device)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteDevice");
 		final parsedResJson = jsonDecode(res);
 		return Device.fromJSON(parsedResJson);
@@ -255,7 +256,7 @@ class DevicePlatformApi {
 				"groupId": jsonEncode(groupId),
 				"deviceIds": jsonEncode(deviceIds?.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDevicesInGroup");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Device.fromJSON(x1) ).toList();
@@ -269,7 +270,7 @@ class DevicePlatformApi {
 				"groupId": jsonEncode(groupId),
 				"device": jsonEncode(Device.encode(device)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyDeviceInGroup");
 		final parsedResJson = jsonDecode(res);
 		return Device.fromJSON(parsedResJson);
@@ -283,7 +284,7 @@ class DevicePlatformApi {
 				"groupId": jsonEncode(groupId),
 				"device": jsonEncode(Device.encode(device)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createDeviceInGroup");
 		final parsedResJson = jsonDecode(res);
 		return Device.fromJSON(parsedResJson);
@@ -297,7 +298,7 @@ class DevicePlatformApi {
 				"groupId": jsonEncode(groupId),
 				"deviceIds": jsonEncode(deviceIds.map((x0) => IdWithRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevicesInGroup");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -312,7 +313,7 @@ class DevicePlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => Device.fromJSON(x0));

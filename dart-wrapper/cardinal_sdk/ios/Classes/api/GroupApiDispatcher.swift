@@ -9,6 +9,7 @@ class GroupApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -44,6 +45,7 @@ class GroupApiDispatcher {
   private static func listGroups(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.listGroups(
@@ -53,6 +55,7 @@ class GroupApiDispatcher {
   }
 
   private static func getGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -65,6 +68,7 @@ class GroupApiDispatcher {
   }
 
   private static func createGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -88,6 +92,7 @@ class GroupApiDispatcher {
   private static func registerNewGroupAdministrator(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.registerNewGroupAdministrator(
@@ -102,6 +107,7 @@ class GroupApiDispatcher {
   private static func listApps(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.listApps(
@@ -111,6 +117,7 @@ class GroupApiDispatcher {
   }
 
   private static func getNameOfGroupParent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -125,6 +132,7 @@ class GroupApiDispatcher {
   private static func modifyGroupName(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.modifyGroupName(
@@ -136,6 +144,7 @@ class GroupApiDispatcher {
   }
 
   private static func getOperationToken(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -152,6 +161,7 @@ class GroupApiDispatcher {
   private static func deleteOperationToken(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.deleteOperationToken(
@@ -162,6 +172,7 @@ class GroupApiDispatcher {
   }
 
   private static func setDefaultRoles(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -178,6 +189,7 @@ class GroupApiDispatcher {
   private static func getDefaultRoles(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.getDefaultRoles(
@@ -190,6 +202,7 @@ class GroupApiDispatcher {
   private static func deleteGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.deleteGroup(
@@ -200,6 +213,7 @@ class GroupApiDispatcher {
   }
 
   private static func changeSuperGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -215,6 +229,7 @@ class GroupApiDispatcher {
   private static func hardDeleteGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.hardDeleteGroup(
@@ -225,6 +240,7 @@ class GroupApiDispatcher {
   }
 
   private static func modifyGroupProperties(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -240,6 +256,7 @@ class GroupApiDispatcher {
   private static func setGroupPassword(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.setGroupPassword(
@@ -251,6 +268,7 @@ class GroupApiDispatcher {
   }
 
   private static func initDesignDocs(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -268,6 +286,7 @@ class GroupApiDispatcher {
   private static func solveConflicts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.solveConflicts(
@@ -280,6 +299,7 @@ class GroupApiDispatcher {
   }
 
   private static func resetStorage(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -297,6 +317,7 @@ class GroupApiDispatcher {
   private static func getGroupsStorageInfos(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.getGroupsStorageInfos(
@@ -307,6 +328,7 @@ class GroupApiDispatcher {
   }
 
   private static func getReplicationInfo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -321,6 +343,7 @@ class GroupApiDispatcher {
   private static func getHierarchy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupApi.shared.getHierarchy(
@@ -331,6 +354,7 @@ class GroupApiDispatcher {
   }
 
   private static func listAllGroupsIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

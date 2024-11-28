@@ -34,6 +34,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -56,6 +57,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -75,6 +77,7 @@ public object MessageBasicApi {
 
   public fun filterMessagesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -104,6 +107,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -127,6 +131,7 @@ public object MessageBasicApi {
 
   public fun deleteMessageById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -158,6 +163,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -177,6 +183,7 @@ public object MessageBasicApi {
 
   public fun purgeMessageById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -208,6 +215,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     messageString: String,
@@ -227,6 +235,7 @@ public object MessageBasicApi {
 
   public fun deleteMessages(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -252,6 +261,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     messageString: String,
@@ -271,6 +281,7 @@ public object MessageBasicApi {
 
   public fun undeleteMessage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -296,6 +307,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -315,6 +327,7 @@ public object MessageBasicApi {
 
   public fun undeleteMessageById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -346,6 +359,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -368,6 +382,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -387,6 +402,7 @@ public object MessageBasicApi {
 
   public fun setMessagesReadStatus(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -427,6 +443,7 @@ public object MessageBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

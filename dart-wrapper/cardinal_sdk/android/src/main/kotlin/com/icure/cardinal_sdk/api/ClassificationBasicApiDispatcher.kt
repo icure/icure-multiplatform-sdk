@@ -15,6 +15,7 @@ public object ClassificationBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchClassificationsBy" -> matchClassificationsBy(parameters, resultCallback)
@@ -33,6 +34,7 @@ public object ClassificationBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationBasicApi.matchClassificationsBy(
       resultCallback,
@@ -42,6 +44,7 @@ public object ClassificationBasicApiDispatcher {
   }
 
   private fun matchClassificationsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -57,6 +60,7 @@ public object ClassificationBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationBasicApi.filterClassificationsBy(
       resultCallback,
@@ -66,6 +70,7 @@ public object ClassificationBasicApiDispatcher {
   }
 
   private fun filterClassificationsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -81,6 +86,7 @@ public object ClassificationBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationBasicApi.deleteClassification(
       resultCallback,
@@ -90,6 +96,7 @@ public object ClassificationBasicApiDispatcher {
   }
 
   private fun deleteClassifications(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -105,6 +112,7 @@ public object ClassificationBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationBasicApi.modifyClassification(
       resultCallback,
@@ -117,6 +125,7 @@ public object ClassificationBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationBasicApi.getClassification(
       resultCallback,
@@ -126,6 +135,7 @@ public object ClassificationBasicApiDispatcher {
   }
 
   private fun getClassifications(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

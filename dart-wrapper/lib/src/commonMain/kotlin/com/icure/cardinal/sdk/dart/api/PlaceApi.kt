@@ -21,6 +21,7 @@ public object PlaceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     placeIdString: String,
@@ -40,6 +41,7 @@ public object PlaceApi {
 
   public fun createPlace(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -65,6 +67,7 @@ public object PlaceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     placeString: String,
@@ -84,6 +87,7 @@ public object PlaceApi {
 
   public fun deletePlaces(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

@@ -15,6 +15,7 @@ public object EntityTemplateApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getEntityTemplate" -> getEntityTemplate(parameters, resultCallback)
@@ -35,6 +36,7 @@ public object EntityTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     EntityTemplateApi.getEntityTemplate(
       resultCallback,
@@ -44,6 +46,7 @@ public object EntityTemplateApiDispatcher {
   }
 
   private fun createEntityTemplate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -59,6 +62,7 @@ public object EntityTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     EntityTemplateApi.modifyEntityTemplate(
       resultCallback,
@@ -68,6 +72,7 @@ public object EntityTemplateApiDispatcher {
   }
 
   private fun listEntityTemplatesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -86,6 +91,7 @@ public object EntityTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     EntityTemplateApi.listAllEntityTemplatesBy(
       resultCallback,
@@ -97,6 +103,7 @@ public object EntityTemplateApiDispatcher {
   }
 
   private fun listEntityTemplatesByKeyword(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -115,6 +122,7 @@ public object EntityTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     EntityTemplateApi.findAllEntityTemplatesByKeyword(
       resultCallback,
@@ -126,6 +134,7 @@ public object EntityTemplateApiDispatcher {
   }
 
   private fun getEntityTemplates(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -141,6 +150,7 @@ public object EntityTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     EntityTemplateApi.modifyEntityTemplates(
       resultCallback,
@@ -153,6 +163,7 @@ public object EntityTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     EntityTemplateApi.createEntityTemplates(
       resultCallback,
@@ -162,6 +173,7 @@ public object EntityTemplateApiDispatcher {
   }
 
   private fun deleteEntityTemplates(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

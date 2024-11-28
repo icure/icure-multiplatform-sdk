@@ -37,6 +37,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -56,6 +57,7 @@ public object ClassificationApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -105,6 +107,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     classificationString: String,
@@ -124,6 +127,7 @@ public object ClassificationApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -149,6 +153,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     classificationString: String,
@@ -168,6 +173,7 @@ public object ClassificationApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -199,6 +205,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     classificationString: String,
@@ -218,6 +225,7 @@ public object ClassificationApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -243,6 +251,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -262,6 +271,7 @@ public object ClassificationApi {
 
   public fun matchClassificationsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -287,6 +297,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -309,6 +320,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -328,6 +340,7 @@ public object ClassificationApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -365,6 +378,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     classificationString: String,
@@ -390,6 +404,7 @@ public object ClassificationApi {
 
   public fun filterClassificationsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -420,6 +435,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -447,6 +463,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -466,6 +483,7 @@ public object ClassificationApi {
 
   public fun getClassification(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -491,6 +509,7 @@ public object ClassificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -512,6 +531,7 @@ public object ClassificationApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -549,6 +569,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       classificationString: String,
@@ -574,6 +595,7 @@ public object ClassificationApi {
 
     public fun filterClassificationsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -604,6 +626,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -631,6 +654,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -650,6 +674,7 @@ public object ClassificationApi {
 
     public fun getClassification(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -675,6 +700,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdsString: String,
@@ -697,6 +723,7 @@ public object ClassificationApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -734,6 +761,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       classificationString: String,
@@ -759,6 +787,7 @@ public object ClassificationApi {
 
     public fun filterClassificationsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -789,6 +818,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -816,6 +846,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -838,6 +869,7 @@ public object ClassificationApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -857,6 +889,7 @@ public object ClassificationApi {
 
     public fun getClassifications(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

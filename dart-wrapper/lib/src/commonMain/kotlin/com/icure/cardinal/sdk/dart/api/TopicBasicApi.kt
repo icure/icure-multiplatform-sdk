@@ -33,6 +33,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -55,6 +56,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -74,6 +76,7 @@ public object TopicBasicApi {
 
   public fun filterTopicsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -103,6 +106,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -126,6 +130,7 @@ public object TopicBasicApi {
 
   public fun deleteTopicById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -157,6 +162,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -176,6 +182,7 @@ public object TopicBasicApi {
 
   public fun purgeTopicById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -207,6 +214,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     topicString: String,
@@ -226,6 +234,7 @@ public object TopicBasicApi {
 
   public fun deleteTopics(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -251,6 +260,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     topicString: String,
@@ -270,6 +280,7 @@ public object TopicBasicApi {
 
   public fun undeleteTopic(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -295,6 +306,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -314,6 +326,7 @@ public object TopicBasicApi {
 
   public fun undeleteTopicById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -345,6 +358,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -367,6 +381,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -386,6 +401,7 @@ public object TopicBasicApi {
 
   public fun addParticipant(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -423,6 +439,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -448,6 +465,7 @@ public object TopicBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

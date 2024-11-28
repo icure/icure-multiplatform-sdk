@@ -9,6 +9,7 @@ class MessageBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -38,6 +39,7 @@ class MessageBasicApiDispatcher {
   private static func matchMessagesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.matchMessagesBy(
@@ -48,6 +50,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func matchMessagesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -62,6 +65,7 @@ class MessageBasicApiDispatcher {
   private static func filterMessagesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.filterMessagesBy(
@@ -74,6 +78,7 @@ class MessageBasicApiDispatcher {
   private static func filterMessagesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.filterMessagesBySorted(
@@ -84,6 +89,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func deleteMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -99,6 +105,7 @@ class MessageBasicApiDispatcher {
   private static func deleteMessagesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.deleteMessagesByIds(
@@ -109,6 +116,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func purgeMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -124,6 +132,7 @@ class MessageBasicApiDispatcher {
   private static func deleteMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.deleteMessage(
@@ -134,6 +143,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func deleteMessages(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -148,6 +158,7 @@ class MessageBasicApiDispatcher {
   private static func purgeMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.purgeMessage(
@@ -158,6 +169,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func undeleteMessage(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -172,6 +184,7 @@ class MessageBasicApiDispatcher {
   private static func modifyMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.modifyMessage(
@@ -182,6 +195,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func undeleteMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -197,6 +211,7 @@ class MessageBasicApiDispatcher {
   private static func getMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.getMessage(
@@ -209,6 +224,7 @@ class MessageBasicApiDispatcher {
   private static func getMessages(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageBasicApi.shared.getMessages(
@@ -219,6 +235,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func setMessagesReadStatus(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -234,6 +251,7 @@ class MessageBasicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

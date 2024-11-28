@@ -15,6 +15,7 @@ public object CodeApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "listCodesByRegionTypeCodeVersion" -> listCodesByRegionTypeCodeVersion(parameters, resultCallback)
@@ -44,6 +45,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.listCodesByRegionTypeCodeVersion(
       resultCallback,
@@ -56,6 +58,7 @@ public object CodeApiDispatcher {
   }
 
   private fun listCodeTypesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -72,6 +75,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.listTagTypesBy(
       resultCallback,
@@ -82,6 +86,7 @@ public object CodeApiDispatcher {
   }
 
   private fun createCode(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -97,6 +102,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.createCodes(
       resultCallback,
@@ -106,6 +112,7 @@ public object CodeApiDispatcher {
   }
 
   private fun createCodesInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -122,6 +129,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.isCodeValid(
       resultCallback,
@@ -133,6 +141,7 @@ public object CodeApiDispatcher {
   }
 
   private fun getCodeByRegionLanguageTypeLabel(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -151,6 +160,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.getCodes(
       resultCallback,
@@ -160,6 +170,7 @@ public object CodeApiDispatcher {
   }
 
   private fun getCodesInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -176,6 +187,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.getCode(
       resultCallback,
@@ -185,6 +197,7 @@ public object CodeApiDispatcher {
   }
 
   private fun getCodeWithParts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -202,6 +215,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.modifyCode(
       resultCallback,
@@ -214,6 +228,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.modifyCodes(
       resultCallback,
@@ -223,6 +238,7 @@ public object CodeApiDispatcher {
   }
 
   private fun modifyCodesInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -239,6 +255,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.filterCodesBy(
       resultCallback,
@@ -248,6 +265,7 @@ public object CodeApiDispatcher {
   }
 
   private fun filterCodesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -263,6 +281,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.matchCodesBy(
       resultCallback,
@@ -275,6 +294,7 @@ public object CodeApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeApi.matchCodesBySorted(
       resultCallback,
@@ -284,6 +304,7 @@ public object CodeApiDispatcher {
   }
 
   private fun importCodes(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -19,6 +19,7 @@ object EntitySubscription {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		subscriptionId: String
 	) {
@@ -32,6 +33,7 @@ object EntitySubscription {
 
 	fun getCloseReason(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -51,6 +53,7 @@ object EntitySubscription {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		subscriptionId: String
 	) {
@@ -64,6 +67,7 @@ object EntitySubscription {
 
 	fun waitForEvent(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,

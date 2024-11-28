@@ -41,6 +41,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -60,6 +61,7 @@ public object CalendarItemApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -109,6 +111,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -128,6 +131,7 @@ public object CalendarItemApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -153,6 +157,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -172,6 +177,7 @@ public object CalendarItemApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -203,6 +209,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -222,6 +229,7 @@ public object CalendarItemApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -247,6 +255,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -269,6 +278,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -288,6 +298,7 @@ public object CalendarItemApi {
 
   public fun deleteCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -319,6 +330,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -338,6 +350,7 @@ public object CalendarItemApi {
 
   public fun purgeCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -369,6 +382,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -388,6 +402,7 @@ public object CalendarItemApi {
 
   public fun deleteCalendarItems(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -413,6 +428,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -432,6 +448,7 @@ public object CalendarItemApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -469,6 +486,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -494,6 +512,7 @@ public object CalendarItemApi {
 
   public fun linkToPatient(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -531,6 +550,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -554,6 +574,7 @@ public object CalendarItemApi {
 
   public fun filterCalendarItemsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -581,6 +602,7 @@ public object CalendarItemApi {
 
   public fun undeleteCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -612,6 +634,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -631,6 +654,7 @@ public object CalendarItemApi {
 
   public fun modifyCalendarItem(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -656,6 +680,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -678,6 +703,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -697,6 +723,7 @@ public object CalendarItemApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -740,6 +767,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       delegateIdString: String,
@@ -774,6 +802,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       calendarItemString: String,
@@ -799,6 +828,7 @@ public object CalendarItemApi {
 
     public fun linkToPatient(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -836,6 +866,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -863,6 +894,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -887,6 +919,7 @@ public object CalendarItemApi {
 
     public fun undeleteCalendarItemById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -918,6 +951,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       calendarItemString: String,
@@ -937,6 +971,7 @@ public object CalendarItemApi {
 
     public fun modifyCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -962,6 +997,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -981,6 +1017,7 @@ public object CalendarItemApi {
 
     public fun getCalendarItems(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1006,6 +1043,7 @@ public object CalendarItemApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1043,6 +1081,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       calendarItemString: String,
@@ -1068,6 +1107,7 @@ public object CalendarItemApi {
 
     public fun linkToPatient(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1105,6 +1145,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1132,6 +1173,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1156,6 +1198,7 @@ public object CalendarItemApi {
 
     public fun undeleteCalendarItemById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1187,6 +1230,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       calendarItemString: String,
@@ -1206,6 +1250,7 @@ public object CalendarItemApi {
 
     public fun modifyCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1231,6 +1276,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1250,6 +1296,7 @@ public object CalendarItemApi {
 
     public fun getCalendarItems(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

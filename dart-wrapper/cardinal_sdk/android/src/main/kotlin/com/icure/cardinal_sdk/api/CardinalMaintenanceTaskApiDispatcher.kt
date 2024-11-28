@@ -15,6 +15,7 @@ public object CardinalMaintenanceTaskApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "applyKeyPairUpdate" -> applyKeyPairUpdate(parameters, resultCallback)
@@ -24,6 +25,7 @@ public object CardinalMaintenanceTaskApiDispatcher {
   }?.let { true } ?: false
 
   private fun applyKeyPairUpdate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -41,6 +43,7 @@ public object CardinalMaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CardinalMaintenanceTaskApi.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
       resultCallback,
@@ -51,6 +54,7 @@ public object CardinalMaintenanceTaskApiDispatcher {
   }
 
   private fun createKeyPairUpdateNotificationTo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

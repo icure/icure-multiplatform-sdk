@@ -47,7 +47,7 @@ sealed class CalendarItem implements StoredDocument, ICureDocument<String>, HasE
 	abstract String? agendaId;
 	abstract String? hcpId;
 	abstract String? recurrenceId;
-	abstract Set<CalendarItemTag> meetingTags;
+	Set<CalendarItemTag> get meetingTags;
 	abstract FlowItem? flowItem;
 	@override abstract Set<String> secretForeignKeys;
 	@override abstract Map<String, Set<Delegation>> cryptedForeignKeys;
@@ -119,7 +119,7 @@ class DecryptedCalendarItem implements CalendarItem {
 	@override String? agendaId = null;
 	@override String? hcpId = null;
 	@override String? recurrenceId = null;
-	@override Set<CalendarItemTag> meetingTags = {};
+	@override Set<DecryptedCalendarItemTag> meetingTags = {};
 	@override FlowItem? flowItem = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
@@ -162,7 +162,7 @@ class DecryptedCalendarItem implements CalendarItem {
 			String? agendaId,
 			String? hcpId,
 			String? recurrenceId,
-			Set<CalendarItemTag>? meetingTags,
+			Set<DecryptedCalendarItemTag>? meetingTags,
 			FlowItem? flowItem,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
@@ -246,7 +246,7 @@ class DecryptedCalendarItem implements CalendarItem {
 			agendaId: (data["agendaId"] as String?),
 			hcpId: (data["hcpId"] as String?),
 			recurrenceId: (data["recurrenceId"] as String?),
-			meetingTags: (data["meetingTags"] as List<dynamic>).map((x0) => CalendarItemTag.fromJSON(x0) ).toSet(),
+			meetingTags: (data["meetingTags"] as List<dynamic>).map((x0) => DecryptedCalendarItemTag.fromJSON(x0) ).toSet(),
 			flowItem: data["flowItem"] == null ? null : FlowItem.fromJSON(data["flowItem"]),
 			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
@@ -292,7 +292,7 @@ class DecryptedCalendarItem implements CalendarItem {
 			"agendaId" : value.agendaId,
 			"hcpId" : value.hcpId,
 			"recurrenceId" : value.recurrenceId,
-			"meetingTags" : value.meetingTags.map((x0) => CalendarItemTag.encode(x0)).toList(),
+			"meetingTags" : value.meetingTags.map((x0) => DecryptedCalendarItemTag.encode(x0)).toList(),
 			"flowItem" : value.flowItem == null ? null : FlowItem.encode(value.flowItem!),
 			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
 			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
@@ -339,7 +339,7 @@ class EncryptedCalendarItem implements CalendarItem {
 	@override String? agendaId = null;
 	@override String? hcpId = null;
 	@override String? recurrenceId = null;
-	@override Set<CalendarItemTag> meetingTags = {};
+	@override Set<EncryptedCalendarItemTag> meetingTags = {};
 	@override FlowItem? flowItem = null;
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
@@ -382,7 +382,7 @@ class EncryptedCalendarItem implements CalendarItem {
 			String? agendaId,
 			String? hcpId,
 			String? recurrenceId,
-			Set<CalendarItemTag>? meetingTags,
+			Set<EncryptedCalendarItemTag>? meetingTags,
 			FlowItem? flowItem,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
@@ -466,7 +466,7 @@ class EncryptedCalendarItem implements CalendarItem {
 			agendaId: (data["agendaId"] as String?),
 			hcpId: (data["hcpId"] as String?),
 			recurrenceId: (data["recurrenceId"] as String?),
-			meetingTags: (data["meetingTags"] as List<dynamic>).map((x0) => CalendarItemTag.fromJSON(x0) ).toSet(),
+			meetingTags: (data["meetingTags"] as List<dynamic>).map((x0) => EncryptedCalendarItemTag.fromJSON(x0) ).toSet(),
 			flowItem: data["flowItem"] == null ? null : FlowItem.fromJSON(data["flowItem"]),
 			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
@@ -512,7 +512,7 @@ class EncryptedCalendarItem implements CalendarItem {
 			"agendaId" : value.agendaId,
 			"hcpId" : value.hcpId,
 			"recurrenceId" : value.recurrenceId,
-			"meetingTags" : value.meetingTags.map((x0) => CalendarItemTag.encode(x0)).toList(),
+			"meetingTags" : value.meetingTags.map((x0) => EncryptedCalendarItemTag.encode(x0)).toList(),
 			"flowItem" : value.flowItem == null ? null : FlowItem.encode(value.flowItem!),
 			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
 			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),

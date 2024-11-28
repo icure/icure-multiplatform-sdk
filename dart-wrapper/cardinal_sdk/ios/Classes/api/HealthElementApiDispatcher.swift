@@ -9,6 +9,7 @@ class HealthElementApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -69,6 +70,7 @@ class HealthElementApiDispatcher {
   private static func createHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.createHealthElement(
@@ -81,6 +83,7 @@ class HealthElementApiDispatcher {
   private static func createHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.createHealthElements(
@@ -91,6 +94,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -109,6 +113,7 @@ class HealthElementApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.getEncryptionKeysOf(
@@ -119,6 +124,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -133,6 +139,7 @@ class HealthElementApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.decryptPatientIdOf(
@@ -143,6 +150,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -158,6 +166,7 @@ class HealthElementApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.decrypt(
@@ -168,6 +177,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -182,6 +192,7 @@ class HealthElementApiDispatcher {
   private static func matchHealthElementsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.matchHealthElementsBy(
@@ -194,6 +205,7 @@ class HealthElementApiDispatcher {
   private static func matchHealthElementsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.matchHealthElementsBySorted(
@@ -204,6 +216,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func deleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -219,6 +232,7 @@ class HealthElementApiDispatcher {
   private static func deleteHealthElementsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.deleteHealthElementsByIds(
@@ -229,6 +243,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func purgeHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -244,6 +259,7 @@ class HealthElementApiDispatcher {
   private static func deleteHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.deleteHealthElement(
@@ -254,6 +270,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func deleteHealthElements(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -268,6 +285,7 @@ class HealthElementApiDispatcher {
   private static func purgeHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.purgeHealthElement(
@@ -278,6 +296,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -294,6 +313,7 @@ class HealthElementApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.shareWithMany(
@@ -305,6 +325,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func filterHealthElementsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -319,6 +340,7 @@ class HealthElementApiDispatcher {
   private static func filterHealthElementsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.filterHealthElementsBySorted(
@@ -329,6 +351,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -344,6 +367,7 @@ class HealthElementApiDispatcher {
   private static func undeleteHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.undeleteHealthElement(
@@ -354,6 +378,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -368,6 +393,7 @@ class HealthElementApiDispatcher {
   private static func modifyHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.modifyHealthElements(
@@ -378,6 +404,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func getHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -392,6 +419,7 @@ class HealthElementApiDispatcher {
   private static func getHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.shared.getHealthElements(
@@ -402,6 +430,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -418,6 +447,7 @@ class HealthElementApiDispatcher {
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.encrypted.shared.shareWith(
@@ -430,6 +460,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -445,6 +476,7 @@ class HealthElementApiDispatcher {
   private static func encrypted_filterHealthElementsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.encrypted.shared.filterHealthElementsBy(
@@ -457,6 +489,7 @@ class HealthElementApiDispatcher {
   private static func encrypted_filterHealthElementsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.encrypted.shared.filterHealthElementsBySorted(
@@ -467,6 +500,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func encrypted_undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -482,6 +516,7 @@ class HealthElementApiDispatcher {
   private static func encrypted_undeleteHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.encrypted.shared.undeleteHealthElement(
@@ -492,6 +527,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func encrypted_modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -506,6 +542,7 @@ class HealthElementApiDispatcher {
   private static func encrypted_modifyHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.encrypted.shared.modifyHealthElements(
@@ -516,6 +553,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func encrypted_getHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -530,6 +568,7 @@ class HealthElementApiDispatcher {
   private static func encrypted_getHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.encrypted.shared.getHealthElements(
@@ -540,6 +579,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -556,6 +596,7 @@ class HealthElementApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.tryAndRecover.shared.shareWithMany(
@@ -567,6 +608,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func tryAndRecover_filterHealthElementsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -581,6 +623,7 @@ class HealthElementApiDispatcher {
   private static func tryAndRecover_filterHealthElementsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.tryAndRecover.shared.filterHealthElementsBySorted(
@@ -591,6 +634,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -606,6 +650,7 @@ class HealthElementApiDispatcher {
   private static func tryAndRecover_undeleteHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.tryAndRecover.shared.undeleteHealthElement(
@@ -616,6 +661,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func tryAndRecover_modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -630,6 +676,7 @@ class HealthElementApiDispatcher {
   private static func tryAndRecover_modifyHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.tryAndRecover.shared.modifyHealthElements(
@@ -642,6 +689,7 @@ class HealthElementApiDispatcher {
   private static func tryAndRecover_getHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementApi.tryAndRecover.shared.getHealthElement(
@@ -652,6 +700,7 @@ class HealthElementApiDispatcher {
   }
 
   private static func tryAndRecover_getHealthElements(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

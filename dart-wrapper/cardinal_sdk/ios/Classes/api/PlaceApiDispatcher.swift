@@ -9,6 +9,7 @@ class PlaceApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -25,6 +26,7 @@ class PlaceApiDispatcher {
   private static func getPlace(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PlaceApi.shared.getPlace(
@@ -35,6 +37,7 @@ class PlaceApiDispatcher {
   }
 
   private static func createPlace(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -49,6 +52,7 @@ class PlaceApiDispatcher {
   private static func modifyPlace(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PlaceApi.shared.modifyPlace(
@@ -59,6 +63,7 @@ class PlaceApiDispatcher {
   }
 
   private static func deletePlaces(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -33,6 +33,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -55,6 +56,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -74,6 +76,7 @@ public object CalendarItemBasicApi {
 
   public fun filterCalendarItemsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -104,6 +107,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -128,6 +132,7 @@ public object CalendarItemBasicApi {
 
   public fun deleteCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -159,6 +164,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -178,6 +184,7 @@ public object CalendarItemBasicApi {
 
   public fun purgeCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -209,6 +216,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -228,6 +236,7 @@ public object CalendarItemBasicApi {
 
   public fun deleteCalendarItems(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -253,6 +262,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -272,6 +282,7 @@ public object CalendarItemBasicApi {
 
   public fun undeleteCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -303,6 +314,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -322,6 +334,7 @@ public object CalendarItemBasicApi {
 
   public fun modifyCalendarItem(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -347,6 +360,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -369,6 +383,7 @@ public object CalendarItemBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -388,6 +403,7 @@ public object CalendarItemBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

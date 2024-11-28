@@ -19,6 +19,7 @@ public object EntityReferenceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     prefixString: String,
@@ -38,6 +39,7 @@ public object EntityReferenceApi {
 
   public fun createEntityReference(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

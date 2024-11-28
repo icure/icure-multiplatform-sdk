@@ -9,6 +9,7 @@ class CalendarItemFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -29,6 +30,7 @@ class CalendarItemFiltersDispatcher {
   private static func byPatientsStartTimeForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemFilters.shared.byPatientsStartTimeForDataOwner(
@@ -44,6 +46,7 @@ class CalendarItemFiltersDispatcher {
   private static func byPatientsStartTimeForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemFilters.shared.byPatientsStartTimeForSelf(
@@ -56,6 +59,7 @@ class CalendarItemFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsStartTimeForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -73,6 +77,7 @@ class CalendarItemFiltersDispatcher {
   private static func byPatientSecretIdsStartTimeForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemFilters.shared.byPatientSecretIdsStartTimeForSelf(
@@ -85,6 +90,7 @@ class CalendarItemFiltersDispatcher {
   }
 
   private static func byPeriodAndAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -101,6 +107,7 @@ class CalendarItemFiltersDispatcher {
   private static func byPeriodForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemFilters.shared.byPeriodForDataOwner(
@@ -114,6 +121,7 @@ class CalendarItemFiltersDispatcher {
   private static func byPeriodForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemFilters.shared.byPeriodForSelf(
@@ -124,6 +132,7 @@ class CalendarItemFiltersDispatcher {
   }
 
   private static func byRecurrenceId(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

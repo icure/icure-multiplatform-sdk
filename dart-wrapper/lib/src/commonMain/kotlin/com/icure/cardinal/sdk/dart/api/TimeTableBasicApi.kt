@@ -27,6 +27,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -49,6 +50,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -68,6 +70,7 @@ public object TimeTableBasicApi {
 
   public fun filterTimeTablesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -97,6 +100,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -121,6 +125,7 @@ public object TimeTableBasicApi {
 
   public fun deleteTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -152,6 +157,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -171,6 +177,7 @@ public object TimeTableBasicApi {
 
   public fun purgeTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -202,6 +209,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -221,6 +229,7 @@ public object TimeTableBasicApi {
 
   public fun deleteTimeTables(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -246,6 +255,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -265,6 +275,7 @@ public object TimeTableBasicApi {
 
   public fun undeleteTimeTable(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -290,6 +301,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -309,6 +321,7 @@ public object TimeTableBasicApi {
 
   public fun undeleteTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -340,6 +353,7 @@ public object TimeTableBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -359,6 +373,7 @@ public object TimeTableBasicApi {
 
   public fun getTimeTables(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

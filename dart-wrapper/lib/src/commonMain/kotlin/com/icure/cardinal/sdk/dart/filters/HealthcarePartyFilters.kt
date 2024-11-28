@@ -23,6 +23,7 @@ public object HealthcarePartyFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -34,6 +35,7 @@ public object HealthcarePartyFilters {
   }
 
   public fun byIdentifiers(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -54,6 +56,7 @@ public object HealthcarePartyFilters {
 
   public fun byCode(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -85,6 +88,7 @@ public object HealthcarePartyFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     tagTypeString: String,
     tagCodeString: String,
@@ -112,6 +116,7 @@ public object HealthcarePartyFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, idsString: String) {
     val ids = fullLanguageInteropJson.decodeFromString(
       ListSerializer(String.serializer()),
@@ -129,6 +134,7 @@ public object HealthcarePartyFilters {
 
   public fun byName(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -160,6 +166,7 @@ public object HealthcarePartyFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     searchStringString: String,
     descendingString: String,
@@ -187,6 +194,7 @@ public object HealthcarePartyFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, parentIdString: String) {
     val parentId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -204,6 +212,7 @@ public object HealthcarePartyFilters {
 
   public fun byTypeSpecialtyPostCode(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

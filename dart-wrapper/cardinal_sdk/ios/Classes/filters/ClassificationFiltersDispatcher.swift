@@ -9,6 +9,7 @@ class ClassificationFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -23,6 +24,7 @@ class ClassificationFiltersDispatcher {
   }
 
   private static func byPatientsCreatedForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -40,6 +42,7 @@ class ClassificationFiltersDispatcher {
   private static func byPatientsCreatedForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationFilters.shared.byPatientsCreatedForSelf(
@@ -52,6 +55,7 @@ class ClassificationFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsCreatedForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -67,6 +71,7 @@ class ClassificationFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsCreatedForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -21,6 +21,7 @@ public object KeywordApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     frontEndMigrationIdString: String,
@@ -40,6 +41,7 @@ public object KeywordApi {
 
   public fun createKeyword(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -65,6 +67,7 @@ public object KeywordApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     keywordString: String,
@@ -87,6 +90,7 @@ public object KeywordApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -106,6 +110,7 @@ public object KeywordApi {
 
   public fun deleteKeywords(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

@@ -15,6 +15,7 @@ public object ApplicationSettingsApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getApplicationSettings" -> getApplicationSettings(parameters, resultCallback)
@@ -24,6 +25,7 @@ public object ApplicationSettingsApiDispatcher {
   }?.let { true } ?: false
 
   private fun getApplicationSettings(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -38,6 +40,7 @@ public object ApplicationSettingsApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ApplicationSettingsApi.createApplicationSettings(
       resultCallback,
@@ -47,6 +50,7 @@ public object ApplicationSettingsApiDispatcher {
   }
 
   private fun updateApplicationSettings(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

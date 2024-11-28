@@ -27,6 +27,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -49,6 +50,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -68,6 +70,7 @@ public object AccessLogBasicApi {
 
   public fun filterAccessLogsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -97,6 +100,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -121,6 +125,7 @@ public object AccessLogBasicApi {
 
   public fun deleteAccessLogById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -152,6 +157,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -171,6 +177,7 @@ public object AccessLogBasicApi {
 
   public fun purgeAccessLogById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -202,6 +209,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     accessLogString: String,
@@ -221,6 +229,7 @@ public object AccessLogBasicApi {
 
   public fun deleteAccessLogs(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -246,6 +255,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     accessLogString: String,
@@ -265,6 +275,7 @@ public object AccessLogBasicApi {
 
   public fun undeleteAccessLogById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -296,6 +307,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     accessLogString: String,
@@ -315,6 +327,7 @@ public object AccessLogBasicApi {
 
   public fun modifyAccessLog(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -340,6 +353,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -359,6 +373,7 @@ public object AccessLogBasicApi {
 
   public fun getAccessLogs(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

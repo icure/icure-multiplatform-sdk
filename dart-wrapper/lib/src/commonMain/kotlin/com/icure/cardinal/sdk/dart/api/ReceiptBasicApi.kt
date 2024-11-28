@@ -22,6 +22,7 @@ public object ReceiptBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -44,6 +45,7 @@ public object ReceiptBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -63,6 +65,7 @@ public object ReceiptBasicApi {
 
   public fun getRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -91,6 +94,7 @@ public object ReceiptBasicApi {
 
   public fun setRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -134,6 +138,7 @@ public object ReceiptBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -156,6 +161,7 @@ public object ReceiptBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -175,6 +181,7 @@ public object ReceiptBasicApi {
 
   public fun listByReference(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

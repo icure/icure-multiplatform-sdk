@@ -15,6 +15,7 @@ public object ReceiptBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "deleteReceipt" -> deleteReceipt(parameters, resultCallback)
@@ -31,6 +32,7 @@ public object ReceiptBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptBasicApi.deleteReceipt(
       resultCallback,
@@ -40,6 +42,7 @@ public object ReceiptBasicApiDispatcher {
   }
 
   private fun deleteReceipts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -55,6 +58,7 @@ public object ReceiptBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptBasicApi.getRawReceiptAttachment(
       resultCallback,
@@ -65,6 +69,7 @@ public object ReceiptBasicApiDispatcher {
   }
 
   private fun setRawReceiptAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -83,6 +88,7 @@ public object ReceiptBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptBasicApi.modifyReceipt(
       resultCallback,
@@ -95,6 +101,7 @@ public object ReceiptBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptBasicApi.getReceipt(
       resultCallback,
@@ -104,6 +111,7 @@ public object ReceiptBasicApiDispatcher {
   }
 
   private fun listByReference(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

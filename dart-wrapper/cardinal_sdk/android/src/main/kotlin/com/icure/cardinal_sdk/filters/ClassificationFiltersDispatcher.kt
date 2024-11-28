@@ -15,6 +15,7 @@ public object ClassificationFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byPatientsCreatedForDataOwner" -> byPatientsCreatedForDataOwner(parameters, resultCallback)
@@ -25,6 +26,7 @@ public object ClassificationFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun byPatientsCreatedForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -43,6 +45,7 @@ public object ClassificationFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationFilters.byPatientsCreatedForSelf(
       resultCallback,
@@ -58,6 +61,7 @@ public object ClassificationFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationFilters.byPatientSecretIdsCreatedForDataOwner(
       resultCallback,
@@ -70,6 +74,7 @@ public object ClassificationFiltersDispatcher {
   }
 
   private fun byPatientSecretIdsCreatedForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -27,6 +27,7 @@ public object CalendarItemFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     patientsString: String,
@@ -73,6 +74,7 @@ public object CalendarItemFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -110,6 +112,7 @@ public object CalendarItemFilters {
 
   public fun byPatientSecretIdsStartTimeForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -159,6 +162,7 @@ public object CalendarItemFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     secretIdsString: String,
     fromString: String,
@@ -196,6 +200,7 @@ public object CalendarItemFilters {
 
   public fun byPeriodAndAgenda(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -239,6 +244,7 @@ public object CalendarItemFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     fromString: String,
@@ -273,6 +279,7 @@ public object CalendarItemFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     fromString: String,
     toString: String,
@@ -297,6 +304,7 @@ public object CalendarItemFilters {
   }
 
   public fun byRecurrenceId(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -25,6 +25,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     agendaDtoString: String,
@@ -44,6 +45,7 @@ public object AgendaApi {
 
   public fun deleteAgendaById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -75,6 +77,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -94,6 +97,7 @@ public object AgendaApi {
 
   public fun purgeAgendaById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -125,6 +129,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -153,6 +158,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     agendaString: String,
@@ -172,6 +178,7 @@ public object AgendaApi {
 
   public fun deleteAgendas(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -197,6 +204,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     agendaString: String,
@@ -216,6 +224,7 @@ public object AgendaApi {
 
   public fun undeleteAgenda(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -241,6 +250,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     agendaIdString: String,
@@ -260,6 +270,7 @@ public object AgendaApi {
 
   public fun getAgendas(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -285,6 +296,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     agendaDtoString: String,
@@ -304,6 +316,7 @@ public object AgendaApi {
 
   public fun matchAgendasBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -329,6 +342,7 @@ public object AgendaApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -348,6 +362,7 @@ public object AgendaApi {
 
   public fun filterAgendasBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -374,6 +389,7 @@ public object AgendaApi {
 
   public fun filterAgendasBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

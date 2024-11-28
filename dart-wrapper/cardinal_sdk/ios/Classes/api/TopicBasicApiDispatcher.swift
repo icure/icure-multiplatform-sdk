@@ -9,6 +9,7 @@ class TopicBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -39,6 +40,7 @@ class TopicBasicApiDispatcher {
   private static func matchTopicsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.matchTopicsBy(
@@ -49,6 +51,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func matchTopicsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -63,6 +66,7 @@ class TopicBasicApiDispatcher {
   private static func filterTopicsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.filterTopicsBy(
@@ -75,6 +79,7 @@ class TopicBasicApiDispatcher {
   private static func filterTopicsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.filterTopicsBySorted(
@@ -85,6 +90,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func deleteTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -100,6 +106,7 @@ class TopicBasicApiDispatcher {
   private static func deleteTopicsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.deleteTopicsByIds(
@@ -110,6 +117,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func purgeTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -125,6 +133,7 @@ class TopicBasicApiDispatcher {
   private static func deleteTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.deleteTopic(
@@ -135,6 +144,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func deleteTopics(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -149,6 +159,7 @@ class TopicBasicApiDispatcher {
   private static func purgeTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.purgeTopic(
@@ -159,6 +170,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func undeleteTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -173,6 +185,7 @@ class TopicBasicApiDispatcher {
   private static func modifyTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.modifyTopic(
@@ -183,6 +196,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func undeleteTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -198,6 +212,7 @@ class TopicBasicApiDispatcher {
   private static func getTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.getTopic(
@@ -210,6 +225,7 @@ class TopicBasicApiDispatcher {
   private static func getTopics(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.getTopics(
@@ -220,6 +236,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func addParticipant(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -236,6 +253,7 @@ class TopicBasicApiDispatcher {
   private static func removeParticipant(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicBasicApi.shared.removeParticipant(
@@ -247,6 +265,7 @@ class TopicBasicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

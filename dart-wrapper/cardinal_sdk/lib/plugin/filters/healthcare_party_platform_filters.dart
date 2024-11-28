@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/healthcare_party.dart';
 import 'package:cardinal_sdk/model/base/identifier.dart';
@@ -15,7 +16,7 @@ class HealthcarePartyPlatformFilters {
 			'HealthcarePartyFilters.all',
 			{
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method all");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -27,7 +28,7 @@ class HealthcarePartyPlatformFilters {
 			{
 				"identifiers": jsonEncode(identifiers.map((x0) => Identifier.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIdentifiers");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -40,7 +41,7 @@ class HealthcarePartyPlatformFilters {
 				"codeType": jsonEncode(codeType),
 				"codeCode": jsonEncode(codeCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byCode");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -53,7 +54,7 @@ class HealthcarePartyPlatformFilters {
 				"tagType": jsonEncode(tagType),
 				"tagCode": jsonEncode(tagCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byTag");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -65,7 +66,7 @@ class HealthcarePartyPlatformFilters {
 			{
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIds");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -78,7 +79,7 @@ class HealthcarePartyPlatformFilters {
 				"searchString": jsonEncode(searchString),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byName");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -91,7 +92,7 @@ class HealthcarePartyPlatformFilters {
 				"searchString": jsonEncode(searchString),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byNationalIdentifier");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -103,7 +104,7 @@ class HealthcarePartyPlatformFilters {
 			{
 				"parentId": jsonEncode(parentId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byParentId");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -118,7 +119,7 @@ class HealthcarePartyPlatformFilters {
 				"startPostCode": jsonEncode(startPostCode),
 				"endPostCode": jsonEncode(endPostCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byTypeSpecialtyPostCode");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/access_log.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
@@ -19,7 +20,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -32,7 +33,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchAccessLogsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -45,7 +46,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedAccessLog.fromJSON(x0));
@@ -58,7 +59,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterAccessLogsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedAccessLog.fromJSON(x0));
@@ -72,7 +73,7 @@ class AccessLogBasicPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -85,7 +86,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -99,7 +100,7 @@ class AccessLogBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteAccessLog(String sdkId, AccessLog accessLog) async {
@@ -109,7 +110,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"accessLog": jsonEncode(AccessLog.encode(accessLog)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLog");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -122,7 +123,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"accessLogs": jsonEncode(accessLogs.map((x0) => AccessLog.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogs");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -135,7 +136,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"accessLog": jsonEncode(AccessLog.encode(accessLog)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<EncryptedAccessLog> undeleteAccessLogById(String sdkId, String id, String rev) async {
@@ -146,7 +147,7 @@ class AccessLogBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteAccessLogById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedAccessLog.fromJSON(parsedResJson);
@@ -159,7 +160,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"accessLog": jsonEncode(AccessLog.encode(accessLog)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteAccessLog");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedAccessLog.fromJSON(parsedResJson);
@@ -172,7 +173,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedAccessLog.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyAccessLog");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedAccessLog.fromJSON(parsedResJson);
@@ -185,7 +186,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAccessLog");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedAccessLog.fromJSON(parsedResJson);
@@ -198,7 +199,7 @@ class AccessLogBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAccessLogs");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedAccessLog.fromJSON(x1) ).toList();

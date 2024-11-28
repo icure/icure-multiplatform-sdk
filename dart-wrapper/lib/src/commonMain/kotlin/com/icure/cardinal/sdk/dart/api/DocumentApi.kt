@@ -39,6 +39,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -58,6 +59,7 @@ public object DocumentApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -107,6 +109,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -129,6 +132,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -148,6 +152,7 @@ public object DocumentApi {
 
   public fun encryptAndSetMainAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -185,6 +190,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -210,6 +216,7 @@ public object DocumentApi {
 
   public fun encryptAndSetSecondaryAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -253,6 +260,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -272,6 +280,7 @@ public object DocumentApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -297,6 +306,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -316,6 +326,7 @@ public object DocumentApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -347,6 +358,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -369,6 +381,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -388,6 +401,7 @@ public object DocumentApi {
 
   public fun tryDecryptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -419,6 +433,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -441,6 +456,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -460,6 +476,7 @@ public object DocumentApi {
 
   public fun deleteDocumentById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -491,6 +508,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -510,6 +528,7 @@ public object DocumentApi {
 
   public fun purgeDocumentById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -541,6 +560,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -560,6 +580,7 @@ public object DocumentApi {
 
   public fun deleteDocuments(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -585,6 +606,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -607,6 +629,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentIdString: String,
@@ -626,6 +649,7 @@ public object DocumentApi {
 
   public fun getRawSecondaryAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -654,6 +678,7 @@ public object DocumentApi {
 
   public fun setRawMainAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -700,6 +725,7 @@ public object DocumentApi {
 
   public fun setRawSecondaryAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -755,6 +781,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -780,6 +807,7 @@ public object DocumentApi {
 
   public fun deleteSecondaryAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -817,6 +845,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     delegateIdString: String,
@@ -851,6 +880,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -876,6 +906,7 @@ public object DocumentApi {
 
   public fun filterDocumentsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -905,6 +936,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -928,6 +960,7 @@ public object DocumentApi {
 
   public fun undeleteDocumentById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -959,6 +992,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -978,6 +1012,7 @@ public object DocumentApi {
 
   public fun modifyDocument(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1003,6 +1038,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -1022,6 +1058,7 @@ public object DocumentApi {
 
   public fun getDocuments(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1047,6 +1084,7 @@ public object DocumentApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -1068,6 +1106,7 @@ public object DocumentApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1105,6 +1144,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       documentString: String,
@@ -1130,6 +1170,7 @@ public object DocumentApi {
 
     public fun filterDocumentsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1160,6 +1201,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1184,6 +1226,7 @@ public object DocumentApi {
 
     public fun undeleteDocumentById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1215,6 +1258,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       documentString: String,
@@ -1234,6 +1278,7 @@ public object DocumentApi {
 
     public fun modifyDocument(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1259,6 +1304,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1278,6 +1324,7 @@ public object DocumentApi {
 
     public fun getDocuments(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1303,6 +1350,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entitiesString: String,
@@ -1325,6 +1373,7 @@ public object DocumentApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1362,6 +1411,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       documentString: String,
@@ -1387,6 +1437,7 @@ public object DocumentApi {
 
     public fun filterDocumentsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1417,6 +1468,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1441,6 +1493,7 @@ public object DocumentApi {
 
     public fun undeleteDocumentById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1472,6 +1525,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       documentString: String,
@@ -1491,6 +1545,7 @@ public object DocumentApi {
 
     public fun modifyDocument(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1516,6 +1571,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1538,6 +1594,7 @@ public object DocumentApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdsString: String,
@@ -1557,6 +1614,7 @@ public object DocumentApi {
 
     public fun modifyDocuments(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

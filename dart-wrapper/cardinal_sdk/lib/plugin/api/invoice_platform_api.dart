@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/invoice.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -32,7 +33,7 @@ class InvoicePlatformApi {
 				"entity": jsonEncode(DecryptedInvoice.encode(entity)),
 				"prefix": jsonEncode(prefix),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createInvoice");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -45,7 +46,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedInvoice.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createInvoices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -62,7 +63,7 @@ class InvoicePlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -75,7 +76,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(Invoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -88,7 +89,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(Invoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -101,7 +102,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(Invoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -115,7 +116,7 @@ class InvoicePlatformApi {
 				"entity": jsonEncode(Invoice.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedInvoice> decrypt(String sdkId, EncryptedInvoice invoice) async {
@@ -125,7 +126,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(EncryptedInvoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -138,7 +139,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(EncryptedInvoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -151,7 +152,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteInvoice");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -164,7 +165,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"minOccurrence": jsonEncode(minOccurrence),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTarificationsCodesOccurrences");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => LabelledOccurence.fromJSON(x1) ).toList();
@@ -179,7 +180,7 @@ class InvoicePlatformApi {
 				"invoice": jsonEncode(DecryptedInvoice.encode(invoice)),
 				"options": jsonEncode(options == null ? null : InvoiceShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -193,7 +194,7 @@ class InvoicePlatformApi {
 				"invoice": jsonEncode(DecryptedInvoice.encode(invoice)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, InvoiceShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -206,7 +207,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedInvoice.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoice");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -219,7 +220,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedInvoice.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -232,7 +233,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoice");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -245,7 +246,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -258,7 +259,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(DecryptedInvoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method reassignInvoice");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -272,7 +273,7 @@ class InvoicePlatformApi {
 				"invoiceId": jsonEncode(invoiceId),
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method mergeTo");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -287,7 +288,7 @@ class InvoicePlatformApi {
 				"scheme": jsonEncode(scheme),
 				"forcedValue": jsonEncode(forcedValue),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method validate");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedInvoice.fromJSON(parsedResJson);
@@ -307,7 +308,7 @@ class InvoicePlatformApi {
 				"gracePeriod": jsonEncode(gracePeriod),
 				"invoicingCodes": jsonEncode(invoicingCodes.map((x0) => EncryptedInvoicingCode.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method appendCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -323,7 +324,7 @@ class InvoicePlatformApi {
 				"secretFKeys": jsonEncode(secretFKeys),
 				"tarificationIds": jsonEncode(tarificationIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -337,7 +338,7 @@ class InvoicePlatformApi {
 				"hcPartyId": jsonEncode(hcPartyId),
 				"groupId": jsonEncode(groupId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartyAndGroupId");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -355,7 +356,7 @@ class InvoicePlatformApi {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -368,7 +369,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"contactIds": jsonEncode(contactIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByContactIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -381,7 +382,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"recipientsIds": jsonEncode(recipientsIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByRecipientsIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -394,7 +395,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurances");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -407,7 +408,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurancesUnsent");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -420,7 +421,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"hcPartyId": jsonEncode(hcPartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -433,7 +434,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"hcPartyId": jsonEncode(hcPartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToPatientsUnsent");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -446,7 +447,7 @@ class InvoicePlatformApi {
 				"sdkId": sdkId,
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -463,7 +464,7 @@ class InvoicePlatformApi {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcpartySendingModeStatusDate");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
@@ -483,7 +484,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"invoice": jsonEncode(Invoice.encode(invoice)),
 				"options": jsonEncode(options == null ? null : InvoiceShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -497,7 +498,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"invoice": jsonEncode(Invoice.encode(invoice)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, InvoiceShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -510,7 +511,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(Invoice.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoice");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -523,7 +524,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => Invoice.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -536,7 +537,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoice");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -549,7 +550,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -562,7 +563,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(Invoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method reassignInvoice");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -576,7 +577,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"invoiceId": jsonEncode(invoiceId),
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method mergeTo");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -591,7 +592,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"scheme": jsonEncode(scheme),
 				"forcedValue": jsonEncode(forcedValue),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method validate");
 		final parsedResJson = jsonDecode(res);
 		return Invoice.fromJSON(parsedResJson);
@@ -611,7 +612,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"gracePeriod": jsonEncode(gracePeriod),
 				"invoicingCodes": jsonEncode(invoicingCodes.map((x0) => EncryptedInvoicingCode.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method appendCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -627,7 +628,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"secretFKeys": jsonEncode(secretFKeys),
 				"tarificationIds": jsonEncode(tarificationIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -641,7 +642,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"hcPartyId": jsonEncode(hcPartyId),
 				"groupId": jsonEncode(groupId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartyAndGroupId");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -659,7 +660,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -672,7 +673,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"contactIds": jsonEncode(contactIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByContactIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -685,7 +686,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"recipientsIds": jsonEncode(recipientsIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByRecipientsIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -698,7 +699,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurances");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -711,7 +712,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurancesUnsent");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -724,7 +725,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"hcPartyId": jsonEncode(hcPartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -737,7 +738,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"hcPartyId": jsonEncode(hcPartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToPatientsUnsent");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -750,7 +751,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"sdkId": sdkId,
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -767,7 +768,7 @@ class TryAndRecoverInvoicePlatformApi {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcpartySendingModeStatusDate");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
@@ -787,7 +788,7 @@ class EncryptedInvoicePlatformApi {
 				"invoice": jsonEncode(EncryptedInvoice.encode(invoice)),
 				"options": jsonEncode(options == null ? null : InvoiceShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedInvoice.fromJSON(parsedResJson);
@@ -801,7 +802,7 @@ class EncryptedInvoicePlatformApi {
 				"invoice": jsonEncode(EncryptedInvoice.encode(invoice)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, InvoiceShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedInvoice.fromJSON(parsedResJson);
@@ -814,7 +815,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedInvoice.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoice");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedInvoice.fromJSON(parsedResJson);
@@ -827,7 +828,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => EncryptedInvoice.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyInvoices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -840,7 +841,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoice");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedInvoice.fromJSON(parsedResJson);
@@ -853,7 +854,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -866,7 +867,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"invoice": jsonEncode(EncryptedInvoice.encode(invoice)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method reassignInvoice");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedInvoice.fromJSON(parsedResJson);
@@ -880,7 +881,7 @@ class EncryptedInvoicePlatformApi {
 				"invoiceId": jsonEncode(invoiceId),
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method mergeTo");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedInvoice.fromJSON(parsedResJson);
@@ -895,7 +896,7 @@ class EncryptedInvoicePlatformApi {
 				"scheme": jsonEncode(scheme),
 				"forcedValue": jsonEncode(forcedValue),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method validate");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedInvoice.fromJSON(parsedResJson);
@@ -915,7 +916,7 @@ class EncryptedInvoicePlatformApi {
 				"gracePeriod": jsonEncode(gracePeriod),
 				"invoicingCodes": jsonEncode(invoicingCodes.map((x0) => EncryptedInvoicingCode.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method appendCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -931,7 +932,7 @@ class EncryptedInvoicePlatformApi {
 				"secretFKeys": jsonEncode(secretFKeys),
 				"tarificationIds": jsonEncode(tarificationIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method removeCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -945,7 +946,7 @@ class EncryptedInvoicePlatformApi {
 				"hcPartyId": jsonEncode(hcPartyId),
 				"groupId": jsonEncode(groupId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartyAndGroupId");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -963,7 +964,7 @@ class EncryptedInvoicePlatformApi {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -976,7 +977,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"contactIds": jsonEncode(contactIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByContactIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -989,7 +990,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"recipientsIds": jsonEncode(recipientsIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByRecipientsIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -1002,7 +1003,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurances");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -1015,7 +1016,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToInsurancesUnsent");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -1028,7 +1029,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"hcPartyId": jsonEncode(hcPartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -1041,7 +1042,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"hcPartyId": jsonEncode(hcPartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listToPatientsUnsent");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -1054,7 +1055,7 @@ class EncryptedInvoicePlatformApi {
 				"sdkId": sdkId,
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
@@ -1071,7 +1072,7 @@ class EncryptedInvoicePlatformApi {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInvoicesByHcpartySendingModeStatusDate");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();

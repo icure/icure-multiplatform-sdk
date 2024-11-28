@@ -14,6 +14,7 @@ public fun dispatchFilter(
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit,
 ): Boolean = when (apiName) {
   "FormFilters" -> FormFiltersDispatcher.dispatch(methodName, parameters, resultCallback)

@@ -13,6 +13,7 @@ object PaginatedListIterator {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		paginatedListIteratorId: String
 	) {
@@ -26,6 +27,7 @@ object PaginatedListIterator {
 
 	fun next(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,

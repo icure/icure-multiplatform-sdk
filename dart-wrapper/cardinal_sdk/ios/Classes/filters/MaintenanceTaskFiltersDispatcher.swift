@@ -9,6 +9,7 @@ class MaintenanceTaskFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -28,6 +29,7 @@ class MaintenanceTaskFiltersDispatcher {
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskFilters.shared.byIds(
@@ -37,6 +39,7 @@ class MaintenanceTaskFiltersDispatcher {
   }
 
   private static func byIdentifiersForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -51,6 +54,7 @@ class MaintenanceTaskFiltersDispatcher {
   private static func byIdentifiersForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskFilters.shared.byIdentifiersForSelf(
@@ -60,6 +64,7 @@ class MaintenanceTaskFiltersDispatcher {
   }
 
   private static func byTypeForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -74,6 +79,7 @@ class MaintenanceTaskFiltersDispatcher {
   private static func byTypeForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskFilters.shared.byTypeForSelf(
@@ -83,6 +89,7 @@ class MaintenanceTaskFiltersDispatcher {
   }
 
   private static func afterDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -95,6 +102,7 @@ class MaintenanceTaskFiltersDispatcher {
   }
 
   private static func afterDateForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

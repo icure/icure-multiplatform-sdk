@@ -9,6 +9,7 @@ class UserApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -66,6 +67,7 @@ class UserApiDispatcher {
   private static func getCurrentUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.getCurrentUser(
@@ -75,6 +77,7 @@ class UserApiDispatcher {
   }
 
   private static func createUser(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -89,6 +92,7 @@ class UserApiDispatcher {
   private static func getUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.getUser(
@@ -99,6 +103,7 @@ class UserApiDispatcher {
   }
 
   private static func getUsers(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -113,6 +118,7 @@ class UserApiDispatcher {
   private static func getUserByEmail(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.getUserByEmail(
@@ -123,6 +129,7 @@ class UserApiDispatcher {
   }
 
   private static func getUserByPhoneNumber(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -137,6 +144,7 @@ class UserApiDispatcher {
   private static func findByHcpartyId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.findByHcpartyId(
@@ -147,6 +155,7 @@ class UserApiDispatcher {
   }
 
   private static func findByPatientId(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -161,6 +170,7 @@ class UserApiDispatcher {
   private static func modifyUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.modifyUser(
@@ -171,6 +181,7 @@ class UserApiDispatcher {
   }
 
   private static func assignHealthcareParty(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -185,6 +196,7 @@ class UserApiDispatcher {
   private static func modifyProperties(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.modifyProperties(
@@ -196,6 +208,7 @@ class UserApiDispatcher {
   }
 
   private static func getToken(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -213,6 +226,7 @@ class UserApiDispatcher {
   private static func filterUsersBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.filterUsersBy(
@@ -223,6 +237,7 @@ class UserApiDispatcher {
   }
 
   private static func matchUsersBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -237,6 +252,7 @@ class UserApiDispatcher {
   private static func filterUsersBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.filterUsersBySorted(
@@ -247,6 +263,7 @@ class UserApiDispatcher {
   }
 
   private static func matchUsersBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -261,6 +278,7 @@ class UserApiDispatcher {
   private static func getMatchingUsers(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.getMatchingUsers(
@@ -270,6 +288,7 @@ class UserApiDispatcher {
   }
 
   private static func getUsersInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -285,6 +304,7 @@ class UserApiDispatcher {
   private static func createUserInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.createUserInGroup(
@@ -296,6 +316,7 @@ class UserApiDispatcher {
   }
 
   private static func modifyUserInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -311,6 +332,7 @@ class UserApiDispatcher {
   private static func setUserRoles(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.setUserRoles(
@@ -322,6 +344,7 @@ class UserApiDispatcher {
   }
 
   private static func setUserRolesInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -338,6 +361,7 @@ class UserApiDispatcher {
   private static func resetUserRoles(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.resetUserRoles(
@@ -348,6 +372,7 @@ class UserApiDispatcher {
   }
 
   private static func resetUserRolesInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -361,6 +386,7 @@ class UserApiDispatcher {
   }
 
   private static func getTokenInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -379,6 +405,7 @@ class UserApiDispatcher {
   private static func getTokenInAllGroups(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.getTokenInAllGroups(
@@ -394,6 +421,7 @@ class UserApiDispatcher {
   private static func filterUsersInGroupBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.filterUsersInGroupBy(
@@ -405,6 +433,7 @@ class UserApiDispatcher {
   }
 
   private static func matchUsersInGroupBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -420,6 +449,7 @@ class UserApiDispatcher {
   private static func filterUsersInGroupBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.filterUsersInGroupBySorted(
@@ -433,6 +463,7 @@ class UserApiDispatcher {
   private static func matchUsersInGroupBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.matchUsersInGroupBySorted(
@@ -444,6 +475,7 @@ class UserApiDispatcher {
   }
 
   private static func enable2faForUserWithGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -460,6 +492,7 @@ class UserApiDispatcher {
   private static func enable2faForUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.enable2faForUser(
@@ -471,6 +504,7 @@ class UserApiDispatcher {
   }
 
   private static func disable2faForUserWithGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -486,6 +520,7 @@ class UserApiDispatcher {
   private static func disable2faForUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.disable2faForUser(
@@ -498,6 +533,7 @@ class UserApiDispatcher {
   private static func createAdminUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.createAdminUser(
@@ -508,6 +544,7 @@ class UserApiDispatcher {
   }
 
   private static func createAdminUserInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -523,6 +560,7 @@ class UserApiDispatcher {
   private static func deleteUserById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.deleteUserById(
@@ -534,6 +572,7 @@ class UserApiDispatcher {
   }
 
   private static func deleteUserInGroupById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -550,6 +589,7 @@ class UserApiDispatcher {
   private static func purgeUserById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.purgeUserById(
@@ -561,6 +601,7 @@ class UserApiDispatcher {
   }
 
   private static func undeleteUserById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -576,6 +617,7 @@ class UserApiDispatcher {
   private static func deleteUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.deleteUser(
@@ -586,6 +628,7 @@ class UserApiDispatcher {
   }
 
   private static func deleteUserInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -601,6 +644,7 @@ class UserApiDispatcher {
   private static func purgeUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.purgeUser(
@@ -613,6 +657,7 @@ class UserApiDispatcher {
   private static func undeleteUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserApi.shared.undeleteUser(
@@ -623,6 +668,7 @@ class UserApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

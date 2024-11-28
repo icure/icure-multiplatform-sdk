@@ -15,6 +15,7 @@ public object MaintenanceTaskBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchMaintenanceTasksBy" -> matchMaintenanceTasksBy(parameters, resultCallback)
@@ -40,6 +41,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.matchMaintenanceTasksBy(
       resultCallback,
@@ -49,6 +51,7 @@ public object MaintenanceTaskBasicApiDispatcher {
   }
 
   private fun matchMaintenanceTasksBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -64,6 +67,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.filterMaintenanceTasksBy(
       resultCallback,
@@ -76,6 +80,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.filterMaintenanceTasksBySorted(
       resultCallback,
@@ -85,6 +90,7 @@ public object MaintenanceTaskBasicApiDispatcher {
   }
 
   private fun deleteMaintenanceTaskById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -101,6 +107,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.deleteMaintenanceTasksByIds(
       resultCallback,
@@ -110,6 +117,7 @@ public object MaintenanceTaskBasicApiDispatcher {
   }
 
   private fun purgeMaintenanceTaskById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -126,6 +134,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.deleteMaintenanceTask(
       resultCallback,
@@ -135,6 +144,7 @@ public object MaintenanceTaskBasicApiDispatcher {
   }
 
   private fun deleteMaintenanceTasks(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -150,6 +160,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.purgeMaintenanceTask(
       resultCallback,
@@ -162,6 +173,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.undeleteMaintenanceTask(
       resultCallback,
@@ -171,6 +183,7 @@ public object MaintenanceTaskBasicApiDispatcher {
   }
 
   private fun undeleteMaintenanceTaskById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -187,6 +200,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.modifyMaintenanceTask(
       resultCallback,
@@ -196,6 +210,7 @@ public object MaintenanceTaskBasicApiDispatcher {
   }
 
   private fun getMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -211,6 +226,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskBasicApi.getMaintenanceTasks(
       resultCallback,
@@ -220,6 +236,7 @@ public object MaintenanceTaskBasicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

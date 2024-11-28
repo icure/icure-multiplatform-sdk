@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/group.dart';
 
@@ -14,7 +15,7 @@ class GroupPlatformFilters {
 			'GroupFilters.all',
 			{
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method all");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -26,7 +27,7 @@ class GroupPlatformFilters {
 			{
 				"superGroupId": jsonEncode(superGroupId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method bySuperGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -39,7 +40,7 @@ class GroupPlatformFilters {
 				"superGroupId": jsonEncode(superGroupId),
 				"searchString": jsonEncode(searchString),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withContent");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);

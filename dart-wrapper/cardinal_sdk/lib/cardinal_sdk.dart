@@ -37,6 +37,7 @@ import 'package:cardinal_sdk/api/user_api.dart';
 import 'package:cardinal_sdk/auth/authentication_method.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_initializers.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:flutter/services.dart';
 import 'auth/authentication_process_telecom_type.dart';
 import 'auth/authentication_process_template_parameters.dart';
@@ -229,7 +230,7 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
           "authenticationProcessTemplateParameters": jsonEncode(AuthenticationProcessTemplateParameters.encode(authenticationProcessTemplateParameters)),
           "options": jsonEncode(SdkOptions.encode(options))
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method initializeWithProcess");
     final parsedResJson = jsonDecode(res);
     return AuthenticationWithProcessStep._factory(parsedResJson as String);
@@ -243,7 +244,7 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
           "authenticationStepId": authenticationStepId,
           "validationCode": jsonEncode(validationCode)
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method completeAuthentication");
     final parsedResJson = jsonDecode(res);
     return CardinalSdk._factory(parsedResJson as String);
@@ -266,7 +267,7 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
           "storageOptions": jsonEncode(StorageOptions.encode(storageOptions)),
           "options": jsonEncode(SdkOptions.encode(options))
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method initialize");
     final parsedResJson = jsonDecode(res);
     return CardinalSdk._factory(parsedResJson as String);

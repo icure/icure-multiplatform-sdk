@@ -29,6 +29,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -48,6 +49,7 @@ public object InvoiceBasicApi {
 
   public fun getTarificationsCodesOccurrences(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -73,6 +75,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -92,6 +95,7 @@ public object InvoiceBasicApi {
 
   public fun modifyInvoices(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -117,6 +121,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -136,6 +141,7 @@ public object InvoiceBasicApi {
 
   public fun getInvoices(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -161,6 +167,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     invoiceString: String,
@@ -180,6 +187,7 @@ public object InvoiceBasicApi {
 
   public fun mergeTo(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -208,6 +216,7 @@ public object InvoiceBasicApi {
 
   public fun validate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -242,6 +251,7 @@ public object InvoiceBasicApi {
 
   public fun appendCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -309,6 +319,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -349,6 +360,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     hcPartyIdString: String,
@@ -374,6 +386,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -429,6 +442,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactIdsString: String,
@@ -448,6 +462,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByRecipientsIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -473,6 +488,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdsString: String,
@@ -492,6 +508,7 @@ public object InvoiceBasicApi {
 
   public fun listToInsurancesUnsent(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -517,6 +534,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     hcPartyIdString: String,
@@ -536,6 +554,7 @@ public object InvoiceBasicApi {
 
   public fun listToPatientsUnsent(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -561,6 +580,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idsString: String,
@@ -580,6 +600,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByHcpartySendingModeStatusDate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

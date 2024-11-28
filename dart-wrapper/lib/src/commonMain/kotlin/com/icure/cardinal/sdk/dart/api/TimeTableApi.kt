@@ -38,6 +38,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -57,6 +58,7 @@ public object TimeTableApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -106,6 +108,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -125,6 +128,7 @@ public object TimeTableApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -150,6 +154,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -169,6 +174,7 @@ public object TimeTableApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -200,6 +206,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -219,6 +226,7 @@ public object TimeTableApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -244,6 +252,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -266,6 +275,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -285,6 +295,7 @@ public object TimeTableApi {
 
   public fun deleteTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -316,6 +327,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -335,6 +347,7 @@ public object TimeTableApi {
 
   public fun purgeTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -366,6 +379,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -385,6 +399,7 @@ public object TimeTableApi {
 
   public fun deleteTimeTables(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -410,6 +425,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -429,6 +445,7 @@ public object TimeTableApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -466,6 +483,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -491,6 +509,7 @@ public object TimeTableApi {
 
   public fun filterTimeTablesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -520,6 +539,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -546,6 +566,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -568,6 +589,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -587,6 +609,7 @@ public object TimeTableApi {
 
   public fun undeleteTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -618,6 +641,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -637,6 +661,7 @@ public object TimeTableApi {
 
   public fun getTimeTables(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -661,6 +686,7 @@ public object TimeTableApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -698,6 +724,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       timeTableString: String,
@@ -723,6 +750,7 @@ public object TimeTableApi {
 
     public fun filterTimeTablesBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -753,6 +781,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -780,6 +809,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       timeTableString: String,
@@ -802,6 +832,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -821,6 +852,7 @@ public object TimeTableApi {
 
     public fun undeleteTimeTableById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -852,6 +884,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -871,6 +904,7 @@ public object TimeTableApi {
 
     public fun getTimeTables(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -896,6 +930,7 @@ public object TimeTableApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -933,6 +968,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       timeTableString: String,
@@ -958,6 +994,7 @@ public object TimeTableApi {
 
     public fun filterTimeTablesBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -988,6 +1025,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1015,6 +1053,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       timeTableString: String,
@@ -1037,6 +1076,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1056,6 +1096,7 @@ public object TimeTableApi {
 
     public fun undeleteTimeTableById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1087,6 +1128,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1106,6 +1148,7 @@ public object TimeTableApi {
 
     public fun getTimeTables(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

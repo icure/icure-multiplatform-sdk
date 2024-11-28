@@ -19,7 +19,7 @@ object ApiScope {
 	}
 
 	fun <T> execute(
-		resultCallback: (success: String?, failureCode: String?, failureMessage: String?) -> Unit,
+		resultCallback: (success: String?, failureCode: String?, failureMessage: String?, failureDetails: String?) -> Unit,
 		resultSerializer: KSerializer<T>,
 		method: suspend () -> T
 	) {

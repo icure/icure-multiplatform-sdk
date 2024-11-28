@@ -1,4 +1,5 @@
 import 'package:cardinal_sdk/subscription/entity_subscription_close_reason.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
@@ -21,7 +22,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
         {
           "subscriptionId": subscriptionId
         }
-    );
+    ).catchError(convertPlatformException);
     return;
   }
 
@@ -32,7 +33,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
         {
           "subscriptionId": subscriptionId
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method getEvent");
     final decodedRes = jsonDecode(res);
     return decodedRes == null ? null : EntitySubscriptionCloseReason.fromJSON(decodedRes);
@@ -45,7 +46,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
         {
           "subscriptionId": subscriptionId
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method getEvent");
     return jsonDecode(res);
   }
@@ -58,7 +59,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
           "subscriptionId": subscriptionId,
           "timeout": jsonEncode(timeout.inMilliseconds)
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method waitForEvent");
     return jsonDecode(res);
   }

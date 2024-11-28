@@ -40,6 +40,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -62,6 +63,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -81,6 +83,7 @@ public object FormApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -130,6 +133,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -149,6 +153,7 @@ public object FormApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -174,6 +179,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -193,6 +199,7 @@ public object FormApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -224,6 +231,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -243,6 +251,7 @@ public object FormApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -268,6 +277,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -290,6 +300,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -309,6 +320,7 @@ public object FormApi {
 
   public fun deleteFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -340,6 +352,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -359,6 +372,7 @@ public object FormApi {
 
   public fun purgeFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -390,6 +404,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -409,6 +424,7 @@ public object FormApi {
 
   public fun deleteForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -434,6 +450,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -453,6 +470,7 @@ public object FormApi {
 
   public fun getFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -484,6 +502,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formTemplateString: String,
@@ -503,6 +522,7 @@ public object FormApi {
 
   public fun deleteFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -528,6 +548,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formTemplateString: String,
@@ -547,6 +568,7 @@ public object FormApi {
 
   public fun setTemplateAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -575,6 +597,7 @@ public object FormApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -612,6 +635,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -637,6 +661,7 @@ public object FormApi {
 
   public fun filterFormsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -666,6 +691,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -692,6 +718,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -711,6 +738,7 @@ public object FormApi {
 
   public fun undeleteFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -742,6 +770,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -761,6 +790,7 @@ public object FormApi {
 
   public fun modifyForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -786,6 +816,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -805,6 +836,7 @@ public object FormApi {
 
   public fun getForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -830,6 +862,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     logicalUuidString: String,
@@ -849,6 +882,7 @@ public object FormApi {
 
   public fun getLatestFormByUniqueId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -873,6 +907,7 @@ public object FormApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -910,6 +945,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       formString: String,
@@ -938,6 +974,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -961,6 +998,7 @@ public object FormApi {
 
     public fun filterFormsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -991,6 +1029,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1010,6 +1049,7 @@ public object FormApi {
 
     public fun undeleteFormById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1041,6 +1081,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       formString: String,
@@ -1060,6 +1101,7 @@ public object FormApi {
 
     public fun modifyForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1085,6 +1127,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1104,6 +1147,7 @@ public object FormApi {
 
     public fun getForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1129,6 +1173,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       logicalUuidString: String,
@@ -1148,6 +1193,7 @@ public object FormApi {
 
     public fun getLatestFormByUniqueId(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1173,6 +1219,7 @@ public object FormApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1210,6 +1257,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       formString: String,
@@ -1238,6 +1286,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1261,6 +1310,7 @@ public object FormApi {
 
     public fun filterFormsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1291,6 +1341,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1310,6 +1361,7 @@ public object FormApi {
 
     public fun undeleteFormById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1341,6 +1393,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       formString: String,
@@ -1360,6 +1413,7 @@ public object FormApi {
 
     public fun modifyForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1385,6 +1439,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1404,6 +1459,7 @@ public object FormApi {
 
     public fun getForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1429,6 +1485,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       logicalUuidString: String,
@@ -1448,6 +1505,7 @@ public object FormApi {
 
     public fun getLatestFormByUniqueId(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

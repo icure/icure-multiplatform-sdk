@@ -9,6 +9,7 @@ class ServiceFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -42,6 +43,7 @@ class ServiceFiltersDispatcher {
   private static func allServicesForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.allServicesForDataOwner(
@@ -51,6 +53,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func allServicesForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -63,6 +66,7 @@ class ServiceFiltersDispatcher {
   private static func byIdentifiersForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byIdentifiersForDataOwner(
@@ -73,6 +77,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byCodeAndValueDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -90,6 +95,7 @@ class ServiceFiltersDispatcher {
   private static func byTagAndValueDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byTagAndValueDateForDataOwner(
@@ -105,6 +111,7 @@ class ServiceFiltersDispatcher {
   private static func byPatientsForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byPatientsForDataOwner(
@@ -115,6 +122,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byPatientsSecretIdsForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -129,6 +137,7 @@ class ServiceFiltersDispatcher {
   private static func byHealthElementIdFromSubContactForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byHealthElementIdFromSubContactForDataOwner(
@@ -141,6 +150,7 @@ class ServiceFiltersDispatcher {
   private static func byIdentifiersForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byIdentifiersForSelf(
@@ -150,6 +160,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byCodeAndValueDateForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -166,6 +177,7 @@ class ServiceFiltersDispatcher {
   private static func byTagAndValueDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byTagAndValueDateForSelf(
@@ -180,6 +192,7 @@ class ServiceFiltersDispatcher {
   private static func byPatientsForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byPatientsForSelf(
@@ -189,6 +202,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byPatientsSecretIdsForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -202,6 +216,7 @@ class ServiceFiltersDispatcher {
   private static func byHealthElementIdFromSubContactForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byHealthElementIdFromSubContactForSelf(
@@ -211,6 +226,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -224,6 +240,7 @@ class ServiceFiltersDispatcher {
   private static func byAssociationId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byAssociationId(
@@ -233,6 +250,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byQualifiedLink(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -245,6 +263,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byPatientsDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -262,6 +281,7 @@ class ServiceFiltersDispatcher {
   private static func byPatientsDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ServiceFilters.shared.byPatientsDateForSelf(
@@ -274,6 +294,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -289,6 +310,7 @@ class ServiceFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsDateForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

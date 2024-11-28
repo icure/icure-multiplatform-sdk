@@ -15,6 +15,7 @@ public object AccessLogBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchAccessLogsBy" -> matchAccessLogsBy(parameters, resultCallback)
@@ -39,6 +40,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.matchAccessLogsBy(
       resultCallback,
@@ -48,6 +50,7 @@ public object AccessLogBasicApiDispatcher {
   }
 
   private fun matchAccessLogsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -63,6 +66,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.filterAccessLogsBy(
       resultCallback,
@@ -75,6 +79,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.filterAccessLogsBySorted(
       resultCallback,
@@ -84,6 +89,7 @@ public object AccessLogBasicApiDispatcher {
   }
 
   private fun deleteAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -100,6 +106,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.deleteAccessLogsByIds(
       resultCallback,
@@ -109,6 +116,7 @@ public object AccessLogBasicApiDispatcher {
   }
 
   private fun purgeAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -125,6 +133,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.deleteAccessLog(
       resultCallback,
@@ -134,6 +143,7 @@ public object AccessLogBasicApiDispatcher {
   }
 
   private fun deleteAccessLogs(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -149,6 +159,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.purgeAccessLog(
       resultCallback,
@@ -158,6 +169,7 @@ public object AccessLogBasicApiDispatcher {
   }
 
   private fun undeleteAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -174,6 +186,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.undeleteAccessLog(
       resultCallback,
@@ -183,6 +196,7 @@ public object AccessLogBasicApiDispatcher {
   }
 
   private fun modifyAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -198,6 +212,7 @@ public object AccessLogBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogBasicApi.getAccessLog(
       resultCallback,
@@ -207,6 +222,7 @@ public object AccessLogBasicApiDispatcher {
   }
 
   private fun getAccessLogs(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

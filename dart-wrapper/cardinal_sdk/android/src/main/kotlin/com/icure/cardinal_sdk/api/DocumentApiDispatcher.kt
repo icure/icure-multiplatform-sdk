@@ -15,6 +15,7 @@ public object DocumentApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createDocument" -> createDocument(parameters, resultCallback)
@@ -82,6 +83,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.createDocument(
       resultCallback,
@@ -91,6 +93,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -110,6 +113,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.getAndTryDecryptMainAttachment(
       resultCallback,
@@ -122,6 +126,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.getAndDecryptMainAttachment(
       resultCallback,
@@ -131,6 +136,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun encryptAndSetMainAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -148,6 +154,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.getAndDecryptSecondaryAttachment(
       resultCallback,
@@ -158,6 +165,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun encryptAndSetSecondaryAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -176,6 +184,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.getEncryptionKeysOf(
       resultCallback,
@@ -188,6 +197,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.hasWriteAccess(
       resultCallback,
@@ -197,6 +207,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -213,6 +224,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -223,6 +235,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -238,6 +251,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.tryDecrypt(
       resultCallback,
@@ -247,6 +261,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun tryDecryptAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -263,6 +278,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.matchDocumentsBy(
       resultCallback,
@@ -275,6 +291,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.matchDocumentsBySorted(
       resultCallback,
@@ -284,6 +301,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun deleteDocumentById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -300,6 +318,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.deleteDocumentsByIds(
       resultCallback,
@@ -309,6 +328,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun purgeDocumentById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -325,6 +345,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.deleteDocument(
       resultCallback,
@@ -334,6 +355,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun deleteDocuments(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -349,6 +371,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.purgeDocument(
       resultCallback,
@@ -361,6 +384,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.getRawMainAttachment(
       resultCallback,
@@ -370,6 +394,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun getRawSecondaryAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -386,6 +411,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.setRawMainAttachment(
       resultCallback,
@@ -399,6 +425,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun setRawSecondaryAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -419,6 +446,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.deleteMainAttachment(
       resultCallback,
@@ -429,6 +457,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun deleteSecondaryAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -446,6 +475,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.shareWith(
       resultCallback,
@@ -457,6 +487,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -473,6 +504,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.filterDocumentsBy(
       resultCallback,
@@ -485,6 +517,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.filterDocumentsBySorted(
       resultCallback,
@@ -494,6 +527,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun undeleteDocumentById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -510,6 +544,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.undeleteDocument(
       resultCallback,
@@ -519,6 +554,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun modifyDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -534,6 +570,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.getDocument(
       resultCallback,
@@ -543,6 +580,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun getDocuments(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -558,6 +596,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.modifyDocuments(
       resultCallback,
@@ -567,6 +606,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -584,6 +624,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.encrypted.shareWithMany(
       resultCallback,
@@ -594,6 +635,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun encrypted_filterDocumentsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -609,6 +651,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.encrypted.filterDocumentsBySorted(
       resultCallback,
@@ -618,6 +661,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun encrypted_undeleteDocumentById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -634,6 +678,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.encrypted.undeleteDocument(
       resultCallback,
@@ -643,6 +688,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun encrypted_modifyDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -658,6 +704,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.encrypted.getDocument(
       resultCallback,
@@ -667,6 +714,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun encrypted_getDocuments(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -682,6 +730,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.encrypted.modifyDocuments(
       resultCallback,
@@ -691,6 +740,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -708,6 +758,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -718,6 +769,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun tryAndRecover_filterDocumentsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -734,6 +786,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.tryAndRecover.filterDocumentsBySorted(
       resultCallback,
@@ -743,6 +796,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteDocumentById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -759,6 +813,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.tryAndRecover.undeleteDocument(
       resultCallback,
@@ -768,6 +823,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun tryAndRecover_modifyDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -783,6 +839,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.tryAndRecover.getDocument(
       resultCallback,
@@ -795,6 +852,7 @@ public object DocumentApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentApi.tryAndRecover.getDocuments(
       resultCallback,
@@ -804,6 +862,7 @@ public object DocumentApiDispatcher {
   }
 
   private fun tryAndRecover_modifyDocuments(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

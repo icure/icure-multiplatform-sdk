@@ -9,6 +9,7 @@ class InvoiceBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -42,6 +43,7 @@ class InvoiceBasicApiDispatcher {
   private static func deleteInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.deleteInvoice(
@@ -52,6 +54,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func getTarificationsCodesOccurrences(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -66,6 +69,7 @@ class InvoiceBasicApiDispatcher {
   private static func modifyInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.modifyInvoice(
@@ -76,6 +80,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func modifyInvoices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -90,6 +95,7 @@ class InvoiceBasicApiDispatcher {
   private static func getInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.getInvoice(
@@ -100,6 +106,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func getInvoices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -114,6 +121,7 @@ class InvoiceBasicApiDispatcher {
   private static func reassignInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.reassignInvoice(
@@ -124,6 +132,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func mergeTo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -139,6 +148,7 @@ class InvoiceBasicApiDispatcher {
   private static func validate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.validate(
@@ -151,6 +161,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func appendCodes(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -172,6 +183,7 @@ class InvoiceBasicApiDispatcher {
   private static func removeCodes(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.removeCodes(
@@ -187,6 +199,7 @@ class InvoiceBasicApiDispatcher {
   private static func listInvoicesByHcPartyAndGroupId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.listInvoicesByHcPartyAndGroupId(
@@ -198,6 +211,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -217,6 +231,7 @@ class InvoiceBasicApiDispatcher {
   private static func listInvoicesByContactIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.listInvoicesByContactIds(
@@ -227,6 +242,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func listInvoicesByRecipientsIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -241,6 +257,7 @@ class InvoiceBasicApiDispatcher {
   private static func listToInsurances(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.listToInsurances(
@@ -251,6 +268,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func listToInsurancesUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -265,6 +283,7 @@ class InvoiceBasicApiDispatcher {
   private static func listToPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.listToPatients(
@@ -275,6 +294,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func listToPatientsUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -289,6 +309,7 @@ class InvoiceBasicApiDispatcher {
   private static func listInvoicesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceBasicApi.shared.listInvoicesByIds(
@@ -299,6 +320,7 @@ class InvoiceBasicApiDispatcher {
   }
 
   private static func listInvoicesByHcpartySendingModeStatusDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

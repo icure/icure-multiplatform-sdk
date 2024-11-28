@@ -15,6 +15,7 @@ public object FormFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byParentIdForDataOwner" -> byParentIdForDataOwner(parameters, resultCallback)
@@ -32,6 +33,7 @@ public object FormFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormFilters.byParentIdForDataOwner(
       resultCallback,
@@ -44,6 +46,7 @@ public object FormFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormFilters.byParentIdForSelf(
       resultCallback,
@@ -52,6 +55,7 @@ public object FormFiltersDispatcher {
   }
 
   private fun byPatientsOpeningDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -70,6 +74,7 @@ public object FormFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormFilters.byPatientsOpeningDateForSelf(
       resultCallback,
@@ -82,6 +87,7 @@ public object FormFiltersDispatcher {
 
   private fun byPatientSecretIdsOpeningDateForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -101,6 +107,7 @@ public object FormFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormFilters.byPatientSecretIdsOpeningDateForSelf(
       resultCallback,
@@ -115,6 +122,7 @@ public object FormFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormFilters.byLogicalUuid(
       resultCallback,
@@ -124,6 +132,7 @@ public object FormFiltersDispatcher {
   }
 
   private fun byUniqueId(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

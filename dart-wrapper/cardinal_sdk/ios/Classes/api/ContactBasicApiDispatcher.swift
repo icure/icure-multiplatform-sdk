@@ -9,6 +9,7 @@ class ContactBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -46,6 +47,7 @@ class ContactBasicApiDispatcher {
   private static func matchContactsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.matchContactsBy(
@@ -56,6 +58,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func matchServicesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -70,6 +73,7 @@ class ContactBasicApiDispatcher {
   private static func matchContactsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.matchContactsBySorted(
@@ -80,6 +84,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func matchServicesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -94,6 +99,7 @@ class ContactBasicApiDispatcher {
   private static func filterContactsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.filterContactsBy(
@@ -104,6 +110,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func filterServicesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -118,6 +125,7 @@ class ContactBasicApiDispatcher {
   private static func filterContactsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.filterContactsBySorted(
@@ -130,6 +138,7 @@ class ContactBasicApiDispatcher {
   private static func filterServicesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.filterServicesBySorted(
@@ -140,6 +149,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func subscribeToServiceCreateOrUpdateEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -155,6 +165,7 @@ class ContactBasicApiDispatcher {
   private static func deleteContactById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.deleteContactById(
@@ -168,6 +179,7 @@ class ContactBasicApiDispatcher {
   private static func deleteContactsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.deleteContactsByIds(
@@ -178,6 +190,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func purgeContactById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -193,6 +206,7 @@ class ContactBasicApiDispatcher {
   private static func deleteContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.deleteContact(
@@ -203,6 +217,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func deleteContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -217,6 +232,7 @@ class ContactBasicApiDispatcher {
   private static func purgeContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.purgeContact(
@@ -227,6 +243,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func getServiceCodesOccurrences(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -242,6 +259,7 @@ class ContactBasicApiDispatcher {
   private static func undeleteContactById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.undeleteContactById(
@@ -253,6 +271,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func undeleteContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -267,6 +286,7 @@ class ContactBasicApiDispatcher {
   private static func modifyContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.modifyContact(
@@ -277,6 +297,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func modifyContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -291,6 +312,7 @@ class ContactBasicApiDispatcher {
   private static func getContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.getContact(
@@ -301,6 +323,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func getContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -315,6 +338,7 @@ class ContactBasicApiDispatcher {
   private static func getService(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.getService(
@@ -327,6 +351,7 @@ class ContactBasicApiDispatcher {
   private static func getServices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactBasicApi.shared.getServices(
@@ -337,6 +362,7 @@ class ContactBasicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

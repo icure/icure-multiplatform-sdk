@@ -15,6 +15,7 @@ public object InvoiceApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createInvoice" -> createInvoice(parameters, resultCallback)
@@ -98,6 +99,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.createInvoice(
       resultCallback,
@@ -111,6 +113,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.createInvoices(
       resultCallback,
@@ -120,6 +123,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -139,6 +143,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.getEncryptionKeysOf(
       resultCallback,
@@ -151,6 +156,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.hasWriteAccess(
       resultCallback,
@@ -160,6 +166,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -176,6 +183,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -186,6 +194,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -201,6 +210,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryDecrypt(
       resultCallback,
@@ -210,6 +220,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun deleteInvoice(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -225,6 +236,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.getTarificationsCodesOccurrences(
       resultCallback,
@@ -234,6 +246,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -251,6 +264,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.shareWithMany(
       resultCallback,
@@ -261,6 +275,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun modifyInvoice(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -276,6 +291,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.modifyInvoices(
       resultCallback,
@@ -285,6 +301,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun getInvoice(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -300,6 +317,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.getInvoices(
       resultCallback,
@@ -312,6 +330,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.reassignInvoice(
       resultCallback,
@@ -321,6 +340,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun mergeTo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -337,6 +357,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.validate(
       resultCallback,
@@ -348,6 +369,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun appendCodes(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -370,6 +392,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.removeCodes(
       resultCallback,
@@ -385,6 +408,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.listInvoicesByHcPartyAndGroupId(
       resultCallback,
@@ -397,6 +421,7 @@ public object InvoiceApiDispatcher {
   private
       fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -417,6 +442,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.listInvoicesByContactIds(
       resultCallback,
@@ -426,6 +452,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun listInvoicesByRecipientsIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -441,6 +468,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.listToInsurances(
       resultCallback,
@@ -450,6 +478,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun listToInsurancesUnsent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -465,6 +494,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.listToPatients(
       resultCallback,
@@ -474,6 +504,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun listToPatientsUnsent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -489,6 +520,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.listInvoicesByIds(
       resultCallback,
@@ -499,6 +531,7 @@ public object InvoiceApiDispatcher {
 
   private fun listInvoicesByHcpartySendingModeStatusDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -518,6 +551,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.shareWith(
       resultCallback,
@@ -529,6 +563,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun encrypted_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -545,6 +580,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.modifyInvoice(
       resultCallback,
@@ -554,6 +590,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun encrypted_modifyInvoices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -569,6 +606,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.getInvoice(
       resultCallback,
@@ -578,6 +616,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun encrypted_getInvoices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -593,6 +632,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.reassignInvoice(
       resultCallback,
@@ -602,6 +642,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun encrypted_mergeTo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -618,6 +659,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.validate(
       resultCallback,
@@ -629,6 +671,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun encrypted_appendCodes(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -651,6 +694,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.removeCodes(
       resultCallback,
@@ -667,6 +711,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.listInvoicesByHcPartyAndGroupId(
       resultCallback,
@@ -679,6 +724,7 @@ public object InvoiceApiDispatcher {
   private
       fun encrypted_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -699,6 +745,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.listInvoicesByContactIds(
       resultCallback,
@@ -709,6 +756,7 @@ public object InvoiceApiDispatcher {
 
   private fun encrypted_listInvoicesByRecipientsIds(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -724,6 +772,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.listToInsurances(
       resultCallback,
@@ -733,6 +782,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun encrypted_listToInsurancesUnsent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -748,6 +798,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.listToPatients(
       resultCallback,
@@ -757,6 +808,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun encrypted_listToPatientsUnsent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -772,6 +824,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.encrypted.listInvoicesByIds(
       resultCallback,
@@ -782,6 +835,7 @@ public object InvoiceApiDispatcher {
 
   private fun encrypted_listInvoicesByHcpartySendingModeStatusDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -801,6 +855,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.shareWith(
       resultCallback,
@@ -812,6 +867,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -828,6 +884,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.modifyInvoice(
       resultCallback,
@@ -837,6 +894,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_modifyInvoices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -852,6 +910,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.getInvoice(
       resultCallback,
@@ -861,6 +920,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_getInvoices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -876,6 +936,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.reassignInvoice(
       resultCallback,
@@ -885,6 +946,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_mergeTo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -901,6 +963,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.validate(
       resultCallback,
@@ -912,6 +975,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_appendCodes(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -934,6 +998,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.removeCodes(
       resultCallback,
@@ -950,6 +1015,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.listInvoicesByHcPartyAndGroupId(
       resultCallback,
@@ -962,6 +1028,7 @@ public object InvoiceApiDispatcher {
   private
       fun tryAndRecover_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -983,6 +1050,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.listInvoicesByContactIds(
       resultCallback,
@@ -996,6 +1064,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.listInvoicesByRecipientsIds(
       resultCallback,
@@ -1005,6 +1074,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_listToInsurances(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -1021,6 +1091,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.listToInsurancesUnsent(
       resultCallback,
@@ -1030,6 +1101,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_listToPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -1045,6 +1117,7 @@ public object InvoiceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceApi.tryAndRecover.listToPatientsUnsent(
       resultCallback,
@@ -1054,6 +1127,7 @@ public object InvoiceApiDispatcher {
   }
 
   private fun tryAndRecover_listInvoicesByIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -1068,6 +1142,7 @@ public object InvoiceApiDispatcher {
   private
       fun tryAndRecover_listInvoicesByHcpartySendingModeStatusDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,

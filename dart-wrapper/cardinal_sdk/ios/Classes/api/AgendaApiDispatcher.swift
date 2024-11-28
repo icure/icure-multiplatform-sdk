@@ -9,6 +9,7 @@ class AgendaApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -37,6 +38,7 @@ class AgendaApiDispatcher {
   private static func createAgenda(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.createAgenda(
@@ -47,6 +49,7 @@ class AgendaApiDispatcher {
   }
 
   private static func deleteAgendaById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -62,6 +65,7 @@ class AgendaApiDispatcher {
   private static func deleteAgendasByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.deleteAgendasByIds(
@@ -72,6 +76,7 @@ class AgendaApiDispatcher {
   }
 
   private static func purgeAgendaById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -87,6 +92,7 @@ class AgendaApiDispatcher {
   private static func undeleteAgendaById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.undeleteAgendaById(
@@ -98,6 +104,7 @@ class AgendaApiDispatcher {
   }
 
   private static func deleteAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -112,6 +119,7 @@ class AgendaApiDispatcher {
   private static func deleteAgendas(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.deleteAgendas(
@@ -122,6 +130,7 @@ class AgendaApiDispatcher {
   }
 
   private static func purgeAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -136,6 +145,7 @@ class AgendaApiDispatcher {
   private static func undeleteAgenda(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.undeleteAgenda(
@@ -146,6 +156,7 @@ class AgendaApiDispatcher {
   }
 
   private static func getAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -160,6 +171,7 @@ class AgendaApiDispatcher {
   private static func getAgendas(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.getAgendas(
@@ -170,6 +182,7 @@ class AgendaApiDispatcher {
   }
 
   private static func modifyAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -184,6 +197,7 @@ class AgendaApiDispatcher {
   private static func matchAgendasBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.matchAgendasBy(
@@ -194,6 +208,7 @@ class AgendaApiDispatcher {
   }
 
   private static func matchAgendasBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -208,6 +223,7 @@ class AgendaApiDispatcher {
   private static func filterAgendasBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaApi.shared.filterAgendasBy(
@@ -218,6 +234,7 @@ class AgendaApiDispatcher {
   }
 
   private static func filterAgendasBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
